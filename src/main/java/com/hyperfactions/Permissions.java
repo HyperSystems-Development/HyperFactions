@@ -163,6 +163,8 @@ public final class Permissions {
     public static final String ADMIN_BYPASS_LIMITS = "hyperfactions.admin.bypass.limits";
     /** Manage backups (create, restore, delete) */
     public static final String ADMIN_BACKUP = "hyperfactions.admin.backup";
+    /** Admin power management (set, adjust, reset, max override, bypass toggles) */
+    public static final String ADMIN_POWER = "hyperfactions.admin.power";
 
     // === Limit Permissions (hyperfactions.limit.*) ===
     /** Maximum claims permission prefix (e.g., hyperfactions.limit.claims.50) */
@@ -198,7 +200,8 @@ public final class Permissions {
             BYPASS_DAMAGE, BYPASS_USE, BYPASS_WARMUP, BYPASS_COOLDOWN,
             // Admin
             ADMIN, ADMIN_RELOAD, ADMIN_DEBUG, ADMIN_ZONES,
-            ADMIN_DISBAND, ADMIN_MODIFY, ADMIN_BYPASS_LIMITS, ADMIN_BACKUP
+            ADMIN_DISBAND, ADMIN_MODIFY, ADMIN_BYPASS_LIMITS, ADMIN_BACKUP,
+            ADMIN_POWER
         };
     }
 
@@ -260,7 +263,8 @@ public final class Permissions {
     public static String[] getAdminPermissions() {
         return new String[] {
             ADMIN, ADMIN_RELOAD, ADMIN_DEBUG, ADMIN_ZONES,
-            ADMIN_DISBAND, ADMIN_MODIFY, ADMIN_BYPASS_LIMITS, ADMIN_BACKUP
+            ADMIN_DISBAND, ADMIN_MODIFY, ADMIN_BYPASS_LIMITS, ADMIN_BACKUP,
+            ADMIN_POWER
         };
     }
 }

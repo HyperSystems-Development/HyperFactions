@@ -6,39 +6,39 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Event data for the Admin Faction Info page.
+ * Event data for the Admin Player Info page.
  */
-public class AdminFactionInfoData implements AdminNavAwareData {
+public class AdminPlayerInfoData implements AdminNavAwareData {
 
     /** The button/action that triggered the event */
     public String button;
 
-    /** Target faction ID (for navigation) */
-    public String factionId;
+    /** Static delta value for +/- adjust buttons */
+    public String delta;
 
-    /** Amount value for bulk power operations */
-    public String amount;
+    /** Dynamic text field value for Set/SetMax (read via @PowerInput) */
+    public String powerInput;
 
     /** Admin nav bar target (for navigation) */
     public String adminNavBar;
 
     /** Codec for serialization/deserialization */
-    public static final BuilderCodec<AdminFactionInfoData> CODEC = BuilderCodec
-            .builder(AdminFactionInfoData.class, AdminFactionInfoData::new)
+    public static final BuilderCodec<AdminPlayerInfoData> CODEC = BuilderCodec
+            .builder(AdminPlayerInfoData.class, AdminPlayerInfoData::new)
             .addField(
                     new KeyedCodec<>("Button", Codec.STRING),
                     (data, value) -> data.button = value,
                     data -> data.button
             )
             .addField(
-                    new KeyedCodec<>("FactionId", Codec.STRING),
-                    (data, value) -> data.factionId = value,
-                    data -> data.factionId
+                    new KeyedCodec<>("Delta", Codec.STRING),
+                    (data, value) -> data.delta = value,
+                    data -> data.delta
             )
             .addField(
-                    new KeyedCodec<>("Amount", Codec.STRING),
-                    (data, value) -> data.amount = value,
-                    data -> data.amount
+                    new KeyedCodec<>("@PowerInput", Codec.STRING),
+                    (data, value) -> data.powerInput = value,
+                    data -> data.powerInput
             )
             .addField(
                     new KeyedCodec<>("AdminNavBar", Codec.STRING),
@@ -47,7 +47,7 @@ public class AdminFactionInfoData implements AdminNavAwareData {
             )
             .build();
 
-    public AdminFactionInfoData() {
+    public AdminPlayerInfoData() {
     }
 
     @Override

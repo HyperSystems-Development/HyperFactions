@@ -1264,6 +1264,41 @@ public class GuiManager {
     }
 
     /**
+     * Opens the Admin Player Info page with power controls.
+     *
+     * @param player            The Player entity
+     * @param ref               The entity reference
+     * @param store             The entity store
+     * @param playerRef         The PlayerRef component
+     * @param targetPlayerUuid  The UUID of the player to view
+     * @param targetPlayerName  The username of the player to view
+     * @param factionId         The faction ID for back navigation
+     */
+    public void openAdminPlayerInfo(Player player, Ref<EntityStore> ref,
+                                    Store<EntityStore> store, PlayerRef playerRef,
+                                    UUID targetPlayerUuid, String targetPlayerName,
+                                    UUID factionId) {
+        Logger.debug("[GUI] Opening AdminPlayerInfoPage for %s (target: %s)", playerRef.getUsername(), targetPlayerName);
+        try {
+            PageManager pageManager = player.getPageManager();
+            AdminPlayerInfoPage page = new AdminPlayerInfoPage(
+                playerRef,
+                targetPlayerUuid,
+                targetPlayerName,
+                factionId,
+                factionManager.get(),
+                powerManager.get(),
+                this
+            );
+            pageManager.openCustomPage(ref, store, page);
+            Logger.debug("[GUI] AdminPlayerInfoPage opened successfully");
+        } catch (Exception e) {
+            Logger.severe("[GUI] Failed to open AdminPlayerInfoPage: %s", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Opens the Admin Faction Relations page.
      * View and force-set relations with admin navigation context.
      *

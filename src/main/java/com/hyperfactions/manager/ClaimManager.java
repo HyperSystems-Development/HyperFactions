@@ -734,12 +734,17 @@ public class ClaimManager {
                 continue;
             }
 
-            // Check if all members are inactive
+            // Check if all members are inactive (claim decay exempt members count as active)
             boolean allInactive = true;
             long mostRecentLogin = 0;
             for (FactionMember member : faction.members().values()) {
                 if (member.lastOnline() > mostRecentLogin) {
                     mostRecentLogin = member.lastOnline();
+                }
+                // Decay-exempt members are treated as always active
+                if (powerManager.getPlayerPower(member.uuid()).claimDecayExempt()) {
+                    allInactive = false;
+                    break;
                 }
                 if (member.lastOnline() > thresholdMs) {
                     allInactive = false;
@@ -796,6 +801,10 @@ public class ClaimManager {
         long thresholdMs = System.currentTimeMillis() - (daysThreshold * 24L * 60 * 60 * 1000);
 
         for (FactionMember member : faction.members().values()) {
+            // Decay-exempt members are treated as always active
+            if (powerManager.getPlayerPower(member.uuid()).claimDecayExempt()) {
+                return false;
+            }
             if (member.lastOnline() > thresholdMs) {
                 return false; // At least one active member
             }
@@ -824,9 +833,12 @@ public class ClaimManager {
 
         int daysThreshold = config.getDecayDaysInactive();
 
-        // Find most recent member login
+        // Find most recent member login (decay-exempt members prevent decay entirely)
         long mostRecentLogin = 0;
         for (FactionMember member : faction.members().values()) {
+            if (powerManager.getPlayerPower(member.uuid()).claimDecayExempt()) {
+                return -1; // Exempt member = faction never decays
+            }
             if (member.lastOnline() > mostRecentLogin) {
                 mostRecentLogin = member.lastOnline();
             }

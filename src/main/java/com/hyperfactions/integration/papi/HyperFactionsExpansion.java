@@ -281,7 +281,7 @@ public class HyperFactionsExpansion extends PlaceholderExpansion {
     @NotNull
     private String getPlayerMaxPower(@NotNull UUID uuid) {
         PlayerPower power = plugin.getPowerManager().getPlayerPower(uuid);
-        return String.format("%.1f", power.maxPower());
+        return String.format("%.1f", power.getEffectiveMaxPower());
     }
 
     @NotNull

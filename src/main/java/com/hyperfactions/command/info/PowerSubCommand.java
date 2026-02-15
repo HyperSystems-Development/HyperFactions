@@ -102,6 +102,6 @@ public class PowerSubCommand extends FactionSubCommand {
         PlayerPower power = hyperFactions.getPowerManager().getPlayerPower(targetUuid);
         ctx.sendMessage(msg(targetName + "'s Power:", COLOR_CYAN));
         ctx.sendMessage(msg("Current: ", COLOR_GRAY).insert(msg(String.format("%.1f/%.1f (%d%%)",
-            power.power(), power.maxPower(), power.getPowerPercent()), COLOR_WHITE)));
+            power.power(), power.getEffectiveMaxPower(), power.getPowerPercent()), COLOR_WHITE)));
     }
 }

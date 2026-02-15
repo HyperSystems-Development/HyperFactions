@@ -118,7 +118,7 @@ public class WhoSubCommand extends FactionSubCommand {
             ctx.sendMessage(msg("Faction: ", COLOR_GRAY).insert(msg("None", COLOR_WHITE)));
         }
 
-        ctx.sendMessage(msg("Power: ", COLOR_GRAY).insert(msg(String.format("%.1f/%.1f", power.power(), power.maxPower()), COLOR_WHITE)));
+        ctx.sendMessage(msg("Power: ", COLOR_GRAY).insert(msg(String.format("%.1f/%.1f", power.power(), power.getEffectiveMaxPower()), COLOR_WHITE)));
         ctx.sendMessage(msg("Status: ", COLOR_GRAY).insert(msg(isOnline ? "Online" : "Offline", isOnline ? COLOR_GREEN : COLOR_RED)));
 
         if (!isOnline && member != null) {

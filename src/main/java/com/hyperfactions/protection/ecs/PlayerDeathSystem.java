@@ -5,6 +5,7 @@ import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.config.modules.GravestoneConfig;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.PlayerData;
+import com.hyperfactions.data.PlayerPower;
 import com.hyperfactions.data.RelationType;
 import com.hyperfactions.data.Zone;
 import com.hyperfactions.data.ZoneFlags;
@@ -81,6 +82,34 @@ public class PlayerDeathSystem extends RefChangeSystem<EntityStore, DeathCompone
 
             UUID victimUuid = playerRef.getUuid();
 
+            // Absolute bypass: per-player power loss disabled (takes priority over zone flags)
+            PlayerPower victimPower = hyperFactions.getPowerManager().getPlayerPower(victimUuid);
+            if (victimPower.powerLossDisabled()) {
+                Logger.debugPower("Power loss bypassed for %s (powerLossDisabled=true)", victimUuid);
+                announceDeathLocation(victimUuid, playerRef, store, commandBuffer, ref);
+
+                // Still process kill reward/neutral penalty for the killer (they aren't bypassed)
+                UUID killerUuid = hyperFactions.getCombatTagManager().getLastAttacker(victimUuid);
+                if (killerUuid != null) {
+                    processKillerRewards(killerUuid, victimUuid);
+                }
+
+                // Still increment death counter
+                hyperFactions.getPlayerStorage().loadPlayerData(victimUuid).thenAccept(opt -> {
+                    PlayerData victimData = opt.orElseGet(() -> new PlayerData(victimUuid));
+                    victimData.incrementDeaths();
+                    hyperFactions.getPlayerStorage().savePlayerData(victimData);
+                });
+                if (killerUuid != null) {
+                    hyperFactions.getPlayerStorage().loadPlayerData(killerUuid).thenAccept(opt -> {
+                        PlayerData killerData = opt.orElseGet(() -> new PlayerData(killerUuid));
+                        killerData.incrementKills();
+                        hyperFactions.getPlayerStorage().savePlayerData(killerData);
+                    });
+                }
+                return;
+            }
+
             // Check if power loss is disabled in this zone
             TransformComponent transform = commandBuffer.getComponent(ref, TransformComponent.getComponentType());
             if (transform != null) {
@@ -108,26 +137,7 @@ public class PlayerDeathSystem extends RefChangeSystem<EntityStore, DeathCompone
             // Kill reward / neutral kill penalty
             UUID killerUuid = hyperFactions.getCombatTagManager().getLastAttacker(victimUuid);
             if (killerUuid != null) {
-                ConfigManager config = ConfigManager.get();
-                PowerManager pm = hyperFactions.getPowerManager();
-
-                // Kill reward (all PvP kills)
-                double reward = config.getKillReward();
-                if (reward > 0) {
-                    double killerPower = pm.applyKillReward(killerUuid, reward);
-                    Logger.debugPower("Kill reward: killer=%s gained %.2f power (now %.2f)", killerUuid, reward, killerPower);
-                }
-
-                // Neutral kill penalty
-                double neutralPenalty = config.getNeutralAttackPenalty();
-                if (neutralPenalty > 0) {
-                    RelationType relation = hyperFactions.getRelationManager()
-                        .getPlayerRelation(killerUuid, victimUuid);
-                    if (relation == null || relation == RelationType.NEUTRAL) {
-                        double killerPower = pm.applyNeutralKillPenalty(killerUuid, neutralPenalty);
-                        Logger.debugPower("Neutral kill penalty: killer=%s lost %.2f power (now %.2f)", killerUuid, neutralPenalty, killerPower);
-                    }
-                }
+                processKillerRewards(killerUuid, victimUuid);
             }
 
             // Increment kill/death counters
@@ -148,6 +158,32 @@ public class PlayerDeathSystem extends RefChangeSystem<EntityStore, DeathCompone
             announceDeathLocation(victimUuid, playerRef, store, commandBuffer, ref);
         } catch (Exception e) {
             Logger.severe("Error handling player death in ECS system", e);
+        }
+    }
+
+    /**
+     * Processes kill rewards and neutral kill penalties for the killer.
+     */
+    private void processKillerRewards(UUID killerUuid, UUID victimUuid) {
+        ConfigManager config = ConfigManager.get();
+        PowerManager pm = hyperFactions.getPowerManager();
+
+        // Kill reward (all PvP kills)
+        double reward = config.getKillReward();
+        if (reward > 0) {
+            double killerPower = pm.applyKillReward(killerUuid, reward);
+            Logger.debugPower("Kill reward: killer=%s gained %.2f power (now %.2f)", killerUuid, reward, killerPower);
+        }
+
+        // Neutral kill penalty
+        double neutralPenalty = config.getNeutralAttackPenalty();
+        if (neutralPenalty > 0) {
+            RelationType relation = hyperFactions.getRelationManager()
+                .getPlayerRelation(killerUuid, victimUuid);
+            if (relation == null || relation == RelationType.NEUTRAL) {
+                double killerPower = pm.applyNeutralKillPenalty(killerUuid, neutralPenalty);
+                Logger.debugPower("Neutral kill penalty: killer=%s lost %.2f power (now %.2f)", killerUuid, neutralPenalty, killerPower);
+            }
         }
     }
 

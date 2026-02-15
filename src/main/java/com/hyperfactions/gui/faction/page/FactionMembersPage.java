@@ -235,7 +235,7 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
         if (isExpanded) {
             // Power info
             PlayerPower power = powerManager.getPlayerPower(member.uuid());
-            String powerText = String.format("%.0f/%.0f", power.power(), power.maxPower());
+            String powerText = String.format("%.0f/%.0f", power.power(), power.getEffectiveMaxPower());
             cmd.set(idx + " #PowerValue.Text", powerText);
             // Color based on power percentage
             int powerPercent = power.getPowerPercent();

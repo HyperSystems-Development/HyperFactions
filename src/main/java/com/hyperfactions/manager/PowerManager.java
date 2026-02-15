@@ -146,6 +146,108 @@ public class PowerManager {
         }
     }
 
+    // === Admin Power Operations ===
+
+    /**
+     * Sets a player's power to an exact value (clamped 0..effectiveMax).
+     *
+     * @param playerUuid the player's UUID
+     * @param newPower   the desired power level
+     * @return the actual new power level (after clamping)
+     */
+    public double setPlayerPower(@NotNull UUID playerUuid, double newPower) {
+        PlayerPower power = getPlayerPower(playerUuid);
+        PlayerPower updated = power.withPower(newPower);
+        powerCache.put(playerUuid, updated);
+        storage.savePlayerPower(updated);
+        Logger.debugPower("Admin set power: player=%s, before=%.2f, after=%.2f", playerUuid, power.power(), updated.power());
+        return updated.power();
+    }
+
+    /**
+     * Adjusts a player's power by a delta (clamped 0..effectiveMax).
+     *
+     * @param playerUuid the player's UUID
+     * @param delta      the amount to add (negative to subtract)
+     * @return the actual new power level (after clamping)
+     */
+    public double adjustPlayerPower(@NotNull UUID playerUuid, double delta) {
+        PlayerPower power = getPlayerPower(playerUuid);
+        PlayerPower updated = power.withPower(power.power() + delta);
+        powerCache.put(playerUuid, updated);
+        storage.savePlayerPower(updated);
+        Logger.debugPower("Admin adjust power: player=%s, before=%.2f, delta=%.2f, after=%.2f", playerUuid, power.power(), delta, updated.power());
+        return updated.power();
+    }
+
+    /**
+     * Resets a player's power to the configured starting power.
+     *
+     * @param playerUuid the player's UUID
+     * @return the new power level
+     */
+    public double resetPlayerPower(@NotNull UUID playerUuid) {
+        double startingPower = ConfigManager.get().getStartingPower();
+        return setPlayerPower(playerUuid, startingPower);
+    }
+
+    /**
+     * Sets a per-player max power override.
+     *
+     * @param playerUuid  the player's UUID
+     * @param maxOverride the max power override, or null to clear
+     * @return the actual new power level (may be clamped if max was lowered)
+     */
+    public double setPlayerMaxPower(@NotNull UUID playerUuid, Double maxOverride) {
+        PlayerPower power = getPlayerPower(playerUuid);
+        PlayerPower updated = power.withMaxPowerOverride(maxOverride);
+        powerCache.put(playerUuid, updated);
+        storage.savePlayerPower(updated);
+        Logger.debugPower("Admin set max power: player=%s, override=%s, power=%.2f",
+            playerUuid, maxOverride != null ? String.format("%.2f", maxOverride) : "cleared", updated.power());
+        return updated.power();
+    }
+
+    /**
+     * Clears a player's max power override (reverts to global config).
+     *
+     * @param playerUuid the player's UUID
+     * @return the actual new power level
+     */
+    public double resetPlayerMaxPower(@NotNull UUID playerUuid) {
+        return setPlayerMaxPower(playerUuid, null);
+    }
+
+    /**
+     * Sets the power loss disabled flag for a player.
+     *
+     * @param playerUuid the player's UUID
+     * @param disabled   true to disable power loss
+     */
+    public void setPlayerPowerLossDisabled(@NotNull UUID playerUuid, boolean disabled) {
+        PlayerPower power = getPlayerPower(playerUuid);
+        PlayerPower updated = power.withPowerLossDisabled(disabled);
+        powerCache.put(playerUuid, updated);
+        storage.savePlayerPower(updated);
+        Logger.debugPower("Admin set power loss disabled: player=%s, disabled=%s", playerUuid, disabled);
+    }
+
+    /**
+     * Sets the claim decay exempt flag for a player.
+     *
+     * @param playerUuid the player's UUID
+     * @param exempt     true to exempt from claim decay
+     */
+    public void setPlayerClaimDecayExempt(@NotNull UUID playerUuid, boolean exempt) {
+        PlayerPower power = getPlayerPower(playerUuid);
+        PlayerPower updated = power.withClaimDecayExempt(exempt);
+        powerCache.put(playerUuid, updated);
+        storage.savePlayerPower(updated);
+        Logger.debugPower("Admin set claim decay exempt: player=%s, exempt=%s", playerUuid, exempt);
+    }
+
+    // === Gameplay Power Operations ===
+
     /**
      * Applies death penalty to a player.
      *
@@ -154,6 +256,13 @@ public class PowerManager {
      */
     public double applyDeathPenalty(@NotNull UUID playerUuid) {
         PlayerPower power = getPlayerPower(playerUuid);
+
+        // Absolute bypass: power loss disabled
+        if (power.powerLossDisabled()) {
+            Logger.debugPower("Death penalty bypassed (powerLossDisabled): player=%s", playerUuid);
+            return power.power();
+        }
+
         double penalty = ConfigManager.get().getDeathPenalty();
 
         PlayerPower updated = power.withDeathPenalty(penalty);
@@ -175,6 +284,13 @@ public class PowerManager {
      */
     public double applyCombatLogoutPenalty(@NotNull UUID playerUuid, double penalty) {
         PlayerPower power = getPlayerPower(playerUuid);
+
+        // Absolute bypass: power loss disabled
+        if (power.powerLossDisabled()) {
+            Logger.debugPower("Combat logout penalty bypassed (powerLossDisabled): player=%s", playerUuid);
+            return power.power();
+        }
+
         // Reuse withDeathPenalty - combat logout is treated as a "virtual death"
         PlayerPower updated = power.withDeathPenalty(penalty);
         powerCache.put(playerUuid, updated);
@@ -212,6 +328,13 @@ public class PowerManager {
      */
     public double applyNeutralKillPenalty(@NotNull UUID playerUuid, double penalty) {
         PlayerPower power = getPlayerPower(playerUuid);
+
+        // Absolute bypass: power loss disabled
+        if (power.powerLossDisabled()) {
+            Logger.debugPower("Neutral kill penalty bypassed (powerLossDisabled): player=%s", playerUuid);
+            return power.power();
+        }
+
         PlayerPower updated = power.withDeathPenalty(penalty);
         powerCache.put(playerUuid, updated);
         storage.savePlayerPower(updated);
@@ -296,7 +419,7 @@ public class PowerManager {
 
         double total = 0;
         for (UUID memberUuid : faction.members().keySet()) {
-            total += getPlayerPower(memberUuid).maxPower();
+            total += getPlayerPower(memberUuid).getEffectiveMaxPower();
         }
         return total;
     }

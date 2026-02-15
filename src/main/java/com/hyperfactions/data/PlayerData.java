@@ -28,6 +28,9 @@ public class PlayerData {
     private long firstJoined;
     private long lastOnline;
     private List<MembershipRecord> membershipHistory = new ArrayList<>();
+    private Double maxPowerOverride;
+    private boolean powerLossDisabled;
+    private boolean claimDecayExempt;
 
     public PlayerData() {}
 
@@ -42,7 +45,7 @@ public class PlayerData {
      */
     @NotNull
     public PlayerPower toPower() {
-        return new PlayerPower(uuid, power, maxPower, lastDeath, lastRegen);
+        return new PlayerPower(uuid, power, maxPower, lastDeath, lastRegen, maxPowerOverride, powerLossDisabled, claimDecayExempt);
     }
 
     /**
@@ -53,6 +56,9 @@ public class PlayerData {
         this.maxPower = p.maxPower();
         this.lastDeath = p.lastDeath();
         this.lastRegen = p.lastRegen();
+        this.maxPowerOverride = p.maxPowerOverride();
+        this.powerLossDisabled = p.powerLossDisabled();
+        this.claimDecayExempt = p.claimDecayExempt();
     }
 
     /**
@@ -173,4 +179,13 @@ public class PlayerData {
     public void setMembershipHistory(@NotNull List<MembershipRecord> membershipHistory) {
         this.membershipHistory = membershipHistory;
     }
+
+    @Nullable public Double getMaxPowerOverride() { return maxPowerOverride; }
+    public void setMaxPowerOverride(@Nullable Double maxPowerOverride) { this.maxPowerOverride = maxPowerOverride; }
+
+    public boolean isPowerLossDisabled() { return powerLossDisabled; }
+    public void setPowerLossDisabled(boolean powerLossDisabled) { this.powerLossDisabled = powerLossDisabled; }
+
+    public boolean isClaimDecayExempt() { return claimDecayExempt; }
+    public void setClaimDecayExempt(boolean claimDecayExempt) { this.claimDecayExempt = claimDecayExempt; }
 }

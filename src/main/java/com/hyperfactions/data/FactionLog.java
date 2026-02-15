@@ -38,7 +38,8 @@ public record FactionLog(
         LEADER_TRANSFER("Transfer"),
         SETTINGS_CHANGE("Settings"),
         POWER_CHANGE("Power"),
-        ECONOMY("Economy");
+        ECONOMY("Economy"),
+        ADMIN_POWER("Admin Power");
 
         private final String displayName;
 

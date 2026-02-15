@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-**Closes:** [#30](https://github.com/HyperSystemsDev/HyperFactions/issues/30), [#32](https://github.com/HyperSystemsDev/HyperFactions/issues/32)
+**Closes:** [#30](https://github.com/HyperSystemsDev/HyperFactions/issues/30), [#32](https://github.com/HyperSystemsDev/HyperFactions/issues/32), [#34](https://github.com/HyperSystemsDev/HyperFactions/issues/34)
 
 ### Fixed
 
@@ -23,6 +23,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Upgrade migration**: Existing faction members automatically get an active membership record on first startup, using their actual faction join date and current role
 - **First joined / last online tracking**: Displayed on the player info page header; initialized on first connect, updated on connect/disconnect
 - `maxMembershipHistory` config option (default: 10) to cap history records per player
+- **Admin power management** (`/f admin power`): Full admin control over player power — set, adjust, reset, per-player max override, power loss bypass, claim decay exemption ([#34](https://github.com/HyperSystemsDev/HyperFactions/issues/34))
+- **Admin Player Info page**: GUI page accessible from admin member list with power controls, bypass toggles, and kick/promote/demote actions
+- **Faction bulk power operations**: Reset All / +/-1/5 All buttons on AdminFactionInfoPage
+- `ADMIN_POWER` log type for faction activity logs
+- `hyperfactions.admin.power` permission node
 - **Terrain map mode for territory GUI**: Territory map now renders actual terrain imagery behind claim overlays using `ChunkWorldMap`, making it much easier to orient yourself and identify terrain features when claiming (rivers, biomes, elevation)
 - Dynamic terrain image asset delivery via `ChunkMapAsset` — generates a composite PNG from chunk world map data and sends it to the player's client at runtime
 - Static placeholder `Map.png` sent immediately on page open, with terrain loading asynchronously in the background

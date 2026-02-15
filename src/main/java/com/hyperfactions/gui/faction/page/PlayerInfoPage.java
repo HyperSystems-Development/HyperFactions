@@ -128,10 +128,10 @@ public class PlayerInfoPage extends InteractiveCustomUIPage<PlayerInfoData> {
 
         // === Stats Section ===
         PlayerPower power = powerManager.getPlayerPower(targetPlayerUuid);
-        cmd.set("#PowerValue.Text", String.format("%.1f / %.1f", power.power(), power.maxPower()));
+        cmd.set("#PowerValue.Text", String.format("%.1f / %.1f", power.power(), power.getEffectiveMaxPower()));
 
         // Power bar
-        float powerRatio = power.maxPower() > 0 ? (float) (power.power() / power.maxPower()) : 0f;
+        float powerRatio = power.getEffectiveMaxPower() > 0 ? (float) (power.power() / power.getEffectiveMaxPower()) : 0f;
         cmd.set("#PowerBar.Value", powerRatio);
         int powerPercent = power.getPowerPercent();
         String powerColor = powerPercent >= 80 ? "#55FF55" : powerPercent >= 40 ? "#FFAA00" : "#FF5555";

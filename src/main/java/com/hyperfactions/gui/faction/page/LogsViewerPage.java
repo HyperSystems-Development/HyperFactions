@@ -251,6 +251,7 @@ public class LogsViewerPage extends InteractiveCustomUIPage<LogsViewerData> {
             case SETTINGS_CHANGE -> "#AA00FF";  // Purple
             case POWER_CHANGE -> "#FFAA00";     // Orange
             case ECONOMY -> "#FFD700";          // Gold
+            case ADMIN_POWER -> "#FF55FF";      // Magenta (admin action)
         };
     }
 }

@@ -236,6 +236,17 @@ public class JsonPlayerStorage implements PlayerStorage {
             obj.addProperty("lastOnline", data.getLastOnline());
         }
 
+        // Admin power overrides
+        if (data.getMaxPowerOverride() != null) {
+            obj.addProperty("maxPowerOverride", data.getMaxPowerOverride());
+        }
+        if (data.isPowerLossDisabled()) {
+            obj.addProperty("powerLossDisabled", true);
+        }
+        if (data.isClaimDecayExempt()) {
+            obj.addProperty("claimDecayExempt", true);
+        }
+
         // Membership history
         if (!data.getMembershipHistory().isEmpty()) {
             JsonArray historyArr = new JsonArray();
@@ -282,6 +293,17 @@ public class JsonPlayerStorage implements PlayerStorage {
         }
         if (obj.has("lastOnline")) {
             data.setLastOnline(obj.get("lastOnline").getAsLong());
+        }
+
+        // Admin power overrides
+        if (obj.has("maxPowerOverride") && !obj.get("maxPowerOverride").isJsonNull()) {
+            data.setMaxPowerOverride(obj.get("maxPowerOverride").getAsDouble());
+        }
+        if (obj.has("powerLossDisabled")) {
+            data.setPowerLossDisabled(obj.get("powerLossDisabled").getAsBoolean());
+        }
+        if (obj.has("claimDecayExempt")) {
+            data.setClaimDecayExempt(obj.get("claimDecayExempt").getAsBoolean());
         }
 
         // Membership history

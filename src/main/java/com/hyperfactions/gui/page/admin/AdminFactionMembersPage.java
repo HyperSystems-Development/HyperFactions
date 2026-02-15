@@ -174,7 +174,7 @@ public class AdminFactionMembersPage extends InteractiveCustomUIPage<AdminFactio
         if (isExpanded) {
             // Power info
             PlayerPower power = powerManager.getPlayerPower(member.uuid());
-            String powerText = String.format("%.0f/%.0f", power.power(), power.maxPower());
+            String powerText = String.format("%.0f/%.0f", power.power(), power.getEffectiveMaxPower());
             cmd.set(idx + " #PowerValue.Text", powerText);
             int powerPercent = power.getPowerPercent();
             String powerColor = powerPercent >= 80 ? "#55FF55" : powerPercent >= 40 ? "#FFAA00" : "#FF5555";
@@ -203,7 +203,18 @@ public class AdminFactionMembersPage extends InteractiveCustomUIPage<AdminFactio
             cmd.set(idx + " #PromoteBtn.Visible", canPromote);
             cmd.set(idx + " #DemoteBtn.Visible", canDemote);
             cmd.set(idx + " #KickBtn.Visible", canKick);
-            cmd.set(idx + " #TeleportBtn.Visible", false); // Teleport requires additional infrastructure
+            // View Info button (repurpose Teleport slot)
+            cmd.set(idx + " #TeleportBtn.Text", "View Info");
+            cmd.set(idx + " #TeleportBtn.Visible", true);
+            events.addEventBinding(
+                    CustomUIEventBindingType.Activating,
+                    idx + " #TeleportBtn",
+                    EventData.of("Button", "ViewPlayerInfo")
+                            .append("MemberUuid", member.uuid().toString())
+                            .append("MemberName", member.username())
+                            .append("FactionId", factionId.toString()),
+                    false
+            );
 
             // Bind action buttons
             if (canPromote) {
@@ -411,6 +422,18 @@ public class AdminFactionMembersPage extends InteractiveCustomUIPage<AdminFactio
                                 rebuildList();
                             }
                         }
+                    } catch (IllegalArgumentException e) {
+                        sendUpdate();
+                    }
+                }
+            }
+
+            case "ViewPlayerInfo" -> {
+                if (data.memberUuid != null) {
+                    try {
+                        UUID memberUuid = UUID.fromString(data.memberUuid);
+                        String memberName = data.memberName != null ? data.memberName : "Unknown";
+                        guiManager.openAdminPlayerInfo(player, ref, store, playerRef, memberUuid, memberName, factionId);
                     } catch (IllegalArgumentException e) {
                         sendUpdate();
                     }

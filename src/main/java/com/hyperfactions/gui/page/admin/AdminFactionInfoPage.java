@@ -2,6 +2,7 @@ package com.hyperfactions.gui.page.admin;
 
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
+import com.hyperfactions.data.FactionLog;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.data.FactionRole;
 import com.hyperfactions.gui.GuiManager;
@@ -175,6 +176,18 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
                 false
         );
 
+        // === Power Management Buttons ===
+        events.addEventBinding(CustomUIEventBindingType.Activating, "#PowerSubFive",
+                EventData.of("Button", "BulkPower").append("Amount", "-5").append("FactionId", factionId.toString()), false);
+        events.addEventBinding(CustomUIEventBindingType.Activating, "#PowerSubOne",
+                EventData.of("Button", "BulkPower").append("Amount", "-1").append("FactionId", factionId.toString()), false);
+        events.addEventBinding(CustomUIEventBindingType.Activating, "#PowerAddOne",
+                EventData.of("Button", "BulkPower").append("Amount", "1").append("FactionId", factionId.toString()), false);
+        events.addEventBinding(CustomUIEventBindingType.Activating, "#PowerAddFive",
+                EventData.of("Button", "BulkPower").append("Amount", "5").append("FactionId", factionId.toString()), false);
+        events.addEventBinding(CustomUIEventBindingType.Activating, "#PowerResetAll",
+                EventData.of("Button", "ResetAllPower").append("FactionId", factionId.toString()), false);
+
         // Back button - returns to admin factions list
         events.addEventBinding(
                 CustomUIEventBindingType.Activating,
@@ -216,6 +229,38 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
 
             case "ViewSettings" -> {
                 guiManager.openAdminFactionSettings(player, ref, store, playerRef, factionId);
+            }
+
+            case "BulkPower" -> {
+                Faction faction = factionManager.getFaction(factionId);
+                if (faction != null && data.amount != null) {
+                    try {
+                        double delta = Double.parseDouble(data.amount);
+                        for (UUID memberUuid : faction.members().keySet()) {
+                            powerManager.adjustPlayerPower(memberUuid, delta);
+                        }
+                        Faction updated = faction.withLog(FactionLog.create(FactionLog.LogType.ADMIN_POWER,
+                                "Admin adjusted all " + faction.getMemberCount() + " members' power by " + String.format("%.1f", delta),
+                                playerRef.getUuid()));
+                        factionManager.updateFaction(updated);
+                        // Rebuild page to show updated stats
+                        guiManager.openAdminFactionInfo(player, ref, store, playerRef, factionId);
+                    } catch (NumberFormatException ignored) {}
+                }
+            }
+
+            case "ResetAllPower" -> {
+                Faction faction = factionManager.getFaction(factionId);
+                if (faction != null) {
+                    for (UUID memberUuid : faction.members().keySet()) {
+                        powerManager.resetPlayerPower(memberUuid);
+                    }
+                    Faction updated = faction.withLog(FactionLog.create(FactionLog.LogType.ADMIN_POWER,
+                            "Admin reset power for all " + faction.getMemberCount() + " members",
+                            playerRef.getUuid()));
+                    factionManager.updateFaction(updated);
+                    guiManager.openAdminFactionInfo(player, ref, store, playerRef, factionId);
+                }
             }
 
             case "Back" -> {
