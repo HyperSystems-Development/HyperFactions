@@ -149,6 +149,30 @@ public class JsonPlayerStorage implements PlayerStorage {
     }
 
     @Override
+    public CompletableFuture<Set<UUID>> getAllPlayerUuids() {
+        return CompletableFuture.supplyAsync(() -> {
+            Set<UUID> uuids = new HashSet<>();
+            if (!Files.exists(playersDir)) {
+                return uuids;
+            }
+            try (DirectoryStream<Path> stream = Files.newDirectoryStream(playersDir, "*.json")) {
+                for (Path file : stream) {
+                    String filename = file.getFileName().toString();
+                    String uuidStr = filename.substring(0, filename.length() - 5); // Remove .json
+                    try {
+                        uuids.add(UUID.fromString(uuidStr));
+                    } catch (IllegalArgumentException ignored) {
+                        // Skip non-UUID filenames
+                    }
+                }
+            } catch (IOException e) {
+                Logger.severe("Failed to list player files: %s", e.getMessage());
+            }
+            return uuids;
+        });
+    }
+
+    @Override
     public CompletableFuture<Optional<PlayerData>> loadPlayerData(@NotNull UUID uuid) {
         return CompletableFuture.supplyAsync(() -> Optional.ofNullable(loadPlayerDataSync(uuid)));
     }

@@ -17,6 +17,8 @@ import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCu
 import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
+import com.hypixel.hytale.server.core.ui.DropdownEntryInfo;
+import com.hypixel.hytale.server.core.ui.LocalizableString;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
@@ -27,12 +29,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
- * Admin Faction Members page - displays read-only member list.
- * No action buttons (promote/demote/kick), only viewing.
- * Uses admin navigation context for proper Back button behavior.
+ * Admin Faction Members page - displays member list with search, sort, and pagination.
+ * Follows AdminFactionsPage gold standard pattern (700x500, Container, IndexCards).
  */
 public class AdminFactionMembersPage extends InteractiveCustomUIPage<AdminFactionMembersData> {
 
+    private static final int MEMBERS_PER_PAGE = 8;
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MMM d, yyyy")
             .withZone(ZoneId.systemDefault());
 
@@ -44,10 +46,14 @@ public class AdminFactionMembersPage extends InteractiveCustomUIPage<AdminFactio
 
     private Set<UUID> expandedMembers = new HashSet<>();
     private SortMode sortMode = SortMode.ROLE;
+    private String searchQuery = "";
+    private int currentPage = 0;
 
     private enum SortMode {
         ROLE,
-        LAST_ONLINE
+        ONLINE,
+        NAME,
+        POWER
     }
 
     public AdminFactionMembersPage(PlayerRef playerRef,
@@ -88,24 +94,37 @@ public class AdminFactionMembersPage extends InteractiveCustomUIPage<AdminFactio
     }
 
     private void buildMemberList(UICommandBuilder cmd, UIEventBuilder events, Faction faction) {
-        List<FactionMember> members = getFilteredSortedMembers(faction);
+        List<FactionMember> allMembers = getFilteredSortedMembers(faction);
 
-        cmd.set("#MemberCount.Text", members.size() + " members");
+        // Count display
+        if (searchQuery.isEmpty()) {
+            cmd.set("#MemberCount.Text", allMembers.size() + " members");
+        } else {
+            cmd.set("#MemberCount.Text", allMembers.size() + " found");
+        }
 
-        // Sort buttons
-        cmd.set("#SortByRole.Disabled", sortMode == SortMode.ROLE);
-        cmd.set("#SortByOnline.Disabled", sortMode == SortMode.LAST_ONLINE);
-
+        // Sort dropdown
+        cmd.set("#SortDropdown.Entries", List.of(
+                new DropdownEntryInfo(LocalizableString.fromString("Role"), "ROLE"),
+                new DropdownEntryInfo(LocalizableString.fromString("Online"), "ONLINE"),
+                new DropdownEntryInfo(LocalizableString.fromString("Name"), "NAME"),
+                new DropdownEntryInfo(LocalizableString.fromString("Power"), "POWER")
+        ));
+        cmd.set("#SortDropdown.Value", sortMode.name());
         events.addEventBinding(
-                CustomUIEventBindingType.Activating,
-                "#SortByRole",
-                EventData.of("Button", "SortByRole"),
+                CustomUIEventBindingType.ValueChanged,
+                "#SortDropdown",
+                EventData.of("Button", "SortChanged")
+                        .append("@SortMode", "#SortDropdown.Value"),
                 false
         );
+
+        // Search field
         events.addEventBinding(
-                CustomUIEventBindingType.Activating,
-                "#SortByOnline",
-                EventData.of("Button", "SortByOnline"),
+                CustomUIEventBindingType.ValueChanged,
+                "#SearchInput",
+                EventData.of("Button", "SearchChanged")
+                        .append("@SearchQuery", "#SearchInput.Value"),
                 false
         );
 
@@ -118,15 +137,43 @@ public class AdminFactionMembersPage extends InteractiveCustomUIPage<AdminFactio
                 false
         );
 
-        // Clear MembersList, then create IndexCards container
+        // Calculate pagination
+        int totalPages = Math.max(1, (int) Math.ceil((double) allMembers.size() / MEMBERS_PER_PAGE));
+        currentPage = Math.min(currentPage, totalPages - 1);
+        int startIdx = currentPage * MEMBERS_PER_PAGE;
+
+        // Clear and rebuild list
         cmd.clear("#MembersList");
         cmd.appendInline("#MembersList", "Group #IndexCards { LayoutMode: Top; }");
 
-        // Build entries
+        // Build paginated entries
         int i = 0;
-        for (FactionMember member : members) {
-            buildMemberEntry(cmd, events, i, member);
+        for (int idx = startIdx; idx < Math.min(startIdx + MEMBERS_PER_PAGE, allMembers.size()); idx++) {
+            buildMemberEntry(cmd, events, i, allMembers.get(idx));
             i++;
+        }
+
+        // Pagination
+        cmd.set("#PageInfo.Text", (currentPage + 1) + "/" + totalPages);
+
+        if (currentPage > 0) {
+            events.addEventBinding(
+                    CustomUIEventBindingType.Activating,
+                    "#PrevBtn",
+                    EventData.of("Button", "PrevPage")
+                            .append("Page", String.valueOf(currentPage - 1)),
+                    false
+            );
+        }
+
+        if (currentPage < totalPages - 1) {
+            events.addEventBinding(
+                    CustomUIEventBindingType.Activating,
+                    "#NextBtn",
+                    EventData.of("Button", "NextPage")
+                            .append("Page", String.valueOf(currentPage + 1)),
+                    false
+            );
         }
     }
 
@@ -135,7 +182,6 @@ public class AdminFactionMembersPage extends InteractiveCustomUIPage<AdminFactio
         boolean isExpanded = expandedMembers.contains(member.uuid());
         boolean memberIsOnline = isOnline(member);
 
-        // Append read-only entry template
         cmd.append("#IndexCards", "HyperFactions/admin/admin_faction_members_entry.ui");
 
         String idx = "#IndexCards[" + index + "]";
@@ -200,19 +246,30 @@ public class AdminFactionMembersPage extends InteractiveCustomUIPage<AdminFactio
             boolean canDemote = member.role() != FactionRole.MEMBER;
             boolean canKick = member.role() != FactionRole.LEADER;
 
+            cmd.set(idx + " #ViewInfoBtn.Visible", true);
+            cmd.set(idx + " #TeleportBtn.Visible", true);
             cmd.set(idx + " #PromoteBtn.Visible", canPromote);
             cmd.set(idx + " #DemoteBtn.Visible", canDemote);
             cmd.set(idx + " #KickBtn.Visible", canKick);
-            // View Info button (repurpose Teleport slot)
-            cmd.set(idx + " #TeleportBtn.Text", "View Info");
-            cmd.set(idx + " #TeleportBtn.Visible", true);
+
+            // View Info button
             events.addEventBinding(
                     CustomUIEventBindingType.Activating,
-                    idx + " #TeleportBtn",
+                    idx + " #ViewInfoBtn",
                     EventData.of("Button", "ViewPlayerInfo")
                             .append("MemberUuid", member.uuid().toString())
                             .append("MemberName", member.username())
                             .append("FactionId", factionId.toString()),
+                    false
+            );
+
+            // Teleport button
+            events.addEventBinding(
+                    CustomUIEventBindingType.Activating,
+                    idx + " #TeleportBtn",
+                    EventData.of("Button", "Teleport")
+                            .append("MemberUuid", member.uuid().toString())
+                            .append("MemberName", member.username()),
                     false
             );
 
@@ -254,21 +311,27 @@ public class AdminFactionMembersPage extends InteractiveCustomUIPage<AdminFactio
 
     private List<FactionMember> getFilteredSortedMembers(Faction faction) {
         return faction.members().values().stream()
+                .filter(m -> searchQuery.isEmpty() ||
+                        m.username().toLowerCase().contains(searchQuery.toLowerCase()))
                 .sorted(getSortComparator())
                 .toList();
     }
 
     private Comparator<FactionMember> getSortComparator() {
-        if (sortMode == SortMode.LAST_ONLINE) {
-            return Comparator
+        return switch (sortMode) {
+            case ONLINE -> Comparator
                     .<FactionMember>comparingLong(m -> isOnline(m) ? Long.MAX_VALUE : m.lastOnline())
                     .reversed()
                     .thenComparing(FactionMember::username);
-        } else {
-            return Comparator
+            case NAME -> Comparator.comparing(FactionMember::username, String.CASE_INSENSITIVE_ORDER);
+            case POWER -> Comparator
+                    .<FactionMember>comparingDouble(m -> powerManager.getPlayerPower(m.uuid()).power())
+                    .reversed()
+                    .thenComparing(FactionMember::username);
+            default -> Comparator // ROLE
                     .<FactionMember>comparingInt(m -> -m.role().getLevel())
                     .thenComparing(FactionMember::username);
-        }
+        };
     }
 
     private boolean isOnline(FactionMember member) {
@@ -343,18 +406,71 @@ public class AdminFactionMembersPage extends InteractiveCustomUIPage<AdminFactio
                 }
             }
 
-            case "SortByRole" -> {
-                sortMode = SortMode.ROLE;
+            case "SortChanged" -> {
+                try {
+                    if (data.sortMode != null) {
+                        sortMode = SortMode.valueOf(data.sortMode);
+                    }
+                } catch (IllegalArgumentException ignored) {}
+                currentPage = 0;
+                expandedMembers.clear();
                 rebuildList();
             }
 
-            case "SortByOnline" -> {
-                sortMode = SortMode.LAST_ONLINE;
+            case "SearchChanged" -> {
+                searchQuery = data.searchQuery != null ? data.searchQuery : "";
+                currentPage = 0;
+                expandedMembers.clear();
+                rebuildList();
+            }
+
+            case "PrevPage" -> {
+                currentPage = Math.max(0, data.page);
+                expandedMembers.clear();
+                rebuildList();
+            }
+
+            case "NextPage" -> {
+                currentPage = data.page;
+                expandedMembers.clear();
                 rebuildList();
             }
 
             case "Back" -> {
                 guiManager.openAdminFactionInfo(player, ref, store, playerRef, factionId);
+            }
+
+            case "Teleport" -> {
+                if (data.memberUuid != null) {
+                    try {
+                        UUID memberUuid = UUID.fromString(data.memberUuid);
+                        PlayerRef targetPlayer = Universe.get().getPlayer(memberUuid);
+                        if (targetPlayer != null && targetPlayer.isValid()) {
+                            guiManager.closePage(player, ref, store);
+                            var targetWorld = Universe.get().getWorld(targetPlayer.getWorldUuid());
+                            if (targetWorld == null) {
+                                player.sendMessage(Message.raw("Target world not found.").color("#FF5555"));
+                                return;
+                            }
+                            var targetTransform = targetPlayer.getTransform();
+                            var targetPos = targetTransform.getPosition();
+                            var targetRot = targetTransform.getRotation();
+                            targetWorld.execute(() -> {
+                                var teleport = com.hypixel.hytale.server.core.modules.entity.teleport.Teleport.createForPlayer(
+                                        targetWorld, targetPos, targetRot);
+                                store.addComponent(ref, com.hypixel.hytale.server.core.modules.entity.teleport.Teleport.getComponentType(), teleport);
+                            });
+                            player.sendMessage(Message.raw("[Admin] Teleported to ").color("#55FF55")
+                                    .insert(Message.raw(data.memberName != null ? data.memberName : "player").color("#00FFFF"))
+                                    .insert(Message.raw(".").color("#55FF55")));
+                        } else {
+                            player.sendMessage(Message.raw("Player is not online.").color("#FF5555"));
+                            sendUpdate();
+                        }
+                    } catch (IllegalArgumentException e) {
+                        sendUpdate();
+                    }
+                }
             }
 
             case "Promote" -> {

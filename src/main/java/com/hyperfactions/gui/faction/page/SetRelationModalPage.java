@@ -294,14 +294,19 @@ public class SetRelationModalPage extends InteractiveCustomUIPage<SetRelationMod
 
                         if (result == RelationManager.RelationResult.REQUEST_SENT) {
                             player.sendMessage(Message.raw("Alliance request sent to " + data.factionName + ".").color("#00AAFF"));
+                            // Navigate to pending tab since a request was sent
+                            guiManager.openFactionRelations(player, ref, store, playerRef,
+                                    factionManager.getFaction(faction.id()), "pending");
                         } else if (result == RelationManager.RelationResult.REQUEST_ACCEPTED) {
                             player.sendMessage(Message.raw("Now allied with " + data.factionName + "!").color("#00AAFF"));
+                            // Navigate to relations tab since alliance is now active
+                            guiManager.openFactionRelations(player, ref, store, playerRef,
+                                    factionManager.getFaction(faction.id()), "relations");
                         } else {
                             player.sendMessage(Message.raw("Failed: " + result).color("#FF5555"));
+                            guiManager.openFactionRelations(player, ref, store, playerRef,
+                                    factionManager.getFaction(faction.id()));
                         }
-
-                        guiManager.openFactionRelations(player, ref, store, playerRef,
-                                factionManager.getFaction(faction.id()));
                     } catch (IllegalArgumentException e) {
                         player.sendMessage(Message.raw("Invalid faction.").color("#FF5555"));
                         sendUpdate();
@@ -328,7 +333,7 @@ public class SetRelationModalPage extends InteractiveCustomUIPage<SetRelationMod
                         }
 
                         guiManager.openFactionRelations(player, ref, store, playerRef,
-                                factionManager.getFaction(faction.id()));
+                                factionManager.getFaction(faction.id()), "relations");
                     } catch (IllegalArgumentException e) {
                         player.sendMessage(Message.raw("Invalid faction.").color("#FF5555"));
                         sendUpdate();
@@ -343,23 +348,16 @@ public class SetRelationModalPage extends InteractiveCustomUIPage<SetRelationMod
                         Faction targetFaction = factionManager.getFaction(targetId);
 
                         if (targetFaction != null) {
-                            PowerManager.FactionPowerStats stats = powerManager.getFactionPowerStats(targetId);
-                            player.sendMessage(Message.raw("=== " + targetFaction.name() + " ===").color("#00FFFF"));
-                            player.sendMessage(Message.raw("Members: " + targetFaction.members().size()).color("#AAAAAA"));
-                            player.sendMessage(Message.raw("Power: " + String.format("%.0f/%.0f", stats.currentPower(), stats.maxPower())).color("#AAAAAA"));
-                            player.sendMessage(Message.raw("Claims: " + targetFaction.claims().size()).color("#AAAAAA"));
-
-                            // Current relation
-                            String relationStr = faction.isAlly(targetId) ? "Ally"
-                                    : faction.isEnemy(targetId) ? "Enemy"
-                                    : "Neutral";
-                            player.sendMessage(Message.raw("Relation: " + relationStr).color("#888888"));
+                            guiManager.openFactionInfo(player, ref, store, playerRef, targetFaction, "relations");
+                        } else {
+                            player.sendMessage(Message.raw("Faction no longer exists.").color("#FF5555"));
+                            sendUpdate();
                         }
                     } catch (IllegalArgumentException e) {
                         player.sendMessage(Message.raw("Invalid faction.").color("#FF5555"));
+                        sendUpdate();
                     }
                 }
-                sendUpdate();
             }
 
             default -> sendUpdate();

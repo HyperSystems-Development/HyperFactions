@@ -16,6 +16,7 @@ import com.hyperfactions.gui.page.admin.*;
 import com.hyperfactions.gui.page.newplayer.*;
 import com.hyperfactions.gui.test.ButtonTestPage;
 import com.hyperfactions.manager.*;
+import com.hyperfactions.storage.PlayerStorage;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -183,7 +184,7 @@ public class GuiManager {
                 (player, ref, store, playerRef, faction, guiManager) -> {
                     if (faction == null) return null;
                     return new FactionRelationsPage(playerRef, factionManager.get(),
-                            relationManager.get(), guiManager, faction);
+                            relationManager.get(), guiManager, faction, null);
                 },
                 true,
                 true,
@@ -333,6 +334,18 @@ public class GuiManager {
                 1
         ));
 
+        // Players page (server-wide player management)
+        registry.registerEntry(new AdminPageRegistry.Entry(
+                "players",
+                "Players",
+                Permissions.ADMIN_POWER,
+                (player, ref, store, playerRef, guiManager) ->
+                        new AdminPlayersPage(playerRef, factionManager.get(), powerManager.get(),
+                                plugin.get().getPlayerStorage(), guiManager),
+                true,
+                2
+        ));
+
         // Zones page
         registry.registerEntry(new AdminPageRegistry.Entry(
                 "zones",
@@ -341,7 +354,7 @@ public class GuiManager {
                 (player, ref, store, playerRef, guiManager) ->
                         new AdminZonePage(playerRef, zoneManager.get(), guiManager, "all", 0),
                 true,
-                2
+                3
         ));
 
         // Config page (placeholder)
@@ -352,7 +365,7 @@ public class GuiManager {
                 (player, ref, store, playerRef, guiManager) ->
                         new AdminConfigPage(playerRef, guiManager),
                 true,
-                3
+                4
         ));
 
         // Backups page (placeholder)
@@ -363,7 +376,7 @@ public class GuiManager {
                 (player, ref, store, playerRef, guiManager) ->
                         new AdminBackupsPage(playerRef, guiManager),
                 true,
-                4
+                5
         ));
 
         // Updates page (placeholder)
@@ -374,7 +387,7 @@ public class GuiManager {
                 (player, ref, store, playerRef, guiManager) ->
                         new AdminUpdatesPage(playerRef, guiManager),
                 true,
-                5
+                6
         ));
 
         // Help page (placeholder)
@@ -385,7 +398,7 @@ public class GuiManager {
                 (player, ref, store, playerRef, guiManager) ->
                         new AdminHelpPage(playerRef, guiManager),
                 true,
-                6
+                7
         ));
 
         Logger.debug("[GUI] Registered %d pages with AdminPageRegistry", registry.getEntries().size());
@@ -534,7 +547,23 @@ public class GuiManager {
     public void openFactionRelations(Player player, Ref<EntityStore> ref,
                                      Store<EntityStore> store, PlayerRef playerRef,
                                      Faction faction) {
-        Logger.debug("[GUI] Opening FactionRelationsPage for %s", playerRef.getUsername());
+        openFactionRelations(player, ref, store, playerRef, faction, null);
+    }
+
+    /**
+     * Opens the Faction Relations page with an initial tab.
+     *
+     * @param player    The Player entity
+     * @param ref       The entity reference
+     * @param store     The entity store
+     * @param playerRef The PlayerRef component
+     * @param faction   The faction to show relations for
+     * @param tab       Initial tab to show ("relations", "pending", or null for default)
+     */
+    public void openFactionRelations(Player player, Ref<EntityStore> ref,
+                                     Store<EntityStore> store, PlayerRef playerRef,
+                                     Faction faction, String tab) {
+        Logger.debug("[GUI] Opening FactionRelationsPage for %s (tab: %s)", playerRef.getUsername(), tab);
         try {
             PageManager pageManager = player.getPageManager();
             FactionRelationsPage page = new FactionRelationsPage(
@@ -542,7 +571,8 @@ public class GuiManager {
                 factionManager.get(),
                 relationManager.get(),
                 this,
-                faction
+                faction,
+                tab
             );
             pageManager.openCustomPage(ref, store, page);
             Logger.debug("[GUI] FactionRelationsPage opened successfully");
@@ -1164,6 +1194,35 @@ public class GuiManager {
             Logger.debug("[GUI] AdminFactionsPage opened successfully");
         } catch (Exception e) {
             Logger.severe("[GUI] Failed to open AdminFactionsPage: %s", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Opens the Admin Players page - server-wide player list.
+     * Browse all known players with search, sort, and pagination.
+     *
+     * @param player    The Player entity
+     * @param ref       The entity reference
+     * @param store     The entity store
+     * @param playerRef The PlayerRef component
+     */
+    public void openAdminPlayers(Player player, Ref<EntityStore> ref,
+                                 Store<EntityStore> store, PlayerRef playerRef) {
+        Logger.debug("[GUI] Opening AdminPlayersPage for %s", playerRef.getUsername());
+        try {
+            PageManager pageManager = player.getPageManager();
+            AdminPlayersPage page = new AdminPlayersPage(
+                playerRef,
+                factionManager.get(),
+                powerManager.get(),
+                plugin.get().getPlayerStorage(),
+                this
+            );
+            pageManager.openCustomPage(ref, store, page);
+            Logger.debug("[GUI] AdminPlayersPage opened successfully");
+        } catch (Exception e) {
+            Logger.severe("[GUI] Failed to open AdminPlayersPage: %s", e.getMessage());
             e.printStackTrace();
         }
     }
@@ -1866,6 +1925,48 @@ public class GuiManager {
     }
 
     /**
+     * Opens the Faction Info page from a PlayerInfoPage context.
+     * When back is clicked, returns to the PlayerInfoPage for the given player.
+     *
+     * @param player              The Player entity
+     * @param ref                 The entity reference
+     * @param store               The entity store
+     * @param playerRef           The PlayerRef component
+     * @param targetFaction       The faction to view
+     * @param sourcePlayerUuid    The UUID of the player being viewed in PlayerInfoPage
+     * @param sourcePlayerName    The name of the player being viewed
+     * @param playerInfoSourcePage The sourcePage that PlayerInfoPage was opened with
+     */
+    public void openFactionInfoFromPlayerInfo(Player player, Ref<EntityStore> ref,
+                                              Store<EntityStore> store, PlayerRef playerRef,
+                                              Faction targetFaction,
+                                              UUID sourcePlayerUuid, String sourcePlayerName,
+                                              String playerInfoSourcePage) {
+        Logger.debug("[GUI] Opening FactionInfoPage for %s (viewing %s, from player_info: %s)",
+                playerRef.getUsername(), targetFaction.name(), sourcePlayerName);
+        try {
+            PageManager pageManager = player.getPageManager();
+            FactionInfoPage page = new FactionInfoPage(
+                playerRef,
+                targetFaction,
+                factionManager.get(),
+                powerManager.get(),
+                relationManager.get(),
+                this,
+                "player_info",
+                sourcePlayerUuid,
+                sourcePlayerName,
+                playerInfoSourcePage
+            );
+            pageManager.openCustomPage(ref, store, page);
+            Logger.debug("[GUI] FactionInfoPage opened successfully");
+        } catch (Exception e) {
+            Logger.severe("[GUI] Failed to open FactionInfoPage: %s", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Opens the Player Info page.
      *
      * @param player          The Player entity
@@ -1878,7 +1979,25 @@ public class GuiManager {
     public void openPlayerInfo(Player player, Ref<EntityStore> ref,
                                Store<EntityStore> store, PlayerRef playerRef,
                                UUID targetUuid, String targetName) {
-        Logger.debug("[GUI] Opening PlayerInfoPage for %s (viewing %s)", playerRef.getUsername(), targetName);
+        openPlayerInfo(player, ref, store, playerRef, targetUuid, targetName, null);
+    }
+
+    /**
+     * Opens the Player Info page with source page tracking.
+     *
+     * @param player     The Player entity
+     * @param ref        The entity reference
+     * @param store      The entity store
+     * @param playerRef  The PlayerRef component
+     * @param targetUuid The UUID of the player to view
+     * @param targetName The name of the player to view
+     * @param sourcePage The page to return to ("members", "browser", or null)
+     */
+    public void openPlayerInfo(Player player, Ref<EntityStore> ref,
+                               Store<EntityStore> store, PlayerRef playerRef,
+                               UUID targetUuid, String targetName, String sourcePage) {
+        Logger.debug("[GUI] Opening PlayerInfoPage for %s (viewing %s, source: %s)",
+                playerRef.getUsername(), targetName, sourcePage);
         try {
             PageManager pageManager = player.getPageManager();
             PlayerInfoPage page = new PlayerInfoPage(
@@ -1888,7 +2007,8 @@ public class GuiManager {
                 factionManager.get(),
                 powerManager.get(),
                 plugin.get().getPlayerStorage(),
-                this
+                this,
+                sourcePage
             );
             pageManager.openCustomPage(ref, store, page);
             Logger.debug("[GUI] PlayerInfoPage opened successfully");

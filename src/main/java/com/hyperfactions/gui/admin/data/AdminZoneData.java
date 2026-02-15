@@ -49,6 +49,9 @@ public class AdminZoneData implements AdminNavAwareData {
     /** Flags choice selection (defaults, customize) */
     public String flagsChoice;
 
+    /** Sort mode from dropdown (dynamic) */
+    public String sortMode;
+
     /** Admin nav bar target (for navigation) */
     public String adminNavBar;
 
@@ -137,6 +140,11 @@ public class AdminZoneData implements AdminNavAwareData {
                     new KeyedCodec<>("FlagsChoice", Codec.STRING),
                     (data, value) -> data.flagsChoice = value,
                     data -> data.flagsChoice
+            )
+            .addField(
+                    new KeyedCodec<>("@SortMode", Codec.STRING),
+                    (data, value) -> data.sortMode = value,
+                    data -> data.sortMode
             )
             .addField(
                     new KeyedCodec<>("AdminNavBar", Codec.STRING),

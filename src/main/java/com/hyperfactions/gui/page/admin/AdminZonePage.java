@@ -12,6 +12,8 @@ import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
+import com.hypixel.hytale.server.core.ui.DropdownEntryInfo;
+import com.hypixel.hytale.server.core.ui.LocalizableString;
 import com.hypixel.hytale.server.core.ui.Value;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
@@ -41,6 +43,14 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
     private String currentTab = "all"; // all, safe, war
     private int currentPage = 0;
     private Set<UUID> expandedZones = new HashSet<>();
+    private ZoneSortMode zoneSortMode = ZoneSortMode.NAME;
+
+    private enum ZoneSortMode {
+        NAME,
+        TYPE,
+        CHUNKS,
+        WORLD
+    }
 
     public AdminZonePage(PlayerRef playerRef,
                          ZoneManager zoneManager,
@@ -102,17 +112,33 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
                 false
         );
 
+        // Sort dropdown
+        cmd.set("#SortDropdown.Entries", List.of(
+                new DropdownEntryInfo(LocalizableString.fromString("Name"), "NAME"),
+                new DropdownEntryInfo(LocalizableString.fromString("Type"), "TYPE"),
+                new DropdownEntryInfo(LocalizableString.fromString("Chunks"), "CHUNKS"),
+                new DropdownEntryInfo(LocalizableString.fromString("World"), "WORLD")
+        ));
+        cmd.set("#SortDropdown.Value", zoneSortMode.name());
+        events.addEventBinding(
+                CustomUIEventBindingType.ValueChanged,
+                "#SortDropdown",
+                EventData.of("Button", "SortChanged")
+                        .append("@SortMode", "#SortDropdown.Value"),
+                false
+        );
+
         // Get zones based on current tab filter
         List<Zone> zones;
         if (currentTab.equals("all")) {
             zones = new ArrayList<>(zoneManager.getAllZones().stream()
-                    .sorted(Comparator.comparing(Zone::name))
+                    .sorted(getZoneSortComparator())
                     .toList());
         } else {
             ZoneType targetType = currentTab.equals("safe") ? ZoneType.SAFE : ZoneType.WAR;
             zones = new ArrayList<>(zoneManager.getAllZones().stream()
                     .filter(z -> z.type() == targetType)
-                    .sorted(Comparator.comparing(Zone::name))
+                    .sorted(getZoneSortComparator())
                     .toList());
         }
 
@@ -320,6 +346,17 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
                 }
             }
 
+            case "SortChanged" -> {
+                try {
+                    if (data.sortMode != null) {
+                        zoneSortMode = ZoneSortMode.valueOf(data.sortMode);
+                    }
+                } catch (IllegalArgumentException ignored) {}
+                currentPage = 0;
+                expandedZones.clear();
+                rebuildList();
+            }
+
             case "TabAll", "TabSafe", "TabWar" -> {
                 String newTab = data.zoneType != null ? data.zoneType : "all";
                 currentTab = newTab;
@@ -411,6 +448,18 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
                 }
             }
         }
+    }
+
+    private Comparator<Zone> getZoneSortComparator() {
+        return switch (zoneSortMode) {
+            case TYPE -> Comparator.<Zone, String>comparing(z -> z.type().name())
+                    .thenComparing(Zone::name, String.CASE_INSENSITIVE_ORDER);
+            case CHUNKS -> Comparator.<Zone>comparingInt(Zone::getChunkCount).reversed()
+                    .thenComparing(Zone::name, String.CASE_INSENSITIVE_ORDER);
+            case WORLD -> Comparator.comparing(Zone::world, String.CASE_INSENSITIVE_ORDER)
+                    .thenComparing(Zone::name, String.CASE_INSENSITIVE_ORDER);
+            default -> Comparator.comparing(Zone::name, String.CASE_INSENSITIVE_ORDER); // NAME
+        };
     }
 
     private void rebuildList() {

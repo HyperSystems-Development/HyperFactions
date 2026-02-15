@@ -1,5 +1,4 @@
-// Admin Member Entry - Read-only expandable
-// No action buttons, shows UUID for admin reference
+// Admin Player Entry - Expandable row for server-wide player list
 $C = "../../Common.ui";
 $S = "../shared/styles.ui";
 
@@ -18,46 +17,43 @@ Group {
       Padding: (Left: 12, Right: 12, Top: 6, Bottom: 6);
       LayoutMode: Left;
 
-      // Role indicator bar
-      Group #RoleIndicator {
+      // Online indicator bar
+      Group #OnlineBar {
         Anchor: (Width: 3, Top: 4, Bottom: 4);
         Background: (Color: #888888);
       }
 
       Group { Anchor: (Width: 10); }
 
-      // Member info
+      // Player name
       Group {
-        Anchor: (Width: 160);
+        Anchor: (Width: 180);
         LayoutMode: Top;
 
-        Label #MemberName {
+        Label #PlayerName {
           Text: "PlayerName";
           Style: (FontSize: 13, TextColor: #CCCCCC, RenderBold: true, VerticalAlignment: Center);
           Anchor: (Height: 18);
         }
-        Label #MemberRole {
-          Text: "Member";
+        Label #OnlineStatus {
+          Text: "Offline";
           Style: (FontSize: 10, TextColor: #888888, VerticalAlignment: Center);
           Anchor: (Height: 14);
         }
       }
 
-      // Online status
-      Group {
-        LayoutMode: Top;
-        Anchor: (Width: 100);
+      // Faction name
+      Label #FactionName {
+        Text: "No Faction";
+        Style: (FontSize: 11, TextColor: #666666, VerticalAlignment: Center);
+        Anchor: (Width: 140);
+      }
 
-        Label #OnlineStatus {
-          Text: "Online";
-          Style: (FontSize: 11, TextColor: #55FF55, VerticalAlignment: Center, HorizontalAlignment: Center);
-          Anchor: (Height: 16, Top: 7);
-        }
-        Label #LastOnline {
-          Text: "";
-          Style: (FontSize: 9, TextColor: #666666, VerticalAlignment: Center, HorizontalAlignment: Center);
-          Anchor: (Height: 14);
-        }
+      // Power display
+      Label #PowerDisplay {
+        Text: "0/0";
+        Style: (FontSize: 11, TextColor: #55FF55, VerticalAlignment: Center, HorizontalAlignment: Center);
+        Anchor: (Width: 90);
       }
 
       Group { FlexWeight: 1; }
@@ -83,7 +79,7 @@ Group {
     }
   }
 
-  // Expanded content (read-only)
+  // Expanded content
   Group #ExtendedInfo {
     LayoutMode: Top;
     Background: (Color: #0d1520);
@@ -95,14 +91,14 @@ Group {
       Anchor: (Height: 20, Bottom: 4);
 
       Label {
-        Text: "Power:";
+        Text: "Role:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
-        Anchor: (Width: 45);
+        Anchor: (Width: 35);
       }
-      Label #PowerValue {
-        Text: "10/10";
-        Style: (FontSize: 10, TextColor: #55FF55, VerticalAlignment: Center);
-        Anchor: (Width: 60);
+      Label #RoleValue {
+        Text: "N/A";
+        Style: (FontSize: 10, TextColor: #888888, VerticalAlignment: Center);
+        Anchor: (Width: 70);
       }
 
       Label {
@@ -117,18 +113,46 @@ Group {
       }
 
       Label {
-        Text: "Last Death:";
+        Text: "Last Online:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
-        Anchor: (Width: 65);
+        Anchor: (Width: 70);
       }
-      Label #LastDeath {
-        Text: "Never";
+      Label #LastOnline {
+        Text: "Unknown";
         Style: (FontSize: 10, TextColor: #888888, VerticalAlignment: Center);
         FlexWeight: 1;
       }
     }
 
-    // UUID row (admin info)
+    // Combat stats row
+    Group #CombatRow {
+      LayoutMode: Left;
+      Anchor: (Height: 20, Bottom: 4);
+
+      Label {
+        Text: "K/D/R:";
+        Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
+        Anchor: (Width: 40);
+      }
+      Label #KdrValue {
+        Text: "0/0/0.00";
+        Style: (FontSize: 10, TextColor: #888888, VerticalAlignment: Center);
+        Anchor: (Width: 100);
+      }
+
+      Label {
+        Text: "Power:";
+        Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
+        Anchor: (Width: 45);
+      }
+      Label #PowerDetail {
+        Text: "0.0/0.0";
+        Style: (FontSize: 10, TextColor: #55FF55, VerticalAlignment: Center);
+        Anchor: (Width: 80);
+      }
+    }
+
+    // UUID row
     Group #UuidRow {
       LayoutMode: Left;
       Anchor: (Height: 18, Bottom: 8);
@@ -159,21 +183,6 @@ Group {
         Text: "Teleport";
         Anchor: (Height: 24, Width: 80, Right: 6);
         Style: $S.@ButtonStyle;
-      }
-      TextButton #PromoteBtn {
-        Text: "Promote";
-        Anchor: (Height: 24, Width: 80, Right: 6);
-        Style: $S.@ButtonStyle;
-      }
-      TextButton #DemoteBtn {
-        Text: "Demote";
-        Anchor: (Height: 24, Width: 80, Right: 6);
-        Style: $S.@ButtonStyle;
-      }
-      TextButton #KickBtn {
-        Text: "Kick";
-        Anchor: (Height: 24, Width: 60);
-        Style: $S.@RedButtonStyle;
       }
       Group { FlexWeight: 1; }
     }

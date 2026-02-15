@@ -42,6 +42,7 @@ public class PlayerInfoPage extends InteractiveCustomUIPage<PlayerInfoData> {
     private final PowerManager powerManager;
     private final PlayerStorage playerStorage;
     private final GuiManager guiManager;
+    private final String sourcePage;
 
     private PlayerData cachedPlayerData;
 
@@ -52,6 +53,24 @@ public class PlayerInfoPage extends InteractiveCustomUIPage<PlayerInfoData> {
                           PowerManager powerManager,
                           PlayerStorage playerStorage,
                           GuiManager guiManager) {
+        this(viewerRef, targetPlayerUuid, targetPlayerName, factionManager, powerManager, playerStorage, guiManager, null);
+    }
+
+    /**
+     * Constructor with source page tracking.
+     * @param sourcePage The page to return to when back is clicked:
+     *                   "members" - FactionMembersPage
+     *                   "browser" - FactionBrowserPage
+     *                   null - just close the page
+     */
+    public PlayerInfoPage(PlayerRef viewerRef,
+                          UUID targetPlayerUuid,
+                          String targetPlayerName,
+                          FactionManager factionManager,
+                          PowerManager powerManager,
+                          PlayerStorage playerStorage,
+                          GuiManager guiManager,
+                          String sourcePage) {
         super(viewerRef, CustomPageLifetime.CanDismiss, PlayerInfoData.CODEC);
         this.viewerRef = viewerRef;
         this.targetPlayerUuid = targetPlayerUuid;
@@ -60,6 +79,7 @@ public class PlayerInfoPage extends InteractiveCustomUIPage<PlayerInfoData> {
         this.powerManager = powerManager;
         this.playerStorage = playerStorage;
         this.guiManager = guiManager;
+        this.sourcePage = sourcePage;
     }
 
     @Override
@@ -203,7 +223,8 @@ public class PlayerInfoPage extends InteractiveCustomUIPage<PlayerInfoData> {
                         UUID factionId = UUID.fromString(data.playerUuid);
                         Faction faction = factionManager.getFaction(factionId);
                         if (faction != null) {
-                            guiManager.openFactionInfo(player, ref, store, playerRef, faction);
+                            guiManager.openFactionInfoFromPlayerInfo(player, ref, store, playerRef, faction,
+                                    targetPlayerUuid, targetPlayerName, sourcePage);
                         } else {
                             player.sendMessage(Message.raw("Faction no longer exists.").color("#FF5555"));
                         }
@@ -213,7 +234,27 @@ public class PlayerInfoPage extends InteractiveCustomUIPage<PlayerInfoData> {
                 }
             }
 
-            case "Back" -> guiManager.closePage(player, ref, store);
+            case "Back" -> handleBack(player, ref, store, playerRef);
+        }
+    }
+
+    private void handleBack(Player player, Ref<EntityStore> ref, Store<EntityStore> store, PlayerRef playerRef) {
+        if (sourcePage == null) {
+            guiManager.closePage(player, ref, store);
+            return;
+        }
+
+        switch (sourcePage) {
+            case "members" -> {
+                Faction faction = factionManager.getPlayerFaction(viewerRef.getUuid());
+                if (faction != null) {
+                    guiManager.openFactionMembers(player, ref, store, playerRef, faction);
+                } else {
+                    guiManager.closePage(player, ref, store);
+                }
+            }
+            case "browser" -> guiManager.openFactionBrowser(player, ref, store, playerRef);
+            default -> guiManager.closePage(player, ref, store);
         }
     }
 

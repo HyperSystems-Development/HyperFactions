@@ -23,6 +23,23 @@ $C.@PageOverlay {
       LayoutMode: Top;
       Padding: (Left: 15, Right: 15, Top: 10, Bottom: 10);
 
+      // Search row
+      Group {
+        Anchor: (Height: 38, Bottom: 8);
+        LayoutMode: Left;
+
+        Label {
+          Text: "Search:";
+          Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
+          Anchor: (Width: 55);
+        }
+
+        $C.@TextField #SearchInput {
+          FlexWeight: 1;
+          Anchor: (Height: 32);
+        }
+      }
+
       // Header row with member count
       Group {
         Anchor: (Height: 36, Bottom: 8);
@@ -44,23 +61,6 @@ $C.@PageOverlay {
         DropdownBox #SortDropdown {
           Style: $C.@DefaultDropdownBoxStyle;
           Anchor: (Height: 28, Width: 140);
-        }
-      }
-
-      // Search row
-      Group {
-        Anchor: (Height: 38, Bottom: 8);
-        LayoutMode: Left;
-
-        Label {
-          Text: "Search:";
-          Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
-          Anchor: (Width: 55);
-        }
-
-        $C.@TextField #SearchInput {
-          FlexWeight: 1;
-          Anchor: (Height: 32);
         }
       }
 

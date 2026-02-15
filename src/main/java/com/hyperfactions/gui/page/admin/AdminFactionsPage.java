@@ -48,6 +48,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
 
     private int currentPage = 0;
     private SortMode sortMode = SortMode.POWER;
+    private String searchQuery = "";
     private Set<UUID> expandedFactions = new HashSet<>();
 
     private enum SortMode {
@@ -86,6 +87,17 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
         List<Faction> factions = getSortedFactions();
 
         cmd.set("#FactionCount.Text", factions.size() + " factions");
+
+        // Search input
+        if (!searchQuery.isEmpty()) {
+            cmd.set("#SearchInput.Value", searchQuery);
+        }
+        events.addEventBinding(
+                CustomUIEventBindingType.ValueChanged,
+                "#SearchInput",
+                EventData.of("Button", "Search").append("@SearchQuery", "#SearchInput.Value"),
+                false
+        );
 
         // Sort dropdown
         cmd.set("#SortDropdown.Entries", List.of(
@@ -261,6 +273,17 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
     private List<Faction> getSortedFactions() {
         List<Faction> factions = new ArrayList<>(factionManager.getAllFactions());
 
+        // Filter by search query
+        if (!searchQuery.isEmpty()) {
+            String lowerQuery = searchQuery.toLowerCase();
+            factions.removeIf(f -> {
+                if (f.name().toLowerCase().contains(lowerQuery)) return false;
+                FactionMember leader = f.getLeader();
+                if (leader != null && leader.username().toLowerCase().contains(lowerQuery)) return false;
+                return true;
+            });
+        }
+
         switch (sortMode) {
             case POWER -> factions.sort((a, b) -> {
                 double powerA = powerManager.getFactionPowerStats(a.id()).currentPower();
@@ -311,6 +334,13 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
                         sendUpdate();
                     }
                 }
+            }
+
+            case "Search" -> {
+                searchQuery = data.searchQuery != null ? data.searchQuery : "";
+                currentPage = 0;
+                expandedFactions.clear();
+                rebuildList();
             }
 
             case "SortChanged" -> {

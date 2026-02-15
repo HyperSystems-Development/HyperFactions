@@ -58,13 +58,27 @@ $C.@PageOverlay {
         Background: (Color: #00AAAA);
       }
 
+      // Header row with zone count and sort
       Group {
-        Anchor: (Height: 25, Bottom: 5);
+        Anchor: (Height: 35, Bottom: 8);
         LayoutMode: Left;
 
         Label #ZoneCount {
           Text: "0 zones";
-          Style: (FontSize: 12, TextColor: #888888, VerticalAlignment: Center);
+          Style: (FontSize: 13, TextColor: #888888, VerticalAlignment: Center);
+          Anchor: (Width: 200);
+        }
+
+        Group { FlexWeight: 1; }
+
+        Label {
+          Text: "Sort:";
+          Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
+          Anchor: (Width: 35);
+        }
+        DropdownBox #SortDropdown {
+          Style: $C.@DefaultDropdownBoxStyle;
+          Anchor: (Height: 28, Width: 130);
         }
       }
 
@@ -75,15 +89,6 @@ $C.@PageOverlay {
 
         Group #ZoneList {
           LayoutMode: Top;
-
-          Group #ZoneEntry0 { Anchor: (Height: 45); }
-          Group #ZoneEntry1 { Anchor: (Height: 45); }
-          Group #ZoneEntry2 { Anchor: (Height: 45); }
-          Group #ZoneEntry3 { Anchor: (Height: 45); }
-          Group #ZoneEntry4 { Anchor: (Height: 45); }
-          Group #ZoneEntry5 { Anchor: (Height: 45); }
-          Group #ZoneEntry6 { Anchor: (Height: 45); }
-          Group #ZoneEntry7 { Anchor: (Height: 45); }
         }
       }
 

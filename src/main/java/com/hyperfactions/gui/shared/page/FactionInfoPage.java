@@ -40,6 +40,11 @@ public class FactionInfoPage extends InteractiveCustomUIPage<FactionPageData> {
     private final GuiManager guiManager;
     private final String sourcePage;
 
+    // Context for returning to PlayerInfoPage (when sourcePage = "player_info")
+    private final UUID sourcePlayerUuid;
+    private final String sourcePlayerName;
+    private final String playerInfoSourcePage;
+
     public FactionInfoPage(PlayerRef viewerRef,
                            Faction targetFaction,
                            FactionManager factionManager,
@@ -55,6 +60,7 @@ public class FactionInfoPage extends InteractiveCustomUIPage<FactionPageData> {
      *                   "browser" - FactionBrowserPage
      *                   "newplayer_browser" - NewPlayerBrowsePage
      *                   "admin_factions" - AdminFactionsPage
+     *                   "relations" - FactionRelationsPage
      *                   null - just close the page
      */
     public FactionInfoPage(PlayerRef viewerRef,
@@ -64,6 +70,29 @@ public class FactionInfoPage extends InteractiveCustomUIPage<FactionPageData> {
                            RelationManager relationManager,
                            GuiManager guiManager,
                            String sourcePage) {
+        this(viewerRef, targetFaction, factionManager, powerManager, relationManager, guiManager,
+                sourcePage, null, null, null);
+    }
+
+    /**
+     * Constructor with source page tracking and player context.
+     * Used when navigating from PlayerInfoPage → FactionInfoPage so back returns to PlayerInfoPage.
+     *
+     * @param sourcePage          "player_info" when coming from PlayerInfoPage
+     * @param sourcePlayerUuid    The UUID of the player being viewed in PlayerInfoPage
+     * @param sourcePlayerName    The name of the player being viewed in PlayerInfoPage
+     * @param playerInfoSourcePage The sourcePage that PlayerInfoPage itself was opened with
+     */
+    public FactionInfoPage(PlayerRef viewerRef,
+                           Faction targetFaction,
+                           FactionManager factionManager,
+                           PowerManager powerManager,
+                           RelationManager relationManager,
+                           GuiManager guiManager,
+                           String sourcePage,
+                           UUID sourcePlayerUuid,
+                           String sourcePlayerName,
+                           String playerInfoSourcePage) {
         super(viewerRef, CustomPageLifetime.CanDismiss, FactionPageData.CODEC);
         this.viewerRef = viewerRef;
         this.targetFaction = targetFaction;
@@ -72,6 +101,9 @@ public class FactionInfoPage extends InteractiveCustomUIPage<FactionPageData> {
         this.relationManager = relationManager;
         this.guiManager = guiManager;
         this.sourcePage = sourcePage;
+        this.sourcePlayerUuid = sourcePlayerUuid;
+        this.sourcePlayerName = sourcePlayerName;
+        this.playerInfoSourcePage = playerInfoSourcePage;
     }
 
     @Override
@@ -249,6 +281,22 @@ public class FactionInfoPage extends InteractiveCustomUIPage<FactionPageData> {
             case "browser" -> guiManager.openFactionBrowser(player, ref, store, playerRef);
             case "newplayer_browser" -> guiManager.openNewPlayerBrowse(player, ref, store, playerRef, 0, null, "");
             case "admin_factions" -> guiManager.openAdminFactions(player, ref, store, playerRef);
+            case "player_info" -> {
+                if (sourcePlayerUuid != null && sourcePlayerName != null) {
+                    guiManager.openPlayerInfo(player, ref, store, playerRef,
+                            sourcePlayerUuid, sourcePlayerName, playerInfoSourcePage);
+                } else {
+                    guiManager.closePage(player, ref, store);
+                }
+            }
+            case "relations" -> {
+                Faction viewerFaction = factionManager.getPlayerFaction(viewerRef.getUuid());
+                if (viewerFaction != null) {
+                    guiManager.openFactionRelations(player, ref, store, playerRef, viewerFaction);
+                } else {
+                    guiManager.closePage(player, ref, store);
+                }
+            }
             default -> guiManager.closePage(player, ref, store);
         }
     }

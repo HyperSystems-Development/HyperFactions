@@ -22,6 +22,15 @@ public class AdminFactionMembersData implements AdminNavAwareData {
     /** Target member name (for display in messages) */
     public String memberName;
 
+    /** Search query from text field (dynamic) */
+    public String searchQuery;
+
+    /** Sort mode from dropdown (dynamic) */
+    public String sortMode;
+
+    /** Page number for pagination */
+    public int page;
+
     /** Admin nav bar target (for navigation) */
     public String adminNavBar;
 
@@ -47,6 +56,27 @@ public class AdminFactionMembersData implements AdminNavAwareData {
                     new KeyedCodec<>("MemberName", Codec.STRING),
                     (data, value) -> data.memberName = value,
                     data -> data.memberName
+            )
+            .addField(
+                    new KeyedCodec<>("@SearchQuery", Codec.STRING),
+                    (data, value) -> data.searchQuery = value,
+                    data -> data.searchQuery
+            )
+            .addField(
+                    new KeyedCodec<>("@SortMode", Codec.STRING),
+                    (data, value) -> data.sortMode = value,
+                    data -> data.sortMode
+            )
+            .addField(
+                    new KeyedCodec<>("Page", Codec.STRING),
+                    (data, value) -> {
+                        try {
+                            data.page = value != null ? Integer.parseInt(value) : 0;
+                        } catch (NumberFormatException e) {
+                            data.page = 0;
+                        }
+                    },
+                    data -> String.valueOf(data.page)
             )
             .addField(
                     new KeyedCodec<>("AdminNavBar", Codec.STRING),

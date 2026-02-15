@@ -37,15 +37,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Compact 2-row legend showing all territory types and player marker
 - `terrainMapEnabled` config toggle in GUI section (default: `true`) — set to `false` to revert to the flat colored grid
 
+- **Admin players page** (`/f admin players`): New admin page for browsing all known server players with search, sort (Name/Faction/Power/Last Online), expandable entries with power stats, faction membership, and quick actions (View Profile, View Faction, Teleport)
+- **Admin search on all list pages**: Added search bars to admin factions, admin faction members, and admin zones pages matching the faction browser search pattern
+- **Admin zone sort dropdown**: Zones can now be sorted by Name, Type, Chunks, or World (previously name-only)
+- **Admin faction members overhaul**: Upgraded from read-only list to full admin tool with search, sort dropdown (Role/Online/Name/Power), pagination (8 per page), and 700x500 container matching the admin factions page layout
+- **Relations page redesign**: Merged three tabs (Allies/Enemies/Pending) into two tabs (Relations/Pending) with collapsible row entries showing faction name, leader, relation badge, member count, power stats, and inline quick actions (View, Set Neutral, Set Enemy, Request Ally, Accept, Decline, Cancel)
+- `getAllPlayerUuids()` storage method for admin player list enumeration
+
 ### Fixed
 
 - **Terrain map lag on claim/unclaim**: Each claim/unclaim action opened a new page instance, regenerating the entire 17x17 terrain image from scratch. Now reuses the same page via `rebuild()`, skipping terrain generation and only updating the overlay grid
 - **Membership history not recorded for faction creation**: `FactionManager.createFaction()` now publishes a JOIN event for the faction creator
 - **Admin kicks not recorded in membership history**: `FactionManager.adminRemoveMember()` now publishes a KICK event
+- **Player info back navigation**: Back button on player info page now returns to the source page (member list, browser) instead of closing the GUI entirely
+- **Faction info back from player profile**: Viewing a faction from a player's profile page and pressing back now returns to the profile instead of closing the GUI
+- **Invite page active tab not disabled**: Selected tab on the invites page is now visually disabled to indicate current selection
+- **Set Relation "View" prints to chat**: View button in the set relation modal now opens the faction info page instead of dumping text to chat
+- **Set Relation ally request goes to wrong tab**: After requesting an ally, the relations page now opens on the Pending tab instead of Relations
+- **Pending cancel goes to wrong tab**: Canceling a pending request now stays on the Pending tab instead of switching to Relations
+- **Members page search row position**: Search bar moved above the header/sort row for consistency with other pages
 
 ### Changed
 
 - CurseForge description updated with Discord community link and HyBounty integration callout
+- Relations page uses 2-tab layout (Relations combining allies+enemies, Pending combining incoming+outgoing) instead of 3 separate tabs
+- Admin faction members page upgraded from DecoratedContainer (520x550) to Container (700x500) with sort dropdown replacing sort buttons
 
 ## [0.7.4] - 2026-02-14
 

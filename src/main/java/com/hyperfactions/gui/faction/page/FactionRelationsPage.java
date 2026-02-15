@@ -9,6 +9,7 @@ import com.hyperfactions.gui.nav.NavBarHelper;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.gui.faction.data.FactionRelationsData;
 import com.hyperfactions.manager.FactionManager;
+import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.manager.RelationManager;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -29,8 +30,11 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 /**
- * Faction Relations page - displays allies, enemies, and pending requests in tabs.
- * Uses tab-based filtering and expandable entries like AdminZonePage.
+ * Faction Relations page - displays relations and pending requests in two tabs.
+ * <p>
+ * Relations tab: combines allies and enemies with inline quick actions.
+ * Pending tab: combines incoming and outgoing ally requests.
+ * Uses collapsible rows matching the faction browser entry style.
  */
 public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelationsData> implements RefreshablePage {
 
@@ -39,17 +43,17 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
     private final PlayerRef playerRef;
     private final FactionManager factionManager;
+    private final PowerManager powerManager;
     private final RelationManager relationManager;
     private final GuiManager guiManager;
     private final Faction faction;
 
-    private Tab currentTab = Tab.ALLIES;
+    private Tab currentTab = Tab.RELATIONS;
     private int currentPage = 0;
     private Set<UUID> expandedItems = new HashSet<>();
 
     private enum Tab {
-        ALLIES,
-        ENEMIES,
+        RELATIONS,
         PENDING
     }
 
@@ -57,13 +61,19 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
                                 FactionManager factionManager,
                                 RelationManager relationManager,
                                 GuiManager guiManager,
-                                Faction faction) {
+                                Faction faction,
+                                String initialTab) {
         super(playerRef, CustomPageLifetime.CanDismiss, FactionRelationsData.CODEC);
         this.playerRef = playerRef;
         this.factionManager = factionManager;
+        this.powerManager = guiManager.getPowerManager().get();
         this.relationManager = relationManager;
         this.guiManager = guiManager;
         this.faction = faction;
+
+        if ("pending".equalsIgnoreCase(initialTab) || "PENDING".equals(initialTab)) {
+            this.currentTab = Tab.PENDING;
+        }
     }
 
     @Override
@@ -102,24 +112,18 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
     }
 
     private void buildList(UICommandBuilder cmd, UIEventBuilder events, boolean canManage) {
-        // Tab buttons - active tab gets cyan text style
-        cmd.set("#TabAllies.Style", Value.ref("HyperFactions/shared/styles.ui",
-                currentTab == Tab.ALLIES ? "CyanButtonStyle" : "ButtonStyle"));
-        cmd.set("#TabEnemies.Style", Value.ref("HyperFactions/shared/styles.ui",
-                currentTab == Tab.ENEMIES ? "CyanButtonStyle" : "ButtonStyle"));
+        // Tab buttons - active tab gets cyan text style and is disabled
+        cmd.set("#TabRelations.Style", Value.ref("HyperFactions/shared/styles.ui",
+                currentTab == Tab.RELATIONS ? "CyanButtonStyle" : "ButtonStyle"));
         cmd.set("#TabPending.Style", Value.ref("HyperFactions/shared/styles.ui",
                 currentTab == Tab.PENDING ? "CyanButtonStyle" : "ButtonStyle"));
+        cmd.set("#TabRelations.Disabled", currentTab == Tab.RELATIONS);
+        cmd.set("#TabPending.Disabled", currentTab == Tab.PENDING);
 
         events.addEventBinding(
                 CustomUIEventBindingType.Activating,
-                "#TabAllies",
-                EventData.of("Button", "Tab").append("Tab", "ALLIES"),
-                false
-        );
-        events.addEventBinding(
-                CustomUIEventBindingType.Activating,
-                "#TabEnemies",
-                EventData.of("Button", "Tab").append("Tab", "ENEMIES"),
+                "#TabRelations",
+                EventData.of("Button", "Tab").append("Tab", "RELATIONS"),
                 false
         );
         events.addEventBinding(
@@ -144,15 +148,13 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
         // Get items based on current tab
         List<RelationItem> items = switch (currentTab) {
-            case ALLIES -> getRelationsOfType(RelationType.ALLY);
-            case ENEMIES -> getRelationsOfType(RelationType.ENEMY);
+            case RELATIONS -> getAllRelations();
             case PENDING -> getPendingRequests();
         };
 
         // Count
         String countText = items.size() + " " + switch (currentTab) {
-            case ALLIES -> items.size() == 1 ? "ally" : "allies";
-            case ENEMIES -> items.size() == 1 ? "enemy" : "enemies";
+            case RELATIONS -> items.size() == 1 ? "relation" : "relations";
             case PENDING -> items.size() == 1 ? "request" : "requests";
         };
         cmd.set("#ItemCount.Text", countText);
@@ -207,22 +209,29 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
         }
     }
 
-    private List<RelationItem> getRelationsOfType(RelationType targetType) {
+    private List<RelationItem> getAllRelations() {
         List<RelationItem> items = new ArrayList<>();
+        Faction freshFaction = factionManager.getFaction(faction.id());
+        if (freshFaction == null) return items;
 
-        for (FactionRelation relation : faction.relations().values()) {
-            if (relation.type() == targetType) {
+        for (FactionRelation relation : freshFaction.relations().values()) {
+            if (relation.type() == RelationType.ALLY || relation.type() == RelationType.ENEMY) {
                 Faction other = factionManager.getFaction(relation.targetFactionId());
                 if (other != null) {
                     FactionMember leader = other.getLeader();
                     String leaderName = leader != null ? leader.username() : "Unknown";
-                    String typeText = targetType == RelationType.ALLY ? "Ally" : "Enemy";
+                    String typeText = relation.type() == RelationType.ALLY ? "Ally" : "Enemy";
+                    PowerManager.FactionPowerStats stats = powerManager.getFactionPowerStats(other.id());
                     items.add(new RelationItem(
                             other.id(),
                             other.name(),
                             leaderName,
                             typeText,
                             relation.since(),
+                            other.getMemberCount(),
+                            stats.currentPower(),
+                            stats.maxPower(),
+                            stats.currentClaims(),
                             false,
                             false
                     ));
@@ -230,8 +239,10 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
             }
         }
 
-        // Sort alphabetically
-        items.sort(Comparator.comparing(RelationItem::factionName));
+        // Sort: allies first, then enemies, then alphabetically within each group
+        items.sort(Comparator
+                .<RelationItem>comparingInt(item -> "Ally".equals(item.type) ? 0 : 1)
+                .thenComparing(RelationItem::factionName));
         return items;
     }
 
@@ -245,12 +256,17 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
             if (requester != null) {
                 FactionMember leader = requester.getLeader();
                 String leaderName = leader != null ? leader.username() : "Unknown";
+                PowerManager.FactionPowerStats stats = powerManager.getFactionPowerStats(requester.id());
                 items.add(new RelationItem(
                         requester.id(),
                         requester.name(),
                         leaderName,
                         "Incoming",
                         System.currentTimeMillis(),
+                        requester.getMemberCount(),
+                        stats.currentPower(),
+                        stats.maxPower(),
+                        stats.currentClaims(),
                         true,
                         false
                 ));
@@ -264,20 +280,27 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
             if (target != null) {
                 FactionMember leader = target.getLeader();
                 String leaderName = leader != null ? leader.username() : "Unknown";
+                PowerManager.FactionPowerStats stats = powerManager.getFactionPowerStats(target.id());
                 items.add(new RelationItem(
                         target.id(),
                         target.name(),
                         leaderName,
                         "Outgoing",
                         System.currentTimeMillis(),
+                        target.getMemberCount(),
+                        stats.currentPower(),
+                        stats.maxPower(),
+                        stats.currentClaims(),
                         false,
                         true
                 ));
             }
         }
 
-        // Sort alphabetically
-        items.sort(Comparator.comparing(RelationItem::factionName));
+        // Sort: incoming first, then outgoing, then alphabetically
+        items.sort(Comparator
+                .<RelationItem>comparingInt(item -> item.isIncoming ? 0 : 1)
+                .thenComparing(RelationItem::factionName));
         return items;
     }
 
@@ -290,7 +313,7 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
         String idx = "#IndexCards[" + index + "]";
 
-        // Basic info
+        // === Header info ===
         cmd.set(idx + " #FactionName.Text", item.factionName);
         cmd.set(idx + " #LeaderName.Text", "Leader: " + item.leaderName);
 
@@ -304,6 +327,25 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
             default -> "#888888";
         };
         cmd.set(idx + " #RelationType.Style.TextColor", typeColor);
+
+        // Relation badge bar color
+        String badgeColor = switch (item.type) {
+            case "Ally" -> "#00AA00";
+            case "Enemy" -> "#FF5555";
+            case "Incoming" -> "#FFAA00";
+            case "Outgoing" -> "#88AAFF";
+            default -> "#888888";
+        };
+        cmd.set(idx + " #RelationBadge.Background.Color", badgeColor);
+
+        // Member count and power
+        cmd.set(idx + " #MemberCount.Text", String.valueOf(item.memberCount));
+        cmd.set(idx + " #PowerDisplay.Text", String.format("%.0f/%.0f", item.power, item.maxPower));
+
+        // Power color based on ratio
+        double powerRatio = item.maxPower > 0 ? item.power / item.maxPower : 0;
+        String powerColor = powerRatio >= 0.8 ? "#55FF55" : powerRatio >= 0.4 ? "#FFAA00" : "#FF5555";
+        cmd.set(idx + " #PowerDisplay.Style.TextColor", powerColor);
 
         // Expansion state
         cmd.set(idx + " #ExpandIcon.Visible", !isExpanded);
@@ -321,17 +363,46 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
         // Extended info (only set if expanded)
         if (isExpanded) {
-            // Since date
-            cmd.set(idx + " #InfoLabel.Text", item.isIncoming || item.isOutbound ? "Requested:" : "Since:");
-            cmd.set(idx + " #InfoValue.Text", formatDate(item.sinceMillis, item.isIncoming || item.isOutbound));
+            boolean isPending = item.isIncoming || item.isOutbound;
 
+            // Show appropriate info row
+            cmd.set(idx + " #StatsRow.Visible", !isPending);
+            cmd.set(idx + " #PendingRow.Visible", isPending);
+
+            if (isPending) {
+                String direction = item.isIncoming ? "Incoming request" : "Outgoing request";
+                cmd.set(idx + " #DirectionValue.Text", direction);
+                cmd.set(idx + " #DirectionValue.Style.TextColor",
+                        item.isIncoming ? "#FFAA00" : "#88AAFF");
+            } else {
+                cmd.set(idx + " #SinceValue.Text", formatDate(item.sinceMillis));
+                cmd.set(idx + " #ClaimsValue.Text", String.valueOf(item.claims));
+            }
+
+            // === Action buttons ===
             // Hide all buttons initially
+            cmd.set(idx + " #ViewBtn.Visible", false);
+            cmd.set(idx + " #ViewSpacer.Visible", false);
             cmd.set(idx + " #NeutralBtn.Visible", false);
+            cmd.set(idx + " #NeutralSpacer.Visible", false);
             cmd.set(idx + " #EnemyBtn.Visible", false);
             cmd.set(idx + " #AllyBtn.Visible", false);
             cmd.set(idx + " #AcceptBtn.Visible", false);
+            cmd.set(idx + " #AcceptSpacer.Visible", false);
             cmd.set(idx + " #DeclineBtn.Visible", false);
             cmd.set(idx + " #CancelBtn.Visible", false);
+
+            // View button - always available
+            cmd.set(idx + " #ViewBtn.Visible", true);
+            cmd.set(idx + " #ViewSpacer.Visible", true);
+            events.addEventBinding(
+                    CustomUIEventBindingType.Activating,
+                    idx + " #ViewBtn",
+                    EventData.of("Button", "ViewFaction")
+                            .append("FactionId", item.factionId.toString())
+                            .append("FactionName", item.factionName),
+                    false
+            );
 
             if (canManage) {
                 UUID viewerUuid = playerRef.getUuid();
@@ -340,9 +411,9 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
                 boolean hasAlly = PermissionManager.get().hasPermission(viewerUuid, Permissions.ALLY);
 
                 if ("Ally".equals(item.type)) {
-                    // For allies: NEUTRAL and ENEMY buttons (permission-gated)
                     if (hasNeutral) {
                         cmd.set(idx + " #NeutralBtn.Visible", true);
+                        cmd.set(idx + " #NeutralSpacer.Visible", true);
                         events.addEventBinding(
                                 CustomUIEventBindingType.Activating,
                                 idx + " #NeutralBtn",
@@ -364,9 +435,9 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
                         );
                     }
                 } else if ("Enemy".equals(item.type)) {
-                    // For enemies: NEUTRAL and ALLY buttons (permission-gated)
                     if (hasNeutral) {
                         cmd.set(idx + " #NeutralBtn.Visible", true);
+                        cmd.set(idx + " #NeutralSpacer.Visible", true);
                         events.addEventBinding(
                                 CustomUIEventBindingType.Activating,
                                 idx + " #NeutralBtn",
@@ -388,9 +459,9 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
                         );
                     }
                 } else if (item.isIncoming) {
-                    // Inbound request: ACCEPT and DECLINE buttons (requires ALLY permission)
                     if (hasAlly) {
                         cmd.set(idx + " #AcceptBtn.Visible", true);
+                        cmd.set(idx + " #AcceptSpacer.Visible", true);
                         cmd.set(idx + " #DeclineBtn.Visible", true);
 
                         events.addEventBinding(
@@ -411,7 +482,6 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
                         );
                     }
                 } else if (item.isOutbound) {
-                    // Outbound request: CANCEL button (requires ALLY permission)
                     if (hasAlly) {
                         cmd.set(idx + " #CancelBtn.Visible", true);
 
@@ -431,20 +501,14 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
     private String getEmptyMessage(boolean canManage) {
         return switch (currentTab) {
-            case ALLIES -> canManage
-                    ? "No allies yet. Click + SET RELATION to request alliances."
-                    : "No allies yet.";
-            case ENEMIES -> canManage
-                    ? "No enemies declared. Click + SET RELATION to declare enemies."
-                    : "No enemies declared.";
+            case RELATIONS -> canManage
+                    ? "No relations yet. Click + SET RELATION to add allies or enemies."
+                    : "No relations yet.";
             case PENDING -> "No pending ally requests.";
         };
     }
 
-    private String formatDate(long sinceMillis, boolean isPending) {
-        if (isPending) {
-            return "Recently";
-        }
+    private String formatDate(long sinceMillis) {
         long daysSince = ChronoUnit.DAYS.between(
                 Instant.ofEpochMilli(sinceMillis),
                 Instant.now()
@@ -459,7 +523,9 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
     }
 
     private record RelationItem(UUID factionId, String factionName, String leaderName,
-                                String type, long sinceMillis, boolean isIncoming, boolean isOutbound) {}
+                                String type, long sinceMillis, int memberCount,
+                                double power, double maxPower, int claims,
+                                boolean isIncoming, boolean isOutbound) {}
 
     @Override
     public void handleDataEvent(Ref<EntityStore> ref, Store<EntityStore> store,
@@ -487,11 +553,7 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
         switch (data.button) {
             case "Tab" -> {
                 if (data.tab != null) {
-                    currentTab = switch (data.tab) {
-                        case "ENEMIES" -> Tab.ENEMIES;
-                        case "PENDING" -> Tab.PENDING;
-                        default -> Tab.ALLIES;
-                    };
+                    currentTab = "PENDING".equals(data.tab) ? Tab.PENDING : Tab.RELATIONS;
                     currentPage = 0;
                     expandedItems.clear();
                     rebuildList(canManage);
@@ -528,24 +590,47 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
             case "SetRelation" -> guiManager.openSetRelationModal(player, ref, store, playerRef, freshFaction);
 
-            case "SetNeutral" -> handleSetNeutral(player, ref, store, playerRef, data);
+            case "ViewFaction" -> handleViewFaction(player, ref, store, playerRef, data);
 
-            case "SetEnemy" -> handleSetEnemy(player, ref, store, playerRef, data);
+            case "SetNeutral" -> handleSetNeutral(player, data, canManage);
 
-            case "RequestAlly" -> handleRequestAlly(player, ref, store, playerRef, data);
+            case "SetEnemy" -> handleSetEnemy(player, data, canManage);
 
-            case "AcceptAlly" -> handleAcceptAlly(player, ref, store, playerRef, data);
+            case "RequestAlly" -> handleRequestAlly(player, data, canManage);
 
-            case "DeclineAlly" -> handleDeclineAlly(player, ref, store, playerRef, data);
+            case "AcceptAlly" -> handleAcceptAlly(player, data, canManage);
 
-            case "CancelRequest" -> handleCancelRequest(player, ref, store, playerRef, data);
+            case "DeclineAlly" -> handleDeclineAlly(player, data, canManage);
+
+            case "CancelRequest" -> handleCancelRequest(player, data, canManage);
 
             default -> sendUpdate();
         }
     }
 
-    private void handleSetNeutral(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
-                                  PlayerRef playerRef, FactionRelationsData data) {
+    private void handleViewFaction(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
+                                   PlayerRef playerRef, FactionRelationsData data) {
+        if (data.factionId == null) {
+            sendUpdate();
+            return;
+        }
+
+        try {
+            UUID targetId = UUID.fromString(data.factionId);
+            Faction targetFaction = factionManager.getFaction(targetId);
+            if (targetFaction != null) {
+                guiManager.openFactionInfo(player, ref, store, playerRef, targetFaction, "relations");
+            } else {
+                player.sendMessage(Message.raw("Faction no longer exists.").color("#FF5555"));
+                sendUpdate();
+            }
+        } catch (IllegalArgumentException e) {
+            player.sendMessage(Message.raw("Invalid faction.").color("#FF5555"));
+            sendUpdate();
+        }
+    }
+
+    private void handleSetNeutral(Player player, FactionRelationsData data, boolean canManage) {
         if (data.factionId == null) return;
 
         try {
@@ -557,14 +642,13 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
             } else {
                 player.sendMessage(Message.raw("Failed: " + result).color("#FF5555"));
             }
-            refresh(player, ref, store, playerRef);
+            rebuildList(canManage);
         } catch (IllegalArgumentException e) {
             player.sendMessage(Message.raw("Invalid faction.").color("#FF5555"));
         }
     }
 
-    private void handleSetEnemy(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
-                                PlayerRef playerRef, FactionRelationsData data) {
+    private void handleSetEnemy(Player player, FactionRelationsData data, boolean canManage) {
         if (data.factionId == null) return;
 
         try {
@@ -576,14 +660,13 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
             } else {
                 player.sendMessage(Message.raw("Failed: " + result).color("#FF5555"));
             }
-            refresh(player, ref, store, playerRef);
+            rebuildList(canManage);
         } catch (IllegalArgumentException e) {
             player.sendMessage(Message.raw("Invalid faction.").color("#FF5555"));
         }
     }
 
-    private void handleRequestAlly(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
-                                   PlayerRef playerRef, FactionRelationsData data) {
+    private void handleRequestAlly(Player player, FactionRelationsData data, boolean canManage) {
         if (data.factionId == null) return;
 
         try {
@@ -592,19 +675,22 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
             RelationManager.RelationResult result = relationManager.requestAlly(actorUuid, targetId);
             if (result == RelationManager.RelationResult.REQUEST_SENT) {
                 player.sendMessage(Message.raw("Alliance request sent to " + data.factionName + ".").color("#00AAFF"));
+                // Switch to pending tab to show the new request
+                currentTab = Tab.PENDING;
+                currentPage = 0;
+                expandedItems.clear();
             } else if (result == RelationManager.RelationResult.REQUEST_ACCEPTED) {
                 player.sendMessage(Message.raw("Now allied with " + data.factionName + "!").color("#00AAFF"));
             } else {
                 player.sendMessage(Message.raw("Failed: " + result).color("#FF5555"));
             }
-            refresh(player, ref, store, playerRef);
+            rebuildList(canManage);
         } catch (IllegalArgumentException e) {
             player.sendMessage(Message.raw("Invalid faction.").color("#FF5555"));
         }
     }
 
-    private void handleAcceptAlly(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
-                                  PlayerRef playerRef, FactionRelationsData data) {
+    private void handleAcceptAlly(Player player, FactionRelationsData data, boolean canManage) {
         if (data.factionId == null) return;
 
         try {
@@ -616,14 +702,13 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
             } else {
                 player.sendMessage(Message.raw("Failed: " + result).color("#FF5555"));
             }
-            refresh(player, ref, store, playerRef);
+            rebuildList(canManage);
         } catch (IllegalArgumentException e) {
             player.sendMessage(Message.raw("Invalid faction.").color("#FF5555"));
         }
     }
 
-    private void handleDeclineAlly(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
-                                   PlayerRef playerRef, FactionRelationsData data) {
+    private void handleDeclineAlly(Player player, FactionRelationsData data, boolean canManage) {
         if (data.factionId == null) return;
 
         try {
@@ -633,14 +718,13 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
             relationManager.setEnemy(actorUuid, requesterId);
             relationManager.setNeutral(actorUuid, requesterId);
             player.sendMessage(Message.raw("Ally request from " + data.factionName + " declined.").color("#888888"));
-            refresh(player, ref, store, playerRef);
+            rebuildList(canManage);
         } catch (IllegalArgumentException e) {
             player.sendMessage(Message.raw("Invalid faction.").color("#FF5555"));
         }
     }
 
-    private void handleCancelRequest(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
-                                     PlayerRef playerRef, FactionRelationsData data) {
+    private void handleCancelRequest(Player player, FactionRelationsData data, boolean canManage) {
         if (data.factionId == null) return;
 
         try {
@@ -652,18 +736,10 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
             } else {
                 player.sendMessage(Message.raw("Failed: " + result).color("#FF5555"));
             }
-            refresh(player, ref, store, playerRef);
+            // Stay on pending tab (Bug 7 fix)
+            rebuildList(canManage);
         } catch (IllegalArgumentException e) {
             player.sendMessage(Message.raw("Invalid faction.").color("#FF5555"));
-        }
-    }
-
-    private void refresh(Player player, Ref<EntityStore> ref, Store<EntityStore> store, PlayerRef playerRef) {
-        Faction freshFaction = factionManager.getFaction(faction.id());
-        if (freshFaction != null) {
-            guiManager.openFactionRelations(player, ref, store, playerRef, freshFaction);
-        } else {
-            guiManager.openFactionMain(player, ref, store, playerRef);
         }
     }
 

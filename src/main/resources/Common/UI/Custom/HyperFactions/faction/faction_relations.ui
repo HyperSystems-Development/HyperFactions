@@ -1,5 +1,5 @@
 // Faction Relations Page
-// Admin zones style with tabs: ALLIES | ENEMIES | PENDING
+// Two tabs: RELATIONS (allies+enemies) | PENDING (incoming+outgoing)
 // Following AdminUI pattern with nav bar
 
 $C = "../../Common.ui";
@@ -10,7 +10,7 @@ $C.@PageOverlay {
   $Nav.@HyperFactionsNavBar #HyperFactionsNavBar {}
 
   $C.@Container {
-    Anchor: (Width: 550, Height: 450);
+    Anchor: (Width: 550, Height: 500);
 
     #Title {
       $C.@Title {
@@ -27,25 +27,17 @@ $C.@PageOverlay {
         Anchor: (Height: 35, Bottom: 10);
         LayoutMode: Left;
 
-        TextButton #TabAllies {
-          Text: "Allies";
-          Anchor: (Height: 26, Width: 65);
+        TextButton #TabRelations {
+          Text: "Relations";
+          Anchor: (Height: 26, Width: 100);
           Style: $S.@ButtonStyle;
-        }
-
-        Label { Anchor: (Width: 5); }
-
-        TextButton #TabEnemies {
-          Text: "Enemies";
-          Anchor: (Height: 26, Width: 75);
-          Style: $S.@RedButtonStyle;
         }
 
         Label { Anchor: (Width: 5); }
 
         TextButton #TabPending {
           Text: "Pending";
-          Anchor: (Height: 26, Width: 75);
+          Anchor: (Height: 26, Width: 100);
           Style: $S.@ButtonStyle;
         }
 
@@ -53,7 +45,7 @@ $C.@PageOverlay {
 
         TextButton #SetRelationBtn {
           Text: "+ Set Relation";
-          Anchor: (Height: 26, Width: 110);
+          Anchor: (Height: 26, Width: 120);
           Style: $S.@ButtonStyle;
         }
       }
@@ -66,7 +58,7 @@ $C.@PageOverlay {
 
       // Count label
       Group {
-        Anchor: (Height: 25, Bottom: 5);
+        Anchor: (Height: 25, Bottom: 4);
         LayoutMode: Left;
 
         Label #ItemCount {

@@ -1,3 +1,7 @@
+// Admin Players Page
+// Server-wide player list with search, sort dropdown, pagination
+// Matches AdminFactionsPage gold standard (700x500, Container)
+
 $C = "../../Common.ui";
 $S = "../shared/styles.ui";
 $Nav = "admin_nav_bar.ui";
@@ -10,7 +14,7 @@ $C.@PageOverlay {
 
     #Title {
       $C.@Title {
-        @Text = "Faction Management";
+        @Text = "Player Management";
       }
     }
 
@@ -28,19 +32,20 @@ $C.@PageOverlay {
           Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
           Anchor: (Width: 55);
         }
+
         $C.@TextField #SearchInput {
           FlexWeight: 1;
           Anchor: (Height: 32);
         }
       }
 
-      // Header row with count and sort
+      // Header row with player count and sort
       Group {
         Anchor: (Height: 35, Bottom: 8);
         LayoutMode: Left;
 
-        Label #FactionCount {
-          Text: "0 factions";
+        Label #PlayerCount {
+          Text: "0 players";
           Style: (FontSize: 13, TextColor: #888888, VerticalAlignment: Center);
           Anchor: (Width: 120);
         }
@@ -64,13 +69,13 @@ $C.@PageOverlay {
         Background: (Color: #00AAAA);
       }
 
-      // Scrollable faction list
-      Group #FactionListContainer {
+      // Scrollable player list
+      Group #PlayerListContainer {
         LayoutMode: TopScrolling;
         ScrollbarStyle: $C.@DefaultScrollbarStyle;
         FlexWeight: 1;
 
-        Group #FactionList {
+        Group #PlayerList {
           LayoutMode: Top;
         }
       }

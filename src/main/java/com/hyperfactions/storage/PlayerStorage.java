@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -58,6 +59,13 @@ public interface PlayerStorage {
      * @return a future containing all player power data
      */
     CompletableFuture<Collection<PlayerPower>> loadAllPlayerPower();
+
+    /**
+     * Gets all known player UUIDs from storage.
+     *
+     * @return a future containing the set of all stored player UUIDs
+     */
+    CompletableFuture<Set<UUID>> getAllPlayerUuids();
 
     /**
      * Loads full player data (power + history + stats).

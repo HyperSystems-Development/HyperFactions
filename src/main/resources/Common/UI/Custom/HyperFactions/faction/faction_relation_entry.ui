@@ -1,5 +1,6 @@
 // Faction Relation Entry - Expandable
-// Unified entry for allies, enemies, and pending requests
+// Collapsible row with header stats and inline quick actions
+// Used for both Relations tab (allies/enemies) and Pending tab (incoming/outgoing)
 $C = "../../Common.ui";
 $S = "../shared/styles.ui";
 
@@ -9,18 +10,25 @@ Group {
 
   // Header wrapper - contains content and clickable overlay
   Group #HeaderWrapper {
-    Anchor: (Height: 40);
+    Anchor: (Height: 44);
 
     // Header content (visual layout)
     Group #HeaderContent {
       Anchor: (Left: 0, Right: 0, Top: 0, Bottom: 0);
       Background: (Color: #1a2a3a);
-      Padding: (Left: 12, Right: 12, Top: 6, Bottom: 6);
+      Padding: (Left: 0, Right: 12, Top: 6, Bottom: 6);
       LayoutMode: Left;
 
-      // Faction name
+      // Relation badge (colored bar)
+      Group #RelationBadge {
+        Anchor: (Width: 4, Top: 0, Bottom: 0);
+        Background: (Color: #00AAFF);
+      }
+
+      // Faction name and leader
       Group {
         Anchor: (Width: 180);
+        Padding: (Left: 10);
         LayoutMode: Top;
 
         Label #FactionName {
@@ -31,18 +39,52 @@ Group {
         Label #LeaderName {
           Text: "Leader: Unknown";
           Style: (FontSize: 10, TextColor: #FFD700, VerticalAlignment: Center);
-          Anchor: (Height: 12);
+          Anchor: (Height: 14);
         }
       }
 
-      // Relation type badge
-      Group #TypeBadge {
-        Anchor: (Width: 80);
+      // Relation type label
+      Group {
+        Anchor: (Width: 75);
         LayoutMode: Left;
 
         Label #RelationType {
           Text: "Ally";
           Style: (FontSize: 10, TextColor: #00AAFF, RenderBold: true, VerticalAlignment: Center, HorizontalAlignment: Center);
+        }
+      }
+
+      // Member count
+      Group {
+        Anchor: (Width: 65);
+        LayoutMode: Top;
+
+        Label #MemberCount {
+          Text: "0";
+          Style: (FontSize: 12, TextColor: #888888, VerticalAlignment: Center, HorizontalAlignment: Center);
+          Anchor: (Height: 18);
+        }
+        Label {
+          Text: "members";
+          Style: (FontSize: 9, TextColor: #666666, VerticalAlignment: Center, HorizontalAlignment: Center);
+          Anchor: (Height: 14);
+        }
+      }
+
+      // Power display
+      Group {
+        Anchor: (Width: 80);
+        LayoutMode: Top;
+
+        Label #PowerDisplay {
+          Text: "0/0";
+          Style: (FontSize: 12, TextColor: #44CC44, VerticalAlignment: Center, HorizontalAlignment: Center);
+          Anchor: (Height: 18);
+        }
+        Label {
+          Text: "power";
+          Style: (FontSize: 9, TextColor: #666666, VerticalAlignment: Center, HorizontalAlignment: Center);
+          Anchor: (Height: 14);
         }
       }
 
@@ -75,18 +117,46 @@ Group {
     Background: (Color: #0d1520);
     Padding: (Left: 25, Right: 12, Top: 8, Bottom: 10);
 
-    // Info row
-    Group #InfoRow {
+    // Stats row (for Relations tab)
+    Group #StatsRow {
       LayoutMode: Left;
-      Anchor: (Height: 18, Bottom: 6);
+      Anchor: (Height: 20, Bottom: 4);
 
-      Label #InfoLabel {
+      Label {
         Text: "Since:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
         Anchor: (Width: 50);
       }
-      Label #InfoValue {
+      Label #SinceValue {
         Text: "Unknown";
+        Style: (FontSize: 10, TextColor: #888888, VerticalAlignment: Center);
+        Anchor: (Width: 100);
+      }
+
+      Label {
+        Text: "Claims:";
+        Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
+        Anchor: (Width: 50);
+      }
+      Label #ClaimsValue {
+        Text: "0";
+        Style: (FontSize: 10, TextColor: #FFAA00, VerticalAlignment: Center);
+        FlexWeight: 1;
+      }
+    }
+
+    // Pending info row (for Pending tab)
+    Group #PendingRow {
+      LayoutMode: Left;
+      Anchor: (Height: 20, Bottom: 4);
+
+      Label {
+        Text: "Direction:";
+        Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
+        Anchor: (Width: 65);
+      }
+      Label #DirectionValue {
+        Text: "Incoming";
         Style: (FontSize: 10, TextColor: #888888, VerticalAlignment: Center);
         FlexWeight: 1;
       }
@@ -97,14 +167,23 @@ Group {
       LayoutMode: Left;
       Anchor: (Height: 32);
 
-      // For allies: NEUTRAL and ENEMY buttons
+      // View button (always available)
+      TextButton #ViewBtn {
+        Text: "View";
+        Anchor: (Height: 28, Width: 65);
+        Style: $S.@ButtonStyle;
+      }
+
+      Group #ViewSpacer { Anchor: (Width: 8); }
+
+      // For allies/enemies: change relation
       TextButton #NeutralBtn {
         Text: "Neutral";
         Anchor: (Height: 28, Width: 80);
         Style: $S.@ButtonStyle;
       }
 
-      Group { Anchor: (Width: 8); }
+      Group #NeutralSpacer { Anchor: (Width: 8); }
 
       TextButton #EnemyBtn {
         Text: "Enemy";
@@ -112,7 +191,6 @@ Group {
         Style: $S.@RedButtonStyle;
       }
 
-      // For enemies: NEUTRAL and ALLY buttons
       TextButton #AllyBtn {
         Text: "Ally";
         Anchor: (Height: 28, Width: 60);
@@ -125,6 +203,8 @@ Group {
         Anchor: (Height: 28, Width: 75);
         Style: $S.@ButtonStyle;
       }
+
+      Group #AcceptSpacer { Anchor: (Width: 8); }
 
       TextButton #DeclineBtn {
         Text: "Decline";

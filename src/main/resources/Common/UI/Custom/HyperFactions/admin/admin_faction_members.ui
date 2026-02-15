@@ -1,6 +1,6 @@
 // Admin Faction Members Page
-// Read-only member list for admin viewing
-// Uses admin nav bar, Back returns to AdminFactionInfoPage
+// Full admin member list with search, sort dropdown, pagination
+// Matches AdminFactionsPage gold standard (700x500, Container)
 
 $C = "../../Common.ui";
 $S = "../shared/styles.ui";
@@ -9,8 +9,8 @@ $Nav = "admin_nav_bar.ui";
 $C.@PageOverlay {
   $Nav.@HyperFactionsAdminNavBar #HyperFactionsAdminNavBar {}
 
-  $C.@DecoratedContainer {
-    Anchor: (Width: 520, Height: 550);
+  $C.@Container {
+    Anchor: (Width: 700, Height: 500);
 
     #Title {
       Group {
@@ -36,38 +36,51 @@ $C.@PageOverlay {
       LayoutMode: Top;
       Padding: (Left: 15, Right: 15, Top: 10, Bottom: 10);
 
-      // Header row with member count
+      // Search row
       Group {
-        Anchor: (Height: 36, Bottom: 8);
+        Anchor: (Height: 38, Bottom: 8);
+        LayoutMode: Left;
+
+        Label {
+          Text: "Search:";
+          Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
+          Anchor: (Width: 55);
+        }
+
+        $C.@TextField #SearchInput {
+          FlexWeight: 1;
+          Anchor: (Height: 32);
+        }
+      }
+
+      // Header row with member count, sort, and back button
+      Group {
+        Anchor: (Height: 35, Bottom: 8);
         LayoutMode: Left;
 
         Label #MemberCount {
           Text: "0 members";
-          Style: (FontSize: 14, TextColor: #888888, VerticalAlignment: Center);
+          Style: (FontSize: 13, TextColor: #888888, VerticalAlignment: Center);
           Anchor: (Width: 120);
         }
 
         Group { FlexWeight: 1; }
 
-        TextButton #SortByRole {
-          Text: "Role";
-          Anchor: (Height: 24, Width: 60);
-          Style: $S.@ButtonStyle;
+        Label {
+          Text: "Sort:";
+          Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
+          Anchor: (Width: 35);
         }
-
-        Group { Anchor: (Width: 4); }
-
-        TextButton #SortByOnline {
-          Text: "Online";
-          Anchor: (Height: 24, Width: 70);
-          Style: $S.@ButtonStyle;
+        DropdownBox #SortDropdown {
+          Style: $C.@DefaultDropdownBoxStyle;
+          Anchor: (Height: 28, Width: 150);
         }
 
         Group { Anchor: (Width: 10); }
 
         TextButton #BackBtn {
           Text: "Back";
-          Anchor: (Height: 24, Width: 60);
+          Anchor: (Height: 26, Width: 60);
           Style: $S.@ButtonStyle;
         }
       }
@@ -86,6 +99,40 @@ $C.@PageOverlay {
 
         Group #MembersList {
           LayoutMode: Top;
+        }
+      }
+
+      // Divider
+      Group {
+        Anchor: (Height: 1, Top: 8, Bottom: 8);
+        Background: (Color: #00AAAA);
+      }
+
+      // Pagination
+      Group #Pagination {
+        Anchor: (Height: 35);
+        LayoutMode: Left;
+
+        TextButton #PrevBtn {
+          Text: "< Prev";
+          Anchor: (Height: 26, Width: 80);
+          Style: $S.@ButtonStyle;
+        }
+
+        Label { FlexWeight: 1; }
+
+        Label #PageInfo {
+          Text: "1/1";
+          Style: (FontSize: 14, TextColor: #888888, HorizontalAlignment: Center, VerticalAlignment: Center);
+          Anchor: (Width: 60);
+        }
+
+        Label { FlexWeight: 1; }
+
+        TextButton #NextBtn {
+          Text: "Next >";
+          Anchor: (Height: 26, Width: 80);
+          Style: $S.@ButtonStyle;
         }
       }
     }

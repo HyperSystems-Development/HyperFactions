@@ -91,11 +91,13 @@ public class FactionInvitesPage extends InteractiveCustomUIPage<FactionPageData>
     }
 
     private void buildList(UICommandBuilder cmd, UIEventBuilder events) {
-        // Tab buttons - active tab gets cyan text style
+        // Tab buttons - active tab gets cyan text style and is disabled
         cmd.set("#TabOutgoing.Style", Value.ref("HyperFactions/shared/styles.ui",
                 currentTab == Tab.OUTGOING ? "CyanButtonStyle" : "ButtonStyle"));
         cmd.set("#TabRequests.Style", Value.ref("HyperFactions/shared/styles.ui",
                 currentTab == Tab.REQUESTS ? "CyanButtonStyle" : "ButtonStyle"));
+        cmd.set("#TabOutgoing.Disabled", currentTab == Tab.OUTGOING);
+        cmd.set("#TabRequests.Disabled", currentTab == Tab.REQUESTS);
 
         events.addEventBinding(
                 CustomUIEventBindingType.Activating,

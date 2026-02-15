@@ -465,7 +465,7 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
                     try {
                         UUID uuid = UUID.fromString(data.playerUuid);
                         String targetName = data.target != null ? data.target : "Unknown";
-                        guiManager.openPlayerInfo(player, ref, store, playerRef, uuid, targetName);
+                        guiManager.openPlayerInfo(player, ref, store, playerRef, uuid, targetName, "members");
                     } catch (IllegalArgumentException e) {
                         sendUpdate();
                     }
