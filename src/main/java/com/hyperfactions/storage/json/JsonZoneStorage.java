@@ -262,14 +262,9 @@ public class JsonZoneStorage implements ZoneStorage {
             }
         }
 
-        // Migration: For WarZones, remove explicit BUILD_ALLOWED and CONTAINER_ACCESS flags
-        // so they use the new secure defaults (false for both)
-        if (type == ZoneType.WAR && flags != null) {
+        // Migration: Remove obsolete flag keys that were replaced by new flags
+        if (flags != null) {
             boolean migrated = false;
-            if (flags.containsKey(ZoneFlags.BUILD_ALLOWED)) {
-                flags.remove(ZoneFlags.BUILD_ALLOWED);
-                migrated = true;
-            }
             // Migrate old container_access and interact_allowed to new block_interact
             if (flags.containsKey("container_access")) {
                 flags.remove("container_access");
@@ -280,7 +275,7 @@ public class JsonZoneStorage implements ZoneStorage {
                 migrated = true;
             }
             if (migrated) {
-                Logger.info("Migrated WarZone '%s' to use secure default flags (build/container disabled)", name);
+                Logger.info("Migrated zone '%s': removed obsolete flag keys", name);
             }
             // If flags map is now empty, set to null
             if (flags.isEmpty()) {

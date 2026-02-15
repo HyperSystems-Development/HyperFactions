@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Closes:** [#30](https://github.com/HyperSystemsDev/HyperFactions/issues/30), [#32](https://github.com/HyperSystemsDev/HyperFactions/issues/32)
 
+### Fixed
+
+- **Zone flags reset on server restart**: WarZone migration code ran on every startup and unconditionally stripped the `BUILD_ALLOWED` flag, reverting any admin customizations to defaults. Migration now only removes genuinely obsolete keys (`container_access`, `interact_allowed`) and applies to all zone types.
+
 ### Added
 
 - **Player info page (`/f who [player]`)**: Full GUI page with faction membership, power stats, combat stats (kills/deaths/KDR), and membership history ([#32](https://github.com/HyperSystemsDev/HyperFactions/issues/32))
