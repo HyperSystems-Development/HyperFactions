@@ -1,6 +1,6 @@
 # HyperFactions Command System
 
-> **Version**: 0.7.0 | **43 subcommands** across **9 categories**
+> **Version**: 0.8.0 | **42 subcommands** across **10 categories**
 
 Architecture documentation for the HyperFactions command system.
 

@@ -1,6 +1,6 @@
 # HyperFactions Manager Layer
 
-> **Version**: 0.7.0 | **14 managers**
+> **Version**: 0.8.0 | **15 core managers** (20 total)
 
 The manager layer contains all business logic for HyperFactions, organized by domain.
 

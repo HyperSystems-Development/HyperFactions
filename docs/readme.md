@@ -1,6 +1,6 @@
 # HyperFactions Developer Documentation
 
-> **Version**: 0.7.0 | **341 classes** | **65 packages** | **14 managers** | **43 commands** | **47+ permissions**
+> **Version**: 0.8.0 | **377 classes** | **69 packages** | **20 managers** | **42 commands** | **60 permissions**
 
 Developer documentation for HyperFactions - a comprehensive faction management plugin for Hytale servers.
 
@@ -11,17 +11,17 @@ Developer documentation for HyperFactions - a comprehensive faction management p
 | Document | Description |
 |----------|-------------|
 | [architecture.md](architecture.md) | High-level architecture overview, 9-layer design, package structure |
-| [managers.md](managers.md) | Manager layer - 14 managers with responsibilities and dependency graph |
+| [managers.md](managers.md) | Manager layer - 15 core managers with responsibilities and dependency graph |
 
 ### Systems
 
 | Document | Description |
 |----------|-------------|
-| [commands.md](commands.md) | Command system - 43 subcommands across 9 categories |
-| [permissions.md](permissions.md) | Permission framework - 47+ nodes, chain-based resolution |
-| [config.md](config.md) | Config system - ConfigManager, 7 modules, config v4 migration |
+| [commands.md](commands.md) | Command system - 42 subcommands across 10 categories |
+| [permissions.md](permissions.md) | Permission framework - 60 nodes, chain-based resolution |
+| [config.md](config.md) | Config system - ConfigManager, 8 modules, config v5 migration |
 | [storage.md](storage.md) | Storage layer - interfaces, JSON adapters, backup system |
-| [gui.md](gui.md) | GUI system - 40+ pages, 3 registries, navigation flows |
+| [gui.md](gui.md) | GUI system - 59 pages, 3 registries, navigation flows |
 | [protection.md](protection.md) | Protection system - ECS handlers, OrbisGuard-Mixins hooks |
 
 ### API & Integrations
@@ -29,7 +29,7 @@ Developer documentation for HyperFactions - a comprehensive faction management p
 | Document | Description |
 |----------|-------------|
 | [api.md](api.md) | Developer API reference - HyperFactionsAPI, EconomyAPI, EventBus |
-| [integrations.md](integrations.md) | Integration breakdown - permissions, PAPI, WiFlow, OrbisGuard, world map |
+| [integrations.md](integrations.md) | Integration breakdown - permissions, PAPI, WiFlow, OrbisGuard, Gravestones, world map |
 | [placeholders.md](placeholders.md) | Placeholder reference - all 35 PAPI & WiFlow placeholders with examples |
 
 ### Feature Documentation
@@ -37,7 +37,7 @@ Developer documentation for HyperFactions - a comprehensive faction management p
 | Document | Description |
 |----------|-------------|
 | [announcements.md](announcements.md) | Announcement system - 7 event types, config, admin exclusions |
-| [data-import.md](data-import.md) | Data import & migration - ElbaphFactions/HyFactions importers, config v1→v4 |
+| [data-import.md](data-import.md) | Data import & migration - ElbaphFactions/HyFactions importers, config v1→v5 |
 
 ## Quick Start
 
@@ -47,7 +47,7 @@ Developer documentation for HyperFactions - a comprehensive faction management p
 |------|---------|
 | [`platform/HyperFactionsPlugin.java`](../src/main/java/com/hyperfactions/platform/HyperFactionsPlugin.java) | Hytale plugin lifecycle (`setup()` → `start()` → `shutdown()`) |
 | [`HyperFactions.java`](../src/main/java/com/hyperfactions/HyperFactions.java) | Core singleton, manager initialization, platform callbacks |
-| [`Permissions.java`](../src/main/java/com/hyperfactions/Permissions.java) | All 47+ permission node constants |
+| [`Permissions.java`](../src/main/java/com/hyperfactions/Permissions.java) | All 60 permission node constants |
 | [`api/HyperFactionsAPI.java`](../src/main/java/com/hyperfactions/api/HyperFactionsAPI.java) | Public API for third-party mods |
 
 ### Key Patterns
@@ -82,21 +82,21 @@ PermissionManager.get().hasPermission(playerUuid, Permissions.CLAIM);
 ## Package Overview
 
 ```
-src/main/java/com/hyperfactions/         (341 classes, 65 packages)
+src/main/java/com/hyperfactions/         (377 classes, 69 packages)
 ├── HyperFactions.java          # Core singleton
-├── Permissions.java            # 47+ permission node constants
+├── Permissions.java            # 60 permission node constants
 ├── BuildInfo.java              # Auto-generated version info
 ├── platform/                   # Hytale plugin entry point + extracted handlers
 ├── lifecycle/                  # Plugin lifecycle helpers (callbacks, tasks, history)
-├── manager/                    # Business logic (14 managers)
-├── command/                    # Command system (43 subcommands)
+├── manager/                    # Business logic (15 core managers)
+├── command/                    # Command system (42 subcommands)
 │   └── admin/handler/          # Admin command handlers (8 handler classes)
-├── gui/                        # CustomUI pages (40+ pages)
+├── gui/                        # CustomUI pages (59 pages)
 │   ├── faction/                # Faction member pages + registry
 │   ├── admin/                  # Admin pages, registry, data
 │   └── newplayer/              # New player pages, registry, data
 ├── protection/                 # Territory/zone protection + ECS handlers
-├── config/                     # Configuration (7 module configs)
+├── config/                     # Configuration (8 module configs)
 ├── storage/                    # Data persistence layer
 ├── data/                       # Data models (records)
 ├── api/                        # Public API, EventBus, EconomyAPI
@@ -105,7 +105,7 @@ src/main/java/com/hyperfactions/         (341 classes, 65 packages)
 │   ├── protection/             # Protection integrations (OrbisGuard, Gravestones)
 │   └── placeholder/            # Placeholder integrations (PAPI, WiFlow)
 ├── backup/                     # GFS backup management
-├── migration/                  # Config migration (v1→v2→v3→v4)
+├── migration/                  # Config migration (v1→v2→v3→v4→v5)
 ├── importer/                   # ElbaphFactions + HyFactions importers
 ├── worldmap/                   # World map integration (5 refresh modes)
 ├── territory/                  # Territory notifications

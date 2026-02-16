@@ -1,6 +1,6 @@
 # HyperFactions Permission Framework
 
-> **Version**: 0.7.0 | **47+ permission nodes** across **10 categories**
+> **Version**: 0.8.0 | **60 permission nodes** across **12 categories**
 
 Architecture documentation for the HyperFactions permission system.
 

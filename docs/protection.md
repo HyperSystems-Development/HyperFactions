@@ -1,6 +1,6 @@
 # HyperFactions Protection System
 
-> **Version**: 0.7.0
+> **Version**: 0.8.0
 
 Architecture documentation for the HyperFactions protection system.
 

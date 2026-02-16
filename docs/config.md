@@ -1,6 +1,6 @@
 # HyperFactions Config System
 
-> **Version**: 0.7.0 | **Config version**: 4 | **7 module configs**
+> **Version**: 0.8.0 | **Config version**: 5 | **8 module configs**
 
 Architecture documentation for the HyperFactions configuration system.
 
@@ -10,16 +10,16 @@ HyperFactions uses a modular JSON-based configuration system with:
 
 - **ConfigManager** - Central coordinator for all config files
 - **CoreConfig** - Main `config.json` with core settings
-- **Module Configs** - 7 feature-specific configs in `config/` subdirectory
+- **Module Configs** - 8 feature-specific configs in `config/` subdirectory
 - **Validation** - Automatic validation with warnings and auto-correction
-- **Migration** - Automatic config migration (v1→v2→v3→v4) with backup/rollback
+- **Migration** - Automatic config migration (v1→v2→v3→v4→v5) with backup/rollback
 
 ## Architecture
 
 ```
 ConfigManager (singleton)
      │
-     ├─► CoreConfig (config.json, configVersion: 4)
+     ├─► CoreConfig (config.json, configVersion: 5)
      │        │
      │        └─► Faction, Power, Claims, Combat, Relations,
      │            Invites, Teleport, Updates, AutoSave, Messages, GUI
@@ -32,6 +32,7 @@ ConfigManager (singleton)
               ├─► EconomyConfig (economy.json)
               ├─► FactionPermissionsConfig (faction-permissions.json)
               ├─► AnnouncementConfig (announcements.json)
+              ├─► GravestoneConfig (gravestones.json)
               └─► WorldMapConfig (worldmap.json)
 ```
 
@@ -39,7 +40,7 @@ ConfigManager (singleton)
 
 ```
 <server>/mods/com.hyperfactions_HyperFactions/
-├── config.json                    # Core configuration (v4)
+├── config.json                    # Core configuration (v5)
 ├── config/                        # Module configs
 │   ├── backup.json
 │   ├── chat.json
@@ -47,6 +48,7 @@ ConfigManager (singleton)
 │   ├── economy.json
 │   ├── faction-permissions.json
 │   ├── announcements.json         # Event broadcast toggles
+│   ├── gravestones.json           # Gravestone integration settings
 │   └── worldmap.json              # World map refresh modes
 ├── factions/                      # Faction data (see storage.md)
 ├── players/                       # Player data (see storage.md)
@@ -56,7 +58,7 @@ ConfigManager (singleton)
 
 ## Config Migration
 
-Configuration is automatically migrated on startup. See [Data Import & Migration](data-import.md#config-migration-system) for the full migration chain (v1→v2→v3→v4).
+Configuration is automatically migrated on startup. See [Data Import & Migration](data-import.md#config-migration-system) for the full migration chain (v1→v2→v3→v4→v5).
 
 ## Key Classes
 

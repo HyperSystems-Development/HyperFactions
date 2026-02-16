@@ -1,6 +1,6 @@
 # HyperFactions Data Import & Migration
 
-> **Version**: 0.7.0 | **Packages**: `com.hyperfactions.importer`, `com.hyperfactions.migration`
+> **Version**: 0.8.0 | **Packages**: `com.hyperfactions.importer`, `com.hyperfactions.migration`
 
 HyperFactions supports importing data from other faction plugins and automatically migrating its own configuration between versions.
 
@@ -148,6 +148,7 @@ Migrations are applied in sequence. The `MigrationRegistry` builds the chain aut
 | `ConfigV1ToV2Migration` | v1 | v2 | Split monolithic config into modules |
 | `ConfigV2ToV3Migration` | v2 | v3 | Move world map config, convert prefix colors |
 | `ConfigV3ToV4Migration` | v3 | v4 | Restructure permissions, add interaction sub-types |
+| `ConfigV4ToV5Migration` | v4 | v5 | Remove `warzonePowerLoss`, add per-zone `power_loss` flag |
 
 ### v1 to v2: Monolithic to Modular
 
@@ -172,6 +173,12 @@ Splits `config.json` into core + module configs:
 - Adds mob spawning flags: `mobSpawning`, `hostileMobSpawning`, `passiveMobSpawning`, `neutralMobSpawning`
 - Converts flat flag map to nested role-level JSON structure
 - Adds `configVersion: 4`
+
+### v4 to v5: Zone Power Loss Flag
+
+- Removes deprecated `warzonePowerLoss` config option from `power` section
+- Power loss in zones is now controlled per-zone via the `power_loss` zone flag
+- Adds `configVersion: 5`
 
 ### Backup & Rollback
 
