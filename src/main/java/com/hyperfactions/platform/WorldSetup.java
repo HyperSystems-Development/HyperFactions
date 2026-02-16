@@ -86,6 +86,9 @@ public class WorldSetup {
                             world.getName(), e.getMessage());
                 }
             }
+            // Apply map player filters to any already-online players
+            hyperFactions.getMapPlayerFilterService().applyToAll();
+
         } catch (Exception e) {
             Logger.warn("Failed to apply world map provider to existing worlds: %s", e.getMessage());
         }

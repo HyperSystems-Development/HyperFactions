@@ -26,6 +26,8 @@ public class RelationManager {
     @Nullable
     private BiConsumer<UUID, UUID> onRelationChanged;
     @Nullable
+    private BiConsumer<UUID, UUID> onRelationChangedForMapFilter;
+    @Nullable
     private BiConsumer<UUID, UUID> onAllyRequestReceived;
 
     // Announcement callbacks
@@ -46,6 +48,15 @@ public class RelationManager {
      */
     public void setOnRelationChanged(@Nullable BiConsumer<UUID, UUID> callback) {
         this.onRelationChanged = callback;
+    }
+
+    /**
+     * Sets a callback for when a relation changes, specifically for map player filter updates.
+     * Separate from the GUI callback to keep concerns independent.
+     * Params: factionId, targetFactionId
+     */
+    public void setOnRelationChangedForMapFilter(@Nullable BiConsumer<UUID, UUID> callback) {
+        this.onRelationChangedForMapFilter = callback;
     }
 
     /**
@@ -575,6 +586,9 @@ public class RelationManager {
 
         if (onRelationChanged != null) {
             try { onRelationChanged.accept(factionId, targetId); } catch (Exception e) { Logger.warn("Error in relation changed callback: %s", e.getMessage()); }
+        }
+        if (onRelationChangedForMapFilter != null) {
+            try { onRelationChangedForMapFilter.accept(factionId, targetId); } catch (Exception e) { Logger.warn("Error in map filter relation callback: %s", e.getMessage()); }
         }
     }
 

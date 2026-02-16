@@ -19,9 +19,11 @@ import com.hyperfactions.territory.TerritoryTickingSystem;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.system.ISystem;
 import com.hypixel.hytale.event.EventPriority;
+import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerConnectEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
+import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.universe.world.events.AddWorldEvent;
 import com.hypixel.hytale.server.core.universe.world.events.RemoveWorldEvent;
 
@@ -79,6 +81,15 @@ public class EventRegistration {
             PlayerChatEvent.class,
             connectionHandler::onPlayerChatAsync
         );
+
+        // Player ready event — apply map player filter (must be PlayerReadyEvent, not PlayerConnectEvent,
+        // because the world map tracker is not initialized until the player is fully ready)
+        plugin.getEventRegistry().registerGlobal(PlayerReadyEvent.class, event -> {
+            Player player = event.getPlayer();
+            if (player != null) {
+                hyperFactions.getMapPlayerFilterService().applyFilter(player);
+            }
+        });
 
         // Public chat formatting (faction tags with relation colors)
         // Register at configured priority (default LATE) to run after LuckPerms

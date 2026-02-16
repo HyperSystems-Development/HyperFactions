@@ -8,6 +8,7 @@ import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.gui.GuiUpdateService;
 import com.hyperfactions.manager.*;
+import com.hyperfactions.worldmap.MapPlayerFilterService;
 import com.hyperfactions.worldmap.WorldMapService;
 
 import java.util.UUID;
@@ -38,6 +39,7 @@ public final class CallbackWiring {
         wireFactionDisbandEventBus(hf);
         wireCombatTagCallbacks(hf.getCombatTagManager(), hf.getPowerManager());
         wireWorldMapCallbacks(hf.getWorldMapService(), hf.getClaimManager());
+        wireMapPlayerFilterCallbacks(hf, hf.getMapPlayerFilterService(), hf.getRelationManager());
         wireAnnouncementCallbacks(hf.getAnnouncementManager(), hf.getFactionManager(),
             hf.getClaimManager(), hf.getRelationManager());
         wireOverclaimNotification(hf);
@@ -107,6 +109,29 @@ public final class CallbackWiring {
     private static void wireWorldMapCallbacks(WorldMapService worldMapService, ClaimManager claimManager) {
         claimManager.setOnChunkChangeCallback(worldMapService::queueChunkRefresh);
         claimManager.setOnClaimChangeCallback(worldMapService::triggerFactionWideRefresh);
+    }
+
+    /**
+     * Wires map player filter callbacks for faction membership and relation changes.
+     * Updates player visibility on the world map/compass when faction state changes.
+     */
+    private static void wireMapPlayerFilterCallbacks(HyperFactions hf,
+                                                      MapPlayerFilterService filterService,
+                                                      RelationManager relationManager) {
+        // Member join/leave/kick → update all players' filters
+        EventBus.register(FactionMemberEvent.class, event -> {
+            switch (event.type()) {
+                case JOIN, LEAVE, KICK -> filterService.updateForFaction(event.faction());
+                default -> {} // PROMOTE/DEMOTE don't affect visibility
+            }
+        });
+
+        // Faction disband → update all players (former members are now factionless)
+        EventBus.register(FactionDisbandEvent.class, event -> filterService.updateForAllPlayers());
+
+        // Relation changes → update all players (both factions' members' views change)
+        relationManager.setOnRelationChangedForMapFilter((factionId, targetFactionId) ->
+            filterService.updateForAllPlayers());
     }
 
     /**

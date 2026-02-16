@@ -91,6 +91,15 @@ public class WorldMapConfig extends ModuleConfig {
     // Display settings
     private boolean showFactionTags = true;
 
+    // Player visibility filtering (disabled = vanilla behavior, all players visible)
+    private boolean playerVisibilityEnabled = false;
+    private boolean showOwnFaction = true;
+    private boolean showAllies = true;
+    private boolean showNeutrals = false;
+    private boolean showEnemies = false;
+    private boolean showFactionlessPlayers = false;
+    private boolean showFactionlessToFactionless = true;
+
     // Performance settings
     private int factionWideRefreshThreshold = 200;  // Above this, use full refresh instead of queuing
 
@@ -137,6 +146,15 @@ public class WorldMapConfig extends ModuleConfig {
         // Display settings
         showFactionTags = true;
 
+        // Player visibility filtering (disabled = vanilla behavior)
+        playerVisibilityEnabled = false;
+        showOwnFaction = true;
+        showAllies = true;
+        showNeutrals = false;
+        showEnemies = false;
+        showFactionlessPlayers = false;
+        showFactionlessToFactionless = true;
+
         // Performance settings
         factionWideRefreshThreshold = 200;
     }
@@ -171,6 +189,18 @@ public class WorldMapConfig extends ModuleConfig {
             incrementalMaxChunksPerBatch = getInt(incremental, "maxChunksPerBatch", incrementalMaxChunksPerBatch);
         }
 
+        // Load player visibility settings
+        if (hasSection(root, "playerVisibility")) {
+            JsonObject pv = root.getAsJsonObject("playerVisibility");
+            playerVisibilityEnabled = getBool(pv, "enabled", playerVisibilityEnabled);
+            showOwnFaction = getBool(pv, "showOwnFaction", showOwnFaction);
+            showAllies = getBool(pv, "showAllies", showAllies);
+            showNeutrals = getBool(pv, "showNeutrals", showNeutrals);
+            showEnemies = getBool(pv, "showEnemies", showEnemies);
+            showFactionlessPlayers = getBool(pv, "showFactionlessPlayers", showFactionlessPlayers);
+            showFactionlessToFactionless = getBool(pv, "showFactionlessToFactionless", showFactionlessToFactionless);
+        }
+
         // Load debounced settings
         if (hasSection(root, "debounced")) {
             JsonObject debounced = root.getAsJsonObject("debounced");
@@ -185,6 +215,18 @@ public class WorldMapConfig extends ModuleConfig {
         root.addProperty("showFactionTags", showFactionTags);
         root.addProperty("factionWideRefreshThreshold", factionWideRefreshThreshold);
         root.addProperty("_thresholdNote", "If faction has more claims than threshold, use full refresh instead of queuing each chunk");
+
+        // Player visibility section
+        JsonObject playerVisibility = new JsonObject();
+        playerVisibility.addProperty("_description", "Controls which players are visible on the world map and compass based on faction relations.");
+        playerVisibility.addProperty("enabled", playerVisibilityEnabled);
+        playerVisibility.addProperty("showOwnFaction", showOwnFaction);
+        playerVisibility.addProperty("showAllies", showAllies);
+        playerVisibility.addProperty("showNeutrals", showNeutrals);
+        playerVisibility.addProperty("showEnemies", showEnemies);
+        playerVisibility.addProperty("showFactionlessPlayers", showFactionlessPlayers);
+        playerVisibility.addProperty("showFactionlessToFactionless", showFactionlessToFactionless);
+        root.add("playerVisibility", playerVisibility);
 
         // Proximity section
         JsonObject proximity = new JsonObject();
@@ -353,5 +395,71 @@ public class WorldMapConfig extends ModuleConfig {
      */
     public int getFactionWideRefreshThreshold() {
         return factionWideRefreshThreshold;
+    }
+
+    // === Player Visibility Getters ===
+
+    /**
+     * Checks if player visibility filtering is enabled.
+     * When disabled, all players are visible on the map (vanilla behavior).
+     *
+     * @return true if filtering is enabled
+     */
+    public boolean isPlayerVisibilityEnabled() {
+        return playerVisibilityEnabled;
+    }
+
+    /**
+     * Checks if own faction members are shown on the map.
+     *
+     * @return true if own faction is visible
+     */
+    public boolean isShowOwnFaction() {
+        return showOwnFaction;
+    }
+
+    /**
+     * Checks if allied faction members are shown on the map.
+     *
+     * @return true if allies are visible
+     */
+    public boolean isShowAllies() {
+        return showAllies;
+    }
+
+    /**
+     * Checks if neutral faction members are shown on the map.
+     *
+     * @return true if neutrals are visible
+     */
+    public boolean isShowNeutrals() {
+        return showNeutrals;
+    }
+
+    /**
+     * Checks if enemy faction members are shown on the map.
+     *
+     * @return true if enemies are visible
+     */
+    public boolean isShowEnemies() {
+        return showEnemies;
+    }
+
+    /**
+     * Checks if factionless players are shown to faction members on the map.
+     *
+     * @return true if factionless players are visible
+     */
+    public boolean isShowFactionlessPlayers() {
+        return showFactionlessPlayers;
+    }
+
+    /**
+     * Checks if factionless players can see other factionless players on the map.
+     *
+     * @return true if factionless-to-factionless is visible
+     */
+    public boolean isShowFactionlessToFactionless() {
+        return showFactionlessToFactionless;
     }
 }

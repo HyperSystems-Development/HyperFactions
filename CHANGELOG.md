@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-**Closes:** [#30](https://github.com/HyperSystemsDev/HyperFactions/issues/30), [#32](https://github.com/HyperSystemsDev/HyperFactions/issues/32), [#34](https://github.com/HyperSystemsDev/HyperFactions/issues/34)
+**Closes:** [#30](https://github.com/HyperSystemsDev/HyperFactions/issues/30), [#31](https://github.com/HyperSystemsDev/HyperFactions/issues/31), [#32](https://github.com/HyperSystemsDev/HyperFactions/issues/32), [#34](https://github.com/HyperSystemsDev/HyperFactions/issues/34)
 
 ### Added
 
@@ -47,6 +47,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Relations Redesign**
 - **Relations page redesign**: Merged three tabs (Allies/Enemies/Pending) into two tabs (Relations/Pending) with collapsible row entries showing faction name, leader, relation badge, member count, power stats, and inline quick actions (View, Set Neutral, Set Enemy, Request Ally, Accept, Decline, Cancel)
+
+**Faction-Aware Map & Compass Visibility** ([#31](https://github.com/HyperSystemsDev/HyperFactions/issues/31))
+- **Player visibility filtering on world map and compass**: Only faction members and allies are visible by default — enemies, neutrals, and factionless players are hidden from the map and compass
+- Configurable per-relation visibility: `showOwnFaction`, `showAllies`, `showNeutrals`, `showEnemies`, `showFactionlessPlayers`, `showFactionlessToFactionless` in `worldmap.json` under `playerVisibility`
+- Master toggle (`playerVisibility.enabled`) to disable filtering entirely (vanilla behavior: all players visible)
+- `hyperfactions.bypass.mapfilter` permission — player can see all others on map regardless of faction filter
+- `hyperfactions.bypass.mapvisibility` permission — player is always visible to everyone on the map
+- Filters update automatically on faction join/leave/kick/disband and relation changes
 
 ### Fixed
 

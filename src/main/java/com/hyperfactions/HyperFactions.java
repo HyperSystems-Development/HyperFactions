@@ -30,6 +30,7 @@ import com.hyperfactions.update.UpdateChecker;
 import com.hyperfactions.update.UpdateNotificationListener;
 import com.hyperfactions.update.UpdateNotificationPreferences;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.worldmap.MapPlayerFilterService;
 import com.hyperfactions.worldmap.WorldMapService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -103,6 +104,7 @@ public class HyperFactions {
     // Territory features
     private TerritoryNotifier territoryNotifier;
     private WorldMapService worldMapService;
+    private MapPlayerFilterService mapPlayerFilterService;
 
     // Lifecycle helpers
     private MembershipHistoryHandler membershipHistoryHandler;
@@ -280,6 +282,9 @@ public class HyperFactions {
 
         // Initialize the world map refresh scheduler with optimized mode
         worldMapService.initializeScheduler(ConfigManager.get().worldMap());
+
+        // Initialize map player filter service (faction-aware player visibility on map/compass)
+        mapPlayerFilterService = new MapPlayerFilterService(factionManager, relationManager);
 
         // Initialize announcement manager (uses deferred onlinePlayersSupplier)
         announcementManager = new AnnouncementManager(
@@ -496,6 +501,11 @@ public class HyperFactions {
         // Reinitialize world map scheduler in case refresh mode changed
         if (worldMapService != null) {
             worldMapService.initializeScheduler(ConfigManager.get().worldMap());
+        }
+
+        // Re-evaluate map player filters in case visibility settings changed
+        if (mapPlayerFilterService != null) {
+            mapPlayerFilterService.applyToAll();
         }
 
         // Restart backup scheduler in case backup settings changed
@@ -828,6 +838,16 @@ public class HyperFactions {
     @NotNull
     public WorldMapService getWorldMapService() {
         return worldMapService;
+    }
+
+    /**
+     * Gets the map player filter service.
+     *
+     * @return the map player filter service
+     */
+    @NotNull
+    public MapPlayerFilterService getMapPlayerFilterService() {
+        return mapPlayerFilterService;
     }
 
     /**

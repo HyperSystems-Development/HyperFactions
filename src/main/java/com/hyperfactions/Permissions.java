@@ -143,6 +143,10 @@ public final class Permissions {
     public static final String BYPASS_WARMUP = "hyperfactions.bypass.warmup";
     /** Bypass home cooldown timer */
     public static final String BYPASS_COOLDOWN = "hyperfactions.bypass.cooldown";
+    /** Player is always visible to everyone on map (admin/staff) */
+    public static final String BYPASS_MAP_VISIBILITY = "hyperfactions.bypass.mapvisibility";
+    /** Player can see all other players regardless of faction filter */
+    public static final String BYPASS_MAP_FILTER = "hyperfactions.bypass.mapfilter";
 
     // === Admin Permissions (hyperfactions.admin.*) ===
     /** All admin permissions */
@@ -198,6 +202,7 @@ public final class Permissions {
             // Bypass
             BYPASS_BUILD, BYPASS_INTERACT, BYPASS_CONTAINER,
             BYPASS_DAMAGE, BYPASS_USE, BYPASS_WARMUP, BYPASS_COOLDOWN,
+            BYPASS_MAP_VISIBILITY, BYPASS_MAP_FILTER,
             // Admin
             ADMIN, ADMIN_RELOAD, ADMIN_DEBUG, ADMIN_ZONES,
             ADMIN_DISBAND, ADMIN_MODIFY, ADMIN_BYPASS_LIMITS, ADMIN_BACKUP,
@@ -251,7 +256,8 @@ public final class Permissions {
     public static String[] getBypassPermissions() {
         return new String[] {
             BYPASS_BUILD, BYPASS_INTERACT, BYPASS_CONTAINER,
-            BYPASS_DAMAGE, BYPASS_USE, BYPASS_WARMUP, BYPASS_COOLDOWN
+            BYPASS_DAMAGE, BYPASS_USE, BYPASS_WARMUP, BYPASS_COOLDOWN,
+            BYPASS_MAP_VISIBILITY, BYPASS_MAP_FILTER
         };
     }
 
