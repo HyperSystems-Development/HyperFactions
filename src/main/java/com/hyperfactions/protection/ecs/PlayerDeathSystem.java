@@ -118,7 +118,10 @@ public class PlayerDeathSystem extends RefChangeSystem<EntityStore, DeathCompone
                 int chunkZ = ChunkUtil.toChunkCoord(pos.getZ());
                 try {
                     String worldName = store.getExternalData().getWorld().getName();
-                    Zone zone = hyperFactions.getZoneManager().getZoneAt(worldName, chunkX, chunkZ);
+                    Zone zone = hyperFactions.getZoneManager().getZone(worldName, chunkX, chunkZ);
+                    Logger.debugPower("Zone check: player=%s, world=%s, chunk=(%d,%d), zone=%s",
+                            victimUuid, worldName, chunkX, chunkZ,
+                            zone != null ? zone.name() + " (power_loss=" + zone.getEffectiveFlag(ZoneFlags.POWER_LOSS) + ")" : "null");
                     if (zone != null && !zone.getEffectiveFlag(ZoneFlags.POWER_LOSS)) {
                         Logger.debugPower("Power loss skipped for %s in zone '%s' (power_loss=false)", victimUuid, zone.name());
                         // Skip power changes, still announce death location
@@ -126,8 +129,10 @@ public class PlayerDeathSystem extends RefChangeSystem<EntityStore, DeathCompone
                         return;
                     }
                 } catch (Exception e) {
-                    // Fall through to normal power loss on error
+                    Logger.debugPower("Zone check failed for %s: %s", victimUuid, e.getMessage());
                 }
+            } else {
+                Logger.debugPower("TransformComponent is null for %s during death", victimUuid);
             }
 
             // Apply death power penalty

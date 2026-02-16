@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Closes:** [#30](https://github.com/HyperSystemsDev/HyperFactions/issues/30), [#31](https://github.com/HyperSystemsDev/HyperFactions/issues/31), [#32](https://github.com/HyperSystemsDev/HyperFactions/issues/32), [#34](https://github.com/HyperSystemsDev/HyperFactions/issues/34), [#36](https://github.com/HyperSystemsDev/HyperFactions/issues/36)
 
+### Fixed
+
+- **Zone power loss flag ignored on death** — `PlayerDeathSystem` passed already-converted chunk coordinates to `getZoneAt()` (which expects world coordinates), causing a double conversion that looked up the wrong chunk. Zone flags like `power_loss=false` were never applied. Changed to `getZone()` which accepts chunk coordinates directly.
+
 ### Added
 
 **Faction Treasury & Economy System** ([#36](https://github.com/HyperSystemsDev/HyperFactions/issues/36))
