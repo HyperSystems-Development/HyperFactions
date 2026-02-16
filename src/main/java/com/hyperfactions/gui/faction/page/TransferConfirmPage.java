@@ -10,6 +10,7 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
@@ -93,7 +94,7 @@ public class TransferConfirmPage extends InteractiveCustomUIPage<TransferConfirm
         // Re-fetch faction to ensure fresh state
         Faction currentFaction = factionManager.getFaction(faction.id());
         if (currentFaction == null) {
-            player.sendMessage(Message.raw("Faction no longer exists.").color("#FF5555"));
+            player.sendMessage(MessageUtil.errorText("Faction no longer exists."));
             guiManager.openFactionMain(player, ref, store, playerRef);
             return;
         }
@@ -102,7 +103,7 @@ public class TransferConfirmPage extends InteractiveCustomUIPage<TransferConfirm
 
         // Verify leader permission
         if (member == null || member.role() != FactionRole.LEADER) {
-            player.sendMessage(Message.raw("Only the leader can transfer leadership.").color("#FF5555"));
+            player.sendMessage(MessageUtil.errorText("Only the leader can transfer leadership."));
             guiManager.openFactionMembers(player, ref, store, playerRef, currentFaction);
             return;
         }

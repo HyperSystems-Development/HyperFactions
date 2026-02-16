@@ -6,7 +6,13 @@ The manager layer contains all business logic for HyperFactions, organized by do
 
 ## Overview
 
-Managers are initialized in [`HyperFactions.java`](../src/main/java/com/hyperfactions/HyperFactions.java) with explicit dependency injection. Each manager:
+Managers are initialized in [`HyperFactions.java`](../src/main/java/com/hyperfactions/HyperFactions.java) with explicit dependency injection. `HyperFactions.java` acts as an orchestrator, delegating lifecycle responsibilities to the `lifecycle/` package:
+
+- **`lifecycle/CallbackWiring`** - Platform callback setup (task scheduling, player lookup)
+- **`lifecycle/PeriodicTaskManager`** - Periodic task management (power regen, combat tag decay, invite cleanup)
+- **`lifecycle/MembershipHistoryHandler`** - Member join/leave history tracking
+
+Each manager:
 
 - Owns a specific domain of functionality
 - Performs permission checks before operations

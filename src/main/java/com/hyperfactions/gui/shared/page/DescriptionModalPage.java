@@ -10,6 +10,7 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
@@ -116,7 +117,7 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
 
         // Verify officer permission (skip in admin mode)
         if (!adminMode && (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel())) {
-            player.sendMessage(Message.raw("You don't have permission to edit the description.").color("#FF5555"));
+            player.sendMessage(MessageUtil.errorText("You don't have permission to edit the description."));
             guiManager.openFactionSettings(player, ref, store, playerRef,
                     factionManager.getFaction(faction.id()));
             return;

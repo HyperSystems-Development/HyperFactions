@@ -9,8 +9,9 @@ import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.gui.RefreshablePage;
 import com.hyperfactions.gui.faction.FactionPageRegistry;
 import com.hyperfactions.gui.faction.data.FactionChatData;
-import com.hyperfactions.gui.nav.NavBarHelper;
+import com.hyperfactions.gui.faction.NavBarHelper;
 import com.hyperfactions.integration.PermissionManager;
+import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.manager.ChatHistoryManager;
 import com.hyperfactions.manager.ChatManager;
 import com.hyperfactions.manager.FactionManager;
@@ -270,7 +271,7 @@ public class FactionChatPage extends InteractiveCustomUIPage<FactionChatData> im
             }
             case "TabAlly" -> {
                 if (!PermissionManager.get().hasPermission(pRef.getUuid(), Permissions.CHAT_ALLY)) {
-                    player.sendMessage(Message.raw("You don't have permission for ally chat.").color("#FF5555"));
+                    player.sendMessage(MessageUtil.errorText("You don't have permission for ally chat."));
                     rebuild();
                     return;
                 }
@@ -300,7 +301,7 @@ public class FactionChatPage extends InteractiveCustomUIPage<FactionChatData> im
         String requiredPerm = (channel == ChatMessage.Channel.ALLY)
                 ? Permissions.CHAT_ALLY : Permissions.CHAT_FACTION;
         if (!PermissionManager.get().hasPermission(uuid, requiredPerm)) {
-            player.sendMessage(Message.raw("No permission.").color("#FF5555"));
+            player.sendMessage(MessageUtil.errorText("No permission."));
             rebuild();
             return;
         }
@@ -308,7 +309,7 @@ public class FactionChatPage extends InteractiveCustomUIPage<FactionChatData> im
         // Get fresh faction data
         Faction currentFaction = factionManager.getFaction(faction.id());
         if (currentFaction == null) {
-            player.sendMessage(Message.raw("Your faction no longer exists.").color("#FF5555"));
+            player.sendMessage(MessageUtil.errorText("Your faction no longer exists."));
             rebuild();
             return;
         }

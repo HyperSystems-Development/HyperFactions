@@ -143,7 +143,7 @@ When no provider can answer:
 
 ## PlaceholderAPI (PAPI)
 
-**Package**: `com.hyperfactions.integration.papi`
+**Package**: `com.hyperfactions.integration.placeholder`
 **Identifier**: `factions`
 **Format**: `%factions_<placeholder>%`
 
@@ -155,7 +155,7 @@ Registered via `PlaceholderExpansion` from the PlaceholderAPI library. Persists 
 
 ## WiFlow PlaceholderAPI
 
-**Package**: `com.hyperfactions.integration.wiflow`
+**Package**: `com.hyperfactions.integration.placeholder`
 **Format**: `{factions_<placeholder>}`
 
 WiFlow uses curly braces instead of percent signs but supports the same placeholders as PAPI. The `WiFlowExpansion` class mirrors `HyperFactionsExpansion` exactly, using WiFlow's `PlaceholderContext` instead of PAPI's `PlayerRef`.
@@ -166,7 +166,7 @@ WiFlow uses curly braces instead of percent signs but supports the same placehol
 
 ## OrbisGuard
 
-**Package**: `com.hyperfactions.integration.orbis`
+**Package**: `com.hyperfactions.integration.protection`
 **Purpose**: Prevents faction claims in OrbisGuard-protected regions
 
 When OrbisGuard is installed, HyperFactions checks for protective regions before allowing territory claims. If a chunk overlaps an OrbisGuard region, the claim is denied.
@@ -192,7 +192,7 @@ When OrbisGuard is installed, HyperFactions checks for protective regions before
 
 ## OrbisGuard-Mixins
 
-**Package**: `com.hyperfactions.integration.orbis`
+**Package**: `com.hyperfactions.integration.protection`
 **Purpose**: Enhanced protection via Hyxin mixin hooks for events not available through normal APIs
 
 OrbisGuard-Mixins extends protection coverage to interactions that Hytale's event system doesn't expose (F-key pickup, hammer cycling, campfire toggling, etc.). It uses `System.getProperties()` for cross-classloader communication — no direct dependency required.
@@ -295,7 +295,7 @@ Key settings in `config/worldmap.json`:
 
 ## GravestonePlugin
 
-**Package**: `com.hyperfactions.integration`
+**Package**: `com.hyperfactions.integration.protection`
 **Purpose**: Faction-aware gravestone access control using direct v2 API
 **Detection**: `GravestonePlugin.getInstance()` (wrapped in `NoClassDefFoundError` catch)
 

@@ -1,10 +1,10 @@
 package com.hyperfactions.command.util;
 
 import com.hyperfactions.HyperFactions;
-import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import org.jetbrains.annotations.NotNull;
@@ -14,16 +14,18 @@ import java.util.UUID;
 
 /**
  * Shared utility methods for faction commands.
+ * <p>
+ * Color constants and message builders delegate to {@link MessageUtil}.
  */
 public final class CommandUtil {
 
-    // Color constants used across commands
-    public static final String COLOR_CYAN = "#55FFFF";
-    public static final String COLOR_GREEN = "#55FF55";
-    public static final String COLOR_RED = "#FF5555";
-    public static final String COLOR_YELLOW = "#FFFF55";
-    public static final String COLOR_GRAY = "#AAAAAA";
-    public static final String COLOR_WHITE = "#FFFFFF";
+    // Color constants — delegate to MessageUtil
+    public static final String COLOR_CYAN = MessageUtil.COLOR_CYAN;
+    public static final String COLOR_GREEN = MessageUtil.COLOR_GREEN;
+    public static final String COLOR_RED = MessageUtil.COLOR_RED;
+    public static final String COLOR_YELLOW = MessageUtil.COLOR_YELLOW;
+    public static final String COLOR_GRAY = MessageUtil.COLOR_GRAY;
+    public static final String COLOR_WHITE = MessageUtil.COLOR_WHITE;
 
     private CommandUtil() {}
 
@@ -35,14 +37,7 @@ public final class CommandUtil {
      */
     @NotNull
     public static Message prefix() {
-        ConfigManager config = ConfigManager.get();
-        String text = config.getPrefixText();
-        String textColor = config.getPrefixColor();
-        String bracketColor = config.getPrefixBracketColor();
-
-        return Message.raw("[").color(bracketColor)
-            .insert(Message.raw(text).color(textColor))
-            .insert(Message.raw("] ").color(bracketColor));
+        return MessageUtil.prefix();
     }
 
     /**
@@ -54,7 +49,7 @@ public final class CommandUtil {
      */
     @NotNull
     public static Message msg(@NotNull String text, @NotNull String color) {
-        return Message.raw(text).color(color);
+        return MessageUtil.text(text, color);
     }
 
     /**

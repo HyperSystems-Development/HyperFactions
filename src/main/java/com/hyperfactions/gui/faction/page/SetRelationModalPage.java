@@ -6,6 +6,8 @@ import com.hyperfactions.data.FactionRole;
 import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.gui.faction.data.SetRelationModalData;
 import com.hyperfactions.manager.FactionManager;
+import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.UuidUtil;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.manager.RelationManager;
 import com.hypixel.hytale.component.Ref;
@@ -282,79 +284,82 @@ public class SetRelationModalPage extends InteractiveCustomUIPage<SetRelationMod
 
             case "RequestAlly" -> {
                 if (!canManage) {
-                    player.sendMessage(Message.raw("You don't have permission to manage relations.").color("#FF5555"));
+                    player.sendMessage(MessageUtil.errorText("You don't have permission to manage relations."));
                     sendUpdate();
                     return;
                 }
 
                 if (data.factionId != null) {
-                    try {
-                        UUID targetId = UUID.fromString(data.factionId);
-                        RelationManager.RelationResult result = relationManager.requestAlly(uuid, targetId);
-
-                        if (result == RelationManager.RelationResult.REQUEST_SENT) {
-                            player.sendMessage(Message.raw("Alliance request sent to " + data.factionName + ".").color("#00AAFF"));
-                            // Navigate to pending tab since a request was sent
-                            guiManager.openFactionRelations(player, ref, store, playerRef,
-                                    factionManager.getFaction(faction.id()), "pending");
-                        } else if (result == RelationManager.RelationResult.REQUEST_ACCEPTED) {
-                            player.sendMessage(Message.raw("Now allied with " + data.factionName + "!").color("#00AAFF"));
-                            // Navigate to relations tab since alliance is now active
-                            guiManager.openFactionRelations(player, ref, store, playerRef,
-                                    factionManager.getFaction(faction.id()), "relations");
-                        } else {
-                            player.sendMessage(Message.raw("Failed: " + result).color("#FF5555"));
-                            guiManager.openFactionRelations(player, ref, store, playerRef,
-                                    factionManager.getFaction(faction.id()));
-                        }
-                    } catch (IllegalArgumentException e) {
-                        player.sendMessage(Message.raw("Invalid faction.").color("#FF5555"));
+                    UUID targetId = UuidUtil.parseOrNull(data.factionId);
+                    if (targetId == null) {
+                        player.sendMessage(MessageUtil.errorText("Invalid faction."));
                         sendUpdate();
+                        return;
+                    }
+
+                    RelationManager.RelationResult result = relationManager.requestAlly(uuid, targetId);
+
+                    if (result == RelationManager.RelationResult.REQUEST_SENT) {
+                        player.sendMessage(Message.raw("Alliance request sent to " + data.factionName + ".").color("#00AAFF"));
+                        // Navigate to pending tab since a request was sent
+                        guiManager.openFactionRelations(player, ref, store, playerRef,
+                                factionManager.getFaction(faction.id()), "pending");
+                    } else if (result == RelationManager.RelationResult.REQUEST_ACCEPTED) {
+                        player.sendMessage(Message.raw("Now allied with " + data.factionName + "!").color("#00AAFF"));
+                        // Navigate to relations tab since alliance is now active
+                        guiManager.openFactionRelations(player, ref, store, playerRef,
+                                factionManager.getFaction(faction.id()), "relations");
+                    } else {
+                        player.sendMessage(Message.raw("Failed: " + result).color("#FF5555"));
+                        guiManager.openFactionRelations(player, ref, store, playerRef,
+                                factionManager.getFaction(faction.id()));
                     }
                 }
             }
 
             case "SetEnemy" -> {
                 if (!canManage) {
-                    player.sendMessage(Message.raw("You don't have permission to manage relations.").color("#FF5555"));
+                    player.sendMessage(MessageUtil.errorText("You don't have permission to manage relations."));
                     sendUpdate();
                     return;
                 }
 
                 if (data.factionId != null) {
-                    try {
-                        UUID targetId = UUID.fromString(data.factionId);
-                        RelationManager.RelationResult result = relationManager.setEnemy(uuid, targetId);
-
-                        if (result == RelationManager.RelationResult.SUCCESS) {
-                            player.sendMessage(Message.raw("Now enemies with " + data.factionName + "!").color("#FF5555"));
-                        } else {
-                            player.sendMessage(Message.raw("Failed: " + result).color("#FF5555"));
-                        }
-
-                        guiManager.openFactionRelations(player, ref, store, playerRef,
-                                factionManager.getFaction(faction.id()), "relations");
-                    } catch (IllegalArgumentException e) {
-                        player.sendMessage(Message.raw("Invalid faction.").color("#FF5555"));
+                    UUID targetId = UuidUtil.parseOrNull(data.factionId);
+                    if (targetId == null) {
+                        player.sendMessage(MessageUtil.errorText("Invalid faction."));
                         sendUpdate();
+                        return;
                     }
+
+                    RelationManager.RelationResult result = relationManager.setEnemy(uuid, targetId);
+
+                    if (result == RelationManager.RelationResult.SUCCESS) {
+                        player.sendMessage(Message.raw("Now enemies with " + data.factionName + "!").color("#FF5555"));
+                    } else {
+                        player.sendMessage(Message.raw("Failed: " + result).color("#FF5555"));
+                    }
+
+                    guiManager.openFactionRelations(player, ref, store, playerRef,
+                            factionManager.getFaction(faction.id()), "relations");
                 }
             }
 
             case "ViewFaction" -> {
                 if (data.factionId != null) {
-                    try {
-                        UUID targetId = UUID.fromString(data.factionId);
-                        Faction targetFaction = factionManager.getFaction(targetId);
+                    UUID targetId = UuidUtil.parseOrNull(data.factionId);
+                    if (targetId == null) {
+                        player.sendMessage(MessageUtil.errorText("Invalid faction."));
+                        sendUpdate();
+                        return;
+                    }
 
-                        if (targetFaction != null) {
-                            guiManager.openFactionInfo(player, ref, store, playerRef, targetFaction, "relations");
-                        } else {
-                            player.sendMessage(Message.raw("Faction no longer exists.").color("#FF5555"));
-                            sendUpdate();
-                        }
-                    } catch (IllegalArgumentException e) {
-                        player.sendMessage(Message.raw("Invalid faction.").color("#FF5555"));
+                    Faction targetFaction = factionManager.getFaction(targetId);
+
+                    if (targetFaction != null) {
+                        guiManager.openFactionInfo(player, ref, store, playerRef, targetFaction, "relations");
+                    } else {
+                        player.sendMessage(MessageUtil.errorText("Faction no longer exists."));
                         sendUpdate();
                     }
                 }

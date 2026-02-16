@@ -2,11 +2,15 @@ package com.hyperfactions.command;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.command.util.CommandUtil;
+import com.hyperfactions.data.Faction;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.Message;
+import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractPlayerCommand;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
@@ -92,6 +96,23 @@ public abstract class FactionSubCommand extends AbstractPlayerCommand {
      */
     protected FactionCommandContext parseContext(String[] args) {
         return FactionCommandContext.parse(args);
+    }
+
+    /**
+     * Gets the player's faction, sending an error message if they aren't in one.
+     *
+     * @param ctx the command context (for sending error message)
+     * @param player the player to check
+     * @return the player's faction, or null if not in a faction
+     */
+    @Nullable
+    protected Faction requireFaction(@NotNull CommandContext ctx, @NotNull PlayerRef player) {
+        Faction faction = hyperFactions.getFactionManager().getPlayerFaction(player.getUuid());
+        if (faction == null) {
+            ctx.sendMessage(MessageUtil.error("You are not in a faction."));
+            return null;
+        }
+        return faction;
     }
 
     // Color constants for convenience

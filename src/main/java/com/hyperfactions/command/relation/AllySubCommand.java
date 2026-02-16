@@ -5,6 +5,7 @@ import com.hyperfactions.Permissions;
 import com.hyperfactions.command.FactionCommandContext;
 import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.data.Faction;
+import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.manager.RelationManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hypixel.hytale.component.Ref;
@@ -38,11 +39,8 @@ public class AllySubCommand extends FactionSubCommand {
             return;
         }
 
-        Faction myFaction = hyperFactions.getFactionManager().getPlayerFaction(player.getUuid());
-        if (myFaction == null) {
-            ctx.sendMessage(prefix().insert(msg("You are not in a faction.", COLOR_RED)));
-            return;
-        }
+        Faction myFaction = requireFaction(ctx, player);
+        if (myFaction == null) return;
 
         String input = ctx.getInputString();
         String[] parts = input != null ? input.trim().split("\\s+") : new String[0];
@@ -81,7 +79,7 @@ public class AllySubCommand extends FactionSubCommand {
                 ctx.sendMessage(prefix().insert(msg("You are now allies with ", COLOR_GREEN))
                     .insert(msg(targetFaction.name(), COLOR_CYAN)).insert(msg("!", COLOR_GREEN)));
             }
-            case NOT_IN_FACTION -> ctx.sendMessage(prefix().insert(msg("You are not in a faction.", COLOR_RED)));
+            case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error("You are not in a faction."));
             case NOT_OFFICER -> ctx.sendMessage(prefix().insert(msg("You must be an officer to manage relations.", COLOR_RED)));
             case CANNOT_RELATE_SELF -> ctx.sendMessage(prefix().insert(msg("You cannot ally with yourself.", COLOR_RED)));
             case ALREADY_ALLY -> ctx.sendMessage(prefix().insert(msg("You are already allied with that faction.", COLOR_RED)));

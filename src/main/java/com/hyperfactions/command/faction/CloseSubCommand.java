@@ -39,11 +39,8 @@ public class CloseSubCommand extends FactionSubCommand {
             return;
         }
 
-        Faction faction = hyperFactions.getFactionManager().getPlayerFaction(player.getUuid());
-        if (faction == null) {
-            ctx.sendMessage(prefix().insert(msg("You are not in a faction.", COLOR_RED)));
-            return;
-        }
+        Faction faction = requireFaction(ctx, player);
+        if (faction == null) return;
 
         FactionMember member = faction.getMember(player.getUuid());
         if (member == null || !member.isLeader()) {

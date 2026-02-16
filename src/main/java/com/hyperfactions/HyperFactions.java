@@ -1,20 +1,16 @@
 package com.hyperfactions;
 
-import com.hyperfactions.api.events.EventBus;
 import com.hyperfactions.api.events.FactionDisbandEvent;
-import com.hyperfactions.api.events.FactionMemberEvent;
 import com.hyperfactions.gui.ActivePageTracker;
 import com.hyperfactions.gui.GuiUpdateService;
 import com.hyperfactions.backup.BackupManager;
+import com.hyperfactions.lifecycle.CallbackWiring;
+import com.hyperfactions.lifecycle.MembershipHistoryHandler;
+import com.hyperfactions.lifecycle.PeriodicTaskManager;
 import com.hyperfactions.config.ConfigManager;
-import com.hyperfactions.data.Faction;
-import com.hyperfactions.data.FactionMember;
-import com.hyperfactions.data.FactionRole;
-import com.hyperfactions.data.MembershipRecord;
-import com.hyperfactions.data.PlayerData;
 import com.hyperfactions.gui.GuiManager;
-import com.hyperfactions.integration.GravestoneIntegration;
-import com.hyperfactions.integration.HyperPermsIntegration;
+import com.hyperfactions.integration.protection.GravestoneIntegration;
+import com.hyperfactions.integration.permissions.HyperPermsIntegration;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.manager.*;
 import com.hyperfactions.protection.ProtectionChecker;
@@ -108,12 +104,13 @@ public class HyperFactions {
     private TerritoryNotifier territoryNotifier;
     private WorldMapService worldMapService;
 
+    // Lifecycle helpers
+    private MembershipHistoryHandler membershipHistoryHandler;
+    private PeriodicTaskManager periodicTaskManager;
+
     // Task management
     private final AtomicInteger taskIdCounter = new AtomicInteger(0);
     private final Map<Integer, ScheduledTask> scheduledTasks = new ConcurrentHashMap<>();
-    private int autoSaveTaskId = -1;
-    private int inviteCleanupTaskId = -1;
-    private int chatHistoryCleanupTaskId = -1;
 
     // Admin bypass state (per-player toggle for protection bypass)
     private final Map<UUID, Boolean> adminBypassEnabled = new ConcurrentHashMap<>();
@@ -268,33 +265,33 @@ public class HyperFactions {
         guiUpdateService = new GuiUpdateService(activePageTracker, factionManager);
         guiManager.setActivePageTracker(activePageTracker);
 
-        // Wire manager callbacks for GUI updates
-        inviteManager.setOnInviteCreated(guiUpdateService::onInviteCreated);
-        inviteManager.setOnInviteRemoved(guiUpdateService::onInviteRemoved);
-        joinRequestManager.setOnRequestCreated(guiUpdateService::onRequestCreated);
-        joinRequestManager.setOnRequestAccepted(guiUpdateService::onRequestAccepted);
-        joinRequestManager.setOnRequestDeclined(guiUpdateService::onRequestDeclined);
-        relationManager.setOnRelationChanged(guiUpdateService::onRelationChanged);
-        relationManager.setOnAllyRequestReceived(guiUpdateService::onAllyRequestReceived);
-        claimManager.setOnGuiChunkChangeCallback(guiUpdateService::onChunkClaimed);
+        // Initialize membership history handler
+        membershipHistoryHandler = new MembershipHistoryHandler(playerStorage, factionManager);
 
-        // Wire EventBus for member changes → GUI updates
-        EventBus.register(FactionMemberEvent.class, event -> {
-            switch (event.type()) {
-                case JOIN -> guiUpdateService.onMemberJoined(event.faction().id(), event.playerUuid());
-                case LEAVE -> guiUpdateService.onMemberLeft(event.faction().id(), event.playerUuid());
-                case KICK -> guiUpdateService.onMemberKicked(event.faction().id(), event.playerUuid());
-                case PROMOTE, DEMOTE -> guiUpdateService.onMemberRoleChanged(event.faction().id(), event.playerUuid());
-            }
-        });
+        // Initialize territory notifier (for entry/exit notifications)
+        territoryNotifier = new TerritoryNotifier(
+            factionManager, claimManager, zoneManager, relationManager
+        );
 
-        // Wire EventBus for membership history recording
-        EventBus.register(FactionMemberEvent.class, this::handleMembershipHistory);
-        EventBus.register(FactionDisbandEvent.class, this::handleDisbandHistory);
+        // Initialize world map service (for claim markers on map)
+        worldMapService = new WorldMapService(
+            factionManager, claimManager, zoneManager, relationManager
+        );
+
+        // Initialize the world map refresh scheduler with optimized mode
+        worldMapService.initializeScheduler(ConfigManager.get().worldMap());
+
+        // Initialize announcement manager (uses deferred onlinePlayersSupplier)
+        announcementManager = new AnnouncementManager(
+            () -> onlinePlayersSupplier != null ? onlinePlayersSupplier.get() : Collections.emptyList()
+        );
+
+        // Wire all manager callbacks (GUI updates, events, announcements, notifications)
+        CallbackWiring.wireAll(this, guiUpdateService, membershipHistoryHandler);
 
         // Migrate existing faction members — creates active membership records
         // for players who don't have one yet (upgrade from pre-history versions)
-        migrateMembershipHistory();
+        membershipHistoryHandler.migrateMembershipHistory();
 
         // Initialize chat manager (uses deferred playerLookup)
         chatManager = new ChatManager(factionManager, relationManager,
@@ -310,78 +307,6 @@ public class HyperFactions {
         chatManager.setGuiUpdateService(guiUpdateService);
         guiManager.setChatManagerSupplier(() -> chatManager);
         guiManager.setChatHistoryManagerSupplier(() -> chatHistoryManager);
-
-        // Setup combat tag callbacks
-        combatTagManager.setOnCombatLogout(playerUuid -> {
-            // Apply combat logout penalty (configurable, default same as death penalty)
-            double penalty = ConfigManager.get().getLogoutPowerLoss();
-            powerManager.applyCombatLogoutPenalty(playerUuid, penalty);
-            Logger.info("Player %s combat logged - %.1f power penalty applied", playerUuid, penalty);
-        });
-
-        // Register faction disband event listener to clean up all associated data
-        EventBus.register(FactionDisbandEvent.class, this::handleFactionDisband);
-
-        // Initialize territory notifier (for entry/exit notifications)
-        territoryNotifier = new TerritoryNotifier(
-            factionManager, claimManager, zoneManager, relationManager
-        );
-
-        // Initialize world map service (for claim markers on map)
-        worldMapService = new WorldMapService(
-            factionManager, claimManager, zoneManager, relationManager
-        );
-
-        // Initialize the world map refresh scheduler with optimized mode
-        worldMapService.initializeScheduler(ConfigManager.get().worldMap());
-
-        // Wire up chunk-specific callback for optimized world map refresh
-        // This allows the scheduler to handle refresh timing based on config
-        claimManager.setOnChunkChangeCallback(worldMapService::queueChunkRefresh);
-
-        // Keep legacy callback for bulk operations (unclaimAll, etc.) - respects refresh mode
-        claimManager.setOnClaimChangeCallback(worldMapService::triggerFactionWideRefresh);
-
-        // Initialize announcement manager (uses deferred onlinePlayersSupplier)
-        announcementManager = new AnnouncementManager(
-            () -> onlinePlayersSupplier != null ? onlinePlayersSupplier.get() : Collections.emptyList()
-        );
-
-        // Wire announcement callbacks
-        factionManager.setOnFactionCreated((name, leader) ->
-            announcementManager.announceFactionCreated(name, leader));
-        factionManager.setOnFactionDisbanded(name ->
-            announcementManager.announceFactionDisbanded(name));
-        factionManager.setOnLeadershipTransferred((faction, oldLeader, newLeader) ->
-            announcementManager.announceLeadershipTransfer(faction, oldLeader, newLeader));
-        claimManager.setOnOverclaimCallback((attacker, defender) ->
-            announcementManager.announceOverclaim(attacker, defender));
-        relationManager.setOnWarDeclared((declaring, target) ->
-            announcementManager.announceWarDeclared(declaring, target));
-        relationManager.setOnAllianceFormed((f1, f2) ->
-            announcementManager.announceAllianceFormed(f1, f2));
-        relationManager.setOnAllianceBroken((f1, f2) ->
-            announcementManager.announceAllianceBroken(f1, f2));
-
-        // Wire up notification callback for overclaim alerts (uses deferred playerLookup)
-        claimManager.setNotificationCallback((factionId, message, hexColor) -> {
-            Faction faction = factionManager.getFaction(factionId);
-            if (faction == null || playerLookup == null) return;
-
-            ConfigManager cfg = ConfigManager.get();
-            com.hypixel.hytale.server.core.Message formatted =
-                com.hypixel.hytale.server.core.Message.raw("[").color(cfg.getPrefixBracketColor())
-                    .insert(com.hypixel.hytale.server.core.Message.raw(cfg.getPrefixText()).color(cfg.getPrefixColor()))
-                    .insert(com.hypixel.hytale.server.core.Message.raw("] ").color(cfg.getPrefixBracketColor()))
-                    .insert(com.hypixel.hytale.server.core.Message.raw(message).color(hexColor));
-
-            for (UUID memberUuid : faction.members().keySet()) {
-                com.hypixel.hytale.server.core.universe.PlayerRef member = playerLookup.apply(memberUuid);
-                if (member != null) {
-                    member.sendMessage(formatted);
-                }
-            }
-        });
 
         // Zone change callback is set by the platform plugin (HyperFactionsPlugin)
         // to include both world map refresh and spawn suppression updates
@@ -410,12 +335,12 @@ public class HyperFactions {
         // The platform should call startPeriodicTasks() after setting up callbacks
 
         // Initialize PlaceholderAPI integration (after all managers are ready)
-        com.hyperfactions.integration.papi.PlaceholderAPIIntegration.init(this);
+        com.hyperfactions.integration.placeholder.PlaceholderAPIIntegration.init(this);
 
         // Initialize WiFlow PlaceholderAPI integration (guard before class loading)
         try {
             Class.forName("com.wiflow.placeholderapi.WiFlowPlaceholderAPI");
-            com.hyperfactions.integration.wiflow.WiFlowPlaceholderIntegration.init(this);
+            com.hyperfactions.integration.placeholder.WiFlowPlaceholderIntegration.init(this);
         } catch (ClassNotFoundException e) {
             Logger.info("WiFlow PlaceholderAPI not found - WiFlow placeholders disabled");
         }
@@ -428,9 +353,10 @@ public class HyperFactions {
      * Should be called by the platform after setting up task scheduler callbacks.
      */
     public void startPeriodicTasks() {
-        startAutoSaveTask();
-        startInviteCleanupTask();
-        startChatHistoryCleanupTask();
+        if (periodicTaskManager == null) {
+            periodicTaskManager = new PeriodicTaskManager(this);
+        }
+        periodicTaskManager.startAll();
         // Start scheduled backups now that the task scheduler is available
         if (backupManager != null) {
             backupManager.startScheduledBackups();
@@ -446,24 +372,15 @@ public class HyperFactions {
         // Unregister PlaceholderAPI expansions
         try {
             Class.forName("com.wiflow.placeholderapi.WiFlowPlaceholderAPI");
-            com.hyperfactions.integration.wiflow.WiFlowPlaceholderIntegration.shutdown();
+            com.hyperfactions.integration.placeholder.WiFlowPlaceholderIntegration.shutdown();
         } catch (ClassNotFoundException ignored) {
             // WiFlow not present, nothing to shut down
         }
-        com.hyperfactions.integration.papi.PlaceholderAPIIntegration.shutdown();
+        com.hyperfactions.integration.placeholder.PlaceholderAPIIntegration.shutdown();
 
         // Cancel periodic tasks first
-        if (autoSaveTaskId > 0) {
-            cancelTask(autoSaveTaskId);
-            autoSaveTaskId = -1;
-        }
-        if (inviteCleanupTaskId > 0) {
-            cancelTask(inviteCleanupTaskId);
-            inviteCleanupTaskId = -1;
-        }
-        if (chatHistoryCleanupTaskId > 0) {
-            cancelTask(chatHistoryCleanupTaskId);
-            chatHistoryCleanupTaskId = -1;
+        if (periodicTaskManager != null) {
+            periodicTaskManager.cancelAll();
         }
 
         // Save all data
@@ -723,78 +640,6 @@ public class HyperFactions {
         Logger.info("Auto-save complete");
     }
 
-    /**
-     * Starts the auto-save periodic task if enabled.
-     */
-    private void startAutoSaveTask() {
-        ConfigManager config = ConfigManager.get();
-        if (!config.isAutoSaveEnabled()) {
-            Logger.info("Auto-save is disabled in config");
-            return;
-        }
-
-        int intervalMinutes = config.getAutoSaveIntervalMinutes();
-        if (intervalMinutes <= 0) {
-            Logger.warn("Invalid auto-save interval: %d minutes, using default 5 minutes", intervalMinutes);
-            intervalMinutes = 5;
-        }
-
-        int periodTicks = intervalMinutes * 60 * 20; // Convert minutes to ticks (20 ticks per second)
-        autoSaveTaskId = scheduleRepeatingTask(periodTicks, periodTicks, this::saveAllData);
-
-        if (autoSaveTaskId > 0) {
-            Logger.info("Auto-save scheduled every %d minutes", intervalMinutes);
-        }
-    }
-
-    /**
-     * Starts the invite cleanup periodic task.
-     * Also cleans up expired join requests.
-     */
-    private void startInviteCleanupTask() {
-        // Run every 5 minutes (6000 ticks)
-        int periodTicks = 5 * 60 * 20;
-        inviteCleanupTaskId = scheduleRepeatingTask(periodTicks, periodTicks, () -> {
-            if (inviteManager != null) {
-                inviteManager.cleanupExpired();
-            }
-            if (joinRequestManager != null) {
-                joinRequestManager.cleanupExpired();
-            }
-        });
-
-        if (inviteCleanupTaskId > 0) {
-            Logger.info("Invite/request cleanup task scheduled every 5 minutes");
-        }
-    }
-
-    /**
-     * Starts the chat history retention cleanup task if enabled.
-     */
-    private void startChatHistoryCleanupTask() {
-        if (!ConfigManager.get().isChatHistoryEnabled()) {
-            Logger.debug("Chat history disabled, skipping retention cleanup task");
-            return;
-        }
-
-        int intervalMinutes = ConfigManager.get().getChatHistoryCleanupIntervalMinutes();
-        if (intervalMinutes <= 0) {
-            Logger.debug("Chat history cleanup interval is 0, skipping retention cleanup task");
-            return;
-        }
-
-        int periodTicks = intervalMinutes * 60 * 20; // Convert minutes to ticks
-        chatHistoryCleanupTaskId = scheduleRepeatingTask(periodTicks, periodTicks, () -> {
-            if (chatHistoryManager != null) {
-                chatHistoryManager.pruneExpired();
-            }
-        });
-
-        if (chatHistoryCleanupTaskId > 0) {
-            Logger.info("Chat history retention cleanup scheduled every %d minutes", intervalMinutes);
-        }
-    }
-
     // === Getters ===
 
     @NotNull
@@ -1035,7 +880,7 @@ public class HyperFactions {
      *
      * @param event the disband event
      */
-    private void handleFactionDisband(@NotNull FactionDisbandEvent event) {
+    public void handleFactionDisband(@NotNull FactionDisbandEvent event) {
         UUID factionId = event.faction().id();
         Logger.info("Cleaning up data for disbanded faction '%s' (ID: %s)",
                 event.faction().name(), factionId);
@@ -1058,120 +903,4 @@ public class HyperFactions {
         }
     }
 
-    /**
-     * Handles membership history recording for member events.
-     */
-    private void handleMembershipHistory(@NotNull FactionMemberEvent event) {
-        Faction faction = event.faction();
-        UUID playerUuid = event.playerUuid();
-        int maxHistory = ConfigManager.get().getMaxMembershipHistory();
-
-        playerStorage.loadPlayerData(playerUuid).thenAccept(opt -> {
-            PlayerData data = opt.orElseGet(() -> new PlayerData(playerUuid));
-            switch (event.type()) {
-                case JOIN -> {
-                    FactionMember member = faction.getMember(playerUuid);
-                    FactionRole role = member != null ? member.role() : FactionRole.MEMBER;
-                    MembershipRecord rec = MembershipRecord.createActive(
-                            faction.id(), faction.name(), faction.tag(), role);
-                    data.addRecord(rec, maxHistory);
-                    Logger.debug("Membership history: %s joined %s", playerUuid, faction.name());
-                }
-                case LEAVE -> {
-                    data.closeActiveRecord(MembershipRecord.LeaveReason.LEFT);
-                    Logger.debug("Membership history: %s left %s", playerUuid, faction.name());
-                }
-                case KICK -> {
-                    data.closeActiveRecord(MembershipRecord.LeaveReason.KICKED);
-                    Logger.debug("Membership history: %s kicked from %s", playerUuid, faction.name());
-                }
-                case PROMOTE -> {
-                    FactionMember member = faction.getMember(playerUuid);
-                    if (member != null) {
-                        data.updateHighestRole(member.role());
-                        Logger.debug("Membership history: %s promoted in %s to %s",
-                                playerUuid, faction.name(), member.role().getDisplayName());
-                    }
-                }
-                case DEMOTE -> {
-                    // Demote doesn't affect highestRole (it tracks the highest achieved)
-                }
-            }
-            playerStorage.savePlayerData(data);
-        }).exceptionally(e -> {
-            Logger.severe("Failed to record membership history for %s", e, playerUuid);
-            return null;
-        });
-    }
-
-    /**
-     * Handles membership history recording for faction disband events.
-     * Closes active records for ALL members with DISBANDED reason.
-     */
-    private void handleDisbandHistory(@NotNull FactionDisbandEvent event) {
-        Faction faction = event.faction();
-
-        for (UUID memberUuid : faction.members().keySet()) {
-            playerStorage.loadPlayerData(memberUuid).thenAccept(opt -> {
-                PlayerData data = opt.orElseGet(() -> new PlayerData(memberUuid));
-                data.closeActiveRecord(MembershipRecord.LeaveReason.DISBANDED);
-                playerStorage.savePlayerData(data);
-                Logger.debug("Membership history: %s's faction %s disbanded", memberUuid, faction.name());
-            }).exceptionally(e -> {
-                Logger.severe("Failed to record disband history for %s", e, memberUuid);
-                return null;
-            });
-        }
-    }
-
-    /**
-     * Migrates existing faction members on upgrade — creates active membership
-     * records for players who don't have one yet. Only runs once per player
-     * (subsequent startups skip players who already have an active record).
-     */
-    private void migrateMembershipHistory() {
-        int maxHistory = ConfigManager.get().getMaxMembershipHistory();
-        int migrated = 0;
-
-        for (Faction faction : factionManager.getAllFactions()) {
-            for (FactionMember member : faction.getMembersSorted()) {
-                try {
-                    PlayerData data = playerStorage.loadPlayerData(member.uuid()).join()
-                        .orElseGet(() -> new PlayerData(member.uuid()));
-
-                    // Skip if they already have an active record
-                    if (data.getActiveRecord() != null) continue;
-
-                    // Create active record using their actual join date and current role
-                    MembershipRecord record = new MembershipRecord(
-                        faction.id(), faction.name(), faction.tag(),
-                        member.role(), member.joinedAt(), 0,
-                        MembershipRecord.LeaveReason.ACTIVE
-                    );
-                    data.addRecord(record, maxHistory);
-
-                    // Cache username and initialize firstJoined if not set
-                    if (data.getUsername() == null) {
-                        data.setUsername(member.username());
-                    }
-                    if (data.getFirstJoined() == 0) {
-                        // Best proxy: their faction join date
-                        data.setFirstJoined(member.joinedAt());
-                    }
-                    if (data.getLastOnline() == 0 && member.lastOnline() > 0) {
-                        data.setLastOnline(member.lastOnline());
-                    }
-
-                    playerStorage.savePlayerData(data).join();
-                    migrated++;
-                } catch (Exception e) {
-                    Logger.severe("Failed to migrate membership history for %s", e, member.username());
-                }
-            }
-        }
-
-        if (migrated > 0) {
-            Logger.info("Migrated membership history for %d existing faction members", migrated);
-        }
-    }
 }

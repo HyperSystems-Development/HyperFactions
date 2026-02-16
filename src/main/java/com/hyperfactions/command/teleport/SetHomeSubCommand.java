@@ -42,11 +42,8 @@ public class SetHomeSubCommand extends FactionSubCommand {
             return;
         }
 
-        Faction faction = hyperFactions.getFactionManager().getPlayerFaction(player.getUuid());
-        if (faction == null) {
-            ctx.sendMessage(prefix().insert(msg("You are not in a faction.", COLOR_RED)));
-            return;
-        }
+        Faction faction = requireFaction(ctx, player);
+        if (faction == null) return;
 
         TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
         if (transform == null) return;

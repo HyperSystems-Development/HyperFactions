@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.UuidUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -52,9 +53,10 @@ public final class UpdateNotificationPreferences {
             Map<String, Boolean> loaded = GSON.fromJson(json, MAP_TYPE);
             if (loaded != null) {
                 loaded.forEach((key, value) -> {
-                    try {
-                        preferences.put(UUID.fromString(key), value);
-                    } catch (IllegalArgumentException e) {
+                    UUID uuid = UuidUtil.parseOrNull(key);
+                    if (uuid != null) {
+                        preferences.put(uuid, value);
+                    } else {
                         Logger.warn("[UpdatePrefs] Invalid UUID in preferences: %s", key);
                     }
                 });

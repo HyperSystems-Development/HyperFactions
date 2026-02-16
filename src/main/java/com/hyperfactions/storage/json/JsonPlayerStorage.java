@@ -13,6 +13,7 @@ import com.hyperfactions.storage.PlayerStorage;
 import com.hyperfactions.storage.StorageHealth;
 import com.hyperfactions.storage.StorageUtils;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.UuidUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -159,11 +160,11 @@ public class JsonPlayerStorage implements PlayerStorage {
                 for (Path file : stream) {
                     String filename = file.getFileName().toString();
                     String uuidStr = filename.substring(0, filename.length() - 5); // Remove .json
-                    try {
-                        uuids.add(UUID.fromString(uuidStr));
-                    } catch (IllegalArgumentException ignored) {
-                        // Skip non-UUID filenames
+                    UUID uuid = UuidUtil.parseOrNull(uuidStr);
+                    if (uuid != null) {
+                        uuids.add(uuid);
                     }
+                    // Skip non-UUID filenames
                 }
             } catch (IOException e) {
                 Logger.severe("Failed to list player files: %s", e.getMessage());

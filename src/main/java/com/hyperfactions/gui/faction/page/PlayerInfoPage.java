@@ -12,6 +12,8 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
+import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.UuidUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
@@ -219,17 +221,18 @@ public class PlayerInfoPage extends InteractiveCustomUIPage<PlayerInfoData> {
         switch (data.button) {
             case "ViewFaction" -> {
                 if (data.playerUuid != null) {
-                    try {
-                        UUID factionId = UUID.fromString(data.playerUuid);
-                        Faction faction = factionManager.getFaction(factionId);
-                        if (faction != null) {
-                            guiManager.openFactionInfoFromPlayerInfo(player, ref, store, playerRef, faction,
-                                    targetPlayerUuid, targetPlayerName, sourcePage);
-                        } else {
-                            player.sendMessage(Message.raw("Faction no longer exists.").color("#FF5555"));
-                        }
-                    } catch (IllegalArgumentException e) {
-                        player.sendMessage(Message.raw("Invalid faction ID.").color("#FF5555"));
+                    UUID factionId = UuidUtil.parseOrNull(data.playerUuid);
+                    if (factionId == null) {
+                        player.sendMessage(MessageUtil.errorText("Invalid faction ID."));
+                        return;
+                    }
+
+                    Faction faction = factionManager.getFaction(factionId);
+                    if (faction != null) {
+                        guiManager.openFactionInfoFromPlayerInfo(player, ref, store, playerRef, faction,
+                                targetPlayerUuid, targetPlayerName, sourcePage);
+                    } else {
+                        player.sendMessage(MessageUtil.errorText("Faction no longer exists."));
                     }
                 }
             }

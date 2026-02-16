@@ -46,8 +46,11 @@ See [Integrations](integrations.md#permission-system) for the full permission re
 | Permissions | [`Permissions.java`](../src/main/java/com/hyperfactions/Permissions.java) | All permission node constants |
 | PermissionManager | [`integration/PermissionManager.java`](../src/main/java/com/hyperfactions/integration/PermissionManager.java) | Chain-based permission resolution |
 | PermissionProvider | [`integration/PermissionProvider.java`](../src/main/java/com/hyperfactions/integration/PermissionProvider.java) | Provider interface |
-| HyperPermsIntegration | [`integration/HyperPermsIntegration.java`](../src/main/java/com/hyperfactions/integration/HyperPermsIntegration.java) | HyperPerms detection and access |
-| HyperPermsProviderAdapter | [`integration/HyperPermsProviderAdapter.java`](../src/main/java/com/hyperfactions/integration/HyperPermsProviderAdapter.java) | HyperPerms → PermissionProvider adapter |
+| HyperPermsIntegration | [`integration/permissions/HyperPermsIntegration.java`](../src/main/java/com/hyperfactions/integration/permissions/HyperPermsIntegration.java) | HyperPerms detection and access |
+| HyperPermsProviderAdapter | [`integration/permissions/HyperPermsProviderAdapter.java`](../src/main/java/com/hyperfactions/integration/permissions/HyperPermsProviderAdapter.java) | HyperPerms → PermissionProvider adapter |
+| HytaleNativeProvider | [`integration/permissions/HytaleNativeProvider.java`](../src/main/java/com/hyperfactions/integration/permissions/HytaleNativeProvider.java) | Hytale native OP provider |
+| LuckPermsProvider | [`integration/permissions/LuckPermsProvider.java`](../src/main/java/com/hyperfactions/integration/permissions/LuckPermsProvider.java) | LuckPerms permission provider |
+| VaultUnlockedProvider | [`integration/permissions/VaultUnlockedProvider.java`](../src/main/java/com/hyperfactions/integration/permissions/VaultUnlockedProvider.java) | VaultUnlocked permission provider |
 
 ## Permission Constants
 
@@ -166,7 +169,7 @@ hyperfactions.*                       # All permissions
 
 [`integration/PermissionManager.java`](../src/main/java/com/hyperfactions/integration/PermissionManager.java)
 
-Singleton that coordinates permission checks:
+Singleton that coordinates permission checks. Provider implementations are in `integration/permissions/`:
 
 ```java
 public class PermissionManager {
@@ -220,7 +223,7 @@ public class PermissionManager {
 
 ## Permission Provider Interface
 
-[`integration/PermissionProvider.java`](../src/main/java/com/hyperfactions/integration/PermissionProvider.java)
+[`integration/PermissionProvider.java`](../src/main/java/com/hyperfactions/integration/PermissionProvider.java) (implementations in `integration/permissions/`)
 
 ```java
 public interface PermissionProvider {
@@ -238,7 +241,7 @@ The `null` return allows providers to "pass" on permissions they don't handle, l
 
 ## HyperPerms Integration
 
-[`integration/HyperPermsIntegration.java`](../src/main/java/com/hyperfactions/integration/HyperPermsIntegration.java)
+[`integration/permissions/HyperPermsIntegration.java`](../src/main/java/com/hyperfactions/integration/permissions/HyperPermsIntegration.java)
 
 Soft dependency detection via reflection:
 
@@ -405,6 +408,9 @@ public int getMaxClaims(UUID playerUuid) {
 | Permissions | [`Permissions.java`](../src/main/java/com/hyperfactions/Permissions.java) |
 | PermissionManager | [`integration/PermissionManager.java`](../src/main/java/com/hyperfactions/integration/PermissionManager.java) |
 | PermissionProvider | [`integration/PermissionProvider.java`](../src/main/java/com/hyperfactions/integration/PermissionProvider.java) |
-| HyperPermsIntegration | [`integration/HyperPermsIntegration.java`](../src/main/java/com/hyperfactions/integration/HyperPermsIntegration.java) |
-| HyperPermsProviderAdapter | [`integration/HyperPermsProviderAdapter.java`](../src/main/java/com/hyperfactions/integration/HyperPermsProviderAdapter.java) |
+| HyperPermsIntegration | [`integration/permissions/HyperPermsIntegration.java`](../src/main/java/com/hyperfactions/integration/permissions/HyperPermsIntegration.java) |
+| HyperPermsProviderAdapter | [`integration/permissions/HyperPermsProviderAdapter.java`](../src/main/java/com/hyperfactions/integration/permissions/HyperPermsProviderAdapter.java) |
+| HytaleNativeProvider | [`integration/permissions/HytaleNativeProvider.java`](../src/main/java/com/hyperfactions/integration/permissions/HytaleNativeProvider.java) |
+| LuckPermsProvider | [`integration/permissions/LuckPermsProvider.java`](../src/main/java/com/hyperfactions/integration/permissions/LuckPermsProvider.java) |
+| VaultUnlockedProvider | [`integration/permissions/VaultUnlockedProvider.java`](../src/main/java/com/hyperfactions/integration/permissions/VaultUnlockedProvider.java) |
 | ProtectionChecker | [`protection/ProtectionChecker.java`](../src/main/java/com/hyperfactions/protection/ProtectionChecker.java) |

@@ -1,6 +1,6 @@
 # HyperFactions Developer Documentation
 
-> **Version**: 0.7.0 | **302 classes** | **50 packages** | **14 managers** | **43 commands** | **47+ permissions**
+> **Version**: 0.7.0 | **341 classes** | **65 packages** | **14 managers** | **43 commands** | **47+ permissions**
 
 Developer documentation for HyperFactions - a comprehensive faction management plugin for Hytale servers.
 
@@ -82,20 +82,28 @@ PermissionManager.get().hasPermission(playerUuid, Permissions.CLAIM);
 ## Package Overview
 
 ```
-src/main/java/com/hyperfactions/         (302 classes, 50 packages)
+src/main/java/com/hyperfactions/         (341 classes, 65 packages)
 ├── HyperFactions.java          # Core singleton
 ├── Permissions.java            # 47+ permission node constants
 ├── BuildInfo.java              # Auto-generated version info
-├── platform/                   # Hytale plugin entry point
+├── platform/                   # Hytale plugin entry point + extracted handlers
+├── lifecycle/                  # Plugin lifecycle helpers (callbacks, tasks, history)
 ├── manager/                    # Business logic (14 managers)
 ├── command/                    # Command system (43 subcommands)
+│   └── admin/handler/          # Admin command handlers (8 handler classes)
 ├── gui/                        # CustomUI pages (40+ pages)
+│   ├── faction/                # Faction member pages + registry
+│   ├── admin/                  # Admin pages, registry, data
+│   └── newplayer/              # New player pages, registry, data
 ├── protection/                 # Territory/zone protection + ECS handlers
 ├── config/                     # Configuration (7 module configs)
 ├── storage/                    # Data persistence layer
 ├── data/                       # Data models (records)
 ├── api/                        # Public API, EventBus, EconomyAPI
-├── integration/                # Permissions, PAPI, WiFlow, OrbisGuard
+├── integration/                # External integrations
+│   ├── permissions/            # Permission providers (HyperPerms, LuckPerms, etc.)
+│   ├── protection/             # Protection integrations (OrbisGuard, Gravestones)
+│   └── placeholder/            # Placeholder integrations (PAPI, WiFlow)
 ├── backup/                     # GFS backup management
 ├── migration/                  # Config migration (v1→v2→v3→v4)
 ├── importer/                   # ElbaphFactions + HyFactions importers
@@ -105,7 +113,7 @@ src/main/java/com/hyperfactions/         (302 classes, 50 packages)
 ├── chat/                       # Chat formatting
 ├── listener/                   # Event listeners
 ├── debug/                      # Debug utilities
-└── util/                       # Utilities (Logger, ChunkUtil, etc.)
+└── util/                       # Utilities (Logger, MessageUtil, UuidUtil, etc.)
 ```
 
 ## Tech Stack

@@ -9,7 +9,7 @@ import com.hyperfactions.data.FactionRole;
 import com.hyperfactions.data.RelationType;
 import com.hyperfactions.data.Zone;
 import com.hyperfactions.data.ZoneFlags;
-import com.hyperfactions.integration.GravestoneIntegration;
+import com.hyperfactions.integration.protection.GravestoneIntegration;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.manager.*;
 import com.hyperfactions.util.ChunkUtil;

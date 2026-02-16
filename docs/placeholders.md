@@ -241,10 +241,10 @@ Faction-specific placeholders return empty strings or zero values for factionles
 
 | File | Purpose |
 |------|---------|
-| [`integration/papi/HyperFactionsExpansion.java`](../src/main/java/com/hyperfactions/integration/papi/HyperFactionsExpansion.java) | PAPI expansion (33 placeholders) |
-| [`integration/wiflow/WiFlowExpansion.java`](../src/main/java/com/hyperfactions/integration/wiflow/WiFlowExpansion.java) | WiFlow expansion (33 placeholders) |
-| [`integration/papi/PlaceholderAPIIntegration.java`](../src/main/java/com/hyperfactions/integration/papi/PlaceholderAPIIntegration.java) | PAPI detection and registration |
-| [`integration/wiflow/WiFlowIntegration.java`](../src/main/java/com/hyperfactions/integration/wiflow/WiFlowIntegration.java) | WiFlow detection and registration |
+| [`integration/placeholder/HyperFactionsExpansion.java`](../src/main/java/com/hyperfactions/integration/placeholder/HyperFactionsExpansion.java) | PAPI expansion (33 placeholders) |
+| [`integration/placeholder/WiFlowExpansion.java`](../src/main/java/com/hyperfactions/integration/placeholder/WiFlowExpansion.java) | WiFlow expansion (33 placeholders) |
+| [`integration/placeholder/PlaceholderAPIIntegration.java`](../src/main/java/com/hyperfactions/integration/placeholder/PlaceholderAPIIntegration.java) | PAPI detection and registration |
+| [`integration/placeholder/WiFlowPlaceholderIntegration.java`](../src/main/java/com/hyperfactions/integration/placeholder/WiFlowPlaceholderIntegration.java) | WiFlow detection and registration |
 
 ### Persistence
 

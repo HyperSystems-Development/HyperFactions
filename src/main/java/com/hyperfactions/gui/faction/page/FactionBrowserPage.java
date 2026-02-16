@@ -2,8 +2,8 @@ package com.hyperfactions.gui.faction.page;
 
 import com.hyperfactions.data.*;
 import com.hyperfactions.gui.GuiManager;
-import com.hyperfactions.gui.nav.NavBarHelper;
-import com.hyperfactions.gui.nav.NewPlayerNavBarHelper;
+import com.hyperfactions.gui.faction.NavBarHelper;
+import com.hyperfactions.gui.newplayer.NewPlayerNavBarHelper;
 import com.hyperfactions.gui.faction.data.FactionPageData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.PowerManager;
@@ -11,6 +11,8 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
+import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.UuidUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
@@ -322,17 +324,17 @@ public class FactionBrowserPage extends InteractiveCustomUIPage<FactionPageData>
         switch (data.button) {
             case "ToggleExpanded" -> {
                 if (data.factionId != null) {
-                    try {
-                        UUID uuid = UUID.fromString(data.factionId);
-                        if (expandedFactions.contains(uuid)) {
-                            expandedFactions.remove(uuid);
-                        } else {
-                            expandedFactions.add(uuid);
-                        }
-                        rebuildList(viewerFaction);
-                    } catch (IllegalArgumentException e) {
+                    UUID uuid = UuidUtil.parseOrNull(data.factionId);
+                    if (uuid == null) {
                         sendUpdate();
+                        return;
                     }
+                    if (expandedFactions.contains(uuid)) {
+                        expandedFactions.remove(uuid);
+                    } else {
+                        expandedFactions.add(uuid);
+                    }
+                    rebuildList(viewerFaction);
                 }
             }
 
@@ -376,15 +378,16 @@ public class FactionBrowserPage extends InteractiveCustomUIPage<FactionPageData>
                                    PlayerRef playerRef, FactionPageData data) {
         if (data.factionId == null) return;
 
-        try {
-            UUID factionId = UUID.fromString(data.factionId);
-            Faction faction = factionManager.getFaction(factionId);
-            if (faction != null) {
-                // Open the FactionInfoPage GUI with source page tracking
-                guiManager.openFactionInfo(player, ref, store, playerRef, faction, "browser");
-            }
-        } catch (IllegalArgumentException e) {
-            player.sendMessage(Message.raw("Invalid faction.").color("#FF5555"));
+        UUID factionId = UuidUtil.parseOrNull(data.factionId);
+        if (factionId == null) {
+            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            return;
+        }
+
+        Faction faction = factionManager.getFaction(factionId);
+        if (faction != null) {
+            // Open the FactionInfoPage GUI with source page tracking
+            guiManager.openFactionInfo(player, ref, store, playerRef, faction, "browser");
         }
     }
 

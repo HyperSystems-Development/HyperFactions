@@ -1,6 +1,6 @@
 # HyperFactions Architecture
 
-> **Version**: 0.7.0 | **302 classes** across **50 packages**
+> **Version**: 0.7.0 | **341 classes** across **65 packages**
 
 ## Overview
 
@@ -39,7 +39,15 @@ src/main/java/com/hyperfactions/
 ├── BuildInfo.java                  # Auto-generated at build time
 │
 ├── platform/                       # Hytale plugin entry point
-│   └── HyperFactionsPlugin.java    # JavaPlugin lifecycle
+│   ├── HyperFactionsPlugin.java    # JavaPlugin lifecycle
+│   ├── EventRegistration.java      # Event listener registration
+│   ├── WorldSetup.java             # World map & ECS system setup
+│   └── PlayerConnectionHandler.java # Connect/disconnect handling
+│
+├── lifecycle/                      # Plugin lifecycle helpers
+│   ├── CallbackWiring.java         # Platform callback setup
+│   ├── PeriodicTaskManager.java    # Scheduled task management
+│   └── MembershipHistoryHandler.java # Member join/leave tracking
 │
 ├── manager/                        # Business logic layer (14 managers)
 │   ├── FactionManager.java         # Faction CRUD, membership, roles
@@ -59,10 +67,20 @@ src/main/java/com/hyperfactions/
 │
 ├── command/                        # Command system
 │   ├── FactionCommand.java         # Main /f dispatcher
-│   ├── FactionSubCommand.java      # Base class for subcommands
+│   ├── FactionSubCommand.java      # Base class with requireFaction() helper
 │   ├── FactionCommandContext.java  # Execution context with --text flag
-│   ├── util/CommandUtil.java       # Shared command utilities
-│   ├── admin/                      # Admin subcommands
+│   ├── util/CommandUtil.java       # Shared utilities (delegates to MessageUtil)
+│   ├── admin/                      # Admin commands
+│   │   ├── AdminSubCommand.java    # Router delegating to handler/ classes
+│   │   └── handler/               # Admin command handlers
+│   │       ├── AdminZoneHandler.java
+│   │       ├── AdminBackupHandler.java
+│   │       ├── AdminDebugHandler.java
+│   │       ├── AdminImportHandler.java
+│   │       ├── AdminUpdateHandler.java
+│   │       ├── AdminIntegrationHandler.java
+│   │       ├── AdminPowerHandler.java
+│   │       └── AdminMapDecayHandler.java
 │   ├── faction/                    # Faction management (create, disband, etc.)
 │   ├── member/                     # Membership (invite, kick, promote, etc.)
 │   ├── territory/                  # Territory (claim, unclaim, overclaim)
@@ -75,22 +93,37 @@ src/main/java/com/hyperfactions/
 ├── gui/                            # CustomUI system
 │   ├── GuiManager.java             # Central GUI coordinator
 │   ├── GuiType.java                # Page type enumeration
+│   ├── ActivePageTracker.java      # Live data refresh tracking
+│   ├── RefreshablePage.java        # Refreshable page interface
+│   ├── GuiUpdateService.java       # GUI update coordination
 │   ├── faction/                    # Faction member pages
 │   │   ├── FactionPageRegistry.java
+│   │   ├── NavBarHelper.java       # Faction navigation bar
+│   │   ├── ChunkMapAsset.java      # Chunk map asset
 │   │   ├── page/                   # Page implementations
 │   │   └── data/                   # Page data models
 │   ├── admin/                      # Admin pages
 │   │   ├── AdminPageRegistry.java
 │   │   ├── AdminNavBarHelper.java
+│   │   ├── page/                   # Admin page implementations
 │   │   └── data/                   # Admin data models
-│   ├── page/                       # Page implementations
-│   │   ├── newplayer/              # Non-faction player pages
-│   │   └── admin/                  # Admin page implementations
+│   ├── newplayer/                  # New player flow
+│   │   ├── NewPlayerPageRegistry.java
+│   │   ├── NewPlayerNavBarHelper.java
+│   │   ├── page/                   # New player page implementations
+│   │   └── data/                   # New player data models
 │   ├── shared/                     # Shared components
-│   │   ├── component/              # Modals (InputModal, ColorPicker)
+│   │   ├── component/              # Modals (InputModal, ConfirmationModal)
 │   │   ├── page/                   # Shared pages (MainMenu, modals)
 │   │   └── data/                   # Shared data models
-│   └── help/                       # Help system pages
+│   ├── help/                       # Help system
+│   │   ├── HelpCategory.java
+│   │   ├── HelpTopic.java
+│   │   ├── HelpRegistry.java
+│   │   ├── data/HelpPageData.java
+│   │   └── page/HelpMainPage.java
+│   └── test/                       # Test pages
+│       └── ButtonTestPage.java
 │
 ├── protection/                     # Territory protection
 │   ├── ProtectionChecker.java      # Central protection logic
@@ -102,8 +135,12 @@ src/main/java/com/hyperfactions/
 │   │   ├── BlockUseProtectionSystem.java
 │   │   ├── ItemPickupProtectionSystem.java
 │   │   ├── ItemDropProtectionSystem.java
+│   │   ├── HarvestPickupProtectionSystem.java
 │   │   ├── PvPProtectionSystem.java
-│   │   └── DamageProtectionSystem.java
+│   │   ├── DamageProtectionSystem.java
+│   │   ├── PlayerDeathSystem.java
+│   │   ├── PlayerRespawnSystem.java
+│   │   └── TeleportCancelOnDamageSystem.java
 │   ├── zone/                       # Zone-specific protection
 │   │   ├── ZoneDamageProtection.java
 │   │   └── ZoneInteractionProtection.java
@@ -175,17 +212,20 @@ src/main/java/com/hyperfactions/
 ├── integration/                    # External integrations
 │   ├── PermissionManager.java      # Unified permission chain
 │   ├── PermissionProvider.java     # Provider interface
-│   ├── HyperPermsIntegration.java  # HyperPerms soft dependency
-│   ├── HyperPermsProviderAdapter.java
-│   ├── LuckPermsProvider.java      # LuckPerms permission provider
-│   ├── VaultUnlockedProvider.java  # VaultUnlocked permission provider
-│   ├── orbis/                      # OrbisGuard integration
+│   ├── PermissionRegistrar.java    # Provider registration
+│   ├── permissions/                # Permission provider implementations
+│   │   ├── HyperPermsIntegration.java    # HyperPerms soft dependency
+│   │   ├── HyperPermsProviderAdapter.java
+│   │   ├── HytaleNativeProvider.java     # Hytale native permissions
+│   │   ├── LuckPermsProvider.java        # LuckPerms permission provider
+│   │   └── VaultUnlockedProvider.java    # VaultUnlocked permission provider
+│   ├── protection/                 # Protection integrations (OrbisGuard, Gravestones)
 │   │   ├── OrbisGuardIntegration.java    # Region conflict detection
-│   │   └── OrbisMixinsIntegration.java   # 11 mixin hook callbacks
-│   ├── papi/                       # PlaceholderAPI integration
-│   │   ├── PlaceholderAPIIntegration.java
-│   │   └── HyperFactionsExpansion.java   # 33 placeholders
-│   └── wiflow/                     # WiFlow placeholder integration
+│   │   ├── OrbisMixinsIntegration.java   # 11 mixin hook callbacks
+│   │   └── GravestoneIntegration.java    # Gravestone access control
+│   └── placeholder/                # Placeholder integrations (PAPI, WiFlow)
+│       ├── PlaceholderAPIIntegration.java
+│       ├── HyperFactionsExpansion.java   # 33 placeholders
 │       ├── WiFlowPlaceholderIntegration.java
 │       └── WiFlowExpansion.java          # 33 placeholders
 │
@@ -235,8 +275,11 @@ src/main/java/com/hyperfactions/
 │
 └── util/                           # Utilities
     ├── Logger.java                 # Logging with debug categories
+    ├── MessageUtil.java            # Message composition helpers
+    ├── UuidUtil.java               # UUID parsing and validation
     ├── ChunkUtil.java              # Chunk coordinate math
     ├── TimeUtil.java               # Duration formatting
+    ├── LegacyColorParser.java      # Legacy color code parsing
     ├── CommandHelp.java            # Help text generation
     └── HelpFormatter.java          # Help formatting
 ```
@@ -253,22 +296,24 @@ The Hytale `JavaPlugin` implementation handles:
 - **start()** - Initialize managers, register commands/events/systems
 - **shutdown()** - Save data, cleanup resources
 
-Key responsibilities:
-- Platform callback wiring (task scheduling, player lookup)
-- Event listener registration (connect, disconnect, chat)
-- ECS system registration (protection, teleport, territory)
-- World map provider registration
-- Periodic task management (power regen, combat tag decay)
+HyperFactionsPlugin delegates its responsibilities to extracted helper classes:
+- **`lifecycle/CallbackWiring`** - Platform callback setup (task scheduling, player lookup)
+- **`lifecycle/PeriodicTaskManager`** - Periodic task management (power regen, combat tag decay)
+- **`lifecycle/MembershipHistoryHandler`** - Member join/leave history tracking
+- **`platform/EventRegistration`** - Event listener registration (connect, disconnect, chat)
+- **`platform/WorldSetup`** - World map provider and ECS system registration
+- **`platform/PlayerConnectionHandler`** - Connect/disconnect event handling
 
 ### Core Singleton: HyperFactions
 
 [`HyperFactions.java`](../src/main/java/com/hyperfactions/HyperFactions.java)
 
-Platform-agnostic coordinator that:
+Platform-agnostic orchestrator that delegates lifecycle responsibilities to the `lifecycle/` package:
 
 - Initializes storage implementations
-- Creates and wires all managers
-- Manages task scheduling via platform callbacks
+- Creates and wires all managers (initialization logic in `CallbackWiring`)
+- Delegates task scheduling to `PeriodicTaskManager`
+- Delegates member tracking to `MembershipHistoryHandler`
 - Provides getter methods for all subsystems
 - Handles admin bypass toggle state
 

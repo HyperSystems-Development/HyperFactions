@@ -3,7 +3,7 @@ package com.hyperfactions.gui.faction.page;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.gui.faction.data.FactionPageData;
-import com.hyperfactions.gui.nav.NavBarHelper;
+import com.hyperfactions.gui.faction.NavBarHelper;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;

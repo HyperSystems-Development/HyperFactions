@@ -3,6 +3,7 @@ package com.hyperfactions.manager;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.config.modules.AnnouncementConfig;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +39,7 @@ public class AnnouncementManager {
         AnnouncementConfig config = ConfigManager.get().announcements();
         if (!config.isEnabled() || !config.isFactionCreated()) return;
 
-        broadcast(buildMessage(leaderName + " has founded the faction " + factionName + "!", "#55FF55"));
+        broadcast(MessageUtil.info(leaderName + " has founded the faction " + factionName + "!", MessageUtil.COLOR_GREEN));
     }
 
     /**
@@ -50,7 +51,7 @@ public class AnnouncementManager {
         AnnouncementConfig config = ConfigManager.get().announcements();
         if (!config.isEnabled() || !config.isFactionDisbanded()) return;
 
-        broadcast(buildMessage("The faction " + factionName + " has been disbanded!", "#FF5555"));
+        broadcast(MessageUtil.error("The faction " + factionName + " has been disbanded!"));
     }
 
     /**
@@ -65,7 +66,7 @@ public class AnnouncementManager {
         AnnouncementConfig config = ConfigManager.get().announcements();
         if (!config.isEnabled() || !config.isLeadershipTransfer()) return;
 
-        broadcast(buildMessage(newLeader + " is now the leader of " + factionName + "!", "#FFAA00"));
+        broadcast(MessageUtil.info(newLeader + " is now the leader of " + factionName + "!", MessageUtil.COLOR_GOLD));
     }
 
     /**
@@ -78,7 +79,7 @@ public class AnnouncementManager {
         AnnouncementConfig config = ConfigManager.get().announcements();
         if (!config.isEnabled() || !config.isOverclaim()) return;
 
-        broadcast(buildMessage(attackerFaction + " has overclaimed territory from " + defenderFaction + "!", "#FF5555"));
+        broadcast(MessageUtil.error(attackerFaction + " has overclaimed territory from " + defenderFaction + "!"));
     }
 
     /**
@@ -91,7 +92,7 @@ public class AnnouncementManager {
         AnnouncementConfig config = ConfigManager.get().announcements();
         if (!config.isEnabled() || !config.isWarDeclared()) return;
 
-        broadcast(buildMessage(declaringFaction + " has declared war on " + targetFaction + "!", "#FF5555"));
+        broadcast(MessageUtil.error(declaringFaction + " has declared war on " + targetFaction + "!"));
     }
 
     /**
@@ -104,7 +105,7 @@ public class AnnouncementManager {
         AnnouncementConfig config = ConfigManager.get().announcements();
         if (!config.isEnabled() || !config.isAllianceFormed()) return;
 
-        broadcast(buildMessage(faction1 + " and " + faction2 + " are now allies!", "#55FF55"));
+        broadcast(MessageUtil.info(faction1 + " and " + faction2 + " are now allies!", MessageUtil.COLOR_GREEN));
     }
 
     /**
@@ -117,22 +118,14 @@ public class AnnouncementManager {
         AnnouncementConfig config = ConfigManager.get().announcements();
         if (!config.isEnabled() || !config.isAllianceBroken()) return;
 
-        broadcast(buildMessage(faction1 + " and " + faction2 + " are no longer allies!", "#FFAA00"));
+        broadcast(MessageUtil.info(faction1 + " and " + faction2 + " are no longer allies!", MessageUtil.COLOR_GOLD));
     }
 
     /**
      * Builds a formatted announcement message using the configured prefix from config.json.
      */
     private Message buildMessage(@NotNull String text, @NotNull String color) {
-        ConfigManager config = ConfigManager.get();
-        String prefixText = config.getPrefixText();
-        String prefixColor = config.getPrefixColor();
-        String bracketColor = config.getPrefixBracketColor();
-
-        return Message.raw("[").color(bracketColor)
-            .insert(Message.raw(prefixText).color(prefixColor))
-            .insert(Message.raw("] ").color(bracketColor))
-            .insert(Message.raw(text).color(color));
+        return MessageUtil.info(text, color);
     }
 
     /**

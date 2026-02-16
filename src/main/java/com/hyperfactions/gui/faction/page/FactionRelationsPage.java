@@ -5,7 +5,7 @@ import com.hyperfactions.data.*;
 import com.hyperfactions.gui.ActivePageTracker;
 import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.gui.RefreshablePage;
-import com.hyperfactions.gui.nav.NavBarHelper;
+import com.hyperfactions.gui.faction.NavBarHelper;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.gui.faction.data.FactionRelationsData;
 import com.hyperfactions.manager.FactionManager;
@@ -15,6 +15,8 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
+import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.UuidUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
@@ -562,17 +564,17 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
             case "ToggleExpanded" -> {
                 if (data.factionId != null) {
-                    try {
-                        UUID uuid = UUID.fromString(data.factionId);
-                        if (expandedItems.contains(uuid)) {
-                            expandedItems.remove(uuid);
-                        } else {
-                            expandedItems.add(uuid);
-                        }
-                        rebuildList(canManage);
-                    } catch (IllegalArgumentException e) {
+                    UUID uuid = UuidUtil.parseOrNull(data.factionId);
+                    if (uuid == null) {
                         sendUpdate();
+                        return;
                     }
+                    if (expandedItems.contains(uuid)) {
+                        expandedItems.remove(uuid);
+                    } else {
+                        expandedItems.add(uuid);
+                    }
+                    rebuildList(canManage);
                 }
             }
 
@@ -615,17 +617,17 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
             return;
         }
 
-        try {
-            UUID targetId = UUID.fromString(data.factionId);
-            Faction targetFaction = factionManager.getFaction(targetId);
-            if (targetFaction != null) {
-                guiManager.openFactionInfo(player, ref, store, playerRef, targetFaction, "relations");
-            } else {
-                player.sendMessage(Message.raw("Faction no longer exists.").color("#FF5555"));
-                sendUpdate();
-            }
-        } catch (IllegalArgumentException e) {
-            player.sendMessage(Message.raw("Invalid faction.").color("#FF5555"));
+        UUID targetId = UuidUtil.parseOrNull(data.factionId);
+        if (targetId == null) {
+            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            sendUpdate();
+            return;
+        }
+        Faction targetFaction = factionManager.getFaction(targetId);
+        if (targetFaction != null) {
+            guiManager.openFactionInfo(player, ref, store, playerRef, targetFaction, "relations");
+        } else {
+            player.sendMessage(MessageUtil.errorText("Faction no longer exists."));
             sendUpdate();
         }
     }
@@ -633,114 +635,114 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
     private void handleSetNeutral(Player player, FactionRelationsData data, boolean canManage) {
         if (data.factionId == null) return;
 
-        try {
-            UUID targetId = UUID.fromString(data.factionId);
-            UUID actorUuid = playerRef.getUuid();
-            RelationManager.RelationResult result = relationManager.setNeutral(actorUuid, targetId);
-            if (result == RelationManager.RelationResult.SUCCESS) {
-                player.sendMessage(Message.raw("Now neutral with " + data.factionName + ".").color("#888888"));
-            } else {
-                player.sendMessage(Message.raw("Failed: " + result).color("#FF5555"));
-            }
-            rebuildList(canManage);
-        } catch (IllegalArgumentException e) {
-            player.sendMessage(Message.raw("Invalid faction.").color("#FF5555"));
+        UUID targetId = UuidUtil.parseOrNull(data.factionId);
+        if (targetId == null) {
+            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            return;
         }
+        UUID actorUuid = playerRef.getUuid();
+        RelationManager.RelationResult result = relationManager.setNeutral(actorUuid, targetId);
+        if (result == RelationManager.RelationResult.SUCCESS) {
+            player.sendMessage(Message.raw("Now neutral with " + data.factionName + ".").color("#888888"));
+        } else {
+            player.sendMessage(MessageUtil.errorText("Failed: " + result));
+        }
+        rebuildList(canManage);
     }
 
     private void handleSetEnemy(Player player, FactionRelationsData data, boolean canManage) {
         if (data.factionId == null) return;
 
-        try {
-            UUID targetId = UUID.fromString(data.factionId);
-            UUID actorUuid = playerRef.getUuid();
-            RelationManager.RelationResult result = relationManager.setEnemy(actorUuid, targetId);
-            if (result == RelationManager.RelationResult.SUCCESS) {
-                player.sendMessage(Message.raw("Now enemies with " + data.factionName + "!").color("#FF5555"));
-            } else {
-                player.sendMessage(Message.raw("Failed: " + result).color("#FF5555"));
-            }
-            rebuildList(canManage);
-        } catch (IllegalArgumentException e) {
-            player.sendMessage(Message.raw("Invalid faction.").color("#FF5555"));
+        UUID targetId = UuidUtil.parseOrNull(data.factionId);
+        if (targetId == null) {
+            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            return;
         }
+        UUID actorUuid = playerRef.getUuid();
+        RelationManager.RelationResult result = relationManager.setEnemy(actorUuid, targetId);
+        if (result == RelationManager.RelationResult.SUCCESS) {
+            player.sendMessage(MessageUtil.errorText("Now enemies with " + data.factionName + "!"));
+        } else {
+            player.sendMessage(MessageUtil.errorText("Failed: " + result));
+        }
+        rebuildList(canManage);
     }
 
     private void handleRequestAlly(Player player, FactionRelationsData data, boolean canManage) {
         if (data.factionId == null) return;
 
-        try {
-            UUID targetId = UUID.fromString(data.factionId);
-            UUID actorUuid = playerRef.getUuid();
-            RelationManager.RelationResult result = relationManager.requestAlly(actorUuid, targetId);
-            if (result == RelationManager.RelationResult.REQUEST_SENT) {
-                player.sendMessage(Message.raw("Alliance request sent to " + data.factionName + ".").color("#00AAFF"));
-                // Switch to pending tab to show the new request
-                currentTab = Tab.PENDING;
-                currentPage = 0;
-                expandedItems.clear();
-            } else if (result == RelationManager.RelationResult.REQUEST_ACCEPTED) {
-                player.sendMessage(Message.raw("Now allied with " + data.factionName + "!").color("#00AAFF"));
-            } else {
-                player.sendMessage(Message.raw("Failed: " + result).color("#FF5555"));
-            }
-            rebuildList(canManage);
-        } catch (IllegalArgumentException e) {
-            player.sendMessage(Message.raw("Invalid faction.").color("#FF5555"));
+        UUID targetId = UuidUtil.parseOrNull(data.factionId);
+        if (targetId == null) {
+            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            return;
         }
+        UUID actorUuid = playerRef.getUuid();
+        RelationManager.RelationResult result = relationManager.requestAlly(actorUuid, targetId);
+        if (result == RelationManager.RelationResult.REQUEST_SENT) {
+            player.sendMessage(Message.raw("Alliance request sent to " + data.factionName + ".").color("#00AAFF"));
+            // Switch to pending tab to show the new request
+            currentTab = Tab.PENDING;
+            currentPage = 0;
+            expandedItems.clear();
+        } else if (result == RelationManager.RelationResult.REQUEST_ACCEPTED) {
+            player.sendMessage(Message.raw("Now allied with " + data.factionName + "!").color("#00AAFF"));
+        } else {
+            player.sendMessage(MessageUtil.errorText("Failed: " + result));
+        }
+        rebuildList(canManage);
     }
 
     private void handleAcceptAlly(Player player, FactionRelationsData data, boolean canManage) {
         if (data.factionId == null) return;
 
-        try {
-            UUID requesterId = UUID.fromString(data.factionId);
-            UUID actorUuid = playerRef.getUuid();
-            RelationManager.RelationResult result = relationManager.acceptAlly(actorUuid, requesterId);
-            if (result == RelationManager.RelationResult.REQUEST_ACCEPTED) {
-                player.sendMessage(Message.raw("Now allied with " + data.factionName + "!").color("#00AAFF"));
-            } else {
-                player.sendMessage(Message.raw("Failed: " + result).color("#FF5555"));
-            }
-            rebuildList(canManage);
-        } catch (IllegalArgumentException e) {
-            player.sendMessage(Message.raw("Invalid faction.").color("#FF5555"));
+        UUID requesterId = UuidUtil.parseOrNull(data.factionId);
+        if (requesterId == null) {
+            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            return;
         }
+        UUID actorUuid = playerRef.getUuid();
+        RelationManager.RelationResult result = relationManager.acceptAlly(actorUuid, requesterId);
+        if (result == RelationManager.RelationResult.REQUEST_ACCEPTED) {
+            player.sendMessage(Message.raw("Now allied with " + data.factionName + "!").color("#00AAFF"));
+        } else {
+            player.sendMessage(MessageUtil.errorText("Failed: " + result));
+        }
+        rebuildList(canManage);
     }
 
     private void handleDeclineAlly(Player player, FactionRelationsData data, boolean canManage) {
         if (data.factionId == null) return;
 
-        try {
-            UUID requesterId = UUID.fromString(data.factionId);
-            UUID actorUuid = playerRef.getUuid();
-            // No direct decline method - use setEnemy then setNeutral to clear the request
-            relationManager.setEnemy(actorUuid, requesterId);
-            relationManager.setNeutral(actorUuid, requesterId);
-            player.sendMessage(Message.raw("Ally request from " + data.factionName + " declined.").color("#888888"));
-            rebuildList(canManage);
-        } catch (IllegalArgumentException e) {
-            player.sendMessage(Message.raw("Invalid faction.").color("#FF5555"));
+        UUID requesterId = UuidUtil.parseOrNull(data.factionId);
+        if (requesterId == null) {
+            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            return;
         }
+        UUID actorUuid = playerRef.getUuid();
+        // No direct decline method - use setEnemy then setNeutral to clear the request
+        relationManager.setEnemy(actorUuid, requesterId);
+        relationManager.setNeutral(actorUuid, requesterId);
+        player.sendMessage(Message.raw("Ally request from " + data.factionName + " declined.").color("#888888"));
+        rebuildList(canManage);
     }
 
     private void handleCancelRequest(Player player, FactionRelationsData data, boolean canManage) {
         if (data.factionId == null) return;
 
-        try {
-            UUID targetId = UUID.fromString(data.factionId);
-            UUID actorUuid = playerRef.getUuid();
-            RelationManager.RelationResult result = relationManager.cancelRequest(actorUuid, targetId);
-            if (result == RelationManager.RelationResult.SUCCESS) {
-                player.sendMessage(Message.raw("Ally request to " + data.factionName + " cancelled.").color("#888888"));
-            } else {
-                player.sendMessage(Message.raw("Failed: " + result).color("#FF5555"));
-            }
-            // Stay on pending tab (Bug 7 fix)
-            rebuildList(canManage);
-        } catch (IllegalArgumentException e) {
-            player.sendMessage(Message.raw("Invalid faction.").color("#FF5555"));
+        UUID targetId = UuidUtil.parseOrNull(data.factionId);
+        if (targetId == null) {
+            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            return;
         }
+        UUID actorUuid = playerRef.getUuid();
+        RelationManager.RelationResult result = relationManager.cancelRequest(actorUuid, targetId);
+        if (result == RelationManager.RelationResult.SUCCESS) {
+            player.sendMessage(Message.raw("Ally request to " + data.factionName + " cancelled.").color("#888888"));
+        } else {
+            player.sendMessage(MessageUtil.errorText("Failed: " + result));
+        }
+        // Stay on pending tab (Bug 7 fix)
+        rebuildList(canManage);
     }
 
     private void rebuildList(boolean canManage) {

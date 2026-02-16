@@ -10,6 +10,7 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
@@ -119,13 +120,13 @@ public class LeaderLeaveConfirmPage extends InteractiveCustomUIPage<LeaderLeaveC
 
         // Verify still in faction and still leader
         if (member == null) {
-            player.sendMessage(Message.raw("You are not in this faction.").color("#FF5555"));
+            player.sendMessage(MessageUtil.errorText("You are not in this faction."));
             guiManager.openFactionMain(player, ref, store, playerRef);
             return;
         }
 
         if (member.role() != FactionRole.LEADER) {
-            player.sendMessage(Message.raw("You are no longer the leader.").color("#FF5555"));
+            player.sendMessage(MessageUtil.errorText("You are no longer the leader."));
             Faction fresh = factionManager.getFaction(faction.id());
             if (fresh != null) {
                 guiManager.openFactionDashboard(player, ref, store, playerRef, fresh);
@@ -149,7 +150,7 @@ public class LeaderLeaveConfirmPage extends InteractiveCustomUIPage<LeaderLeaveC
             case "Leave" -> {
                 // Transfer leadership to successor and leave
                 if (successor == null) {
-                    player.sendMessage(Message.raw("No successor available. Use disband instead.").color("#FF5555"));
+                    player.sendMessage(MessageUtil.errorText("No successor available. Use disband instead."));
                     return;
                 }
 

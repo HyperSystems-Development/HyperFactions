@@ -34,9 +34,9 @@ FactionCommand (dispatcher): /f, /hf, /faction, /hyperfactions
 | Class | Path | Purpose |
 |-------|------|---------|
 | FactionCommand | [`command/FactionCommand.java`](../src/main/java/com/hyperfactions/command/FactionCommand.java) | Main dispatcher, registers all subcommands |
-| FactionSubCommand | [`command/FactionSubCommand.java`](../src/main/java/com/hyperfactions/command/FactionSubCommand.java) | Base class with shared utilities |
+| FactionSubCommand | [`command/FactionSubCommand.java`](../src/main/java/com/hyperfactions/command/FactionSubCommand.java) | Base class with shared utilities and `requireFaction()` helper |
 | FactionCommandContext | [`command/FactionCommandContext.java`](../src/main/java/com/hyperfactions/command/FactionCommandContext.java) | Execution context, `--text` flag parsing |
-| CommandUtil | [`command/util/CommandUtil.java`](../src/main/java/com/hyperfactions/command/util/CommandUtil.java) | Shared utilities (messages, player lookup) |
+| CommandUtil | [`command/util/CommandUtil.java`](../src/main/java/com/hyperfactions/command/util/CommandUtil.java) | Shared utilities (delegates to `util/MessageUtil` for message composition) |
 
 ## Main Dispatcher
 
@@ -96,6 +96,7 @@ public abstract class FactionSubCommand extends AbstractPlayerCommand {
     protected PlayerRef findOnlinePlayer(String) { ... }
     protected void broadcastToFaction(UUID, Message) { ... }
     protected FactionCommandContext parseContext(String[] args) { ... }
+    protected Faction requireFaction(PlayerRef, CommandContext) { ... } // Returns player's faction or sends error
 
     // Color constants
     protected static final String COLOR_CYAN = "#00FFFF";
@@ -191,7 +192,16 @@ command/
 │   └── SettingsSubCommand.java
 │
 └── admin/                      # Admin commands
-    └── AdminSubCommand.java    # Nested admin subcommands
+    ├── AdminSubCommand.java    # Router delegating to handler/ classes
+    └── handler/               # Admin command handlers
+        ├── AdminZoneHandler.java
+        ├── AdminBackupHandler.java
+        ├── AdminDebugHandler.java
+        ├── AdminImportHandler.java
+        ├── AdminUpdateHandler.java
+        ├── AdminIntegrationHandler.java
+        ├── AdminPowerHandler.java
+        └── AdminMapDecayHandler.java
 ```
 
 ### Category Summary
@@ -281,6 +291,17 @@ if (result == ClaimResult.NO_PERMISSION) {
 ## Admin Commands
 
 [`command/admin/AdminSubCommand.java`](../src/main/java/com/hyperfactions/command/admin/AdminSubCommand.java)
+
+`AdminSubCommand` acts as a router that delegates to specialized handler classes in `command/admin/handler/`:
+
+- `AdminZoneHandler` - Zone create/delete/claim/unclaim/radius/list, zoneflag, safezone, warzone
+- `AdminBackupHandler` - Backup create/list/restore/delete
+- `AdminDebugHandler` - Debug toggle, trace, diagnostics
+- `AdminImportHandler` - Data import from other faction plugins
+- `AdminUpdateHandler` - Update check and notification
+- `AdminIntegrationHandler` - Integration status reporting
+- `AdminPowerHandler` - Power set/reset/modify
+- `AdminMapDecayHandler` - Map decay management
 
 Admin commands use nested subcommand structure:
 

@@ -13,6 +13,7 @@ import com.hypixel.hytale.component.dependency.Dependency;
 import com.hypixel.hytale.component.dependency.RootDependency;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.EntityEventSystem;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.ecs.InteractivelyPickupItemEvent;
@@ -112,7 +113,7 @@ public class HarvestPickupProtectionSystem extends EntityEventSystem<EntityStore
             if (!zoneAllows) {
                 event.setCancelled(true);
                 event.setItemStack(ItemStack.EMPTY);  // Also clear the item stack
-                player.sendMessage(Message.raw("You cannot pick up items manually in this zone.").color("#FF5555"));
+                player.sendMessage(MessageUtil.errorText("You cannot pick up items manually in this zone."));
                 Logger.debugProtection("Manual pickup blocked by zone (ITEM_PICKUP_MANUAL=false) at %s/%d/%d for player %s",
                     worldName, x, z, playerRef.getUuid());
                 return;

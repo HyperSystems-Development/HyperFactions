@@ -2,7 +2,7 @@ package com.hyperfactions.gui.shared.page;
 
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.gui.GuiManager;
-import com.hyperfactions.gui.nav.NavBarHelper;
+import com.hyperfactions.gui.faction.NavBarHelper;
 import com.hyperfactions.gui.shared.data.PlaceholderData;
 import com.hyperfactions.manager.FactionManager;
 import com.hypixel.hytale.component.Ref;

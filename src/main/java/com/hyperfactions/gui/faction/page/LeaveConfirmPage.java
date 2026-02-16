@@ -10,6 +10,7 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
@@ -87,14 +88,14 @@ public class LeaveConfirmPage extends InteractiveCustomUIPage<LeaveConfirmData> 
 
         // Verify still in faction
         if (member == null) {
-            player.sendMessage(Message.raw("You are not in this faction.").color("#FF5555"));
+            player.sendMessage(MessageUtil.errorText("You are not in this faction."));
             guiManager.openFactionMain(player, ref, store, playerRef);
             return;
         }
 
         // Leaders cannot leave via this modal (they must disband or transfer leadership)
         if (member.role() == FactionRole.LEADER) {
-            player.sendMessage(Message.raw("Leaders cannot leave. Transfer leadership or disband the faction.").color("#FF5555"));
+            player.sendMessage(MessageUtil.errorText("Leaders cannot leave. Transfer leadership or disband the faction."));
             guiManager.openFactionDashboard(player, ref, store, playerRef,
                     factionManager.getFaction(faction.id()));
             return;

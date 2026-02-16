@@ -4,7 +4,7 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.RelationType;
 import com.hyperfactions.data.Zone;
 import com.hyperfactions.data.ZoneType;
-import com.hyperfactions.integration.HyperPermsIntegration;
+import com.hyperfactions.integration.permissions.HyperPermsIntegration;
 import com.hyperfactions.manager.*;
 import com.hyperfactions.protection.ProtectionChecker.InteractionType;
 import com.hyperfactions.protection.ProtectionChecker.ProtectionResult;

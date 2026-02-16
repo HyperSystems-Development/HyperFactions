@@ -12,6 +12,7 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
@@ -114,7 +115,7 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
 
         // Verify officer permission (skip in admin mode)
         if (!adminMode && (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel())) {
-            player.sendMessage(Message.raw("You don't have permission to edit the tag.").color("#FF5555"));
+            player.sendMessage(MessageUtil.errorText("You don't have permission to edit the tag."));
             guiManager.openFactionSettings(player, ref, store, playerRef,
                     factionManager.getFaction(faction.id()));
             return;
@@ -158,27 +159,27 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
 
                 // Validate length
                 if (newTag.length() < MIN_TAG_LENGTH) {
-                    player.sendMessage(Message.raw("Tag must be at least " + MIN_TAG_LENGTH + " character.").color("#FF5555"));
+                    player.sendMessage(MessageUtil.errorText("Tag must be at least " + MIN_TAG_LENGTH + " character."));
                     sendUpdate();
                     return;
                 }
 
                 if (newTag.length() > MAX_TAG_LENGTH) {
-                    player.sendMessage(Message.raw("Tag cannot exceed " + MAX_TAG_LENGTH + " characters.").color("#FF5555"));
+                    player.sendMessage(MessageUtil.errorText("Tag cannot exceed " + MAX_TAG_LENGTH + " characters."));
                     sendUpdate();
                     return;
                 }
 
                 // Validate format (alphanumeric only)
                 if (!TAG_PATTERN.matcher(newTag).matches()) {
-                    player.sendMessage(Message.raw("Tag can only contain letters and numbers.").color("#FF5555"));
+                    player.sendMessage(MessageUtil.errorText("Tag can only contain letters and numbers."));
                     sendUpdate();
                     return;
                 }
 
                 // Check if same as current
                 if (newTag.equalsIgnoreCase(faction.tag())) {
-                    player.sendMessage(Message.raw("That's already your faction's tag.").color("#FFAA00"));
+                    player.sendMessage(MessageUtil.text("That's already your faction's tag.", MessageUtil.COLOR_GOLD));
                     sendUpdate();
                     return;
                 }
@@ -186,7 +187,7 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
                 // Check uniqueness
                 Faction existing = factionManager.getFactionByTag(newTag);
                 if (existing != null && !existing.id().equals(faction.id())) {
-                    player.sendMessage(Message.raw("A faction with that tag already exists.").color("#FF5555"));
+                    player.sendMessage(MessageUtil.errorText("A faction with that tag already exists."));
                     sendUpdate();
                     return;
                 }

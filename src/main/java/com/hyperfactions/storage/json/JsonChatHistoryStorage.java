@@ -12,6 +12,7 @@ import com.hyperfactions.storage.ChatHistoryStorage;
 import com.hyperfactions.storage.StorageHealth;
 import com.hyperfactions.storage.StorageUtils;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.UuidUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -140,9 +141,10 @@ public class JsonChatHistoryStorage implements ChatHistoryStorage {
                 for (Path file : stream) {
                     String fileName = file.getFileName().toString();
                     String uuidStr = fileName.substring(0, fileName.length() - 5); // strip .json
-                    try {
-                        ids.add(UUID.fromString(uuidStr));
-                    } catch (IllegalArgumentException e) {
+                    UUID uuid = UuidUtil.parseOrNull(uuidStr);
+                    if (uuid != null) {
+                        ids.add(uuid);
+                    } else {
                         Logger.warn("Skipping non-UUID chat history file: %s", fileName);
                     }
                 }

@@ -3,7 +3,7 @@ package com.hyperfactions.gui.faction.page;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.gui.faction.FactionPageRegistry;
 import com.hyperfactions.gui.GuiManager;
-import com.hyperfactions.gui.nav.NavBarHelper;
+import com.hyperfactions.gui.faction.NavBarHelper;
 import com.hyperfactions.gui.faction.data.FactionModulesData;
 import com.hyperfactions.manager.FactionManager;
 import com.hypixel.hytale.component.Ref;

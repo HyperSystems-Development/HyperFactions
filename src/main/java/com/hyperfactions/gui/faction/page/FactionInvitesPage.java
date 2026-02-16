@@ -5,7 +5,7 @@ import com.hyperfactions.data.*;
 import com.hyperfactions.gui.ActivePageTracker;
 import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.gui.RefreshablePage;
-import com.hyperfactions.gui.nav.NavBarHelper;
+import com.hyperfactions.gui.faction.NavBarHelper;
 import com.hyperfactions.gui.faction.data.FactionPageData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.InviteManager;
@@ -14,6 +14,8 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
+import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.UuidUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
@@ -410,19 +412,20 @@ public class FactionInvitesPage extends InteractiveCustomUIPage<FactionPageData>
             return;
         }
 
-        try {
-            UUID targetUuid = UUID.fromString(data.playerUuid);
-            inviteManager.removeInvite(faction.id(), targetUuid);
-
-            String playerName = getPlayerName(targetUuid);
-            player.sendMessage(Message.raw("Cancelled invite to " + playerName + ".").color("#AAAAAA"));
-
-            expandedItems.remove(data.playerUuid);
-            rebuildList();
-        } catch (IllegalArgumentException e) {
-            player.sendMessage(Message.raw("Invalid player.").color("#FF5555"));
+        UUID targetUuid = UuidUtil.parseOrNull(data.playerUuid);
+        if (targetUuid == null) {
+            player.sendMessage(MessageUtil.errorText("Invalid player."));
             sendUpdate();
+            return;
         }
+
+        inviteManager.removeInvite(faction.id(), targetUuid);
+
+        String playerName = getPlayerName(targetUuid);
+        player.sendMessage(Message.raw("Cancelled invite to " + playerName + ".").color("#AAAAAA"));
+
+        expandedItems.remove(data.playerUuid);
+        rebuildList();
     }
 
     private void handleAcceptRequest(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
@@ -432,35 +435,36 @@ public class FactionInvitesPage extends InteractiveCustomUIPage<FactionPageData>
             return;
         }
 
-        try {
-            UUID targetUuid = UUID.fromString(data.playerUuid);
-            JoinRequest request = joinRequestManager.acceptRequest(faction.id(), targetUuid);
-
-            if (request != null) {
-                // Add player to faction
-                FactionManager.FactionResult result = factionManager.addMember(
-                        faction.id(), targetUuid, request.playerName()
-                );
-
-                if (result == FactionManager.FactionResult.SUCCESS) {
-                    // Clear player's other requests since they joined a faction
-                    joinRequestManager.clearPlayerRequests(targetUuid);
-                    player.sendMessage(Message.raw(request.playerName() + " has joined the faction!").color("#55FF55"));
-                } else if (result == FactionManager.FactionResult.FACTION_FULL) {
-                    player.sendMessage(Message.raw("Faction is full. Cannot accept request.").color("#FF5555"));
-                } else {
-                    player.sendMessage(Message.raw("Failed to add player to faction.").color("#FF5555"));
-                }
-            } else {
-                player.sendMessage(Message.raw("Request not found or expired.").color("#FF5555"));
-            }
-
-            expandedItems.remove(data.playerUuid);
-            rebuildList();
-        } catch (IllegalArgumentException e) {
-            player.sendMessage(Message.raw("Invalid player.").color("#FF5555"));
+        UUID targetUuid = UuidUtil.parseOrNull(data.playerUuid);
+        if (targetUuid == null) {
+            player.sendMessage(MessageUtil.errorText("Invalid player."));
             sendUpdate();
+            return;
         }
+
+        JoinRequest request = joinRequestManager.acceptRequest(faction.id(), targetUuid);
+
+        if (request != null) {
+            // Add player to faction
+            FactionManager.FactionResult result = factionManager.addMember(
+                    faction.id(), targetUuid, request.playerName()
+            );
+
+            if (result == FactionManager.FactionResult.SUCCESS) {
+                // Clear player's other requests since they joined a faction
+                joinRequestManager.clearPlayerRequests(targetUuid);
+                player.sendMessage(Message.raw(request.playerName() + " has joined the faction!").color("#55FF55"));
+            } else if (result == FactionManager.FactionResult.FACTION_FULL) {
+                player.sendMessage(MessageUtil.errorText("Faction is full. Cannot accept request."));
+            } else {
+                player.sendMessage(MessageUtil.errorText("Failed to add player to faction."));
+            }
+        } else {
+            player.sendMessage(MessageUtil.errorText("Request not found or expired."));
+        }
+
+        expandedItems.remove(data.playerUuid);
+        rebuildList();
     }
 
     private void handleDeclineRequest(Player player, FactionPageData data) {
@@ -469,21 +473,22 @@ public class FactionInvitesPage extends InteractiveCustomUIPage<FactionPageData>
             return;
         }
 
-        try {
-            UUID targetUuid = UUID.fromString(data.playerUuid);
-            JoinRequest request = joinRequestManager.getRequest(faction.id(), targetUuid);
-            String playerName = request != null ? request.playerName() : "Unknown";
-
-            joinRequestManager.declineRequest(faction.id(), targetUuid);
-
-            player.sendMessage(Message.raw("Declined join request from " + playerName + ".").color("#AAAAAA"));
-
-            expandedItems.remove(data.playerUuid);
-            rebuildList();
-        } catch (IllegalArgumentException e) {
-            player.sendMessage(Message.raw("Invalid player.").color("#FF5555"));
+        UUID targetUuid = UuidUtil.parseOrNull(data.playerUuid);
+        if (targetUuid == null) {
+            player.sendMessage(MessageUtil.errorText("Invalid player."));
             sendUpdate();
+            return;
         }
+
+        JoinRequest request = joinRequestManager.getRequest(faction.id(), targetUuid);
+        String playerName = request != null ? request.playerName() : "Unknown";
+
+        joinRequestManager.declineRequest(faction.id(), targetUuid);
+
+        player.sendMessage(Message.raw("Declined join request from " + playerName + ".").color("#AAAAAA"));
+
+        expandedItems.remove(data.playerUuid);
+        rebuildList();
     }
 
     @Override

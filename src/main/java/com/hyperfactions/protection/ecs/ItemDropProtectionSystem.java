@@ -10,6 +10,7 @@ import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.EntityEventSystem;
 import com.hypixel.hytale.math.vector.Vector3d;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.event.events.ecs.DropItemEvent;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
@@ -64,7 +65,7 @@ public class ItemDropProtectionSystem extends EntityEventSystem<EntityStore, Dro
 
             if (!zoneAllows) {
                 event.setCancelled(true);
-                player.sendMessage(Message.raw("You cannot drop items in this zone.").color("#FF5555"));
+                player.sendMessage(MessageUtil.errorText("You cannot drop items in this zone."));
             }
         } catch (Exception e) {
             Logger.severe("Error processing item drop event", e);

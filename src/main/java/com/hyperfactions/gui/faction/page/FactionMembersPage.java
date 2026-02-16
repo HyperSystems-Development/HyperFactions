@@ -5,7 +5,7 @@ import com.hyperfactions.data.*;
 import com.hyperfactions.gui.ActivePageTracker;
 import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.gui.RefreshablePage;
-import com.hyperfactions.gui.nav.NavBarHelper;
+import com.hyperfactions.gui.faction.NavBarHelper;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.gui.faction.data.FactionMembersData;
 import com.hyperfactions.manager.FactionManager;
@@ -15,6 +15,8 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
+import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.UuidUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
@@ -418,17 +420,17 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
         switch (data.button) {
             case "ToggleExpanded" -> {
                 if (data.playerUuid != null) {
-                    try {
-                        UUID uuid = UUID.fromString(data.playerUuid);
-                        if (expandedMembers.contains(uuid)) {
-                            expandedMembers.remove(uuid);
-                        } else {
-                            expandedMembers.add(uuid);
-                        }
-                        rebuildList(ref, store);
-                    } catch (IllegalArgumentException e) {
+                    UUID uuid = UuidUtil.parseOrNull(data.playerUuid);
+                    if (uuid == null) {
                         sendUpdate();
+                        return;
                     }
+                    if (expandedMembers.contains(uuid)) {
+                        expandedMembers.remove(uuid);
+                    } else {
+                        expandedMembers.add(uuid);
+                    }
+                    rebuildList(ref, store);
                 }
             }
 
@@ -462,13 +464,13 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
 
             case "ViewProfile" -> {
                 if (data.playerUuid != null) {
-                    try {
-                        UUID uuid = UUID.fromString(data.playerUuid);
-                        String targetName = data.target != null ? data.target : "Unknown";
-                        guiManager.openPlayerInfo(player, ref, store, playerRef, uuid, targetName, "members");
-                    } catch (IllegalArgumentException e) {
+                    UUID uuid = UuidUtil.parseOrNull(data.playerUuid);
+                    if (uuid == null) {
                         sendUpdate();
+                        return;
                     }
+                    String targetName = data.target != null ? data.target : "Unknown";
+                    guiManager.openPlayerInfo(player, ref, store, playerRef, uuid, targetName, "members");
                 }
             }
 
@@ -487,25 +489,25 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
             return;
         }
 
-        try {
-            UUID targetUuid = UUID.fromString(targetUuidStr);
-            FactionMember target = faction.members().get(targetUuid);
-            if (target == null) {
-                player.sendMessage(Message.raw("Member not found.").color("#FF5555"));
-                sendUpdate();
-                return;
-            }
-
-            var result = factionManager.promoteMember(faction.id(), targetUuid, playerRef.getUuid());
-            if (result == FactionManager.FactionResult.SUCCESS) {
-                player.sendMessage(Message.raw("Promoted " + target.username() + " to Officer.").color("#55FF55"));
-            } else {
-                player.sendMessage(Message.raw("Failed to promote: " + result.name()).color("#FF5555"));
-            }
-            rebuildList(ref, store);
-        } catch (IllegalArgumentException e) {
+        UUID targetUuid = UuidUtil.parseOrNull(targetUuidStr);
+        if (targetUuid == null) {
             sendUpdate();
+            return;
         }
+        FactionMember target = faction.members().get(targetUuid);
+        if (target == null) {
+            player.sendMessage(MessageUtil.errorText("Member not found."));
+            sendUpdate();
+            return;
+        }
+
+        var result = factionManager.promoteMember(faction.id(), targetUuid, playerRef.getUuid());
+        if (result == FactionManager.FactionResult.SUCCESS) {
+            player.sendMessage(Message.raw("Promoted " + target.username() + " to Officer.").color("#55FF55"));
+        } else {
+            player.sendMessage(MessageUtil.errorText("Failed to promote: " + result.name()));
+        }
+        rebuildList(ref, store);
     }
 
     private void handleDemote(Player player, Ref<EntityStore> ref, Store<EntityStore> store, String targetUuidStr) {
@@ -514,25 +516,25 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
             return;
         }
 
-        try {
-            UUID targetUuid = UUID.fromString(targetUuidStr);
-            FactionMember target = faction.members().get(targetUuid);
-            if (target == null) {
-                player.sendMessage(Message.raw("Member not found.").color("#FF5555"));
-                sendUpdate();
-                return;
-            }
-
-            var result = factionManager.demoteMember(faction.id(), targetUuid, playerRef.getUuid());
-            if (result == FactionManager.FactionResult.SUCCESS) {
-                player.sendMessage(Message.raw("Demoted " + target.username() + " to Member.").color("#55FF55"));
-            } else {
-                player.sendMessage(Message.raw("Failed to demote: " + result.name()).color("#FF5555"));
-            }
-            rebuildList(ref, store);
-        } catch (IllegalArgumentException e) {
+        UUID targetUuid = UuidUtil.parseOrNull(targetUuidStr);
+        if (targetUuid == null) {
             sendUpdate();
+            return;
         }
+        FactionMember target = faction.members().get(targetUuid);
+        if (target == null) {
+            player.sendMessage(MessageUtil.errorText("Member not found."));
+            sendUpdate();
+            return;
+        }
+
+        var result = factionManager.demoteMember(faction.id(), targetUuid, playerRef.getUuid());
+        if (result == FactionManager.FactionResult.SUCCESS) {
+            player.sendMessage(Message.raw("Demoted " + target.username() + " to Member.").color("#55FF55"));
+        } else {
+            player.sendMessage(MessageUtil.errorText("Failed to demote: " + result.name()));
+        }
+        rebuildList(ref, store);
     }
 
     private void handleKick(Player player, Ref<EntityStore> ref, Store<EntityStore> store, String targetUuidStr) {
@@ -541,25 +543,25 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
             return;
         }
 
-        try {
-            UUID targetUuid = UUID.fromString(targetUuidStr);
-            FactionMember target = faction.members().get(targetUuid);
-            if (target == null) {
-                player.sendMessage(Message.raw("Member not found.").color("#FF5555"));
-                sendUpdate();
-                return;
-            }
-
-            var result = factionManager.removeMember(faction.id(), targetUuid, playerRef.getUuid(), true);
-            if (result == FactionManager.FactionResult.SUCCESS) {
-                player.sendMessage(Message.raw("Kicked " + target.username() + " from the faction.").color("#55FF55"));
-            } else {
-                player.sendMessage(Message.raw("Failed to kick: " + result.name()).color("#FF5555"));
-            }
-            rebuildList(ref, store);
-        } catch (IllegalArgumentException e) {
+        UUID targetUuid = UuidUtil.parseOrNull(targetUuidStr);
+        if (targetUuid == null) {
             sendUpdate();
+            return;
         }
+        FactionMember target = faction.members().get(targetUuid);
+        if (target == null) {
+            player.sendMessage(MessageUtil.errorText("Member not found."));
+            sendUpdate();
+            return;
+        }
+
+        var result = factionManager.removeMember(faction.id(), targetUuid, playerRef.getUuid(), true);
+        if (result == FactionManager.FactionResult.SUCCESS) {
+            player.sendMessage(Message.raw("Kicked " + target.username() + " from the faction.").color("#55FF55"));
+        } else {
+            player.sendMessage(MessageUtil.errorText("Failed to kick: " + result.name()));
+        }
+        rebuildList(ref, store);
     }
 
     private void handleTransfer(Player player, Ref<EntityStore> ref, Store<EntityStore> store, String targetUuidStr) {
@@ -568,20 +570,20 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
             return;
         }
 
-        try {
-            UUID targetUuid = UUID.fromString(targetUuidStr);
-            FactionMember target = faction.members().get(targetUuid);
-            if (target == null) {
-                player.sendMessage(Message.raw("Member not found.").color("#FF5555"));
-                sendUpdate();
-                return;
-            }
-
-            // Open confirmation modal instead of directly transferring
-            guiManager.openTransferConfirm(player, ref, store, playerRef, faction, targetUuid, target.username());
-        } catch (IllegalArgumentException e) {
+        UUID targetUuid = UuidUtil.parseOrNull(targetUuidStr);
+        if (targetUuid == null) {
             sendUpdate();
+            return;
         }
+        FactionMember target = faction.members().get(targetUuid);
+        if (target == null) {
+            player.sendMessage(MessageUtil.errorText("Member not found."));
+            sendUpdate();
+            return;
+        }
+
+        // Open confirmation modal instead of directly transferring
+        guiManager.openTransferConfirm(player, ref, store, playerRef, faction, targetUuid, target.username());
     }
 
     private void rebuildList(Ref<EntityStore> ref, Store<EntityStore> store) {

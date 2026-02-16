@@ -8,7 +8,7 @@ import com.hyperfactions.data.FactionClaim;
 import com.hyperfactions.data.FactionLog;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.integration.PermissionManager;
-import com.hyperfactions.integration.orbis.OrbisGuardIntegration;
+import com.hyperfactions.integration.protection.OrbisGuardIntegration;
 import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.Logger;
 import org.jetbrains.annotations.NotNull;

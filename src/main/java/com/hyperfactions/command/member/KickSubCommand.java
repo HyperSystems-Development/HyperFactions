@@ -39,11 +39,8 @@ public class KickSubCommand extends FactionSubCommand {
             return;
         }
 
-        Faction faction = hyperFactions.getFactionManager().getPlayerFaction(player.getUuid());
-        if (faction == null) {
-            ctx.sendMessage(prefix().insert(msg("You are not in a faction.", COLOR_RED)));
-            return;
-        }
+        Faction faction = requireFaction(ctx, player);
+        if (faction == null) return;
 
         String input = ctx.getInputString();
         String[] parts = input != null ? input.trim().split("\\s+") : new String[0];

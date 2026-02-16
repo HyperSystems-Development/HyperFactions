@@ -9,25 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Closes:** [#30](https://github.com/HyperSystemsDev/HyperFactions/issues/30), [#32](https://github.com/HyperSystemsDev/HyperFactions/issues/32), [#34](https://github.com/HyperSystemsDev/HyperFactions/issues/34)
 
-### Fixed
-
-- **Zone flags reset on server restart**: WarZone migration code ran on every startup and unconditionally stripped the `BUILD_ALLOWED` flag, reverting any admin customizations to defaults. Migration now only removes genuinely obsolete keys (`container_access`, `interact_allowed`) and applies to all zone types.
-
 ### Added
 
-- **Player info page (`/f who [player]`)**: Full GUI page with faction membership, power stats, combat stats (kills/deaths/KDR), and membership history ([#32](https://github.com/HyperSystemsDev/HyperFactions/issues/32))
+**Player Info & Membership History** ([#32](https://github.com/HyperSystemsDev/HyperFactions/issues/32))
+- **Player info page** (`/f who [player]`): Full GUI page with faction membership, power stats, combat stats (kills/deaths/KDR), and membership history
 - **Membership history tracking**: Records all faction joins, leaves, kicks, and disbands with timestamps, highest role achieved, and leave reason
 - **Player data expansion**: New `PlayerData` model with `firstJoined`, `lastOnline`, kills, deaths, username caching, and membership history — backwards-compatible with existing player JSON files
-- **"View Profile" button on members page**: Click a member's profile to navigate to their player info page
-- **Admin clear history command** (`/f admin clearhistory <player>`): Clears a player's membership history and re-initializes with their current faction if applicable
+- "View Profile" button on members page to navigate to player info
+- `/f admin clearhistory <player>` command to clear a player's membership history
 - **Upgrade migration**: Existing faction members automatically get an active membership record on first startup, using their actual faction join date and current role
-- **First joined / last online tracking**: Displayed on the player info page header; initialized on first connect, updated on connect/disconnect
+- First joined / last online tracking displayed on the player info page header
 - `maxMembershipHistory` config option (default: 10) to cap history records per player
-- **Admin power management** (`/f admin power`): Full admin control over player power — set, adjust, reset, per-player max override, power loss bypass, claim decay exemption ([#34](https://github.com/HyperSystemsDev/HyperFactions/issues/34))
+
+**Admin Power Management** ([#34](https://github.com/HyperSystemsDev/HyperFactions/issues/34))
+- **Admin power command** (`/f admin power`): Full admin control over player power — set, adjust, reset, per-player max override, power loss bypass, claim decay exemption
 - **Admin Player Info page**: GUI page accessible from admin member list with power controls, bypass toggles, and kick/promote/demote actions
 - **Faction bulk power operations**: Reset All / +/-1/5 All buttons on AdminFactionInfoPage
 - `ADMIN_POWER` log type for faction activity logs
 - `hyperfactions.admin.power` permission node
+
+**Terrain Map Mode** ([#30](https://github.com/HyperSystemsDev/HyperFactions/issues/30))
 - **Terrain map mode for territory GUI**: Territory map now renders actual terrain imagery behind claim overlays using `ChunkWorldMap`, making it much easier to orient yourself and identify terrain features when claiming (rivers, biomes, elevation)
 - Dynamic terrain image asset delivery via `ChunkMapAsset` — generates a composite PNG from chunk world map data and sends it to the player's client at runtime
 - Static placeholder `Map.png` sent immediately on page open, with terrain loading asynchronously in the background
@@ -37,15 +38,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Compact 2-row legend showing all territory types and player marker
 - `terrainMapEnabled` config toggle in GUI section (default: `true`) — set to `false` to revert to the flat colored grid
 
+**Admin GUI Improvements**
 - **Admin players page** (`/f admin players`): New admin page for browsing all known server players with search, sort (Name/Faction/Power/Last Online), expandable entries with power stats, faction membership, and quick actions (View Profile, View Faction, Teleport)
 - **Admin search on all list pages**: Added search bars to admin factions, admin faction members, and admin zones pages matching the faction browser search pattern
 - **Admin zone sort dropdown**: Zones can now be sorted by Name, Type, Chunks, or World (previously name-only)
 - **Admin faction members overhaul**: Upgraded from read-only list to full admin tool with search, sort dropdown (Role/Online/Name/Power), pagination (8 per page), and 700x500 container matching the admin factions page layout
-- **Relations page redesign**: Merged three tabs (Allies/Enemies/Pending) into two tabs (Relations/Pending) with collapsible row entries showing faction name, leader, relation badge, member count, power stats, and inline quick actions (View, Set Neutral, Set Enemy, Request Ally, Accept, Decline, Cancel)
 - `getAllPlayerUuids()` storage method for admin player list enumeration
+
+**Relations Redesign**
+- **Relations page redesign**: Merged three tabs (Allies/Enemies/Pending) into two tabs (Relations/Pending) with collapsible row entries showing faction name, leader, relation badge, member count, power stats, and inline quick actions (View, Set Neutral, Set Enemy, Request Ally, Accept, Decline, Cancel)
 
 ### Fixed
 
+- **Zone flags reset on server restart**: WarZone migration code ran on every startup and unconditionally stripped the `BUILD_ALLOWED` flag, reverting any admin customizations to defaults. Migration now only removes genuinely obsolete keys (`container_access`, `interact_allowed`) and applies to all zone types.
 - **Terrain map lag on claim/unclaim**: Each claim/unclaim action opened a new page instance, regenerating the entire 17x17 terrain image from scratch. Now reuses the same page via `rebuild()`, skipping terrain generation and only updating the overlay grid
 - **Membership history not recorded for faction creation**: `FactionManager.createFaction()` now publishes a JOIN event for the faction creator
 - **Admin kicks not recorded in membership history**: `FactionManager.adminRemoveMember()` now publishes a KICK event
@@ -59,9 +64,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- CurseForge description updated with Discord community link and HyBounty integration callout
 - Relations page uses 2-tab layout (Relations combining allies+enemies, Pending combining incoming+outgoing) instead of 3 separate tabs
 - Admin faction members page upgraded from DecoratedContainer (520x550) to Container (700x500) with sort dropdown replacing sort buttons
+- CurseForge description updated with Discord community link and HyBounty integration callout
+
+### Refactored
+
+- **Codebase cleanup** — Purely mechanical refactoring with no behavioral changes:
+  - `MessageUtil` and `UuidUtil` utilities replace ~200 hardcoded color/prefix/UUID patterns across ~85 files
+  - `requireFaction()` helper in `FactionSubCommand` replaces 26 duplicate null-check blocks
+  - GUI packages reorganized: consistent `gui/<subsystem>/page/` layout (admin, faction, newplayer, help)
+  - Integration packages reorganized into `permissions/`, `protection/`, `placeholder/` subdirectories
+  - `HyperFactions.java` decomposed (1,177→906 lines) with `lifecycle/` helpers (CallbackWiring, PeriodicTaskManager, MembershipHistoryHandler)
+  - `HyperFactionsPlugin.java` decomposed (997→440 lines) with `platform/` helpers (EventRegistration, WorldSetup, PlayerConnectionHandler)
+  - `AdminSubCommand.java` decomposed (2,462→306 lines) into 8 focused handler classes in `command/admin/handler/`
+  - All internal documentation updated to reflect new structure
 
 ## [0.7.4] - 2026-02-14
 

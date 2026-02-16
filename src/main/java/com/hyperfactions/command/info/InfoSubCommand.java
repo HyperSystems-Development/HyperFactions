@@ -6,6 +6,7 @@ import com.hyperfactions.command.FactionCommandContext;
 import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
+import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
@@ -58,7 +59,7 @@ public class InfoSubCommand extends FactionSubCommand {
         } else {
             faction = hyperFactions.getFactionManager().getPlayerFaction(player.getUuid());
             if (faction == null) {
-                ctx.sendMessage(prefix().insert(msg("You are not in a faction. Use /f info <faction>", COLOR_RED)));
+                ctx.sendMessage(MessageUtil.error("You are not in a faction. Use /f info <faction>"));
                 return;
             }
         }

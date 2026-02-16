@@ -87,7 +87,7 @@ GuiManager
 | GuiManager | [`gui/GuiManager.java`](../src/main/java/com/hyperfactions/gui/GuiManager.java) | Central GUI coordinator |
 | GuiType | [`gui/GuiType.java`](../src/main/java/com/hyperfactions/gui/GuiType.java) | Page type enumeration |
 | FactionPageRegistry | [`gui/faction/FactionPageRegistry.java`](../src/main/java/com/hyperfactions/gui/faction/FactionPageRegistry.java) | Faction page navigation |
-| NewPlayerPageRegistry | [`gui/NewPlayerPageRegistry.java`](../src/main/java/com/hyperfactions/gui/NewPlayerPageRegistry.java) | New player page navigation |
+| NewPlayerPageRegistry | [`gui/newplayer/NewPlayerPageRegistry.java`](../src/main/java/com/hyperfactions/gui/newplayer/NewPlayerPageRegistry.java) | New player page navigation |
 | AdminPageRegistry | [`gui/admin/AdminPageRegistry.java`](../src/main/java/com/hyperfactions/gui/admin/AdminPageRegistry.java) | Admin page navigation |
 
 ## GuiManager
@@ -467,9 +467,14 @@ private void onRenameClicked() {
 gui/
 ├── GuiManager.java               # Central coordinator
 ├── GuiType.java                  # Page type enum
+├── ActivePageTracker.java        # Live data refresh tracking
+├── RefreshablePage.java          # Refreshable page interface
+├── GuiUpdateService.java         # GUI update coordination
 │
 ├── faction/                      # Faction member pages
 │   ├── FactionPageRegistry.java  # Navigation registry
+│   ├── NavBarHelper.java         # Faction navigation bar
+│   ├── ChunkMapAsset.java        # Chunk map asset
 │   ├── page/                     # Page implementations
 │   │   ├── FactionMainPage.java
 │   │   ├── FactionMembersPage.java
@@ -480,7 +485,7 @@ gui/
 │   │   ├── FactionHelpPage.java
 │   │   ├── FactionInvitesPage.java
 │   │   ├── FactionModulesPage.java
-│   │   ├── ChunkMapPage.java
+│   │   ├── FactionChatPage.java
 │   │   ├── LogsViewerPage.java
 │   │   ├── PlayerInfoPage.java
 │   │   ├── SetRelationModalPage.java
@@ -494,53 +499,60 @@ gui/
 │       ├── FactionRelationsData.java
 │       └── ...
 │
-├── page/                         # Non-registry pages
-│   ├── newplayer/               # New player flow
-│   │   ├── CreateFactionStep1Page.java
-│   │   ├── CreateFactionStep2Page.java
-│   │   ├── InvitesPage.java
-│   │   ├── HelpPage.java
-│   │   ├── NewPlayerMapPage.java
-│   │   └── NewPlayerBrowsePage.java
-│   └── admin/                   # Admin pages
-│       ├── AdminMainPage.java
-│       ├── AdminDashboardPage.java
-│       ├── AdminFactionsPage.java
-│       ├── AdminFactionInfoPage.java
-│       ├── AdminFactionMembersPage.java
-│       ├── AdminFactionRelationsPage.java
-│       ├── AdminZoneMapPage.java
-│       ├── AdminZoneSettingsPage.java
-│       ├── AdminZoneIntegrationFlagsPage.java
-│       ├── CreateZoneWizardPage.java
-│       ├── AdminConfigPage.java
-│       ├── AdminBackupsPage.java
-│       ├── AdminUpdatesPage.java
-│       ├── AdminHelpPage.java
-│       ├── AdminDisbandConfirmPage.java
-│       └── AdminUnclaimAllConfirmPage.java
-│
-├── admin/                       # Admin utilities
+├── admin/                       # Admin pages (registry + pages + data)
 │   ├── AdminPageRegistry.java
 │   ├── AdminNavBarHelper.java
+│   ├── page/                    # Admin page implementations
+│   │   ├── AdminMainPage.java
+│   │   ├── AdminDashboardPage.java
+│   │   ├── AdminFactionsPage.java
+│   │   ├── AdminFactionInfoPage.java
+│   │   ├── AdminFactionMembersPage.java
+│   │   ├── AdminFactionRelationsPage.java
+│   │   ├── AdminFactionSettingsPage.java
+│   │   ├── AdminPlayersPage.java
+│   │   ├── AdminPlayerInfoPage.java
+│   │   ├── AdminZoneMapPage.java
+│   │   ├── AdminZonePage.java
+│   │   ├── AdminZoneSettingsPage.java
+│   │   ├── AdminZoneIntegrationFlagsPage.java
+│   │   ├── CreateZoneWizardPage.java
+│   │   ├── ZoneRenameModalPage.java
+│   │   ├── ZoneChangeTypeModalPage.java
+│   │   ├── AdminConfigPage.java
+│   │   ├── AdminBackupsPage.java
+│   │   ├── AdminUpdatesPage.java
+│   │   ├── AdminHelpPage.java
+│   │   ├── AdminDisbandConfirmPage.java
+│   │   └── AdminUnclaimAllConfirmPage.java
 │   └── data/                    # Admin data records
 │       ├── AdminMainData.java
 │       ├── AdminDashboardData.java
 │       └── ...
 │
+├── newplayer/                   # New player flow (registry + pages + data)
+│   ├── NewPlayerPageRegistry.java  # New player navigation
+│   ├── NewPlayerNavBarHelper.java  # New player navigation bar
+│   ├── page/                    # New player page implementations
+│   │   ├── CreateFactionPage.java
+│   │   ├── InvitesPage.java
+│   │   ├── HelpPage.java
+│   │   ├── NewPlayerMapPage.java
+│   │   └── NewPlayerBrowsePage.java
+│   └── data/                    # New player data models
+│       └── NewPlayerPageData.java
+│
 ├── shared/                      # Shared components
 │   ├── component/
 │   │   ├── InputModal.java
-│   │   ├── ColorPickerModal.java
 │   │   └── ConfirmationModal.java
 │   ├── page/
 │   │   ├── MainMenuPage.java
+│   │   ├── FactionInfoPage.java
 │   │   ├── PlaceholderPage.java
 │   │   ├── RenameModalPage.java
 │   │   ├── DescriptionModalPage.java
-│   │   ├── TagModalPage.java
-│   │   ├── ColorPickerPage.java
-│   │   └── RecruitmentModalPage.java
+│   │   └── TagModalPage.java
 │   └── data/
 │       ├── NavAwareData.java
 │       ├── MainMenuData.java
@@ -549,11 +561,14 @@ gui/
 ├── help/                        # Help system
 │   ├── HelpCategory.java
 │   ├── HelpTopic.java
-│   ├── HelpPageData.java
+│   ├── HelpRegistry.java
+│   ├── data/
+│   │   └── HelpPageData.java
 │   └── page/
 │       └── HelpMainPage.java
 │
-└── NewPlayerPageRegistry.java   # New player navigation
+└── test/                        # Test pages
+    └── ButtonTestPage.java
 ```
 
 ## Permission Checks in GUI
@@ -631,8 +646,8 @@ public class FactionSettingsPage extends InteractiveCustomUIPage {
 |-------|------|
 | GuiManager | [`gui/GuiManager.java`](../src/main/java/com/hyperfactions/gui/GuiManager.java) |
 | FactionPageRegistry | [`gui/faction/FactionPageRegistry.java`](../src/main/java/com/hyperfactions/gui/faction/FactionPageRegistry.java) |
-| NewPlayerPageRegistry | [`gui/NewPlayerPageRegistry.java`](../src/main/java/com/hyperfactions/gui/NewPlayerPageRegistry.java) |
+| NewPlayerPageRegistry | [`gui/newplayer/NewPlayerPageRegistry.java`](../src/main/java/com/hyperfactions/gui/newplayer/NewPlayerPageRegistry.java) |
+| NewPlayerNavBarHelper | [`gui/newplayer/NewPlayerNavBarHelper.java`](../src/main/java/com/hyperfactions/gui/newplayer/NewPlayerNavBarHelper.java) |
 | AdminPageRegistry | [`gui/admin/AdminPageRegistry.java`](../src/main/java/com/hyperfactions/gui/admin/AdminPageRegistry.java) |
-| FactionMainPage | [`gui/faction/page/FactionMainPage.java`](../src/main/java/com/hyperfactions/gui/faction/page/FactionMainPage.java) |
+| NavBarHelper | [`gui/faction/NavBarHelper.java`](../src/main/java/com/hyperfactions/gui/faction/NavBarHelper.java) |
 | InputModal | [`gui/shared/component/InputModal.java`](../src/main/java/com/hyperfactions/gui/shared/component/InputModal.java) |
-| ColorPickerModal | [`gui/shared/component/ColorPickerModal.java`](../src/main/java/com/hyperfactions/gui/shared/component/ColorPickerModal.java) |

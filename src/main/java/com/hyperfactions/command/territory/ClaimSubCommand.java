@@ -5,6 +5,7 @@ import com.hyperfactions.Permissions;
 import com.hyperfactions.command.FactionCommandContext;
 import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.data.Faction;
+import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.manager.ClaimManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.ChunkUtil;
@@ -43,12 +44,8 @@ public class ClaimSubCommand extends FactionSubCommand {
             return;
         }
 
-        // Upfront faction check - consistent error handling
-        Faction faction = hyperFactions.getFactionManager().getPlayerFaction(player.getUuid());
-        if (faction == null) {
-            ctx.sendMessage(prefix().insert(msg("You are not in a faction.", COLOR_RED)));
-            return;
-        }
+        Faction faction = requireFaction(ctx, player);
+        if (faction == null) return;
 
         TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
         if (transform == null) return;
@@ -109,7 +106,7 @@ public class ClaimSubCommand extends FactionSubCommand {
                     }
                 }
             }
-            case NOT_IN_FACTION -> ctx.sendMessage(prefix().insert(msg("You are not in a faction.", COLOR_RED)));
+            case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error("You are not in a faction."));
             case NOT_OFFICER -> ctx.sendMessage(prefix().insert(msg("You must be an officer to claim land.", COLOR_RED)));
             case ALREADY_CLAIMED_SELF -> ctx.sendMessage(prefix().insert(msg("Your faction already owns this chunk.", COLOR_RED)));
             case ALREADY_CLAIMED_OTHER -> ctx.sendMessage(prefix().insert(msg("This chunk is already claimed.", COLOR_RED)));

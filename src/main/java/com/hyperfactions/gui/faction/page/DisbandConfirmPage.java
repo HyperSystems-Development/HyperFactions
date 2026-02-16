@@ -10,6 +10,7 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
@@ -87,7 +88,7 @@ public class DisbandConfirmPage extends InteractiveCustomUIPage<DisbandConfirmDa
 
         // Verify leader permission
         if (member == null || member.role() != FactionRole.LEADER) {
-            player.sendMessage(Message.raw("Only the leader can disband the faction.").color("#FF5555"));
+            player.sendMessage(MessageUtil.errorText("Only the leader can disband the faction."));
             guiManager.openFactionSettings(player, ref, store, playerRef,
                     factionManager.getFaction(faction.id()));
             return;
@@ -114,7 +115,7 @@ public class DisbandConfirmPage extends InteractiveCustomUIPage<DisbandConfirmDa
                                     .insert(Message.raw("' has been disbanded.").color("#FF5555"))
                     );
                 } else {
-                    player.sendMessage(Message.raw("Failed to disband faction.").color("#FF5555"));
+                    player.sendMessage(MessageUtil.errorText("Failed to disband faction."));
                 }
 
                 guiManager.openFactionMain(player, ref, store, playerRef);

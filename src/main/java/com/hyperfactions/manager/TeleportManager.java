@@ -5,6 +5,7 @@ import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.TimeUtil;
 import com.hypixel.hytale.server.core.Message;
 import org.jetbrains.annotations.NotNull;
@@ -25,13 +26,6 @@ import java.util.function.Supplier;
  * the correct thread.
  */
 public class TeleportManager {
-
-    // Color constants for consistent messaging
-    private static final String COLOR_CYAN = "#55FFFF";
-    private static final String COLOR_GREEN = "#55FF55";
-    private static final String COLOR_RED = "#FF5555";
-    private static final String COLOR_YELLOW = "#FFFF55";
-    private static final String COLOR_GRAY = "#AAAAAA";
 
     private final FactionManager factionManager;
 
@@ -267,8 +261,8 @@ public class TeleportManager {
         if (!PermissionManager.get().hasPermission(playerUuid, Permissions.BYPASS_COOLDOWN)) {
             if (isOnCooldown(playerUuid)) {
                 int remaining = getCooldownRemaining(playerUuid);
-                sendMessage.accept(prefix().insert(msg("You must wait " +
-                    TimeUtil.formatDurationSeconds(remaining) + " before teleporting again.", COLOR_RED)));
+                sendMessage.accept(MessageUtil.error("You must wait " +
+                    TimeUtil.formatDurationSeconds(remaining) + " before teleporting again."));
                 return TeleportResult.ON_COOLDOWN;
             }
         }
@@ -300,7 +294,7 @@ public class TeleportManager {
         pendingTeleports.put(playerUuid, pending);
 
         // Send warmup message
-        sendMessage.accept(prefix().insert(msg("Teleporting to faction home in " + warmup + " seconds...", COLOR_YELLOW)));
+        sendMessage.accept(MessageUtil.info("Teleporting to faction home in " + warmup + " seconds...", MessageUtil.COLOR_YELLOW));
 
         Logger.debug("Scheduled teleport for %s, will execute at %d", playerUuid, executeAt);
         return TeleportResult.SUCCESS_WARMUP;
@@ -356,7 +350,7 @@ public class TeleportManager {
 
         // Check combat tag
         if (pending.isTagged().get()) {
-            sendMessage.accept(prefix().insert(msg("Teleportation cancelled - you are in combat!", COLOR_RED)));
+            sendMessage.accept(MessageUtil.error("Teleportation cancelled - you are in combat!"));
             return null;
         }
 
@@ -371,7 +365,7 @@ public class TeleportManager {
      */
     public void onTeleportSuccess(@NotNull UUID playerUuid, @NotNull Consumer<Message> sendMessage) {
         applyCooldown(playerUuid);
-        sendMessage.accept(prefix().insert(msg("Teleported to faction home!", COLOR_GREEN)));
+        sendMessage.accept(MessageUtil.success("Teleported to faction home!"));
     }
 
     /**
@@ -382,9 +376,9 @@ public class TeleportManager {
      */
     public void onTeleportFailed(@NotNull TeleportResult result, @NotNull Consumer<Message> sendMessage) {
         switch (result) {
-            case NO_HOME -> sendMessage.accept(prefix().insert(msg("Your faction has no home set.", COLOR_RED)));
-            case WORLD_NOT_FOUND -> sendMessage.accept(prefix().insert(msg("World not found.", COLOR_RED)));
-            default -> sendMessage.accept(prefix().insert(msg("Teleportation failed.", COLOR_RED)));
+            case NO_HOME -> sendMessage.accept(MessageUtil.error("Your faction has no home set."));
+            case WORLD_NOT_FOUND -> sendMessage.accept(MessageUtil.error("World not found."));
+            default -> sendMessage.accept(MessageUtil.error("Teleportation failed."));
         }
     }
 
@@ -398,7 +392,7 @@ public class TeleportManager {
         int secondsToAnnounce = pending.checkCountdown();
         if (secondsToAnnounce > 0) {
             String timeText = secondsToAnnounce == 1 ? "1 second" : secondsToAnnounce + " seconds";
-            sendMessage.accept(prefix().insert(msg("Teleporting in " + timeText + "...", COLOR_YELLOW)));
+            sendMessage.accept(MessageUtil.info("Teleporting in " + timeText + "...", MessageUtil.COLOR_YELLOW));
         }
     }
 
@@ -434,7 +428,7 @@ public class TeleportManager {
 
         if (distSq > 0.25) { // 0.5 blocks
             removePending(playerUuid);
-            sendMessage.accept(prefix().insert(msg("Teleportation cancelled - you moved!", COLOR_RED)));
+            sendMessage.accept(MessageUtil.error("Teleportation cancelled - you moved!"));
             return true;
         }
 
@@ -458,7 +452,7 @@ public class TeleportManager {
 
         if (pendingTeleports.containsKey(playerUuid)) {
             removePending(playerUuid);
-            sendMessage.accept(prefix().insert(msg("Teleportation cancelled - you took damage!", COLOR_RED)));
+            sendMessage.accept(MessageUtil.error("Teleportation cancelled - you took damage!"));
             return true;
         }
 
@@ -513,29 +507,6 @@ public class TeleportManager {
         if (cooldownSeconds > 0) {
             cooldowns.put(playerUuid, System.currentTimeMillis() + (cooldownSeconds * 1000L));
         }
-    }
-
-    /**
-     * Creates the standard HyperFactions message prefix.
-     *
-     * @return the prefix message
-     */
-    private static Message prefix() {
-        ConfigManager config = ConfigManager.get();
-        return Message.raw("[").color(config.getPrefixBracketColor())
-            .insert(Message.raw(config.getPrefixText()).color(config.getPrefixColor()))
-            .insert(Message.raw("] ").color(config.getPrefixBracketColor()));
-    }
-
-    /**
-     * Creates a colored message.
-     *
-     * @param text the text content
-     * @param color the hex color code
-     * @return the colored message
-     */
-    private static Message msg(@NotNull String text, @NotNull String color) {
-        return Message.raw(text).color(color);
     }
 
     /**

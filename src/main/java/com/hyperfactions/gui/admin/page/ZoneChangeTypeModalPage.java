@@ -1,0 +1,165 @@
+package com.hyperfactions.gui.admin.page;
+
+import com.hyperfactions.data.Zone;
+import com.hyperfactions.data.ZoneType;
+import com.hyperfactions.gui.GuiManager;
+import com.hyperfactions.gui.admin.data.ZoneChangeTypeModalData;
+import com.hyperfactions.manager.ZoneManager;
+import com.hypixel.hytale.component.Ref;
+import com.hypixel.hytale.component.Store;
+import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
+import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
+import com.hyperfactions.util.MessageUtil;
+import com.hypixel.hytale.server.core.Message;
+import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
+import com.hypixel.hytale.server.core.ui.builder.EventData;
+import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
+import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
+import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+
+import java.util.UUID;
+
+/**
+ * Modal for changing a zone's type (SafeZone <-> WarZone).
+ * Offers options to keep existing flag overrides or reset to new type defaults.
+ */
+public class ZoneChangeTypeModalPage extends InteractiveCustomUIPage<ZoneChangeTypeModalData> {
+
+    private final PlayerRef playerRef;
+    private final ZoneManager zoneManager;
+    private final GuiManager guiManager;
+    private final UUID zoneId;
+    private final String currentTab;
+    private final int currentPage;
+
+    public ZoneChangeTypeModalPage(PlayerRef playerRef,
+                                   ZoneManager zoneManager,
+                                   GuiManager guiManager,
+                                   UUID zoneId,
+                                   String currentTab,
+                                   int currentPage) {
+        super(playerRef, CustomPageLifetime.CanDismiss, ZoneChangeTypeModalData.CODEC);
+        this.playerRef = playerRef;
+        this.zoneManager = zoneManager;
+        this.guiManager = guiManager;
+        this.zoneId = zoneId;
+        this.currentTab = currentTab;
+        this.currentPage = currentPage;
+    }
+
+    @Override
+    public void build(Ref<EntityStore> ref, UICommandBuilder cmd,
+                      UIEventBuilder events, Store<EntityStore> store) {
+
+        Zone zone = zoneManager.getZoneById(zoneId);
+        if (zone == null) {
+            return;
+        }
+
+        // Load the modal template
+        cmd.append("HyperFactions/admin/zone_change_type_modal.ui");
+
+        // Zone name
+        cmd.set("#ZoneName.Text", zone.name());
+
+        // Current and new types - use visibility toggle instead of setting style dynamically
+        ZoneType currentType = zone.type();
+        ZoneType newType = currentType == ZoneType.SAFE ? ZoneType.WAR : ZoneType.SAFE;
+
+        // Toggle visibility of current type labels
+        cmd.set("#CurrentTypeSafe.Visible", currentType == ZoneType.SAFE);
+        cmd.set("#CurrentTypeWar.Visible", currentType == ZoneType.WAR);
+
+        // Toggle visibility of new type labels
+        cmd.set("#NewTypeSafe.Visible", newType == ZoneType.SAFE);
+        cmd.set("#NewTypeWar.Visible", newType == ZoneType.WAR);
+
+        // Cancel button
+        events.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#CancelBtn",
+                EventData.of("Button", "Cancel"),
+                false
+        );
+
+        // Keep flags button
+        events.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#KeepFlagsBtn",
+                EventData.of("Button", "KeepFlags"),
+                false
+        );
+
+        // Reset flags button
+        events.addEventBinding(
+                CustomUIEventBindingType.Activating,
+                "#ResetFlagsBtn",
+                EventData.of("Button", "ResetFlags"),
+                false
+        );
+    }
+
+    @Override
+    public void handleDataEvent(Ref<EntityStore> ref, Store<EntityStore> store,
+                                ZoneChangeTypeModalData data) {
+        super.handleDataEvent(ref, store, data);
+
+        Player player = store.getComponent(ref, Player.getComponentType());
+        PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
+
+        if (player == null || playerRef == null || data.button == null) {
+            return;
+        }
+
+        Zone zone = zoneManager.getZoneById(zoneId);
+        if (zone == null) {
+            player.sendMessage(MessageUtil.errorText("Zone no longer exists."));
+            guiManager.openAdminZone(player, ref, store, playerRef, currentTab, currentPage);
+            return;
+        }
+
+        switch (data.button) {
+            case "Cancel" -> {
+                guiManager.openAdminZone(player, ref, store, playerRef, currentTab, currentPage);
+            }
+
+            case "KeepFlags" -> {
+                handleTypeChange(player, ref, store, playerRef, zone, false);
+            }
+
+            case "ResetFlags" -> {
+                handleTypeChange(player, ref, store, playerRef, zone, true);
+            }
+        }
+    }
+
+    private void handleTypeChange(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
+                                  PlayerRef playerRef, Zone zone, boolean resetFlags) {
+        ZoneType oldType = zone.type();
+        ZoneManager.ZoneResult result = zoneManager.changeZoneType(zoneId, resetFlags);
+
+        if (result == ZoneManager.ZoneResult.SUCCESS) {
+            Zone updated = zoneManager.getZoneById(zoneId);
+            ZoneType newType = updated != null ? updated.type() : (oldType == ZoneType.SAFE ? ZoneType.WAR : ZoneType.SAFE);
+
+            String oldColor = oldType == ZoneType.SAFE ? "#55FF55" : "#FF5555";
+            String newColor = newType == ZoneType.SAFE ? "#55FF55" : "#FF5555";
+
+            player.sendMessage(
+                    Message.raw("[Admin] Changed ").color("#AAAAAA")
+                            .insert(Message.raw(zone.name()).color("#00FFFF"))
+                            .insert(Message.raw(" from ").color("#AAAAAA"))
+                            .insert(Message.raw(oldType.getDisplayName()).color(oldColor))
+                            .insert(Message.raw(" to ").color("#AAAAAA"))
+                            .insert(Message.raw(newType.getDisplayName()).color(newColor))
+                            .insert(Message.raw(resetFlags ? " (flags reset)" : " (flags kept)").color("#888888"))
+            );
+        } else {
+            player.sendMessage(MessageUtil.adminError("Failed to change zone type: " + result));
+        }
+
+        guiManager.openAdminZone(player, ref, store, playerRef, currentTab, currentPage);
+    }
+}

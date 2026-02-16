@@ -12,6 +12,7 @@ import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.EntityEventSystem;
 import com.hypixel.hytale.math.vector.Vector3i;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.event.events.ecs.UseBlockEvent;
@@ -94,7 +95,7 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
                 boolean cropHarvestAllowed = zoneProtection.isManualPickupAllowed(worldName, pos.getX(), pos.getZ());
                 if (!cropHarvestAllowed) {
                     event.setCancelled(true);
-                    player.sendMessage(Message.raw("You cannot harvest crops in this zone.").color("#FF5555"));
+                    player.sendMessage(MessageUtil.errorText("You cannot harvest crops in this zone."));
                     Logger.debugProtection("Crop harvest blocked by zone (ITEM_PICKUP_MANUAL=false) at %s/%d/%d for player %s",
                         worldName, pos.getX(), pos.getZ(), player.getUuid());
                     return;
@@ -130,7 +131,7 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
                     case SEAT -> "seat use";
                     case OTHER -> "block interaction";
                 };
-                player.sendMessage(Message.raw("You cannot use " + flagName + " in this zone.").color("#FF5555"));
+                player.sendMessage(MessageUtil.errorText("You cannot use " + flagName + " in this zone."));
                 return;
             }
 

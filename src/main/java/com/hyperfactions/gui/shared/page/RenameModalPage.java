@@ -12,6 +12,7 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
@@ -107,7 +108,7 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
 
         // Verify officer permission (skip in admin mode)
         if (!adminMode && (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel())) {
-            player.sendMessage(Message.raw("You don't have permission to rename the faction.").color("#FF5555"));
+            player.sendMessage(MessageUtil.errorText("You don't have permission to rename the faction."));
             guiManager.openFactionSettings(player, ref, store, playerRef,
                     factionManager.getFaction(faction.id()));
             return;
@@ -128,7 +129,7 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
 
                 // Validation
                 if (newName == null || newName.trim().isEmpty()) {
-                    player.sendMessage(Message.raw("Please enter a faction name.").color("#FF5555"));
+                    player.sendMessage(MessageUtil.errorText("Please enter a faction name."));
                     sendUpdate();
                     return;
                 }
@@ -136,20 +137,20 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
                 newName = newName.trim();
 
                 if (newName.length() < MIN_NAME_LENGTH) {
-                    player.sendMessage(Message.raw("Faction name must be at least " + MIN_NAME_LENGTH + " characters.").color("#FF5555"));
+                    player.sendMessage(MessageUtil.errorText("Faction name must be at least " + MIN_NAME_LENGTH + " characters."));
                     sendUpdate();
                     return;
                 }
 
                 if (newName.length() > MAX_NAME_LENGTH) {
-                    player.sendMessage(Message.raw("Faction name cannot exceed " + MAX_NAME_LENGTH + " characters.").color("#FF5555"));
+                    player.sendMessage(MessageUtil.errorText("Faction name cannot exceed " + MAX_NAME_LENGTH + " characters."));
                     sendUpdate();
                     return;
                 }
 
                 // Check if name is the same
                 if (newName.equalsIgnoreCase(faction.name())) {
-                    player.sendMessage(Message.raw("That's already your faction's name.").color("#FFAA00"));
+                    player.sendMessage(MessageUtil.text("That's already your faction's name.", MessageUtil.COLOR_GOLD));
                     sendUpdate();
                     return;
                 }
@@ -157,7 +158,7 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
                 // Check uniqueness
                 Faction existing = factionManager.getFactionByName(newName);
                 if (existing != null) {
-                    player.sendMessage(Message.raw("A faction with that name already exists.").color("#FF5555"));
+                    player.sendMessage(MessageUtil.errorText("A faction with that name already exists."));
                     sendUpdate();
                     return;
                 }

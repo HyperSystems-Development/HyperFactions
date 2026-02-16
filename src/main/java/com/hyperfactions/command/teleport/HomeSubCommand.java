@@ -4,6 +4,7 @@ import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
 import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.data.Faction;
+import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.manager.TeleportManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hypixel.hytale.component.Ref;
@@ -43,12 +44,8 @@ public class HomeSubCommand extends FactionSubCommand {
             return;
         }
 
-        // Upfront faction check - consistent error handling
-        Faction faction = hyperFactions.getFactionManager().getPlayerFaction(player.getUuid());
-        if (faction == null) {
-            ctx.sendMessage(prefix().insert(msg("You are not in a faction.", COLOR_RED)));
-            return;
-        }
+        Faction faction = requireFaction(ctx, player);
+        if (faction == null) return;
 
         TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
         if (transform == null) return;
@@ -77,7 +74,7 @@ public class HomeSubCommand extends FactionSubCommand {
 
         // Handle immediate results (warmup teleports are handled by TerritoryTickingSystem)
         switch (result) {
-            case NOT_IN_FACTION -> ctx.sendMessage(prefix().insert(msg("You are not in a faction.", COLOR_RED)));
+            case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error("You are not in a faction."));
             case NO_HOME -> ctx.sendMessage(prefix().insert(msg("Your faction has no home set.", COLOR_RED)));
             case COMBAT_TAGGED -> ctx.sendMessage(prefix().insert(msg("You cannot teleport while in combat!", COLOR_RED)));
             case ON_COOLDOWN -> {} // Message sent by TeleportManager

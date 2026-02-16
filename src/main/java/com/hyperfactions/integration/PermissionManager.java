@@ -1,6 +1,10 @@
 package com.hyperfactions.integration;
 
 import com.hyperfactions.config.ConfigManager;
+import com.hyperfactions.integration.permissions.HyperPermsProviderAdapter;
+import com.hyperfactions.integration.permissions.HytaleNativeProvider;
+import com.hyperfactions.integration.permissions.LuckPermsProvider;
+import com.hyperfactions.integration.permissions.VaultUnlockedProvider;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import org.jetbrains.annotations.NotNull;
