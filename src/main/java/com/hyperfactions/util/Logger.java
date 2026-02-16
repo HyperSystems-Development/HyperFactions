@@ -27,7 +27,8 @@ public final class Logger {
         INTERACTION("interaction"),
         MIXIN("mixin"),
         SPAWNING("spawning"),
-        INTEGRATION("integration");
+        INTEGRATION("integration"),
+        ECONOMY("economy");
 
         private final String configKey;
 
@@ -368,6 +369,19 @@ public final class Logger {
     public static void debugSpawning(@NotNull String message, Object... args) {
         if (isDebugEnabled(DebugCategory.SPAWNING)) {
             logDebug("SPAWNING", message, args);
+        }
+    }
+
+    /**
+     * Logs an economy-related debug message (treasury transactions, balance changes, admin adjustments).
+     * Used for debugging the faction economy system.
+     *
+     * @param message the message format
+     * @param args    format arguments
+     */
+    public static void debugEconomy(@NotNull String message, Object... args) {
+        if (isDebugEnabled(DebugCategory.ECONOMY)) {
+            logDebug("ECONOMY", message, args);
         }
     }
 

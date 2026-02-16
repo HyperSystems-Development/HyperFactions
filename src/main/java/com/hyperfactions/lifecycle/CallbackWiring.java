@@ -7,7 +7,9 @@ import com.hyperfactions.api.events.FactionMemberEvent;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.gui.GuiUpdateService;
+import com.hyperfactions.integration.economy.VaultEconomyProvider;
 import com.hyperfactions.manager.*;
+import com.hyperfactions.util.Logger;
 import com.hyperfactions.worldmap.MapPlayerFilterService;
 import com.hyperfactions.worldmap.WorldMapService;
 
@@ -43,6 +45,7 @@ public final class CallbackWiring {
         wireAnnouncementCallbacks(hf.getAnnouncementManager(), hf.getFactionManager(),
             hf.getClaimManager(), hf.getRelationManager());
         wireOverclaimNotification(hf);
+        wireEconomyCallbacks(hf);
     }
 
     /**
@@ -155,6 +158,47 @@ public final class CallbackWiring {
             announcementManager.announceAllianceFormed(f1, f2));
         relationManager.setOnAllianceBroken((f1, f2) ->
             announcementManager.announceAllianceBroken(f1, f2));
+    }
+
+    /**
+     * Wires economy callbacks for faction creation and disband.
+     * On creation: initializes faction economy with starting balance.
+     * On disband: refunds balance to leader (if configured) or destroys it.
+     */
+    private static void wireEconomyCallbacks(HyperFactions hf) {
+        if (!hf.isTreasuryEnabled()) return;
+
+        EconomyManager econ = hf.getEconomyManager();
+        if (econ == null) return;
+
+        // Faction creation → initialize economy
+        hf.getFactionManager().setOnFactionCreatedForEconomy(faction -> {
+            econ.initializeFaction(faction.id());
+        });
+
+        // Faction disband → refund or destroy balance
+        EventBus.register(FactionDisbandEvent.class, event -> {
+            Faction faction = event.faction();
+            double balance = econ.getFactionBalance(faction.id());
+
+            if (balance > 0 && ConfigManager.get().isEconomyDisbandRefundToLeader()) {
+                // Refund balance to leader
+                UUID leaderId = faction.getLeaderId();
+                VaultEconomyProvider vault = econ.getVaultProvider();
+                if (leaderId != null && vault.deposit(leaderId, balance)) {
+                    Logger.info("Refunded %s to leader %s on faction %s disband",
+                            econ.formatCurrency(balance), leaderId, faction.name());
+                } else {
+                    Logger.warn("Failed to refund %s to leader on faction %s disband",
+                            econ.formatCurrency(balance), faction.name());
+                }
+            } else if (balance > 0) {
+                Logger.info("Destroyed %s balance on faction %s disband (refund disabled)",
+                        econ.formatCurrency(balance), faction.name());
+            }
+
+            econ.removeFaction(faction.id());
+        });
     }
 
     /**

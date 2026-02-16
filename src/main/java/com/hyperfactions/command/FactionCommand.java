@@ -3,6 +3,7 @@ package com.hyperfactions.command;
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
 import com.hyperfactions.command.admin.AdminSubCommand;
+import com.hyperfactions.command.economy.*;
 import com.hyperfactions.command.faction.*;
 import com.hyperfactions.command.info.*;
 import com.hyperfactions.command.member.*;
@@ -91,6 +92,14 @@ public class FactionCommand extends AbstractPlayerCommand {
         addSubCommand(new RequestSubCommand(hyperFactions, plugin));
         addSubCommand(new InvitesSubCommand(hyperFactions, plugin));
         addSubCommand(new ChatSubCommand(hyperFactions, plugin));
+
+        // Economy commands (only if treasury is enabled)
+        if (hyperFactions.isTreasuryEnabled()) {
+            addSubCommand(new MoneySubCommand(hyperFactions, plugin));
+            addSubCommand(new BalanceSubCommand(hyperFactions, plugin));
+            addSubCommand(new DepositSubCommand(hyperFactions, plugin));
+            addSubCommand(new WithdrawSubCommand(hyperFactions, plugin));
+        }
 
         // UI commands
         addSubCommand(new GuiSubCommand(hyperFactions, plugin));

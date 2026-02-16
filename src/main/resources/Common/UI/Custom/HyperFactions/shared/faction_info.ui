@@ -1,50 +1,47 @@
 // Faction Info Page
-// Displays detailed information about a specific faction
+// Card-based stat layout matching admin faction info style
 // Used for /f info [faction] command (GUI mode)
 
 $C = "../../Common.ui";
 $S = "styles.ui";
 
 $C.@PageOverlay {
-  $C.@DecoratedContainer {
-    Anchor: (Width: 550, Height: 500);
+  $C.@Container {
+    Anchor: (Width: 560, Height: 520);
 
     #Title {
-      Group {
-        $C.@Title {
-          @Text = "Faction Info";
-        }
+      $C.@Title {
+        @Text = "Faction Info";
       }
     }
 
     #Content {
       LayoutMode: Top;
-      Padding: (Left: 25, Right: 25, Top: 15, Bottom: 15);
+      Padding: (Left: 20, Right: 20, Top: 12, Bottom: 12);
 
       // === Header Section ===
       Group #HeaderSection {
-        Anchor: (Height: 70, Bottom: 15);
+        Anchor: (Height: 55, Bottom: 8);
         LayoutMode: Top;
 
-        // Faction name and tag row
+        // Faction name, tag, and status row
         Group {
           LayoutMode: Left;
           Anchor: (Height: 28);
 
           Label #FactionName {
             Text: "Faction Name";
-            Style: (FontSize: 20, TextColor: #00FFFF, RenderBold: true, VerticalAlignment: Center);
+            Style: (FontSize: 18, TextColor: #00FFFF, RenderBold: true, VerticalAlignment: Center);
           }
 
           Label #FactionTag {
             Text: "";
             Style: (FontSize: 14, TextColor: #FFD700, RenderBold: true, VerticalAlignment: Center);
-            Anchor: (Left: 10);
+            Anchor: (Left: 8);
           }
 
           Label { FlexWeight: 1; }
 
-          // Status indicator
           Label #StatusIndicator {
             Text: "";
             Style: (FontSize: 12, TextColor: #44cc44, RenderBold: true, VerticalAlignment: Center);
@@ -55,250 +52,227 @@ $C.@PageOverlay {
         Label #FactionDescription {
           Text: "No description set.";
           Style: (FontSize: 12, TextColor: #888888);
-          Anchor: (Height: 36);
+          Anchor: (Height: 20);
         }
       }
 
-      // Divider
+      // === Stats Row 1: Power, Claims, Members ===
       Group {
-        Anchor: (Height: 1, Bottom: 12);
-        Background: (Color: #00AAAA);
-      }
-
-      // === Stats Section ===
-      Group {
-        Anchor: (Height: 20, Bottom: 5);
-        Label {
-          Text: "Faction Stats";
-          Style: (FontSize: 11, TextColor: #666666, RenderBold: true);
-        }
-      }
-
-      // Stats grid
-      Group #StatsGrid {
-        Anchor: (Height: 90, Bottom: 15);
+        Anchor: (Height: 75, Bottom: 8);
         LayoutMode: Left;
 
-        // Left column
+        // Power card
         Group {
-          Anchor: (Width: 240);
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
           LayoutMode: Top;
+          Anchor: (Right: 4);
 
-          // Power
-          Group {
-            Anchor: (Height: 22);
-            LayoutMode: Left;
-
-            Label {
-              Text: "Power:";
-              Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
-              Anchor: (Width: 100);
-            }
-
-            Label #PowerValue {
-              Text: "0.0 / 0.0";
-              Style: (FontSize: 12, TextColor: #FFFFFF, VerticalAlignment: Center);
-            }
+          Label {
+            Text: "Power";
+            Style: (FontSize: 9, TextColor: #666666);
+            Anchor: (Height: 14);
           }
-
-          // Claims
-          Group {
-            Anchor: (Height: 22);
-            LayoutMode: Left;
-
-            Label {
-              Text: "Claims:";
-              Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
-              Anchor: (Width: 100);
-            }
-
-            Label #ClaimsValue {
-              Text: "0 / 0";
-              Style: (FontSize: 12, TextColor: #FFFFFF, VerticalAlignment: Center);
-            }
+          Label #PowerValue {
+            Text: "0.0 / 0.0";
+            Style: (FontSize: 20, TextColor: #44CC44, RenderBold: true);
+            FlexWeight: 1;
           }
-
-          // Members
-          Group {
-            Anchor: (Height: 22);
-            LayoutMode: Left;
-
-            Label {
-              Text: "Members:";
-              Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
-              Anchor: (Width: 100);
-            }
-
-            Label #MembersValue {
-              Text: "0 / 0";
-              Style: (FontSize: 12, TextColor: #FFFFFF, VerticalAlignment: Center);
-            }
-          }
-
-          // Status
-          Group {
-            Anchor: (Height: 22);
-            LayoutMode: Left;
-
-            Label {
-              Text: "Recruitment:";
-              Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
-              Anchor: (Width: 100);
-            }
-
-            Label #RecruitmentValue {
-              Text: "Invite Only";
-              Style: (FontSize: 12, TextColor: #FFFFFF, VerticalAlignment: Center);
-            }
+          Label {
+            Text: "current / max";
+            Style: (FontSize: 9, TextColor: #444444);
+            Anchor: (Height: 14);
           }
         }
 
-        // Spacer
-        Label { Anchor: (Width: 20); }
-
-        // Right column
+        // Claims card
         Group {
-          Anchor: (Width: 230);
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
           LayoutMode: Top;
+          Anchor: (Left: 4, Right: 4);
 
-          // Founded
-          Group {
-            Anchor: (Height: 22);
-            LayoutMode: Left;
-
-            Label {
-              Text: "Founded:";
-              Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
-              Anchor: (Width: 80);
-            }
-
-            Label #FoundedValue {
-              Text: "Unknown";
-              Style: (FontSize: 12, TextColor: #FFFFFF, VerticalAlignment: Center);
-            }
+          Label {
+            Text: "Claims";
+            Style: (FontSize: 9, TextColor: #666666);
+            Anchor: (Height: 14);
           }
+          Label #ClaimsValue {
+            Text: "0 / 0";
+            Style: (FontSize: 20, TextColor: #FFAA00, RenderBold: true);
+            FlexWeight: 1;
+          }
+          Label {
+            Text: "claimed / max";
+            Style: (FontSize: 9, TextColor: #444444);
+            Anchor: (Height: 14);
+          }
+        }
 
-          // Allies
+        // Members card
+        Group {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+          LayoutMode: Top;
+          Anchor: (Left: 4);
+
+          Label {
+            Text: "Members";
+            Style: (FontSize: 9, TextColor: #666666);
+            Anchor: (Height: 14);
+          }
+          Label #MembersValue {
+            Text: "0 / 0";
+            Style: (FontSize: 20, TextColor: #00FFFF, RenderBold: true);
+            FlexWeight: 1;
+          }
+          Label #RecruitmentValue {
+            Text: "Invite Only";
+            Style: (FontSize: 9, TextColor: #444444);
+            Anchor: (Height: 14);
+          }
+        }
+      }
+
+      // === Stats Row 2: Relations, Status, Info ===
+      Group {
+        Anchor: (Height: 75, Bottom: 10);
+        LayoutMode: Left;
+
+        // Relations card (ally / enemy split)
+        Group {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+          LayoutMode: Top;
+          Anchor: (Right: 4);
+
+          Label {
+            Text: "Relations";
+            Style: (FontSize: 9, TextColor: #666666);
+            Anchor: (Height: 14);
+          }
           Group {
-            Anchor: (Height: 22);
+            FlexWeight: 1;
             LayoutMode: Left;
-
-            Label {
-              Text: "Allies:";
-              Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
-              Anchor: (Width: 80);
-            }
 
             Label #AlliesValue {
               Text: "0";
-              Style: (FontSize: 12, TextColor: #00AAFF, VerticalAlignment: Center);
+              Style: (FontSize: 18, TextColor: #55FF55, RenderBold: true, VerticalAlignment: Center);
+              FlexWeight: 1;
             }
-          }
-
-          // Enemies
-          Group {
-            Anchor: (Height: 22);
-            LayoutMode: Left;
-
             Label {
-              Text: "Enemies:";
-              Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
-              Anchor: (Width: 80);
+              Text: "/";
+              Style: (FontSize: 14, TextColor: #444444, VerticalAlignment: Center);
+              Anchor: (Width: 15);
             }
-
             Label #EnemiesValue {
               Text: "0";
-              Style: (FontSize: 12, TextColor: #FF5555, VerticalAlignment: Center);
+              Style: (FontSize: 18, TextColor: #FF5555, RenderBold: true, VerticalAlignment: Center);
+              FlexWeight: 1;
             }
           }
+          Label {
+            Text: "ally / enemy";
+            Style: (FontSize: 9, TextColor: #444444);
+            Anchor: (Height: 14);
+          }
+        }
 
-          // Raidable status
-          Group {
-            Anchor: (Height: 22);
-            LayoutMode: Left;
+        // Status card (raidable + founded)
+        Group {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+          LayoutMode: Top;
+          Anchor: (Left: 4, Right: 4);
 
-            Label {
-              Text: "Status:";
-              Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
-              Anchor: (Width: 80);
-            }
+          Label {
+            Text: "Status";
+            Style: (FontSize: 9, TextColor: #666666);
+            Anchor: (Height: 14);
+          }
+          Label #RaidableValue {
+            Text: "Protected";
+            Style: (FontSize: 18, TextColor: #44cc44, RenderBold: true);
+            FlexWeight: 1;
+          }
+          Label #FoundedValue {
+            Text: "Unknown";
+            Style: (FontSize: 9, TextColor: #444444);
+            Anchor: (Height: 14);
+          }
+        }
 
-            Label #RaidableValue {
-              Text: "Protected";
-              Style: (FontSize: 12, TextColor: #44cc44, VerticalAlignment: Center);
-            }
+        // Treasury card (hidden when economy disabled)
+        Group #TreasuryCard {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+          LayoutMode: Top;
+          Anchor: (Left: 4);
+          Visible: false;
+
+          Label {
+            Text: "Treasury";
+            Style: (FontSize: 9, TextColor: #666666);
+            Anchor: (Height: 14);
+          }
+          Label #TreasuryValue {
+            Text: "0";
+            Style: (FontSize: 18, TextColor: #FFD700, RenderBold: true);
+            FlexWeight: 1;
+          }
+          Label {
+            Text: "faction balance";
+            Style: (FontSize: 9, TextColor: #444444);
+            Anchor: (Height: 14);
           }
         }
       }
 
-      // Divider
+      // Cyan divider
       Group {
-        Anchor: (Height: 1, Bottom: 12);
-        Background: (Color: #333333);
+        Anchor: (Height: 1, Bottom: 8);
+        Background: (Color: #00AAAA);
       }
 
-      // === Leadership Section ===
-      Group {
-        Anchor: (Height: 20, Bottom: 5);
-        Label {
-          Text: "Leadership";
-          Style: (FontSize: 11, TextColor: #666666, RenderBold: true);
-        }
-      }
-
+      // === Leadership Card ===
       Group #LeadershipSection {
-        Anchor: (Height: 50, Bottom: 15);
+        Anchor: (Height: 50, Bottom: 8);
+        Background: (Color: #1a2a3a);
+        Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
         LayoutMode: Left;
 
-        // Leader
-        Group {
-          Anchor: (Width: 240);
-          LayoutMode: Top;
-
-          Group {
-            Anchor: (Height: 22);
-            LayoutMode: Left;
-
-            Label {
-              Text: "Leader:";
-              Style: (FontSize: 12, TextColor: #FFD700, RenderBold: true, VerticalAlignment: Center);
-              Anchor: (Width: 80);
-            }
-
-            Label #LeaderName {
-              Text: "Unknown";
-              Style: (FontSize: 12, TextColor: #FFFFFF, VerticalAlignment: Center);
-            }
-          }
+        Label {
+          Text: "Leader:";
+          Style: (FontSize: 12, TextColor: #FFD700, RenderBold: true, VerticalAlignment: Center);
+          Anchor: (Width: 65);
         }
 
-        // Spacer
-        Label { Anchor: (Width: 20); }
+        Label #LeaderName {
+          Text: "Unknown";
+          Style: (FontSize: 12, TextColor: #FFFFFF, VerticalAlignment: Center);
+        }
 
-        // Officers
-        Group {
-          Anchor: (Width: 230);
-          LayoutMode: Top;
+        Label { Anchor: (Width: 30); }
 
-          Group {
-            Anchor: (Height: 22);
-            LayoutMode: Left;
+        Label {
+          Text: "Officers:";
+          Style: (FontSize: 12, TextColor: #87CEEB, RenderBold: true, VerticalAlignment: Center);
+          Anchor: (Width: 70);
+        }
 
-            Label {
-              Text: "Officers:";
-              Style: (FontSize: 12, TextColor: #87CEEB, RenderBold: true, VerticalAlignment: Center);
-              Anchor: (Width: 80);
-            }
-
-            Label #OfficersValue {
-              Text: "None";
-              Style: (FontSize: 12, TextColor: #FFFFFF, VerticalAlignment: Center);
-            }
-          }
+        Label #OfficersValue {
+          Text: "None";
+          Style: (FontSize: 12, TextColor: #FFFFFF, VerticalAlignment: Center);
         }
       }
 
-      // Spacer to push buttons down
+      // Spacer to push buttons to bottom
       Label { FlexWeight: 1; }
 
       // === Action Buttons ===
@@ -332,5 +306,4 @@ $C.@PageOverlay {
   }
 }
 
-// Native Hytale back button (bottom-left ESC)
 $C.@BackButton {}

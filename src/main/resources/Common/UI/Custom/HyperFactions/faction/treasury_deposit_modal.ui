@@ -1,0 +1,146 @@
+// Treasury Deposit/Withdraw Modal
+// Shared template for deposit and withdraw flows with fee preview
+
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+
+$C.@PageOverlay {
+  $C.@DecoratedContainer {
+    Anchor: (Width: 440, Height: 360);
+
+    #Title {
+      Group {
+        $C.@Title {
+          @Text = "Treasury";
+        }
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+      Padding: (Left: 24, Right: 24, Top: 12, Bottom: 12);
+
+      // Mode subtitle (set dynamically: "Deposit" or "Withdraw")
+      Label #ModeLabel {
+        Text: "Deposit";
+        Style: (FontSize: 13, TextColor: #00AAAA, RenderBold: true);
+        Anchor: (Height: 20, Bottom: 8);
+      }
+
+      // Balance info card
+      Group {
+        LayoutMode: Top;
+        Background: (Color: #0d1520);
+        Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+        Anchor: (Bottom: 10);
+
+        Label #WalletLabel {
+          Text: "Your wallet: --";
+          Style: (FontSize: 11, TextColor: #888888);
+          Anchor: (Height: 18);
+        }
+        Label #TreasuryLabel {
+          Text: "Treasury balance: --";
+          Style: (FontSize: 11, TextColor: #888888);
+          Anchor: (Height: 18);
+        }
+      }
+
+      // Amount input row
+      Group {
+        LayoutMode: Left;
+        Anchor: (Height: 32, Bottom: 10);
+
+        Label {
+          Text: "Amount:";
+          Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
+          Anchor: (Width: 70);
+        }
+
+        $C.@TextField #AmountInput {
+          Anchor: (Height: 28);
+          FlexWeight: 1;
+          Style: (FontSize: 12, TextColor: #FFFFFF);
+        }
+      }
+
+      // Fee preview card
+      Group #FeeSection {
+        LayoutMode: Top;
+        Background: (Color: #0d1520);
+        Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+        Anchor: (Bottom: 12);
+
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 18);
+          Label {
+            Text: "Amount:";
+            Style: (FontSize: 10, TextColor: #666666);
+            Anchor: (Width: 100);
+          }
+          Label #FeeAmount {
+            Text: "--";
+            Style: (FontSize: 10, TextColor: #FFFFFF);
+          }
+        }
+
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 18);
+          Label #FeeLabel {
+            Text: "Fee (0%):";
+            Style: (FontSize: 10, TextColor: #666666);
+            Anchor: (Width: 100);
+          }
+          Label #FeeValue {
+            Text: "--";
+            Style: (FontSize: 10, TextColor: #FF5555);
+          }
+        }
+
+        // Divider
+        Group {
+          Anchor: (Height: 1, Top: 3, Bottom: 3);
+          Background: (Color: #334455);
+        }
+
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 20);
+          Label {
+            Text: "Total:";
+            Style: (FontSize: 11, TextColor: #AAAAAA, RenderBold: true);
+            Anchor: (Width: 100);
+          }
+          Label #FeeTotal {
+            Text: "--";
+            Style: (FontSize: 11, TextColor: #FFD700, RenderBold: true);
+          }
+        }
+      }
+
+      // Buttons
+      Group {
+        LayoutMode: Left;
+        Anchor: (Height: 36);
+
+        TextButton #CancelBtn {
+          Text: "Cancel";
+          Anchor: (Height: 32, Width: 110);
+          Style: $S.@ButtonStyle;
+        }
+
+        Label { FlexWeight: 1; }
+
+        TextButton #ConfirmBtn {
+          Text: "Confirm";
+          Anchor: (Height: 32, Width: 160);
+          Style: $S.@GreenButtonStyle;
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

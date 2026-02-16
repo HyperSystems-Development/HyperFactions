@@ -4,6 +4,7 @@ import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
 import com.hyperfactions.command.admin.handler.AdminBackupHandler;
 import com.hyperfactions.command.admin.handler.AdminDebugHandler;
+import com.hyperfactions.command.admin.handler.AdminEconomyHandler;
 import com.hyperfactions.command.admin.handler.AdminImportHandler;
 import com.hyperfactions.command.admin.handler.AdminIntegrationHandler;
 import com.hyperfactions.command.admin.handler.AdminMapDecayHandler;
@@ -55,6 +56,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
     private final AdminImportHandler importHandler;
     private final AdminDebugHandler debugHandler;
     private final AdminPowerHandler powerHandler;
+    private final AdminEconomyHandler economyHandler;
     private final AdminMapDecayHandler mapDecayHandler;
 
     public AdminSubCommand(@NotNull HyperFactions hyperFactions, @NotNull HyperFactionsPlugin plugin) {
@@ -71,6 +73,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
         this.importHandler = new AdminImportHandler(hyperFactions);
         this.debugHandler = new AdminDebugHandler(hyperFactions);
         this.powerHandler = new AdminPowerHandler(hyperFactions, plugin);
+        this.economyHandler = new AdminEconomyHandler(hyperFactions);
         this.mapDecayHandler = new AdminMapDecayHandler(hyperFactions);
     }
 
@@ -241,6 +244,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
             case "zoneflag" -> { if (requirePlayer(ctx, isPlayer)) zoneHandler.handleZoneFlag(ctx, currentWorld.getName(), chunkX, chunkZ, subArgs); }
             case "clearhistory" -> powerHandler.handleClearHistory(ctx, player, subArgs);
             case "power" -> powerHandler.handleAdminPower(ctx, player, senderUuid, subArgs);
+            case "economy", "econ", "treasury" -> economyHandler.handleAdminEconomy(ctx, player, senderUuid, subArgs);
             default -> ctx.sendMessage(prefix().insert(msg("Unknown admin command. Use /f admin help", COLOR_RED)));
         }
     }
@@ -268,6 +272,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
         commands.add(new CommandHelp("/f admin integration <name>", "Detailed integration status"));
         commands.add(new CommandHelp("/f admin clearhistory <player>", "Clear player membership history"));
         commands.add(new CommandHelp("/f admin power", "Admin power management"));
+        commands.add(new CommandHelp("/f admin economy", "Economy/treasury management"));
         ctx.sendMessage(HelpFormatter.buildHelp("Admin Commands", "Server administration", commands, null));
     }
 

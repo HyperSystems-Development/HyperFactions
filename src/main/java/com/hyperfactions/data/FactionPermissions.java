@@ -115,10 +115,21 @@ public final class FactionPermissions {
     public static final String OFFICERS_CAN_EDIT = "officersCanEdit";
 
     // =========================================================================
+    // TREASURY FLAGS
+    // =========================================================================
+
+    /** Whether members can deposit into the faction treasury */
+    public static final String TREASURY_DEPOSIT = "treasuryDeposit";
+    /** Whether members can withdraw from the faction treasury */
+    public static final String TREASURY_WITHDRAW = "treasuryWithdraw";
+    /** Whether members can transfer money to other factions */
+    public static final String TREASURY_TRANSFER = "treasuryTransfer";
+
+    // =========================================================================
     // ALL FLAGS
     // =========================================================================
 
-    /** All 38 flag names for iteration, validation, and serialization. */
+    /** All 41 flag names for iteration, validation, and serialization. */
     public static final List<String> ALL_FLAGS = List.of(
         // Outsider (8)
         OUTSIDER_BREAK, OUTSIDER_PLACE, OUTSIDER_INTERACT,
@@ -139,7 +150,9 @@ public final class FactionPermissions {
         // Mob Spawning (4)
         MOB_SPAWNING, HOSTILE_MOB_SPAWNING, PASSIVE_MOB_SPAWNING, NEUTRAL_MOB_SPAWNING,
         // Global (2)
-        PVP_ENABLED, OFFICERS_CAN_EDIT
+        PVP_ENABLED, OFFICERS_CAN_EDIT,
+        // Treasury (3)
+        TREASURY_DEPOSIT, TREASURY_WITHDRAW, TREASURY_TRANSFER
     );
 
     /** Set for fast validation. */
@@ -246,6 +259,11 @@ public final class FactionPermissions {
         // Global
         defaults.put(PVP_ENABLED, true);
         defaults.put(OFFICERS_CAN_EDIT, false);
+
+        // Treasury: deposit open to all, withdraw/transfer officer+ only
+        defaults.put(TREASURY_DEPOSIT, true);
+        defaults.put(TREASURY_WITHDRAW, false);
+        defaults.put(TREASURY_TRANSFER, false);
 
         return defaults;
     }
@@ -454,6 +472,9 @@ public final class FactionPermissions {
             case NEUTRAL_MOB_SPAWNING -> "Neutral Mobs";
             case PVP_ENABLED -> "PvP Enabled";
             case OFFICERS_CAN_EDIT -> "Officers Can Edit";
+            case TREASURY_DEPOSIT -> "Treasury Deposit";
+            case TREASURY_WITHDRAW -> "Allow Officers to Withdraw";
+            case TREASURY_TRANSFER -> "Allow Officers to Transfer";
             default -> flagName;
         };
     }

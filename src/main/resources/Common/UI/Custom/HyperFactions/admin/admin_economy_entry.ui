@@ -1,0 +1,45 @@
+// Admin Economy - Faction entry row
+// Appended into #FactionList per faction
+
+$S = "../shared/styles.ui";
+
+Group {
+  Anchor: (Height: 40, Bottom: 2);
+  Background: (Color: #0d1520);
+  Padding: (Left: 12, Right: 12, Top: 6, Bottom: 6);
+  LayoutMode: Left;
+
+  Label #FactionName {
+    Text: "Faction";
+    Style: (FontSize: 12, TextColor: #FFFFFF, VerticalAlignment: Center);
+    Anchor: (Width: 160);
+  }
+
+  Label #Balance {
+    Text: "0";
+    Style: (FontSize: 12, TextColor: #FFD700, RenderBold: true, VerticalAlignment: Center);
+    Anchor: (Width: 120);
+  }
+
+  Label #MemberCount {
+    Text: "0";
+    Style: (FontSize: 12, TextColor: #888888, VerticalAlignment: Center);
+    Anchor: (Width: 80);
+  }
+
+  Label { FlexWeight: 1; }
+
+  TextButton #AdjustBtn {
+    Text: "Adjust";
+    Style: $S.@CyanButtonStyle;
+    Anchor: (Height: 26, Width: 70);
+  }
+
+  Label { Anchor: (Width: 6); }
+
+  TextButton #ViewBtn {
+    Text: "Info";
+    Style: $S.@ButtonStyle;
+    Anchor: (Height: 26, Width: 55);
+  }
+}

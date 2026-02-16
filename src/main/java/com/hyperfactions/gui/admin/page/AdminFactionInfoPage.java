@@ -8,6 +8,7 @@ import com.hyperfactions.data.FactionRole;
 import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.gui.admin.AdminNavBarHelper;
 import com.hyperfactions.gui.admin.data.AdminFactionInfoData;
+import com.hyperfactions.manager.EconomyManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.manager.RelationManager;
@@ -40,6 +41,7 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
     private final FactionManager factionManager;
     private final PowerManager powerManager;
     private final RelationManager relationManager;
+    private final EconomyManager economyManager;
     private final GuiManager guiManager;
 
     public AdminFactionInfoPage(PlayerRef playerRef,
@@ -47,6 +49,7 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
                                 FactionManager factionManager,
                                 PowerManager powerManager,
                                 RelationManager relationManager,
+                                EconomyManager economyManager,
                                 GuiManager guiManager) {
         super(playerRef, CustomPageLifetime.CanDismiss, AdminFactionInfoData.CODEC);
         this.playerRef = playerRef;
@@ -54,6 +57,7 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
         this.factionManager = factionManager;
         this.powerManager = powerManager;
         this.relationManager = relationManager;
+        this.economyManager = economyManager;
         this.guiManager = guiManager;
     }
 
@@ -188,6 +192,33 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
         events.addEventBinding(CustomUIEventBindingType.Activating, "#PowerResetAll",
                 EventData.of("Button", "ResetAllPower").append("FactionId", factionId.toString()), false);
 
+        // === Economy Section (conditional) ===
+        if (economyManager != null) {
+            // Show treasury balance in stats
+            cmd.set("#TreasuryRow.Visible", true);
+            double balance = economyManager.getFactionBalance(factionId);
+            cmd.set("#TreasuryValue.Text", economyManager.formatCurrencyCompact(balance));
+
+            // Show economy management section
+            cmd.set("#EconomyManagement.Visible", true);
+
+            events.addEventBinding(
+                    CustomUIEventBindingType.Activating,
+                    "#EconAdjustBtn",
+                    EventData.of("Button", "EconAdjust")
+                            .append("FactionId", factionId.toString()),
+                    false
+            );
+
+            events.addEventBinding(
+                    CustomUIEventBindingType.Activating,
+                    "#EconViewLogBtn",
+                    EventData.of("Button", "EconViewLog")
+                            .append("FactionId", factionId.toString()),
+                    false
+            );
+        }
+
         // Back button - returns to admin factions list
         events.addEventBinding(
                 CustomUIEventBindingType.Activating,
@@ -260,6 +291,17 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
                             playerRef.getUuid()));
                     factionManager.updateFaction(updated);
                     guiManager.openAdminFactionInfo(player, ref, store, playerRef, factionId);
+                }
+            }
+
+            case "EconAdjust" -> {
+                guiManager.openAdminEconomyAdjust(player, ref, store, playerRef, factionId);
+            }
+
+            case "EconViewLog" -> {
+                Faction faction = factionManager.getFaction(factionId);
+                if (faction != null) {
+                    guiManager.openFactionTreasury(player, ref, store, playerRef, faction);
                 }
             }
 

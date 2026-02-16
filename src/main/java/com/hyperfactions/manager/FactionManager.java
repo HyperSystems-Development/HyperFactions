@@ -42,6 +42,10 @@ public class FactionManager {
     @Nullable
     private java.util.function.Consumer<String> onFactionDisbanded;
 
+    // Economy callback (fires after faction creation with full Faction object)
+    @Nullable
+    private java.util.function.Consumer<Faction> onFactionCreatedForEconomy;
+
     /**
      * Functional interface for callbacks with three parameters.
      */
@@ -60,6 +64,14 @@ public class FactionManager {
      */
     public void setOnFactionCreated(@Nullable BiConsumer<String, String> callback) {
         this.onFactionCreated = callback;
+    }
+
+    /**
+     * Sets a callback for when a faction is created (full Faction object).
+     * Used by economy module for initialization.
+     */
+    public void setOnFactionCreatedForEconomy(@Nullable java.util.function.Consumer<Faction> callback) {
+        this.onFactionCreatedForEconomy = callback;
     }
 
     /**
@@ -424,6 +436,9 @@ public class FactionManager {
 
         if (onFactionCreated != null) {
             try { onFactionCreated.accept(name, leaderName); } catch (Exception e) { Logger.warn("Error in faction created callback: %s", e.getMessage()); }
+        }
+        if (onFactionCreatedForEconomy != null) {
+            try { onFactionCreatedForEconomy.accept(faction); } catch (Exception e) { Logger.warn("Error in economy creation callback: %s", e.getMessage()); }
         }
 
         return FactionResult.SUCCESS;

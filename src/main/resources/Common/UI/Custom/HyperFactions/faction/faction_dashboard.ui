@@ -9,7 +9,7 @@ $C.@PageOverlay {
   $Nav.@HyperFactionsNavBar #HyperFactionsNavBar {}
 
   $C.@DecoratedContainer {
-    Anchor: (Width: 600, Height: 580);
+    Anchor: (Width: 600, Height: 660);
 
     #Title {
       Group {
@@ -237,6 +237,89 @@ $C.@PageOverlay {
           }
           Label {
             Text: "sent / requests";
+            Style: (FontSize: 9, TextColor: #444444, HorizontalAlignment: Center, VerticalAlignment: Center);
+            Anchor: (Height: 14);
+          }
+        }
+      }
+
+      // Economy Stats Row (hidden when economy disabled)
+      Group #EconomyRow {
+        Anchor: (Height: 80, Bottom: 10);
+        LayoutMode: Left;
+        Visible: false;
+
+        // Treasury Balance
+        Group #TreasuryStat {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 15, Right: 15, Top: 12, Bottom: 12);
+          LayoutMode: Top;
+          Anchor: (Right: 5);
+
+          Label {
+            Text: "Treasury";
+            Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
+            Anchor: (Height: 16);
+          }
+          Label #TreasuryBalance {
+            Text: "0";
+            Style: (FontSize: 22, TextColor: #FFD700, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
+            FlexWeight: 1;
+          }
+          Label #TreasurySubtext {
+            Text: "";
+            Style: (FontSize: 9, TextColor: #888888, HorizontalAlignment: Center, VerticalAlignment: Center);
+            Anchor: (Height: 14);
+          }
+        }
+
+        // Upkeep stat (hidden unless upkeep enabled)
+        Group #UpkeepStat {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 15, Right: 15, Top: 12, Bottom: 12);
+          LayoutMode: Top;
+          Anchor: (Left: 5, Right: 5);
+          Visible: false;
+
+          Label {
+            Text: "Upkeep";
+            Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
+            Anchor: (Height: 16);
+          }
+          Label #UpkeepValue {
+            Text: "0";
+            Style: (FontSize: 22, TextColor: #FF5555, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
+            FlexWeight: 1;
+          }
+          Label #UpkeepSubtext {
+            Text: "per cycle";
+            Style: (FontSize: 9, TextColor: #888888, HorizontalAlignment: Center, VerticalAlignment: Center);
+            Anchor: (Height: 14);
+          }
+        }
+
+        // Personal Wallet
+        Group #WalletStat {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 15, Right: 15, Top: 12, Bottom: 12);
+          LayoutMode: Top;
+          Anchor: (Left: 5);
+
+          Label {
+            Text: "Your Wallet";
+            Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
+            Anchor: (Height: 16);
+          }
+          Label #WalletBalance {
+            Text: "0";
+            Style: (FontSize: 22, TextColor: #AAAAAA, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
+            FlexWeight: 1;
+          }
+          Label {
+            Text: "personal balance";
             Style: (FontSize: 9, TextColor: #444444, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 14);
           }

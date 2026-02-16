@@ -15,6 +15,7 @@ package com.hyperfactions;
  * - hyperfactions.relation.* - Diplomatic relations
  * - hyperfactions.chat.* - Communication
  * - hyperfactions.info.* - Information viewing
+ * - hyperfactions.economy.* - Economy/treasury
  * - hyperfactions.bypass.* - Protection bypass
  * - hyperfactions.admin.* - Administration
  * - hyperfactions.limit.* - Numeric limits
@@ -126,6 +127,19 @@ public final class Permissions {
     /** View help */
     public static final String HELP = "hyperfactions.info.help";
 
+    // === Economy (hyperfactions.economy.*) ===
+    public static final String ECONOMY_WILDCARD = "hyperfactions.economy.*";
+    /** View faction treasury balance */
+    public static final String ECONOMY_BALANCE = "hyperfactions.economy.balance";
+    /** Deposit money into faction treasury */
+    public static final String ECONOMY_DEPOSIT = "hyperfactions.economy.deposit";
+    /** Withdraw money from faction treasury */
+    public static final String ECONOMY_WITHDRAW = "hyperfactions.economy.withdraw";
+    /** Transfer money between factions */
+    public static final String ECONOMY_TRANSFER = "hyperfactions.economy.transfer";
+    /** View faction transaction log */
+    public static final String ECONOMY_LOG = "hyperfactions.economy.log";
+
     // === Bypass Permissions (hyperfactions.bypass.*) ===
     /** Bypass all protections */
     public static final String BYPASS_WILDCARD = "hyperfactions.bypass.*";
@@ -169,6 +183,8 @@ public final class Permissions {
     public static final String ADMIN_BACKUP = "hyperfactions.admin.backup";
     /** Admin power management (set, adjust, reset, max override, bypass toggles) */
     public static final String ADMIN_POWER = "hyperfactions.admin.power";
+    /** Admin economy management (adjust balance, view all treasuries) */
+    public static final String ADMIN_ECONOMY = "hyperfactions.admin.economy";
 
     // === Limit Permissions (hyperfactions.limit.*) ===
     /** Maximum claims permission prefix (e.g., hyperfactions.limit.claims.50) */
@@ -199,6 +215,8 @@ public final class Permissions {
             CHAT_FACTION, CHAT_ALLY,
             // Information
             INFO, LIST, WHO, POWER, MEMBERS, LOGS, HELP,
+            // Economy
+            ECONOMY_BALANCE, ECONOMY_DEPOSIT, ECONOMY_WITHDRAW, ECONOMY_TRANSFER, ECONOMY_LOG,
             // Bypass
             BYPASS_BUILD, BYPASS_INTERACT, BYPASS_CONTAINER,
             BYPASS_DAMAGE, BYPASS_USE, BYPASS_WARMUP, BYPASS_COOLDOWN,
@@ -206,7 +224,7 @@ public final class Permissions {
             // Admin
             ADMIN, ADMIN_RELOAD, ADMIN_DEBUG, ADMIN_ZONES,
             ADMIN_DISBAND, ADMIN_MODIFY, ADMIN_BYPASS_LIMITS, ADMIN_BACKUP,
-            ADMIN_POWER
+            ADMIN_POWER, ADMIN_ECONOMY
         };
     }
 
@@ -225,6 +243,7 @@ public final class Permissions {
             RELATION_WILDCARD,
             CHAT_WILDCARD,
             INFO_WILDCARD,
+            ECONOMY_WILDCARD,
             BYPASS_WILDCARD,
             ADMIN_WILDCARD
         };
@@ -244,7 +263,8 @@ public final class Permissions {
             HOME, SETHOME, DELHOME, STUCK,
             ALLY, ENEMY, NEUTRAL, RELATIONS,
             CHAT_FACTION, CHAT_ALLY,
-            INFO, LIST, WHO, POWER, MEMBERS, LOGS, HELP
+            INFO, LIST, WHO, POWER, MEMBERS, LOGS, HELP,
+            ECONOMY_BALANCE, ECONOMY_DEPOSIT, ECONOMY_WITHDRAW, ECONOMY_TRANSFER, ECONOMY_LOG
         };
     }
 
@@ -270,7 +290,7 @@ public final class Permissions {
         return new String[] {
             ADMIN, ADMIN_RELOAD, ADMIN_DEBUG, ADMIN_ZONES,
             ADMIN_DISBAND, ADMIN_MODIFY, ADMIN_BYPASS_LIMITS, ADMIN_BACKUP,
-            ADMIN_POWER
+            ADMIN_POWER, ADMIN_ECONOMY
         };
     }
 }

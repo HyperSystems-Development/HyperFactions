@@ -1,0 +1,45 @@
+// Transfer search result entry card
+// Used by TreasuryTransferSearchPage with cmd.append + indexed selectors
+
+$S = "../shared/styles.ui";
+
+Group {
+  Anchor: (Height: 50, Bottom: 2);
+  Background: (Color: #0d1520);
+  Padding: (Left: 12, Right: 12, Top: 6, Bottom: 6);
+  LayoutMode: Left;
+
+  // Left side: name + type + subtitle stacked
+  Group {
+    LayoutMode: Top;
+    FlexWeight: 1;
+
+    Group {
+      LayoutMode: Left;
+      Anchor: (Height: 20);
+
+      Label #Name {
+        Text: "";
+        Style: (FontSize: 12, TextColor: #FFFFFF, RenderBold: true);
+      }
+      Label { Anchor: (Width: 6); }
+      Label #TypeTag {
+        Text: "";
+        Style: (FontSize: 10, TextColor: #55FF55);
+      }
+    }
+
+    Label #Subtitle {
+      Text: "";
+      Style: (FontSize: 10, TextColor: #888888);
+      Anchor: (Height: 16);
+    }
+  }
+
+  // Right side: select button
+  TextButton #SelectBtn {
+    Text: "Select";
+    Anchor: (Height: 28, Width: 80);
+    Style: $S.@ButtonStyle;
+  }
+}

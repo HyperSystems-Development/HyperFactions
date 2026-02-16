@@ -9,6 +9,7 @@ import com.hyperfactions.lifecycle.MembershipHistoryHandler;
 import com.hyperfactions.lifecycle.PeriodicTaskManager;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.gui.GuiManager;
+import com.hyperfactions.integration.economy.VaultEconomyProvider;
 import com.hyperfactions.integration.protection.GravestoneIntegration;
 import com.hyperfactions.integration.permissions.HyperPermsIntegration;
 import com.hyperfactions.integration.PermissionManager;
@@ -19,6 +20,7 @@ import com.hyperfactions.protection.zone.ZoneDamageProtection;
 import com.hyperfactions.protection.zone.ZoneInteractionProtection;
 import com.hyperfactions.storage.ChatHistoryStorage;
 import com.hyperfactions.storage.FactionStorage;
+import com.hyperfactions.storage.JsonEconomyStorage;
 import com.hyperfactions.storage.PlayerStorage;
 import com.hyperfactions.storage.ZoneStorage;
 import com.hyperfactions.storage.json.JsonChatHistoryStorage;
@@ -78,6 +80,12 @@ public class HyperFactions {
     private ConfirmationManager confirmationManager;
     private SpawnSuppressionManager spawnSuppressionManager;
     private AnnouncementManager announcementManager;
+
+    // Economy
+    private VaultEconomyProvider vaultEconomyProvider;
+    private EconomyManager economyManager;
+    private JsonEconomyStorage economyStorage;
+    private String treasuryDisabledReason;
 
     // Integrations
     private GravestoneIntegration gravestoneIntegration;
@@ -227,6 +235,26 @@ public class HyperFactions {
 
         // Build claim index after loading factions
         claimManager.buildIndex();
+
+        // Initialize treasury system (requires both config enabled AND VaultUnlocked economy)
+        vaultEconomyProvider = new VaultEconomyProvider();
+        vaultEconomyProvider.init();
+
+        if (!ConfigManager.get().isEconomyEnabled()) {
+            treasuryDisabledReason = "Economy features are not available on this server";
+            Logger.info("Treasury module disabled by server configuration");
+        } else if (!vaultEconomyProvider.isAvailable()) {
+            treasuryDisabledReason = "No economy plugin detected — install VaultUnlocked and an economy plugin";
+            Logger.info("Treasury module disabled (no economy provider — install VaultUnlocked + an economy plugin)");
+        } else {
+            // Both conditions met — activate treasury
+            economyStorage = new JsonEconomyStorage(dataDir);
+            economyStorage.init().join();
+            economyManager = new EconomyManager(factionManager, vaultEconomyProvider, economyStorage);
+            economyManager.loadAll();
+            treasuryDisabledReason = null;
+            Logger.info("Treasury module enabled (VaultUnlocked economy detected)");
+        }
 
         // Initialize protection checker (with plugin reference for admin bypass toggle)
         protectionChecker = new ProtectionChecker(
@@ -386,6 +414,11 @@ public class HyperFactions {
         // Cancel periodic tasks first
         if (periodicTaskManager != null) {
             periodicTaskManager.cancelAll();
+        }
+
+        // Save economy data
+        if (economyManager != null) {
+            economyManager.saveAll();
         }
 
         // Save all data
@@ -568,6 +601,16 @@ public class HyperFactions {
     }
 
     /**
+     * Gets all online player references.
+     *
+     * @return collection of online PlayerRef, or empty if not available
+     */
+    @NotNull
+    public Collection<com.hypixel.hytale.server.core.universe.PlayerRef> getOnlinePlayerRefs() {
+        return onlinePlayersSupplier != null ? onlinePlayersSupplier.get() : Collections.emptyList();
+    }
+
+    /**
      * Looks up an online player by UUID.
      *
      * @param uuid the player's UUID
@@ -576,6 +619,38 @@ public class HyperFactions {
     @Nullable
     public com.hypixel.hytale.server.core.universe.PlayerRef lookupPlayer(@NotNull UUID uuid) {
         return playerLookup != null ? playerLookup.apply(uuid) : null;
+    }
+
+    /**
+     * Resolves a player UUID by username.
+     * Checks online players first, then falls back to faction member records.
+     *
+     * @param name the player username (case-insensitive)
+     * @return the player's UUID, or null if not found
+     */
+    @Nullable
+    public UUID resolvePlayerByName(@NotNull String name) {
+        // Check online players first
+        if (onlinePlayersSupplier != null) {
+            for (com.hypixel.hytale.server.core.universe.PlayerRef ref : onlinePlayersSupplier.get()) {
+                if (ref.getUsername().equalsIgnoreCase(name)) {
+                    return ref.getUuid();
+                }
+            }
+        }
+
+        // Fall back to faction member records
+        if (factionManager != null) {
+            for (com.hyperfactions.data.Faction faction : factionManager.getAllFactions()) {
+                for (com.hyperfactions.data.FactionMember member : faction.members().values()) {
+                    if (name.equalsIgnoreCase(member.username())) {
+                        return member.uuid();
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     // === Task scheduling ===
@@ -868,6 +943,47 @@ public class HyperFactions {
     @NotNull
     public AnnouncementManager getAnnouncementManager() {
         return announcementManager;
+    }
+
+    // === Economy ===
+
+    /**
+     * Gets the economy manager, or null if treasury is disabled.
+     *
+     * @return the economy manager, or null
+     */
+    @Nullable
+    public EconomyManager getEconomyManager() {
+        return economyManager;
+    }
+
+    /**
+     * Gets the VaultUnlocked economy provider, or null if not initialized.
+     *
+     * @return the vault economy provider, or null
+     */
+    @Nullable
+    public VaultEconomyProvider getVaultEconomyProvider() {
+        return vaultEconomyProvider;
+    }
+
+    /**
+     * Checks if the treasury system is fully enabled and operational.
+     *
+     * @return true if economy manager is active
+     */
+    public boolean isTreasuryEnabled() {
+        return economyManager != null;
+    }
+
+    /**
+     * Gets a human-readable reason why treasury is disabled.
+     *
+     * @return the reason string, or null if treasury is enabled
+     */
+    @Nullable
+    public String getTreasuryDisabledReason() {
+        return treasuryDisabledReason;
     }
 
     // === Admin Bypass Toggle ===

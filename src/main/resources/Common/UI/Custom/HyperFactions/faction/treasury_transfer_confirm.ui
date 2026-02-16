@@ -1,0 +1,177 @@
+// Treasury Transfer Confirmation Modal
+// Shows target info, amount input, and fee breakdown
+
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+
+$C.@PageOverlay {
+  $C.@DecoratedContainer {
+    Anchor: (Width: 440, Height: 400);
+
+    #Title {
+      Group {
+        $C.@Title {
+          @Text = "Treasury";
+        }
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+      Padding: (Left: 24, Right: 24, Top: 12, Bottom: 12);
+
+      // Subtitle
+      Label #ModeLabel {
+        Text: "Transfer Funds";
+        Style: (FontSize: 13, TextColor: #00AAAA, RenderBold: true);
+        Anchor: (Height: 20, Bottom: 8);
+      }
+
+      // Target + balance info card
+      Group {
+        LayoutMode: Top;
+        Background: (Color: #0d1520);
+        Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+        Anchor: (Bottom: 10);
+
+        // Target row
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 20);
+
+          Label {
+            Text: "To:";
+            Style: (FontSize: 11, TextColor: #666666);
+            Anchor: (Width: 70);
+          }
+          Label #TargetName {
+            Text: "Unknown";
+            Style: (FontSize: 11, TextColor: #FFFFFF, RenderBold: true);
+          }
+          Label { Anchor: (Width: 6); }
+          Label #TargetType {
+            Text: "";
+            Style: (FontSize: 10, TextColor: #55FF55);
+          }
+        }
+
+        // Treasury balance
+        Label #TreasuryLabel {
+          Text: "Treasury: --";
+          Style: (FontSize: 11, TextColor: #888888);
+          Anchor: (Height: 18);
+        }
+      }
+
+      // Amount input row
+      Group {
+        LayoutMode: Left;
+        Anchor: (Height: 32, Bottom: 10);
+
+        Label {
+          Text: "Amount:";
+          Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
+          Anchor: (Width: 70);
+        }
+
+        $C.@TextField #AmountInput {
+          Anchor: (Height: 28);
+          FlexWeight: 1;
+          Style: (FontSize: 12, TextColor: #FFFFFF);
+        }
+      }
+
+      // Fee preview card
+      Group #FeeSection {
+        LayoutMode: Top;
+        Background: (Color: #0d1520);
+        Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+        Anchor: (Bottom: 12);
+
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 18);
+          Label {
+            Text: "Transfer amount:";
+            Style: (FontSize: 10, TextColor: #666666);
+            Anchor: (Width: 130);
+          }
+          Label #FeeAmount {
+            Text: "--";
+            Style: (FontSize: 10, TextColor: #FFFFFF);
+          }
+        }
+
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 18);
+          Label #FeeLabel {
+            Text: "Fee (0%):";
+            Style: (FontSize: 10, TextColor: #666666);
+            Anchor: (Width: 130);
+          }
+          Label #FeeValue {
+            Text: "--";
+            Style: (FontSize: 10, TextColor: #FF5555);
+          }
+        }
+
+        // Divider
+        Group {
+          Anchor: (Height: 1, Top: 3, Bottom: 3);
+          Background: (Color: #334455);
+        }
+
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 20);
+          Label {
+            Text: "Deducted:";
+            Style: (FontSize: 11, TextColor: #AAAAAA, RenderBold: true);
+            Anchor: (Width: 130);
+          }
+          Label #FeeTotal {
+            Text: "--";
+            Style: (FontSize: 11, TextColor: #FFD700, RenderBold: true);
+          }
+        }
+
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 18);
+          Label {
+            Text: "Recipient receives:";
+            Style: (FontSize: 10, TextColor: #666666);
+            Anchor: (Width: 130);
+          }
+          Label #RecipientAmount {
+            Text: "--";
+            Style: (FontSize: 10, TextColor: #55FF55);
+          }
+        }
+      }
+
+      // Buttons
+      Group {
+        LayoutMode: Left;
+        Anchor: (Height: 36);
+
+        TextButton #CancelBtn {
+          Text: "Back";
+          Anchor: (Height: 32, Width: 110);
+          Style: $S.@ButtonStyle;
+        }
+
+        Label { FlexWeight: 1; }
+
+        TextButton #ConfirmBtn {
+          Text: "Confirm Transfer";
+          Anchor: (Height: 32, Width: 160);
+          Style: $S.@CyanButtonStyle;
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

@@ -18,6 +18,26 @@ public class EconomyConfig extends ModuleConfig {
     private String currencyNamePlural = "dollars";
     private String currencySymbol = "$";
     private double startingBalance = 0.0;
+    private boolean disbandRefundToLeader = true;
+
+    // Default treasury limits for new factions
+    private double defaultMaxWithdrawAmount = 0.0;
+    private double defaultMaxWithdrawPerPeriod = 0.0;
+    private double defaultMaxTransferAmount = 0.0;
+    private double defaultMaxTransferPerPeriod = 0.0;
+    private int defaultLimitPeriodHours = 24;
+
+    // Fee configuration (percentage, 0 = no fee)
+    private double depositFeePercent = 0.0;
+    private double withdrawFeePercent = 0.0;
+    private double transferFeePercent = 0.0;
+
+    // Upkeep configuration
+    private boolean upkeepEnabled = false;
+    private double upkeepCostPerChunk = 10.0;
+    private int upkeepIntervalHours = 24;
+    private int upkeepGracePeriodHours = 48;
+    private boolean upkeepAutoPayDefault = true;
 
     /**
      * Creates a new economy config.
@@ -41,6 +61,20 @@ public class EconomyConfig extends ModuleConfig {
         currencyNamePlural = "dollars";
         currencySymbol = "$";
         startingBalance = 0.0;
+        disbandRefundToLeader = true;
+        defaultMaxWithdrawAmount = 0.0;
+        defaultMaxWithdrawPerPeriod = 0.0;
+        defaultMaxTransferAmount = 0.0;
+        defaultMaxTransferPerPeriod = 0.0;
+        defaultLimitPeriodHours = 24;
+        depositFeePercent = 0.0;
+        withdrawFeePercent = 0.0;
+        transferFeePercent = 0.0;
+        upkeepEnabled = false;
+        upkeepCostPerChunk = 10.0;
+        upkeepIntervalHours = 24;
+        upkeepGracePeriodHours = 48;
+        upkeepAutoPayDefault = true;
     }
 
     @Override
@@ -49,6 +83,20 @@ public class EconomyConfig extends ModuleConfig {
         currencyNamePlural = getString(root, "currencyNamePlural", currencyNamePlural);
         currencySymbol = getString(root, "currencySymbol", currencySymbol);
         startingBalance = getDouble(root, "startingBalance", startingBalance);
+        disbandRefundToLeader = getBool(root, "disbandRefundToLeader", disbandRefundToLeader);
+        defaultMaxWithdrawAmount = getDouble(root, "defaultMaxWithdrawAmount", defaultMaxWithdrawAmount);
+        defaultMaxWithdrawPerPeriod = getDouble(root, "defaultMaxWithdrawPerPeriod", defaultMaxWithdrawPerPeriod);
+        defaultMaxTransferAmount = getDouble(root, "defaultMaxTransferAmount", defaultMaxTransferAmount);
+        defaultMaxTransferPerPeriod = getDouble(root, "defaultMaxTransferPerPeriod", defaultMaxTransferPerPeriod);
+        defaultLimitPeriodHours = getInt(root, "defaultLimitPeriodHours", defaultLimitPeriodHours);
+        depositFeePercent = getDouble(root, "depositFeePercent", depositFeePercent);
+        withdrawFeePercent = getDouble(root, "withdrawFeePercent", withdrawFeePercent);
+        transferFeePercent = getDouble(root, "transferFeePercent", transferFeePercent);
+        upkeepEnabled = getBool(root, "upkeepEnabled", upkeepEnabled);
+        upkeepCostPerChunk = getDouble(root, "upkeepCostPerChunk", upkeepCostPerChunk);
+        upkeepIntervalHours = getInt(root, "upkeepIntervalHours", upkeepIntervalHours);
+        upkeepGracePeriodHours = getInt(root, "upkeepGracePeriodHours", upkeepGracePeriodHours);
+        upkeepAutoPayDefault = getBool(root, "upkeepAutoPayDefault", upkeepAutoPayDefault);
     }
 
     @Override
@@ -57,6 +105,20 @@ public class EconomyConfig extends ModuleConfig {
         root.addProperty("currencyNamePlural", currencyNamePlural);
         root.addProperty("currencySymbol", currencySymbol);
         root.addProperty("startingBalance", startingBalance);
+        root.addProperty("disbandRefundToLeader", disbandRefundToLeader);
+        root.addProperty("defaultMaxWithdrawAmount", defaultMaxWithdrawAmount);
+        root.addProperty("defaultMaxWithdrawPerPeriod", defaultMaxWithdrawPerPeriod);
+        root.addProperty("defaultMaxTransferAmount", defaultMaxTransferAmount);
+        root.addProperty("defaultMaxTransferPerPeriod", defaultMaxTransferPerPeriod);
+        root.addProperty("defaultLimitPeriodHours", defaultLimitPeriodHours);
+        root.addProperty("depositFeePercent", depositFeePercent);
+        root.addProperty("withdrawFeePercent", withdrawFeePercent);
+        root.addProperty("transferFeePercent", transferFeePercent);
+        root.addProperty("upkeepEnabled", upkeepEnabled);
+        root.addProperty("upkeepCostPerChunk", upkeepCostPerChunk);
+        root.addProperty("upkeepIntervalHours", upkeepIntervalHours);
+        root.addProperty("upkeepGracePeriodHours", upkeepGracePeriodHours);
+        root.addProperty("upkeepAutoPayDefault", upkeepAutoPayDefault);
     }
 
     // === Getters ===
@@ -98,6 +160,48 @@ public class EconomyConfig extends ModuleConfig {
      */
     public double getStartingBalance() {
         return startingBalance;
+    }
+
+    /**
+     * Whether to refund the faction balance to the leader on disband.
+     * If false, the balance is destroyed.
+     *
+     * @return true if refund to leader (default)
+     */
+    public boolean isDisbandRefundToLeader() {
+        return disbandRefundToLeader;
+    }
+
+    public double getDefaultMaxWithdrawAmount() { return defaultMaxWithdrawAmount; }
+    public double getDefaultMaxWithdrawPerPeriod() { return defaultMaxWithdrawPerPeriod; }
+    public double getDefaultMaxTransferAmount() { return defaultMaxTransferAmount; }
+    public double getDefaultMaxTransferPerPeriod() { return defaultMaxTransferPerPeriod; }
+    public int getDefaultLimitPeriodHours() { return defaultLimitPeriodHours; }
+
+    // Fee getters
+    public double getDepositFeePercent() { return depositFeePercent; }
+    public double getWithdrawFeePercent() { return withdrawFeePercent; }
+    public double getTransferFeePercent() { return transferFeePercent; }
+
+    // Upkeep getters
+    public boolean isUpkeepEnabled() { return upkeepEnabled; }
+    public double getUpkeepCostPerChunk() { return upkeepCostPerChunk; }
+    public int getUpkeepIntervalHours() { return upkeepIntervalHours; }
+    public int getUpkeepGracePeriodHours() { return upkeepGracePeriodHours; }
+    public boolean isUpkeepAutoPayDefault() { return upkeepAutoPayDefault; }
+
+    /**
+     * Creates a TreasuryLimits instance from the server-configured defaults.
+     *
+     * @return default treasury limits from config
+     */
+    @NotNull
+    public com.hyperfactions.data.FactionEconomy.TreasuryLimits getDefaultTreasuryLimits() {
+        return new com.hyperfactions.data.FactionEconomy.TreasuryLimits(
+            defaultMaxWithdrawAmount, defaultMaxWithdrawPerPeriod,
+            defaultMaxTransferAmount, defaultMaxTransferPerPeriod,
+            defaultLimitPeriodHours
+        );
     }
 
     /**
@@ -146,6 +250,16 @@ public class EconomyConfig extends ModuleConfig {
             currencyNamePlural = "dollars";
             needsSave = true;
         }
+
+        // Fee percentages must be 0-100
+        depositFeePercent = validateRange(result, "depositFeePercent", depositFeePercent, 0.0, 100.0, 0.0);
+        withdrawFeePercent = validateRange(result, "withdrawFeePercent", withdrawFeePercent, 0.0, 100.0, 0.0);
+        transferFeePercent = validateRange(result, "transferFeePercent", transferFeePercent, 0.0, 100.0, 0.0);
+
+        // Upkeep settings
+        upkeepCostPerChunk = validateMin(result, "upkeepCostPerChunk", upkeepCostPerChunk, 0.0, 10.0);
+        upkeepIntervalHours = validateMin(result, "upkeepIntervalHours", upkeepIntervalHours, 1, 24);
+        upkeepGracePeriodHours = validateMin(result, "upkeepGracePeriodHours", upkeepGracePeriodHours, 0, 48);
 
         return result;
     }

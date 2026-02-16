@@ -1,0 +1,209 @@
+// Admin Economy Overview Page
+// Server-wide economy stats and faction treasury list with search/sort/pagination
+
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+$Nav = "admin_nav_bar.ui";
+
+$C.@PageOverlay {
+  $Nav.@HyperFactionsAdminNavBar #HyperFactionsAdminNavBar {}
+
+  $C.@Container {
+    Anchor: (Width: 700, Height: 560);
+
+    #Title {
+      $C.@Title {
+        @Text = "Admin: Server Economy";
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+      Padding: (Left: 15, Right: 15, Top: 10, Bottom: 10);
+
+      // Server Economy Stats Row
+      Group #EconStatsRow {
+        Anchor: (Height: 70, Bottom: 8);
+        LayoutMode: Left;
+
+        // Total Balance
+        Group {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+          LayoutMode: Top;
+          Anchor: (Right: 4);
+
+          Label {
+            Text: "Total Balance";
+            Style: (FontSize: 9, TextColor: #666666);
+            Anchor: (Height: 14);
+          }
+          Label #TotalBalance {
+            Text: "0";
+            Style: (FontSize: 20, TextColor: #FFD700, RenderBold: true);
+            FlexWeight: 1;
+          }
+        }
+
+        // Factions with Economy
+        Group {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+          LayoutMode: Top;
+          Anchor: (Left: 4, Right: 4);
+
+          Label {
+            Text: "Factions";
+            Style: (FontSize: 9, TextColor: #666666);
+            Anchor: (Height: 14);
+          }
+          Label #EconFactionCount {
+            Text: "0";
+            Style: (FontSize: 24, TextColor: #00FFFF, RenderBold: true);
+            FlexWeight: 1;
+          }
+        }
+
+        // Average Balance
+        Group {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+          LayoutMode: Top;
+          Anchor: (Left: 4);
+
+          Label {
+            Text: "Avg Balance";
+            Style: (FontSize: 9, TextColor: #666666);
+            Anchor: (Height: 14);
+          }
+          Label #AvgBalance {
+            Text: "0";
+            Style: (FontSize: 20, TextColor: #888888, RenderBold: true);
+            FlexWeight: 1;
+          }
+        }
+      }
+
+      // Search row
+      Group {
+        Anchor: (Height: 38, Bottom: 8);
+        LayoutMode: Left;
+
+        Label {
+          Text: "Search:";
+          Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
+          Anchor: (Width: 55);
+        }
+        $C.@TextField #SearchInput {
+          FlexWeight: 1;
+          Anchor: (Height: 32);
+        }
+      }
+
+      // Header row with count and sort
+      Group {
+        Anchor: (Height: 35, Bottom: 8);
+        LayoutMode: Left;
+
+        Label #FactionCount {
+          Text: "0 factions";
+          Style: (FontSize: 13, TextColor: #888888, VerticalAlignment: Center);
+          Anchor: (Width: 120);
+        }
+
+        Group { FlexWeight: 1; }
+
+        Label {
+          Text: "Sort:";
+          Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
+          Anchor: (Width: 35);
+        }
+        DropdownBox #SortDropdown {
+          Style: $C.@DefaultDropdownBoxStyle;
+          Anchor: (Height: 28, Width: 150);
+        }
+      }
+
+      // Divider
+      Group {
+        Anchor: (Height: 1, Bottom: 8);
+        Background: (Color: #00AAAA);
+      }
+
+      // Column Headers
+      Group {
+        Anchor: (Height: 22, Bottom: 4);
+        LayoutMode: Left;
+        Padding: (Left: 12, Right: 12);
+
+        Label {
+          Text: "Faction";
+          Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
+          Anchor: (Width: 160);
+        }
+        Label {
+          Text: "Balance";
+          Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
+          Anchor: (Width: 120);
+        }
+        Label {
+          Text: "Members";
+          Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
+          Anchor: (Width: 80);
+        }
+        Label { FlexWeight: 1; }
+        Label {
+          Text: "Actions";
+          Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
+          Anchor: (Width: 135);
+        }
+      }
+
+      // Scrollable Faction List
+      Group #FactionList {
+        FlexWeight: 1;
+        LayoutMode: TopScrolling;
+        ScrollbarStyle: $C.@DefaultScrollbarStyle;
+      }
+
+      // Divider
+      Group {
+        Anchor: (Height: 1, Top: 8, Bottom: 8);
+        Background: (Color: #00AAAA);
+      }
+
+      // Pagination
+      Group #Pagination {
+        Anchor: (Height: 35);
+        LayoutMode: Left;
+
+        TextButton #PrevBtn {
+          Text: "< Prev";
+          Anchor: (Height: 26, Width: 80);
+          Style: $S.@ButtonStyle;
+        }
+
+        Label { FlexWeight: 1; }
+
+        Label #PageInfo {
+          Text: "1/1";
+          Style: (FontSize: 14, TextColor: #888888, VerticalAlignment: Center);
+          Anchor: (Width: 60);
+        }
+
+        Label { FlexWeight: 1; }
+
+        TextButton #NextBtn {
+          Text: "Next >";
+          Anchor: (Height: 26, Width: 80);
+          Style: $S.@ButtonStyle;
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

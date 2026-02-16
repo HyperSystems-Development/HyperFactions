@@ -192,6 +192,24 @@ public class GuiManager {
                 6
         ));
 
+        // Treasury page (conditional - only if economy is enabled)
+        if (plugin.get().isTreasuryEnabled()) {
+            registry.registerEntry(new Entry(
+                    "treasury",
+                    "Treasury",
+                    Permissions.ECONOMY_BALANCE,
+                    (player, ref, store, playerRef, faction, guiManager) -> {
+                        if (faction == null) return null;
+                        EconomyManager econ = plugin.get().getEconomyManager();
+                        if (econ == null) return null;
+                        return new TreasuryPage(playerRef, factionManager.get(), econ, guiManager, plugin.get(), faction);
+                    },
+                    true, // Show in nav bar
+                    true, // Requires faction
+                    7
+            ));
+        }
+
         // Settings page (officers+) - unified two-column layout
         registry.registerEntry(new Entry(
                 "settings",
@@ -203,7 +221,7 @@ public class GuiManager {
                 },
                 true, // Show in nav bar
                 true, // Requires faction
-                7
+                8
         ));
 
         // Help page (available to all players in faction nav bar)
@@ -215,7 +233,7 @@ public class GuiManager {
                         new HelpMainPage(playerRef, guiManager, factionManager.get()),
                 true, // Show in nav bar
                 false, // Doesn't require faction
-                8
+                9
         ));
 
         // Admin page (requires permission) - accessed via /f admin, not in main nav bar
@@ -227,7 +245,7 @@ public class GuiManager {
                         new AdminMainPage(playerRef, factionManager.get(), powerManager.get(), guiManager),
                 false,  // Not in main nav bar - separate admin GUI
                 false,
-                10
+                11
         ));
 
         Logger.debug("[GUI] Registered %d pages with FactionPageRegistry", registry.getEntries().size());
@@ -347,6 +365,20 @@ public class GuiManager {
                 2
         ));
 
+        // Economy page (conditional - only if economy is enabled)
+        if (plugin.get().isTreasuryEnabled()) {
+            registry.registerEntry(new AdminPageRegistry.Entry(
+                    "economy",
+                    "Economy",
+                    Permissions.ADMIN_ECONOMY,
+                    (player, ref, store, playerRef, guiManager) ->
+                            new AdminEconomyPage(playerRef, factionManager.get(),
+                                    plugin.get().getEconomyManager(), guiManager),
+                    true,
+                    3
+            ));
+        }
+
         // Zones page
         registry.registerEntry(new AdminPageRegistry.Entry(
                 "zones",
@@ -355,7 +387,7 @@ public class GuiManager {
                 (player, ref, store, playerRef, guiManager) ->
                         new AdminZonePage(playerRef, zoneManager.get(), guiManager, "all", 0),
                 true,
-                3
+                4
         ));
 
         // Config page (placeholder)
@@ -366,7 +398,7 @@ public class GuiManager {
                 (player, ref, store, playerRef, guiManager) ->
                         new AdminConfigPage(playerRef, guiManager),
                 true,
-                4
+                5
         ));
 
         // Backups page (placeholder)
@@ -377,7 +409,7 @@ public class GuiManager {
                 (player, ref, store, playerRef, guiManager) ->
                         new AdminBackupsPage(playerRef, guiManager),
                 true,
-                5
+                6
         ));
 
         // Updates page (placeholder)
@@ -388,7 +420,7 @@ public class GuiManager {
                 (player, ref, store, playerRef, guiManager) ->
                         new AdminUpdatesPage(playerRef, guiManager),
                 true,
-                6
+                7
         ));
 
         // Help page (placeholder)
@@ -399,7 +431,7 @@ public class GuiManager {
                 (player, ref, store, playerRef, guiManager) ->
                         new AdminHelpPage(playerRef, guiManager),
                 true,
-                7
+                8
         ));
 
         Logger.debug("[GUI] Registered %d pages with AdminPageRegistry", registry.getEntries().size());
@@ -1117,12 +1149,144 @@ public class GuiManager {
                 playerRef,
                 factionManager.get(),
                 this,
+                plugin.get(),
                 faction
             );
             pageManager.openCustomPage(ref, store, page);
             Logger.debug("[GUI] FactionModulesPage opened successfully");
         } catch (Exception e) {
             Logger.severe("[GUI] Failed to open FactionModulesPage: %s", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Opens the Faction Treasury page.
+     *
+     * @param player    The Player entity
+     * @param ref       The entity reference
+     * @param store     The entity store
+     * @param playerRef The PlayerRef component
+     * @param faction   The faction to show treasury for
+     */
+    public void openFactionTreasury(Player player, Ref<EntityStore> ref,
+                                    Store<EntityStore> store, PlayerRef playerRef,
+                                    Faction faction) {
+        Logger.debug("[GUI] Opening TreasuryPage for %s", playerRef.getUsername());
+        try {
+            EconomyManager econ = plugin.get().getEconomyManager();
+            if (econ == null) {
+                player.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Treasury is not available."));
+                return;
+            }
+            PageManager pageManager = player.getPageManager();
+            TreasuryPage page = new TreasuryPage(
+                playerRef,
+                factionManager.get(),
+                econ,
+                this,
+                plugin.get(),
+                faction
+            );
+            pageManager.openCustomPage(ref, store, page);
+            Logger.debug("[GUI] TreasuryPage opened successfully");
+        } catch (Exception e) {
+            Logger.severe("[GUI] Failed to open TreasuryPage: %s", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Opens the Treasury Deposit/Withdraw modal.
+     *
+     * @param player    The Player entity
+     * @param ref       The entity reference
+     * @param store     The entity store
+     * @param playerRef The PlayerRef component
+     * @param faction   The faction
+     * @param mode      "deposit" or "withdraw"
+     */
+    public void openTreasuryDepositModal(Player player, Ref<EntityStore> ref,
+                                          Store<EntityStore> store, PlayerRef playerRef,
+                                          Faction faction, String mode) {
+        Logger.debug("[GUI] Opening TreasuryDepositModal (%s) for %s", mode, playerRef.getUsername());
+        try {
+            EconomyManager econ = plugin.get().getEconomyManager();
+            if (econ == null) {
+                player.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Treasury is not available."));
+                return;
+            }
+            var page = new TreasuryDepositModalPage(playerRef, factionManager.get(), econ,
+                    this, plugin.get(), faction, mode);
+            player.getPageManager().openCustomPage(ref, store, page);
+        } catch (Exception e) {
+            Logger.severe("[GUI] Failed to open TreasuryDepositModal: %s", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Opens the Treasury Transfer Search modal.
+     */
+    public void openTreasuryTransferSearch(Player player, Ref<EntityStore> ref,
+                                            Store<EntityStore> store, PlayerRef playerRef,
+                                            Faction faction) {
+        Logger.debug("[GUI] Opening TreasuryTransferSearch for %s", playerRef.getUsername());
+        try {
+            EconomyManager econ = plugin.get().getEconomyManager();
+            if (econ == null) {
+                player.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Treasury is not available."));
+                return;
+            }
+            var page = new TreasuryTransferSearchPage(playerRef, factionManager.get(), econ,
+                    this, plugin.get(), faction);
+            player.getPageManager().openCustomPage(ref, store, page);
+        } catch (Exception e) {
+            Logger.severe("[GUI] Failed to open TreasuryTransferSearch: %s", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Opens the Treasury Transfer Confirmation page.
+     */
+    public void openTreasuryTransferConfirm(Player player, Ref<EntityStore> ref,
+                                              Store<EntityStore> store, PlayerRef playerRef,
+                                              Faction faction, String targetId,
+                                              String targetName, String targetType) {
+        Logger.debug("[GUI] Opening TreasuryTransferConfirm for %s -> %s", playerRef.getUsername(), targetName);
+        try {
+            EconomyManager econ = plugin.get().getEconomyManager();
+            if (econ == null) {
+                player.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Treasury is not available."));
+                return;
+            }
+            var page = new TreasuryTransferConfirmPage(playerRef, factionManager.get(), econ,
+                    this, plugin.get(), faction, targetId, targetName, targetType);
+            player.getPageManager().openCustomPage(ref, store, page);
+        } catch (Exception e) {
+            Logger.severe("[GUI] Failed to open TreasuryTransferConfirm: %s", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Opens the Treasury Settings sub-page.
+     */
+    public void openTreasurySettings(Player player, Ref<EntityStore> ref,
+                                      Store<EntityStore> store, PlayerRef playerRef,
+                                      Faction faction) {
+        Logger.debug("[GUI] Opening TreasurySettings for %s", playerRef.getUsername());
+        try {
+            EconomyManager econ = plugin.get().getEconomyManager();
+            if (econ == null) {
+                player.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Treasury is not available."));
+                return;
+            }
+            var page = new TreasurySettingsPage(playerRef, factionManager.get(), econ, this, faction);
+            player.getPageManager().openCustomPage(ref, store, page);
+        } catch (Exception e) {
+            Logger.severe("[GUI] Failed to open TreasurySettings: %s", e.getMessage());
             e.printStackTrace();
         }
     }
@@ -1282,12 +1446,81 @@ public class GuiManager {
                 factionManager.get(),
                 powerManager.get(),
                 relationManager.get(),
+                plugin.get().getEconomyManager(),
                 this
             );
             pageManager.openCustomPage(ref, store, page);
             Logger.debug("[GUI] AdminFactionInfoPage opened successfully");
         } catch (Exception e) {
             Logger.severe("[GUI] Failed to open AdminFactionInfoPage: %s", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Opens the Admin Economy overview page.
+     * Shows server economy stats and scrollable faction treasury list.
+     *
+     * @param player    The Player entity
+     * @param ref       The entity reference
+     * @param store     The entity store
+     * @param playerRef The PlayerRef component
+     */
+    public void openAdminEconomy(Player player, Ref<EntityStore> ref,
+                                 Store<EntityStore> store, PlayerRef playerRef) {
+        Logger.debug("[GUI] Opening AdminEconomyPage for %s", playerRef.getUsername());
+        try {
+            EconomyManager econ = plugin.get().getEconomyManager();
+            if (econ == null) {
+                player.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Economy system is not enabled."));
+                return;
+            }
+            PageManager pageManager = player.getPageManager();
+            AdminEconomyPage page = new AdminEconomyPage(
+                playerRef,
+                factionManager.get(),
+                econ,
+                this
+            );
+            pageManager.openCustomPage(ref, store, page);
+            Logger.debug("[GUI] AdminEconomyPage opened successfully");
+        } catch (Exception e) {
+            Logger.severe("[GUI] Failed to open AdminEconomyPage: %s", e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Opens the Admin Economy Adjust modal for a specific faction.
+     *
+     * @param player    The Player entity
+     * @param ref       The entity reference
+     * @param store     The entity store
+     * @param playerRef The PlayerRef component
+     * @param factionId The UUID of the faction to adjust
+     */
+    public void openAdminEconomyAdjust(Player player, Ref<EntityStore> ref,
+                                       Store<EntityStore> store, PlayerRef playerRef,
+                                       UUID factionId) {
+        Logger.debug("[GUI] Opening AdminEconomyAdjustPage for %s (faction: %s)", playerRef.getUsername(), factionId);
+        try {
+            EconomyManager econ = plugin.get().getEconomyManager();
+            if (econ == null) {
+                player.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Economy system is not enabled."));
+                return;
+            }
+            PageManager pageManager = player.getPageManager();
+            AdminEconomyAdjustPage page = new AdminEconomyAdjustPage(
+                playerRef,
+                factionManager.get(),
+                econ,
+                this,
+                factionId
+            );
+            pageManager.openCustomPage(ref, store, page);
+            Logger.debug("[GUI] AdminEconomyAdjustPage opened successfully");
+        } catch (Exception e) {
+            Logger.severe("[GUI] Failed to open AdminEconomyAdjustPage: %s", e.getMessage());
             e.printStackTrace();
         }
     }
@@ -1914,6 +2147,7 @@ public class GuiManager {
                 factionManager.get(),
                 powerManager.get(),
                 relationManager.get(),
+                plugin.get().getEconomyManager(),
                 this,
                 sourcePage
             );
@@ -1953,6 +2187,7 @@ public class GuiManager {
                 factionManager.get(),
                 powerManager.get(),
                 relationManager.get(),
+                plugin.get().getEconomyManager(),
                 this,
                 "player_info",
                 sourcePlayerUuid,

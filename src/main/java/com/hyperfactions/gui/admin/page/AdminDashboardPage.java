@@ -5,6 +5,7 @@ import com.hyperfactions.data.*;
 import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.gui.admin.AdminNavBarHelper;
 import com.hyperfactions.gui.admin.data.AdminDashboardData;
+import com.hyperfactions.manager.EconomyManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.manager.ZoneManager;
@@ -12,7 +13,6 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
@@ -91,6 +91,30 @@ public class AdminDashboardPage extends InteractiveCustomUIPage<AdminDashboardDa
         cmd.set("#WarZones.Text", String.valueOf(warZones));
         cmd.set("#TotalPower.Text", String.format("%.0f", totalPower));
         cmd.set("#AvgPower.Text", String.format("%.1f", avgPower));
+
+        // Economy stats (conditional - only if economy is enabled)
+        EconomyManager econ = plugin.getEconomyManager();
+        if (econ != null) {
+            cmd.set("#EconomyStatsRow.Visible", true);
+            double total = econ.getServerTotalBalance();
+            int econFactions = econ.getFactionEconomyCount();
+            double econAvg = econFactions > 0 ? total / econFactions : 0;
+
+            cmd.set("#TotalEconomy.Text", econ.formatCurrencyCompact(total));
+
+            // Find wealthiest faction
+            String wealthiestName = "None";
+            double wealthiestBalance = 0;
+            for (Faction f : allFactions) {
+                double balance = econ.getFactionBalance(f.id());
+                if (balance > wealthiestBalance) {
+                    wealthiestBalance = balance;
+                    wealthiestName = f.name();
+                }
+            }
+            cmd.set("#WealthiestFaction.Text", wealthiestName);
+            cmd.set("#AvgBalance.Text", econ.formatCurrencyCompact(econAvg));
+        }
 
         // Setup bypass toggle
         boolean bypassEnabled = plugin.isAdminBypassEnabled(playerRef.getUuid());

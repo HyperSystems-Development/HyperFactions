@@ -24,6 +24,7 @@ public interface EconomyAPI {
         PLAYER_NOT_FOUND,
         NOT_IN_FACTION,
         NO_PERMISSION,
+        LIMIT_EXCEEDED,
         ERROR
     }
 
@@ -53,6 +54,7 @@ public interface EconomyAPI {
         WAR_COST,
         RAID_COST,
         SPOILS,
+        PLAYER_TRANSFER_OUT,
         ADMIN_ADJUSTMENT
     }
 

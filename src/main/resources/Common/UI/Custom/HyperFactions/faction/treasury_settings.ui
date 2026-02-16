@@ -1,0 +1,207 @@
+// Treasury Settings Sub-page
+// Officer permissions, withdrawal/transfer limits, upkeep settings
+
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+
+$C.@PageOverlay {
+  $C.@DecoratedContainer {
+    Anchor: (Width: 560, Height: 520);
+
+    #Title {
+      Group {
+        $C.@Title {
+          @Text = "Treasury Settings";
+        }
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+      Padding: (Left: 20, Right: 20, Top: 10, Bottom: 10);
+
+      // === Officer Permissions Section ===
+      Label {
+        Text: "OFFICER PERMISSIONS";
+        Style: (FontSize: 10, TextColor: #00AAAA, RenderBold: true, RenderUppercase: true);
+        Anchor: (Height: 18, Bottom: 4);
+      }
+
+      Group {
+        LayoutMode: Top;
+        Background: (Color: #0d1520);
+        Padding: (Left: 12, Right: 12, Top: 6, Bottom: 6);
+        Anchor: (Bottom: 12);
+
+        Group {
+          Anchor: (Height: 30);
+          Padding: (Top: 2, Bottom: 2);
+          $C.@CheckBoxWithLabel #OfficerWithdrawToggle {
+            @Text = "Allow Officers to Withdraw";
+            @Checked = false;
+            Anchor: (Height: 26);
+          }
+        }
+
+        // Thin divider
+        Group {
+          Anchor: (Height: 1);
+          Background: (Color: #1a2a3a);
+        }
+
+        Group {
+          Anchor: (Height: 30);
+          Padding: (Top: 2, Bottom: 2);
+          $C.@CheckBoxWithLabel #OfficerTransferToggle {
+            @Text = "Allow Officers to Transfer";
+            @Checked = false;
+            Anchor: (Height: 26);
+          }
+        }
+      }
+
+      // === Limits Section ===
+      Label {
+        Text: "WITHDRAWAL AND TRANSFER LIMITS";
+        Style: (FontSize: 10, TextColor: #00AAAA, RenderBold: true, RenderUppercase: true);
+        Anchor: (Height: 18, Bottom: 4);
+      }
+
+      Group {
+        LayoutMode: Top;
+        Background: (Color: #0d1520);
+        Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+        Anchor: (Bottom: 4);
+
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 28, Bottom: 4);
+          Label {
+            Text: "Max per withdrawal:";
+            Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
+            Anchor: (Width: 200);
+          }
+          $C.@TextField #MaxWithdrawAmountInput {
+            Anchor: (Height: 24, Width: 120);
+            Style: (FontSize: 10, TextColor: #FFFFFF);
+          }
+        }
+
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 28, Bottom: 4);
+          Label {
+            Text: "Max withdrawals per period:";
+            Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
+            Anchor: (Width: 200);
+          }
+          $C.@TextField #MaxWithdrawPeriodInput {
+            Anchor: (Height: 24, Width: 120);
+            Style: (FontSize: 10, TextColor: #FFFFFF);
+          }
+        }
+
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 28, Bottom: 4);
+          Label {
+            Text: "Max per transfer:";
+            Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
+            Anchor: (Width: 200);
+          }
+          $C.@TextField #MaxTransferAmountInput {
+            Anchor: (Height: 24, Width: 120);
+            Style: (FontSize: 10, TextColor: #FFFFFF);
+          }
+        }
+
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 28, Bottom: 4);
+          Label {
+            Text: "Max transfers per period:";
+            Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
+            Anchor: (Width: 200);
+          }
+          $C.@TextField #MaxTransferPeriodInput {
+            Anchor: (Height: 24, Width: 120);
+            Style: (FontSize: 10, TextColor: #FFFFFF);
+          }
+        }
+
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 28);
+          Label {
+            Text: "Limit period (hours):";
+            Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
+            Anchor: (Width: 200);
+          }
+          $C.@TextField #PeriodHoursInput {
+            Anchor: (Height: 24, Width: 120);
+            Style: (FontSize: 10, TextColor: #FFFFFF);
+          }
+        }
+      }
+
+      Label {
+        Text: "Set to 0 for no limit";
+        Style: (FontSize: 9, TextColor: #555555);
+        Anchor: (Height: 14, Bottom: 10);
+      }
+
+      // === Upkeep Settings (visible only if enabled) ===
+      Group #UpkeepSettings {
+        Visible: false;
+        LayoutMode: Top;
+        Anchor: (Bottom: 10);
+
+        Label {
+          Text: "UPKEEP SETTINGS";
+          Style: (FontSize: 10, TextColor: #00AAAA, RenderBold: true, RenderUppercase: true);
+          Anchor: (Height: 18, Bottom: 4);
+        }
+
+        Group {
+          Background: (Color: #0d1520);
+          Padding: (Left: 12, Right: 12, Top: 6, Bottom: 6);
+
+          Group {
+            Anchor: (Height: 30);
+            Padding: (Top: 2, Bottom: 2);
+            $C.@CheckBoxWithLabel #AutoPayToggle {
+              @Text = "Auto-pay upkeep from treasury";
+              @Checked = true;
+              Anchor: (Height: 26);
+            }
+          }
+        }
+      }
+
+      // Spacer to push buttons to bottom
+      Label { FlexWeight: 1; }
+
+      // === Action Buttons ===
+      Group {
+        LayoutMode: Left;
+        Anchor: (Height: 36);
+
+        TextButton #BackBtn {
+          Text: "Back";
+          Anchor: (Height: 32, Width: 110);
+          Style: $S.@ButtonStyle;
+        }
+
+        Label { FlexWeight: 1; }
+
+        TextButton #SaveBtn {
+          Text: "Save Settings";
+          Anchor: (Height: 32, Width: 140);
+          Style: $S.@GreenButtonStyle;
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

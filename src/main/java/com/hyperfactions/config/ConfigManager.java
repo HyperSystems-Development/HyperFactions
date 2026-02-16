@@ -404,6 +404,17 @@ public class ConfigManager {
     @NotNull public String getEconomyCurrencyNamePlural() { return economyConfig.getCurrencyNamePlural(); }
     @NotNull public String getEconomyCurrencySymbol() { return economyConfig.getCurrencySymbol(); }
     public double getEconomyStartingBalance() { return economyConfig.getStartingBalance(); }
+    public boolean isEconomyDisbandRefundToLeader() { return economyConfig.isDisbandRefundToLeader(); }
+    @NotNull public com.hyperfactions.data.FactionEconomy.TreasuryLimits getDefaultTreasuryLimits() { return economyConfig.getDefaultTreasuryLimits(); }
+    @NotNull public com.hyperfactions.config.modules.EconomyConfig getEconomyConfig() { return economyConfig; }
+    public double getDepositFeePercent() { return economyConfig.getDepositFeePercent(); }
+    public double getWithdrawFeePercent() { return economyConfig.getWithdrawFeePercent(); }
+    public double getTransferFeePercent() { return economyConfig.getTransferFeePercent(); }
+    public boolean isUpkeepEnabled() { return economyConfig.isUpkeepEnabled(); }
+    public double getUpkeepCostPerChunk() { return economyConfig.getUpkeepCostPerChunk(); }
+    public int getUpkeepIntervalHours() { return economyConfig.getUpkeepIntervalHours(); }
+    public int getUpkeepGracePeriodHours() { return economyConfig.getUpkeepGracePeriodHours(); }
+    public boolean isUpkeepAutoPayDefault() { return economyConfig.isUpkeepAutoPayDefault(); }
 
     // Messages (v3 structured prefix)
     @NotNull public String getPrefixText() { return coreConfig.getPrefixText(); }

@@ -6,6 +6,7 @@ import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.data.FactionRole;
 import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.gui.faction.data.FactionPageData;
+import com.hyperfactions.manager.EconomyManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.manager.RelationManager;
@@ -37,6 +38,7 @@ public class FactionInfoPage extends InteractiveCustomUIPage<FactionPageData> {
     private final FactionManager factionManager;
     private final PowerManager powerManager;
     private final RelationManager relationManager;
+    private final EconomyManager economyManager;
     private final GuiManager guiManager;
     private final String sourcePage;
 
@@ -50,8 +52,9 @@ public class FactionInfoPage extends InteractiveCustomUIPage<FactionPageData> {
                            FactionManager factionManager,
                            PowerManager powerManager,
                            RelationManager relationManager,
+                           EconomyManager economyManager,
                            GuiManager guiManager) {
-        this(viewerRef, targetFaction, factionManager, powerManager, relationManager, guiManager, null);
+        this(viewerRef, targetFaction, factionManager, powerManager, relationManager, economyManager, guiManager, null);
     }
 
     /**
@@ -68,9 +71,10 @@ public class FactionInfoPage extends InteractiveCustomUIPage<FactionPageData> {
                            FactionManager factionManager,
                            PowerManager powerManager,
                            RelationManager relationManager,
+                           EconomyManager economyManager,
                            GuiManager guiManager,
                            String sourcePage) {
-        this(viewerRef, targetFaction, factionManager, powerManager, relationManager, guiManager,
+        this(viewerRef, targetFaction, factionManager, powerManager, relationManager, economyManager, guiManager,
                 sourcePage, null, null, null);
     }
 
@@ -88,6 +92,7 @@ public class FactionInfoPage extends InteractiveCustomUIPage<FactionPageData> {
                            FactionManager factionManager,
                            PowerManager powerManager,
                            RelationManager relationManager,
+                           EconomyManager economyManager,
                            GuiManager guiManager,
                            String sourcePage,
                            UUID sourcePlayerUuid,
@@ -99,6 +104,7 @@ public class FactionInfoPage extends InteractiveCustomUIPage<FactionPageData> {
         this.factionManager = factionManager;
         this.powerManager = powerManager;
         this.relationManager = relationManager;
+        this.economyManager = economyManager;
         this.guiManager = guiManager;
         this.sourcePage = sourcePage;
         this.sourcePlayerUuid = sourcePlayerUuid;
@@ -173,6 +179,13 @@ public class FactionInfoPage extends InteractiveCustomUIPage<FactionPageData> {
         } else {
             cmd.set("#RaidableValue.Text", "Protected");
             // Note: Cannot dynamically set text color via cmd.set()
+        }
+
+        // Treasury balance (visible when economy enabled)
+        if (economyManager != null) {
+            cmd.set("#TreasuryCard.Visible", true);
+            double balance = economyManager.getFactionBalance(targetFaction.id());
+            cmd.set("#TreasuryValue.Text", economyManager.formatCurrencyCompact(balance));
         }
 
         // === Leadership Section ===

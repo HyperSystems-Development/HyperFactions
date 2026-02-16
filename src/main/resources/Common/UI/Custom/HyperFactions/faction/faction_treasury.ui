@@ -1,0 +1,291 @@
+// Faction Treasury Page v2
+// Stat cards, upkeep section, quick action buttons, transaction log, settings button
+
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+$Nav = "../nav/nav_bar.ui";
+
+$C.@PageOverlay {
+  $Nav.@HyperFactionsNavBar #HyperFactionsNavBar {}
+
+  $C.@DecoratedContainer {
+    Anchor: (Width: 900, Height: 680);
+
+    #Title {
+      Group {
+        $C.@Title {
+          @Text = "Faction Treasury";
+        }
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+      Padding: (Left: 20, Right: 20, Top: 20, Bottom: 10);
+
+      // === A. Stats Row ===
+      Group #StatsRow {
+        Anchor: (Height: 80, Bottom: 8);
+        LayoutMode: Left;
+
+        // Balance card
+        Group #BalanceStat {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 15, Right: 15, Top: 12, Bottom: 12);
+          LayoutMode: Top;
+          Anchor: (Right: 5);
+
+          Label {
+            Text: "Balance";
+            Style: (FontSize: 10, TextColor: #666666);
+            Anchor: (Height: 16);
+          }
+          Label #BalanceValue {
+            Text: "0.00";
+            Style: (FontSize: 22, TextColor: #FFD700, RenderBold: true);
+            FlexWeight: 1;
+          }
+          Label #WalletBalance {
+            Text: "Your wallet: 0.00";
+            Style: (FontSize: 10, TextColor: #888888);
+            Anchor: (Height: 14);
+          }
+        }
+
+        // Income (24h) card
+        Group #IncomeStat {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 15, Right: 15, Top: 12, Bottom: 12);
+          LayoutMode: Top;
+          Anchor: (Left: 5, Right: 5);
+
+          Label {
+            Text: "Income (24h)";
+            Style: (FontSize: 10, TextColor: #666666);
+            Anchor: (Height: 16);
+          }
+          Label #IncomeValue {
+            Text: "0.00";
+            Style: (FontSize: 22, TextColor: #44CC44, RenderBold: true);
+            FlexWeight: 1;
+          }
+          Label {
+            Text: "deposits, transfers in";
+            Style: (FontSize: 10, TextColor: #888888);
+            Anchor: (Height: 14);
+          }
+        }
+
+        // Expenses (24h) card
+        Group #ExpensesStat {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 15, Right: 15, Top: 12, Bottom: 12);
+          LayoutMode: Top;
+          Anchor: (Left: 5);
+
+          Label {
+            Text: "Expenses (24h)";
+            Style: (FontSize: 10, TextColor: #666666);
+            Anchor: (Height: 16);
+          }
+          Label #ExpensesValue {
+            Text: "0.00";
+            Style: (FontSize: 22, TextColor: #FF5555, RenderBold: true);
+            FlexWeight: 1;
+          }
+          Label {
+            Text: "withdrawals, transfers out";
+            Style: (FontSize: 10, TextColor: #888888);
+            Anchor: (Height: 14);
+          }
+        }
+      }
+
+      // === B. Net P&L Row ===
+      Group #PnlRow {
+        Anchor: (Height: 24, Bottom: 10);
+        LayoutMode: Left;
+
+        Label { FlexWeight: 1; }
+        Label #PnlValue {
+          Text: "Net (24h): +0.00";
+          Style: (FontSize: 12, TextColor: #44CC44, RenderBold: true);
+        }
+      }
+
+      // === C. Upkeep Section (hidden by default) ===
+      Group #UpkeepSection {
+        Visible: false;
+        Anchor: (Bottom: 10);
+        Background: (Color: #1a2a3a);
+        Padding: (Left: 15, Right: 15, Top: 10, Bottom: 10);
+        LayoutMode: Top;
+
+        // Header row
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 18);
+
+          Label {
+            Text: "MAINTENANCE";
+            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
+          }
+          Label { FlexWeight: 1; }
+          Label #UpkeepCost {
+            Text: "Cost: --";
+            Style: (FontSize: 10, TextColor: #AAAAAA);
+          }
+        }
+
+        // Progress bar row
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 22, Top: 4);
+
+          ProgressBar #UpkeepBar {
+            FlexWeight: 1;
+            Anchor: (Height: 16);
+            Bar: (Color: #55FF55);
+            Background: (Color: #333333);
+          }
+          Label { Anchor: (Width: 8); }
+          Label #UpkeepTimer {
+            Text: "--";
+            Style: (FontSize: 10, TextColor: #AAAAAA);
+          }
+        }
+
+        // Auto-pay row
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 16, Top: 2);
+
+          Label #AutoPayStatus {
+            Text: "Auto-pay: ON";
+            Style: (FontSize: 10, TextColor: #55FF55);
+          }
+        }
+      }
+
+      // === D. Quick Actions ===
+      Group #QuickActions {
+        Anchor: (Height: 40, Bottom: 10);
+        LayoutMode: Left;
+
+        Label { FlexWeight: 1; }
+
+        TextButton #DepositBtn {
+          Text: "Deposit";
+          Anchor: (Height: 32, Width: 130);
+          Style: $S.@GreenButtonStyle;
+        }
+
+        Label { Anchor: (Width: 10); }
+
+        TextButton #WithdrawBtn {
+          Text: "Withdraw";
+          Anchor: (Height: 32, Width: 130);
+          Style: $S.@ButtonStyle;
+        }
+
+        Label { Anchor: (Width: 10); }
+
+        TextButton #TransferBtn {
+          Text: "Transfer";
+          Anchor: (Height: 32, Width: 130);
+          Style: $S.@CyanButtonStyle;
+        }
+
+        Label { FlexWeight: 1; }
+      }
+
+      // === Divider ===
+      Group {
+        Anchor: (Height: 1, Bottom: 8);
+        Background: (Color: #00AAAA);
+      }
+
+      // === E. Transaction Log ===
+      Group {
+        Anchor: (Height: 22);
+        LayoutMode: Left;
+
+        Label {
+          Text: "Recent Transactions";
+          Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
+          FlexWeight: 1;
+        }
+
+        Label #NoTransactions {
+          Text: "No transactions yet";
+          Style: (FontSize: 10, TextColor: #555555);
+          Visible: true;
+        }
+      }
+
+      // Column headers
+      Group #ColumnHeaders {
+        Anchor: (Height: 20);
+        LayoutMode: Left;
+
+        Label {
+          Text: "Date";
+          Style: (FontSize: 10, TextColor: #555555);
+          Anchor: (Width: 100);
+        }
+        Label {
+          Text: "Type";
+          Style: (FontSize: 10, TextColor: #555555);
+          Anchor: (Width: 100);
+        }
+        Label {
+          Text: "By";
+          Style: (FontSize: 10, TextColor: #555555);
+          Anchor: (Width: 90);
+        }
+        Label {
+          Text: "Amount";
+          Style: (FontSize: 10, TextColor: #555555);
+          Anchor: (Width: 100);
+        }
+        Label {
+          Text: "Details";
+          Style: (FontSize: 10, TextColor: #555555);
+          FlexWeight: 1;
+        }
+      }
+
+      // Scrollable transaction list
+      Group #TransactionLog {
+        FlexWeight: 1;
+        LayoutMode: TopScrolling;
+        ScrollbarStyle: $C.@DefaultScrollbarStyle;
+        Background: (Color: #0d1520);
+
+        Group #TransactionList {
+          LayoutMode: Top;
+        }
+      }
+
+      // === F. Settings button (leader-only) ===
+      Group #SettingsRow {
+        Visible: false;
+        Anchor: (Height: 36, Top: 6);
+        LayoutMode: Left;
+
+        Label { FlexWeight: 1; }
+
+        TextButton #SettingsBtn {
+          Text: "Treasury Settings";
+          Anchor: (Height: 28, Width: 160);
+          Style: $S.@ButtonStyle;
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

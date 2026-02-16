@@ -1,0 +1,101 @@
+// Treasury Transfer Search Modal
+// Unified search for players and factions with pagination
+
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+
+$C.@PageOverlay {
+  $C.@DecoratedContainer {
+    Anchor: (Width: 520, Height: 500);
+
+    #Title {
+      Group {
+        $C.@Title {
+          @Text = "Transfer Funds";
+        }
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+      Padding: (Left: 15, Right: 15, Top: 8, Bottom: 8);
+
+      // Search row
+      Group {
+        Anchor: (Height: 38, Bottom: 8);
+        LayoutMode: Left;
+
+        $C.@TextField #SearchInput {
+          FlexWeight: 1;
+          Anchor: (Height: 32);
+        }
+      }
+
+      // Divider
+      Group {
+        Anchor: (Height: 1, Bottom: 6);
+        Background: (Color: #334455);
+      }
+
+      // Results list (dynamically populated)
+      Group #ResultsList {
+        LayoutMode: Top;
+        Anchor: (Height: 300);
+      }
+
+      // Empty state
+      Group #EmptyState {
+        Anchor: (Height: 40);
+
+        Label #EmptyText {
+          Text: "Search for a player or faction";
+          Style: (FontSize: 12, TextColor: #666666, VerticalAlignment: Center);
+        }
+      }
+
+      // Divider
+      Group {
+        Anchor: (Height: 1, Top: 6, Bottom: 6);
+        Background: (Color: #334455);
+      }
+
+      // Pagination and cancel row
+      Group {
+        Anchor: (Height: 36);
+        LayoutMode: Left;
+
+        TextButton #CancelBtn {
+          Text: "Cancel";
+          Anchor: (Height: 30, Width: 100);
+          Style: $S.@ButtonStyle;
+        }
+
+        Label { FlexWeight: 1; }
+
+        TextButton #PrevBtn {
+          Text: "<";
+          Anchor: (Height: 30, Width: 40);
+          Style: $S.@ButtonStyle;
+        }
+
+        Label { Anchor: (Width: 5); }
+
+        Label #PageInfo {
+          Text: "1/1";
+          Style: (FontSize: 12, TextColor: #888888, VerticalAlignment: Center);
+          Anchor: (Width: 50);
+        }
+
+        Label { Anchor: (Width: 5); }
+
+        TextButton #NextBtn {
+          Text: ">";
+          Anchor: (Height: 30, Width: 40);
+          Style: $S.@ButtonStyle;
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

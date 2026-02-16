@@ -10,7 +10,10 @@ import java.util.*;
  */
 public record FactionEconomy(
     double balance,
-    @NotNull List<EconomyAPI.Transaction> transactionHistory
+    @NotNull List<EconomyAPI.Transaction> transactionHistory,
+    @NotNull TreasuryLimits limits,
+    long lastUpkeepTimestamp,
+    boolean upkeepAutoPay
 ) {
     /**
      * Maximum number of transactions to keep in history.
@@ -18,12 +21,33 @@ public record FactionEconomy(
     public static final int MAX_HISTORY = 50;
 
     /**
+     * Configurable limits for treasury withdrawals and transfers.
+     *
+     * @param maxWithdrawAmount   max per-transaction withdrawal (0 = unlimited)
+     * @param maxWithdrawPerPeriod max total withdrawals in timeframe (0 = unlimited)
+     * @param maxTransferAmount   max per-transaction transfer (0 = unlimited)
+     * @param maxTransferPerPeriod max total transfers in timeframe (0 = unlimited)
+     * @param periodHours         timeframe duration in hours (default: 24)
+     */
+    public record TreasuryLimits(
+        double maxWithdrawAmount,
+        double maxWithdrawPerPeriod,
+        double maxTransferAmount,
+        double maxTransferPerPeriod,
+        int periodHours
+    ) {
+        public static TreasuryLimits defaults() {
+            return new TreasuryLimits(0, 0, 0, 0, 24);
+        }
+    }
+
+    /**
      * Creates an empty economy with zero balance.
      *
      * @return a new empty FactionEconomy
      */
     public static FactionEconomy empty() {
-        return new FactionEconomy(0.0, new ArrayList<>());
+        return new FactionEconomy(0.0, new ArrayList<>(), TreasuryLimits.defaults(), 0L, true);
     }
 
     /**
@@ -33,7 +57,7 @@ public record FactionEconomy(
      * @return a new FactionEconomy
      */
     public static FactionEconomy withStartingBalance(double startingBalance) {
-        return new FactionEconomy(startingBalance, new ArrayList<>());
+        return new FactionEconomy(startingBalance, new ArrayList<>(), TreasuryLimits.defaults(), 0L, true);
     }
 
     /**
@@ -51,7 +75,7 @@ public record FactionEconomy(
      * @return a new FactionEconomy with the updated balance
      */
     public FactionEconomy withBalance(double newBalance) {
-        return new FactionEconomy(newBalance, transactionHistory);
+        return new FactionEconomy(newBalance, transactionHistory, limits, lastUpkeepTimestamp, upkeepAutoPay);
     }
 
     /**
@@ -63,13 +87,13 @@ public record FactionEconomy(
     public FactionEconomy withTransaction(@NotNull EconomyAPI.Transaction transaction) {
         List<EconomyAPI.Transaction> newHistory = new ArrayList<>(transactionHistory);
         newHistory.add(0, transaction); // Add to front (most recent first)
-        
+
         // Trim if exceeds max history
         while (newHistory.size() > MAX_HISTORY) {
             newHistory.remove(newHistory.size() - 1);
         }
-        
-        return new FactionEconomy(balance, newHistory);
+
+        return new FactionEconomy(balance, newHistory, limits, lastUpkeepTimestamp, upkeepAutoPay);
     }
 
     /**
@@ -79,9 +103,27 @@ public record FactionEconomy(
      * @param transaction the transaction to add
      * @return a new FactionEconomy
      */
-    public FactionEconomy withBalanceAndTransaction(double newBalance, 
+    public FactionEconomy withBalanceAndTransaction(double newBalance,
                                                      @NotNull EconomyAPI.Transaction transaction) {
         return withBalance(newBalance).withTransaction(transaction);
+    }
+
+    /**
+     * Returns a copy with updated treasury limits.
+     *
+     * @param newLimits the new limits
+     * @return a new FactionEconomy with updated limits
+     */
+    public FactionEconomy withLimits(@NotNull TreasuryLimits newLimits) {
+        return new FactionEconomy(balance, transactionHistory, newLimits, lastUpkeepTimestamp, upkeepAutoPay);
+    }
+
+    public FactionEconomy withLastUpkeepTimestamp(long timestamp) {
+        return new FactionEconomy(balance, transactionHistory, limits, timestamp, upkeepAutoPay);
+    }
+
+    public FactionEconomy withUpkeepAutoPay(boolean autoPay) {
+        return new FactionEconomy(balance, transactionHistory, limits, lastUpkeepTimestamp, autoPay);
     }
 
     /**

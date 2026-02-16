@@ -6,7 +6,7 @@ $C.@PageOverlay {
   $Nav.@HyperFactionsAdminNavBar #HyperFactionsAdminNavBar {}
 
   $C.@Container {
-    Anchor: (Width: 520, Height: 380);
+    Anchor: (Width: 520, Height: 480);
 
     #Title {
       $C.@Title {
@@ -176,6 +176,73 @@ $C.@PageOverlay {
           Label #AvgPower {
             Text: "0.0";
             Style: (FontSize: 28, TextColor: #888888, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
+            FlexWeight: 1;
+          }
+        }
+      }
+
+      // Economy Stats Row (hidden when economy is disabled)
+      Group #EconomyStatsRow {
+        Anchor: (Height: 80, Bottom: 15);
+        LayoutMode: Left;
+        Visible: false;
+
+        // Total Economy
+        Group {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 15, Right: 15, Top: 12, Bottom: 12);
+          LayoutMode: Top;
+          Anchor: (Right: 5);
+
+          Label {
+            Text: "Total Economy";
+            Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
+            Anchor: (Height: 16);
+          }
+          Label #TotalEconomy {
+            Text: "0";
+            Style: (FontSize: 22, TextColor: #FFD700, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
+            FlexWeight: 1;
+          }
+        }
+
+        // Wealthiest Faction
+        Group {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 15, Right: 15, Top: 12, Bottom: 12);
+          LayoutMode: Top;
+          Anchor: (Left: 5, Right: 5);
+
+          Label {
+            Text: "Wealthiest";
+            Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
+            Anchor: (Height: 16);
+          }
+          Label #WealthiestFaction {
+            Text: "None";
+            Style: (FontSize: 16, TextColor: #00FFFF, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
+            FlexWeight: 1;
+          }
+        }
+
+        // Average Balance
+        Group {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 15, Right: 15, Top: 12, Bottom: 12);
+          LayoutMode: Top;
+          Anchor: (Left: 5);
+
+          Label {
+            Text: "Avg Balance";
+            Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
+            Anchor: (Height: 16);
+          }
+          Label #AvgBalance {
+            Text: "0";
+            Style: (FontSize: 22, TextColor: #888888, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
             FlexWeight: 1;
           }
         }

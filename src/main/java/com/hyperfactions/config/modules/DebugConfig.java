@@ -29,6 +29,7 @@ public class DebugConfig extends ModuleConfig {
     private boolean mixin = false;
     private boolean spawning = false;
     private boolean integration = false;
+    private boolean economy = false;
 
     /**
      * Creates a new debug config.
@@ -66,6 +67,7 @@ public class DebugConfig extends ModuleConfig {
         mixin = false;
         spawning = false;
         integration = false;
+        economy = false;
     }
 
     @Override
@@ -87,6 +89,7 @@ public class DebugConfig extends ModuleConfig {
             mixin = getBool(categories, "mixin", false);
             spawning = getBool(categories, "spawning", false);
             integration = getBool(categories, "integration", false);
+            economy = getBool(categories, "economy", false);
         }
 
         // Apply settings to Logger
@@ -110,6 +113,7 @@ public class DebugConfig extends ModuleConfig {
         categories.addProperty("mixin", mixin);
         categories.addProperty("spawning", spawning);
         categories.addProperty("integration", integration);
+        categories.addProperty("economy", economy);
         root.add("categories", categories);
     }
 
@@ -131,6 +135,7 @@ public class DebugConfig extends ModuleConfig {
         Logger.setDebugEnabled(Logger.DebugCategory.MIXIN, mixin);
         Logger.setDebugEnabled(Logger.DebugCategory.SPAWNING, spawning);
         Logger.setDebugEnabled(Logger.DebugCategory.INTEGRATION, integration);
+        Logger.setDebugEnabled(Logger.DebugCategory.ECONOMY, economy);
     }
 
     // === Getters ===
@@ -252,6 +257,15 @@ public class DebugConfig extends ModuleConfig {
         return integration;
     }
 
+    /**
+     * Checks if economy debug is enabled.
+     *
+     * @return true if enabled
+     */
+    public boolean isEconomy() {
+        return economy;
+    }
+
     // === Setters (for runtime toggle) ===
 
     /**
@@ -365,6 +379,16 @@ public class DebugConfig extends ModuleConfig {
     }
 
     /**
+     * Sets economy debug state and applies to Logger.
+     *
+     * @param enabled true to enable
+     */
+    public void setEconomy(boolean enabled) {
+        this.economy = enabled;
+        applyToLogger();
+    }
+
+    /**
      * Enables all debug categories.
      */
     public void enableAll() {
@@ -380,6 +404,7 @@ public class DebugConfig extends ModuleConfig {
         mixin = true;
         spawning = true;
         integration = true;
+        economy = true;
         applyToLogger();
     }
 
@@ -399,6 +424,7 @@ public class DebugConfig extends ModuleConfig {
         mixin = false;
         spawning = false;
         integration = false;
+        economy = false;
         applyToLogger();
     }
 }

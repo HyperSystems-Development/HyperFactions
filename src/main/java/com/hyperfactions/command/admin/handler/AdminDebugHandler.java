@@ -124,6 +124,7 @@ public class AdminDebugHandler {
             ctx.sendMessage(msg("  mixin: ", COLOR_WHITE).insert(msg(debugConfig.isMixin() ? "ON" : "OFF", debugConfig.isMixin() ? COLOR_GREEN : COLOR_RED)));
             ctx.sendMessage(msg("  spawning: ", COLOR_WHITE).insert(msg(debugConfig.isSpawning() ? "ON" : "OFF", debugConfig.isSpawning() ? COLOR_GREEN : COLOR_RED)));
             ctx.sendMessage(msg("  integration: ", COLOR_WHITE).insert(msg(debugConfig.isIntegration() ? "ON" : "OFF", debugConfig.isIntegration() ? COLOR_GREEN : COLOR_RED)));
+            ctx.sendMessage(msg("  economy: ", COLOR_WHITE).insert(msg(debugConfig.isEconomy() ? "ON" : "OFF", debugConfig.isEconomy() ? COLOR_GREEN : COLOR_RED)));
             ctx.sendMessage(msg("Usage: /f admin debug toggle <category|all> [on|off]", COLOR_GRAY));
             return;
         }
@@ -158,9 +159,10 @@ public class AdminDebugHandler {
             case "mixin" -> currentValue = debugConfig.isMixin();
             case "spawning" -> currentValue = debugConfig.isSpawning();
             case "integration" -> currentValue = debugConfig.isIntegration();
+            case "economy" -> currentValue = debugConfig.isEconomy();
             default -> {
                 ctx.sendMessage(prefix().insert(msg("Unknown category: " + category, COLOR_RED)));
-                ctx.sendMessage(msg("Valid categories: power, claim, combat, protection, relation, territory, worldmap, interaction, mixin, spawning, integration, all", COLOR_GRAY));
+                ctx.sendMessage(msg("Valid categories: power, claim, combat, protection, relation, territory, worldmap, interaction, mixin, spawning, integration, economy, all", COLOR_GRAY));
                 return;
             }
         }
@@ -183,6 +185,7 @@ public class AdminDebugHandler {
             case "mixin" -> debugConfig.setMixin(newValue);
             case "spawning" -> debugConfig.setSpawning(newValue);
             case "integration" -> debugConfig.setIntegration(newValue);
+            case "economy" -> debugConfig.setEconomy(newValue);
         }
 
         // Save to persist the change
@@ -221,6 +224,7 @@ public class AdminDebugHandler {
         ctx.sendMessage(msg("  mixin: ", COLOR_WHITE).insert(msg(debugConfig.isMixin() ? "ON" : "OFF", debugConfig.isMixin() ? COLOR_GREEN : COLOR_RED)));
         ctx.sendMessage(msg("  spawning: ", COLOR_WHITE).insert(msg(debugConfig.isSpawning() ? "ON" : "OFF", debugConfig.isSpawning() ? COLOR_GREEN : COLOR_RED)));
         ctx.sendMessage(msg("  integration: ", COLOR_WHITE).insert(msg(debugConfig.isIntegration() ? "ON" : "OFF", debugConfig.isIntegration() ? COLOR_GREEN : COLOR_RED)));
+        ctx.sendMessage(msg("  economy: ", COLOR_WHITE).insert(msg(debugConfig.isEconomy() ? "ON" : "OFF", debugConfig.isEconomy() ? COLOR_GREEN : COLOR_RED)));
     }
 
     public void handleDebugPower(CommandContext ctx, String[] args) {

@@ -1,5 +1,6 @@
 package com.hyperfactions.gui.faction.page;
 
+import com.hyperfactions.HyperFactions;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.gui.faction.FactionPageRegistry;
 import com.hyperfactions.gui.GuiManager;
@@ -28,27 +29,30 @@ public class FactionModulesPage extends InteractiveCustomUIPage<FactionModulesDa
 
     private static final String PAGE_ID = "modules";
 
-    // Module definitions for the 2x2 grid
+    // Module definitions for the 2x2 grid (treasury state is dynamic)
     private static final List<ModuleInfo> MODULES = List.of(
-            new ModuleInfo("treasury", "Treasury", "Faction bank & economy system", "#fbbf24", false),
-            new ModuleInfo("raids", "Raids", "Scheduled faction battles", "#ef4444", false),
-            new ModuleInfo("levels", "Levels", "Faction progression & XP", "#22c55e", false),
-            new ModuleInfo("war", "War", "Formal war declarations", "#a855f7", false)
+            new ModuleInfo("treasury", "Treasury", "Faction bank & economy system", "#fbbf24"),
+            new ModuleInfo("raids", "Raids", "Scheduled faction battles", "#ef4444"),
+            new ModuleInfo("levels", "Levels", "Faction progression & XP", "#22c55e"),
+            new ModuleInfo("war", "War", "Formal war declarations", "#a855f7")
     );
 
     private final PlayerRef playerRef;
     private final FactionManager factionManager;
     private final GuiManager guiManager;
+    private final HyperFactions hyperFactions;
     private final Faction faction;
 
     public FactionModulesPage(PlayerRef playerRef,
                               FactionManager factionManager,
                               GuiManager guiManager,
+                              HyperFactions hyperFactions,
                               Faction faction) {
         super(playerRef, CustomPageLifetime.CanDismiss, FactionModulesData.CODEC);
         this.playerRef = playerRef;
         this.factionManager = factionManager;
         this.guiManager = guiManager;
+        this.hyperFactions = hyperFactions;
         this.faction = faction;
     }
 
@@ -74,23 +78,13 @@ public class FactionModulesPage extends InteractiveCustomUIPage<FactionModulesDa
             // Set color indicator
             cmd.set(cardSelector + " #ColorBar.Background.Color", module.color);
 
-            // Set status badge
-            if (module.available) {
-                cmd.set(cardSelector + " #StatusBadge.Text", "Available");
-                cmd.set(cardSelector + " #StatusBadge.Style.TextColor", "#22c55e");
+            // Treasury has dynamic state
+            if ("treasury".equals(module.id)) {
+                buildTreasuryCard(cmd, events, cardSelector);
             } else {
+                // Other modules: coming soon
                 cmd.set(cardSelector + " #StatusBadge.Text", "Coming Soon");
                 cmd.set(cardSelector + " #StatusBadge.Style.TextColor", "#888888");
-            }
-
-            // Bind click event (for future use when modules are available)
-            if (module.available) {
-                events.addEventBinding(
-                        CustomUIEventBindingType.Activating,
-                        cardSelector + " #ModuleBtn",
-                        EventData.of("Button", "OpenModule").append("ModuleId", module.id),
-                        false
-                );
             }
         }
 
@@ -137,8 +131,13 @@ public class FactionModulesPage extends InteractiveCustomUIPage<FactionModulesDa
             }
 
             case "OpenModule" -> {
-                // Future: open module configuration page
-                // For now, modules are not yet implemented
+                if ("treasury".equals(data.moduleId) && hyperFactions.isTreasuryEnabled()) {
+                    Faction currentFaction = factionManager.getFaction(faction.id());
+                    if (currentFaction != null) {
+                        guiManager.openFactionTreasury(player, ref, store, playerRef, currentFaction);
+                        return;
+                    }
+                }
                 sendUpdate();
             }
 
@@ -146,5 +145,40 @@ public class FactionModulesPage extends InteractiveCustomUIPage<FactionModulesDa
         }
     }
 
-    private record ModuleInfo(String id, String name, String description, String color, boolean available) {}
+    /**
+     * Builds the treasury card with three possible states:
+     * 1. Active (treasury enabled) - green badge, "View Treasury" button
+     * 2. Disabled by config - gray badge, disabled message
+     * 3. No economy plugin - amber badge, unavailable message
+     */
+    private void buildTreasuryCard(UICommandBuilder cmd, UIEventBuilder events, String cardSelector) {
+        if (hyperFactions.isTreasuryEnabled()) {
+            // State 1: Active
+            cmd.set(cardSelector + " #StatusBadge.Text", "Active");
+            cmd.set(cardSelector + " #StatusBadge.Style.TextColor", "#22c55e");
+            cmd.set(cardSelector + " #ModuleBtn.Visible", true);
+            cmd.set(cardSelector + " #ModuleBtn.Text", "View Treasury");
+            events.addEventBinding(
+                    CustomUIEventBindingType.Activating,
+                    cardSelector + " #ModuleBtn",
+                    EventData.of("Button", "OpenModule").append("ModuleId", "treasury"),
+                    false
+            );
+        } else {
+            String reason = hyperFactions.getTreasuryDisabledReason();
+            if (reason != null && reason.contains("economy plugin")) {
+                // State 3: Config enabled but no economy plugin
+                cmd.set(cardSelector + " #StatusBadge.Text", "Unavailable");
+                cmd.set(cardSelector + " #StatusBadge.Style.TextColor", "#fbbf24");
+                cmd.set(cardSelector + " #ModuleDesc.Text", "No economy plugin detected");
+            } else {
+                // State 2: Disabled by server config
+                cmd.set(cardSelector + " #StatusBadge.Text", "Disabled");
+                cmd.set(cardSelector + " #StatusBadge.Style.TextColor", "#888888");
+                cmd.set(cardSelector + " #ModuleDesc.Text", "Economy features are not available on this server");
+            }
+        }
+    }
+
+    private record ModuleInfo(String id, String name, String description, String color) {}
 }

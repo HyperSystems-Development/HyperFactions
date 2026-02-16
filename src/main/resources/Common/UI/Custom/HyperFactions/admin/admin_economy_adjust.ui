@@ -1,0 +1,171 @@
+// Admin Economy - Adjust Treasury Balance Modal
+
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+$Nav = "admin_nav_bar.ui";
+
+$C.@PageOverlay {
+  $Nav.@HyperFactionsAdminNavBar #HyperFactionsAdminNavBar {}
+
+  $C.@DecoratedContainer {
+    Anchor: (Width: 440, Height: 380);
+
+    #Title {
+      Group {
+        $C.@Title {
+          @Text = "Admin: Economy";
+        }
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+      Padding: (Left: 25, Right: 25, Top: 12, Bottom: 12);
+
+      // Section header
+      Label {
+        Text: "Adjust Treasury Balance";
+        Style: (FontSize: 14, TextColor: #00FFFF, RenderBold: true);
+        Anchor: (Height: 28, Bottom: 8);
+      }
+
+      // Faction info card
+      Group #FactionInfoCard {
+        Anchor: (Height: 50, Bottom: 12);
+        Background: (Color: #0d1520);
+        Padding: (Left: 15, Right: 15, Top: 10, Bottom: 10);
+        LayoutMode: Top;
+
+        Group {
+          Anchor: (Height: 20);
+          LayoutMode: Left;
+
+          Label {
+            Text: "Faction:";
+            Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
+            Anchor: (Width: 100);
+          }
+          Label #TargetFactionName {
+            Text: "Unknown";
+            Style: (FontSize: 12, TextColor: #FFFFFF, RenderBold: true, VerticalAlignment: Center);
+          }
+        }
+
+        Group {
+          Anchor: (Height: 20);
+          LayoutMode: Left;
+
+          Label {
+            Text: "Current Balance:";
+            Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
+            Anchor: (Width: 100);
+          }
+          Label #CurrentBalance {
+            Text: "0";
+            Style: (FontSize: 12, TextColor: #FFD700, RenderBold: true, VerticalAlignment: Center);
+          }
+        }
+      }
+
+      // Amount input
+      Group {
+        Anchor: (Height: 20, Bottom: 4);
+        Label {
+          Text: "Amount (positive to add, negative to deduct):";
+          Style: (FontSize: 11, TextColor: #AAAAAA);
+        }
+      }
+
+      $C.@TextField #AmountInput {
+        Anchor: (Height: 30, Bottom: 4);
+        Style: (FontSize: 13, TextColor: #FFFFFF);
+      }
+
+      // Hint text
+      Label #HintText {
+        Text: "Enter a number to preview the change";
+        Style: (FontSize: 10, TextColor: #555555);
+        Anchor: (Height: 16, Bottom: 10);
+      }
+
+      // Preview card
+      Group #PreviewCard {
+        Anchor: (Height: 50, Bottom: 12);
+        Background: (Color: #0d1520);
+        Padding: (Left: 15, Right: 15, Top: 10, Bottom: 10);
+        LayoutMode: Top;
+        Visible: false;
+
+        Group {
+          Anchor: (Height: 20);
+          LayoutMode: Left;
+
+          Label {
+            Text: "Adjustment:";
+            Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
+            Anchor: (Width: 100);
+          }
+          Label #AdjustmentPreview {
+            Text: "";
+            Style: (FontSize: 12, TextColor: #44CC44, RenderBold: true, VerticalAlignment: Center);
+          }
+        }
+
+        Group {
+          Anchor: (Height: 20);
+          LayoutMode: Left;
+
+          Label {
+            Text: "New Balance:";
+            Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
+            Anchor: (Width: 100);
+          }
+          Label #NewBalancePreview {
+            Text: "";
+            Style: (FontSize: 12, TextColor: #FFD700, RenderBold: true, VerticalAlignment: Center);
+          }
+        }
+      }
+
+      // Error message
+      Label #ErrorMessage {
+        Text: "";
+        Style: (FontSize: 11, TextColor: #FF5555);
+        Anchor: (Height: 18);
+      }
+
+      // Spacer
+      Group { FlexWeight: 1; }
+
+      // Action buttons
+      Group {
+        Anchor: (Height: 35);
+        LayoutMode: Left;
+
+        TextButton #BackBtn {
+          Text: "Back";
+          Anchor: (Height: 30, Width: 70);
+          Style: $S.@ButtonStyle;
+        }
+
+        Label { FlexWeight: 1; }
+
+        TextButton #SetBalanceBtn {
+          Text: "Set Balance";
+          Anchor: (Height: 30, Width: 100);
+          Style: $S.@GoldButtonStyle;
+        }
+
+        Label { Anchor: (Width: 8); }
+
+        TextButton #ConfirmBtn {
+          Text: "Confirm +/-";
+          Anchor: (Height: 30, Width: 110);
+          Style: $S.@CyanButtonStyle;
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

@@ -7,9 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-**Closes:** [#30](https://github.com/HyperSystemsDev/HyperFactions/issues/30), [#31](https://github.com/HyperSystemsDev/HyperFactions/issues/31), [#32](https://github.com/HyperSystemsDev/HyperFactions/issues/32), [#34](https://github.com/HyperSystemsDev/HyperFactions/issues/34)
+**Closes:** [#30](https://github.com/HyperSystemsDev/HyperFactions/issues/30), [#31](https://github.com/HyperSystemsDev/HyperFactions/issues/31), [#32](https://github.com/HyperSystemsDev/HyperFactions/issues/32), [#34](https://github.com/HyperSystemsDev/HyperFactions/issues/34), [#36](https://github.com/HyperSystemsDev/HyperFactions/issues/36)
 
 ### Added
+
+**Faction Treasury & Economy System** ([#36](https://github.com/HyperSystemsDev/HyperFactions/issues/36))
+- **Treasury page** (`/f treasury`): Full GUI with balance display, deposit/withdraw buttons, transfer system, transaction log, and treasury settings — accessible from the faction nav bar
+- **Deposit/Withdraw modals**: Amount input with live preview, fee calculation display, and balance validation via VaultUnlocked player wallets
+- **Transfer system**: Search factions by name, confirm transfer with fee preview, complete inter-faction treasury transfers
+- **Treasury settings page**: Officers can configure deposit/withdraw limits, toggle auto-pay upkeep, and view fee rates
+- **Transaction log**: Scrollable history of all treasury activity (deposits, withdrawals, transfers, admin adjustments) with timestamps and actor names
+- **Economy CLI commands**: `/f balance`, `/f deposit <amount>`, `/f withdraw <amount>`, `/f money` for quick treasury access without GUI
+- **Admin economy page** (`/f admin economy`): Server economy overview with total balance, faction count, average balance stats, and sortable/searchable faction treasury list with per-row Adjust and Info buttons
+- **Admin economy adjust modal**: Set exact balance or add/deduct amounts with live preview, faction info card, and error display
+- **Admin economy CLI** (`/f admin economy <balance|set|add|take|total|reset> ...`): Full console-compatible treasury management
+- **Economy stats on admin dashboard**: Total economy, wealthiest faction, and average balance cards (conditionally visible when economy enabled)
+- **Economy stats on faction dashboard**: Treasury balance, next upkeep, and personal wallet cards (conditionally visible)
+- **Treasury info on admin faction info page**: Balance display in stats grid, "Adjust Balance" and "View Treasury" quick action buttons in Economy Management section
+- **Treasury balance on faction info page**: Gold-colored treasury card visible to all players when economy is enabled
+- **Economy configuration** (`economy.json`): Starting balance, treasury limits (deposit/withdraw min/max/daily), transfer fees, upkeep settings, fee rates
+- **VaultUnlocked integration**: Player wallet operations (balance check, deposit, withdraw) via VaultUnlocked economy API
+- **Faction permissions for economy**: `DEPOSIT`, `WITHDRAW`, `TRANSFER`, `MANAGE_TREASURY` permission flags per role
+- `hyperfactions.admin.economy` permission node for admin economy operations
+- `ECONOMY` debug category with `Logger.debugEconomy()` — togglable via `/f admin debug toggle economy` and `debug.json` config
+- `UiUtil` shared utility class for CustomUI text sanitization and amount parsing
 
 **Player Info & Membership History** ([#32](https://github.com/HyperSystemsDev/HyperFactions/issues/32))
 - **Player info page** (`/f who [player]`): Full GUI page with faction membership, power stats, combat stats (kills/deaths/KDR), and membership history
@@ -72,6 +93,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Faction info page redesigned** (`/f info`): Converted from flat label rows to card-based stat layout — Power/Claims/Members stat cards, Relations (ally/enemy split), Status (raidable + founded), Treasury card, Leadership section
+- **Player info page redesigned** (`/f who`): Converted to card-based layout — header with online indicator, faction membership card with View Faction button, Power/Combat/KDR stat cards, power bar, scrollable membership history
+- **Admin faction info page redesigned**: Increased container to 700x640, added Economy Management section with Adjust Balance and View Treasury buttons
+- **Admin dashboard expanded**: Added conditional economy stats row (Total Economy, Wealthiest Faction, Avg Balance)
+- **Faction dashboard expanded**: Added conditional economy row (Treasury Balance, Next Upkeep, Personal Wallet)
+- "Economy" tab added to admin nav bar between Players and Zones (conditionally visible when economy enabled)
 - Relations page uses 2-tab layout (Relations combining allies+enemies, Pending combining incoming+outgoing) instead of 3 separate tabs
 - Admin faction members page upgraded from DecoratedContainer (520x550) to Container (700x500) with sort dropdown replacing sort buttons
 - CurseForge description updated with Discord community link and HyBounty integration callout

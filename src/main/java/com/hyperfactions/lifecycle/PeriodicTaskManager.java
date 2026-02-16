@@ -16,6 +16,7 @@ public class PeriodicTaskManager {
     private int autoSaveTaskId = -1;
     private int inviteCleanupTaskId = -1;
     private int chatHistoryCleanupTaskId = -1;
+    private int upkeepTaskId = -1;
 
     public PeriodicTaskManager(HyperFactions hyperFactions) {
         this.hyperFactions = hyperFactions;
@@ -28,6 +29,7 @@ public class PeriodicTaskManager {
         startAutoSaveTask();
         startInviteCleanupTask();
         startChatHistoryCleanupTask();
+        startUpkeepTask();
     }
 
     /**
@@ -45,6 +47,10 @@ public class PeriodicTaskManager {
         if (chatHistoryCleanupTaskId > 0) {
             hyperFactions.cancelTask(chatHistoryCleanupTaskId);
             chatHistoryCleanupTaskId = -1;
+        }
+        if (upkeepTaskId > 0) {
+            hyperFactions.cancelTask(upkeepTaskId);
+            upkeepTaskId = -1;
         }
     }
 
@@ -117,6 +123,51 @@ public class PeriodicTaskManager {
 
         if (chatHistoryCleanupTaskId > 0) {
             Logger.info("Chat history retention cleanup scheduled every %d minutes", intervalMinutes);
+        }
+    }
+
+    /**
+     * Starts the upkeep collection task if enabled.
+     * This is a skeleton — logs what it would collect but doesn't actually deduct.
+     */
+    private void startUpkeepTask() {
+        ConfigManager config = ConfigManager.get();
+        if (!config.isUpkeepEnabled()) {
+            Logger.debug("Upkeep is disabled in config");
+            return;
+        }
+
+        int intervalHours = config.getUpkeepIntervalHours();
+        int periodTicks = intervalHours * 3600 * 20; // Convert hours to ticks
+
+        upkeepTaskId = hyperFactions.scheduleRepeatingTask(periodTicks, periodTicks, () -> {
+            var economyManager = hyperFactions.getEconomyManager();
+            var factionManager = hyperFactions.getFactionManager();
+            if (economyManager == null || factionManager == null) return;
+
+            double costPerChunk = config.getUpkeepCostPerChunk();
+            int factionsProcessed = 0;
+
+            for (var faction : factionManager.getAllFactions()) {
+                int claimCount = faction.getClaimCount();
+                if (claimCount <= 0) continue;
+
+                double cost = claimCount * costPerChunk;
+                var economy = economyManager.getEconomy(faction.id());
+                if (economy == null) continue;
+
+                // Skeleton: log what would happen but don't deduct
+                Logger.info("[Upkeep] Faction '%s': %d claims x %.2f = %.2f (skeleton — not deducted)",
+                        faction.name(), claimCount, costPerChunk, cost);
+                factionsProcessed++;
+            }
+
+            Logger.info("[Upkeep] Upkeep collection task ran — %d factions processed (skeleton mode)",
+                    factionsProcessed);
+        });
+
+        if (upkeepTaskId > 0) {
+            Logger.info("Upkeep collection scheduled every %d hours", intervalHours);
         }
     }
 }

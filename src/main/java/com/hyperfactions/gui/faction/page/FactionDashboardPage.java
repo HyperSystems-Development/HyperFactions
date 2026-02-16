@@ -15,8 +15,11 @@ import com.hyperfactions.gui.faction.NavBarHelper;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.gui.faction.data.FactionDashboardData;
+import com.hyperfactions.config.ConfigManager;
+import com.hyperfactions.data.FactionEconomy;
 import com.hyperfactions.manager.ChatManager;
 import com.hyperfactions.manager.ClaimManager;
+import com.hyperfactions.manager.EconomyManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.InviteManager;
 import com.hyperfactions.manager.JoinRequestManager;
@@ -217,6 +220,32 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
         int requestCount = joinRequestManager.getFactionRequests(currentFaction.id()).size();
         cmd.set("#InvitesSent.Text", String.valueOf(sentInvites));
         cmd.set("#InvitesReceived.Text", String.valueOf(requestCount));
+
+        // Economy row (conditional - only if economy enabled)
+        EconomyManager econ = plugin.getEconomyManager();
+        if (econ != null) {
+            cmd.set("#EconomyRow.Visible", true);
+
+            // Treasury balance
+            double treasuryBalance = econ.getFactionBalance(currentFaction.id());
+            cmd.set("#TreasuryBalance.Text", econ.formatCurrencyCompact(treasuryBalance));
+
+            // Upkeep info
+            if (ConfigManager.get().isUpkeepEnabled()) {
+                cmd.set("#UpkeepStat.Visible", true);
+                double upkeepAmount = ConfigManager.get().getUpkeepCostPerChunk() * currentFaction.claims().size();
+                cmd.set("#UpkeepValue.Text", econ.formatCurrencyCompact(upkeepAmount));
+            }
+
+            // Personal wallet balance
+            UUID viewerUuid = playerRef.getUuid();
+            try {
+                double walletBalance = econ.getVaultProvider().getBalance(viewerUuid);
+                cmd.set("#WalletBalance.Text", econ.formatCurrencyCompact(walletBalance));
+            } catch (Exception e) {
+                cmd.set("#WalletBalance.Text", "N/A");
+            }
+        }
     }
 
     private int countOnlineMembers(Faction currentFaction) {
