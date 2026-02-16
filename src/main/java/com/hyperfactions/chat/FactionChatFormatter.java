@@ -233,7 +233,7 @@ public class FactionChatFormatter implements PlayerChatEvent.Formatter {
                     }
                     break;
                 case "player":
-                    result = result.insert(Message.raw(playerName).color("#FFFF55"));
+                    result = result.insert(Message.raw(playerName).color(config.getChatPlayerNameColor()));
                     break;
                 case "message":
                     result = result.insert(Message.raw(messageContent).color("#FFFFFF"));

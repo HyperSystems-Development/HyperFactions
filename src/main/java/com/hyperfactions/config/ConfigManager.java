@@ -464,6 +464,7 @@ public class ConfigManager {
     @NotNull public String getChatTagFormat() { return chatConfig.getTagFormat(); }
     @NotNull public String getChatNoFactionTag() { return chatConfig.getNoFactionTag(); }
     @NotNull public String getChatNoFactionTagColor() { return chatConfig.getNoFactionTagColor(); }
+    @NotNull public String getChatPlayerNameColor() { return chatConfig.getPlayerNameColor(); }
     @NotNull public String getChatEventPriority() { return chatConfig.getPriority(); }
     @NotNull public String getChatRelationColorOwn() { return chatConfig.getRelationColorOwn(); }
     @NotNull public String getChatRelationColorAlly() { return chatConfig.getRelationColorAlly(); }

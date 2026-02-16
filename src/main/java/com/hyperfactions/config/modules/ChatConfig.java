@@ -21,6 +21,7 @@ public class ChatConfig extends ModuleConfig {
     private String tagFormat = "[{tag}] ";
     private String noFactionTag = "";           // Tag for non-faction players
     private String noFactionTagColor = "#555555"; // Color for no-faction tag (dark gray)
+    private String playerNameColor = "#FFFFFF";  // Color for {player} in public chat
     private String priority = "LATE";             // Event priority
 
     // Relation colors
@@ -64,6 +65,7 @@ public class ChatConfig extends ModuleConfig {
         tagFormat = "[{tag}] ";
         noFactionTag = "";
         noFactionTagColor = "#555555";
+        playerNameColor = "#FFFFFF";
         priority = "LATE";
         relationColorOwn = "#00FF00";
         relationColorAlly = "#FF69B4";
@@ -88,6 +90,7 @@ public class ChatConfig extends ModuleConfig {
         tagFormat = getString(root, "tagFormat", tagFormat);
         noFactionTag = getString(root, "noFactionTag", noFactionTag);
         noFactionTagColor = getString(root, "noFactionTagColor", noFactionTagColor);
+        playerNameColor = getString(root, "playerNameColor", playerNameColor);
         priority = getString(root, "priority", priority);
 
         // Load relation colors
@@ -123,6 +126,7 @@ public class ChatConfig extends ModuleConfig {
         root.addProperty("tagFormat", tagFormat);
         root.addProperty("noFactionTag", noFactionTag);
         root.addProperty("noFactionTagColor", noFactionTagColor);
+        root.addProperty("playerNameColor", playerNameColor);
         root.addProperty("priority", priority);
 
         JsonObject colors = new JsonObject();
@@ -191,6 +195,16 @@ public class ChatConfig extends ModuleConfig {
     @NotNull
     public String getNoFactionTagColor() {
         return noFactionTagColor;
+    }
+
+    /**
+     * Gets the color for player names in public chat ({player} placeholder).
+     *
+     * @return hex color (e.g., "#FFFFFF")
+     */
+    @NotNull
+    public String getPlayerNameColor() {
+        return playerNameColor;
     }
 
     /**
@@ -308,6 +322,7 @@ public class ChatConfig extends ModuleConfig {
 
         // Validate hex colors (warn but don't correct)
         validateHexColor(result, "noFactionTagColor", noFactionTagColor);
+        validateHexColor(result, "playerNameColor", playerNameColor);
         validateHexColor(result, "relationColors.own", relationColorOwn);
         validateHexColor(result, "relationColors.ally", relationColorAlly);
         validateHexColor(result, "relationColors.neutral", relationColorNeutral);
