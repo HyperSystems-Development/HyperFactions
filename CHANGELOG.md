@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Map GUI crash**: Fixed `NoSuchMethodError` on `PacketHandler.write(Packet[])` — changed to `ToClientPacket[]` for server compatibility
 - **World map generator**: Fixed generator not being set on live worlds added after startup
+- **Server version warning**: Manifest now specifies target server version (prevents PluginManager "does not specify a target server version" warning)
 
 ### Added
 

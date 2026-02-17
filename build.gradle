@@ -90,9 +90,11 @@ public final class BuildInfo {
 // Expand version placeholder in manifest.json
 processResources {
     def ver = buildVersion
+    def srvVer = rootProject.hytaleServerVersion
     inputs.property('version', ver)
+    inputs.property('serverVersion', srvVer)
     filesMatching('manifest.json') {
-        expand(version: ver.get())
+        expand(version: ver.get(), serverVersion: srvVer)
     }
 }
 
