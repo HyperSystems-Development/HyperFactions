@@ -1,0 +1,5 @@
+// Help spacer - visual gap between content sections
+
+Group {
+  Anchor: (Height: 6);
+}

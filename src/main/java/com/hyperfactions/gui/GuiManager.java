@@ -2407,7 +2407,7 @@ public class GuiManager {
     }
 
     /**
-     * Opens the Help page with the default category (GETTING_STARTED).
+     * Opens the Help page with the default category (WELCOME).
      *
      * @param player    The Player entity
      * @param ref       The entity reference
@@ -2416,7 +2416,7 @@ public class GuiManager {
      */
     public void openHelpPage(Player player, Ref<EntityStore> ref,
                              Store<EntityStore> store, PlayerRef playerRef) {
-        openHelp(player, ref, store, playerRef, HelpCategory.GETTING_STARTED);
+        openHelp(player, ref, store, playerRef, HelpCategory.WELCOME);
     }
 
     /**

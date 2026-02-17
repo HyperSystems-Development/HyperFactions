@@ -1,5 +1,0 @@
-// Help spacer - large (between topics)
-
-Group {
-  Anchor: (Height: 14);
-}

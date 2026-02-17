@@ -23,23 +23,20 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 /**
- * Main Help page with left category menu and scrollable content area.
- * Supports deep-linking from commands and can be used by both new players
- * and faction members.
+ * Main Help page with colored sidebar navigation and card-based content area.
+ * Supports deep-linking from commands and works for both new players and faction members.
  */
 public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
 
     private static final String PAGE_ID = "help";
 
     // Template paths
-    private static final String TPL_CATEGORY_HEADER = "HyperFactions/help/help_category_header.ui";
-    private static final String TPL_TOPIC_HEADER = "HyperFactions/help/help_topic_header.ui";
-    private static final String TPL_LINE_DEFAULT = "HyperFactions/help/help_line_default.ui";
+    private static final String TPL_TOPIC_CARD = "HyperFactions/help/help_topic_card.ui";
+    private static final String TPL_LINE_TEXT = "HyperFactions/help/help_line_text.ui";
     private static final String TPL_LINE_COMMAND = "HyperFactions/help/help_line_command.ui";
-    private static final String TPL_LINE_BULLET = "HyperFactions/help/help_line_bullet.ui";
-    private static final String TPL_LINE_DESC = "HyperFactions/help/help_line_desc.ui";
-    private static final String TPL_SPACER_SMALL = "HyperFactions/help/help_spacer_small.ui";
-    private static final String TPL_SPACER_LARGE = "HyperFactions/help/help_spacer_large.ui";
+    private static final String TPL_LINE_TIP = "HyperFactions/help/help_line_tip.ui";
+    private static final String TPL_LINE_HEADING = "HyperFactions/help/help_line_heading.ui";
+    private static final String TPL_SPACER = "HyperFactions/help/help_spacer.ui";
 
     private final PlayerRef playerRef;
     private final GuiManager guiManager;
@@ -48,12 +45,12 @@ public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
     private final Faction faction;
 
     /**
-     * Creates a help page with the default category (GETTING_STARTED).
+     * Creates a help page with the default category (WELCOME).
      */
     public HelpMainPage(@NotNull PlayerRef playerRef,
                         @NotNull GuiManager guiManager,
                         @NotNull FactionManager factionManager) {
-        this(playerRef, guiManager, factionManager, HelpCategory.GETTING_STARTED);
+        this(playerRef, guiManager, factionManager, HelpCategory.WELCOME);
     }
 
     /**
@@ -89,12 +86,16 @@ public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
         // Setup category buttons (disable selected, bind events to others)
         setupCategoryButtons(cmd, events);
 
-        // Build content for selected category
-        buildContent(cmd);
+        // Set the category title header text and color
+        cmd.set("#CategoryTitle.Text", selectedCategory.displayName().toUpperCase());
+        cmd.set("#CategoryTitle.Style.TextColor", selectedCategory.color());
+
+        // Build topic cards for selected category
+        buildTopicCards(cmd);
     }
 
     /**
-     * Sets up the category buttons - disabling the selected one
+     * Sets up the 7 category buttons - disabling the selected one
      * and binding click events to the others.
      */
     private void setupCategoryButtons(UICommandBuilder cmd, UIEventBuilder events) {
@@ -104,7 +105,7 @@ public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
             boolean isSelected = category == selectedCategory;
 
             if (isSelected) {
-                // Disable the selected category button
+                // Disable the selected category button (shows accent color via style)
                 cmd.set(buttonId + ".Disabled", true);
             } else {
                 // Bind click event for non-selected categories
@@ -119,63 +120,52 @@ public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
     }
 
     /**
-     * Builds the content area for the selected category.
-     * Uses separate template variants for different line styles.
-     * IMPORTANT: Only .Text can be set dynamically - not .Style or .Anchor!
+     * Builds topic cards in the content area for the selected category.
      */
-    private void buildContent(UICommandBuilder cmd) {
+    private void buildTopicCards(UICommandBuilder cmd) {
         List<HelpTopic> topics = HelpRegistry.getInstance().getTopics(selectedCategory);
+        int cardIndex = 0;
 
-        int lineIndex = 0;
-
-        // Category header (large cyan text)
-        cmd.append("#ContentList", TPL_CATEGORY_HEADER);
-        cmd.set("#ContentList[" + lineIndex + "] #Text.Text", selectedCategory.displayName().toUpperCase());
-        lineIndex++;
-
-        // Spacer after category header
-        cmd.append("#ContentList", TPL_SPACER_LARGE);
-        lineIndex++;
-
-        // Build each topic
         for (HelpTopic topic : topics) {
-            // Topic title (teal text)
-            cmd.append("#ContentList", TPL_TOPIC_HEADER);
-            cmd.set("#ContentList[" + lineIndex + "] #Text.Text", topic.title());
-            lineIndex++;
+            // Append card template
+            cmd.append("#ContentList", TPL_TOPIC_CARD);
+            String cardPrefix = "#ContentList[" + cardIndex + "]";
 
-            // Content lines
-            for (String line : topic.lines()) {
-                if (line.isEmpty()) {
-                    // Empty line = small spacer
-                    cmd.append("#ContentList", TPL_SPACER_SMALL);
-                } else {
-                    // Choose template based on line content
-                    String template = getTemplateForLine(line);
-                    cmd.append("#ContentList", template);
-                    cmd.set("#ContentList[" + lineIndex + "] #Text.Text", line);
+            // Set card title
+            cmd.set(cardPrefix + " #Title.Text", topic.title());
+
+            // Append lines into card's #Lines container
+            int lineIndex = 0;
+            for (HelpEntry entry : topic.entries()) {
+                String linesContainer = cardPrefix + " #Lines";
+                String template = getTemplateForType(entry.type());
+                cmd.append(linesContainer, template);
+
+                if (entry.type() != HelpEntry.EntryType.SPACER) {
+                    String text = entry.text();
+                    // Prefix tips with >> for visual distinction
+                    if (entry.type() == HelpEntry.EntryType.TIP) {
+                        text = ">> " + text;
+                    }
+                    cmd.set(linesContainer + "[" + lineIndex + "] #Text.Text", text);
                 }
                 lineIndex++;
             }
-
-            // Spacer after topic
-            cmd.append("#ContentList", TPL_SPACER_LARGE);
-            lineIndex++;
+            cardIndex++;
         }
     }
 
     /**
-     * Returns the appropriate template path based on line content.
+     * Returns the appropriate template path for an entry type.
      */
-    private String getTemplateForLine(String line) {
-        if (line.startsWith("/f ")) {
-            return TPL_LINE_COMMAND; // Yellow for commands
-        } else if (line.startsWith("  ")) {
-            return TPL_LINE_DESC; // Cyan-gray, indented for descriptions
-        } else if (line.startsWith("- ")) {
-            return TPL_LINE_BULLET; // Gray for bullet points
-        }
-        return TPL_LINE_DEFAULT; // Default gray
+    private String getTemplateForType(HelpEntry.EntryType type) {
+        return switch (type) {
+            case TEXT -> TPL_LINE_TEXT;
+            case COMMAND -> TPL_LINE_COMMAND;
+            case TIP -> TPL_LINE_TIP;
+            case HEADING -> TPL_LINE_HEADING;
+            case SPACER -> TPL_SPACER;
+        };
     }
 
     @Override

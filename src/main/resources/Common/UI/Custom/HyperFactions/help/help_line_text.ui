@@ -1,4 +1,4 @@
-// Help content line - default gray text
+// Help content line - body text (gray)
 
 Group {
   Anchor: (Height: 16);

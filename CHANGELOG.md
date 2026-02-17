@@ -15,6 +15,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+**Help Center Redesign**
+- **Guide-first help GUI**: Complete rewrite of the help system from command-dump format to conceptual guides with commands woven in contextually
+- **Wide sidebar layout** (750x650): Colored category sidebar with 7 topic categories, scrollable card-based content area replacing the old flat list
+- **7 help categories**: Welcome (cyan), Your Faction (green), Power & Land (gold), Diplomacy (blue), Combat & Safety (red), Economy (orange), Quick Reference (gray) — each with unique accent color on sidebar
+- **22 guide-first topics**: Organized into conceptual guides that teach game mechanics with commands referenced in context, rather than raw command lists
+- **Typed content entries**: New `HelpEntry` record with 5 entry types (TEXT, COMMAND, TIP, HEADING, SPACER) replacing fragile string-based line type detection
+- **i18n foundation** (`HelpMessages.java`): All help content uses message key lookups (`HelpMessages.get("help.welcome.title")`) — hardcoded English now, locale file loading in the future
+- **Deep-linking support**: `/f <command> help` opens directly to the relevant category (e.g., `/f claim help` opens Power & Land)
+- **Card-based topic rendering**: Dark background cards with teal titles, body text, yellow command callouts, green tips, and teal sub-headings
+- **All 43 commands verified**: Quick Reference section verified against actual command implementations with correct syntax and permission requirements
+- Deleted 8 obsolete UI templates, added 5 new templates (topic card, line text, line tip, line heading, spacer)
+
 **Faction Treasury & Economy System** ([#36](https://github.com/HyperSystemsDev/HyperFactions/issues/36))
 - **Treasury page** (`/f treasury`): Full GUI with balance display, deposit/withdraw buttons, transfer system, transaction log, and treasury settings — accessible from the faction nav bar
 - **Deposit/Withdraw modals**: Amount input with live preview, fee calculation display, and balance validation via VaultUnlocked player wallets

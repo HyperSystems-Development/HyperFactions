@@ -1,5 +1,0 @@
-// Help spacer - small (for empty lines)
-
-Group {
-  Anchor: (Height: 8);
-}

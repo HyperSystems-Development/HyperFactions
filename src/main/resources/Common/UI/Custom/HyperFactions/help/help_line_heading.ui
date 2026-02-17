@@ -1,0 +1,11 @@
+// Help content line - sub-heading (teal bold, top margin)
+
+Group {
+  Anchor: (Height: 20, Top: 4);
+
+  Label #Text {
+    Text: "";
+    Style: (FontSize: 11, TextColor: #00AAAA, RenderBold: true);
+    Anchor: (Left: 0, Right: 0, Top: 0, Bottom: 0);
+  }
+}

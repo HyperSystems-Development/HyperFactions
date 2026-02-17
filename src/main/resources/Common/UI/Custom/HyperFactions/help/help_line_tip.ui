@@ -1,11 +1,11 @@
-// Help content line - gray for bullet points
+// Help content line - tip callout (green)
 
 Group {
   Anchor: (Height: 16);
 
   Label #Text {
     Text: "";
-    Style: (FontSize: 11, TextColor: #AAAAAA);
+    Style: (FontSize: 11, TextColor: #55FF55);
     Anchor: (Left: 0, Right: 0, Top: 0, Bottom: 0);
   }
 }

@@ -1,0 +1,18 @@
+// Help topic card - dark background container with title and content lines
+
+Group {
+  Anchor: (Bottom: 8);
+  Background: (Color: #1a2a3a);
+  Padding: (Left: 14, Right: 14, Top: 10, Bottom: 10);
+  LayoutMode: Top;
+
+  Label #Title {
+    Text: "";
+    Style: (FontSize: 12, TextColor: #00AAAA, RenderBold: true);
+    Anchor: (Height: 20, Left: 0, Right: 0);
+  }
+
+  Group #Lines {
+    LayoutMode: Top;
+  }
+}

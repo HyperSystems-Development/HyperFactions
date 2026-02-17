@@ -4,23 +4,27 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Categories for organizing help content.
- * Each category represents a module/feature area of HyperFactions.
+ * Each category represents a conceptual area with an accent color for UI rendering.
  */
 public enum HelpCategory {
-    GETTING_STARTED("getting_started", "Getting Started", 0),
-    FACTION_BASICS("faction_basics", "Faction Basics", 1),
-    TERRITORY("territory", "Territory & Claims", 2),
-    RELATIONS("relations", "Relations & Diplomacy", 3),
-    COMBAT("combat", "Combat & Protection", 4),
-    COMMANDS("commands", "Commands Reference", 5);
+    WELCOME("welcome", "Welcome", "#00FFFF", 0),
+    YOUR_FACTION("your_faction", "Your Faction", "#44CC44", 1),
+    POWER_AND_LAND("power_land", "Power & Land", "#FFD700", 2),
+    DIPLOMACY("diplomacy", "Diplomacy", "#55AAFF", 3),
+    COMBAT("combat", "Combat & Safety", "#FF5555", 4),
+    ECONOMY("economy", "Economy", "#FFAA00", 5),
+    QUICK_REFERENCE("quick_ref", "Quick Reference", "#888888", 6);
 
     private final String id;
     private final String displayName;
+    private final String color;
     private final int order;
 
-    HelpCategory(@NotNull String id, @NotNull String displayName, int order) {
+    HelpCategory(@NotNull String id, @NotNull String displayName,
+                 @NotNull String color, int order) {
         this.id = id;
         this.displayName = displayName;
+        this.color = color;
         this.order = order;
     }
 
@@ -41,6 +45,14 @@ public enum HelpCategory {
     }
 
     /**
+     * Gets the accent color hex string (e.g. "#00FFFF") for UI rendering.
+     */
+    @NotNull
+    public String color() {
+        return color;
+    }
+
+    /**
      * Gets the display order (lower = higher in list).
      */
     public int order() {
@@ -51,7 +63,7 @@ public enum HelpCategory {
      * Finds a category by its ID.
      *
      * @param id The category ID
-     * @return The matching category, or GETTING_STARTED if not found
+     * @return The matching category, or WELCOME if not found
      */
     @NotNull
     public static HelpCategory fromId(@NotNull String id) {
@@ -60,6 +72,6 @@ public enum HelpCategory {
                 return category;
             }
         }
-        return GETTING_STARTED;
+        return WELCOME;
     }
 }
