@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+*No changes yet*
+
+## [0.8.1] - 2026-02-17
+
+**Server Version:** `2026.02.17-255364b8e`
+
 ### Fixed
 
 - **Map GUI crash**: Fixed `NoSuchMethodError` on `PacketHandler.write(Packet[])` — changed to `ToClientPacket[]` for server compatibility
