@@ -21,6 +21,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **PlayerDB integration**: New `PlayerDBService` utility for looking up any Hytale player by username (5-minute TTL cache, min 3-char query for API calls)
 - **Debug logging**: Added diagnostic logging to player connection, online player search, world map setup, and world map generation
 
+### Changed
+
+- **Target-aware build**: Compile against release or prerelease server JAR via `-PhytaleTarget` Gradle flag
+
 ## [0.8.0] - 2026-02-16
 
 **Closes:** [#30](https://github.com/HyperSystemsDev/HyperFactions/issues/30), [#31](https://github.com/HyperSystemsDev/HyperFactions/issues/31), [#32](https://github.com/HyperSystemsDev/HyperFactions/issues/32), [#34](https://github.com/HyperSystemsDev/HyperFactions/issues/34), [#36](https://github.com/HyperSystemsDev/HyperFactions/issues/36)
