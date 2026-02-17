@@ -7,7 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-*No changes yet*
+### Fixed
+
+- **Map GUI crash**: Fixed `NoSuchMethodError` on `PacketHandler.write(Packet[])` — changed to `ToClientPacket[]` for server compatibility
+- **World map generator**: Fixed generator not being set on live worlds added after startup
+
+### Added
+
+- **Centralized player resolution** (`PlayerResolver`): Unified player name lookup used across all commands and GUIs — resolves online players, then faction member records, then PlayerDB API as fallback
+- **Offline player support**: Treasury transfer search, `/f who`, `/f power`, and admin commands now resolve offline players via faction member records and PlayerDB
+- **Search debounce**: Treasury transfer search waits 500ms after last keystroke before searching to avoid spamming PlayerDB API
+- **PlayerDB integration**: New `PlayerDBService` utility for looking up any Hytale player by username (5-minute TTL cache, min 3-char query for API calls)
+- **Debug logging**: Added diagnostic logging to player connection, online player search, world map setup, and world map generation
 
 ## [0.8.0] - 2026-02-16
 

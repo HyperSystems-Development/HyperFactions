@@ -33,10 +33,12 @@ public class PlayerConnectionHandler {
         UUID uuid = playerRef.getUuid();
         String username = playerRef.getUsername();
 
-        Logger.debug("Player connecting: %s (%s)", username, uuid);
+        Logger.debug("Player connecting: %s (%s) [username null=%s]", username, uuid, username == null);
 
         // Track the player
         trackedPlayers.put(uuid, playerRef);
+        Logger.debug("Tracked players after connect: %d (contains %s=%s)",
+                trackedPlayers.size(), uuid, trackedPlayers.containsKey(uuid));
 
         // Cache username, track first join and last online
         hyperFactions.getPlayerStorage().loadPlayerData(uuid).thenAccept(opt -> {

@@ -13,6 +13,7 @@ import com.hyperfactions.data.PlayerPower;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.CommandHelp;
 import com.hyperfactions.util.HelpFormatter;
+import com.hyperfactions.util.PlayerResolver;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -95,28 +96,15 @@ public class AdminPowerHandler {
     }
 
     /**
-     * Resolves a player UUID from their username. Checks online players first, then faction members.
-     * Returns null if not found.
+     * Resolves a player UUID from their username using centralized resolution.
+     * Chain: online players -> faction members -> PlayerDB API.
      */
     private record ResolvedPlayer(UUID uuid, String name) {}
 
     @Nullable
     private ResolvedPlayer resolvePlayer(String targetName) {
-        // Check online players
-        for (PlayerRef online : plugin.getTrackedPlayers().values()) {
-            if (online.getUsername().equalsIgnoreCase(targetName)) {
-                return new ResolvedPlayer(online.getUuid(), online.getUsername());
-            }
-        }
-        // Check faction members
-        for (Faction faction : hyperFactions.getFactionManager().getAllFactions()) {
-            for (FactionMember member : faction.getMembersSorted()) {
-                if (member.username().equalsIgnoreCase(targetName)) {
-                    return new ResolvedPlayer(member.uuid(), member.username());
-                }
-            }
-        }
-        return null;
+        var resolved = PlayerResolver.resolve(hyperFactions, targetName);
+        return resolved != null ? new ResolvedPlayer(resolved.uuid(), resolved.username()) : null;
     }
 
     /**
@@ -491,35 +479,15 @@ public class AdminPowerHandler {
 
         String targetName = args[0];
 
-        // Resolve player UUID -- check online players first, then faction members
-        UUID targetUuid = null;
-        String resolvedName = targetName;
-
-        for (PlayerRef online : plugin.getTrackedPlayers().values()) {
-            if (online.getUsername().equalsIgnoreCase(targetName)) {
-                targetUuid = online.getUuid();
-                resolvedName = online.getUsername();
-                break;
-            }
-        }
-
-        if (targetUuid == null) {
-            for (Faction faction : hyperFactions.getFactionManager().getAllFactions()) {
-                for (FactionMember member : faction.getMembersSorted()) {
-                    if (member.username().equalsIgnoreCase(targetName)) {
-                        targetUuid = member.uuid();
-                        resolvedName = member.username();
-                        break;
-                    }
-                }
-                if (targetUuid != null) break;
-            }
-        }
-
-        if (targetUuid == null) {
+        // Resolve player using centralized resolver (online -> faction members -> PlayerDB)
+        var resolved = PlayerResolver.resolve(hyperFactions, targetName);
+        if (resolved == null) {
             ctx.sendMessage(prefix().insert(msg("Player not found.", COLOR_RED)));
             return;
         }
+
+        UUID targetUuid = resolved.uuid();
+        String resolvedName = resolved.username();
 
         final String finalName = resolvedName;
         hyperFactions.getPlayerStorage().loadPlayerData(targetUuid).thenAccept(opt -> {

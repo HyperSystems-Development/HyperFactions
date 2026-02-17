@@ -4,10 +4,9 @@ import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
 import com.hyperfactions.command.FactionCommandContext;
 import com.hyperfactions.command.FactionSubCommand;
-import com.hyperfactions.data.Faction;
-import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.data.PlayerPower;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.PlayerResolver;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -54,37 +53,14 @@ public class PowerSubCommand extends FactionSubCommand {
             targetUuid = player.getUuid();
             targetName = player.getUsername();
         } else {
-            // Look up target player
-            targetName = fctx.getArg(0);
-            targetUuid = null;
-
-            // First check online players
-            for (PlayerRef online : plugin.getTrackedPlayers().values()) {
-                if (online.getUsername().equalsIgnoreCase(targetName)) {
-                    targetUuid = online.getUuid();
-                    targetName = online.getUsername();
-                    break;
-                }
-            }
-
-            // If not online, search faction members
-            if (targetUuid == null) {
-                for (Faction faction : hyperFactions.getFactionManager().getAllFactions()) {
-                    for (FactionMember member : faction.getMembersSorted()) {
-                        if (member.username().equalsIgnoreCase(targetName)) {
-                            targetUuid = member.uuid();
-                            targetName = member.username();
-                            break;
-                        }
-                    }
-                    if (targetUuid != null) break;
-                }
-            }
-
-            if (targetUuid == null) {
+            // Look up target player using centralized resolver
+            var resolved = PlayerResolver.resolve(hyperFactions, fctx.getArg(0));
+            if (resolved == null) {
                 ctx.sendMessage(prefix().insert(msg("Player not found.", COLOR_RED)));
                 return;
             }
+            targetUuid = resolved.uuid();
+            targetName = resolved.username();
         }
 
         // TODO: GUI mode disabled - PlayerInfoPage UI templates don't exist yet

@@ -89,12 +89,16 @@ public class HyperFactionsWorldMap implements IWorldMap {
 
         return CompletableFuture.allOf(futures).thenApply(unused -> {
             WorldMap worldMap = new WorldMap(futures.length);
+            int rendered = 0;
             for (CompletableFuture<ClaimImageBuilder> future : futures) {
                 ClaimImageBuilder builder = future.getNow(null);
                 if (builder != null) {
                     worldMap.getChunks().put(builder.getIndex(), builder.getImage());
+                    rendered++;
                 }
             }
+            Logger.debugWorldMap("[HyperFactionsWorldMap] generate() complete - %d/%d chunks rendered",
+                    rendered, futures.length);
             return worldMap;
         });
     }

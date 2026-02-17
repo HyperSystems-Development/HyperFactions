@@ -623,34 +623,16 @@ public class HyperFactions {
 
     /**
      * Resolves a player UUID by username.
-     * Checks online players first, then falls back to faction member records.
+     * Delegates to {@link com.hyperfactions.util.PlayerResolver} for centralized resolution:
+     * online players -> faction members -> PlayerDB API.
      *
      * @param name the player username (case-insensitive)
      * @return the player's UUID, or null if not found
      */
     @Nullable
     public UUID resolvePlayerByName(@NotNull String name) {
-        // Check online players first
-        if (onlinePlayersSupplier != null) {
-            for (com.hypixel.hytale.server.core.universe.PlayerRef ref : onlinePlayersSupplier.get()) {
-                if (ref.getUsername().equalsIgnoreCase(name)) {
-                    return ref.getUuid();
-                }
-            }
-        }
-
-        // Fall back to faction member records
-        if (factionManager != null) {
-            for (com.hyperfactions.data.Faction faction : factionManager.getAllFactions()) {
-                for (com.hyperfactions.data.FactionMember member : faction.members().values()) {
-                    if (name.equalsIgnoreCase(member.username())) {
-                        return member.uuid();
-                    }
-                }
-            }
-        }
-
-        return null;
+        var resolved = com.hyperfactions.util.PlayerResolver.resolve(this, name);
+        return resolved != null ? resolved.uuid() : null;
     }
 
     // === Task scheduling ===

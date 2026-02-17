@@ -8,6 +8,7 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.data.PlayerPower;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.PlayerResolver;
 import com.hyperfactions.util.TimeUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -47,44 +48,22 @@ public class WhoSubCommand extends FactionSubCommand {
         String[] rawArgs = parts.length > 2 ? java.util.Arrays.copyOfRange(parts, 2, parts.length) : new String[0];
         FactionCommandContext fctx = parseContext(rawArgs);
 
+        UUID targetUuid;
         String targetName;
-        UUID targetUuid = null;
 
         if (!fctx.hasArgs()) {
             // Show own info
-            targetName = player.getUsername();
             targetUuid = player.getUuid();
+            targetName = player.getUsername();
         } else {
-            // Look up target player
-            targetName = fctx.getArg(0);
-
-            // First check online players
-            for (PlayerRef online : plugin.getTrackedPlayers().values()) {
-                if (online.getUsername().equalsIgnoreCase(targetName)) {
-                    targetUuid = online.getUuid();
-                    targetName = online.getUsername(); // Use correct case
-                    break;
-                }
+            // Look up target player using centralized resolver
+            var resolved = PlayerResolver.resolve(hyperFactions, fctx.getArg(0));
+            if (resolved == null) {
+                ctx.sendMessage(prefix().insert(msg("Player not found.", COLOR_RED)));
+                return;
             }
-
-            // If not online, search faction members
-            if (targetUuid == null) {
-                for (Faction faction : hyperFactions.getFactionManager().getAllFactions()) {
-                    for (FactionMember member : faction.getMembersSorted()) {
-                        if (member.username().equalsIgnoreCase(targetName)) {
-                            targetUuid = member.uuid();
-                            targetName = member.username(); // Use correct case
-                            break;
-                        }
-                    }
-                    if (targetUuid != null) break;
-                }
-            }
-        }
-
-        if (targetUuid == null) {
-            ctx.sendMessage(prefix().insert(msg("Player not found.", COLOR_RED)));
-            return;
+            targetUuid = resolved.uuid();
+            targetName = resolved.username();
         }
 
         // GUI mode - open player info page

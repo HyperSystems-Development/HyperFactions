@@ -3,11 +3,11 @@ package com.hyperfactions.gui.faction.page;
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionEconomy;
-import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.gui.faction.data.TransferSearchData;
 import com.hyperfactions.manager.EconomyManager;
 import com.hyperfactions.manager.FactionManager;
+import com.hyperfactions.util.PlayerResolver;
 import com.hyperfactions.util.UiUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -30,6 +30,7 @@ import java.util.*;
 public class TreasuryTransferSearchPage extends InteractiveCustomUIPage<TransferSearchData> {
 
     private static final int RESULTS_PER_PAGE = 5;
+    private static final int SEARCH_DEBOUNCE_TICKS = 10; // 500ms at 20 TPS
 
     private final PlayerRef playerRef;
     private final FactionManager factionManager;
@@ -40,6 +41,7 @@ public class TreasuryTransferSearchPage extends InteractiveCustomUIPage<Transfer
 
     private String searchQuery = "";
     private int currentPage = 0;
+    private int pendingSearchTaskId = -1;
 
     public TreasuryTransferSearchPage(PlayerRef playerRef,
                                        FactionManager factionManager,
@@ -139,21 +141,18 @@ public class TreasuryTransferSearchPage extends InteractiveCustomUIPage<Transfer
         if (searchQuery.isEmpty()) return Collections.emptyList();
 
         List<SearchResult> results = new ArrayList<>();
-        Set<UUID> addedPlayerUuids = new HashSet<>();
         UUID selfUuid = playerRef.getUuid();
         String query = searchQuery.toLowerCase();
 
-        // Search online players
-        for (PlayerRef ref : plugin.getOnlinePlayerRefs()) {
-            UUID pUuid = ref.getUuid();
-            if (pUuid.equals(selfUuid)) continue;
-            if (addedPlayerUuids.contains(pUuid)) continue;
-
-            String name = ref.getUsername();
-            if (name != null && name.toLowerCase().contains(query)) {
-                addedPlayerUuids.add(pUuid);
-                results.add(new SearchResult(pUuid.toString(), name, "player", "Online"));
-            }
+        // Search players (online + offline faction members + PlayerDB fallback)
+        List<PlayerResolver.ResolvedPlayer> players = PlayerResolver.search(plugin, searchQuery, selfUuid);
+        for (PlayerResolver.ResolvedPlayer p : players) {
+            String subtitle = switch (p.source()) {
+                case ONLINE -> "Online" + (p.factionName() != null ? " - " + p.factionName() : "");
+                case FACTION_MEMBER -> "Offline - " + p.factionName();
+                case PLAYER_DB -> "Hytale player";
+            };
+            results.add(new SearchResult(p.uuid().toString(), p.username(), "player", subtitle));
         }
 
         // Search factions
@@ -208,7 +207,16 @@ public class TreasuryTransferSearchPage extends InteractiveCustomUIPage<Transfer
             case "Search" -> {
                 searchQuery = data.searchQuery != null ? data.searchQuery.trim() : "";
                 currentPage = 0;
-                rebuildResults();
+                // Cancel any pending debounced search
+                if (pendingSearchTaskId != -1) {
+                    plugin.cancelTask(pendingSearchTaskId);
+                    pendingSearchTaskId = -1;
+                }
+                // Debounce: delay the search to avoid spamming PlayerDB on every keystroke
+                pendingSearchTaskId = plugin.scheduleDelayedTask(SEARCH_DEBOUNCE_TICKS, () -> {
+                    pendingSearchTaskId = -1;
+                    rebuildResults();
+                });
             }
             case "Page" -> {
                 currentPage = data.page;

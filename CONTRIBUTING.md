@@ -22,7 +22,7 @@ HyperSystems/
 ├── HyperFactions/    # This plugin
 ├── HyperWarp/        # Warps, spawns, TPA
 ├── HyperSpawns/      # Mob spawn zone control
-├── libs/Server/      # Hytale server runtime
+├── servers/          # Dev and prerelease servers
 ├── settings.gradle   # Multi-project configuration
 └── build.gradle      # Root build with shared properties
 ```
@@ -78,7 +78,7 @@ The `jar` task has `archiveClassifier = 'plain'` to prevent it from overwriting 
 
 ```bash
 # Start the test server (uses screen)
-cd libs/Server && ./start.sh
+cd servers/dev && ./start.sh
 
 # Attach to server console
 screen -r hytale-server

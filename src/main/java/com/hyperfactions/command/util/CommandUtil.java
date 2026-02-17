@@ -4,6 +4,7 @@ import com.hyperfactions.HyperFactions;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -72,11 +73,20 @@ public final class CommandUtil {
      */
     @Nullable
     public static PlayerRef findOnlinePlayer(@NotNull HyperFactionsPlugin plugin, @NotNull String name) {
-        for (PlayerRef player : plugin.getTrackedPlayers().values()) {
-            if (player.getUsername().equalsIgnoreCase(name)) {
+        var tracked = plugin.getTrackedPlayers();
+        Logger.debug("findOnlinePlayer: searching for '%s' among %d tracked players", name, tracked.size());
+        for (PlayerRef player : tracked.values()) {
+            String username = player.getUsername();
+            if (username == null) {
+                Logger.debug("findOnlinePlayer: tracked player %s has NULL username", player.getUuid());
+                continue;
+            }
+            if (username.equalsIgnoreCase(name)) {
+                Logger.debug("findOnlinePlayer: matched '%s' -> %s (%s)", name, username, player.getUuid());
                 return player;
             }
         }
+        Logger.debug("findOnlinePlayer: no match for '%s'", name);
         return null;
     }
 
