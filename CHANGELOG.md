@@ -9,10 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **Closes:** [#30](https://github.com/HyperSystemsDev/HyperFactions/issues/30), [#31](https://github.com/HyperSystemsDev/HyperFactions/issues/31), [#32](https://github.com/HyperSystemsDev/HyperFactions/issues/32), [#34](https://github.com/HyperSystemsDev/HyperFactions/issues/34), [#36](https://github.com/HyperSystemsDev/HyperFactions/issues/36)
 
-### Fixed
-
-- **Zone power loss flag ignored on death** — `PlayerDeathSystem` passed already-converted chunk coordinates to `getZoneAt()` (which expects world coordinates), causing a double conversion that looked up the wrong chunk. Zone flags like `power_loss=false` were never applied. Changed to `getZone()` which accepts chunk coordinates directly.
-
 ### Added
 
 **Help Center Redesign**
@@ -95,6 +91,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Zone power loss flag ignored on death** — `PlayerDeathSystem` passed already-converted chunk coordinates to `getZoneAt()` (which expects world coordinates), causing a double conversion that looked up the wrong chunk. Zone flags like `power_loss=false` were never applied. Changed to `getZone()` which accepts chunk coordinates directly.
 - **Zone flags reset on server restart**: WarZone migration code ran on every startup and unconditionally stripped the `BUILD_ALLOWED` flag, reverting any admin customizations to defaults. Migration now only removes genuinely obsolete keys (`container_access`, `interact_allowed`) and applies to all zone types.
 - **Terrain map lag on claim/unclaim**: Each claim/unclaim action opened a new page instance, regenerating the entire 17x17 terrain image from scratch. Now reuses the same page via `rebuild()`, skipping terrain generation and only updating the overlay grid
 - **Membership history not recorded for faction creation**: `FactionManager.createFaction()` now publishes a JOIN event for the faction creator

@@ -5,12 +5,25 @@
 <p>&nbsp;</p>
 <h2>✨ Why HyperFactions?</h2>
 <ul>
-    <li>🖥️ <strong><span style="color: #f0b232;">40+ GUI Pages</span></strong> - Every feature has a polished, interactive GUI. No command memorization needed.</li>
+    <li>🖥️ <strong><span style="color: #f0b232;">59 Interactive GUI Pages</span></strong> - Every feature has a polished, interactive GUI. No command memorization needed.</li>
     <li>⚡ <strong><span style="color: #f0b232;">Real-Time GUI Updates</span></strong> - When a member joins, a chunk is claimed, or a relation changes, every open GUI refreshes automatically.</li>
     <li>🛡️ <strong><span style="color: #f0b232;">25+ Zone Flags</span></strong> - The most granular territory protection available, from PvP to mob spawning to F-key pickup control.</li>
     <li>📦 <strong><span style="color: #f0b232;">Data Import</span></strong> - Migrating from ElbaphFactions or HyFactions? One command imports your factions, claims, and relations.</li>
     <li>⚙️ <strong><span style="color: #f0b232;">Deep Configurability</span></strong> - 8 modular config files covering every aspect of gameplay, with more planned as new modules are added. Tune it to your server's style.</li>
     <li>🚀 <strong><span style="color: #f0b232;">Active Development</span></strong> - Regular updates with community-driven features. Open source on GitHub.</li>
+</ul>
+<p>&nbsp;</p>
+<h2><span style="color: #f0b232;">🆕 Recent Highlights</span></h2>
+<ul>
+    <li>💰 <strong><span style="color: #61afef;">Faction Treasury &amp; Economy</span></strong> - Full treasury system with deposits, withdrawals, transfers, transaction logs, and VaultUnlocked integration</li>
+    <li>🗺️ <strong><span style="color: #61afef;">Terrain Map Mode</span></strong> - Territory map renders actual terrain imagery behind claim overlays using chunk world map data</li>
+    <li>👤 <strong><span style="color: #61afef;">Player Info &amp; History</span></strong> - Player profiles with combat stats, membership history, and faction membership tracking</li>
+    <li>⚡ <strong><span style="color: #61afef;">Admin Power Management</span></strong> - Full admin power control with per-player overrides, bypass toggles, and bulk operations</li>
+    <li>🧭 <strong><span style="color: #61afef;">Map &amp; Compass Visibility</span></strong> - Faction-aware player visibility filtering on world map and compass</li>
+    <li>❓ <strong><span style="color: #61afef;">Help Center Redesign</span></strong> - Guide-first help with 7 colored categories, sidebar navigation, and i18n foundation</li>
+    <li>🤝 <strong><span style="color: #61afef;">Relations Redesign</span></strong> - Merged 3-tab layout into streamlined 2-tab design with inline quick actions</li>
+    <li>🔍 <strong><span style="color: #61afef;">Admin Search &amp; Sort</span></strong> - Search bars and sort options added to all admin list pages</li>
+    <li>🏗️ <strong><span style="color: #61afef;">Codebase Refactor</span></strong> - MessageUtil, UiUtil, reorganized packages, decomposed 3 monolithic classes</li>
 </ul>
 <p>&nbsp;</p>
 <h2><span style="color: #5b8def;">🏰 Core Features</span></h2>
@@ -28,6 +41,7 @@
 <h3>🗺️ Territory &amp; Claiming</h3>
 <ul>
     <li><strong>Chunk-based claiming</strong> with interactive GUI map (click to claim/unclaim)</li>
+    <li><strong>Terrain map mode</strong> - See actual terrain imagery behind claim overlays for easy orientation</li>
     <li><strong>World map integration</strong> - See all claims colored by faction on Hytale's world map (press M)</li>
     <li><strong>Power-based claim limits</strong> - More members means more territory</li>
     <li><strong>Overclaiming</strong> - Capture enemy territory when their power hits zero</li>
@@ -106,7 +120,7 @@
 <p>Each event type can be individually enabled or disabled in <code>announcements.json</code>.</p>
 <p>&nbsp;</p>
 <h2><span style="color: #c678dd;">🖥️ Full GUI System</span></h2>
-<p>HyperFactions features <strong><span style="color: #f0b232;">40+ interactive GUI pages</span></strong> covering every aspect of gameplay:</p>
+<p>HyperFactions features <strong><span style="color: #f0b232;">59 interactive GUI pages</span></strong> covering every aspect of gameplay:</p>
 <h3>🎮 Player GUI (<code>/f</code>)</h3>
 <ul>
     <li>📊 <strong>Dashboard</strong> - Power, claims, members, relations, status, and invites at a glance</li>
@@ -117,7 +131,9 @@
     <li>💬 <strong>Chat History</strong> - Faction and ally chat logs with tab switching</li>
     <li>✉️ <strong>Invites</strong> - Manage sent invitations and incoming join requests</li>
     <li>📋 <strong>Logs</strong> - View faction activity history</li>
-    <li>❓ <strong>Help</strong> - In-game command reference</li>
+    <li>💰 <strong>Treasury</strong> - Manage faction funds with deposits, withdrawals, transfers, and transaction history</li>
+    <li>👤 <strong>Player Info</strong> - View any player's faction membership, power stats, combat record, and history</li>
+    <li>❓ <strong>Help</strong> - Guide-first Help Center with 7 categories, sidebar navigation, and verified command reference</li>
 </ul>
 <h3>🆕 New Player GUI</h3>
 <ul>
@@ -131,6 +147,9 @@
     <li>🏰 <strong>Faction Management</strong> - Browse, edit, and delete any faction</li>
     <li>🏟️ <strong>Zone Management</strong> - Create, configure, and map SafeZones and WarZones</li>
     <li>⚙️ <strong>Configuration</strong> - Runtime settings adjustment</li>
+    <li>👥 <strong>Players</strong> - Browse all players with search, sort, power stats, and quick actions</li>
+    <li>💰 <strong>Economy</strong> - Server economy overview, per-faction treasury adjustment, sortable faction balance list</li>
+    <li>⚡ <strong>Power Management</strong> - Set, adjust, reset player power with bypass toggles and bulk operations</li>
     <li>💾 <strong>Backups</strong> - Backup management and restore</li>
     <li>🔄 <strong>Updates</strong> - Check and install updates from within the game</li>
 </ul>
@@ -151,6 +170,9 @@
     <li>🐛 <strong>Debug system</strong> - Toggle 7+ debug categories individually for targeted troubleshooting</li>
     <li>⏳ <strong>Claim decay management</strong> - Monitor and manually trigger inactive faction cleanup</li>
     <li>📦 <strong>Data import</strong> - Migrate from ElbaphFactions or HyFactions with validation reports</li>
+    <li>⚡ <strong>Power management</strong> - Per-player power set, adjust, reset, bypass toggles, and bulk faction operations</li>
+    <li>💰 <strong>Economy management</strong> - Server-wide treasury overview, per-faction balance adjustment</li>
+    <li>👥 <strong>Player browser</strong> - Search and manage all server players with sort and quick actions</li>
     <li>🔃 <strong>Config hot-reload</strong> - <code>/f admin reload</code> reloads all configuration without restart</li>
 </ul>
 <p>&nbsp;</p>
@@ -202,19 +224,6 @@
     <li><strong><span style="color: #abb2bf;">🪦 </span><a href="https://www.curseforge.com/hytale/mods/gravestones" rel="nofollow">Gravetones</a></strong> - Handle protections of items when player is killed <span style="color: #e5c07b;">(WIP pending <a href="https://github.com/zurkubusiness/gravestones/pull/2" target="_blank" rel="nofollow noopener">PR</a>)</span></li>
 </ul>
 <p>💡 <strong>Want HyperFactions to integrate with your plugin?</strong> Reach out to <strong>DMehaffy</strong> on <a href="https://discord.gg/6bUQsJbxyC" rel="nofollow">Discord</a> to discuss integration opportunities.</p>
-<p>&nbsp;</p>
-<h2><span style="color: #f0b232;">🆕 Recent Highlights</span></h2>
-<ul>
-    <li>💬 <strong><span style="color: #61afef;">Chat History GUI</span></strong> - New in-game page for browsing faction and ally chat history with persistent storage</li>
-    <li>📢 <strong><span style="color: #61afef;">Server-Wide Announcements</span></strong> - Broadcasts for faction creation, wars, alliances, overclaims, and more</li>
-    <li>✨ <strong><span style="color: #61afef;">Create Faction Redesign</span></strong> - Single-page wizard with live preview, color picker, and territory permission setup</li>
-    <li>📊 <strong><span style="color: #61afef;">PlaceholderAPI &amp; WiFlow</span></strong> - 30+ placeholders for integration with scoreboards, holograms, and menus</li>
-    <li>⚡ <strong><span style="color: #61afef;">Real-Time GUI Updates</span></strong> - All GUI pages auto-refresh when data changes (claims, members, relations)</li>
-    <li>🔒 <strong><span style="color: #61afef;">Permission-Based GUI Filtering</span></strong> - Nav tabs and action buttons automatically hide when the player lacks permission</li>
-    <li>📦 <strong><span style="color: #61afef;">Data Import from Competitors</span></strong> - One-command migration from ElbaphFactions or HyFactions</li>
-    <li>🛡️ <strong><span style="color: #61afef;">OrbisGuard-Mixins Integration</span></strong> - F-key pickup blocking, keep inventory, invincible items, and NPC spawn control</li>
-    <li>🐾 <strong><span style="color: #61afef;">Mob Spawn Suppression</span></strong> - Integrated with Hytale's native SpawnSuppressionController for granular mob control</li>
-</ul>
 <p>&nbsp;</p>
 <h2><span style="color: #5b8def;">📥 Installation</span></h2>
 <h3>Basic Install</h3>
