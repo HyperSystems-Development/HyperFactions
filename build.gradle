@@ -31,7 +31,7 @@ repositories {
 
 dependencies {
     // Hytale Server API (provided at runtime)
-    compileOnly files(rootProject.hytaleServerJarPrerelease)
+    compileOnly files(rootProject.hytaleServerJar)
 
     // HyperPerms soft dependency (for compile-time reference only)
     // Actual integration uses reflection to avoid hard dependency
