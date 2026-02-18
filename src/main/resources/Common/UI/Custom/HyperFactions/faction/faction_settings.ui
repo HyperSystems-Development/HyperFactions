@@ -4,7 +4,6 @@
 // Right: Color, Mob Spawning, Faction Settings (PvP + Officers)
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 $Nav = "../nav/nav_bar.ui";
 
 $C.@PageOverlay {
@@ -34,19 +33,12 @@ $C.@PageOverlay {
         Group #LeftColumn {
           Anchor: (Width: 280);
           LayoutMode: TopScrolling;
-          ScrollbarStyle: $C.@DefaultScrollbarStyle;
+          ScrollbarStyle: $C.@TranslucentScrollbarStyle;
           Padding: (Left: 0, Right: 8, Top: 0, Bottom: 0);
 
           // --- General ---
-          Label {
-            Text: "General";
-            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
-            Anchor: (Height: 18, Bottom: 4);
-          }
-          Group {
-            Anchor: (Height: 1, Bottom: 8);
-            Background: (Color: #334455);
-          }
+          $C.@Subtitle { @Text = "General"; Anchor: (Bottom: 4); }
+          $C.@ContentSeparator { Anchor: (Bottom: 8); }
 
           Group #GeneralBox {
             Background: (Color: #1a2a3a);
@@ -72,7 +64,9 @@ $C.@PageOverlay {
               TextButton #NameEditBtn {
                 Text: "Edit";
                 Anchor: (Height: 26, Width: 50);
-                Style: $S.@ButtonStyle;
+                Style: $C.@SecondaryTextButtonStyle;
+                TooltipText: "Change your faction name";
+                TextTooltipStyle: $C.@DefaultTextTooltipStyle;
               }
             }
 
@@ -94,7 +88,9 @@ $C.@PageOverlay {
               TextButton #TagEditBtn {
                 Text: "Edit";
                 Anchor: (Height: 26, Width: 50);
-                Style: $S.@ButtonStyle;
+                Style: $C.@SecondaryTextButtonStyle;
+                TooltipText: "Change your faction tag";
+                TextTooltipStyle: $C.@DefaultTextTooltipStyle;
               }
             }
 
@@ -116,21 +112,16 @@ $C.@PageOverlay {
               TextButton #DescEditBtn {
                 Text: "Edit";
                 Anchor: (Height: 26, Width: 50);
-                Style: $S.@ButtonStyle;
+                Style: $C.@SecondaryTextButtonStyle;
+                TooltipText: "Set or change faction description";
+                TextTooltipStyle: $C.@DefaultTextTooltipStyle;
               }
             }
           }
 
           // --- Recruitment ---
-          Label {
-            Text: "Recruitment";
-            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
-            Anchor: (Height: 18, Bottom: 4);
-          }
-          Group {
-            Anchor: (Height: 1, Bottom: 8);
-            Background: (Color: #334455);
-          }
+          $C.@Subtitle { @Text = "Recruitment"; Anchor: (Bottom: 4); }
+          $C.@ContentSeparator { Anchor: (Bottom: 8); }
 
           Group #RecruitmentBox {
             Background: (Color: #1a2a3a);
@@ -156,15 +147,8 @@ $C.@PageOverlay {
           }
 
           // --- Home Location ---
-          Label {
-            Text: "Home Location";
-            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
-            Anchor: (Height: 18, Bottom: 4);
-          }
-          Group {
-            Anchor: (Height: 1, Bottom: 8);
-            Background: (Color: #334455);
-          }
+          $C.@Subtitle { @Text = "Home Location"; Anchor: (Bottom: 4); }
+          $C.@ContentSeparator { Anchor: (Bottom: 8); }
 
           Group #HomeBox {
             Background: (Color: #1a2a3a);
@@ -195,7 +179,9 @@ $C.@PageOverlay {
               TextButton #SetHomeBtn {
                 Text: "Set Home";
                 Anchor: (Height: 26, Width: 80);
-                Style: $S.@ButtonStyle;
+                Style: $C.@SecondaryTextButtonStyle;
+                TooltipText: "Set faction home to your current location";
+                TextTooltipStyle: $C.@DefaultTextTooltipStyle;
               }
 
               Label { Anchor: (Width: 4); }
@@ -203,7 +189,9 @@ $C.@PageOverlay {
               TextButton #TeleportHomeBtn {
                 Text: "Teleport";
                 Anchor: (Height: 26, Width: 70);
-                Style: $S.@ButtonStyle;
+                Style: $C.@SecondaryTextButtonStyle;
+                TooltipText: "Teleport to faction home";
+                TextTooltipStyle: $C.@DefaultTextTooltipStyle;
               }
 
               Label { Anchor: (Width: 4); }
@@ -211,21 +199,16 @@ $C.@PageOverlay {
               TextButton #DeleteHomeBtn {
                 Text: "Delete";
                 Anchor: (Height: 26, Width: 60);
-                Style: $S.@RedButtonStyle;
+                Style: $C.@CancelTextButtonStyle;
+                TooltipText: "Remove the faction home location";
+                TextTooltipStyle: $C.@DefaultTextTooltipStyle;
               }
             }
           }
 
           // --- Optional Features ---
-          Label {
-            Text: "Optional Features";
-            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
-            Anchor: (Height: 18, Bottom: 4);
-          }
-          Group {
-            Anchor: (Height: 1, Bottom: 8);
-            Background: (Color: #334455);
-          }
+          $C.@Subtitle { @Text = "Optional Features"; Anchor: (Bottom: 4); }
+          $C.@ContentSeparator { Anchor: (Bottom: 8); }
 
           Group #ModulesBox {
             Background: (Color: #1a2a3a);
@@ -246,7 +229,9 @@ $C.@PageOverlay {
               TextButton #ModulesBtn {
                 Text: "Modules";
                 Anchor: (Height: 26, Width: 80);
-                Style: $S.@ButtonStyle;
+                Style: $C.@SecondaryTextButtonStyle;
+                TooltipText: "Configure optional faction features";
+                TextTooltipStyle: $C.@DefaultTextTooltipStyle;
               }
             }
           }
@@ -257,15 +242,8 @@ $C.@PageOverlay {
             LayoutMode: Top;
             Anchor: (Bottom: 8);
 
-            Label {
-              Text: "Danger Zone";
-              Style: (FontSize: 11, TextColor: #FF5555, RenderBold: true);
-              Anchor: (Height: 18, Bottom: 4);
-            }
-            Group {
-              Anchor: (Height: 1, Bottom: 8);
-              Background: (Color: #553344);
-            }
+            $C.@Subtitle { @Text = "Danger Zone"; Anchor: (Bottom: 4); }
+            $C.@ContentSeparator { Anchor: (Bottom: 8); }
 
             Group {
               Background: (Color: #2a1a1a);
@@ -281,7 +259,9 @@ $C.@PageOverlay {
               TextButton #DisbandBtn {
                 Text: "Disband Faction";
                 Anchor: (Height: 28, Width: 140);
-                Style: $S.@FlatRedButtonStyle;
+                Style: $C.@CancelTextButtonStyle;
+                TooltipText: "Permanently disband your faction - this cannot be undone";
+                TextTooltipStyle: $C.@DefaultTextTooltipStyle;
               }
             }
           }
@@ -314,15 +294,8 @@ $C.@PageOverlay {
           }
 
           // ---- BUILDING PERMISSIONS ----
-          Label {
-            Text: "Building Permissions";
-            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
-            Anchor: (Height: 18, Bottom: 4);
-          }
-          Group {
-            Anchor: (Height: 1, Bottom: 8);
-            Background: (Color: #334455);
-          }
+          $C.@Subtitle { @Text = "Building Permissions"; Anchor: (Bottom: 4); }
+          $C.@ContentSeparator { Anchor: (Bottom: 8); }
 
           Group #BuildingBox {
             Background: (Color: #1a2a3a);
@@ -438,24 +411,13 @@ $C.@PageOverlay {
           }
 
           // ---- INTERACTION PERMISSIONS ----
-          Group {
-            LayoutMode: Left;
-            Anchor: (Height: 18, Bottom: 2);
-
-            Label {
-              Text: "Interaction Permissions";
-              Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
-            }
-          }
+          $C.@Subtitle { @Text = "Interaction Permissions"; Anchor: (Bottom: 2); }
           Label {
             Text: "(children disabled when All is off)";
             Style: (FontSize: 8, TextColor: #666666);
             Anchor: (Height: 12, Bottom: 4);
           }
-          Group {
-            Anchor: (Height: 1, Bottom: 8);
-            Background: (Color: #334455);
-          }
+          $C.@ContentSeparator { Anchor: (Bottom: 8); }
 
           Group #InteractionBox {
             Background: (Color: #1a2a3a);
@@ -595,15 +557,8 @@ $C.@PageOverlay {
           Padding: (Left: 8, Right: 0, Top: 0, Bottom: 0);
 
           // --- Appearance ---
-          Label {
-            Text: "Appearance";
-            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
-            Anchor: (Height: 18, Bottom: 4);
-          }
-          Group {
-            Anchor: (Height: 1, Bottom: 8);
-            Background: (Color: #334455);
-          }
+          $C.@Subtitle { @Text = "Appearance"; Anchor: (Bottom: 4); }
+          $C.@ContentSeparator { Anchor: (Bottom: 8); }
 
           Group #ColorBox {
             Background: (Color: #1a2a3a);
@@ -649,20 +604,13 @@ $C.@PageOverlay {
           }
 
           // --- Mob Spawning ---
-          Label {
-            Text: "Mob Spawning";
-            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
-            Anchor: (Height: 18, Bottom: 2);
-          }
+          $C.@Subtitle { @Text = "Mob Spawning"; Anchor: (Bottom: 2); }
           Label {
             Text: "(children disabled when master is off)";
             Style: (FontSize: 8, TextColor: #666666);
             Anchor: (Height: 12, Bottom: 4);
           }
-          Group {
-            Anchor: (Height: 1, Bottom: 8);
-            Background: (Color: #334455);
-          }
+          $C.@ContentSeparator { Anchor: (Bottom: 8); }
 
           Group #MobSpawningBox {
             Background: (Color: #1a2a3a);
@@ -748,15 +696,8 @@ $C.@PageOverlay {
           }
 
           // --- Faction Settings ---
-          Label {
-            Text: "Faction Settings";
-            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
-            Anchor: (Height: 18, Bottom: 4);
-          }
-          Group {
-            Anchor: (Height: 1, Bottom: 8);
-            Background: (Color: #334455);
-          }
+          $C.@Subtitle { @Text = "Faction Settings"; Anchor: (Bottom: 4); }
+          $C.@ContentSeparator { Anchor: (Bottom: 8); }
 
           Group #FactionSettingsBox {
             Background: (Color: #1a2a3a);
@@ -779,6 +720,8 @@ $C.@PageOverlay {
               $C.@CheckBoxWithLabel #PvPToggle {
                 @Text = ""; @Checked = true;
                 Anchor: (Height: 24, Width: 40);
+                TooltipText: "Toggle PvP damage in your faction territory";
+                TextTooltipStyle: $C.@DefaultTextTooltipStyle;
               }
               Label #PvPStatus {
                 Text: "Enabled";
@@ -803,6 +746,8 @@ $C.@PageOverlay {
               $C.@CheckBoxWithLabel #OfficersCanEditToggle {
                 @Text = ""; @Checked = false;
                 Anchor: (Height: 24, Width: 40);
+                TooltipText: "Allow officers to modify faction settings";
+                TextTooltipStyle: $C.@DefaultTextTooltipStyle;
               }
               Label {
                 Text: "Leader only";

@@ -2,7 +2,6 @@
 // View and manage relations for any faction (admin bypass)
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 $Nav = "admin_nav_bar.ui";
 
 $C.@PageOverlay {
@@ -50,7 +49,7 @@ $C.@PageOverlay {
         TextButton #BackBtn {
           Text: "Back";
           Anchor: (Height: 24, Width: 60);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
 

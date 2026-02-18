@@ -2,7 +2,6 @@
 // 70px tall card with faction info and relation buttons
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 Group {
   Anchor: (Height: 70, Bottom: 6);
@@ -55,7 +54,7 @@ Group {
     TextButton #AllyBtn {
       Text: "Ally";
       Anchor: (Height: 28, Width: 55);
-      Style: $S.@ButtonStyle;
+      Style: $C.@SecondaryTextButtonStyle;
     }
 
     Label { Anchor: (Width: 5); }
@@ -63,7 +62,7 @@ Group {
     TextButton #EnemyBtn {
       Text: "Enemy";
       Anchor: (Height: 28, Width: 55);
-      Style: $S.@RedButtonStyle;
+      Style: $C.@CancelTextButtonStyle;
     }
 
     Label { Anchor: (Width: 5); }
@@ -71,7 +70,7 @@ Group {
     TextButton #ViewBtn {
       Text: "View";
       Anchor: (Height: 28, Width: 55);
-      Style: $S.@ButtonStyle;
+      Style: $C.@SecondaryTextButtonStyle;
     }
   }
 }

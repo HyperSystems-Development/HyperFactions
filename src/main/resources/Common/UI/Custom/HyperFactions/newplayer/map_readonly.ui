@@ -2,7 +2,6 @@
 // View-only mode - no claim functionality
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 $Nav = "../nav/nav_bar.ui";
 
 $C.@PageOverlay {

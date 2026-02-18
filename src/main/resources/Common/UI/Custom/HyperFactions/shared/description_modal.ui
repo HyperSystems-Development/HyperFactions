@@ -1,7 +1,6 @@
 // Description Modal - test with CurrentDesc
 
 $C = "../../Common.ui";
-$S = "styles.ui";
 
 $C.@PageOverlay {
   $C.@DecoratedContainer {
@@ -45,6 +44,7 @@ $C.@PageOverlay {
       }
 
       $C.@TextField #DescInput {
+        PlaceholderText: "Enter description...";
         FlexWeight: 1;
         Anchor: (Height: 60, Bottom: 8);
       }
@@ -57,7 +57,7 @@ $C.@PageOverlay {
         TextButton #CancelBtn {
           Text: "Cancel";
           Anchor: (Height: 32, Width: 100);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { FlexWeight: 1; }
@@ -65,7 +65,7 @@ $C.@PageOverlay {
         TextButton #ClearBtn {
           Text: "Clear";
           Anchor: (Height: 32, Width: 80);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { Anchor: (Width: 10); }
@@ -73,7 +73,7 @@ $C.@PageOverlay {
         TextButton #SaveBtn {
           Text: "Save";
           Anchor: (Height: 32, Width: 100);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
     }

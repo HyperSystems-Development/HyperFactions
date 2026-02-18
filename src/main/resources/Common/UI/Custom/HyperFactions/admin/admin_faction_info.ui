@@ -3,7 +3,6 @@
 // Back button returns to AdminFactionsPage
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 $Nav = "admin_nav_bar.ui";
 
 $C.@PageOverlay {
@@ -304,31 +303,31 @@ $C.@PageOverlay {
         TextButton #PowerSubFive {
           Text: "-5 All";
           Anchor: (Height: 26, Width: 55, Right: 4);
-          Style: $S.@RedButtonStyle;
+          Style: $C.@CancelTextButtonStyle;
         }
 
         TextButton #PowerSubOne {
           Text: "-1 All";
           Anchor: (Height: 26, Width: 55, Right: 4);
-          Style: $S.@RedButtonStyle;
+          Style: $C.@CancelTextButtonStyle;
         }
 
         TextButton #PowerAddOne {
           Text: "+1 All";
           Anchor: (Height: 26, Width: 55, Right: 4);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         TextButton #PowerAddFive {
           Text: "+5 All";
           Anchor: (Height: 26, Width: 55, Right: 8);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         TextButton #PowerResetAll {
           Text: "Reset All";
           Anchor: (Height: 26, Width: 75);
-          Style: $S.@CyanButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
 
@@ -353,13 +352,13 @@ $C.@PageOverlay {
           TextButton #EconAdjustBtn {
             Text: "Adjust Balance";
             Anchor: (Height: 26, Width: 120, Right: 8);
-            Style: $S.@CyanButtonStyle;
+            Style: $C.@SecondaryTextButtonStyle;
           }
 
           TextButton #EconViewLogBtn {
             Text: "View Treasury";
             Anchor: (Height: 26, Width: 120);
-            Style: $S.@ButtonStyle;
+            Style: $C.@SecondaryTextButtonStyle;
           }
         }
       }
@@ -375,7 +374,7 @@ $C.@PageOverlay {
         TextButton #ViewMembersBtn {
           Text: "Members";
           Anchor: (Height: 30, Width: 90);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { Anchor: (Width: 8); }
@@ -383,7 +382,7 @@ $C.@PageOverlay {
         TextButton #ViewRelationsBtn {
           Text: "Relations";
           Anchor: (Height: 30, Width: 95);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { Anchor: (Width: 8); }
@@ -391,7 +390,7 @@ $C.@PageOverlay {
         TextButton #ViewSettingsBtn {
           Text: "Settings";
           Anchor: (Height: 30, Width: 90);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { FlexWeight: 1; }
@@ -399,7 +398,7 @@ $C.@PageOverlay {
         TextButton #BackBtn {
           Text: "Back";
           Anchor: (Height: 30, Width: 70);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
     }

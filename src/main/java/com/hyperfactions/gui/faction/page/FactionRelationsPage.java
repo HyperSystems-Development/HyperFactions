@@ -115,10 +115,10 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
     private void buildList(UICommandBuilder cmd, UIEventBuilder events, boolean canManage) {
         // Tab buttons - active tab gets cyan text style and is disabled
-        cmd.set("#TabRelations.Style", Value.ref("HyperFactions/shared/styles.ui",
-                currentTab == Tab.RELATIONS ? "CyanButtonStyle" : "ButtonStyle"));
-        cmd.set("#TabPending.Style", Value.ref("HyperFactions/shared/styles.ui",
-                currentTab == Tab.PENDING ? "CyanButtonStyle" : "ButtonStyle"));
+        cmd.set("#TabRelations.Style", Value.ref("Common.ui",
+                currentTab == Tab.RELATIONS ? "DefaultTextButtonStyle" : "SecondaryTextButtonStyle"));
+        cmd.set("#TabPending.Style", Value.ref("Common.ui",
+                currentTab == Tab.PENDING ? "DefaultTextButtonStyle" : "SecondaryTextButtonStyle"));
         cmd.set("#TabRelations.Disabled", currentTab == Tab.RELATIONS);
         cmd.set("#TabPending.Disabled", currentTab == Tab.PENDING);
 

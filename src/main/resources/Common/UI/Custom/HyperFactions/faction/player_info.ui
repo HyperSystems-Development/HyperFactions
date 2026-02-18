@@ -3,7 +3,6 @@
 // Used for /f who [player] command (GUI mode) and member profile navigation
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 $C.@PageOverlay {
   $C.@Container {
@@ -133,7 +132,7 @@ $C.@PageOverlay {
           TextButton #ViewFactionBtn {
             Text: "View Faction";
             Anchor: (Height: 24, Width: 110);
-            Style: $S.@CyanButtonStyle;
+            Style: $C.@SecondaryTextButtonStyle;
           }
         }
 
@@ -276,7 +275,7 @@ $C.@PageOverlay {
       Group #HistoryList {
         FlexWeight: 1;
         LayoutMode: TopScrolling;
-        ScrollbarStyle: $C.@DefaultScrollbarStyle;
+        ScrollbarStyle: $C.@TranslucentScrollbarStyle;
       }
 
       // Spacer
@@ -292,7 +291,7 @@ $C.@PageOverlay {
         TextButton #BackBtn {
           Text: "Back";
           Anchor: (Height: 30, Width: 80);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
     }

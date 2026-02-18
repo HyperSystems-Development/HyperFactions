@@ -2,7 +2,6 @@
 // Open via: /f admin testgui
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 $C.@PageOverlay {
   $C.@DecoratedContainer {
@@ -43,7 +42,7 @@ $C.@PageOverlay {
           TextButton #BtnSecondary {
             Text: "SECONDARY (MUTED GRAY)";
             Anchor: (Height: 36, Bottom: 8);
-            Style: $S.@ButtonStyle;
+            Style: $C.@SecondaryTextButtonStyle;
           }
 
           Label {
@@ -55,25 +54,25 @@ $C.@PageOverlay {
           TextButton #BtnRed {
             Text: "RED TEXT STYLE";
             Anchor: (Height: 36, Bottom: 4);
-            Style: $S.@RedButtonStyle;
+            Style: $C.@CancelTextButtonStyle;
           }
 
           TextButton #BtnGreen {
             Text: "GREEN TEXT STYLE";
             Anchor: (Height: 36, Bottom: 4);
-            Style: $S.@GreenButtonStyle;
+            Style: $C.@SecondaryTextButtonStyle;
           }
 
           TextButton #BtnCyan {
             Text: "CYAN TEXT STYLE";
             Anchor: (Height: 36, Bottom: 4);
-            Style: $S.@CyanButtonStyle;
+            Style: $C.@SecondaryTextButtonStyle;
           }
 
           TextButton #BtnGold {
             Text: "GOLD TEXT STYLE";
             Anchor: (Height: 36, Bottom: 8);
-            Style: $S.@GoldButtonStyle;
+            Style: $C.@SecondaryTextButtonStyle;
           }
 
           Label {
@@ -85,13 +84,13 @@ $C.@PageOverlay {
           TextButton #BtnFlatRed {
             Text: "FLAT RED BG";
             Anchor: (Height: 36, Bottom: 4);
-            Style: $S.@FlatRedButtonStyle;
+            Style: $C.@CancelTextButtonStyle;
           }
 
           TextButton #BtnFlatDarkRed {
             Text: "FLAT DARK RED BG";
             Anchor: (Height: 36, Bottom: 8);
-            Style: $S.@FlatDarkRedButtonStyle;
+            Style: $C.@CancelTextButtonStyle;
           }
 
           Label {

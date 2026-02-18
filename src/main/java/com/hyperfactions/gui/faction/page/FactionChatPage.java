@@ -114,8 +114,8 @@ public class FactionChatPage extends InteractiveCustomUIPage<FactionChatData> im
 
         // Active tab is disabled (non-clickable), inactive tab is clickable
         if (hasFactionPerm) {
-            cmd.set("#TabFactionBtn.Style", Value.ref("HyperFactions/shared/styles.ui",
-                    activeTab == Tab.FACTION ? "DisabledButtonStyle" : "ButtonStyle"));
+            cmd.set("#TabFactionBtn.Style", Value.ref("Common.ui",
+                    activeTab == Tab.FACTION ? "DefaultTextButtonStyle" : "SecondaryTextButtonStyle"));
             if (activeTab != Tab.FACTION) {
                 events.addEventBinding(CustomUIEventBindingType.Activating, "#TabFactionBtn",
                         EventData.of("Button", "TabFaction"), false);
@@ -125,8 +125,8 @@ public class FactionChatPage extends InteractiveCustomUIPage<FactionChatData> im
         }
 
         if (hasAllyPerm) {
-            cmd.set("#TabAllyBtn.Style", Value.ref("HyperFactions/shared/styles.ui",
-                    activeTab == Tab.ALLY ? "DisabledButtonStyle" : "ButtonStyle"));
+            cmd.set("#TabAllyBtn.Style", Value.ref("Common.ui",
+                    activeTab == Tab.ALLY ? "DefaultTextButtonStyle" : "SecondaryTextButtonStyle"));
             if (activeTab != Tab.ALLY) {
                 events.addEventBinding(CustomUIEventBindingType.Activating, "#TabAllyBtn",
                         EventData.of("Button", "TabAlly"), false);

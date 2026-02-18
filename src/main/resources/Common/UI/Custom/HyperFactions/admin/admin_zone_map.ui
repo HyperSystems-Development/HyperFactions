@@ -3,7 +3,6 @@
 // Left-click unclaimed to claim, right-click zone chunk to unclaim
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 $C.@PageOverlay {}
 
@@ -152,7 +151,7 @@ $C.@Container {
       TextButton #ConfirmBtn {
         Text: "Done";
         Anchor: (Height: 36, Width: 120);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       Label { FlexWeight: 1; }

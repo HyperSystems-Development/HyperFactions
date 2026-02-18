@@ -2,7 +2,6 @@
 // Shows a single pending invitation
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 Group {
   Anchor: (Height: 115, Bottom: 8);
@@ -73,7 +72,7 @@ Group {
     TextButton #AcceptBtn {
       Text: "Accept";
       Anchor: (Height: 28, Width: 100);
-      Style: $S.@ButtonStyle;
+      Style: $C.@SecondaryTextButtonStyle;
     }
 
     Label { Anchor: (Width: 10); }
@@ -81,7 +80,7 @@ Group {
     TextButton #DeclineBtn {
       Text: "Decline";
       Anchor: (Height: 28, Width: 100);
-      Style: $S.@RedButtonStyle;
+      Style: $C.@CancelTextButtonStyle;
     }
   }
 }

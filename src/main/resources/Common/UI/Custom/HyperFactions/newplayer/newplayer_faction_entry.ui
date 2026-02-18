@@ -152,7 +152,7 @@ Group {
       TextButton #ActionBtn {
         Text: "Join";
         Anchor: (Height: 28, Width: 80);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       Group { Anchor: (Width: 8); }
@@ -160,7 +160,7 @@ Group {
       TextButton #ViewInfoBtn {
         Text: "View Info";
         Anchor: (Height: 28, Width: 90);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       Group { FlexWeight: 1; }

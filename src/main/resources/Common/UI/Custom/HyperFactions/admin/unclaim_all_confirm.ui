@@ -2,7 +2,6 @@
 // Shows warning and requires confirmation to unclaim all territory
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 $C.@PageOverlay {
   $C.@DecoratedContainer {
@@ -57,7 +56,7 @@ $C.@PageOverlay {
         TextButton #CancelBtn {
           Text: "Cancel";
           Anchor: (Height: 32, Width: 120);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { FlexWeight: 1; }
@@ -65,7 +64,7 @@ $C.@PageOverlay {
         TextButton #ConfirmBtn {
           Text: "Unclaim All";
           Anchor: (Height: 32, Width: 130);
-          Style: $S.@RedButtonStyle;
+          Style: $C.@CancelTextButtonStyle;
         }
       }
     }

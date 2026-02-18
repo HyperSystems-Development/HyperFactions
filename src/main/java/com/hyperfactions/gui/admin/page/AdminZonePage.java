@@ -88,12 +88,12 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
 
     private void buildZoneList(UICommandBuilder cmd, UIEventBuilder events) {
         // Tab buttons - active tab gets cyan text style, inactive keeps original color
-        cmd.set("#TabAll.Style", Value.ref("HyperFactions/shared/styles.ui",
-                currentTab.equals("all") ? "CyanButtonStyle" : "ButtonStyle"));
-        cmd.set("#TabSafe.Style", Value.ref("HyperFactions/shared/styles.ui",
-                currentTab.equals("safe") ? "CyanButtonStyle" : "SmallTealButtonStyle"));
-        cmd.set("#TabWar.Style", Value.ref("HyperFactions/shared/styles.ui",
-                currentTab.equals("war") ? "CyanButtonStyle" : "SmallPurpleButtonStyle"));
+        cmd.set("#TabAll.Style", Value.ref("Common.ui",
+                currentTab.equals("all") ? "DefaultTextButtonStyle" : "SecondaryTextButtonStyle"));
+        cmd.set("#TabSafe.Style", Value.ref("Common.ui",
+                currentTab.equals("safe") ? "DefaultTextButtonStyle" : "SecondaryTextButtonStyle"));
+        cmd.set("#TabWar.Style", Value.ref("Common.ui",
+                currentTab.equals("war") ? "DefaultTextButtonStyle" : "SecondaryTextButtonStyle"));
 
         events.addEventBinding(
                 CustomUIEventBindingType.Activating,

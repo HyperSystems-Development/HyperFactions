@@ -171,7 +171,7 @@ Group {
       TextButton #ViewBtn {
         Text: "View";
         Anchor: (Height: 28, Width: 65);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       Group #ViewSpacer { Anchor: (Width: 8); }
@@ -180,7 +180,7 @@ Group {
       TextButton #NeutralBtn {
         Text: "Neutral";
         Anchor: (Height: 28, Width: 80);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       Group #NeutralSpacer { Anchor: (Width: 8); }
@@ -188,20 +188,20 @@ Group {
       TextButton #EnemyBtn {
         Text: "Enemy";
         Anchor: (Height: 28, Width: 70);
-        Style: $S.@RedButtonStyle;
+        Style: $C.@CancelTextButtonStyle;
       }
 
       TextButton #AllyBtn {
         Text: "Ally";
         Anchor: (Height: 28, Width: 60);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       // For pending requests
       TextButton #AcceptBtn {
         Text: "Accept";
         Anchor: (Height: 28, Width: 75);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       Group #AcceptSpacer { Anchor: (Width: 8); }
@@ -209,13 +209,13 @@ Group {
       TextButton #DeclineBtn {
         Text: "Decline";
         Anchor: (Height: 28, Width: 80);
-        Style: $S.@RedButtonStyle;
+        Style: $C.@CancelTextButtonStyle;
       }
 
       TextButton #CancelBtn {
         Text: "Cancel";
         Anchor: (Height: 28, Width: 75);
-        Style: $S.@RedButtonStyle;
+        Style: $C.@CancelTextButtonStyle;
       }
 
       Group { FlexWeight: 1; }

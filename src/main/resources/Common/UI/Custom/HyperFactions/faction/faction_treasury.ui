@@ -2,7 +2,6 @@
 // Stat cards, upkeep section, quick action buttons, transaction log, settings button
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 $Nav = "../nav/nav_bar.ui";
 
 $C.@PageOverlay {
@@ -180,7 +179,7 @@ $C.@PageOverlay {
         TextButton #DepositBtn {
           Text: "Deposit";
           Anchor: (Height: 32, Width: 130);
-          Style: $S.@GreenButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { Anchor: (Width: 10); }
@@ -188,7 +187,7 @@ $C.@PageOverlay {
         TextButton #WithdrawBtn {
           Text: "Withdraw";
           Anchor: (Height: 32, Width: 130);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { Anchor: (Width: 10); }
@@ -196,7 +195,7 @@ $C.@PageOverlay {
         TextButton #TransferBtn {
           Text: "Transfer";
           Anchor: (Height: 32, Width: 130);
-          Style: $S.@CyanButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { FlexWeight: 1; }
@@ -262,7 +261,7 @@ $C.@PageOverlay {
       Group #TransactionLog {
         FlexWeight: 1;
         LayoutMode: TopScrolling;
-        ScrollbarStyle: $C.@DefaultScrollbarStyle;
+        ScrollbarStyle: $C.@TranslucentScrollbarStyle;
         Background: (Color: #0d1520);
 
         Group #TransactionList {
@@ -281,7 +280,7 @@ $C.@PageOverlay {
         TextButton #SettingsBtn {
           Text: "Treasury Settings";
           Anchor: (Height: 28, Width: 160);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
     }

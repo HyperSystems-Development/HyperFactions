@@ -2,7 +2,6 @@
 // Shows warning and requires explicit confirmation to transfer leadership
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 $C.@PageOverlay {
   $C.@DecoratedContainer {
@@ -45,7 +44,7 @@ $C.@PageOverlay {
         TextButton #CancelBtn {
           Text: "Cancel";
           Anchor: (Height: 32, Width: 120);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { FlexWeight: 1; }
@@ -53,7 +52,7 @@ $C.@PageOverlay {
         TextButton #ConfirmBtn {
           Text: "Transfer";
           Anchor: (Height: 32, Width: 120);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
     }

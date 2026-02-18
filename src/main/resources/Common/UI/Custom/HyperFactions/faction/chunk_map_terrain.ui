@@ -3,7 +3,6 @@
 // Left-click wilderness to claim, right-click own territory to unclaim
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 $Nav = "../nav/nav_bar.ui";
 
 $C.@PageOverlay {

@@ -2,7 +2,6 @@
 // Actions for territory and claiming
 
 $C = "../../Common.ui";
-$S = "styles.ui";
 
 Group {
   LayoutMode: Top;
@@ -14,7 +13,9 @@ Group {
     TextButton #MapBtn {
       Text: "View Map";
       Anchor: (Height: 32, Width: 130);
-      Style: $S.@ButtonStyle;
+      Style: $C.@SecondaryTextButtonStyle;
+      TooltipText: "View the territory claim map";
+      TextTooltipStyle: $C.@DefaultTextTooltipStyle;
     }
 
     Label { Anchor: (Width: 10); }
@@ -22,7 +23,9 @@ Group {
     TextButton #ClaimBtn {
       Text: "Claim Chunk";
       Anchor: (Height: 32, Width: 130);
-      Style: $S.@ButtonStyle;
+      Style: $C.@SecondaryTextButtonStyle;
+      TooltipText: "Claim the current chunk for your faction";
+      TextTooltipStyle: $C.@DefaultTextTooltipStyle;
     }
 
     Label { FlexWeight: 1; }

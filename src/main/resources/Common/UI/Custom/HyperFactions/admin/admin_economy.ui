@@ -2,7 +2,6 @@
 // Server-wide economy stats and faction treasury list with search/sort/pagination
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 $Nav = "admin_nav_bar.ui";
 
 $C.@PageOverlay {
@@ -98,6 +97,7 @@ $C.@PageOverlay {
           Anchor: (Width: 55);
         }
         $C.@TextField #SearchInput {
+          PlaceholderText: "Search...";
           FlexWeight: 1;
           Anchor: (Height: 32);
         }
@@ -183,7 +183,7 @@ $C.@PageOverlay {
         TextButton #PrevBtn {
           Text: "< Prev";
           Anchor: (Height: 26, Width: 80);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { FlexWeight: 1; }
@@ -199,7 +199,7 @@ $C.@PageOverlay {
         TextButton #NextBtn {
           Text: "Next >";
           Anchor: (Height: 26, Width: 80);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
     }

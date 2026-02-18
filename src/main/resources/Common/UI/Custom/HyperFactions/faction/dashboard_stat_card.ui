@@ -1,6 +1,5 @@
 // Dashboard Stat Card Template
 
-$S = "../shared/styles.ui";
 
 Group {
   Anchor: (Height: 85);

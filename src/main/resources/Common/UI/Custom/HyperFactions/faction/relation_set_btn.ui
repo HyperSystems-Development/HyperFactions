@@ -1,8 +1,7 @@
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 TextButton #SetRelationBtn {
   Text: "+ Set Relation";
   Anchor: (Height: 28, Width: 120);
-  Style: $S.@ButtonStyle;
+  Style: $C.@SecondaryTextButtonStyle;
 }

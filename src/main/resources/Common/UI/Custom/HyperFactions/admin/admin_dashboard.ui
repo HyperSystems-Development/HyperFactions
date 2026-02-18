@@ -1,5 +1,4 @@
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 $Nav = "admin_nav_bar.ui";
 
 $C.@PageOverlay {
@@ -269,7 +268,7 @@ $C.@PageOverlay {
         TextButton #ToggleBypassBtn {
           Text: "Enable";
           Anchor: (Height: 30, Width: 100);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
 

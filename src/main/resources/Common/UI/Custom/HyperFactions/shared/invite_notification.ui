@@ -1,5 +1,4 @@
 $C = "../../Common.ui";
-$S = "styles.ui";
 
 Group {
   Anchor: (Height: 50, Bottom: 10);
@@ -22,7 +21,7 @@ Group {
   TextButton #AcceptInviteBtn {
     Text: "Accept";
     Anchor: (Height: 26, Width: 70);
-    Style: $S.@ButtonStyle;
+    Style: $C.@SecondaryTextButtonStyle;
   }
 
   Label { Anchor: (Width: 5); }
@@ -30,6 +29,6 @@ Group {
   TextButton #DeclineInviteBtn {
     Text: "Decline";
     Anchor: (Height: 26, Width: 70);
-    Style: $S.@RedButtonStyle;
+    Style: $C.@CancelTextButtonStyle;
   }
 }

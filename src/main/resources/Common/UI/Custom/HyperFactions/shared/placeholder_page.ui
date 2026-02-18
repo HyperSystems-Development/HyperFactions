@@ -2,7 +2,6 @@
 // Generic "Coming Soon" page with nav bar support
 
 $C = "../../Common.ui";
-$S = "styles.ui";
 $Nav = "../nav/nav_bar.ui";
 
 $C.@PageOverlay {

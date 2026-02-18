@@ -3,7 +3,6 @@
 // For officers+ to manage outgoing invites and incoming join requests
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 $Nav = "../nav/nav_bar.ui";
 
 $C.@PageOverlay {
@@ -30,7 +29,7 @@ $C.@PageOverlay {
         TextButton #TabOutgoing {
           Text: "Outgoing";
           Anchor: (Height: 26, Width: 90);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { Anchor: (Width: 5); }
@@ -38,7 +37,7 @@ $C.@PageOverlay {
         TextButton #TabRequests {
           Text: "Requests";
           Anchor: (Height: 26, Width: 90);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { FlexWeight: 1; }
@@ -64,7 +63,7 @@ $C.@PageOverlay {
       // Scrollable list
       Group #ListContainer {
         LayoutMode: TopScrolling;
-        ScrollbarStyle: $C.@DefaultScrollbarStyle;
+        ScrollbarStyle: $C.@TranslucentScrollbarStyle;
         FlexWeight: 1;
 
         Group #ItemList {
@@ -86,7 +85,7 @@ $C.@PageOverlay {
         TextButton #PrevBtn {
           Text: "< Prev";
           Anchor: (Height: 26, Width: 80);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { FlexWeight: 1; }
@@ -102,7 +101,7 @@ $C.@PageOverlay {
         TextButton #NextBtn {
           Text: "Next >";
           Anchor: (Height: 26, Width: 80);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
     }

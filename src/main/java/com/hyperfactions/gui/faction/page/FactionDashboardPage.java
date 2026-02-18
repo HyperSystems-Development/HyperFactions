@@ -269,7 +269,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
             cmd.append("#HomeBtnContainer", "HyperFactions/faction/dashboard_action_btn.ui");
             cmd.set("#HomeBtnContainer #ActionBtn.Text", faction.hasHome() ? "Home" : "Set Home");
             cmd.set("#HomeBtnContainer #ActionBtn.Style",
-                    Value.ref("HyperFactions/shared/styles.ui", "CyanButtonStyle"));
+                    Value.ref("Common.ui", "SecondaryTextButtonStyle"));
             events.addEventBinding(
                     CustomUIEventBindingType.Activating,
                     "#HomeBtnContainer #ActionBtn",
@@ -285,7 +285,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
             cmd.append("#ClaimBtnContainer", "HyperFactions/faction/dashboard_action_btn.ui");
             cmd.set("#ClaimBtnContainer #ActionBtn.Text", "Claim");
             cmd.set("#ClaimBtnContainer #ActionBtn.Style",
-                    Value.ref("HyperFactions/shared/styles.ui", "GreenButtonStyle"));
+                    Value.ref("Common.ui", "SecondaryTextButtonStyle"));
             events.addEventBinding(
                     CustomUIEventBindingType.Activating,
                     "#ClaimBtnContainer #ActionBtn",
@@ -320,7 +320,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
             cmd.append("#LeaveBtnContainer", "HyperFactions/faction/dashboard_action_btn.ui");
             cmd.set("#LeaveBtnContainer #ActionBtn.Text", "Leave");
             cmd.set("#LeaveBtnContainer #ActionBtn.Style",
-                    Value.ref("HyperFactions/shared/styles.ui", "FlatRedButtonStyle"));
+                    Value.ref("Common.ui", "CancelTextButtonStyle"));
             events.addEventBinding(
                     CustomUIEventBindingType.Activating,
                     "#LeaveBtnContainer #ActionBtn",

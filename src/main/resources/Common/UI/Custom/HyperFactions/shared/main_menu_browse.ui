@@ -2,7 +2,6 @@
 // Actions for browsing factions
 
 $C = "../../Common.ui";
-$S = "styles.ui";
 
 Group {
   LayoutMode: Top;
@@ -14,7 +13,9 @@ Group {
     TextButton #BrowseFactionsBtn {
       Text: "Browse Factions";
       Anchor: (Height: 32, Width: 160);
-      Style: $S.@ButtonStyle;
+      Style: $C.@SecondaryTextButtonStyle;
+      TooltipText: "Browse and search all existing factions";
+      TextTooltipStyle: $C.@DefaultTextTooltipStyle;
     }
 
     Label { FlexWeight: 1; }

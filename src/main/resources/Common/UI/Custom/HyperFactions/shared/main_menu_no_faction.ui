@@ -2,7 +2,6 @@
 // Displayed when player is not in a faction
 
 $C = "../../Common.ui";
-$S = "styles.ui";
 
 Group {
   LayoutMode: Top;
@@ -22,7 +21,9 @@ Group {
     TextButton #CreateFactionBtn {
       Text: "Create Faction";
       Anchor: (Height: 32, Width: 180);
-      Style: $S.@ButtonStyle;
+      Style: $C.@SecondaryTextButtonStyle;
+      TooltipText: "Start a new faction and become its leader";
+      TextTooltipStyle: $C.@DefaultTextTooltipStyle;
     }
 
     Label { FlexWeight: 1; }

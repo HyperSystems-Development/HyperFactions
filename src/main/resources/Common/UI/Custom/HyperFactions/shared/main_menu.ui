@@ -2,7 +2,6 @@
 // Central navigation hub for faction management
 
 $C = "../../Common.ui";
-$S = "styles.ui";
 
 $C.@PageOverlay {}
 

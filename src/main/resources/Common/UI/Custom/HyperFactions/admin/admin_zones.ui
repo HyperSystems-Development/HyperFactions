@@ -1,5 +1,4 @@
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 $Nav = "admin_nav_bar.ui";
 
 $C.@PageOverlay {
@@ -25,7 +24,7 @@ $C.@PageOverlay {
         TextButton #TabAll {
           Text: "All";
           Anchor: (Height: 26, Width: 50);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { Anchor: (Width: 5); }
@@ -33,7 +32,7 @@ $C.@PageOverlay {
         TextButton #TabSafe {
           Text: "Safe";
           Anchor: (Height: 26, Width: 60);
-          Style: $S.@SmallTealButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { Anchor: (Width: 5); }
@@ -41,7 +40,7 @@ $C.@PageOverlay {
         TextButton #TabWar {
           Text: "War";
           Anchor: (Height: 26, Width: 55);
-          Style: $S.@SmallPurpleButtonStyle;
+          Style: $C.@CancelTextButtonStyle;
         }
 
         Label { FlexWeight: 1; }
@@ -49,7 +48,7 @@ $C.@PageOverlay {
         TextButton #CreateZoneBtn {
           Text: "+ Create";
           Anchor: (Height: 26, Width: 90);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
 
@@ -104,7 +103,7 @@ $C.@PageOverlay {
         TextButton #PrevBtn {
           Text: "< Prev";
           Anchor: (Height: 26, Width: 80);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { FlexWeight: 1; }
@@ -120,7 +119,7 @@ $C.@PageOverlay {
         TextButton #NextBtn {
           Text: "Next >";
           Anchor: (Height: 26, Width: 80);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
     }

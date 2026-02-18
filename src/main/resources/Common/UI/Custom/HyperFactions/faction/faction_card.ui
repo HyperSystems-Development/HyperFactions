@@ -1,5 +1,4 @@
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 Group {
   Anchor: (Height: 60, Bottom: 5);
@@ -60,6 +59,6 @@ Group {
   TextButton #ViewBtn {
     Text: "View";
     Anchor: (Height: 28, Width: 60);
-    Style: $S.@ButtonStyle;
+    Style: $C.@SecondaryTextButtonStyle;
   }
 }

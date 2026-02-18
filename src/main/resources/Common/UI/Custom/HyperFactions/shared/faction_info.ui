@@ -3,7 +3,6 @@
 // Used for /f info [faction] command (GUI mode)
 
 $C = "../../Common.ui";
-$S = "styles.ui";
 
 $C.@PageOverlay {
   $C.@Container {
@@ -283,7 +282,7 @@ $C.@PageOverlay {
         TextButton #ViewMembersBtn {
           Text: "View Members";
           Anchor: (Height: 30, Width: 130);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { Anchor: (Width: 10); }
@@ -291,7 +290,7 @@ $C.@PageOverlay {
         TextButton #ViewRelationsBtn {
           Text: "Relations";
           Anchor: (Height: 30, Width: 100);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { FlexWeight: 1; }
@@ -299,7 +298,7 @@ $C.@PageOverlay {
         TextButton #BackBtn {
           Text: "Back";
           Anchor: (Height: 30, Width: 80);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
     }

@@ -1,11 +1,12 @@
 // HyperFactions Shared Styles
-// Centralized style definitions for consistent UI appearance
-// Brand colors: Cyan/Teal gradient (#00FFFF to deeper teal/blue)
+// Only custom styles that have no native Hytale equivalent.
+// All standard button styles now use native $C.@SecondaryTextButtonStyle,
+// $C.@CancelTextButtonStyle, $C.@DefaultTextButtonStyle from Common.ui.
 
 $C = "../../Common.ui";
 
 // =============================================================================
-// COLORS
+// COLORS (reference only)
 // =============================================================================
 // Primary: #00FFFF (cyan)
 // Secondary: #00AAAA (teal)
@@ -14,8 +15,6 @@ $C = "../../Common.ui";
 // Leader: #FFD700 (gold)
 // Officer: #87CEEB (sky blue)
 // Member: #AAAAAA (gray)
-// Primary text: #cccccc
-// Muted text: #888888
 // Success: #44cc44
 // Danger: #ff5555
 // Warning: #FFAA00
@@ -23,10 +22,10 @@ $C = "../../Common.ui";
 // Enemy: #FF5555
 
 // =============================================================================
-// LABEL STYLES
+// INVISIBLE BUTTON STYLE (transparent click overlays for chunk map & list rows)
 // =============================================================================
 
-@ButtonLabelStyle = LabelStyle(
+@InvisibleLabelStyle = LabelStyle(
   FontSize: 13,
   TextColor: #bfcdd5,
   RenderBold: true,
@@ -34,207 +33,11 @@ $C = "../../Common.ui";
   VerticalAlignment: Center
 );
 
-@CyanLabelStyle = LabelStyle(
-  FontSize: 13,
-  TextColor: #00FFFF,
-  RenderBold: true,
-  HorizontalAlignment: Center,
-  VerticalAlignment: Center
-);
-
-@GreenLabelStyle = LabelStyle(
-  FontSize: 13,
-  TextColor: #44cc44,
-  RenderBold: true,
-  HorizontalAlignment: Center,
-  VerticalAlignment: Center
-);
-
-@RedLabelStyle = LabelStyle(
-  FontSize: 13,
-  TextColor: #ff5555,
-  RenderBold: true,
-  HorizontalAlignment: Center,
-  VerticalAlignment: Center
-);
-
-@GoldLabelStyle = LabelStyle(
-  FontSize: 13,
-  TextColor: #FFD700,
-  RenderBold: true,
-  HorizontalAlignment: Center,
-  VerticalAlignment: Center
-);
-
-// =============================================================================
-// BUTTON STYLES
-// =============================================================================
-
-// Standard button style - native backgrounds with controlled font size
-@ButtonStyle = TextButtonStyle(
-  Default: (Background: $C.@DefaultSquareButtonDefaultBackground, LabelStyle: @ButtonLabelStyle),
-  Hovered: (Background: $C.@DefaultSquareButtonHoveredBackground, LabelStyle: @ButtonLabelStyle),
-  Pressed: (Background: $C.@DefaultSquareButtonPressedBackground, LabelStyle: @ButtonLabelStyle),
-  Disabled: (Background: $C.@DefaultSquareButtonDisabledBackground, LabelStyle: @ButtonLabelStyle),
-  Sounds: $C.@ButtonSounds,
-);
-
-// Invisible button style - fully transparent background for click overlays
 @InvisibleButtonStyle = TextButtonStyle(
-  Default: (Background: (Color: #00000000), LabelStyle: @ButtonLabelStyle),
-  Hovered: (Background: (Color: #00000000), LabelStyle: @ButtonLabelStyle),
-  Pressed: (Background: (Color: #00000000), LabelStyle: @ButtonLabelStyle),
-  Disabled: (Background: (Color: #00000000), LabelStyle: @ButtonLabelStyle),
-  Sounds: $C.@ButtonSounds,
-);
-
-// Colored text button styles (same background as native, custom text color)
-@CyanButtonStyle = TextButtonStyle(
-  Default: (Background: $C.@DefaultSquareButtonDefaultBackground, LabelStyle: @CyanLabelStyle),
-  Hovered: (Background: $C.@DefaultSquareButtonHoveredBackground, LabelStyle: @CyanLabelStyle),
-  Pressed: (Background: $C.@DefaultSquareButtonPressedBackground, LabelStyle: @CyanLabelStyle),
-  Disabled: (Background: $C.@DefaultSquareButtonDisabledBackground, LabelStyle: @CyanLabelStyle),
-  Sounds: $C.@ButtonSounds,
-);
-
-@GreenButtonStyle = TextButtonStyle(
-  Default: (Background: $C.@DefaultSquareButtonDefaultBackground, LabelStyle: @GreenLabelStyle),
-  Hovered: (Background: $C.@DefaultSquareButtonHoveredBackground, LabelStyle: @GreenLabelStyle),
-  Pressed: (Background: $C.@DefaultSquareButtonPressedBackground, LabelStyle: @GreenLabelStyle),
-  Disabled: (Background: $C.@DefaultSquareButtonDisabledBackground, LabelStyle: @GreenLabelStyle),
-  Sounds: $C.@ButtonSounds,
-);
-
-@RedButtonStyle = TextButtonStyle(
-  Default: (Background: $C.@DefaultSquareButtonDefaultBackground, LabelStyle: @RedLabelStyle),
-  Hovered: (Background: $C.@DefaultSquareButtonHoveredBackground, LabelStyle: @RedLabelStyle),
-  Pressed: (Background: $C.@DefaultSquareButtonPressedBackground, LabelStyle: @RedLabelStyle),
-  Disabled: (Background: $C.@DefaultSquareButtonDisabledBackground, LabelStyle: @RedLabelStyle),
-  Sounds: $C.@ButtonSounds,
-);
-
-@GoldButtonStyle = TextButtonStyle(
-  Default: (Background: $C.@DefaultSquareButtonDefaultBackground, LabelStyle: @GoldLabelStyle),
-  Hovered: (Background: $C.@DefaultSquareButtonHoveredBackground, LabelStyle: @GoldLabelStyle),
-  Pressed: (Background: $C.@DefaultSquareButtonPressedBackground, LabelStyle: @GoldLabelStyle),
-  Disabled: (Background: $C.@DefaultSquareButtonDisabledBackground, LabelStyle: @GoldLabelStyle),
-  Sounds: $C.@ButtonSounds,
-);
-
-// Disabled button style - grayed out, non-interactive
-@DisabledLabelStyle = LabelStyle(
-  FontSize: 13,
-  TextColor: #555555,
-  RenderBold: true,
-  HorizontalAlignment: Center,
-  VerticalAlignment: Center
-);
-
-@DisabledButtonStyle = TextButtonStyle(
-  Default: (Background: $C.@DefaultSquareButtonDisabledBackground, LabelStyle: @DisabledLabelStyle),
-  Hovered: (Background: $C.@DefaultSquareButtonDisabledBackground, LabelStyle: @DisabledLabelStyle),
-  Pressed: (Background: $C.@DefaultSquareButtonDisabledBackground, LabelStyle: @DisabledLabelStyle),
-  Disabled: (Background: $C.@DefaultSquareButtonDisabledBackground, LabelStyle: @DisabledLabelStyle),
-  Sounds: $C.@ButtonSounds,
-);
-
-// =============================================================================
-// ZONE BUTTON STYLES (SafeZone = Green, WarZone = Red)
-// =============================================================================
-
-@SafeZoneLabelStyle = LabelStyle(
-  FontSize: 13,
-  TextColor: #55FF55,
-  RenderBold: true,
-  HorizontalAlignment: Center,
-  VerticalAlignment: Center
-);
-
-@WarZoneLabelStyle = LabelStyle(
-  FontSize: 13,
-  TextColor: #FF5555,
-  RenderBold: true,
-  HorizontalAlignment: Center,
-  VerticalAlignment: Center
-);
-
-@SafeZoneButtonStyle = TextButtonStyle(
-  Default: (Background: $C.@DefaultSquareButtonDefaultBackground, LabelStyle: @SafeZoneLabelStyle),
-  Hovered: (Background: $C.@DefaultSquareButtonHoveredBackground, LabelStyle: @SafeZoneLabelStyle),
-  Pressed: (Background: $C.@DefaultSquareButtonPressedBackground, LabelStyle: @SafeZoneLabelStyle),
-  Disabled: (Background: $C.@DefaultSquareButtonDisabledBackground, LabelStyle: @SafeZoneLabelStyle),
-  Sounds: $C.@ButtonSounds,
-);
-
-@WarZoneButtonStyle = TextButtonStyle(
-  Default: (Background: $C.@DefaultSquareButtonDefaultBackground, LabelStyle: @WarZoneLabelStyle),
-  Hovered: (Background: $C.@DefaultSquareButtonHoveredBackground, LabelStyle: @WarZoneLabelStyle),
-  Pressed: (Background: $C.@DefaultSquareButtonPressedBackground, LabelStyle: @WarZoneLabelStyle),
-  Disabled: (Background: $C.@DefaultSquareButtonDisabledBackground, LabelStyle: @WarZoneLabelStyle),
-  Sounds: $C.@ButtonSounds,
-);
-
-// =============================================================================
-// ADMIN ZONE LIST STYLES (colored text for zone type tabs)
-// =============================================================================
-
-@SmallTealLabelStyle = LabelStyle(
-  FontSize: 12,
-  TextColor: #55FF55,
-  RenderBold: true,
-  HorizontalAlignment: Center,
-  VerticalAlignment: Center
-);
-
-@SmallPurpleLabelStyle = LabelStyle(
-  FontSize: 12,
-  TextColor: #FF5555,
-  RenderBold: true,
-  HorizontalAlignment: Center,
-  VerticalAlignment: Center
-);
-
-@SmallTealButtonStyle = TextButtonStyle(
-  Default: (Background: $C.@DefaultSquareButtonDefaultBackground, LabelStyle: @SmallTealLabelStyle),
-  Hovered: (Background: $C.@DefaultSquareButtonHoveredBackground, LabelStyle: @SmallTealLabelStyle),
-  Pressed: (Background: $C.@DefaultSquareButtonPressedBackground, LabelStyle: @SmallTealLabelStyle),
-  Disabled: (Background: $C.@DefaultSquareButtonDisabledBackground, LabelStyle: @SmallTealLabelStyle),
-  Sounds: $C.@ButtonSounds,
-);
-
-@SmallPurpleButtonStyle = TextButtonStyle(
-  Default: (Background: $C.@DefaultSquareButtonDefaultBackground, LabelStyle: @SmallPurpleLabelStyle),
-  Hovered: (Background: $C.@DefaultSquareButtonHoveredBackground, LabelStyle: @SmallPurpleLabelStyle),
-  Pressed: (Background: $C.@DefaultSquareButtonPressedBackground, LabelStyle: @SmallPurpleLabelStyle),
-  Disabled: (Background: $C.@DefaultSquareButtonDisabledBackground, LabelStyle: @SmallPurpleLabelStyle),
-  Sounds: $C.@ButtonSounds,
-);
-
-// =============================================================================
-// FLAT COLOR BUTTON STYLES (solid color backgrounds, no texture)
-// =============================================================================
-
-@FlatRedLabelStyle = LabelStyle(
-  FontSize: 13,
-  TextColor: #FFFFFF,
-  RenderBold: true,
-  HorizontalAlignment: Center,
-  VerticalAlignment: Center
-);
-
-@FlatRedButtonStyle = TextButtonStyle(
-  Default: (Background: (Color: #CC3344), LabelStyle: @FlatRedLabelStyle),
-  Hovered: (Background: (Color: #DD4455), LabelStyle: @FlatRedLabelStyle),
-  Pressed: (Background: (Color: #AA2233), LabelStyle: @FlatRedLabelStyle),
-  Disabled: (Background: (Color: #553333), LabelStyle: @FlatRedLabelStyle),
-  Sounds: $C.@ButtonSounds,
-);
-
-@FlatDarkRedButtonStyle = TextButtonStyle(
-  Default: (Background: (Color: #8b3a3a), LabelStyle: @FlatRedLabelStyle),
-  Hovered: (Background: (Color: #9b4a4a), LabelStyle: @FlatRedLabelStyle),
-  Pressed: (Background: (Color: #7b2a2a), LabelStyle: @FlatRedLabelStyle),
-  Disabled: (Background: (Color: #443333), LabelStyle: @FlatRedLabelStyle),
+  Default: (Background: (Color: #00000000), LabelStyle: @InvisibleLabelStyle),
+  Hovered: (Background: (Color: #00000000), LabelStyle: @InvisibleLabelStyle),
+  Pressed: (Background: (Color: #00000000), LabelStyle: @InvisibleLabelStyle),
+  Disabled: (Background: (Color: #00000000), LabelStyle: @InvisibleLabelStyle),
   Sounds: $C.@ButtonSounds,
 );
 

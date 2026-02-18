@@ -1,7 +1,6 @@
 // Help Center - Wide sidebar layout (750x650)
 // Left: Colored category sidebar (180px), Right: Scrollable card content
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 $Nav = "../nav/nav_bar.ui";
 
 // === Sidebar button styles per category ===
@@ -272,7 +271,7 @@ $C.@PageOverlay {
       Group #ContentArea {
         FlexWeight: 1;
         LayoutMode: TopScrolling;
-        ScrollbarStyle: $C.@DefaultScrollbarStyle;
+        ScrollbarStyle: $C.@TranslucentScrollbarStyle;
         Padding: (Left: 15, Right: 10, Top: 0, Bottom: 10);
 
         // Category title header (set from Java)

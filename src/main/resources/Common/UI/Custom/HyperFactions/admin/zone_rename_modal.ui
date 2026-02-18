@@ -2,7 +2,6 @@
 // Text input for entering new zone name with validation
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 $C.@PageOverlay {
   $C.@DecoratedContainer {
@@ -46,6 +45,7 @@ $C.@PageOverlay {
       }
 
       $C.@TextField #NameInput {
+        PlaceholderText: "Enter name...";
         FlexWeight: 1;
         Anchor: (Height: 36, Bottom: 8);
       }
@@ -65,7 +65,7 @@ $C.@PageOverlay {
         TextButton #CancelBtn {
           Text: "Cancel";
           Anchor: (Height: 32, Width: 100);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { FlexWeight: 1; }
@@ -73,7 +73,7 @@ $C.@PageOverlay {
         TextButton #SaveBtn {
           Text: "Save";
           Anchor: (Height: 32, Width: 100);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
     }

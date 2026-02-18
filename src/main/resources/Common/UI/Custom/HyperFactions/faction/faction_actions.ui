@@ -1,5 +1,4 @@
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 Group {
   LayoutMode: Top;
@@ -12,7 +11,7 @@ Group {
     TextButton #HomeBtn {
       Text: "Home";
       Anchor: (Height: 32, Width: 100);
-      Style: $S.@ButtonStyle;
+      Style: $C.@SecondaryTextButtonStyle;
     }
   }
 
@@ -24,7 +23,7 @@ Group {
     TextButton #LeaveBtn {
       Text: "Leave";
       Anchor: (Height: 32, Width: 100);
-      Style: $S.@RedButtonStyle;
+      Style: $C.@CancelTextButtonStyle;
     }
 
     Label { FlexWeight: 1; }
@@ -32,7 +31,7 @@ Group {
     TextButton #DisbandBtn {
       Text: "Disband";
       Anchor: (Height: 32, Width: 100);
-      Style: $S.@RedButtonStyle;
+      Style: $C.@CancelTextButtonStyle;
     }
   }
 }

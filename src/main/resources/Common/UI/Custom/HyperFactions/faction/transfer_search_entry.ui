@@ -1,7 +1,6 @@
 // Transfer search result entry card
 // Used by TreasuryTransferSearchPage with cmd.append + indexed selectors
 
-$S = "../shared/styles.ui";
 
 Group {
   Anchor: (Height: 50, Bottom: 2);
@@ -40,6 +39,6 @@ Group {
   TextButton #SelectBtn {
     Text: "Select";
     Anchor: (Height: 28, Width: 80);
-    Style: $S.@ButtonStyle;
+    Style: $C.@SecondaryTextButtonStyle;
   }
 }

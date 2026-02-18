@@ -4,7 +4,6 @@
 // Right: faction color, mob spawning, combat, create button
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 $Nav = "../nav/nav_bar.ui";
 
 $C.@PageOverlay {
@@ -35,15 +34,8 @@ $C.@PageOverlay {
           Padding: (Left: 0, Right: 8, Top: 0, Bottom: 0);
 
           // --- PREVIEW ---
-          Label {
-            Text: "Preview";
-            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
-            Anchor: (Height: 18, Bottom: 4);
-          }
-          Group {
-            Anchor: (Height: 1, Bottom: 8);
-            Background: (Color: #334455);
-          }
+          $C.@Subtitle { @Text = "Preview"; Anchor: (Bottom: 4); }
+          $C.@ContentSeparator { Anchor: (Bottom: 8); }
 
           Group {
             Background: (Color: #1a2a3a);
@@ -73,15 +65,8 @@ $C.@PageOverlay {
           }
 
           // --- BASIC INFO ---
-          Label {
-            Text: "Basic Info";
-            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
-            Anchor: (Height: 18, Bottom: 4);
-          }
-          Group {
-            Anchor: (Height: 1, Bottom: 8);
-            Background: (Color: #334455);
-          }
+          $C.@Subtitle { @Text = "Basic Info"; Anchor: (Bottom: 4); }
+          $C.@ContentSeparator { Anchor: (Bottom: 8); }
 
           Group {
             Background: (Color: #1a2a3a);
@@ -95,6 +80,7 @@ $C.@PageOverlay {
               Anchor: (Height: 16);
             }
             $C.@TextField #NameInput {
+              PlaceholderText: "Enter name...";
               Anchor: (Height: 32, Bottom: 6);
             }
 
@@ -108,21 +94,15 @@ $C.@PageOverlay {
               Anchor: (Height: 32);
 
               $C.@TextField #TagInput {
+                PlaceholderText: "2-4 characters";
                 Anchor: (Height: 32, Width: 100);
               }
             }
           }
 
           // --- DETAILS ---
-          Label {
-            Text: "Details";
-            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
-            Anchor: (Height: 18, Bottom: 4);
-          }
-          Group {
-            Anchor: (Height: 1, Bottom: 8);
-            Background: (Color: #334455);
-          }
+          $C.@Subtitle { @Text = "Details"; Anchor: (Bottom: 4); }
+          $C.@ContentSeparator { Anchor: (Bottom: 8); }
 
           Group {
             Background: (Color: #1a2a3a);
@@ -135,6 +115,7 @@ $C.@PageOverlay {
               Anchor: (Height: 16);
             }
             $C.@TextField #DescInput {
+              PlaceholderText: "Enter description...";
               Anchor: (Height: 50, Bottom: 6);
             }
 
@@ -182,15 +163,8 @@ $C.@PageOverlay {
           }
 
           // ---- BUILDING PERMISSIONS ----
-          Label {
-            Text: "Building Permissions";
-            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
-            Anchor: (Height: 18, Bottom: 4);
-          }
-          Group {
-            Anchor: (Height: 1, Bottom: 8);
-            Background: (Color: #334455);
-          }
+          $C.@Subtitle { @Text = "Building Permissions"; Anchor: (Bottom: 4); }
+          $C.@ContentSeparator { Anchor: (Bottom: 8); }
 
           Group #BuildingBox {
             Background: (Color: #1a2a3a);
@@ -306,24 +280,13 @@ $C.@PageOverlay {
           }
 
           // ---- INTERACTION PERMISSIONS ----
-          Group {
-            LayoutMode: Left;
-            Anchor: (Height: 18, Bottom: 2);
-
-            Label {
-              Text: "Interaction Permissions";
-              Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
-            }
-          }
+          $C.@Subtitle { @Text = "Interaction Permissions"; Anchor: (Bottom: 2); }
           Label {
             Text: "(children disabled when All is off)";
             Style: (FontSize: 8, TextColor: #666666);
             Anchor: (Height: 12, Bottom: 4);
           }
-          Group {
-            Anchor: (Height: 1, Bottom: 8);
-            Background: (Color: #334455);
-          }
+          $C.@ContentSeparator { Anchor: (Bottom: 8); }
 
           Group #InteractionBox {
             Background: (Color: #1a2a3a);
@@ -463,15 +426,8 @@ $C.@PageOverlay {
           Padding: (Left: 8, Right: 0, Top: 0, Bottom: 0);
 
           // --- FACTION COLOR ---
-          Label {
-            Text: "Faction Color";
-            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
-            Anchor: (Height: 18, Bottom: 4);
-          }
-          Group {
-            Anchor: (Height: 1, Bottom: 8);
-            Background: (Color: #334455);
-          }
+          $C.@Subtitle { @Text = "Faction Color"; Anchor: (Bottom: 4); }
+          $C.@ContentSeparator { Anchor: (Bottom: 8); }
 
           Group {
             Background: (Color: #1a2a3a);
@@ -485,20 +441,13 @@ $C.@PageOverlay {
           }
 
           // --- MOB SPAWNING ---
-          Label {
-            Text: "Mob Spawning";
-            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
-            Anchor: (Height: 18, Bottom: 2);
-          }
+          $C.@Subtitle { @Text = "Mob Spawning"; Anchor: (Bottom: 2); }
           Label {
             Text: "(children disabled when master is off)";
             Style: (FontSize: 8, TextColor: #666666);
             Anchor: (Height: 12, Bottom: 4);
           }
-          Group {
-            Anchor: (Height: 1, Bottom: 8);
-            Background: (Color: #334455);
-          }
+          $C.@ContentSeparator { Anchor: (Bottom: 8); }
 
           Group #MobSpawningBox {
             Background: (Color: #1a2a3a);
@@ -584,15 +533,8 @@ $C.@PageOverlay {
           }
 
           // --- COMBAT ---
-          Label {
-            Text: "Combat";
-            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
-            Anchor: (Height: 18, Bottom: 4);
-          }
-          Group {
-            Anchor: (Height: 1, Bottom: 8);
-            Background: (Color: #334455);
-          }
+          $C.@Subtitle { @Text = "Combat"; Anchor: (Bottom: 4); }
+          $C.@ContentSeparator { Anchor: (Bottom: 8); }
 
           Group {
             Background: (Color: #1a2a3a);

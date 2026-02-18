@@ -153,7 +153,7 @@ Group {
       TextButton #EditMapBtn {
         Text: "Edit Map";
         Anchor: (Height: 28, Width: 80);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       Group { Anchor: (Width: 6); }
@@ -161,7 +161,7 @@ Group {
       TextButton #SettingsBtn {
         Text: "Flags";
         Anchor: (Height: 28, Width: 60);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       Group { Anchor: (Width: 6); }
@@ -169,7 +169,7 @@ Group {
       TextButton #RenameBtn {
         Text: "Rename";
         Anchor: (Height: 28, Width: 70);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       Group { FlexWeight: 1; }
@@ -177,7 +177,7 @@ Group {
       TextButton #TypeBtn {
         Text: "Type";
         Anchor: (Height: 28, Width: 55);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       Group { Anchor: (Width: 6); }
@@ -185,7 +185,7 @@ Group {
       TextButton #DeleteBtn {
         Text: "Delete";
         Anchor: (Height: 28, Width: 70);
-        Style: $S.@RedButtonStyle;
+        Style: $C.@CancelTextButtonStyle;
       }
     }
   }

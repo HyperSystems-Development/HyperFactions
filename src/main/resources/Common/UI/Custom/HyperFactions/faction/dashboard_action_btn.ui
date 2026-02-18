@@ -1,7 +1,6 @@
 // Dashboard Action Button Template
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 Group {
   LayoutMode: Top;
@@ -9,6 +8,6 @@ Group {
   TextButton #ActionBtn {
     Text: "Action";
     Anchor: (Height: 36);
-    Style: $S.@ButtonStyle;
+    Style: $C.@SecondaryTextButtonStyle;
   }
 }

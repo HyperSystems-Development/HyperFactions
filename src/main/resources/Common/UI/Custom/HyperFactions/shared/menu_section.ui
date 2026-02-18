@@ -2,7 +2,6 @@
 // Contains a title and content area for dynamic content
 
 $C = "../../Common.ui";
-$S = "styles.ui";
 
 Group {
   Anchor: (Bottom: 15);

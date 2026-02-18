@@ -2,7 +2,6 @@
 // Displays member list with expandable entries
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 $Nav = "../nav/nav_bar.ui";
 
 $C.@PageOverlay {
@@ -35,6 +34,7 @@ $C.@PageOverlay {
         }
 
         $C.@TextField #SearchInput {
+          PlaceholderText: "Search...";
           FlexWeight: 1;
           Anchor: (Height: 32);
         }
@@ -88,7 +88,7 @@ $C.@PageOverlay {
         TextButton #PrevBtn {
           Text: "< Prev";
           Anchor: (Height: 28, Width: 70);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
           Visible: false;
         }
 
@@ -106,7 +106,7 @@ $C.@PageOverlay {
         TextButton #NextBtn {
           Text: "Next >";
           Anchor: (Height: 28, Width: 70);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
           Visible: false;
         }
       }

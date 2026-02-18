@@ -2,7 +2,6 @@
 // Shows pending faction invitations and outgoing join requests
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 $Nav = "../nav/nav_bar.ui";
 
 $C.@PageOverlay {
@@ -31,7 +30,7 @@ $C.@PageOverlay {
 
     #Content {
       LayoutMode: TopScrolling;
-      ScrollbarStyle: $C.@DefaultScrollbarStyle;
+      ScrollbarStyle: $C.@TranslucentScrollbarStyle;
       Padding: (Left: 15, Right: 15, Top: 10, Bottom: 10);
 
       // === RECEIVED INVITES SECTION ===

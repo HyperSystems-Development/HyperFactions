@@ -1,7 +1,6 @@
 // Admin Economy - Faction entry row
 // Appended into #FactionList per faction
 
-$S = "../shared/styles.ui";
 
 Group {
   Anchor: (Height: 40, Bottom: 2);
@@ -31,7 +30,7 @@ Group {
 
   TextButton #AdjustBtn {
     Text: "Adjust";
-    Style: $S.@CyanButtonStyle;
+    Style: $C.@SecondaryTextButtonStyle;
     Anchor: (Height: 26, Width: 70);
   }
 
@@ -39,7 +38,7 @@ Group {
 
   TextButton #ViewBtn {
     Text: "Info";
-    Style: $S.@ButtonStyle;
+    Style: $C.@SecondaryTextButtonStyle;
     Anchor: (Height: 26, Width: 55);
   }
 }

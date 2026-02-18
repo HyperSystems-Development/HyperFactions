@@ -2,7 +2,6 @@
 // Shows succession information when leader wants to leave
 
 $C = "../../Common.ui";
-$S = "styles.ui";
 
 $C.@PageOverlay {
   $C.@DecoratedContainer {
@@ -64,7 +63,7 @@ $C.@PageOverlay {
         TextButton #CancelBtn {
           Text: "Cancel";
           Anchor: (Height: 32, Width: 100);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { FlexWeight: 1; }
@@ -74,7 +73,7 @@ $C.@PageOverlay {
           Text: "Leave";
           Anchor: (Height: 32, Width: 100);
           Visible: true;
-          Style: $S.@RedButtonStyle;
+          Style: $C.@CancelTextButtonStyle;
         }
 
         // Disband button (when no successor)
@@ -82,7 +81,7 @@ $C.@PageOverlay {
           Text: "Disband";
           Anchor: (Height: 32, Width: 100);
           Visible: false;
-          Style: $S.@RedButtonStyle;
+          Style: $C.@CancelTextButtonStyle;
         }
       }
     }

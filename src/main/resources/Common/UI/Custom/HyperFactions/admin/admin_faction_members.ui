@@ -3,7 +3,6 @@
 // Matches AdminFactionsPage gold standard (700x500, Container)
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 $Nav = "admin_nav_bar.ui";
 
 $C.@PageOverlay {
@@ -48,6 +47,7 @@ $C.@PageOverlay {
         }
 
         $C.@TextField #SearchInput {
+          PlaceholderText: "Search...";
           FlexWeight: 1;
           Anchor: (Height: 32);
         }
@@ -81,7 +81,7 @@ $C.@PageOverlay {
         TextButton #BackBtn {
           Text: "Back";
           Anchor: (Height: 26, Width: 60);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
 
@@ -116,7 +116,7 @@ $C.@PageOverlay {
         TextButton #PrevBtn {
           Text: "< Prev";
           Anchor: (Height: 26, Width: 80);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { FlexWeight: 1; }
@@ -132,7 +132,7 @@ $C.@PageOverlay {
         TextButton #NextBtn {
           Text: "Next >";
           Anchor: (Height: 26, Width: 80);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
     }

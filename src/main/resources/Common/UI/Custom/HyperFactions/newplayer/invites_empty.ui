@@ -2,7 +2,6 @@
 // Shown when player has no pending invitations
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 Group {
   Anchor: (Height: 200);
@@ -38,7 +37,7 @@ Group {
     TextButton #BrowseBtn {
       Text: "Browse Factions";
       Anchor: (Height: 36, Width: 180);
-      Style: $S.@ButtonStyle;
+      Style: $C.@SecondaryTextButtonStyle;
     }
 
     Label { FlexWeight: 1; }

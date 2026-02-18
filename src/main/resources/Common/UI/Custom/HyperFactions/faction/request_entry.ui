@@ -2,7 +2,6 @@
 // Shows player name, optional message, time remaining, accept/decline buttons
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 Group {
   Anchor: (Height: 55, Bottom: 5);
@@ -43,7 +42,7 @@ Group {
     TextButton #AcceptBtn {
       Text: "Accept";
       Anchor: (Width: 70, Height: 28);
-      Style: $S.@ButtonStyle;
+      Style: $C.@SecondaryTextButtonStyle;
     }
 
     Label { Anchor: (Width: 5); }
@@ -51,7 +50,7 @@ Group {
     TextButton #DeclineBtn {
       Text: "Decline";
       Anchor: (Width: 70, Height: 28);
-      Style: $S.@RedButtonStyle;
+      Style: $C.@CancelTextButtonStyle;
     }
   }
 }

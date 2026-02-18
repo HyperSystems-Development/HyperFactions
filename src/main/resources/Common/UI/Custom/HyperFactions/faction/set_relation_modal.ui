@@ -2,7 +2,6 @@
 // Searchable faction picker with pagination
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 $C.@PageOverlay {
   $C.@DecoratedContainer {
@@ -26,6 +25,7 @@ $C.@PageOverlay {
         LayoutMode: Left;
 
         $C.@TextField #SearchInput {
+          PlaceholderText: "Search...";
           FlexWeight: 1;
           Anchor: (Height: 32);
         }
@@ -67,7 +67,7 @@ $C.@PageOverlay {
         TextButton #CancelBtn {
           Text: "Cancel";
           Anchor: (Height: 30, Width: 100);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { FlexWeight: 1; }
@@ -76,7 +76,7 @@ $C.@PageOverlay {
         TextButton #PrevBtn {
           Text: "<";
           Anchor: (Height: 30, Width: 40);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { Anchor: (Width: 5); }
@@ -92,7 +92,7 @@ $C.@PageOverlay {
         TextButton #NextBtn {
           Text: ">";
           Anchor: (Height: 30, Width: 40);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
     }

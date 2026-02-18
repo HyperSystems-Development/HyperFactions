@@ -2,7 +2,6 @@
 // Getting started guide for factions
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 $Nav = "../nav/nav_bar.ui";
 
 $C.@PageOverlay {
@@ -21,7 +20,7 @@ $C.@PageOverlay {
 
     #Content {
       LayoutMode: TopScrolling;
-      ScrollbarStyle: $C.@DefaultScrollbarStyle;
+      ScrollbarStyle: $C.@TranslucentScrollbarStyle;
       Padding: (Left: 20, Right: 20, Top: 15, Bottom: 15);
 
       // Section 1: What are Factions?

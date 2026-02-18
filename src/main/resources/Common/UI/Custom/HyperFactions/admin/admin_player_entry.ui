@@ -177,12 +177,12 @@ Group {
       TextButton #ViewInfoBtn {
         Text: "Info";
         Anchor: (Height: 24, Width: 60, Right: 6);
-        Style: $S.@CyanButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
       TextButton #TeleportBtn {
         Text: "Teleport";
         Anchor: (Height: 24, Width: 80, Right: 6);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
       Group { FlexWeight: 1; }
     }

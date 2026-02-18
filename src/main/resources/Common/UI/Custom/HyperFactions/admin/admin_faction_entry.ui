@@ -150,7 +150,7 @@ Group {
       TextButton #TpHomeBtn {
         Text: "TP Home";
         Anchor: (Height: 28, Width: 85);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       Group { Anchor: (Width: 8); }
@@ -158,7 +158,7 @@ Group {
       TextButton #ViewInfoBtn {
         Text: "View Info";
         Anchor: (Height: 28, Width: 90);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       Group { Anchor: (Width: 8); }
@@ -166,7 +166,7 @@ Group {
       TextButton #MembersBtn {
         Text: "Members";
         Anchor: (Height: 28, Width: 85);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       Group { Anchor: (Width: 8); }
@@ -174,7 +174,7 @@ Group {
       TextButton #SettingsBtn {
         Text: "Settings";
         Anchor: (Height: 28, Width: 85);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       Group { Anchor: (Width: 8); }
@@ -182,7 +182,7 @@ Group {
       TextButton #UnclaimAllBtn {
         Text: "Unclaim All";
         Anchor: (Height: 28, Width: 100);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       Group { FlexWeight: 1; }
@@ -190,7 +190,7 @@ Group {
       TextButton #DisbandBtn {
         Text: "Disband";
         Anchor: (Height: 28, Width: 85);
-        Style: $S.@RedButtonStyle;
+        Style: $C.@CancelTextButtonStyle;
       }
     }
   }

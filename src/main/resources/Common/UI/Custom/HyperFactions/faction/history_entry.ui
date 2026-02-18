@@ -2,7 +2,6 @@
 // Compact 36px row: role indicator bar, faction name + role, dates, leave reason badge
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 Group {
   Anchor: (Height: 36, Bottom: 3);

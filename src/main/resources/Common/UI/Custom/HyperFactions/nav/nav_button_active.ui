@@ -2,7 +2,6 @@
 // Button for current page with cyan styling
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 Group {
   Anchor: (Right: 5);
@@ -11,6 +10,6 @@ Group {
     Text: "Nav";
     Anchor: (Height: 28, Width: 85);
     Padding: (Left: 8, Right: 8, Top: 5, Bottom: 5);
-    Style: $S.@ButtonStyle;
+    Style: $C.@SecondaryTextButtonStyle;
   }
 }

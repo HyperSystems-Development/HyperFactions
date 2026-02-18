@@ -2,7 +2,6 @@
 // 2x2 grid of module cards showing available/upcoming features
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 $Nav = "../nav/nav_bar.ui";
 
 $C.@PageOverlay {
@@ -82,7 +81,7 @@ $C.@PageOverlay {
               TextButton #ModuleBtn {
                 Text: "Configure";
                 Anchor: (Height: 26, Width: 100);
-                Style: $S.@ButtonStyle;
+                Style: $C.@SecondaryTextButtonStyle;
                 Visible: false;
               }
             }
@@ -129,7 +128,7 @@ $C.@PageOverlay {
               TextButton #ModuleBtn {
                 Text: "Configure";
                 Anchor: (Height: 26, Width: 100);
-                Style: $S.@ButtonStyle;
+                Style: $C.@SecondaryTextButtonStyle;
                 Visible: false;
               }
             }
@@ -180,7 +179,7 @@ $C.@PageOverlay {
               TextButton #ModuleBtn {
                 Text: "Configure";
                 Anchor: (Height: 26, Width: 100);
-                Style: $S.@ButtonStyle;
+                Style: $C.@SecondaryTextButtonStyle;
                 Visible: false;
               }
             }
@@ -227,7 +226,7 @@ $C.@PageOverlay {
               TextButton #ModuleBtn {
                 Text: "Configure";
                 Anchor: (Height: 26, Width: 100);
-                Style: $S.@ButtonStyle;
+                Style: $C.@SecondaryTextButtonStyle;
                 Visible: false;
               }
             }
@@ -243,7 +242,7 @@ $C.@PageOverlay {
         TextButton #BackBtn {
           Text: "< Back to Settings";
           Anchor: (Height: 30, Width: 160);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
     }

@@ -1,6 +1,7 @@
 // HyperFactions Navigation Button
 // Following AdminUI pattern exactly
 
+$C = "../../Common.ui";
 $NavBar = "nav_bar.ui";
 
-Group { $NavBar.@NavButton #NavActionButton { Text: "Button"; }}
+Group { $NavBar.@NavButton #NavActionButton { Text: "Button"; TooltipText: "Navigate to this section"; TextTooltipStyle: $C.@DefaultTextTooltipStyle; }}

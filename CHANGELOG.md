@@ -7,7 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-*No changes yet*
+### Changed
+
+**GUI Redesign — Native Hytale Style (Phase 1: Styles & Buttons)**
+- **Removed** all custom color-variant button styles from `styles.ui` (`@ButtonStyle`, `@CyanButtonStyle`, `@GreenButtonStyle`, `@GoldButtonStyle`, `@RedButtonStyle`, `@FlatRedButtonStyle`, `@DisabledButtonStyle`, `@SmallTealButtonStyle`, `@SmallPurpleButtonStyle`)
+- **Migrated** 97 `.ui` templates and 5 Java files to native Hytale button styles: `$C.@SecondaryTextButtonStyle` (191 uses), `$C.@CancelTextButtonStyle` (45 uses), `$C.@DefaultTextButtonStyle` (8 uses)
+- **Retained** only `@InvisibleButtonStyle` and `@PlayerMarkerButtonStyle` in `styles.ui` (no native equivalent — used for chunk map overlays)
+- **Updated** all Java `Value.ref()` calls from custom styles to `Common.ui` native styles (AdminZonePage, FactionDashboardPage, FactionRelationsPage, FactionInvitesPage, FactionChatPage)
+
+**GUI Redesign — Phase 2 Partial: Separators & Section Headers**
+- **Added** `$C.@ContentSeparator` dividers (29 uses) replacing manual `Group { Height: 1; Background }` patterns
+- **Added** `$C.@Subtitle` section headers (29 uses) replacing manual styled Labels
+
+**GUI Redesign — Phase 3 Partial: Input Hints**
+- **Added** `PlaceholderText` to all text input fields (29 uses across 21 files) — search, create, rename, and modal inputs
+
+**GUI Redesign — Phase 4: Scrollbars**
+- **Migrated** player-facing pages to `$C.@TranslucentScrollbarStyle` (12 files) for cleaner scroll appearance
+- **Kept** `$C.@DefaultScrollbarStyle` on admin data tables (8 files) for visible scroll position
+
+**GUI Redesign — Phase 5 Partial: Tooltips**
+- **Added** `TooltipText` + `$C.@DefaultTextTooltipStyle` on navigation tabs, dashboard stats, settings fields, and main menu items (29 tooltips across 8 files)
+
+### Added
+
+- **GUI redesign design docs** (`docs/gui-redesign/`): 7 phase-specific design documents, page migration guide, and progress tracker
 
 ## [0.8.1] - 2026-02-17
 

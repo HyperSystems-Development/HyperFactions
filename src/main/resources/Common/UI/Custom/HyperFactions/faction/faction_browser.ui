@@ -3,7 +3,6 @@
 // Uses expandable IndexCards pattern like admin_factions.ui
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 $Nav = "../nav/nav_bar.ui";
 
 $C.@PageOverlay {
@@ -34,6 +33,7 @@ $C.@PageOverlay {
         }
 
         $C.@TextField #SearchInput {
+          PlaceholderText: "Search...";
           FlexWeight: 1;
           Anchor: (Height: 32);
         }
@@ -72,7 +72,7 @@ $C.@PageOverlay {
       // Scrollable faction list
       Group #FactionListContainer {
         LayoutMode: TopScrolling;
-        ScrollbarStyle: $C.@DefaultScrollbarStyle;
+        ScrollbarStyle: $C.@TranslucentScrollbarStyle;
         FlexWeight: 1;
 
         Group #FactionList {
@@ -94,7 +94,7 @@ $C.@PageOverlay {
         TextButton #PrevBtn {
           Text: "< Prev";
           Anchor: (Height: 26, Width: 80);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { FlexWeight: 1; }
@@ -110,7 +110,7 @@ $C.@PageOverlay {
         TextButton #NextBtn {
           Text: "Next >";
           Anchor: (Height: 26, Width: 80);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
     }

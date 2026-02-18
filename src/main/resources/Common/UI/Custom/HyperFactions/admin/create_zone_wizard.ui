@@ -2,7 +2,6 @@
 // Two-column layout for compact display
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 $C.@PageOverlay {}
 
@@ -29,7 +28,7 @@ $C.@Container {
       TextButton #BackBtn {
         Text: "< Back";
         Anchor: (Height: 36, Width: 100);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       Label { FlexWeight: 1; }
@@ -37,7 +36,7 @@ $C.@Container {
       TextButton #CreateBtn {
         Text: "Create Zone";
         Anchor: (Height: 36, Width: 150);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
     }
 
@@ -85,7 +84,7 @@ $C.@Container {
             TextButton #SafeZoneBtn {
               Text: "SafeZone";
               Anchor: (Height: 30);
-              Style: $S.@SafeZoneButtonStyle;
+              Style: $C.@SecondaryTextButtonStyle;
             }
           }
 
@@ -104,7 +103,7 @@ $C.@Container {
             TextButton #WarZoneBtn {
               Text: "WarZone";
               Anchor: (Height: 30);
-              Style: $S.@WarZoneButtonStyle;
+              Style: $C.@CancelTextButtonStyle;
             }
           }
         }
@@ -132,6 +131,7 @@ $C.@Container {
         }
 
         $C.@TextField #NameInput {
+          PlaceholderText: "Enter name...";
           Anchor: (Height: 34);
         }
       }
@@ -174,7 +174,7 @@ $C.@Container {
             TextButton #MethodNone {
               Text: "No claims";
               Anchor: (Height: 26);
-              Style: $S.@ButtonStyle;
+              Style: $C.@SecondaryTextButtonStyle;
             }
           }
 
@@ -192,7 +192,7 @@ $C.@Container {
             TextButton #MethodSingle {
               Text: "Single chunk";
               Anchor: (Height: 26);
-              Style: $S.@ButtonStyle;
+              Style: $C.@SecondaryTextButtonStyle;
             }
           }
         }
@@ -214,7 +214,7 @@ $C.@Container {
             TextButton #MethodCircle {
               Text: "Circle radius";
               Anchor: (Height: 26);
-              Style: $S.@ButtonStyle;
+              Style: $C.@SecondaryTextButtonStyle;
             }
           }
 
@@ -232,7 +232,7 @@ $C.@Container {
             TextButton #MethodSquare {
               Text: "Square radius";
               Anchor: (Height: 26);
-              Style: $S.@ButtonStyle;
+              Style: $C.@SecondaryTextButtonStyle;
             }
           }
         }
@@ -250,7 +250,7 @@ $C.@Container {
           TextButton #MethodMap {
             Text: "Use claim map";
             Anchor: (Height: 26);
-            Style: $S.@ButtonStyle;
+            Style: $C.@SecondaryTextButtonStyle;
           }
         }
       }
@@ -292,31 +292,31 @@ $C.@Container {
             TextButton #Radius3 {
               Text: "3";
               Anchor: (Height: 26, Width: 38);
-              Style: $S.@ButtonStyle;
+              Style: $C.@SecondaryTextButtonStyle;
             }
             Group { Anchor: (Width: 4); }
             TextButton #Radius5 {
               Text: "5";
               Anchor: (Height: 26, Width: 38);
-              Style: $S.@ButtonStyle;
+              Style: $C.@SecondaryTextButtonStyle;
             }
             Group { Anchor: (Width: 4); }
             TextButton #Radius10 {
               Text: "10";
               Anchor: (Height: 26, Width: 38);
-              Style: $S.@ButtonStyle;
+              Style: $C.@SecondaryTextButtonStyle;
             }
             Group { Anchor: (Width: 4); }
             TextButton #Radius15 {
               Text: "15";
               Anchor: (Height: 26, Width: 38);
-              Style: $S.@ButtonStyle;
+              Style: $C.@SecondaryTextButtonStyle;
             }
             Group { Anchor: (Width: 4); }
             TextButton #Radius20 {
               Text: "20";
               Anchor: (Height: 26, Width: 38);
-              Style: $S.@ButtonStyle;
+              Style: $C.@SecondaryTextButtonStyle;
             }
           }
 
@@ -331,13 +331,14 @@ $C.@Container {
               Anchor: (Width: 85);
             }
             $C.@TextField #CustomRadiusInput {
+              PlaceholderText: "Radius";
               Anchor: (Height: 26, Width: 55);
             }
             Group { Anchor: (Width: 6); }
             TextButton #ApplyCustomRadius {
               Text: "Apply";
               Anchor: (Height: 26, Width: 60);
-              Style: $S.@ButtonStyle;
+              Style: $C.@SecondaryTextButtonStyle;
             }
           }
         }
@@ -371,7 +372,7 @@ $C.@Container {
               TextButton #FlagsDefaults {
                 Text: "Use defaults";
                 Anchor: (Height: 26);
-                Style: $S.@ButtonStyle;
+                Style: $C.@SecondaryTextButtonStyle;
               }
             }
 
@@ -389,7 +390,7 @@ $C.@Container {
               TextButton #FlagsCustomize {
                 Text: "Customize";
                 Anchor: (Height: 26);
-                Style: $S.@ButtonStyle;
+                Style: $C.@SecondaryTextButtonStyle;
               }
             }
           }

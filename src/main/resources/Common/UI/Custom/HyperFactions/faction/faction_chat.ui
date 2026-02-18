@@ -2,7 +2,6 @@
 // Chat history with faction and ally tabs, scrollable messages, and send input
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 $Nav = "../nav/nav_bar.ui";
 
 $C.@PageOverlay {
@@ -28,7 +27,7 @@ $C.@PageOverlay {
 
         TextButton #TabFactionBtn {
           Text: "Faction";
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
           Anchor: (Width: 80, Height: 26);
         }
 
@@ -36,7 +35,7 @@ $C.@PageOverlay {
 
         TextButton #TabAllyBtn {
           Text: "Ally";
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
           Anchor: (Width: 80, Height: 26);
         }
 
@@ -53,7 +52,7 @@ $C.@PageOverlay {
       Group #MessageList {
         FlexWeight: 1;
         LayoutMode: BottomScrolling;
-        ScrollbarStyle: $C.@DefaultScrollbarStyle;
+        ScrollbarStyle: $C.@TranslucentScrollbarStyle;
         Background: (Color: #0a1018);
         Padding: (Left: 8, Right: 8, Top: 6, Bottom: 6);
       }
@@ -70,6 +69,7 @@ $C.@PageOverlay {
         Anchor: (Height: 35);
 
         $C.@TextField #ChatInput {
+          PlaceholderText: "Type a message...";
           FlexWeight: 1;
           Anchor: (Height: 28);
           Style: (FontSize: 12, TextColor: #FFFFFF);
@@ -79,7 +79,7 @@ $C.@PageOverlay {
 
         TextButton #SendBtn {
           Text: "Send";
-          Style: $S.@CyanButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
           Anchor: (Width: 70, Height: 28);
         }
       }

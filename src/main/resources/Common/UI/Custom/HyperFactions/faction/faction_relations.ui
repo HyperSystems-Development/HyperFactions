@@ -3,7 +3,6 @@
 // Following AdminUI pattern with nav bar
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 $Nav = "../nav/nav_bar.ui";
 
 $C.@PageOverlay {
@@ -30,7 +29,7 @@ $C.@PageOverlay {
         TextButton #TabRelations {
           Text: "Relations";
           Anchor: (Height: 26, Width: 100);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { Anchor: (Width: 5); }
@@ -38,7 +37,7 @@ $C.@PageOverlay {
         TextButton #TabPending {
           Text: "Pending";
           Anchor: (Height: 26, Width: 100);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { FlexWeight: 1; }
@@ -46,7 +45,7 @@ $C.@PageOverlay {
         TextButton #SetRelationBtn {
           Text: "+ Set Relation";
           Anchor: (Height: 26, Width: 120);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
 
@@ -70,7 +69,7 @@ $C.@PageOverlay {
       // Scrollable list
       Group #ListContainer {
         LayoutMode: TopScrolling;
-        ScrollbarStyle: $C.@DefaultScrollbarStyle;
+        ScrollbarStyle: $C.@TranslucentScrollbarStyle;
         FlexWeight: 1;
 
         Group #ItemList {
@@ -92,7 +91,7 @@ $C.@PageOverlay {
         TextButton #PrevBtn {
           Text: "< Prev";
           Anchor: (Height: 26, Width: 80);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { FlexWeight: 1; }
@@ -108,7 +107,7 @@ $C.@PageOverlay {
         TextButton #NextBtn {
           Text: "Next >";
           Anchor: (Height: 26, Width: 80);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
     }

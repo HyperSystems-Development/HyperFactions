@@ -135,7 +135,7 @@ Group {
       TextButton #PromoteBtn {
         Text: "Promote";
         Anchor: (Height: 28, Width: 80);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       Group #PromoteSpacer { Anchor: (Width: 6); }
@@ -143,7 +143,7 @@ Group {
       TextButton #DemoteBtn {
         Text: "Demote";
         Anchor: (Height: 28, Width: 75);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       Group #DemoteSpacer { Anchor: (Width: 6); }
@@ -151,7 +151,7 @@ Group {
       TextButton #KickBtn {
         Text: "Kick";
         Anchor: (Height: 28, Width: 55);
-        Style: $S.@RedButtonStyle;
+        Style: $C.@CancelTextButtonStyle;
       }
 
       Group #KickSpacer { Anchor: (Width: 6); }
@@ -159,13 +159,13 @@ Group {
       TextButton #TransferBtn {
         Text: "Make Leader";
         Anchor: (Height: 28, Width: 105);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       TextButton #ProfileBtn {
         Text: "Profile";
         Anchor: (Height: 28, Width: 65);
-        Style: $S.@CyanButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       Group #ProfileSpacer { Anchor: (Width: 6); }

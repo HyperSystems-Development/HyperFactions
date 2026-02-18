@@ -1,5 +1,4 @@
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 Group {
   Anchor: (Height: 55, Bottom: 5);

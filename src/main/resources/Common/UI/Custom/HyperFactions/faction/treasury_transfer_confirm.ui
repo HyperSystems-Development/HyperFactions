@@ -2,7 +2,6 @@
 // Shows target info, amount input, and fee breakdown
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 $C.@PageOverlay {
   $C.@DecoratedContainer {
@@ -75,6 +74,7 @@ $C.@PageOverlay {
         }
 
         $C.@TextField #AmountInput {
+          PlaceholderText: "Enter amount...";
           Anchor: (Height: 28);
           FlexWeight: 1;
           Style: (FontSize: 12, TextColor: #FFFFFF);
@@ -116,10 +116,8 @@ $C.@PageOverlay {
           }
         }
 
-        // Divider
-        Group {
-          Anchor: (Height: 1, Top: 3, Bottom: 3);
-          Background: (Color: #334455);
+        $C.@ContentSeparator {
+          Anchor: (Top: 3, Bottom: 3);
         }
 
         Group {
@@ -159,7 +157,7 @@ $C.@PageOverlay {
         TextButton #CancelBtn {
           Text: "Back";
           Anchor: (Height: 32, Width: 110);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Label { FlexWeight: 1; }
@@ -167,7 +165,7 @@ $C.@PageOverlay {
         TextButton #ConfirmBtn {
           Text: "Confirm Transfer";
           Anchor: (Height: 32, Width: 160);
-          Style: $S.@CyanButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
       }
     }

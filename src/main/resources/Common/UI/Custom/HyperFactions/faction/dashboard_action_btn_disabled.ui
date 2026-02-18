@@ -1,7 +1,6 @@
 // Dashboard Action Button Template - Disabled/Coming Soon state
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 Group {
   LayoutMode: Top;
@@ -9,7 +8,7 @@ Group {
   TextButton #ActionBtn {
     Text: "Action";
     Anchor: (Height: 32, Width: 80);
-    Style: $S.@DisabledButtonStyle;
+    Style: $C.@SecondaryTextButtonStyle;
     Disabled: true;
   }
 

@@ -2,7 +2,6 @@
 // Shows faction requested to join, status, and cancel button
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 Group {
   Anchor: (Height: 70, Bottom: 5);
@@ -65,7 +64,7 @@ Group {
     TextButton #CancelBtn {
       Text: "Cancel";
       Anchor: (Width: 70, Height: 28);
-      Style: $S.@RedButtonStyle;
+      Style: $C.@CancelTextButtonStyle;
     }
   }
 }

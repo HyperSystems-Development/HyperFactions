@@ -2,7 +2,6 @@
 // Main dashboard for faction members with stats, quick actions, and activity feed
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 $Nav = "../nav/nav_bar.ui";
 
 $C.@PageOverlay {
@@ -58,6 +57,8 @@ $C.@PageOverlay {
 
         // Power stat
         Group #PowerStat {
+          TooltipText: "Faction power determines how much territory you can claim";
+          TextTooltipStyle: $C.@DefaultTextTooltipStyle;
           FlexWeight: 1;
           Background: (Color: #1a2a3a);
           Padding: (Left: 15, Right: 15, Top: 12, Bottom: 12);
@@ -83,6 +84,8 @@ $C.@PageOverlay {
 
         // Claims stat
         Group #ClaimsStat {
+          TooltipText: "Territory chunks claimed by your faction";
+          TextTooltipStyle: $C.@DefaultTextTooltipStyle;
           FlexWeight: 1;
           Background: (Color: #1a2a3a);
           Padding: (Left: 15, Right: 15, Top: 12, Bottom: 12);
@@ -108,6 +111,8 @@ $C.@PageOverlay {
 
         // Members stat
         Group #MembersStat {
+          TooltipText: "Total faction members and currently online count";
+          TextTooltipStyle: $C.@DefaultTextTooltipStyle;
           FlexWeight: 1;
           Background: (Color: #1a2a3a);
           Padding: (Left: 15, Right: 15, Top: 12, Bottom: 12);
@@ -139,6 +144,8 @@ $C.@PageOverlay {
 
         // Relations stat
         Group #RelationsStat {
+          TooltipText: "Allied and enemy faction count";
+          TextTooltipStyle: $C.@DefaultTextTooltipStyle;
           FlexWeight: 1;
           Background: (Color: #1a2a3a);
           Padding: (Left: 15, Right: 15, Top: 12, Bottom: 12);
@@ -179,6 +186,8 @@ $C.@PageOverlay {
 
         // Status stat
         Group #StatusStat {
+          TooltipText: "Open factions accept join requests, Invite Only requires invitations";
+          TextTooltipStyle: $C.@DefaultTextTooltipStyle;
           FlexWeight: 1;
           Background: (Color: #1a2a3a);
           Padding: (Left: 15, Right: 15, Top: 12, Bottom: 12);
@@ -204,6 +213,8 @@ $C.@PageOverlay {
 
         // Invites stat
         Group #InvitesStat {
+          TooltipText: "Invitations sent to players and join requests received";
+          TextTooltipStyle: $C.@DefaultTextTooltipStyle;
           FlexWeight: 1;
           Background: (Color: #1a2a3a);
           Padding: (Left: 15, Right: 15, Top: 12, Bottom: 12);
@@ -251,6 +262,8 @@ $C.@PageOverlay {
 
         // Treasury Balance
         Group #TreasuryStat {
+          TooltipText: "Faction treasury balance";
+          TextTooltipStyle: $C.@DefaultTextTooltipStyle;
           FlexWeight: 1;
           Background: (Color: #1a2a3a);
           Padding: (Left: 15, Right: 15, Top: 12, Bottom: 12);
@@ -276,6 +289,8 @@ $C.@PageOverlay {
 
         // Upkeep stat (hidden unless upkeep enabled)
         Group #UpkeepStat {
+          TooltipText: "Cost per upkeep cycle to maintain claimed territory";
+          TextTooltipStyle: $C.@DefaultTextTooltipStyle;
           FlexWeight: 1;
           Background: (Color: #1a2a3a);
           Padding: (Left: 15, Right: 15, Top: 12, Bottom: 12);
@@ -302,6 +317,8 @@ $C.@PageOverlay {
 
         // Personal Wallet
         Group #WalletStat {
+          TooltipText: "Your personal economy balance";
+          TextTooltipStyle: $C.@DefaultTextTooltipStyle;
           FlexWeight: 1;
           Background: (Color: #1a2a3a);
           Padding: (Left: 15, Right: 15, Top: 12, Bottom: 12);
@@ -327,14 +344,7 @@ $C.@PageOverlay {
       }
 
       // Quick actions section
-      Group {
-        Anchor: (Height: 25, Bottom: 8);
-
-        Label {
-          Text: "Quick Actions";
-          Style: (FontSize: 11, TextColor: #666666, RenderBold: true);
-        }
-      }
+      $C.@Subtitle { @Text = "Quick Actions"; Anchor: (Bottom: 8); }
 
       Group #QuickActionsRow {
         Anchor: (Height: 70, Bottom: 15);
@@ -398,27 +408,22 @@ $C.@PageOverlay {
       }
 
       // Divider
-      Group {
-        Anchor: (Height: 1, Bottom: 10);
-        Background: (Color: #00AAAA);
-      }
+      $C.@ContentSeparator { Anchor: (Bottom: 10); }
 
       // Activity feed section
       Group {
         Anchor: (Height: 25, Bottom: 5);
         LayoutMode: Left;
 
-        Label {
-          Text: "Recent Activity";
-          Style: (FontSize: 11, TextColor: #666666, RenderBold: true);
-        }
+        $C.@Subtitle { @Text = "Recent Activity"; }
 
         Label { FlexWeight: 1; }
 
         TextButton #ViewLogsBtn {
           Text: "View All";
           Anchor: (Height: 22, Width: 70);
-          Style: $S.@DisabledButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
+          Disabled: true;
         }
       }
 
@@ -426,7 +431,7 @@ $C.@PageOverlay {
       Group #ActivityFeed {
         FlexWeight: 1;
         LayoutMode: TopScrolling;
-        ScrollbarStyle: $C.@DefaultScrollbarStyle;
+        ScrollbarStyle: $C.@TranslucentScrollbarStyle;
       }
     }
   }

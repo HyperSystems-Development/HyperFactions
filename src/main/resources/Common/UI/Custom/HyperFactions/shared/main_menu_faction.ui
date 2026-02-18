@@ -2,7 +2,6 @@
 // Displayed when player is in a faction
 
 $C = "../../Common.ui";
-$S = "styles.ui";
 
 Group {
   LayoutMode: Top;
@@ -33,7 +32,9 @@ Group {
     TextButton #ViewFactionBtn {
       Text: "View";
       Anchor: (Height: 32, Width: 110);
-      Style: $S.@ButtonStyle;
+      Style: $C.@SecondaryTextButtonStyle;
+      TooltipText: "View your faction details and info";
+      TextTooltipStyle: $C.@DefaultTextTooltipStyle;
     }
 
     Label { Anchor: (Width: 10); }
@@ -41,7 +42,9 @@ Group {
     TextButton #MembersBtn {
       Text: "Members";
       Anchor: (Height: 32, Width: 110);
-      Style: $S.@ButtonStyle;
+      Style: $C.@SecondaryTextButtonStyle;
+      TooltipText: "View and manage faction members";
+      TextTooltipStyle: $C.@DefaultTextTooltipStyle;
     }
 
     Label { Anchor: (Width: 10); }
@@ -49,7 +52,9 @@ Group {
     TextButton #RelationsBtn {
       Text: "Relations";
       Anchor: (Height: 32, Width: 110);
-      Style: $S.@ButtonStyle;
+      Style: $C.@SecondaryTextButtonStyle;
+      TooltipText: "Manage diplomatic relations with other factions";
+      TextTooltipStyle: $C.@DefaultTextTooltipStyle;
     }
   }
 }

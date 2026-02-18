@@ -3,7 +3,6 @@
 // with options to keep or reset flags
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 $C.@PageOverlay {
   $C.@DecoratedContainer {
@@ -132,7 +131,7 @@ $C.@PageOverlay {
           TextButton #KeepFlagsBtn {
             Text: "Keep Flags";
             Anchor: (Height: 32);
-            Style: $S.@ButtonStyle;
+            Style: $C.@SecondaryTextButtonStyle;
           }
         }
 
@@ -152,7 +151,7 @@ $C.@PageOverlay {
           TextButton #ResetFlagsBtn {
             Text: "Reset Flags";
             Anchor: (Height: 32);
-            Style: $S.@ButtonStyle;
+            Style: $C.@SecondaryTextButtonStyle;
           }
         }
       }
@@ -170,7 +169,7 @@ $C.@PageOverlay {
         TextButton #CancelBtn {
           Text: "Cancel";
           Anchor: (Height: 32, Width: 100);
-          Style: $S.@RedButtonStyle;
+          Style: $C.@CancelTextButtonStyle;
         }
 
         Label { FlexWeight: 1; }

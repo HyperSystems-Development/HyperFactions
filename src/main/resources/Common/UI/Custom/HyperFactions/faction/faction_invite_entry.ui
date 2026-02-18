@@ -118,14 +118,14 @@ Group {
       TextButton #CancelBtn {
         Text: "Cancel";
         Anchor: (Height: 28, Width: 75);
-        Style: $S.@RedButtonStyle;
+        Style: $C.@CancelTextButtonStyle;
       }
 
       // For requests: Accept and Decline buttons
       TextButton #AcceptBtn {
         Text: "Accept";
         Anchor: (Height: 28, Width: 75);
-        Style: $S.@ButtonStyle;
+        Style: $C.@SecondaryTextButtonStyle;
       }
 
       Group { Anchor: (Width: 8); }
@@ -133,7 +133,7 @@ Group {
       TextButton #DeclineBtn {
         Text: "Decline";
         Anchor: (Height: 28, Width: 80);
-        Style: $S.@RedButtonStyle;
+        Style: $C.@CancelTextButtonStyle;
       }
 
       Group { FlexWeight: 1; }

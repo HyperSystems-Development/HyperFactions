@@ -2,7 +2,6 @@
 // Shows player invited, who invited them, time remaining, and cancel button
 
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 Group {
   Anchor: (Height: 55, Bottom: 5);
@@ -43,7 +42,7 @@ Group {
     TextButton #CancelBtn {
       Text: "Cancel";
       Anchor: (Width: 70, Height: 28);
-      Style: $S.@RedButtonStyle;
+      Style: $C.@CancelTextButtonStyle;
     }
   }
 }

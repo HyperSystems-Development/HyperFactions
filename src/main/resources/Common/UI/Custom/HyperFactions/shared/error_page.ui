@@ -2,7 +2,6 @@
 // Simple error message display
 
 $C = "../../Common.ui";
-$S = "styles.ui";
 
 $C.@PageOverlay {
   $C.@DecoratedContainer {
@@ -38,7 +37,7 @@ $C.@PageOverlay {
         TextButton #CloseBtn {
           Text: "Close";
           Anchor: (Height: 30, Width: 100);
-          Style: $S.@ButtonStyle;
+          Style: $C.@SecondaryTextButtonStyle;
         }
 
         Group { FlexWeight: 1; }

@@ -2,7 +2,6 @@
 // Admin-only actions (requires hyperfactions.admin permission)
 
 $C = "../../Common.ui";
-$S = "styles.ui";
 
 Group {
   LayoutMode: Top;
@@ -14,7 +13,9 @@ Group {
     TextButton #AdminPanelBtn {
       Text: "Admin Panel";
       Anchor: (Height: 32, Width: 130);
-      Style: $S.@ButtonStyle;
+      Style: $C.@SecondaryTextButtonStyle;
+      TooltipText: "Open the server admin management panel";
+      TextTooltipStyle: $C.@DefaultTextTooltipStyle;
     }
 
     Label { Anchor: (Width: 10); }
@@ -22,7 +23,9 @@ Group {
     TextButton #ZonesBtn {
       Text: "Manage Zones";
       Anchor: (Height: 32, Width: 130);
-      Style: $S.@ButtonStyle;
+      Style: $C.@SecondaryTextButtonStyle;
+      TooltipText: "Create and manage protected zones";
+      TextTooltipStyle: $C.@DefaultTextTooltipStyle;
     }
 
     Label { FlexWeight: 1; }

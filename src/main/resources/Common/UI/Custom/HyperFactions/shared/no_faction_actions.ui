@@ -1,5 +1,4 @@
 $C = "../../Common.ui";
-$S = "styles.ui";
 
 Group {
   LayoutMode: Top;
@@ -19,7 +18,7 @@ Group {
     TextButton #CreateFactionBtn {
       Text: "Create Faction";
       Anchor: (Height: 36, Width: 160);
-      Style: $S.@ButtonStyle;
+      Style: $C.@SecondaryTextButtonStyle;
     }
 
     Label { Anchor: (Width: 20); }
@@ -27,7 +26,7 @@ Group {
     TextButton #BrowseFactionsBtn {
       Text: "Browse Factions";
       Anchor: (Height: 36, Width: 160);
-      Style: $S.@ButtonStyle;
+      Style: $C.@SecondaryTextButtonStyle;
     }
 
     Label { FlexWeight: 1; }

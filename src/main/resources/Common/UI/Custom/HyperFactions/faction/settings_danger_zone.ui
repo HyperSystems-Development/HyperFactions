@@ -1,5 +1,4 @@
 $C = "../../Common.ui";
-$S = "../shared/styles.ui";
 
 Group #DangerZone {
   LayoutMode: Top;
@@ -40,7 +39,7 @@ Group #DangerZone {
     TextButton #DisbandBtn {
       Text: "Disband";
       Anchor: (Height: 32, Width: 100);
-      Style: $S.@RedButtonStyle;
+      Style: $C.@CancelTextButtonStyle;
     }
   }
 }
