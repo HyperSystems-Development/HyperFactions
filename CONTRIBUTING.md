@@ -8,8 +8,18 @@ Thank you for your interest in contributing to HyperFactions! This guide covers 
 
 - **Java 25** (build and runtime)
 - **Gradle 9.3.0+** (included via wrapper — no manual install needed)
-- **Hytale Server JAR** (Early Access)
 - **Git** for version control
+
+### Soft Dependencies
+
+HyperFactions compiles against a few optional mods. Download the JARs and place them in `HyperFactions/libs/`:
+
+| JAR | Required | Download |
+|-----|----------|----------|
+| WiFlowPlaceholderAPI | Yes (compile) | [CurseForge](https://www.curseforge.com/hytale/mods/wiflows-placeholderapi) |
+| GravestonePlugin | Yes (compile) | [CurseForge](https://www.curseforge.com/hytale/mods/gravestones) |
+
+The Hytale Server API is resolved automatically from `maven.hytale.com` — no local JAR needed.
 
 ### Repository Structure
 

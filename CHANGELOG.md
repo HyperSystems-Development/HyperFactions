@@ -7,7 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-*No changes yet*
+### Changed
+
+- **Maven build migration**: Hytale Server API now resolved from `maven.hytale.com` instead of local JAR files. Use `-Phytale_channel=pre-release` to build against the pre-release server
+- **Local soft dependencies**: Moved WiFlowPlaceholderAPI and GravestonePlugin references to local `libs/` directory with `fileTree` glob — version bumps only need a symlink update, no `build.gradle` edits
+
+### Added
+
+- **Contributor docs**: Updated CONTRIBUTING.md and README.md with soft dependency download instructions and CurseForge links
 
 ## [0.8.1] - 2026-02-17
 

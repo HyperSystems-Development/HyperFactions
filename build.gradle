@@ -30,8 +30,8 @@ repositories {
 }
 
 dependencies {
-    // Hytale Server API (provided at runtime)
-    compileOnly files(rootProject.hytaleServerJar)
+    // Hytale Server API (resolved from maven.hytale.com)
+    compileOnly "com.hypixel.hytale:Server:${rootProject.hytaleVersion}"
 
     // HyperPerms soft dependency (for compile-time reference only)
     // Actual integration uses reflection to avoid hard dependency
@@ -43,11 +43,11 @@ dependencies {
     // PlaceholderAPI Hytale (soft dependency - compileOnly)
     compileOnly 'at.helpch:placeholderapi-hytale:1.0.4'
 
-    // WiFlow PlaceholderAPI (soft dependency - compileOnly, no Maven repo available)
-    compileOnly files("${rootProject.projectDir}/resources/mods/jars/WiFlowPlaceholderAPI-1.0.3.jar")
-
-    // GravestonePlugin (soft dependency - compileOnly, forked with API access for direct integration)
-    compileOnly files("${rootProject.projectDir}/resources/mods/repos/gravestones/build/libs/GravestonePlugin-1.0.9.jar")
+    // Local soft dependencies (libs/ — symlinked in monorepo, manual drop-in for contributors)
+    // Required JARs:
+    //   - WiFlowPlaceholderAPI — https://www.curseforge.com/hytale/mods/wiflows-placeholderapi
+    //   - GravestonePlugin    — https://www.curseforge.com/hytale/mods/gravestones
+    compileOnly fileTree('libs') { include '*.jar' }
 
     // Null safety annotations
     compileOnly 'org.jetbrains:annotations:24.1.0'
@@ -90,7 +90,7 @@ public final class BuildInfo {
 // Expand version placeholder in manifest.json
 processResources {
     def ver = buildVersion
-    def srvVer = rootProject.hytaleServerVersion
+    def srvVer = rootProject.hytaleVersion
     inputs.property('version', ver)
     inputs.property('serverVersion', srvVer)
     filesMatching('manifest.json') {

@@ -205,7 +205,15 @@ Comprehensive developer and admin documentation is available in the [`docs/`](do
 
 - Java 25
 - Gradle 9.3.0+ (included via wrapper)
-- Hytale Server JAR (Early Access)
+
+Download these JARs into `libs/` before building:
+
+| JAR | Download |
+|-----|----------|
+| WiFlowPlaceholderAPI | [CurseForge](https://www.curseforge.com/hytale/mods/wiflows-placeholderapi) |
+| GravestonePlugin | [CurseForge](https://www.curseforge.com/hytale/mods/gravestones) |
+
+The Hytale Server API is resolved automatically from Maven.
 
 ### Build
 
