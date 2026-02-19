@@ -26,13 +26,15 @@ This document is for third-party mod developers who want to hook into HyperFacti
 
 ### Dependency Setup
 
-Add HyperFactions as a compile-only dependency in your `build.gradle`:
+Add the JitPack repository and HyperFactions as a compile-only dependency in your `build.gradle`:
 
 ```gradle
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 dependencies {
-    compileOnly project(':HyperFactions')
-    // or if using a JAR directly:
-    compileOnly files('libs/HyperFactions-0.7.0.jar')
+    compileOnly 'com.github.HyperSystemsDev:HyperFactions:v0.8.1'
 }
 ```
 
@@ -41,7 +43,7 @@ Add the soft dependency in your `manifest.json`:
 ```json
 {
   "optionalDependencies": {
-    "HyperSystems:HyperFactions": "0.7.0"
+    "HyperSystems:HyperFactions": "0.8.1"
   }
 }
 ```

@@ -199,6 +199,24 @@ Comprehensive developer and admin documentation is available in the [`docs/`](do
 
 ---
 
+## For Developers
+
+### Maven Dependency (JitPack)
+
+Add HyperFactions as a dependency to build integrations:
+
+```gradle
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    compileOnly 'com.github.HyperSystemsDev:HyperFactions:v0.8.1'
+}
+```
+
+See the [Developer API Reference](docs/api.md) for full API documentation.
+
 ## Building from Source
 
 ### Requirements
@@ -206,14 +224,14 @@ Comprehensive developer and admin documentation is available in the [`docs/`](do
 - Java 25
 - Gradle 9.3.0+ (included via wrapper)
 
-Download these JARs into `libs/` before building:
+The Hytale Server API and all required dependencies are resolved automatically from Maven. Optional integrations (WiFlowPlaceholderAPI, GravestonePlugin) use reflection and are **not required** to compile.
 
-| JAR | Download |
-|-----|----------|
-| WiFlowPlaceholderAPI | [CurseForge](https://www.curseforge.com/hytale/mods/wiflows-placeholderapi) |
-| GravestonePlugin | [CurseForge](https://www.curseforge.com/hytale/mods/gravestones) |
+For full functionality during local development, optionally download these JARs into `libs/`:
 
-The Hytale Server API is resolved automatically from Maven.
+| JAR | Download | Required? |
+|-----|----------|-----------|
+| WiFlowPlaceholderAPI | [CurseForge](https://www.curseforge.com/hytale/mods/wiflows-placeholderapi) | Optional |
+| GravestonePlugin | [CurseForge](https://www.curseforge.com/hytale/mods/gravestones) | Optional |
 
 ### Build
 

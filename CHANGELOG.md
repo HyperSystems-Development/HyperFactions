@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Contributor docs**: Updated CONTRIBUTING.md and README.md with soft dependency download instructions and CurseForge links
 - **JitPack publishing**: Added `maven-publish` plugin and `jitpack.yml` — other developers can now depend on HyperFactions via `com.github.HyperSystemsDev:HyperFactions:<version>` from JitPack
 - **Standalone build support**: Build resolves Hytale server version independently when built outside the monorepo (JitPack, CI)
+- **Developer docs**: Updated README and API reference with JitPack dependency instructions, marked WiFlow/Gravestone libs as optional
 
 ## [0.8.1] - 2026-02-17
 
