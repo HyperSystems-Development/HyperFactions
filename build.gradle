@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven-publish'
     id 'com.gradleup.shadow' version '9.3.1'
 }
 
@@ -17,6 +18,28 @@ gradle.taskGraph.whenReady { graph ->
     }
 }
 
+// Resolve Hytale server version (standalone fallback for JitPack / CI builds)
+def hytaleChannel = (findProperty('hytale_channel') ?: 'release').toString().trim()
+def hytaleServerVersion = {
+    // Prefer root project version (monorepo), fall back to self-resolution
+    if (rootProject.hasProperty('hytaleVersion')) return rootProject.hytaleVersion
+    def override = (findProperty('hytale_server_version') ?: '').toString().trim()
+    if (override) return override
+    try {
+        def url = "https://maven.hytale.com/${hytaleChannel}/com/hypixel/hytale/Server/maven-metadata.xml"
+        def text = new URI(url).toURL().text
+        def m = text =~ /<release>(.+?)<\/release>/
+        if (m.find()) return m.group(1)
+    } catch (ignored) {}
+    throw new GradleException("Could not resolve Hytale server version")
+}()
+
+// Detect monorepo vs standalone (JitPack / CI) build context
+def isMonorepo = rootProject.name == 'HyperSystems'
+
+// Check if optional local dependencies are available (WiFlowExpansion needs WiFlow API to compile)
+def hasWiFlowLib = file('libs').listFiles()?.any { it.name.contains('WiFlow') } ?: false
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(25)
@@ -25,17 +48,24 @@ java {
 
 repositories {
     mavenCentral()
-    // PlaceholderAPI for Hytale
+    maven { url = "https://maven.hytale.com/${hytaleChannel}" }
     maven { url = 'https://repo.helpch.at/releases/' }
+    if (!isMonorepo) {
+        // Standalone build: resolve HyperPerms from JitPack
+        maven { url = 'https://jitpack.io' }
+    }
 }
 
 dependencies {
-    // Hytale Server API (resolved from maven.hytale.com)
-    compileOnly "com.hypixel.hytale:Server:${rootProject.hytaleVersion}"
+    // Hytale Server API
+    compileOnly "com.hypixel.hytale:Server:${hytaleServerVersion}"
 
     // HyperPerms soft dependency (for compile-time reference only)
-    // Actual integration uses reflection to avoid hard dependency
-    compileOnly project(':HyperPerms')
+    if (isMonorepo) {
+        compileOnly project(':HyperPerms')
+    } else {
+        compileOnly 'com.github.HyperSystemsDev:HyperPerms:v2.8.5'
+    }
 
     // JSON handling
     implementation 'com.google.code.gson:gson:2.11.0'
@@ -43,10 +73,9 @@ dependencies {
     // PlaceholderAPI Hytale (soft dependency - compileOnly)
     compileOnly 'at.helpch:placeholderapi-hytale:1.0.4'
 
-    // Local soft dependencies (libs/ — symlinked in monorepo, manual drop-in for contributors)
-    // Required JARs:
-    //   - WiFlowPlaceholderAPI — https://www.curseforge.com/hytale/mods/wiflows-placeholderapi
-    //   - GravestonePlugin    — https://www.curseforge.com/hytale/mods/gravestones
+    // Optional local soft dependencies (only available in monorepo dev environment)
+    // WiFlowPlaceholderAPI and GravestonePlugin integrations use reflection so the build
+    // succeeds without them. WiFlowExpansion.java is conditionally excluded below.
     compileOnly fileTree('libs') { include '*.jar' }
 
     // Null safety annotations
@@ -56,6 +85,13 @@ dependencies {
     // Testing
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+// WiFlowExpansion extends PlaceholderExpansion (from WiFlowPlaceholderAPI) directly.
+// When WiFlow isn't on the classpath (JitPack / CI), exclude it from compilation.
+// The bridge class (WiFlowPlaceholderIntegration) loads it reflectively at runtime.
+if (!hasWiFlowLib) {
+    sourceSets.main.java.exclude '**/WiFlowExpansion.java'
 }
 
 // Generate BuildInfo.java with project version
@@ -90,7 +126,7 @@ public final class BuildInfo {
 // Expand version placeholder in manifest.json
 processResources {
     def ver = buildVersion
-    def srvVer = rootProject.hytaleVersion
+    def srvVer = hytaleServerVersion
     inputs.property('version', ver)
     inputs.property('serverVersion', srvVer)
     filesMatching('manifest.json') {
@@ -126,7 +162,10 @@ tasks.withType(JavaCompile).configureEach {
 
 // Ensure build info is generated and HyperPerms shadowJar is built before compiling
 tasks.named('compileJava') {
-    dependsOn 'generateBuildInfo', ':HyperPerms:shadowJar'
+    dependsOn 'generateBuildInfo'
+    if (isMonorepo) {
+        dependsOn ':HyperPerms:shadowJar'
+    }
 }
 
 // Dev build task - clean build with version set to 'dev'
@@ -138,4 +177,21 @@ tasks.register('buildDev') {
 
 tasks.named('build') {
     mustRunAfter 'clean'
+}
+
+// Maven publication for JitPack (publishes API classes, not the shadow JAR)
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            groupId = 'com.hyperfactions'
+            artifactId = 'HyperFactions'
+
+            // Strip all dependencies from the POM — consumers provide their own
+            pom.withXml {
+                def deps = asNode().dependencies
+                if (deps) deps.each { asNode().remove(it) }
+            }
+        }
+    }
 }

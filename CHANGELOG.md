@@ -11,10 +11,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Maven build migration**: Hytale Server API now resolved from `maven.hytale.com` instead of local JAR files. Use `-Phytale_channel=pre-release` to build against the pre-release server
 - **Local soft dependencies**: Moved WiFlowPlaceholderAPI and GravestonePlugin references to local `libs/` directory with `fileTree` glob — version bumps only need a symlink update, no `build.gradle` edits
+- **GravestoneIntegration**: Refactored from direct API imports to pure reflection — compiles and runs without GravestonePlugin JAR present
+- **WiFlowPlaceholderIntegration**: Refactored bridge to pure reflection — compiles without WiFlowPlaceholderAPI JAR. WiFlowExpansion conditionally excluded from compilation when WiFlow is absent
+- **HyperPerms dependency**: Conditional resolution — uses project reference in monorepo, JitPack coordinate when building standalone
 
 ### Added
 
 - **Contributor docs**: Updated CONTRIBUTING.md and README.md with soft dependency download instructions and CurseForge links
+- **JitPack publishing**: Added `maven-publish` plugin and `jitpack.yml` — other developers can now depend on HyperFactions via `com.github.HyperSystemsDev:HyperFactions:<version>` from JitPack
+- **Standalone build support**: Build resolves Hytale server version independently when built outside the monorepo (JitPack, CI)
 
 ## [0.8.1] - 2026-02-17
 

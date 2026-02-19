@@ -2,20 +2,29 @@ package com.hyperfactions.integration.placeholder;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.util.Logger;
-import com.wiflow.placeholderapi.WiFlowPlaceholderAPI;
 import org.jetbrains.annotations.Nullable;
+
+import java.lang.reflect.Method;
 
 /**
  * Soft dependency integration with WiFlow PlaceholderAPI.
  * <p>
- * Detects WiFlow PlaceholderAPI at runtime and registers the HyperFactions
- * expansion to expose faction data as placeholders using {@code {factions_xxx}} syntax.
+ * All WiFlow classes are accessed via reflection so HyperFactions compiles
+ * and runs without the WiFlowPlaceholderAPI JAR present.
+ * <p>
+ * The actual expansion implementation lives in {@code WiFlowExpansion} which
+ * extends PlaceholderExpansion directly — that class is conditionally compiled
+ * only when the WiFlow API is available on the classpath.
  */
 public final class WiFlowPlaceholderIntegration {
 
     private static boolean available = false;
     @Nullable
-    private static WiFlowExpansion expansion;
+    private static Object expansion;
+
+    // Cached reflection handles for shutdown
+    private static Method unregisterMethod;
+    private static Class<?> baseExpansionClass;
 
     private WiFlowPlaceholderIntegration() {}
 
@@ -35,9 +44,21 @@ public final class WiFlowPlaceholderIntegration {
         }
 
         try {
-            expansion = new WiFlowExpansion(plugin);
-            boolean registered = WiFlowPlaceholderAPI.registerExpansion(expansion);
+            // WiFlowExpansion extends PlaceholderExpansion — only compiled when WiFlow is available.
+            // Load it reflectively to avoid a compile-time dependency in this class.
+            Class<?> expansionClass = Class.forName(
+                    "com.hyperfactions.integration.placeholder.WiFlowExpansion");
+            expansion = expansionClass.getConstructor(HyperFactions.class).newInstance(plugin);
+
+            // WiFlowPlaceholderAPI.registerExpansion(PlaceholderExpansion)
+            Class<?> apiClass = Class.forName("com.wiflow.placeholderapi.WiFlowPlaceholderAPI");
+            baseExpansionClass = Class.forName("com.wiflow.placeholderapi.expansion.PlaceholderExpansion");
+            Method registerMethod = apiClass.getMethod("registerExpansion", baseExpansionClass);
+            boolean registered = (boolean) registerMethod.invoke(null, expansion);
+
             if (registered) {
+                // Cache unregister method for shutdown
+                unregisterMethod = apiClass.getMethod("unregisterExpansion", baseExpansionClass);
                 available = true;
                 Logger.info("WiFlow PlaceholderAPI expansion registered ({factions_*})");
             } else {
@@ -57,11 +78,15 @@ public final class WiFlowPlaceholderIntegration {
     public static void shutdown() {
         if (expansion != null) {
             try {
-                WiFlowPlaceholderAPI.unregisterExpansion(expansion);
+                if (unregisterMethod != null) {
+                    unregisterMethod.invoke(null, expansion);
+                }
             } catch (Exception e) {
                 Logger.debug("Failed to unregister WiFlow PlaceholderAPI expansion: %s", e.getMessage());
             }
             expansion = null;
+            unregisterMethod = null;
+            baseExpansionClass = null;
         }
         available = false;
     }
