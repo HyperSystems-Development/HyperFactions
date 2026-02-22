@@ -9,6 +9,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
 import java.util.function.Function;
 
 /**
@@ -29,11 +30,13 @@ public class DamageProtectionHandler {
     private final ProjectileDamageProtection projectileDamage;
     private final MobDamageProtection mobDamage;
     private final PvPDamageProtection pvpDamage;
+    private final CombatTagManager combatTagManager;
 
     public DamageProtectionHandler(@NotNull ZoneDamageProtection zoneDamage,
                                     @NotNull ProtectionChecker protectionChecker,
                                     @NotNull CombatTagManager combatTagManager,
                                     @NotNull Function<ProtectionChecker.PvPResult, String> pvpDenialMessageProvider) {
+        this.combatTagManager = combatTagManager;
         this.fallDamage = new FallDamageProtection(zoneDamage);
         this.environmentalDamage = new EnvironmentalDamageProtection(zoneDamage);
         this.projectileDamage = new ProjectileDamageProtection(zoneDamage);
@@ -58,36 +61,51 @@ public class DamageProtectionHandler {
                              double x, double z,
                              @NotNull CommandBuffer<EntityStore> commandBuffer) {
 
+        UUID defenderUuid = defender.getUuid();
+
         // 1. Check fall damage (uses cause, not source)
         if (fallDamage.handle(event, worldName, x, z)) {
+            if (!event.isCancelled()) {
+                combatTagManager.recordDamageType(defenderUuid, CombatTagManager.DeathCauseType.ENVIRONMENTAL);
+            }
             return; // Handled
         }
 
         // 2. Check environmental damage (uses cause, not source)
         if (environmentalDamage.handle(event, worldName, x, z)) {
+            if (!event.isCancelled()) {
+                combatTagManager.recordDamageType(defenderUuid, CombatTagManager.DeathCauseType.ENVIRONMENTAL);
+            }
             return; // Handled
         }
 
         // 3. For entity-based damage, check source type
         Damage.Source source = event.getSource();
         if (!(source instanceof Damage.EntitySource entitySource)) {
-            // Unknown source type - allow by default
+            // Unknown non-entity source - record as environmental (damage goes through)
+            combatTagManager.recordDamageType(defenderUuid, CombatTagManager.DeathCauseType.ENVIRONMENTAL);
             return;
         }
 
         // 4. Check projectile damage (may continue to PvP check if from player)
         boolean projectileBlocked = projectileDamage.handle(event, worldName, x, z);
         if (projectileBlocked) {
-            return; // Projectile damage blocked
+            return; // Projectile damage blocked by zone - don't record
         }
 
         // 5. Check mob damage (non-player entities)
         if (mobDamage.handle(event, entitySource, defender, worldName, x, z, commandBuffer)) {
+            if (!event.isCancelled()) {
+                combatTagManager.recordDamageType(defenderUuid, CombatTagManager.DeathCauseType.MOB);
+            }
             return; // Handled (either blocked or allowed mob damage)
         }
 
         // 6. Check PvP damage (player vs player)
         pvpDamage.handle(event, entitySource, defender, worldName, x, z, commandBuffer);
+        if (!event.isCancelled()) {
+            combatTagManager.recordDamageType(defenderUuid, CombatTagManager.DeathCauseType.PVP);
+        }
     }
 
     // Accessors for individual protection systems (for testing or direct access)

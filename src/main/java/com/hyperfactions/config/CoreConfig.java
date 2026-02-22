@@ -33,6 +33,8 @@ public class CoreConfig extends ConfigFile {
     private double deathPenalty = 1.0;
     private double killReward = 0.0;
     private boolean killRewardRequiresFaction = true;
+    private boolean powerLossOnMobDeath = true;
+    private boolean powerLossOnEnvironmentalDeath = true;
     private double regenPerMinute = 0.1;
     private boolean regenWhenOffline = false;
 
@@ -144,6 +146,8 @@ public class CoreConfig extends ConfigFile {
             deathPenalty = getDouble(power, "deathPenalty", deathPenalty);
             killReward = getDouble(power, "killReward", killReward);
             killRewardRequiresFaction = getBool(power, "killRewardRequiresFaction", killRewardRequiresFaction);
+            powerLossOnMobDeath = getBool(power, "powerLossOnMobDeath", powerLossOnMobDeath);
+            powerLossOnEnvironmentalDeath = getBool(power, "powerLossOnEnvironmentalDeath", powerLossOnEnvironmentalDeath);
             regenPerMinute = getDouble(power, "regenPerMinute", regenPerMinute);
             regenWhenOffline = getBool(power, "regenWhenOffline", regenWhenOffline);
         }
@@ -309,6 +313,8 @@ public class CoreConfig extends ConfigFile {
         power.addProperty("deathPenalty", deathPenalty);
         power.addProperty("killReward", killReward);
         power.addProperty("killRewardRequiresFaction", killRewardRequiresFaction);
+        power.addProperty("powerLossOnMobDeath", powerLossOnMobDeath);
+        power.addProperty("powerLossOnEnvironmentalDeath", powerLossOnEnvironmentalDeath);
         power.addProperty("regenPerMinute", regenPerMinute);
         power.addProperty("regenWhenOffline", regenWhenOffline);
         root.add("power", power);
@@ -434,6 +440,8 @@ public class CoreConfig extends ConfigFile {
     public double getKillReward() { return killReward; }
 
     public boolean isKillRewardRequiresFaction() { return killRewardRequiresFaction; }
+    public boolean isPowerLossOnMobDeath() { return powerLossOnMobDeath; }
+    public boolean isPowerLossOnEnvironmentalDeath() { return powerLossOnEnvironmentalDeath; }
     public double getRegenPerMinute() { return regenPerMinute; }
     public boolean isRegenWhenOffline() { return regenWhenOffline; }
 

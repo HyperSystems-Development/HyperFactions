@@ -380,7 +380,7 @@ Defined in [`data/ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneF
 
 [`manager/CombatTagManager.java`](../src/main/java/com/hyperfactions/manager/CombatTagManager.java)
 
-Combat tagging and spawn protection tracking.
+Combat tagging, spawn protection, and damage type tracking.
 
 ### Responsibilities
 
@@ -389,6 +389,18 @@ Combat tagging and spawn protection tracking.
 - Detect combat logout
 - Manage spawn protection (respawn invincibility)
 - Call logout penalty callback
+- Track last damage type per player (for configurable power loss by death cause)
+
+### DeathCauseType Enum
+
+Categorizes damage source for power loss configuration:
+
+| Value | Description |
+|-------|-------------|
+| `PVP` | Killed by another player (direct or projectile) |
+| `MOB` | Killed by a mob (direct or mob projectile) |
+| `ENVIRONMENTAL` | Fall damage, drowning, suffocation, or other non-entity damage |
+| `UNKNOWN` | Death cause could not be determined |
 
 ### Key Methods
 
@@ -402,6 +414,9 @@ Combat tagging and spawn protection tracking.
 | `hasSpawnProtection(playerUuid)` | Check if spawn protected |
 | `clearSpawnProtection(playerUuid)` | Remove spawn protection |
 | `tickDecay()` | Called every second to expire tags |
+| `recordDamageType(playerUuid, type)` | Record last damage cause type |
+| `getLastDamageType(playerUuid)` | Get last damage type (or UNKNOWN) |
+| `clearDamageType(playerUuid)` | Clear recorded damage type |
 
 ### Combat Tag Flow
 

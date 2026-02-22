@@ -9,6 +9,7 @@ import com.hyperfactions.data.PlayerPower;
 import com.hyperfactions.data.RelationType;
 import com.hyperfactions.data.Zone;
 import com.hyperfactions.data.ZoneFlags;
+import com.hyperfactions.manager.CombatTagManager;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.Logger;
@@ -135,7 +136,60 @@ public class PlayerDeathSystem extends RefChangeSystem<EntityStore, DeathCompone
                 Logger.debugPower("TransformComponent is null for %s during death", victimUuid);
             }
 
-            // Apply death power penalty
+            // Check if power loss is disabled for this death cause type
+            CombatTagManager.DeathCauseType deathCause = hyperFactions.getCombatTagManager().getLastDamageType(victimUuid);
+            hyperFactions.getCombatTagManager().clearDamageType(victimUuid);
+            ConfigManager config = ConfigManager.get();
+
+            if (deathCause == CombatTagManager.DeathCauseType.MOB && !config.isPowerLossOnMobDeath()) {
+                Logger.debugPower("Power loss skipped for %s (mob death, powerLossOnMobDeath=false)", victimUuid);
+                announceDeathLocation(victimUuid, playerRef, store, commandBuffer, ref);
+
+                UUID killerUuid = hyperFactions.getCombatTagManager().getLastAttacker(victimUuid);
+                if (killerUuid != null) {
+                    processKillerRewards(killerUuid, victimUuid);
+                }
+
+                hyperFactions.getPlayerStorage().loadPlayerData(victimUuid).thenAccept(opt -> {
+                    PlayerData victimData = opt.orElseGet(() -> new PlayerData(victimUuid));
+                    victimData.incrementDeaths();
+                    hyperFactions.getPlayerStorage().savePlayerData(victimData);
+                });
+                if (killerUuid != null) {
+                    hyperFactions.getPlayerStorage().loadPlayerData(killerUuid).thenAccept(opt -> {
+                        PlayerData killerData = opt.orElseGet(() -> new PlayerData(killerUuid));
+                        killerData.incrementKills();
+                        hyperFactions.getPlayerStorage().savePlayerData(killerData);
+                    });
+                }
+                return;
+            }
+
+            if (deathCause == CombatTagManager.DeathCauseType.ENVIRONMENTAL && !config.isPowerLossOnEnvironmentalDeath()) {
+                Logger.debugPower("Power loss skipped for %s (environmental death, powerLossOnEnvironmentalDeath=false)", victimUuid);
+                announceDeathLocation(victimUuid, playerRef, store, commandBuffer, ref);
+
+                UUID killerUuid = hyperFactions.getCombatTagManager().getLastAttacker(victimUuid);
+                if (killerUuid != null) {
+                    processKillerRewards(killerUuid, victimUuid);
+                }
+
+                hyperFactions.getPlayerStorage().loadPlayerData(victimUuid).thenAccept(opt -> {
+                    PlayerData victimData = opt.orElseGet(() -> new PlayerData(victimUuid));
+                    victimData.incrementDeaths();
+                    hyperFactions.getPlayerStorage().savePlayerData(victimData);
+                });
+                if (killerUuid != null) {
+                    hyperFactions.getPlayerStorage().loadPlayerData(killerUuid).thenAccept(opt -> {
+                        PlayerData killerData = opt.orElseGet(() -> new PlayerData(killerUuid));
+                        killerData.incrementKills();
+                        hyperFactions.getPlayerStorage().savePlayerData(killerData);
+                    });
+                }
+                return;
+            }
+
+            // Apply death power penalty (PVP, UNKNOWN, or enabled cause types)
             double newPower = hyperFactions.getPowerManager().applyDeathPenalty(victimUuid);
             Logger.debugPower("Player %s died, power now %.2f", victimUuid, newPower);
 

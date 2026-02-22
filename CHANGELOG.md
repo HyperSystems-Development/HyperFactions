@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Configurable power loss by death cause**: New `powerLossOnMobDeath` and `powerLossOnEnvironmentalDeath` config options in the `power` section (both default `true` for backward compatibility). Set either to `false` to skip the death power penalty for that cause type while still incrementing kill/death counters and announcing gravestone locations. PvP deaths always incur power loss. Zone flag `power_loss=false` takes priority over these settings
+- **Death cause tracking**: `DamageProtectionHandler` now records the type of each damage event (PVP, MOB, ENVIRONMENTAL) that passes through protection checks into `CombatTagManager`, which `PlayerDeathSystem` reads at death time to apply the correct power loss policy
+
 ### Changed
 
 - **Maven build migration**: Hytale Server API now resolved from `maven.hytale.com` instead of local JAR files. Use `-Phytale_channel=pre-release` to build against the pre-release server

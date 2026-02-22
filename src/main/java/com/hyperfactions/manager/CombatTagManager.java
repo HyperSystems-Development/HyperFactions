@@ -16,11 +16,31 @@ import java.util.function.Consumer;
  */
 public class CombatTagManager {
 
+    /**
+     * Categorizes the cause of a player's death for power loss configuration.
+     * Recorded by {@link com.hyperfactions.protection.damage.DamageProtectionHandler}
+     * when damage is allowed through, and read by
+     * {@link com.hyperfactions.protection.ecs.PlayerDeathSystem} at death time.
+     */
+    public enum DeathCauseType {
+        /** Player was killed by another player (direct or projectile). */
+        PVP,
+        /** Player was killed by a mob (direct or mob projectile). */
+        MOB,
+        /** Player died to fall damage, drowning, suffocation, or other non-entity damage. */
+        ENVIRONMENTAL,
+        /** Death cause could not be determined. */
+        UNKNOWN
+    }
+
     // Active combat tags: player UUID -> CombatTag
     private final Map<UUID, CombatTag> tags = new ConcurrentHashMap<>();
 
     // Last attacker tracking: defender UUID -> attacker UUID (for kill rewards)
     private final Map<UUID, UUID> lastAttacker = new ConcurrentHashMap<>();
+
+    // Last damage type tracking: player UUID -> DeathCauseType (for configurable power loss)
+    private final Map<UUID, DeathCauseType> lastDamageType = new ConcurrentHashMap<>();
 
     // Active spawn protections: player UUID -> SpawnProtection
     private final Map<UUID, SpawnProtection> spawnProtections = new ConcurrentHashMap<>();
@@ -180,6 +200,41 @@ public class CombatTagManager {
         return lastAttacker.remove(defenderUuid);
     }
 
+    // === Damage Type Tracking ===
+
+    /**
+     * Records the type of damage a player received.
+     * Called by {@link com.hyperfactions.protection.damage.DamageProtectionHandler}
+     * when damage is allowed through protection checks.
+     *
+     * @param playerUuid the player's UUID
+     * @param type       the damage cause type
+     */
+    public void recordDamageType(@NotNull UUID playerUuid, @NotNull DeathCauseType type) {
+        lastDamageType.put(playerUuid, type);
+    }
+
+    /**
+     * Gets the last recorded damage type for a player.
+     *
+     * @param playerUuid the player's UUID
+     * @return the last damage type, or {@link DeathCauseType#UNKNOWN} if not recorded
+     */
+    @NotNull
+    public DeathCauseType getLastDamageType(@NotNull UUID playerUuid) {
+        DeathCauseType type = lastDamageType.get(playerUuid);
+        return type != null ? type : DeathCauseType.UNKNOWN;
+    }
+
+    /**
+     * Clears the recorded damage type for a player.
+     *
+     * @param playerUuid the player's UUID
+     */
+    public void clearDamageType(@NotNull UUID playerUuid) {
+        lastDamageType.remove(playerUuid);
+    }
+
     /**
      * Clears a player's combat tag.
      *
@@ -188,6 +243,7 @@ public class CombatTagManager {
     public void clearTag(@NotNull UUID playerUuid) {
         tags.remove(playerUuid);
         lastAttacker.remove(playerUuid);
+        lastDamageType.remove(playerUuid);
     }
 
     /**
@@ -200,6 +256,7 @@ public class CombatTagManager {
     public boolean handleDisconnect(@NotNull UUID playerUuid) {
         CombatTag tag = tags.remove(playerUuid);
         lastAttacker.remove(playerUuid);
+        lastDamageType.remove(playerUuid);
         if (tag != null && !tag.isExpired()) {
             Logger.debugCombat("Combat logout: player=%s, remainingSeconds=%d, penaltyEnabled=%b",
                 playerUuid, tag.getRemainingSeconds(), ConfigManager.get().isTaggedLogoutPenalty());

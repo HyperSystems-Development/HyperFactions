@@ -333,6 +333,8 @@ public class ConfigManager {
     public double getKillReward() { return coreConfig.getKillReward(); }
 
     public boolean isKillRewardRequiresFaction() { return coreConfig.isKillRewardRequiresFaction(); }
+    public boolean isPowerLossOnMobDeath() { return coreConfig.isPowerLossOnMobDeath(); }
+    public boolean isPowerLossOnEnvironmentalDeath() { return coreConfig.isPowerLossOnEnvironmentalDeath(); }
     public double getRegenPerMinute() { return coreConfig.getRegenPerMinute(); }
     public boolean isRegenWhenOffline() { return coreConfig.isRegenWhenOffline(); }
 

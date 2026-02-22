@@ -11,6 +11,8 @@
     "powerPerClaim": 2,
     "deathPenalty": 1,
     "killRewardRequiresFaction": true,
+    "powerLossOnMobDeath": true,
+    "powerLossOnEnvironmentalDeath": true,
     "regenPerMinute": 0.1,
     "regenWhenOffline": false
   },

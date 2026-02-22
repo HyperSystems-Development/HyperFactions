@@ -94,7 +94,7 @@ ProtectionChecker (central logic)
 | ItemDropProtectionSystem | [`ecs/ItemDropProtectionSystem.java`](../src/main/java/com/hyperfactions/protection/ecs/ItemDropProtectionSystem.java) | DropItemEvent |
 | ItemPickupProtectionSystem | [`ecs/ItemPickupProtectionSystem.java`](../src/main/java/com/hyperfactions/protection/ecs/ItemPickupProtectionSystem.java) | InteractivelyPickupItemEvent |
 | HarvestPickupProtectionSystem | [`ecs/HarvestPickupProtectionSystem.java`](../src/main/java/com/hyperfactions/protection/ecs/HarvestPickupProtectionSystem.java) | InteractivelyPickupItemEvent (manual F-key) |
-| PlayerDeathSystem | [`ecs/PlayerDeathSystem.java`](../src/main/java/com/hyperfactions/protection/ecs/PlayerDeathSystem.java) | DeathComponent (power loss, kill rewards) |
+| PlayerDeathSystem | [`ecs/PlayerDeathSystem.java`](../src/main/java/com/hyperfactions/protection/ecs/PlayerDeathSystem.java) | DeathComponent (power loss by death cause, kill rewards) |
 | PlayerRespawnSystem | [`ecs/PlayerRespawnSystem.java`](../src/main/java/com/hyperfactions/protection/ecs/PlayerRespawnSystem.java) | DeathComponent removal (spawn protection) |
 | DamageProtectionSystem | [`ecs/DamageProtectionSystem.java`](../src/main/java/com/hyperfactions/protection/ecs/DamageProtectionSystem.java) | Damage event |
 | PvPProtectionSystem | [`ecs/PvPProtectionSystem.java`](../src/main/java/com/hyperfactions/protection/ecs/PvPProtectionSystem.java) | Alias for DamageProtectionSystem |
@@ -326,6 +326,36 @@ DamageProtectionHandler.handleDamage(event, defender, world, x, z)
      └─6─► PvP Damage
            └─► Player attacker → Use PvPDamageProtection
 ```
+
+## Death Cause Type Tracking
+
+`DamageProtectionHandler` records the type of each damage event that goes through protection checks into `CombatTagManager`. When a player dies, `PlayerDeathSystem` reads the last recorded damage type to determine whether power loss applies.
+
+```
+DamageProtectionHandler                CombatTagManager              PlayerDeathSystem
+     │                                      │                              │
+     ├─ Fall damage allowed ──────► recordDamageType(ENVIRONMENTAL)        │
+     ├─ Environmental allowed ────► recordDamageType(ENVIRONMENTAL)        │
+     ├─ Mob damage allowed ───────► recordDamageType(MOB)                  │
+     ├─ PvP damage allowed ───────► recordDamageType(PVP)                  │
+     │                                      │                              │
+     │                                      │    Player dies ──────────────┤
+     │                                      │◄── getLastDamageType() ──────┤
+     │                                      │                              │
+     │                                      │    Check config:             │
+     │                                      │    MOB + !powerLossOnMobDeath → skip
+     │                                      │    ENV + !powerLossOnEnvDeath → skip
+     │                                      │    PVP/UNKNOWN → always apply │
+```
+
+**Configuration** (in `config.json` → `power` section):
+
+| Key | Default | Description |
+|-----|---------|-------------|
+| `powerLossOnMobDeath` | `true` | Apply power loss when killed by mobs |
+| `powerLossOnEnvironmentalDeath` | `true` | Apply power loss for fall, drowning, suffocation |
+
+When power loss is skipped, kill/death counters and gravestone announcements still fire — only the power penalty is omitted. Zone flag `power_loss=false` takes priority over these settings.
 
 ## ECS Integration
 

@@ -225,6 +225,8 @@ Power mechanics:
 | `startingPower` | double | 10.0 | Initial power for new players |
 | `powerPerClaim` | double | 2.0 | Power cost per claim |
 | `deathPenalty` | double | 1.0 | Power lost on death |
+| `powerLossOnMobDeath` | bool | true | Apply death penalty for mob kills |
+| `powerLossOnEnvironmentalDeath` | bool | true | Apply death penalty for fall/drowning/suffocation |
 | `regenPerMinute` | double | 0.1 | Power regeneration rate |
 | `regenWhenOffline` | bool | false | Regen while offline |
 | `killRewardRequiresFaction` | bool | true | Only gain power from killing factioned players |
