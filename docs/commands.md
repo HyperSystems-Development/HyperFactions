@@ -1,6 +1,6 @@
 # HyperFactions Command System
 
-> **Version**: 0.8.0 | **42 subcommands** across **10 categories**
+> **Version**: 0.8.2 | **42 subcommands** across **10 categories**
 
 Architecture documentation for the HyperFactions command system.
 
@@ -211,12 +211,20 @@ command/
 | faction | create, disband, rename, desc, color, open, close | `hyperfactions.faction.*` |
 | member | invite, accept, leave, kick, promote, demote, transfer | `hyperfactions.member.*` |
 | territory | claim, unclaim, overclaim, stuck | `hyperfactions.territory.*` |
-| teleport | home, sethome | `hyperfactions.teleport.*` |
+| teleport | home, sethome, delhome | `hyperfactions.teleport.*` |
 | relation | ally, enemy, neutral, relations | `hyperfactions.relation.*` |
 | info | info, list, map, members, who, power, help | `hyperfactions.info.*` |
 | social | request, invites, chat | `hyperfactions.member.*`, `hyperfactions.chat.*` |
 | ui | gui, settings | `hyperfactions.use` |
 | admin | zone, backup, reload, debug, bypass | `hyperfactions.admin.*` |
+
+### Notable Command Behaviors
+
+**`/f stuck`** — Teleports the player to a random safe unclaimed chunk. Walks outward in a random direction from the player's position, increasing the search radius on each failed attempt. Configurable via `stuckMinRadius`, `stuckRadiusIncrease`, and `stuckMaxAttempts` in config.json. Uses the faction teleport warmup/cooldown system.
+
+**`/f info [faction] --text`** — Text mode shows ally/enemy counts and bidirectional relation status. Displays "They consider you" and "You consider them" lines using `RelationManager.getEffectiveRelation()` for accurate bidirectional awareness. Color-coded: green for ally, red for enemy, gray for neutral.
+
+**`/f claim` / `/f unclaim`** — 500ms per-player debounce prevents double-execution from rapid command dispatch.
 
 ## Subcommand Implementation Pattern
 

@@ -1,6 +1,6 @@
 # HyperFactions Manager Layer
 
-> **Version**: 0.8.0 | **15 core managers** (20 total)
+> **Version**: 0.8.2 | **15 core managers** (20 total)
 
 The manager layer contains all business logic for HyperFactions, organized by domain.
 
@@ -8,7 +8,7 @@ The manager layer contains all business logic for HyperFactions, organized by do
 
 Managers are initialized in [`HyperFactions.java`](../src/main/java/com/hyperfactions/HyperFactions.java) with explicit dependency injection. `HyperFactions.java` acts as an orchestrator, delegating lifecycle responsibilities to the `lifecycle/` package:
 
-- **`lifecycle/CallbackWiring`** - Platform callback setup (task scheduling, player lookup)
+- **`lifecycle/CallbackWiring`** - Wires all manager callbacks: GUI updates, events, announcements, explosion/harvest/hammer protection hooks, economy, world map, map player filter, overclaim notification
 - **`lifecycle/PeriodicTaskManager`** - Periodic task management (power regen, combat tag decay, invite cleanup)
 - **`lifecycle/MembershipHistoryHandler`** - Member join/leave history tracking
 
@@ -212,6 +212,10 @@ public enum ClaimResult {
 }
 ```
 
+### Debounce
+
+Claim and unclaim operations have a 500ms per-player debounce to prevent double-execution from rapid command dispatch or key-down/key-up events.
+
 ### Claim Index
 
 Claims are indexed by `ChunkKey` (world + chunk coordinates) for O(1) lookups:
@@ -292,6 +296,7 @@ Diplomatic relations between factions.
 | `setEnemy(playerUuid, targetFactionId)` | `relation.enemy` | `RelationResult` |
 | `setNeutral(playerUuid, targetFactionId)` | `relation.neutral` | `RelationResult` |
 | `getRelation(factionId1, factionId2)` | - | `RelationType` |
+| `getEffectiveRelation(factionId1, factionId2)` | - | `RelationType` |
 | `getPlayerRelation(player1, player2)` | - | `RelationType` |
 
 ### Relation Types
@@ -304,6 +309,16 @@ public enum RelationType {
     ENEMY     // Declared enemies
 }
 ```
+
+### Bidirectional Relations
+
+`getRelation()` returns the one-way declared relation (A→B). `getEffectiveRelation()` checks both directions and returns the effective relation:
+
+- **ENEMY** wins if either side declares enemy
+- **ALLY** only if both sides are allies
+- Otherwise **NEUTRAL**
+
+Used by map player filtering and `/f info` to show the true relationship state.
 
 ### Ally Handshake
 

@@ -1,6 +1,6 @@
 # HyperFactions Config System
 
-> **Version**: 0.8.0 | **Config version**: 5 | **8 module configs**
+> **Version**: 0.8.2 | **Config version**: 5 | **8 module configs**
 
 Architecture documentation for the HyperFactions configuration system.
 
@@ -227,6 +227,7 @@ Power mechanics:
 | `deathPenalty` | double | 1.0 | Power lost on death |
 | `regenPerMinute` | double | 0.1 | Power regeneration rate |
 | `regenWhenOffline` | bool | false | Regen while offline |
+| `killRewardRequiresFaction` | bool | true | Only gain power from killing factioned players |
 
 ### claims
 
@@ -264,6 +265,9 @@ Teleportation settings:
 | `cooldownSeconds` | int | 300 | Cooldown between teleports |
 | `cancelOnMove` | bool | true | Cancel on movement |
 | `cancelOnDamage` | bool | true | Cancel on damage |
+| `stuckMinRadius` | int | 5 | Minimum search radius for `/f stuck` (chunks) |
+| `stuckRadiusIncrease` | int | 5 | Radius increase per failed attempt |
+| `stuckMaxAttempts` | int | 6 | Maximum search attempts before giving up |
 
 ### permissions
 

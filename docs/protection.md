@@ -1,6 +1,6 @@
 # HyperFactions Protection System
 
-> **Version**: 0.8.0
+> **Version**: 0.8.2
 
 Architecture documentation for the HyperFactions protection system.
 
@@ -52,18 +52,21 @@ Hytale ECS Events                  OrbisGuard-Mixins Hooks
      ▼                                    ▼
 ECS Protection Systems             OrbisMixinsIntegration (11 hooks)
 ├── BlockPlaceProtectionSystem     ├── PickupHook
-├── BlockBreakProtectionSystem     ├── HammerHook
-├── BlockUseProtectionSystem       ├── HarvestHook
+├── BlockBreakProtectionSystem     ├── HammerHook (zone + claim BUILD)
+├── BlockUseProtectionSystem       ├── HarvestHook (zone + claim INTERACT)
 ├── ItemDropProtectionSystem       ├── PlaceHook (bucket/fluid)
 ├── ItemPickupProtectionSystem     ├── UseHook (campfire, lantern)
-└── DamageProtectionSystem         ├── SeatHook
-     │                             ├── ExplosionHook
-     ▼                             ├── CommandHook
-ProtectionChecker (central logic)  ├── DeathHook (keep inventory)
-├── canInteract() ─► Result        ├── DurabilityHook
-                                   └── SpawnHook
-├── canDamagePlayer() ─► PvPResult
-└── isDamageAllowed() ─► Zone flag check
+├── HarvestPickupProtectionSystem  ├── SeatHook
+├── PlayerDeathSystem              ├── ExplosionHook (claim + safezone)
+├── PlayerRespawnSystem            ├── CommandHook
+└── DamageProtectionSystem         ├── DeathHook (keep inventory)
+     │                             ├── DurabilityHook
+     ▼                             └── SpawnHook
+ProtectionChecker (central logic)
+├── canInteract() ─► Result        Interaction Codec Replacements
+├── canDamagePlayer() ─► PvPResult ├── HarvestCrop (scythe protection)
+└── isDamageAllowed() ─► Zone flag ├── PlaceFluid (bucket protection)
+                                   └── RefillContainer (scoop protection)
      │
      ├─► ZoneManager (zone flag lookup)
      ├─► ClaimManager (territory ownership)
@@ -90,8 +93,21 @@ ProtectionChecker (central logic)  ├── DeathHook (keep inventory)
 | BlockUseProtectionSystem | [`ecs/BlockUseProtectionSystem.java`](../src/main/java/com/hyperfactions/protection/ecs/BlockUseProtectionSystem.java) | UseBlockEvent |
 | ItemDropProtectionSystem | [`ecs/ItemDropProtectionSystem.java`](../src/main/java/com/hyperfactions/protection/ecs/ItemDropProtectionSystem.java) | DropItemEvent |
 | ItemPickupProtectionSystem | [`ecs/ItemPickupProtectionSystem.java`](../src/main/java/com/hyperfactions/protection/ecs/ItemPickupProtectionSystem.java) | InteractivelyPickupItemEvent |
+| HarvestPickupProtectionSystem | [`ecs/HarvestPickupProtectionSystem.java`](../src/main/java/com/hyperfactions/protection/ecs/HarvestPickupProtectionSystem.java) | InteractivelyPickupItemEvent (manual F-key) |
+| PlayerDeathSystem | [`ecs/PlayerDeathSystem.java`](../src/main/java/com/hyperfactions/protection/ecs/PlayerDeathSystem.java) | DeathComponent (power loss, kill rewards) |
+| PlayerRespawnSystem | [`ecs/PlayerRespawnSystem.java`](../src/main/java/com/hyperfactions/protection/ecs/PlayerRespawnSystem.java) | DeathComponent removal (spawn protection) |
 | DamageProtectionSystem | [`ecs/DamageProtectionSystem.java`](../src/main/java/com/hyperfactions/protection/ecs/DamageProtectionSystem.java) | Damage event |
 | PvPProtectionSystem | [`ecs/PvPProtectionSystem.java`](../src/main/java/com/hyperfactions/protection/ecs/PvPProtectionSystem.java) | Alias for DamageProtectionSystem |
+
+### Interaction Codec Replacements (protection/interactions/)
+
+Codec replacements extend vanilla interaction classes to add protection checks. They override `interactWithBlock()` to check zone flags and faction permissions before calling `super`. Registered in `HyperFactionsPlugin.registerInteractionCodecs()`.
+
+| Class | Path | Protects Against |
+|-------|------|-----------------|
+| HyperFactionsHarvestCropInteraction | [`interactions/HyperFactionsHarvestCropInteraction.java`](../src/main/java/com/hyperfactions/protection/interactions/HyperFactionsHarvestCropInteraction.java) | Scythe/tool crop harvesting |
+| HyperFactionsPlaceFluidInteraction | [`interactions/HyperFactionsPlaceFluidInteraction.java`](../src/main/java/com/hyperfactions/protection/interactions/HyperFactionsPlaceFluidInteraction.java) | Bucket fluid placement |
+| HyperFactionsRefillContainerInteraction | [`interactions/HyperFactionsRefillContainerInteraction.java`](../src/main/java/com/hyperfactions/protection/interactions/HyperFactionsRefillContainerInteraction.java) | Scooping fluid with empty bucket |
 
 ### Damage Handlers (protection/damage/)
 
@@ -384,6 +400,7 @@ Bypass permissions allow players to ignore protection rules:
 | `hyperfactions.bypass.container` | Chest access protection |
 | `hyperfactions.bypass.damage` | Entity damage protection |
 | `hyperfactions.bypass.use` | Item use protection |
+| `hyperfactions.bypass.pickup` | Item pickup protection (F-key) |
 | `hyperfactions.bypass.*` | All interaction protections |
 
 **Admin Bypass:**

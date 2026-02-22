@@ -1,6 +1,6 @@
 # HyperFactions Integration Breakdown
 
-> **Version**: 0.8.0 | **Package**: `com.hyperfactions.integration`
+> **Version**: 0.8.2 | **Package**: `com.hyperfactions.integration`
 
 HyperFactions integrates with external plugins through soft dependencies. All integrations use reflection-based detection and fail-open design — if a dependency is missing, the feature gracefully degrades.
 
@@ -218,8 +218,8 @@ All hooks are registered in a shared `ConcurrentHashMap` stored in `System.getPr
 | Hook | Callback Interface | Protects Against |
 |------|--------------------|-----------------|
 | **Pickup** | `PickupCheckCallback` | F-key and auto item pickup |
-| **Hammer** | `HammerCheckCallback` | Hammer block cycling |
-| **Harvest** | `HarvestCheckCallback` | F-key crop harvesting |
+| **Hammer** | `HammerCheckCallback` | Hammer block cycling (zone + claim BUILD protection) |
+| **Harvest** | `HarvestCheckCallback` | F-key crop/rubble harvesting + scythe crop harvesting |
 | **Place** | `PlaceCheckCallback` | Bucket/fluid placement |
 | **Use** | `UseCheckCallback` | Block interaction (campfire, lantern toggle) |
 | **Seat** | `SeatCheckCallback` | Seating on blocks |
@@ -238,10 +238,34 @@ boolean isAllowed(UUID playerUuid, String worldName, int x, int y, int z);
 // Exceptions:
 // Pickup: check(UUID, String, double, double, double, String mode) -> boolean
 // Harvest: check(UUID, String, int, int, int) -> String (null=allowed, non-null=denial message)
+//          checkScytheHarvest(UUID, String, int, int, int) -> String (OG-Mixins 0.8.3+)
+// Hammer: checkMessage(UUID, String, int, int, int) -> String (null=allow, ""=deny silently)
+//         isHammerAllowed(UUID, String, int, int, int) -> boolean (legacy codec replacement)
 // Explosion: shouldBlockExplosion(String worldName, int x, int y, int z) -> boolean (no player)
 // Spawn: shouldBlockSpawn(String worldName, int x, int y, int z) -> boolean (no player)
 // Command: shouldBlockCommand(UUID, String, int, int, int, String command) -> CommandCheckResult
 ```
+
+### Dual Hook Patterns (0.8.3)
+
+OrbisGuard-Mixins 0.8.3 introduced new mixin entry points that call hook methods by name:
+
+- **HarvestCropInteractionMixin** calls `checkScytheHarvest()` on the harvest hook — protects scythe/tool crop harvesting via a code path separate from F-key harvesting
+- **CycleBlockGroupInteractionMixin** calls `checkMessage()` on the hammer hook — returns `null` (allow) or a `String` (deny, empty string = silent deny)
+
+Both serve as defense-in-depth alongside HyperFactions' own codec replacements. The mixin fires first; if `orbisguard.bypass` is granted, only the codec replacement protects.
+
+### Hook Wiring
+
+All protection hooks are wired in [`lifecycle/CallbackWiring.java`](../src/main/java/com/hyperfactions/lifecycle/CallbackWiring.java):
+
+| Wiring Method | Hook | Protection Logic |
+|---------------|------|-----------------|
+| `wireExplosionProtection()` | ExplosionHook | Block explosions in claimed territory and safezones |
+| `wireHarvestProtection()` | HarvestHook | Check zone ITEM_PICKUP_MANUAL flag + faction INTERACT permission |
+| `wireHammerProtection()` | HammerHook | Check safezone + faction BUILD permission |
+
+Harvest and hammer hooks return empty string `""` for denials (blocks action silently) because `UseBlockEvent.Pre` already sends the denial message — returning a non-empty message would cause duplicate notifications.
 
 ### Fail-Open Design
 
