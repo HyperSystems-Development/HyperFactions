@@ -106,8 +106,9 @@ public class HomeSubCommand extends FactionSubCommand {
             }
         }
 
-        // Execute teleport on the target world's thread using createForPlayer for proper player teleportation
-        targetWorld.execute(() -> {
+        // Execute on the player's CURRENT world thread (store belongs to this thread).
+        // Pass targetWorld to createForPlayer so TeleportSystems handles the cross-world move.
+        currentWorld.execute(() -> {
             Vector3d position = new Vector3d(home.x(), home.y(), home.z());
             Vector3f rotation = new Vector3f(home.pitch(), home.yaw(), 0);
             Teleport teleport = Teleport.createForPlayer(targetWorld, position, rotation);

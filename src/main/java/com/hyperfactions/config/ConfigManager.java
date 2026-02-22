@@ -331,6 +331,8 @@ public class ConfigManager {
     public double getPowerPerClaim() { return coreConfig.getPowerPerClaim(); }
     public double getDeathPenalty() { return coreConfig.getDeathPenalty(); }
     public double getKillReward() { return coreConfig.getKillReward(); }
+
+    public boolean isKillRewardRequiresFaction() { return coreConfig.isKillRewardRequiresFaction(); }
     public double getRegenPerMinute() { return coreConfig.getRegenPerMinute(); }
     public boolean isRegenWhenOffline() { return coreConfig.isRegenWhenOffline(); }
 
@@ -370,6 +372,9 @@ public class ConfigManager {
     public long getJoinRequestExpirationMs() { return coreConfig.getJoinRequestExpirationMs(); }
 
     // Stuck
+    public int getStuckMinRadius() { return coreConfig.getStuckMinRadius(); }
+    public int getStuckRadiusIncrease() { return coreConfig.getStuckRadiusIncrease(); }
+    public int getStuckMaxAttempts() { return coreConfig.getStuckMaxAttempts(); }
     public int getStuckWarmupSeconds() { return coreConfig.getStuckWarmupSeconds(); }
     public int getStuckCooldownSeconds() { return coreConfig.getStuckCooldownSeconds(); }
 

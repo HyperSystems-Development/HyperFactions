@@ -164,7 +164,7 @@ public class MapPlayerFilterService {
                 }
                 // Check relation
                 else {
-                    RelationType relation = relationManager.getRelation(viewerFactionId, targetFactionId);
+                    RelationType relation = relationManager.getEffectiveRelation(viewerFactionId, targetFactionId);
                     shouldHide = switch (relation) {
                         case ALLY, OWN -> !cfgShowAllies;
                         case ENEMY -> !cfgShowEnemies;

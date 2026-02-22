@@ -173,11 +173,22 @@ public class PlayerDeathSystem extends RefChangeSystem<EntityStore, DeathCompone
         ConfigManager config = ConfigManager.get();
         PowerManager pm = hyperFactions.getPowerManager();
 
-        // Kill reward (all PvP kills)
+        // Kill reward
         double reward = config.getKillReward();
         if (reward > 0) {
-            double killerPower = pm.applyKillReward(killerUuid, reward);
-            Logger.debugPower("Kill reward: killer=%s gained %.2f power (now %.2f)", killerUuid, reward, killerPower);
+            // Check if victim must be in a faction for kill reward
+            if (config.isKillRewardRequiresFaction()) {
+                Faction victimFaction = hyperFactions.getFactionManager().getPlayerFaction(victimUuid);
+                if (victimFaction == null) {
+                    Logger.debugPower("Kill reward skipped: victim=%s has no faction (killRewardRequiresFaction=true)", victimUuid);
+                } else {
+                    double killerPower = pm.applyKillReward(killerUuid, reward);
+                    Logger.debugPower("Kill reward: killer=%s gained %.2f power (now %.2f)", killerUuid, reward, killerPower);
+                }
+            } else {
+                double killerPower = pm.applyKillReward(killerUuid, reward);
+                Logger.debugPower("Kill reward: killer=%s gained %.2f power (now %.2f)", killerUuid, reward, killerPower);
+            }
         }
 
         // Neutral kill penalty

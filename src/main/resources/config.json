@@ -10,6 +10,7 @@
     "startingPower": 10,
     "powerPerClaim": 2,
     "deathPenalty": 1,
+    "killRewardRequiresFaction": true,
     "regenPerMinute": 0.1,
     "regenWhenOffline": false
   },

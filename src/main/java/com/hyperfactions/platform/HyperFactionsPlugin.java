@@ -6,6 +6,7 @@ import com.hyperfactions.chat.PublicChatListener;
 import com.hyperfactions.command.FactionCommand;
 import com.hyperfactions.listener.PlayerListener;
 import com.hyperfactions.protection.ProtectionListener;
+import com.hyperfactions.protection.interactions.HyperFactionsHarvestCropInteraction;
 import com.hyperfactions.protection.interactions.HyperFactionsPlaceFluidInteraction;
 import com.hyperfactions.protection.interactions.HyperFactionsRefillContainerInteraction;
 import com.hyperfactions.util.Logger;
@@ -249,8 +250,12 @@ public class HyperFactionsPlugin extends JavaPlugin {
 
     /**
      * Registers custom interaction codec replacements for protection.
-     * Replaces PlaceFluid with a version that checks zone/faction protection.
      * Must be called in setup() before assets are loaded.
+     *
+     * Replaced interactions:
+     * - PlaceFluid: Prevents fluid placement (water/lava buckets) in protected territory
+     * - RefillContainer: Prevents fluid pickup from containers in protected territory
+     * - HarvestCrop: Prevents crop harvesting (F-key on mature crops) in protected territory
      */
     private void registerInteractionCodecs() {
         try {
@@ -261,9 +266,12 @@ public class HyperFactionsPlugin extends JavaPlugin {
             registry.register("RefillContainer",
                     HyperFactionsRefillContainerInteraction.class,
                     HyperFactionsRefillContainerInteraction.CODEC);
-            getLogger().at(Level.INFO).log("Registered fluid protection codecs (place + pickup)");
+            registry.register("HarvestCrop",
+                    HyperFactionsHarvestCropInteraction.class,
+                    HyperFactionsHarvestCropInteraction.CODEC);
+            getLogger().at(Level.INFO).log("Registered interaction protection codecs (fluid place/pickup + crop harvest)");
         } catch (Exception e) {
-            getLogger().at(Level.WARNING).log("Failed to register fluid placement codec: %s", e.getMessage());
+            getLogger().at(Level.WARNING).log("Failed to register interaction codecs: %s", e.getMessage());
         }
     }
 
@@ -287,18 +295,8 @@ public class HyperFactionsPlugin extends JavaPlugin {
                             playerUuid, worldName, x, y, z, mode);
                 });
 
-        // Register harvest/F-key pickup protection hook
-        // This handles F-key pickup on rubble, crops, etc. via BlockHarvestUtils
-        OrbisMixinsIntegration.registerHarvestHook(
-                (playerUuid, worldName, x, y, z) -> {
-                    // Check ITEM_PICKUP_MANUAL flag for F-key pickup protection
-                    boolean allowed = hyperFactions.getProtectionChecker().canPickupItem(
-                            playerUuid, worldName, x, 0, z, "manual");
-                    if (!allowed) {
-                        return "You cannot pick up items manually in this zone.";
-                    }
-                    return null; // Allowed
-                });
+        // Harvest hook is registered in CallbackWiring.wireHarvestProtection()
+        // (handles both zone and claim protection in one hook)
 
         // Register spawn protection hook
         OrbisMixinsIntegration.registerSpawnHook(
@@ -437,4 +435,5 @@ public class HyperFactionsPlugin extends JavaPlugin {
     public ProtectionListener getProtectionListener() {
         return protectionListener;
     }
+
 }

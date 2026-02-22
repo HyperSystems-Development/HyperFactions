@@ -3,6 +3,7 @@ package com.hyperfactions.territory;
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.manager.TeleportManager;
+import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.ArchetypeChunk;
 import com.hypixel.hytale.component.CommandBuffer;
@@ -21,7 +22,9 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * ECS ticking system that provides player position updates to the territory
@@ -37,6 +40,9 @@ import java.util.UUID;
 public class TerritoryTickingSystem extends EntityTickingSystem<EntityStore> {
 
     private final HyperFactions hyperFactions;
+
+    /** Tracks expected teleport destinations for post-teleport position verification. */
+    private final Map<UUID, double[]> pendingVerification = new ConcurrentHashMap<>();
 
     /**
      * Creates a new territory ticking system.
@@ -76,6 +82,20 @@ public class TerritoryTickingSystem extends EntityTickingSystem<EntityStore> {
             UUID playerUuid = playerRef.getUuid();
             TeleportManager teleportManager = hyperFactions.getTeleportManager();
 
+            // Post-teleport position verification
+            double[] expected = pendingVerification.remove(playerUuid);
+            if (expected != null) {
+                int actualChunkX = ChunkUtil.toChunkCoord(posX);
+                int actualChunkZ = ChunkUtil.toChunkCoord(posZ);
+                int expectedChunkX = ChunkUtil.toChunkCoord(expected[0]);
+                int expectedChunkZ = ChunkUtil.toChunkCoord(expected[2]);
+                Logger.debugTerritory("POST-TELEPORT VERIFY %s: actual=block(%.1f, %.1f, %.1f) chunk(%d, %d) | expected=block(%.1f, %.1f, %.1f) chunk(%d, %d) | match=%b",
+                    playerUuid,
+                    posX, posY, posZ, actualChunkX, actualChunkZ,
+                    expected[0], expected[1], expected[2], expectedChunkX, expectedChunkZ,
+                    actualChunkX == expectedChunkX && actualChunkZ == expectedChunkZ);
+            }
+
             // Check for pending teleport
             if (teleportManager.hasPending(playerUuid)) {
                 // Check for movement cancellation first
@@ -98,8 +118,8 @@ public class TerritoryTickingSystem extends EntityTickingSystem<EntityStore> {
                     );
 
                     if (ready != null) {
-                        // Execute the teleport on the world thread (we're on it!)
-                        executeTeleport(store, ref, player.getWorld(), ready, playerRef);
+                        // Execute the teleport via world.execute() (runs after tick completes)
+                        executeTeleport(ref, player.getWorld(), ready, playerRef);
                     }
                 }
             }
@@ -117,43 +137,64 @@ public class TerritoryTickingSystem extends EntityTickingSystem<EntityStore> {
 
     /**
      * Executes a pending teleport.
-     * Uses targetWorld.execute() to ensure teleport runs on the correct world thread.
+     * Uses world.execute() + ref.getStore() pattern (from Hytale's InstanceEditLoadCommand)
+     * to add the Teleport component OUTSIDE the ticking system's processing cycle.
+     * This ensures TeleportSystems properly handles chunk loading and client sync.
      */
-    private void executeTeleport(Store<EntityStore> store, Ref<EntityStore> ref,
+    private void executeTeleport(Ref<EntityStore> ref,
                                   World currentWorld, TeleportManager.PendingTeleport pending,
                                   PlayerRef playerRef) {
         TeleportManager.TeleportDestination dest = pending.destination();
 
-        // Get target world (supports cross-world teleportation)
-        World targetWorld;
-        if (currentWorld.getName().equals(dest.world())) {
-            targetWorld = currentWorld;
-        } else {
-            targetWorld = Universe.get().getWorld(dest.world());
-            if (targetWorld == null) {
-                hyperFactions.getTeleportManager().onTeleportFailed(
-                    TeleportManager.TeleportResult.WORLD_NOT_FOUND,
-                    playerRef::sendMessage
-                );
+        Logger.debugTerritory("Executing teleport for %s to world=%s, block=(%.1f, %.1f, %.1f), chunk=(%d, %d)",
+            pending.playerUuid(), dest.world(), dest.x(), dest.y(), dest.z(),
+            ChunkUtil.toChunkCoord(dest.x()), ChunkUtil.toChunkCoord(dest.z()));
+
+        Vector3d position = new Vector3d(dest.x(), dest.y(), dest.z());
+        Vector3f rotation = new Vector3f(dest.pitch(), dest.yaw(), 0);
+        boolean sameWorld = currentWorld.getName().equals(dest.world());
+
+        // Schedule teleport via world.execute() — runs on world thread AFTER tick completes.
+        // Uses ref.getStore() for a fresh store reference (not the tick-captured one).
+        // This matches the pattern used by Hytale's built-in InstanceEditLoadCommand.
+        currentWorld.execute(() -> {
+            if (!ref.isValid()) {
+                Logger.debugTerritory("Teleport cancelled: entity ref no longer valid for %s", pending.playerUuid());
                 return;
             }
-        }
 
-        // Execute teleport on the target world's thread using createForPlayer for proper player teleportation
-        targetWorld.execute(() -> {
-            Vector3d position = new Vector3d(dest.x(), dest.y(), dest.z());
-            Vector3f rotation = new Vector3f(dest.pitch(), dest.yaw(), 0);
-            Teleport teleport = Teleport.createForPlayer(targetWorld, position, rotation);
-            store.addComponent(ref, Teleport.getComponentType(), teleport);
+            Store<EntityStore> store = ref.getStore();
+
+            if (sameWorld) {
+                Teleport teleport = Teleport.createForPlayer(position, rotation);
+                store.addComponent(ref, Teleport.getComponentType(), teleport);
+            } else {
+                World targetWorld = Universe.get().getWorld(dest.world());
+                if (targetWorld == null) {
+                    hyperFactions.getTeleportManager().onTeleportFailed(
+                        TeleportManager.TeleportResult.WORLD_NOT_FOUND,
+                        playerRef::sendMessage
+                    );
+                    return;
+                }
+                Teleport teleport = Teleport.createForPlayer(targetWorld, position, rotation);
+                store.addComponent(ref, Teleport.getComponentType(), teleport);
+            }
+
+            Logger.debugTerritory("Teleport component added for %s via world.execute()", pending.playerUuid());
         });
+
+        // Track expected destination for post-teleport verification
+        pendingVerification.put(pending.playerUuid(), new double[]{dest.x(), dest.y(), dest.z()});
 
         // Success - apply cooldown and send message
         hyperFactions.getTeleportManager().onTeleportSuccess(
             pending.playerUuid(),
+            pending.successMessage(),
             playerRef::sendMessage
         );
 
-        Logger.debug("Executed teleport for %s to %s (%.1f, %.1f, %.1f)",
+        Logger.debugTerritory("Teleport scheduled for %s to %s (%.1f, %.1f, %.1f)",
             pending.playerUuid(), dest.world(), dest.x(), dest.y(), dest.z());
     }
 

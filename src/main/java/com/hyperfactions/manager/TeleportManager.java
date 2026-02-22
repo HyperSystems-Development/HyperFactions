@@ -46,16 +46,24 @@ public class TeleportManager {
         private final TeleportDestination destination;
         private final long executeAt;  // System time when teleport should execute
         private final Supplier<Boolean> isTagged;  // Combat tag checker
+        private final @Nullable String successMessage;  // Custom completion message (null = default)
         private int lastAnnouncedSecond = -1;  // Track countdown announcements
 
         public PendingTeleport(UUID playerUuid, UUID factionId, StartLocation startLocation,
                                TeleportDestination destination, long executeAt, Supplier<Boolean> isTagged) {
+            this(playerUuid, factionId, startLocation, destination, executeAt, isTagged, null);
+        }
+
+        public PendingTeleport(UUID playerUuid, UUID factionId, StartLocation startLocation,
+                               TeleportDestination destination, long executeAt, Supplier<Boolean> isTagged,
+                               @Nullable String successMessage) {
             this.playerUuid = playerUuid;
             this.factionId = factionId;
             this.startLocation = startLocation;
             this.destination = destination;
             this.executeAt = executeAt;
             this.isTagged = isTagged;
+            this.successMessage = successMessage;
         }
 
         public UUID playerUuid() { return playerUuid; }
@@ -64,6 +72,7 @@ public class TeleportManager {
         public TeleportDestination destination() { return destination; }
         public long executeAt() { return executeAt; }
         public Supplier<Boolean> isTagged() { return isTagged; }
+        public @Nullable String successMessage() { return successMessage; }
 
         /**
          * Checks if the warmup has completed and teleport is ready.
@@ -304,11 +313,11 @@ public class TeleportManager {
      * Schedules a generic teleport with warmup (for /f stuck, etc.).
      * The teleport will be executed by TerritoryTickingSystem when warmup completes.
      *
-     * @param playerUuid    the player's UUID
-     * @param startLocation the player's starting location (for movement cancellation)
-     * @param destination   the teleport destination
-     * @param warmupSeconds the warmup time in seconds
-     * @param isTagged      supplier to check if player is combat tagged
+     * @param playerUuid     the player's UUID
+     * @param startLocation  the player's starting location (for movement cancellation)
+     * @param destination    the teleport destination
+     * @param warmupSeconds  the warmup time in seconds
+     * @param isTagged       supplier to check if player is combat tagged
      */
     public void scheduleTeleport(
         @NotNull UUID playerUuid,
@@ -317,13 +326,34 @@ public class TeleportManager {
         int warmupSeconds,
         @NotNull Supplier<Boolean> isTagged
     ) {
+        scheduleTeleport(playerUuid, startLocation, destination, warmupSeconds, isTagged, null);
+    }
+
+    /**
+     * Schedules a generic teleport with warmup and custom success message.
+     *
+     * @param playerUuid     the player's UUID
+     * @param startLocation  the player's starting location (for movement cancellation)
+     * @param destination    the teleport destination
+     * @param warmupSeconds  the warmup time in seconds
+     * @param isTagged       supplier to check if player is combat tagged
+     * @param successMessage custom message on completion (null = default "Teleported to faction home!")
+     */
+    public void scheduleTeleport(
+        @NotNull UUID playerUuid,
+        @NotNull StartLocation startLocation,
+        @NotNull TeleportDestination destination,
+        int warmupSeconds,
+        @NotNull Supplier<Boolean> isTagged,
+        @Nullable String successMessage
+    ) {
         // Cancel any existing pending teleport
         removePending(playerUuid);
 
         // Store pending teleport - will be executed by TerritoryTickingSystem
         long executeAt = System.currentTimeMillis() + (warmupSeconds * 1000L);
         PendingTeleport pending = new PendingTeleport(
-            playerUuid, null, startLocation, destination, executeAt, isTagged
+            playerUuid, null, startLocation, destination, executeAt, isTagged, successMessage
         );
         pendingTeleports.put(playerUuid, pending);
 
@@ -363,9 +393,10 @@ public class TeleportManager {
      * @param playerUuid the player's UUID
      * @param sendMessage function to send messages
      */
-    public void onTeleportSuccess(@NotNull UUID playerUuid, @NotNull Consumer<Message> sendMessage) {
+    public void onTeleportSuccess(@NotNull UUID playerUuid, @Nullable String customMessage, @NotNull Consumer<Message> sendMessage) {
         applyCooldown(playerUuid);
-        sendMessage.accept(MessageUtil.success("Teleported to faction home!"));
+        String msg = customMessage != null ? customMessage : "Teleported to faction home!";
+        sendMessage.accept(MessageUtil.success(msg));
     }
 
     /**

@@ -6,6 +6,7 @@ import com.hyperfactions.command.FactionCommandContext;
 import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
+import com.hyperfactions.data.RelationType;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.manager.PowerManager;
@@ -85,5 +86,31 @@ public class InfoSubCommand extends FactionSubCommand {
         if (stats.isRaidable()) {
             ctx.sendMessage(msg("RAIDABLE!", COLOR_RED).bold(true));
         }
+
+        // Relation info
+        var relationManager = hyperFactions.getRelationManager();
+        int allyCount = relationManager.getAllies(faction.id()).size();
+        int enemyCount = relationManager.getEnemies(faction.id()).size();
+        ctx.sendMessage(msg("Allies: ", COLOR_GRAY).insert(msg(String.valueOf(allyCount), COLOR_GREEN)));
+        ctx.sendMessage(msg("Enemies: ", COLOR_GRAY).insert(msg(String.valueOf(enemyCount), COLOR_RED)));
+
+        // Show bidirectional relation if viewer is in a different faction
+        Faction viewerFaction = hyperFactions.getFactionManager().getPlayerFaction(player.getUuid());
+        if (viewerFaction != null && !viewerFaction.id().equals(faction.id())) {
+            RelationType theyThinkOfUs = relationManager.getRelation(faction.id(), viewerFaction.id());
+            RelationType weThinkOfThem = relationManager.getRelation(viewerFaction.id(), faction.id());
+            ctx.sendMessage(msg("They consider you: ", COLOR_GRAY)
+                .insert(msg(theyThinkOfUs.name(), relationColor(theyThinkOfUs))));
+            ctx.sendMessage(msg("You consider them: ", COLOR_GRAY)
+                .insert(msg(weThinkOfThem.name(), relationColor(weThinkOfThem))));
+        }
+    }
+
+    private String relationColor(RelationType type) {
+        return switch (type) {
+            case ALLY, OWN -> COLOR_GREEN;
+            case ENEMY -> COLOR_RED;
+            case NEUTRAL -> COLOR_GRAY;
+        };
     }
 }

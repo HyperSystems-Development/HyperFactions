@@ -95,8 +95,8 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
                 boolean cropHarvestAllowed = zoneProtection.isManualPickupAllowed(worldName, pos.getX(), pos.getZ());
                 if (!cropHarvestAllowed) {
                     event.setCancelled(true);
-                    player.sendMessage(MessageUtil.errorText("You cannot harvest crops in this zone."));
-                    Logger.debugProtection("Crop harvest blocked by zone (ITEM_PICKUP_MANUAL=false) at %s/%d/%d for player %s",
+                    player.sendMessage(MessageUtil.errorText("You cannot harvest plants in this zone."));
+                    Logger.debugProtection("Plant harvest blocked by zone (ITEM_PICKUP_MANUAL=false) at %s/%d/%d for player %s",
                         worldName, pos.getX(), pos.getZ(), player.getUuid());
                     return;
                 }
@@ -196,19 +196,28 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
     }
 
     /**
-     * Checks if a block ID indicates a harvestable crop/plant block.
-     * Crop harvesting uses the ITEM_PICKUP_MANUAL flag since it's conceptually
+     * Checks if a block ID indicates a harvestable plant/crop/flower block.
+     * These blocks use the ITEM_PICKUP_MANUAL flag since harvesting is conceptually
      * the same as F-key item pickup (manual item acquisition from the world).
      *
      * Examples:
      * - *Plant_Crop_Berry_Block_State_Definitions_StageFinal (berry bush)
      * - *Plant_Crop_* (any crop at harvestable stage)
+     * - *Plant_Flower_* (flowers like dandelions, roses, etc.)
+     * - *Plant_Mushroom_* (mushrooms)
+     * - *Plant_* (generic plant blocks)
      */
     private boolean isCropBlock(String blockId) {
         if (blockId == null) return false;
         String lower = blockId.toLowerCase();
-        // Check for crop plants (berry, wheat, etc.)
-        return lower.contains("plant_crop") || lower.contains("crop_");
+        return lower.contains("plant_crop") || lower.contains("crop_")
+            || lower.contains("plant_flower") || lower.contains("flower_")
+            || lower.contains("plant_mushroom") || lower.contains("mushroom_")
+            || lower.contains("plant_berry") || lower.contains("berry_bush")
+            || lower.contains("plant_tall") || lower.contains("plant_fern")
+            || lower.contains("plant_grass") || lower.contains("plant_vine")
+            || lower.contains("plant_seagrass") || lower.contains("plant_kelp")
+            || lower.contains("plant_cactus") || lower.contains("plant_sugar");
     }
 
     private String getWorldName(Store<EntityStore> store) {

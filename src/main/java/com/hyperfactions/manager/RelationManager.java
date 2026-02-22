@@ -135,6 +135,38 @@ public class RelationManager {
     }
 
     /**
+     * Gets the effective (bidirectional) relation between two factions.
+     * ENEMY wins if either side declares enemy.
+     * ALLY only if both sides are allies.
+     * Otherwise NEUTRAL.
+     *
+     * @param factionId1 first faction ID
+     * @param factionId2 second faction ID
+     * @return the effective relation type
+     */
+    @NotNull
+    public RelationType getEffectiveRelation(@NotNull UUID factionId1, @NotNull UUID factionId2) {
+        if (factionId1.equals(factionId2)) {
+            return RelationType.ALLY;
+        }
+
+        RelationType rel1to2 = getRelation(factionId1, factionId2);
+        RelationType rel2to1 = getRelation(factionId2, factionId1);
+
+        // ENEMY wins if either side declares enemy
+        if (rel1to2 == RelationType.ENEMY || rel2to1 == RelationType.ENEMY) {
+            return RelationType.ENEMY;
+        }
+
+        // ALLY only if both sides are allies
+        if (rel1to2 == RelationType.ALLY && rel2to1 == RelationType.ALLY) {
+            return RelationType.ALLY;
+        }
+
+        return RelationType.NEUTRAL;
+    }
+
+    /**
      * Gets the relation between two players based on their factions.
      *
      * @param player1 first player UUID

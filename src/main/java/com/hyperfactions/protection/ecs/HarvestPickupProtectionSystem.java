@@ -5,6 +5,7 @@ import com.hyperfactions.protection.ProtectionChecker;
 import com.hyperfactions.protection.ProtectionListener;
 import com.hyperfactions.protection.zone.ZoneInteractionProtection;
 import com.hyperfactions.util.Logger;
+import com.hypixel.hytale.component.Archetype;
 import com.hypixel.hytale.component.ArchetypeChunk;
 import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.Ref;
@@ -49,8 +50,10 @@ public class HarvestPickupProtectionSystem extends EntityEventSystem<EntityStore
 
     @Override
     public Query<EntityStore> getQuery() {
-        // Match OrbisGuard's pattern - query for entities with PlayerRef component
-        return PlayerRef.getComponentType();
+        // Use Archetype.empty() to match ALL entities — same as BlockBreakProtectionSystem
+        // and BlockUseProtectionSystem which are confirmed working.
+        // PlayerRef.getComponentType() as a query may not match player archetypes correctly.
+        return Archetype.empty();
     }
 
     @Override
@@ -69,7 +72,7 @@ public class HarvestPickupProtectionSystem extends EntityEventSystem<EntityStore
         }
 
         try {
-            // Get entity reference first (matching OrbisGuard's pattern)
+            // Get entity reference first
             Ref<EntityStore> ref = chunk.getReferenceTo(entityIndex);
 
             // Get both Player and PlayerRef components from the store
@@ -103,7 +106,7 @@ public class HarvestPickupProtectionSystem extends EntityEventSystem<EntityStore
                 return;
             }
 
-            Logger.debugInteraction("HarvestPickup: player=%s, world=%s, pos=(%d,%d,%d)",
+            Logger.debugProtection("[HarvestPickupECS] player=%s, world=%s, pos=(%d,%d,%d)",
                 playerRef.getUuid(), worldName, x, y, z);
 
             // 1. First check zone flags (ITEM_PICKUP_MANUAL for interactive/F-key pickup)
@@ -114,8 +117,7 @@ public class HarvestPickupProtectionSystem extends EntityEventSystem<EntityStore
                 event.setCancelled(true);
                 event.setItemStack(ItemStack.EMPTY);  // Also clear the item stack
                 player.sendMessage(MessageUtil.errorText("You cannot pick up items manually in this zone."));
-                Logger.debugProtection("Manual pickup blocked by zone (ITEM_PICKUP_MANUAL=false) at %s/%d/%d for player %s",
-                    worldName, x, z, playerRef.getUuid());
+                Logger.debugProtection("[HarvestPickupECS] BLOCKED by zone at %s/%d/%d", worldName, x, z);
                 return;
             }
 
@@ -126,6 +128,9 @@ public class HarvestPickupProtectionSystem extends EntityEventSystem<EntityStore
                 x, y, z
             );
 
+            Logger.debugProtection("[HarvestPickupECS] Faction check: blocked=%s for player=%s at %s/%d/%d",
+                blocked, playerRef.getUuid(), worldName, x, z);
+
             if (blocked) {
                 event.setCancelled(true);
                 event.setItemStack(ItemStack.EMPTY);  // Also clear the item stack
@@ -134,8 +139,7 @@ public class HarvestPickupProtectionSystem extends EntityEventSystem<EntityStore
                     ProtectionChecker.InteractionType.INTERACT
                 );
                 player.sendMessage(Message.raw(protectionListener.getDenialMessage(result)).color("#FF5555"));
-                Logger.debugProtection("Harvest pickup blocked by faction protection at %s/%d/%d for player %s: %s",
-                    worldName, x, z, playerRef.getUuid(), result);
+                Logger.debugProtection("[HarvestPickupECS] BLOCKED by faction: %s", result);
             }
         } catch (Exception e) {
             Logger.severe("Error processing harvest pickup event", e);

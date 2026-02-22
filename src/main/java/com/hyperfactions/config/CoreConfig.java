@@ -32,6 +32,7 @@ public class CoreConfig extends ConfigFile {
     private double powerPerClaim = 2.0;
     private double deathPenalty = 1.0;
     private double killReward = 0.0;
+    private boolean killRewardRequiresFaction = true;
     private double regenPerMinute = 0.1;
     private boolean regenWhenOffline = false;
 
@@ -67,6 +68,9 @@ public class CoreConfig extends ConfigFile {
     private int joinRequestExpirationHours = 24;
 
     // Stuck command settings
+    private int stuckMinRadius = 3;
+    private int stuckRadiusIncrease = 3;
+    private int stuckMaxAttempts = 10;
     private int stuckWarmupSeconds = 30;
     private int stuckCooldownSeconds = 300;
 
@@ -139,6 +143,7 @@ public class CoreConfig extends ConfigFile {
             powerPerClaim = getDouble(power, "powerPerClaim", powerPerClaim);
             deathPenalty = getDouble(power, "deathPenalty", deathPenalty);
             killReward = getDouble(power, "killReward", killReward);
+            killRewardRequiresFaction = getBool(power, "killRewardRequiresFaction", killRewardRequiresFaction);
             regenPerMinute = getDouble(power, "regenPerMinute", regenPerMinute);
             regenWhenOffline = getBool(power, "regenWhenOffline", regenWhenOffline);
         }
@@ -192,6 +197,9 @@ public class CoreConfig extends ConfigFile {
         // Stuck settings
         if (hasSection(root, "stuck")) {
             JsonObject stuck = root.getAsJsonObject("stuck");
+            stuckMinRadius = getInt(stuck, "minRadius", stuckMinRadius);
+            stuckRadiusIncrease = getInt(stuck, "radiusIncrease", stuckRadiusIncrease);
+            stuckMaxAttempts = getInt(stuck, "maxAttempts", stuckMaxAttempts);
             stuckWarmupSeconds = getInt(stuck, "warmupSeconds", stuckWarmupSeconds);
             stuckCooldownSeconds = getInt(stuck, "cooldownSeconds", stuckCooldownSeconds);
         }
@@ -300,6 +308,7 @@ public class CoreConfig extends ConfigFile {
         power.addProperty("powerPerClaim", powerPerClaim);
         power.addProperty("deathPenalty", deathPenalty);
         power.addProperty("killReward", killReward);
+        power.addProperty("killRewardRequiresFaction", killRewardRequiresFaction);
         power.addProperty("regenPerMinute", regenPerMinute);
         power.addProperty("regenWhenOffline", regenWhenOffline);
         root.add("power", power);
@@ -346,6 +355,9 @@ public class CoreConfig extends ConfigFile {
 
         // Stuck settings
         JsonObject stuck = new JsonObject();
+        stuck.addProperty("minRadius", stuckMinRadius);
+        stuck.addProperty("radiusIncrease", stuckRadiusIncrease);
+        stuck.addProperty("maxAttempts", stuckMaxAttempts);
         stuck.addProperty("warmupSeconds", stuckWarmupSeconds);
         stuck.addProperty("cooldownSeconds", stuckCooldownSeconds);
         root.add("stuck", stuck);
@@ -420,6 +432,8 @@ public class CoreConfig extends ConfigFile {
     public double getPowerPerClaim() { return powerPerClaim; }
     public double getDeathPenalty() { return deathPenalty; }
     public double getKillReward() { return killReward; }
+
+    public boolean isKillRewardRequiresFaction() { return killRewardRequiresFaction; }
     public double getRegenPerMinute() { return regenPerMinute; }
     public boolean isRegenWhenOffline() { return regenWhenOffline; }
 
@@ -457,6 +471,9 @@ public class CoreConfig extends ConfigFile {
     public long getJoinRequestExpirationMs() { return joinRequestExpirationHours * 60 * 60 * 1000L; }
 
     // Stuck
+    public int getStuckMinRadius() { return stuckMinRadius; }
+    public int getStuckRadiusIncrease() { return stuckRadiusIncrease; }
+    public int getStuckMaxAttempts() { return stuckMaxAttempts; }
     public int getStuckWarmupSeconds() { return stuckWarmupSeconds; }
     public int getStuckCooldownSeconds() { return stuckCooldownSeconds; }
 
@@ -584,6 +601,9 @@ public class CoreConfig extends ConfigFile {
                 joinRequestExpirationHours, 1, 24);
 
         // Stuck settings
+        stuckMinRadius = validateMin(result, "stuck.minRadius", stuckMinRadius, 1, 3);
+        stuckRadiusIncrease = validateMin(result, "stuck.radiusIncrease", stuckRadiusIncrease, 1, 3);
+        stuckMaxAttempts = validateMin(result, "stuck.maxAttempts", stuckMaxAttempts, 1, 10);
         stuckWarmupSeconds = validateMin(result, "stuck.warmupSeconds", stuckWarmupSeconds, 0, 30);
         stuckCooldownSeconds = validateMin(result, "stuck.cooldownSeconds", stuckCooldownSeconds, 0, 300);
 

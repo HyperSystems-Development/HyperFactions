@@ -22,6 +22,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Standalone build support**: Build resolves Hytale server version independently when built outside the monorepo (JitPack, CI)
 - **Developer docs**: Updated README and API reference with JitPack dependency instructions, marked WiFlow/Gravestone libs as optional
 
+## [0.8.2] - 2026-02-21
+
+**Closes:** [#49](https://github.com/HyperSystemsDev/HyperFactions/issues/49), [#50](https://github.com/HyperSystemsDev/HyperFactions/issues/50), [#51](https://github.com/HyperSystemsDev/HyperFactions/issues/51), [#52](https://github.com/HyperSystemsDev/HyperFactions/issues/52), [#53](https://github.com/HyperSystemsDev/HyperFactions/issues/53), [#55](https://github.com/HyperSystemsDev/HyperFactions/issues/55), [#56](https://github.com/HyperSystemsDev/HyperFactions/issues/56), [#57](https://github.com/HyperSystemsDev/HyperFactions/issues/57)
+
+### Fixed
+
+- **Kill reward for factionless victims** ([#51](https://github.com/HyperSystemsDev/HyperFactions/issues/51)): Killing factionless players no longer grants power. New `killRewardRequiresFaction` config option (default: `true`) — set to `false` to restore old behavior
+- **`/f stuck` always teleports to same location** ([#52](https://github.com/HyperSystemsDev/HyperFactions/issues/52)): Rewrote stuck teleport to walk in a random direction until finding a safe unclaimed chunk, instead of deterministic BFS that always found the same nearest chunk. Configurable search radius via `stuckMinRadius`, `stuckRadiusIncrease`, and `stuckMaxAttempts` config options
+- **Map markers visible to enemies** ([#49](https://github.com/HyperSystemsDev/HyperFactions/issues/49)): World map and compass player visibility now uses bidirectional relation checks — if either faction considers the other an enemy, both are hidden from each other's map (previously only checked one direction)
+- **Enemy relation not shown in `/f info`** ([#50](https://github.com/HyperSystemsDev/HyperFactions/issues/50)): `/f info` text mode now displays ally/enemy counts and bidirectional relation status ("They consider you: Enemy", "You consider them: Neutral") with color-coded formatting
+- **Boomshroom explosions damage across claim borders** ([#53](https://github.com/HyperSystemsDev/HyperFactions/issues/53)): Wired explosion protection hook to block explosions in claimed faction territory and safezones. Wilderness and warzone explosions still permitted
+- **Crops harvestable by outsiders** ([#55](https://github.com/HyperSystemsDev/HyperFactions/issues/55)): F-key crop harvesting now blocked in protected territory via OrbisGuard-Mixins harvest hook. Added scythe/tool harvest protection via `HyperFactionsHarvestCropInteraction` codec replacement as defense-in-depth
+- **Plants and flowers not protected** ([#57](https://github.com/HyperSystemsDev/HyperFactions/issues/57)): Expanded harvestable block detection to cover flowers, berry bushes, mushrooms, tall plants, ferns, grass, vines, seagrass, kelp, cactus, and sugar cane — not just `plant_crop` and `crop_` prefixed blocks
+- **Claim double-fire causing auto-unclaim** ([#56](https://github.com/HyperSystemsDev/HyperFactions/issues/56)): Added 500ms per-player debounce to claim and unclaim commands to prevent double-execution from rapid command dispatch
+- **Duplicate denial messages on harvest/hammer**: Harvest and hammer protection hooks now silently deny actions when UseBlockEvent already sends a denial message, preventing players from seeing two error messages
+
+### Added
+
+- **Hammer protection**: CycleBlockGroupInteraction (hammer tool) now blocked in safezones and enemy faction territory via OrbisGuard-Mixins hook — hammer was previously unprotected
+- **OrbisGuard-Mixins 0.8.3 support**: Added `checkScytheHarvest()` and `checkMessage()` hook methods for compatibility with new mixin entry points (HarvestCropInteractionMixin, CycleBlockGroupInteractionMixin)
+- **Bidirectional relation API**: New `RelationManager.getEffectiveRelation()` method — ENEMY wins if either side declares enemy, ALLY requires both sides, used across map filter and info display
+- **Bed debug logging**: Added diagnostic logging for bed block interactions in BlockBreakProtectionSystem to investigate post-overclaim bed protection ([#54](https://github.com/HyperSystemsDev/HyperFactions/issues/54))
+
+### Changed
+
+- **Teleport execution**: `/f stuck` and `/f home` teleports now execute on the correct world thread with post-teleport position verification
+- All harvest/pickup protection logging uses `Logger.debugProtection()` category instead of `Logger.info()`
+
 ## [0.8.1] - 2026-02-17
 
 **Server Version:** `2026.02.17-255364b8e`

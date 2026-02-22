@@ -42,3 +42,6 @@ libs/
 
 # Local config overrides
 config.local.json
+
+# Serena
+.serena/

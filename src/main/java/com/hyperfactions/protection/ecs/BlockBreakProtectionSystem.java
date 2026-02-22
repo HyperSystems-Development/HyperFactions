@@ -55,6 +55,12 @@ public class BlockBreakProtectionSystem extends EntityEventSystem<EntityStore, B
             // Access control is handled by our registered GravestoneAccessChecker in the gravestone plugin
             BlockType blockType = event.getBlockType();
             String blockId = blockType != null ? blockType.getId() : null;
+
+            // Debug: log bed block interactions to diagnose #54
+            if (blockId != null && blockId.toLowerCase().contains("bed")) {
+                Logger.debugProtection("BreakBlockEvent for BED: player=%s, blockId=%s, pos=(%d,%d,%d), world=%s",
+                    player.getUuid(), blockId, pos.getX(), pos.getY(), pos.getZ(), worldName);
+            }
             if (blockId != null && blockId.contains("Gravestone")) {
                 var gsIntegration = hyperFactions.getProtectionChecker().getGravestoneIntegration();
                 if (gsIntegration != null && gsIntegration.isAvailable()) {
@@ -70,6 +76,16 @@ public class BlockBreakProtectionSystem extends EntityEventSystem<EntityStore, B
                 worldName,
                 pos.getX(), pos.getY(), pos.getZ()
             );
+
+            // Debug: log bed break protection result to diagnose #54
+            if (blockId != null && blockId.toLowerCase().contains("bed")) {
+                ProtectionChecker.ProtectionResult bedResult = hyperFactions.getProtectionChecker().canInteract(
+                    player.getUuid(), worldName, pos.getX(), pos.getZ(),
+                    ProtectionChecker.InteractionType.BUILD
+                );
+                Logger.debugProtection("BED break result: player=%s, blocked=%s, result=%s, blockId=%s",
+                    player.getUuid(), blocked, bedResult, blockId);
+            }
 
             if (blocked) {
                 event.setCancelled(true);

@@ -382,9 +382,18 @@ public final class OrbisMixinsIntegration {
 
     @FunctionalInterface
     public interface HammerCheckCallback {
-        boolean isHammerAllowed(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z);
+        /**
+         * Check if hammer cycling (block group change) is allowed.
+         * @return null if allowed, denial message if blocked
+         */
+        @Nullable String checkHammer(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z);
     }
 
+    /**
+     * Wrapper for hammer hook that matches OrbisGuard-Mixins expected signatures.
+     * OrbisGuard's CycleBlockGroupInteraction codec replacement calls isHammerAllowed() -> boolean.
+     * OrbisGuard-Mixins 0.8.3+ CycleBlockGroupInteractionMixin calls checkMessage() -> String.
+     */
     public static final class HammerHookWrapper {
         private final HammerCheckCallback callback;
 
@@ -392,17 +401,37 @@ public final class OrbisMixinsIntegration {
             this.callback = callback;
         }
 
+        /**
+         * Called by OrbisGuard's CycleBlockGroupInteraction codec replacement (boolean API).
+         */
         public boolean isHammerAllowed(UUID playerUuid, String worldName, int x, int y, int z) {
             try {
-                boolean allowed = callback.isHammerAllowed(playerUuid, worldName, x, y, z);
-                Logger.debugInteraction("[Mixin:Hammer] player=%s, world=%s, pos=(%d,%d,%d), allowed=%b",
-                    playerUuid, worldName, x, y, z, allowed);
+                String result = callback.checkHammer(playerUuid, worldName, x, y, z);
+                boolean allowed = result == null;
                 Logger.debugProtection("[Mixin:Hammer] player=%s, world=%s, pos=(%d,%d,%d), allowed=%b",
                     playerUuid, worldName, x, y, z, allowed);
                 return allowed;
             } catch (Exception e) {
                 Logger.debugMixin("Error in hammer check: %s", e.getMessage());
                 return true; // Fail-open
+            }
+        }
+
+        /**
+         * Called by CycleBlockGroupInteractionMixin (OG-Mixins 0.8.3+) for hammer protection.
+         * The mixin is a safety net that works regardless of which plugin's codec override wins.
+         * @return null if allowed, denial message if blocked
+         */
+        public String checkMessage(UUID playerUuid, String worldName, int x, int y, int z) {
+            try {
+                String result = callback.checkHammer(playerUuid, worldName, x, y, z);
+                boolean allowed = result == null;
+                Logger.debugProtection("[Mixin:HammerMessage] player=%s, world=%s, pos=(%d,%d,%d), allowed=%b",
+                    playerUuid, worldName, x, y, z, allowed);
+                return result;
+            } catch (Exception e) {
+                Logger.debugMixin("Error in hammer checkMessage: %s", e.getMessage());
+                return null; // Fail-open
             }
         }
     }
@@ -796,6 +825,26 @@ public final class OrbisMixinsIntegration {
                 return result;
             } catch (Exception e) {
                 Logger.debugMixin("Error in harvest pickup check: %s", e.getMessage());
+                return null; // Fail-open
+            }
+        }
+
+        /**
+         * Called by HarvestCropInteractionMixin (OG-Mixins 0.8.3+) for scythe/tool crop harvesting.
+         * Scythes use HarvestCropInteraction → FarmingUtil.harvest(), a completely different
+         * code path from F-key harvesting (BlockHarvestUtils.performPickupByInteraction).
+         * @return null if allowed, denial message if blocked
+         */
+        public String checkScytheHarvest(UUID playerUuid, String worldName, int x, int y, int z) {
+            try {
+                // Same protection check as F-key harvesting — both should be blocked in protected territory
+                String result = callback.checkPickup(playerUuid, worldName, x, y, z);
+                boolean allowed = result == null;
+                Logger.debugProtection("[Mixin:ScytheHarvest] player=%s, world=%s, pos=(%d,%d,%d), allowed=%b",
+                    playerUuid, worldName, x, y, z, allowed);
+                return result;
+            } catch (Exception e) {
+                Logger.debugMixin("Error in scythe harvest check: %s", e.getMessage());
                 return null; // Fail-open
             }
         }

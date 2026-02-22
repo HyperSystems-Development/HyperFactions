@@ -30,6 +30,10 @@ public class ClaimManager {
     @Nullable
     private ZoneManager zoneManager;
 
+    // Per-player claim action debounce (prevents double-fire from UI events)
+    private static final long CLAIM_DEBOUNCE_MS = 500;
+    private final Map<UUID, Long> lastClaimAction = new ConcurrentHashMap<>();
+
     // Index: ChunkKey -> faction ID for fast lookups
     private final Map<ChunkKey, UUID> claimIndex = new ConcurrentHashMap<>();
 
@@ -336,6 +340,15 @@ public class ClaimManager {
      * @return the result
      */
     public ClaimResult claim(@NotNull UUID playerUuid, @NotNull String world, int chunkX, int chunkZ) {
+        // Debounce: prevent rapid repeated claims from double-firing UI events (#56)
+        long now = System.currentTimeMillis();
+        Long lastAction = lastClaimAction.get(playerUuid);
+        if (lastAction != null && (now - lastAction) < CLAIM_DEBOUNCE_MS) {
+            Logger.debugClaim("Claim debounced for player %s (%.0fms since last action)", playerUuid, (double)(now - lastAction));
+            return ClaimResult.ALREADY_CLAIMED_SELF;
+        }
+        lastClaimAction.put(playerUuid, now);
+
         // Check permission first
         if (!PermissionManager.get().hasPermission(playerUuid, Permissions.CLAIM)) {
             return ClaimResult.NO_PERMISSION;
@@ -423,6 +436,15 @@ public class ClaimManager {
      * @return the result
      */
     public ClaimResult unclaim(@NotNull UUID playerUuid, @NotNull String world, int chunkX, int chunkZ) {
+        // Debounce: prevent rapid repeated unclaims from double-firing UI events (#56)
+        long now = System.currentTimeMillis();
+        Long lastAction = lastClaimAction.get(playerUuid);
+        if (lastAction != null && (now - lastAction) < CLAIM_DEBOUNCE_MS) {
+            Logger.debugClaim("Unclaim debounced for player %s (%.0fms since last action)", playerUuid, (double)(now - lastAction));
+            return ClaimResult.CHUNK_NOT_CLAIMED;
+        }
+        lastClaimAction.put(playerUuid, now);
+
         // Check permission first
         if (!PermissionManager.get().hasPermission(playerUuid, Permissions.UNCLAIM)) {
             return ClaimResult.NO_PERMISSION;
