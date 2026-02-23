@@ -1,6 +1,6 @@
 # HyperFactions Config System
 
-> **Version**: 0.8.2 | **Config version**: 5 | **8 module configs**
+> **Version**: 0.9.0 | **Config version**: 5 | **8 module configs**
 
 Architecture documentation for the HyperFactions configuration system.
 
@@ -279,6 +279,18 @@ Permission behavior:
 |-----|------|---------|-------------|
 | `adminRequiresOp` | bool | true | Admin commands require OP |
 | `fallbackBehavior` | string | "deny" | Default when no provider |
+
+### updates.hyperProtect
+
+[HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) lifecycle management:
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `autoDownload` | bool | false | Auto-download HP-Mixin to `earlyplugins/` if not installed |
+| `autoUpdate` | bool | true | Check for HP-Mixin updates on startup, notify admins |
+| `url` | string | GitHub Releases API | API endpoint for version checking |
+
+When `autoDownload` is disabled and HP-Mixin is not installed, the server logs install instructions. Use `/f admin update mixin` for manual install/update regardless of config. Use `/f admin update toggle-mixin-download` to toggle auto-download at runtime (persisted).
 
 ## Module Configs
 

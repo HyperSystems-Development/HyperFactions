@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+**Closes:** [#10](https://github.com/HyperSystemsDev/HyperFactions/issues/10), [#13](https://github.com/HyperSystemsDev/HyperFactions/issues/13), [#14](https://github.com/HyperSystemsDev/HyperFactions/issues/14), [#46](https://github.com/HyperSystemsDev/HyperFactions/issues/46), [#50](https://github.com/HyperSystemsDev/HyperFactions/issues/50), [#51](https://github.com/HyperSystemsDev/HyperFactions/issues/51), [#52](https://github.com/HyperSystemsDev/HyperFactions/issues/52), [#53](https://github.com/HyperSystemsDev/HyperFactions/issues/53), [#55](https://github.com/HyperSystemsDev/HyperFactions/issues/55), [#56](https://github.com/HyperSystemsDev/HyperFactions/issues/56), [#57](https://github.com/HyperSystemsDev/HyperFactions/issues/57)
+
 ### Added
 
 **Granular Friendly Fire Flags**
@@ -38,6 +40,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Contributor docs**: Updated CONTRIBUTING.md and README.md with soft dependency download instructions and CurseForge links
 - **Developer docs**: Updated README and API reference with JitPack dependency instructions, marked WiFlow/Gravestone libs as optional
 
+**New Player Experience GUI**
+- **Create faction page redesign**: Two-column form combining name, tag, color picker, description, recruitment setting, and full territory permissions with live preview into a single screen. Permission toggles support parent-child hierarchy with server-locked flags greyed out
+- **New player map terrain mode**: New player territory map now respects `terrain-map-enabled` config, showing terrain imagery with semi-transparent claim overlays matching the faction map style. All claims shown as "Other" since new players have no faction
+- **New player map OG rendering**: OrbisGuard-protected regions shown on new player territory map in both flat and terrain modes with dynamic legend entry
+
+**Admin Tools**
+- **Admin zone map terrain mode**: `/f admin zone map` now respects `terrain-map-enabled` config, showing terrain imagery behind semi-transparent zone overlays (75% opacity for current zone, 50% for other zones, 63% for faction claims). Uses `ChunkMapAsset` async pipeline matching the faction territory map pattern
+- **Admin zone map OG rendering**: OrbisGuard-protected regions shown on admin zone map in both flat and terrain modes with dynamic legend entry
+
 **OrbisGuard Compatibility**
 - **Hook chaining**: All 11 OrbisGuard-Mixins hooks now chain with existing OG hooks instead of overwriting them. When OG registers hooks before HF, the originals are captured and called first — if OG denies the action (region protection), HF respects it; if OG allows, HF applies faction-based checks on top. Hooks are restored to originals on unregister
 - **OrbisGuard API integration**: New `OrbisGuardIntegration` class provides soft-dependency access to OG's region container via reflection and cached MethodHandles. Supports `getRegionsAt()` for point queries, `canCreateClaim()` for chunk-level AABB checks, and `getLoadedManagers()` for region enumeration
@@ -68,11 +79,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **BackupManager**: Simplified backup directory handling and error reporting
 - **StorageUtils**: Streamlined file I/O operations
 - **HP-Mixin auto-download**: Default changed to `false` (opt-in). Detects on-disk JAR that failed to initialize and checks for updates against the existing version. When no JAR exists and auto-download is off, logs install instructions instead of silently skipping
+- **Faction members list**: Member list container now uses `TopScrolling` layout with scrollbar for overflow handling
 
 ### Fixed
 
-- **Permission toggle children not enabling**: Fixed parent-child checkbox state in faction settings — toggling a parent permission (e.g., Interact) ON now immediately enables its children (Door, Chest, etc.) without requiring a page close/reopen. Root cause: `Disabled` state was only ever set to `true` but never explicitly reset to `false` on update
+- **Permission toggle children not enabling**: Fixed parent-child checkbox state in faction settings and create faction page — toggling a parent permission (e.g., Interact) ON now immediately enables its children (Door, Chest, etc.) without requiring a page close/reopen. Root cause: `Disabled` state was only ever set to `true` but never explicitly reset to `false` on update, and toggling sent an empty update instead of rebuilding the toggle tree
 - **Claim blocking in OG regions**: Fixed `isChunkProtected()` using 16-block chunk size (`<< 4`) instead of Hytale's 32-block chunks (`<< 5`), causing protection checks to examine the wrong area and fail to block claims
+- **New player map terrain crash**: Fixed crash when opening new player map in terrain mode — `#FactionLegend.Visible` selector targeted an element only present in the flat template
 
 ## [0.8.1] - 2026-02-17
 

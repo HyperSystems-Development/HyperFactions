@@ -1,6 +1,6 @@
 # HyperFactions Storage Layer
 
-> **Version**: 0.8.0
+> **Version**: 0.9.0
 
 Architecture documentation for the HyperFactions data persistence system.
 

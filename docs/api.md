@@ -1,6 +1,6 @@
 # HyperFactions Developer API Reference
 
-> **Version**: 0.8.0 | **Package**: `com.hyperfactions.api`
+> **Version**: 0.9.0 | **Package**: `com.hyperfactions.api`
 
 This document is for third-party mod developers who want to hook into HyperFactions from their own plugins.
 

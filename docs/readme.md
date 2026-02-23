@@ -1,6 +1,6 @@
 # HyperFactions Developer Documentation
 
-> **Version**: 0.8.2 | **377 classes** | **69 packages** | **20 managers** | **42 commands** | **60 permissions**
+> **Version**: 0.9.0 | **377 classes** | **69 packages** | **20 managers** | **42 commands** | **60 permissions**
 
 Developer documentation for HyperFactions - a comprehensive faction management plugin for Hytale servers.
 
@@ -22,14 +22,14 @@ Developer documentation for HyperFactions - a comprehensive faction management p
 | [config.md](config.md) | Config system - ConfigManager, 8 modules, config v5 migration |
 | [storage.md](storage.md) | Storage layer - interfaces, JSON adapters, backup system |
 | [gui.md](gui.md) | GUI system - 59 pages, 3 registries, navigation flows |
-| [protection.md](protection.md) | Protection system - ECS handlers, OrbisGuard-Mixins hooks |
+| [protection.md](protection.md) | Protection system - ECS handlers, protection mixin hooks (HyperProtect-Mixin / OrbisGuard-Mixins) |
 
 ### API & Integrations
 
 | Document | Description |
 |----------|-------------|
 | [api.md](api.md) | Developer API reference - HyperFactionsAPI, EconomyAPI, EventBus |
-| [integrations.md](integrations.md) | Integration breakdown - permissions, PAPI, WiFlow, OrbisGuard, Gravestones, world map |
+| [integrations.md](integrations.md) | Integration breakdown - permissions, PAPI, WiFlow, HyperProtect-Mixin, OrbisGuard, Gravestones, world map |
 | [placeholders.md](placeholders.md) | Placeholder reference - all 35 PAPI & WiFlow placeholders with examples |
 
 ### Feature Documentation
@@ -102,7 +102,7 @@ src/main/java/com/hyperfactions/         (377 classes, 69 packages)
 ├── api/                        # Public API, EventBus, EconomyAPI
 ├── integration/                # External integrations
 │   ├── permissions/            # Permission providers (HyperPerms, LuckPerms, etc.)
-│   ├── protection/             # Protection integrations (OrbisGuard, Gravestones)
+│   ├── protection/             # Protection integrations (HyperProtect-Mixin, OrbisGuard, Gravestones)
 │   └── placeholder/            # Placeholder integrations (PAPI, WiFlow)
 ├── backup/                     # GFS backup management
 ├── migration/                  # Config migration (v1→v2→v3→v4→v5)

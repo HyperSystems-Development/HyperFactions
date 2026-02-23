@@ -7,23 +7,22 @@
 <ul>
     <li>🖥️ <strong><span style="color: #f0b232;">59 Interactive GUI Pages</span></strong> - Every feature has a polished, interactive GUI. No command memorization needed.</li>
     <li>⚡ <strong><span style="color: #f0b232;">Real-Time GUI Updates</span></strong> - When a member joins, a chunk is claimed, or a relation changes, every open GUI refreshes automatically.</li>
-    <li>🛡️ <strong><span style="color: #f0b232;">25+ Zone Flags</span></strong> - The most granular territory protection available, from PvP to mob spawning to F-key pickup control.</li>
+    <li>🛡️ <strong><span style="color: #f0b232;">31 Zone Flags</span></strong> - The most granular territory protection available, from PvP and granular friendly fire to mob spawning, transport control, and F-key pickup.</li>
     <li>📦 <strong><span style="color: #f0b232;">Data Import</span></strong> - Migrating from ElbaphFactions or HyFactions? One command imports your factions, claims, and relations.</li>
     <li>⚙️ <strong><span style="color: #f0b232;">Deep Configurability</span></strong> - 8 modular config files covering every aspect of gameplay, with more planned as new modules are added. Tune it to your server's style.</li>
     <li>🚀 <strong><span style="color: #f0b232;">Active Development</span></strong> - Regular updates with community-driven features. Open source on GitHub.</li>
 </ul>
 <p>&nbsp;</p>
-<h2><span style="color: #f0b232;">🆕 Recent Highlights</span></h2>
+<h2><span style="color: #f0b232;">🆕 What's New in v0.9.0</span></h2>
 <ul>
-    <li>💰 <strong><span style="color: #61afef;">Faction Treasury &amp; Economy</span></strong> - Full treasury system with deposits, withdrawals, transfers, transaction logs, and VaultUnlocked integration</li>
-    <li>🗺️ <strong><span style="color: #61afef;">Terrain Map Mode</span></strong> - Territory map renders actual terrain imagery behind claim overlays using chunk world map data</li>
-    <li>👤 <strong><span style="color: #61afef;">Player Info &amp; History</span></strong> - Player profiles with combat stats, membership history, and faction membership tracking</li>
-    <li>⚡ <strong><span style="color: #61afef;">Admin Power Management</span></strong> - Full admin power control with per-player overrides, bypass toggles, and bulk operations</li>
-    <li>🧭 <strong><span style="color: #61afef;">Map &amp; Compass Visibility</span></strong> - Faction-aware player visibility filtering on world map and compass</li>
-    <li>❓ <strong><span style="color: #61afef;">Help Center Redesign</span></strong> - Guide-first help with 7 colored categories, sidebar navigation, and i18n foundation</li>
-    <li>🤝 <strong><span style="color: #61afef;">Relations Redesign</span></strong> - Merged 3-tab layout into streamlined 2-tab design with inline quick actions</li>
-    <li>🔍 <strong><span style="color: #61afef;">Admin Search &amp; Sort</span></strong> - Search bars and sort options added to all admin list pages</li>
-    <li>🏗️ <strong><span style="color: #61afef;">Codebase Refactor</span></strong> - MessageUtil, UiUtil, reorganized packages, decomposed 3 monolithic classes</li>
+    <li>🛡️ <strong><span style="color: #61afef;">HyperProtect-Mixin Integration</span></strong> - 20 protection hooks via our new recommended mixin system, with auto-download, auto-update, and dual-provider support alongside OrbisGuard-Mixins</li>
+    <li>⚔️ <strong><span style="color: #61afef;">Granular Friendly Fire</span></strong> - 3-level combat hierarchy: PvP → Friendly Fire → per-faction / per-ally, all configurable per zone</li>
+    <li>🌍 <strong><span style="color: #61afef;">OrbisGuard Compatibility</span></strong> - Region protection integration with claim blocking, world map rendering, and territory map overlay for OG-protected regions</li>
+    <li>💀 <strong><span style="color: #61afef;">Configurable Death Power Loss</span></strong> - Separate toggles for mob deaths and environmental deaths, independent from PvP power loss</li>
+    <li>🚪 <strong><span style="color: #61afef;">7 New Zone Flags</span></strong> - Explosion damage, fire spread, block place, hammer use, builder tools, teleporter use, and portal use</li>
+    <li>🔄 <strong><span style="color: #61afef;">Auto-Update for Mixin</span></strong> - HyperProtect-Mixin auto-download and version checking with <code>/f admin update mixin</code></li>
+    <li>📦 <strong><span style="color: #61afef;">JitPack Publishing</span></strong> - Developers can now depend on HyperFactions via Maven/Gradle with no authentication</li>
+    <li>🛠️ <strong><span style="color: #61afef;">8 Bug Fixes</span></strong> - Permission toggle children, OG region claim blocking, and more</li>
 </ul>
 <p>&nbsp;</p>
 <h2><span style="color: #5b8def;">🏰 Core Features</span></h2>
@@ -53,7 +52,7 @@
 <ul>
     <li><strong>Personal power</strong> per player (configurable cap, default 20)</li>
     <li><strong>Automatic regeneration</strong> at configurable intervals</li>
-    <li><strong>Power loss on death</strong> detected via Hytale's ECS system</li>
+    <li><strong>Power loss on death</strong> detected via Hytale's ECS system, with separate toggles for PvP, mob, and environmental deaths</li>
     <li><strong>Configurable power cost per claim</strong> (default: 2 power per chunk)</li>
     <li><strong>No power loss in WarZones</strong> - Fight freely in designated PvP arenas</li>
     <li><strong>Neutral kill penalty</strong> - Configurable power loss for attacking neutral players</li>
@@ -76,15 +75,16 @@
 </ul>
 <p>&nbsp;</p>
 <h2><span style="color: #e06c75;">🛡️ Protection System</span></h2>
-<p>HyperFactions provides comprehensive territory protection with <strong><span style="color: #f0b232;">25+ configurable zone flags</span></strong> organized into categories:</p>
+<p>HyperFactions provides comprehensive territory protection with <strong><span style="color: #f0b232;">31 configurable zone flags</span></strong> organized into categories:</p>
 <ul>
-    <li>⚔️ <strong><span style="color: #e06c75;">Combat</span></strong> - PvP enabled, friendly fire, projectile damage, mob damage</li>
-    <li>🧱 <strong><span style="color: #d19a66;">Building</span></strong> - Block placement, block breaking</li>
+    <li>⚔️ <strong><span style="color: #e06c75;">Combat</span></strong> - PvP enabled, friendly fire (with per-faction and per-ally sub-flags), projectile damage, mob damage</li>
+    <li>🧱 <strong><span style="color: #d19a66;">Building</span></strong> - Build allowed (master), block place <em>(mixin)</em>, hammer use <em>(mixin)</em>, builder tools <em>(mixin)</em></li>
     <li>🚪 <strong><span style="color: #61afef;">Interaction</span></strong> - Block interaction (master), doors, containers, crafting benches, processing blocks, seats</li>
-    <li>🎒 <strong><span style="color: #c678dd;">Items</span></strong> - Item drop, auto pickup, F-key pickup <em>(requires mixin)</em>, invincible items <em>(requires mixin)</em></li>
+    <li>🎒 <strong><span style="color: #c678dd;">Items</span></strong> - Item drop, auto pickup, F-key pickup <em>(mixin)</em>, invincible items <em>(mixin)</em></li>
     <li>🐾 <strong><span style="color: #98c379;">Spawning</span></strong> - Mob spawning (master), hostile mobs, passive mobs, neutral mobs, NPC spawning</li>
-    <li>💀 <strong><span style="color: #abb2bf;">Death</span></strong> - Keep inventory <em>(requires mixin)</em></li>
-    <li>💥 <strong><span style="color: #e5c07b;">Damage</span></strong> - Fall damage, environmental damage</li>
+    <li>💀 <strong><span style="color: #abb2bf;">Death</span></strong> - Keep inventory <em>(mixin)</em>, power loss</li>
+    <li>💥 <strong><span style="color: #e5c07b;">Damage</span></strong> - Fall damage, environmental damage, explosion damage <em>(mixin)</em>, fire spread <em>(mixin)</em></li>
+    <li>🚀 <strong><span style="color: #56b6c2;">Transport</span></strong> - Teleporter use <em>(mixin)</em>, portal use <em>(mixin)</em></li>
 </ul>
 <p>&nbsp;</p>
 <h2><span style="color: #98c379;">🏟️ SafeZones</span> &amp; <span style="color: #e06c75;">WarZones</span></h2>
@@ -200,8 +200,9 @@
 </ul>
 <h3>🛡️ Protection Extensions</h3>
 <ul>
-    <li>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/hyxin" rel="nofollow">Hyxin</a></strong> + <strong><a href="https://www.curseforge.com/hytale/mods/orbisguard-mixins" rel="nofollow">OrbisGuard-Mixins</a></strong> - Enables F-key pickup protection, keep inventory, invincible items, and NPC spawn hooks</li>
-    <li><strong>⭐ <a href="https://www.curseforge.com/hytale/mods/hybounty" rel="nofollow">HyBounty</a></strong> - Place bounties on other players with protections against abuse</li>
+    <li>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/hyxin" rel="nofollow">Hyxin</a></strong> + <strong><a href="https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin" rel="nofollow">HyperProtect-Mixin</a></strong> - <span style="color: #98c379;">Recommended</span> &mdash; 20 protection hooks including F-key pickup, keep inventory, explosion/fire protection, block placement, transport control, entity damage, and more</li>
+    <li><strong><a href="https://www.curseforge.com/hytale/mods/hyxin" rel="nofollow">Hyxin</a></strong> + <strong><a href="https://www.curseforge.com/hytale/mods/orbisguard-mixins" rel="nofollow">OrbisGuard-Mixins</a></strong> - Alternative &mdash; 11 protection hooks. Both can run simultaneously (HyperFactions auto-detects and routes hooks accordingly)</li>
+    <li>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/hybounty" rel="nofollow">HyBounty</a></strong> - Place bounties on other players with protections against abuse</li>
 </ul>
 <h3>📊 Placeholder Systems</h3>
 <ul>
@@ -213,10 +214,13 @@
     <li><strong>ElbaphFactions</strong> - Full import of factions, members, claims, relations, and zones</li>
     <li><strong>HyFactions</strong> - Full import with validation reporting</li>
 </ul>
+<h3>🗺️ Region Protection</h3>
+<ul>
+    <li><strong><a href="https://www.curseforge.com/hytale/mods/orbisguard" rel="nofollow">OrbisGuard</a></strong> - Auto-blocks claims in OG-protected regions, renders OG regions on world map and territory GUI with colored overlays</li>
+</ul>
 <h3>🔮 Upcoming Integrations</h3>
 <ul>
     <li>💰 <strong><a href="https://www.curseforge.com/hytale/mods/ecotale" rel="nofollow">Ecotale</a></strong> - Economy integration for faction banks, upkeep, and faction shops <span style="color: #e5c07b;">(Planned)</span></li>
-    <li><strong><a href="https://www.curseforge.com/hytale/mods/orbisguard" rel="nofollow">OrbisGuard</a></strong> - Region protection integration <span style="color: #e5c07b;">(Planned)</span></li>
     <li>📈 <strong><a href="https://www.curseforge.com/hytale/mods/rpg-leveling-and-stats" rel="nofollow">RPG Leveling</a></strong> - Faction bonuses and level-based perks for faction members <span style="color: #e5c07b;">(Planned)</span></li>
     <li>🗣️ <strong><a href="https://www.curseforge.com/hytale/mods/npc-dialog" rel="nofollow">NPC Dialog</a></strong> - Faction NPCs and dialog interactions in claimed territory <span style="color: #e5c07b;">(Planned)</span></li>
     <li>📝 <strong><a href="https://www.curseforge.com/hytale/mods/npc-dialog-npc-quests-maker" rel="nofollow">NPC Quests Maker</a></strong> - Faction quests and mission systems <span style="color: #e5c07b;">(Planned)</span></li>
@@ -236,7 +240,7 @@
 <h3>For Full Protection (Recommended)</h3>
 <ol>
     <li>Create an <code>earlyplugins/</code> folder in your server directory</li>
-    <li>Place <a href="https://www.curseforge.com/hytale/mods/hyxin" rel="nofollow">Hyxin</a> and <a href="https://www.curseforge.com/hytale/mods/orbisguard-mixins" rel="nofollow">OrbisGuard-Mixins</a> JARs in <code>earlyplugins/</code> (NOT mods/)</li>
+    <li>Place <a href="https://www.curseforge.com/hytale/mods/hyxin" rel="nofollow">Hyxin</a> and <a href="https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin" rel="nofollow">HyperProtect-Mixin</a> JARs in <code>earlyplugins/</code> (NOT mods/)</li>
     <li>Add the <code>--accept-early-plugins</code> flag to your server start script:</li>
 </ol>
 <p>&nbsp;</p>
@@ -244,7 +248,8 @@
 <pre>DEFAULT_ARGS="--accept-early-plugins --assets ../Assets.zip --backup --backup-dir backups --backup-frequency 30"</pre>
 <p><strong>Windows:</strong></p>
 <pre>set DEFAULT_ARGS=--accept-early-plugins --assets ../Assets.zip --backup --backup-dir backups --backup-frequency 30</pre>
-<p><span style="color: #e03e2d;"><strong><em>HyperFactions works without Hyxin/OrbisGuard-Mixins, but some zone protections (F-key pickup, keep inventory, invincible items, NPC spawn control) require the mixin system.</em></strong></span></p>
+<p><span style="color: #e03e2d;"><strong><em>HyperFactions works without a mixin system, but 11 zone flags (explosion, fire, block placement, transport, keep inventory, etc.) require <a href="https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin" style="color: #e03e2d;" rel="nofollow">HyperProtect-Mixin</a> or <a href="https://www.curseforge.com/hytale/mods/orbisguard-mixins" style="color: #e03e2d;" rel="nofollow">OrbisGuard-Mixins</a>.</em></strong></span></p>
+<p><span style="color: #98c379;"><strong>💡 Tip:</strong> HyperFactions can auto-download HyperProtect-Mixin for you! Enable <code>autoDownload</code> in config or run <code>/f admin update mixin</code> in-game.</span></p>
 <h3>🚀 Quick Start</h3>
 <p><strong>1. Grant permissions</strong> (with <a href="https://www.curseforge.com/hytale/mods/hyperperms" rel="nofollow">HyperPerms</a>):</p>
 <pre>/hp group setperm default hyperfactions.use
@@ -370,7 +375,7 @@
 }
 
 dependencies {
-    compileOnly 'com.github.HyperSystemsDev:HyperFactions:v0.8.1'
+    compileOnly 'com.github.HyperSystemsDev:HyperFactions:v0.9.0'
 }</pre>
 <p>See the full <a href="https://github.com/HyperSystemsDev/HyperFactions/blob/main/docs/api.md" rel="nofollow">Developer API Reference</a> on GitHub for API usage, event listeners, economy integration, and more.</p>
 <p>&nbsp;</p>

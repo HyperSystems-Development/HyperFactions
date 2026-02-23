@@ -1,6 +1,6 @@
 # HyperFactions Integration Breakdown
 
-> **Version**: 0.8.2 | **Package**: `com.hyperfactions.integration`
+> **Version**: 0.9.0 | **Package**: `com.hyperfactions.integration`
 
 HyperFactions integrates with external plugins through soft dependencies. All integrations use reflection-based detection and fail-open design — if a dependency is missing, the feature gracefully degrades.
 
@@ -13,6 +13,8 @@ HyperFactions integrates with external plugins through soft dependencies. All in
 - [PlaceholderAPI (PAPI)](#placeholderapi-papi)
 - [WiFlow PlaceholderAPI](#wiflow-placeholderapi)
 - [OrbisGuard](#orbisguard)
+- [Protection Mixin Bridge](#protection-mixin-bridge)
+- [HyperProtect-Mixin](#hyperprotect-mixin) (recommended)
 - [OrbisGuard-Mixins](#orbisguard-mixins)
 - [World Map](#world-map)
 - [GravestonePlugin](#gravestoneplugin)
@@ -28,26 +30,31 @@ graph TD
     HF --> PAPI[PlaceholderAPI]
     HF --> WF[WiFlow]
     HF --> OG[OrbisGuard]
-    HF --> OGM[OrbisGuard-Mixins]
+    HF --> PMB[ProtectionMixinBridge]
     HF --> WM[World Map]
     HF --> GS[Gravestones]
-    HF --> HP[HyperPerms Context]
+    HF --> HPC[HyperPerms Context]
 
     PM --> VU[VaultUnlocked]
     PM --> HPP[HyperPerms]
     PM --> LP[LuckPerms]
 
-    OGM -->|System.getProperties| Hooks[11 Hook Callbacks]
+    PMB -->|auto-detect| HPM[HyperProtect-Mixin]
+    PMB -->|auto-detect| OGM[OrbisGuard-Mixins]
+    HPM -->|bridge slots| HPHooks[20 Hook Wrappers]
+    OGM -->|System.getProperties| OGHooks[11 Hook Callbacks]
 
     style HF fill:#2563eb,color:#fff
     style PM fill:#7c3aed,color:#fff
     style PAPI fill:#059669,color:#fff
     style WF fill:#059669,color:#fff
     style OG fill:#d97706,color:#fff
+    style PMB fill:#dc2626,color:#fff
+    style HPM fill:#059669,color:#fff
     style OGM fill:#d97706,color:#fff
     style WM fill:#0891b2,color:#fff
     style GS fill:#dc2626,color:#fff
-    style HP fill:#7c3aed,color:#fff
+    style HPC fill:#7c3aed,color:#fff
 ```
 
 All integrations share these design principles:
@@ -190,10 +197,149 @@ When OrbisGuard is installed, HyperFactions checks for protective regions before
 
 ---
 
+## Protection Mixin Bridge
+
+**Package**: `com.hyperfactions.integration.protection`
+**Class**: [`ProtectionMixinBridge.java`](../src/main/java/com/hyperfactions/integration/protection/ProtectionMixinBridge.java)
+**Purpose**: Unified facade that auto-detects which mixin system(s) are available and routes protection hooks accordingly
+
+HyperFactions supports two mixin providers for extended protection coverage: **[HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin)** (recommended) and **OrbisGuard-Mixins**. The `ProtectionMixinBridge` automatically detects which system(s) are installed and registers the appropriate hooks — no configuration required from the admin.
+
+### Provider Modes
+
+| Mode | Condition | Behavior |
+|------|-----------|----------|
+| `HYPERPROTECT` | Only HyperProtect-Mixin installed | All 20 HP hooks registered (standalone) |
+| `ORBISGUARD` | Only OrbisGuard-Mixins installed | All 11 OG hooks registered |
+| `BOTH` | Both installed | OG handles its 11 features + HP handles 5 unique features |
+| `NONE` | Neither installed | Graceful degradation — ECS-based protection only |
+
+### Detection Logic
+
+1. **HyperProtect-Mixin**: Checks system properties (`hyperprotect.bridge.active`, `hyperprotect.intercept.*`), falls back to JAR file detection in `earlyplugins/`
+2. **OrbisGuard-Mixins**: Checks system properties (`orbisguard.mixins.loaded`, `orbisguard.mixin.*.loaded`)
+
+### Initialization
+
+Called during `HyperFactionsPlugin.start()`:
+
+```java
+private void initializeProtectionMixins() {
+    OrbisGuardIntegration.init();        // OG API (region conflict detection)
+    ProtectionMixinBridge.init();         // Detect mixin providers
+    ProtectionMixinBridge.registerAllHooks(hyperFactions); // Register applicable hooks
+}
+```
+
+### BOTH Mode Details
+
+When both systems are installed simultaneously:
+
+1. HyperProtect-Mixin's `HyperProtectConfigPlugin` automatically disables 17 conflicting mixins
+2. OrbisGuard handles its 11 features with hook chaining (preserves OG's region checks)
+3. HyperProtect provides 5 unique features not covered by OG (teleporter, portal, container_open, entity_damage, respawn)
+
+### Admin Commands
+
+- `/f admin integrations` — Shows mixin provider status, version, and hook details
+- `/f admin integration hyperprotect` (aliases: `hp`) — Detailed HP-Mixin status
+- `/f admin integration mixins` — Detailed OG-Mixins status
+
+---
+
+## HyperProtect-Mixin
+
+**Package**: `com.hyperfactions.integration.protection`
+**Class**: [`HyperProtectIntegration.java`](../src/main/java/com/hyperfactions/integration/protection/HyperProtectIntegration.java)
+**Purpose**: Protection via [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) bridge-slot architecture — the **recommended** mixin provider
+
+> **Install**: Download from [CurseForge](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) or [GitHub](https://github.com/HyperSystemsDev/HyperProtect-Mixin) and place in `earlyplugins/`
+
+HyperProtect-Mixin is the preferred mixin for HyperFactions. It provides 20 hook slots covering all protection scenarios including features not available in OrbisGuard-Mixins (teleporter/portal blocking, entity damage, container access, respawn override). It uses an `AtomicReferenceArray` at `System.getProperties().get("hyperprotect.bridge")` for cross-classloader communication.
+
+### Verdict Protocol
+
+| Code | Meaning | Description |
+|------|---------|-------------|
+| 0 | `ALLOW` | Action permitted |
+| 1 | `DENY_WITH_MESSAGE` | Denied — interceptor calls `fetchDenyReason()` for message |
+| 2 | `DENY_SILENT` | Denied — no message sent |
+| 3 | `DENY_MOD_HANDLES` | Denied — consumer mod (HyperFactions) sends the message |
+
+### Hook Slots (20)
+
+| Slot | Feature | Purpose |
+|------|---------|---------|
+| 0 | `block_break` | Block break protection |
+| 1 | `explosion` | Explosion damage blocking |
+| 2 | `fire_spread` | Fire spread blocking |
+| 3 | `builder_tools` | Builder tool paste protection |
+| 4 | `item_pickup` | Item pickup (F-key/auto) |
+| 5 | `death_drop` | Keep inventory on death |
+| 6 | `durability` | Prevent durability loss |
+| 7 | `container_access` | Crafting bench/container access |
+| 8 | `mob_spawn` | Mob spawning control |
+| 9 | `teleporter` | Teleporter block use |
+| 10 | `portal` | Portal block use |
+| 11 | `command` | Command blocking |
+| 12 | `interaction_log` | Interaction logging filter |
+| 15 | `format_handle` | Message formatting (ChatFormatter MethodHandle) |
+| 16 | `entity_damage` | PvP/entity damage |
+| 17 | `container_open` | Open containers |
+| 18 | `block_place` | Block placement protection |
+| 19 | `hammer` | Hammer block cycling |
+| 20 | `use` | Block interaction (campfire, lantern) |
+| 21 | `seat` | Seat/mount seating |
+| 22 | `respawn` | Custom respawn location override |
+
+### Return Conventions
+
+- Methods returning `String`: `null` = allowed, non-null = denial message (cached in ThreadLocal for DENY_WITH_MESSAGE)
+- Methods returning `boolean`: `true` = block/deny, `false` = allow
+- Methods returning `double[]`: respawn coordinates, or `null` for default
+
+### Features Unique to HyperProtect-Mixin
+
+These features are **only available** with HyperProtect-Mixin (not OrbisGuard-Mixins):
+
+| Feature | Description |
+|---------|-------------|
+| Teleporter blocking | Prevents teleporter use in protected zones/territory |
+| Portal blocking | Prevents portal use in protected zones/territory |
+| Container open | Prevents opening containers in protected areas |
+| Entity damage | PvP and entity damage interception via mixin |
+| Respawn override | Custom respawn location based on faction home/zone |
+| Fire spread | Blocks fire spread in claimed/zoned territory |
+| Builder tools | Protects against builder tool paste in protected areas |
+| Interaction logging | Filters interaction logs in protected areas |
+
+### Auto-Download & Auto-Update
+
+HyperFactions can automatically manage HyperProtect-Mixin:
+
+| Config Key | Type | Default | Description |
+|------------|------|---------|-------------|
+| `updates.hyperProtect.autoDownload` | bool | `false` | Auto-download HP-Mixin if not installed |
+| `updates.hyperProtect.autoUpdate` | bool | `true` | Check for updates on startup, notify admins |
+| `updates.hyperProtect.url` | string | GitHub Releases API | API endpoint for version checking |
+
+**Manual commands:**
+- `/f admin update mixin` — Check for and download HP-Mixin updates (or initial install)
+- `/f admin update toggle-mixin-download` — Toggle auto-download on/off (persisted)
+
+### Fail-Open Design
+
+All hooks fail-open on error (return the permissive default). Cross-classloader compatibility is maintained via reflection and MethodHandles — no direct dependency on the HP-Mixin JAR.
+
+---
+
 ## OrbisGuard-Mixins
 
 **Package**: `com.hyperfactions.integration.protection`
-**Purpose**: Enhanced protection via Hyxin mixin hooks for events not available through normal APIs
+**Class**: [`OrbisMixinsIntegration.java`](../src/main/java/com/hyperfactions/integration/protection/OrbisMixinsIntegration.java)
+**Purpose**: Legacy protection via OrbisGuard-Mixins hooks for events not available through normal APIs
+
+> **Note**: [HyperProtect-Mixin](#hyperprotect-mixin) is the **recommended** mixin provider. OrbisGuard-Mixins remains fully supported as an alternative. All hook registration is handled through the [ProtectionMixinBridge](#protection-mixin-bridge).
 
 OrbisGuard-Mixins extends protection coverage to interactions that Hytale's event system doesn't expose (F-key pickup, hammer cycling, campfire toggling, etc.). It uses `System.getProperties()` for cross-classloader communication — no direct dependency required.
 
@@ -255,17 +401,11 @@ OrbisGuard-Mixins 0.8.3 introduced new mixin entry points that call hook methods
 
 Both serve as defense-in-depth alongside HyperFactions' own codec replacements. The mixin fires first; if `orbisguard.bypass` is granted, only the codec replacement protects.
 
-### Hook Wiring
+### Hook Registration
 
-All protection hooks are wired in [`lifecycle/CallbackWiring.java`](../src/main/java/com/hyperfactions/lifecycle/CallbackWiring.java):
+All OrbisGuard-Mixins hooks are registered through [`ProtectionMixinBridge`](#protection-mixin-bridge), which delegates to `OrbisMixinsIntegration.registerAllHooks()`. The bridge handles hook chaining — if OrbisGuard registers its own hooks before HyperFactions, the originals are captured and called first (OG region checks respected, then faction-based checks applied on top).
 
-| Wiring Method | Hook | Protection Logic |
-|---------------|------|-----------------|
-| `wireExplosionProtection()` | ExplosionHook | Block explosions in claimed territory and safezones |
-| `wireHarvestProtection()` | HarvestHook | Check zone ITEM_PICKUP_MANUAL flag + faction INTERACT permission |
-| `wireHammerProtection()` | HammerHook | Check safezone + faction BUILD permission |
-
-Harvest and hammer hooks return empty string `""` for denials (blocks action silently) because `UseBlockEvent.Pre` already sends the denial message — returning a non-empty message would cause duplicate notifications.
+Legacy wiring methods (`wireExplosionProtection`, `wireHarvestProtection`, `wireHammerProtection`) have been removed from `CallbackWiring` — all protection hooks now flow through `ProtectionMixinBridge`.
 
 ### Fail-Open Design
 
@@ -394,9 +534,9 @@ Gravestone lifecycle events are logged when `debug integration` is enabled:
 
 ### Admin Commands
 
-- `/f admin integrations` — Summary status of all 7 integrations (permissions, protection, placeholders)
+- `/f admin integrations` — Summary status of all integrations (permissions, protection, placeholders)
 - `/f admin integration <name>` — Detailed status for a specific integration
-  - Names: `hyperperms`/`perms`, `orbisguard`/`orbis`, `mixins`, `gravestones`/`gs`, `papi`, `wiflow`
+  - Names: `hyperperms`/`perms`, `orbisguard`/`orbis`, `hyperprotect`/`hp`, `mixins`, `gravestones`/`gs`, `papi`, `wiflow`
 - `/f admin debug toggle integration` — Enable/disable integration debug logging
 
 ### Graceful Degradation

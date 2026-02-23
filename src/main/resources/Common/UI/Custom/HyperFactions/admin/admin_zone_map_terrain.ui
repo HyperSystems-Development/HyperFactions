@@ -1,0 +1,164 @@
+// Admin Zone Map Page - Terrain Mode
+// Interactive 17x17 chunk grid with terrain imagery behind zone overlays
+// Left-click unclaimed to claim for zone, right-click zone chunk to unclaim
+
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+
+$C.@PageOverlay {}
+
+$C.@Container {
+  Anchor: (Width: 620, Height: 760);
+
+  #Title {
+    $C.@Title {
+      @Text = "Zone Map Editor";
+    }
+  }
+
+  #Content {
+    LayoutMode: Top;
+    Padding: (Left: 10, Right: 10, Top: 8, Bottom: 6);
+
+    // Zone header info
+    Group #ZoneHeader {
+      Anchor: (Height: 22, Bottom: 3);
+      LayoutMode: Left;
+
+      Label #ZoneTitle {
+        Text: "Zone Name (Type)";
+        Style: (FontSize: 13, TextColor: #00FFFF, RenderBold: true, VerticalAlignment: Center);
+        FlexWeight: 1;
+      }
+
+      Label #ZoneStats {
+        Text: "0 chunks claimed";
+        Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
+        Anchor: (Width: 150);
+      }
+    }
+
+    // Position info
+    Label #PositionInfo {
+      Text: "Your Position: Chunk (0, 0)";
+      Style: (FontSize: 12, TextColor: #00FFFF, RenderBold: true, HorizontalAlignment: Center);
+      Anchor: (Height: 16, Bottom: 3);
+    }
+
+    // Grid area wrapper (free positioning so children keep their fixed sizes)
+    Group #GridArea {
+      Anchor: (Height: 544);
+
+      // Terrain image layer - fixed 544x544, rendered at (0,0)
+      Group #TerrainBg {
+        Anchor: (Width: 544, Height: 544);
+        Background: "../Map.png";
+      }
+
+      // Cell overlay layer - same position/size, on top of terrain
+      Group #ChunkGrid {
+        LayoutMode: Top;
+        Anchor: (Width: 544, Height: 544);
+      }
+    }
+
+    // Action hints
+    Label #ActionHint {
+      Text: "Left-click: Claim for zone | Right-click: Unclaim from zone";
+      Style: (FontSize: 10, TextColor: #888888, HorizontalAlignment: Center);
+      Anchor: (Height: 14, Top: 3, Bottom: 2);
+    }
+
+    // Divider
+    Group {
+      Anchor: (Height: 1, Bottom: 3);
+      Background: (Color: #00AAAA);
+    }
+
+    // Compact legend (2 rows)
+    Group #LegendContainer {
+      LayoutMode: Top;
+      Anchor: (Height: 30);
+
+      // Row 1: Current Safe, Current War, Other Safe, Other War
+      Group {
+        LayoutMode: Left;
+        Anchor: (Height: 14);
+
+        Group {
+          LayoutMode: Left;
+          Anchor: (Width: 120);
+          Group { Anchor: (Width: 10, Height: 10); Background: (Color: #14b8a6); }
+          Label { Text: " This Zone (Safe)"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); }
+        }
+        Group {
+          LayoutMode: Left;
+          Anchor: (Width: 120);
+          Group { Anchor: (Width: 10, Height: 10); Background: (Color: #c084fc); }
+          Label { Text: " This Zone (War)"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); }
+        }
+        Group {
+          LayoutMode: Left;
+          Anchor: (Width: 110);
+          Group { Anchor: (Width: 10, Height: 10); Background: (Color: #2dd4bf80); }
+          Label { Text: " Other SafeZone"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); }
+        }
+        Group {
+          LayoutMode: Left;
+          Anchor: (Width: 110);
+          Group { Anchor: (Width: 10, Height: 10); Background: (Color: #c084fc80); }
+          Label { Text: " Other WarZone"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); }
+        }
+      }
+
+      // Row 2: Faction, Unclaimed, Player marker
+      Group {
+        LayoutMode: Left;
+        Anchor: (Height: 14);
+
+        Group {
+          LayoutMode: Left;
+          Anchor: (Width: 120);
+          Group { Anchor: (Width: 10, Height: 10); Background: (Color: #6b7280); }
+          Label { Text: " Faction Claim"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); }
+        }
+        Group {
+          LayoutMode: Left;
+          Anchor: (Width: 120);
+          Group { Anchor: (Width: 10, Height: 10); Background: (Color: #00000000); }
+          Label { Text: " Unclaimed"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); }
+        }
+        Group {
+          LayoutMode: Left;
+          Anchor: (Width: 110);
+          Label { Text: " + "; Style: (FontSize: 9, TextColor: #ffffff, RenderBold: true, VerticalAlignment: Center); Anchor: (Width: 14); }
+          Label { Text: "You are here"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); }
+        }
+      }
+    }
+
+    // Divider
+    Group {
+      Anchor: (Height: 1, Top: 3, Bottom: 3);
+      Background: (Color: #00AAAA);
+    }
+
+    // Confirm button
+    Group {
+      Anchor: (Height: 36);
+      LayoutMode: Left;
+
+      Label { FlexWeight: 1; }
+
+      TextButton #ConfirmBtn {
+        Text: "Done";
+        Anchor: (Height: 32, Width: 120);
+        Style: $S.@ButtonStyle;
+      }
+
+      Label { FlexWeight: 1; }
+    }
+  }
+}
+
+$C.@BackButton {}

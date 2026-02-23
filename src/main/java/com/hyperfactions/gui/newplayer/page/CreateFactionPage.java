@@ -138,6 +138,7 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
             buildPermissionToggle(cmd, events, cap + "BenchToggle", level + "BenchUse", perms.get(level + "BenchUse"), config, interactOff);
             buildPermissionToggle(cmd, events, cap + "ProcessingToggle", level + "ProcessingUse", perms.get(level + "ProcessingUse"), config, interactOff);
             buildPermissionToggle(cmd, events, cap + "SeatToggle", level + "SeatUse", perms.get(level + "SeatUse"), config, interactOff);
+            buildPermissionToggle(cmd, events, cap + "TransportToggle", level + "TransportUse", perms.get(level + "TransportUse"), config, interactOff);
         }
 
         // Mob spawning toggles — children disabled when master is off
@@ -170,10 +171,9 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
         boolean shouldDisable = parentDisabled || locked;
 
         cmd.set(selector + " #CheckBox.Value", displayValue);
+        cmd.set(selector + " #CheckBox.Disabled", shouldDisable);
 
-        if (shouldDisable) {
-            cmd.set(selector + " #CheckBox.Disabled", true);
-        } else {
+        if (!shouldDisable) {
             events.addEventBinding(
                     CustomUIEventBindingType.ValueChanged,
                     selector + " #CheckBox",
@@ -250,7 +250,12 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
 
         // Toggle in-memory (no database — faction doesn't exist yet)
         this.permissions = this.permissions.toggle(permName);
-        sendUpdate();
+
+        // Rebuild permission toggles to update parent/child disable state
+        UICommandBuilder cmd = new UICommandBuilder();
+        UIEventBuilder events = new UIEventBuilder();
+        buildPermissionToggles(cmd, events);
+        sendUpdate(cmd, events, false);
     }
 
     private void handleCreate(Player player, Ref<EntityStore> ref, Store<EntityStore> store,

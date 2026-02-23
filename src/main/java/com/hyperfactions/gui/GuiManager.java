@@ -302,7 +302,7 @@ public class GuiManager {
                 null,
                 (player, ref, store, playerRef, guiManager) ->
                         new NewPlayerMapPage(playerRef, factionManager.get(), claimManager.get(),
-                                zoneManager.get(), guiManager),
+                                relationManager.get(), zoneManager.get(), guiManager),
                 true,
                 3
         ));
@@ -2395,6 +2395,7 @@ public class GuiManager {
                 playerRef,
                 factionManager.get(),
                 claimManager.get(),
+                relationManager.get(),
                 zoneManager.get(),
                 this
             );

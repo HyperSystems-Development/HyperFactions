@@ -1,6 +1,6 @@
 # HyperFactions Architecture
 
-> **Version**: 0.8.0 | **377 classes** across **69 packages**
+> **Version**: 0.9.0 | **377 classes** across **69 packages**
 
 ## Overview
 
@@ -11,24 +11,24 @@ block-beta
     columns 1
     A["Platform Layer — Hytale plugin lifecycle"]
     B["Core Layer — Central coordinator"]
-    C["Integration Layer — Permissions, PAPI, OrbisGuard, World Map"]
+    C["Integration Layer — Permissions, PAPI, OrbisGuard, HyperProtect-Mixin, World Map"]
     D["API Layer — Public API, EventBus, EconomyAPI"]
-    E["Manager Layer — 14 domain managers"]
+    E["Manager Layer — 15 domain managers"]
     F["Storage Layer — Async JSON persistence"]
     G["Command Layer — 43 subcommands"]
     H["GUI Layer — 40+ CustomUI pages"]
-    I["Protection Layer — ECS handlers + OrbisGuard-Mixins hooks"]
+    I["Protection Layer — ECS handlers + protection mixin hooks"]
 ```
 
 1. **Platform Layer** - Hytale plugin lifecycle and event registration
 2. **Core Layer** - Central coordinator and manager initialization
-3. **Integration Layer** - Permission chain, PAPI, WiFlow, OrbisGuard, world map
+3. **Integration Layer** - Permission chain, PAPI, WiFlow, OrbisGuard, HyperProtect-Mixin, world map
 4. **API Layer** - Public API for third-party mods, EventBus, EconomyAPI
-5. **Manager Layer** - Business logic organized by domain (14 managers)
+5. **Manager Layer** - Business logic organized by domain (15 managers)
 6. **Storage Layer** - Async JSON persistence with interfaces
 7. **Command Layer** - Subcommand-based dispatcher pattern (43 subcommands)
 8. **GUI Layer** - CustomUI pages with registry-based navigation (40+ pages)
-9. **Protection Layer** - ECS event handlers + OrbisGuard-Mixins hooks
+9. **Protection Layer** - ECS event handlers + protection mixin hooks (HyperProtect-Mixin / OrbisGuard-Mixins)
 
 ## Package Structure
 
@@ -219,9 +219,11 @@ src/main/java/com/hyperfactions/
 │   │   ├── HytaleNativeProvider.java     # Hytale native permissions
 │   │   ├── LuckPermsProvider.java        # LuckPerms permission provider
 │   │   └── VaultUnlockedProvider.java    # VaultUnlocked permission provider
-│   ├── protection/                 # Protection integrations (OrbisGuard, Gravestones)
-│   │   ├── OrbisGuardIntegration.java    # Region conflict detection
-│   │   ├── OrbisMixinsIntegration.java   # 11 mixin hook callbacks
+│   ├── protection/                 # Protection integrations
+│   │   ├── ProtectionMixinBridge.java    # Dual-provider mixin detection facade
+│   │   ├── HyperProtectIntegration.java  # HyperProtect-Mixin bridge (20 hooks)
+│   │   ├── OrbisMixinsIntegration.java   # OrbisGuard-Mixins hooks (11 hooks)
+│   │   ├── OrbisGuardIntegration.java    # OG region conflict detection
 │   │   └── GravestoneIntegration.java    # Gravestone access control
 │   └── placeholder/                # Placeholder integrations (PAPI, WiFlow)
 │       ├── PlaceholderAPIIntegration.java

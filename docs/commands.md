@@ -1,6 +1,6 @@
 # HyperFactions Command System
 
-> **Version**: 0.8.2 | **42 subcommands** across **10 categories**
+> **Version**: 0.9.0 | **42 subcommands** across **10 categories**
 
 Architecture documentation for the HyperFactions command system.
 
@@ -333,6 +333,8 @@ Admin commands use nested subcommand structure:
 │   └── delete
 ├── reload        # Reload config
 ├── update        # Check for updates
+│   ├── mixin     # Check/download HyperProtect-Mixin
+│   └── toggle-mixin-download  # Toggle HP-Mixin auto-download
 └── debug         # Debug commands
 ```
 

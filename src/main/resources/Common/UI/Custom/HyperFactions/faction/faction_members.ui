@@ -70,9 +70,10 @@ $C.@PageOverlay {
         Background: (Color: #00AAAA);
       }
 
-      // Member list (paginated, no scrolling needed with 8/page)
+      // Member list (scrollable when entries expand)
       Group #MembersListContainer {
-        LayoutMode: Top;
+        LayoutMode: TopScrolling;
+        ScrollbarStyle: $C.@DefaultScrollbarStyle;
         FlexWeight: 1;
 
         Group #MembersList {

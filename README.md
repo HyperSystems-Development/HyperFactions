@@ -89,11 +89,13 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 | Feature | Status |
 |---------|--------|
 | Block, item, PvP protection | Implemented |
-| OrbisGuard-Mixins (11 hooks) | Implemented |
+| [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) (20 hooks, recommended) | Implemented |
+| OrbisGuard-Mixins (11 hooks, alternative) | Implemented |
+| Dual-provider auto-detection | Implemented |
 | Mob spawn suppression | Implemented |
 | Gravestones integration | Implemented |
-| Zone flags (25+) | Implemented |
-| Command blocking in zones | [Planned #29](https://github.com/HyperSystemsDev/HyperFactions/issues/29) |
+| Zone flags (31) | Implemented |
+| Command blocking in zones | Implemented |
 
 ### GUI
 
@@ -127,6 +129,7 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 | VaultUnlocked | Implemented |
 | PlaceholderAPI (35 placeholders) | Implemented |
 | WiFlow | Implemented |
+| [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) (recommended) | Implemented |
 | OrbisGuard / OrbisGuard-Mixins | Implemented |
 | Gravestones | Implemented |
 
@@ -156,6 +159,8 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 3. **Configure** by editing `mods/com.hyperfactions_HyperFactions/config.json` after first startup
 4. **Create a faction** with `/f create MyFaction` and claim territory with `/f claim`
 
+**Recommended:** Install [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) in `earlyplugins/` for full protection coverage (20 hook types including teleporter/portal blocking, entity damage, and respawn override).
+
 **Optional:** Install [HyperPerms](https://github.com/HyperSystemsDev/HyperPerms) for enhanced permission control with groups, tracks, and contextual permissions.
 
 ---
@@ -180,14 +185,14 @@ Comprehensive developer and admin documentation is available in the [`docs/`](do
 | [config.md](docs/config.md) | ConfigManager, 8 module configs, migration (v1-v5) |
 | [storage.md](docs/storage.md) | Interface-based storage, JSON adapters, backup system |
 | [gui.md](docs/gui.md) | 59 pages, 3 registries, navigation flows |
-| [protection.md](docs/protection.md) | ECS handlers, OrbisGuard-Mixins, zone flags |
+| [protection.md](docs/protection.md) | ECS handlers, HyperProtect-Mixin / OrbisGuard-Mixins, zone flags |
 
 ### API & Integrations
 
 | Document | Description |
 |----------|-------------|
 | [api.md](docs/api.md) | HyperFactionsAPI, EconomyAPI, EventBus for third-party mods |
-| [integrations.md](docs/integrations.md) | HyperPerms, LuckPerms, PAPI, WiFlow, OrbisGuard, Gravestones |
+| [integrations.md](docs/integrations.md) | HyperPerms, LuckPerms, PAPI, WiFlow, HyperProtect-Mixin, OrbisGuard, Gravestones |
 | [placeholders.md](docs/placeholders.md) | All 35 PAPI & WiFlow placeholders with examples |
 
 ### Feature Documentation
@@ -211,7 +216,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'com.github.HyperSystemsDev:HyperFactions:v0.8.1'
+    compileOnly 'com.github.HyperSystemsDev:HyperFactions:v0.9.0'
 }
 ```
 

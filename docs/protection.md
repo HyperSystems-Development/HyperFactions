@@ -1,6 +1,6 @@
 # HyperFactions Protection System
 
-> **Version**: 0.8.2
+> **Version**: 0.9.0
 
 Architecture documentation for the HyperFactions protection system.
 
@@ -8,11 +8,11 @@ Architecture documentation for the HyperFactions protection system.
 
 HyperFactions uses a multi-layered protection system that controls block interactions, PvP combat, and damage types based on:
 
-- **Zones** - SafeZone and WarZone with configurable flags
+- **Zones** - SafeZone and WarZone with configurable flags (31 flags)
 - **Faction Claims** - Territory permissions for members, allies, and outsiders
 - **Relations** - Same faction, ally, enemy, neutral
 - **Combat State** - Spawn protection, combat tagging
-- **OrbisGuard-Mixins** - 11 mixin hooks for extended protection coverage
+- **Protection Mixins** - [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) (20 hooks, recommended) or OrbisGuard-Mixins (11 hooks) via [ProtectionMixinBridge](integrations.md#protection-mixin-bridge)
 - **Spawn Suppression** - Mob spawning control in claims and zones
 
 ```mermaid
@@ -47,26 +47,30 @@ flowchart TD
 ## Architecture
 
 ```
-Hytale ECS Events                  OrbisGuard-Mixins Hooks
+Hytale ECS Events                  ProtectionMixinBridge (auto-detect)
      │                                    │
-     ▼                                    ▼
-ECS Protection Systems             OrbisMixinsIntegration (11 hooks)
-├── BlockPlaceProtectionSystem     ├── PickupHook
-├── BlockBreakProtectionSystem     ├── HammerHook (zone + claim BUILD)
-├── BlockUseProtectionSystem       ├── HarvestHook (zone + claim INTERACT)
-├── ItemDropProtectionSystem       ├── PlaceHook (bucket/fluid)
-├── ItemPickupProtectionSystem     ├── UseHook (campfire, lantern)
-├── HarvestPickupProtectionSystem  ├── SeatHook
-├── PlayerDeathSystem              ├── ExplosionHook (claim + safezone)
-├── PlayerRespawnSystem            ├── CommandHook
-└── DamageProtectionSystem         ├── DeathHook (keep inventory)
-     │                             ├── DurabilityHook
-     ▼                             └── SpawnHook
-ProtectionChecker (central logic)
-├── canInteract() ─► Result        Interaction Codec Replacements
-├── canDamagePlayer() ─► PvPResult ├── HarvestCrop (scythe protection)
-└── isDamageAllowed() ─► Zone flag ├── PlaceFluid (bucket protection)
-                                   └── RefillContainer (scoop protection)
+     ▼                                    ├─► HyperProtectIntegration (20 hooks, recommended)
+ECS Protection Systems                    │   ├── BlockBreak, BlockPlace, Explosion
+├── BlockPlaceProtectionSystem            │   ├── FireSpread, BuilderTools
+├── BlockBreakProtectionSystem            │   ├── ItemPickup, DeathDrop, Durability
+├── BlockUseProtectionSystem              │   ├── ContainerAccess, ContainerOpen
+├── ItemDropProtectionSystem              │   ├── MobSpawn, Command
+├── ItemPickupProtectionSystem            │   ├── Teleporter, Portal (unique to HP)
+├── HarvestPickupProtectionSystem         │   ├── EntityDamage, Respawn (unique to HP)
+├── PlayerDeathSystem                     │   └── Hammer, Use, Seat
+├── PlayerRespawnSystem                   │
+└── DamageProtectionSystem                └─► OrbisMixinsIntegration (11 hooks)
+     │                                         ├── Pickup, Hammer, Harvest
+     ▼                                         ├── Place, Use, Seat
+ProtectionChecker (central logic)              ├── Explosion, Command
+├── canInteract() ─► Result                    └── Death, Durability, Spawn
+├── canDamagePlayer() ─► PvPResult
+├── checkBuild/Place/Hammer() ─► String   Interaction Codec Replacements
+├── checkTeleporter/Portal() ─► String    ├── HarvestCrop (when no mixin active)
+├── shouldBlockExplosion/FireSpread()     ├── PlaceFluid (bucket protection)
+├── shouldKeepInventory/PreventDurability └── RefillContainer (scoop protection)
+├── checkEntityDamage() ─► String
+└── getRespawnOverride() ─► double[]
      │
      ├─► ZoneManager (zone flag lookup)
      ├─► ClaimManager (territory ownership)
@@ -79,10 +83,13 @@ ProtectionChecker (central logic)
 
 | Class | Path | Purpose |
 |-------|------|---------|
-| ProtectionChecker | [`protection/ProtectionChecker.java`](../src/main/java/com/hyperfactions/protection/ProtectionChecker.java) | Central protection logic |
+| ProtectionChecker | [`protection/ProtectionChecker.java`](../src/main/java/com/hyperfactions/protection/ProtectionChecker.java) | Central protection logic (~1,320 lines) |
 | ProtectionListener | [`protection/ProtectionListener.java`](../src/main/java/com/hyperfactions/protection/ProtectionListener.java) | High-level event callbacks |
+| ProtectionMixinBridge | [`integration/protection/ProtectionMixinBridge.java`](../src/main/java/com/hyperfactions/integration/protection/ProtectionMixinBridge.java) | Dual-provider mixin detection and routing facade |
+| HyperProtectIntegration | [`integration/protection/HyperProtectIntegration.java`](../src/main/java/com/hyperfactions/integration/protection/HyperProtectIntegration.java) | HyperProtect-Mixin bridge-slot hook registration |
+| OrbisMixinsIntegration | [`integration/protection/OrbisMixinsIntegration.java`](../src/main/java/com/hyperfactions/integration/protection/OrbisMixinsIntegration.java) | OrbisGuard-Mixins hook registration with chaining |
 | SpawnProtection | [`protection/SpawnProtection.java`](../src/main/java/com/hyperfactions/protection/SpawnProtection.java) | Spawn protection data record |
-| ZoneFlags | [`data/ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.java) | Zone flag constants and defaults |
+| ZoneFlags | [`data/ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.java) | Zone flag constants and defaults (31 flags) |
 
 ### ECS Systems (protection/ecs/)
 
@@ -102,6 +109,8 @@ ProtectionChecker (central logic)
 ### Interaction Codec Replacements (protection/interactions/)
 
 Codec replacements extend vanilla interaction classes to add protection checks. They override `interactWithBlock()` to check zone flags and faction permissions before calling `super`. Registered in `HyperFactionsPlugin.registerInteractionCodecs()`.
+
+> **Note**: `HyperFactionsHarvestCropInteraction` is only registered when **no mixin system** is active — mixin hooks handle harvest interception natively.
 
 | Class | Path | Protects Against |
 |-------|------|-----------------|
@@ -196,16 +205,23 @@ public enum InteractionType {
 | Flag | Description | SafeZone Default | WarZone Default |
 |------|-------------|------------------|-----------------|
 | `pvp_enabled` | Players can damage players | false | true |
-| `friendly_fire` | Same-faction damage | false | false |
+| `friendly_fire` | Same-faction/ally damage (parent) | false | false |
+| ↳ `friendly_fire_faction` | Same-faction members can damage each other | false | false |
+| ↳ `friendly_fire_ally` | Allied faction members can damage each other | false | false |
 | `projectile_damage` | Projectiles deal damage | false | true |
 | `mob_damage` | Mobs can damage players | false | true |
+
+> **3-level hierarchy**: `pvp_enabled` → `friendly_fire` → `friendly_fire_faction` / `friendly_fire_ally`. Disabling a parent disables all children.
 
 ### Building Flags
 
 | Flag | Description | SafeZone Default | WarZone Default |
 |------|-------------|------------------|-----------------|
-| `build_allowed` | Place/break blocks | false | false |
-| `block_interact` | General block interaction | true | true |
+| `build_allowed` | Place/break blocks (parent) | false | false |
+| ↳ `block_place` | Block placement *(mixin-dependent)* | false | true |
+| ↳ `hammer_use` | Hammer block cycling *(mixin-dependent)* | false | true |
+| ↳ `builder_tools_use` | Builder tool paste *(mixin-dependent)* | false | true |
+| `block_interact` | General block interaction (parent) | true | true |
 
 ### Interaction Flags
 
@@ -230,6 +246,17 @@ public enum InteractionType {
 |------|-------------|------------------|-----------------|
 | `fall_damage` | Fall damage applies | false | true |
 | `environmental_damage` | Drowning, suffocation | false | true |
+| `explosion_damage` | Explosion block damage *(mixin-dependent)* | false | true |
+| `fire_spread` | Fire spread *(mixin-dependent)* | false | true |
+
+### Transport Flags
+
+| Flag | Description | SafeZone Default | WarZone Default |
+|------|-------------|------------------|-----------------|
+| `teleporter_use` | Teleporter block use *(mixin-dependent)* | false | true |
+| `portal_use` | Portal block use *(mixin-dependent)* | false | true |
+
+> **Mixin-dependent flags** require [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) or OrbisGuard-Mixins to be installed. Without a mixin system, these flags exist in zone data but have no enforcement.
 
 ## Protection Check Flow
 
@@ -514,6 +541,9 @@ This enables detailed logging of protection checks:
 |-------|------|
 | ProtectionChecker | [`protection/ProtectionChecker.java`](../src/main/java/com/hyperfactions/protection/ProtectionChecker.java) |
 | ProtectionListener | [`protection/ProtectionListener.java`](../src/main/java/com/hyperfactions/protection/ProtectionListener.java) |
+| ProtectionMixinBridge | [`integration/protection/ProtectionMixinBridge.java`](../src/main/java/com/hyperfactions/integration/protection/ProtectionMixinBridge.java) |
+| HyperProtectIntegration | [`integration/protection/HyperProtectIntegration.java`](../src/main/java/com/hyperfactions/integration/protection/HyperProtectIntegration.java) |
+| OrbisMixinsIntegration | [`integration/protection/OrbisMixinsIntegration.java`](../src/main/java/com/hyperfactions/integration/protection/OrbisMixinsIntegration.java) |
 | SpawnProtection | [`protection/SpawnProtection.java`](../src/main/java/com/hyperfactions/protection/SpawnProtection.java) |
 | ZoneFlags | [`data/ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.java) |
 | DamageProtectionHandler | [`protection/damage/DamageProtectionHandler.java`](../src/main/java/com/hyperfactions/protection/damage/DamageProtectionHandler.java) |
