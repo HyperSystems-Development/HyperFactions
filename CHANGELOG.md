@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+*No changes yet*
+
+## [0.9.0] - 2026-02-22
+
+**Server Version:** `2026.02.19-1a311a592`
+
 **Closes:** [#10](https://github.com/HyperSystemsDev/HyperFactions/issues/10), [#13](https://github.com/HyperSystemsDev/HyperFactions/issues/13), [#14](https://github.com/HyperSystemsDev/HyperFactions/issues/14), [#46](https://github.com/HyperSystemsDev/HyperFactions/issues/46), [#50](https://github.com/HyperSystemsDev/HyperFactions/issues/50), [#51](https://github.com/HyperSystemsDev/HyperFactions/issues/51), [#52](https://github.com/HyperSystemsDev/HyperFactions/issues/52), [#53](https://github.com/HyperSystemsDev/HyperFactions/issues/53), [#55](https://github.com/HyperSystemsDev/HyperFactions/issues/55), [#56](https://github.com/HyperSystemsDev/HyperFactions/issues/56), [#57](https://github.com/HyperSystemsDev/HyperFactions/issues/57)
 
 ### Added
@@ -86,6 +92,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Permission toggle children not enabling**: Fixed parent-child checkbox state in faction settings and create faction page — toggling a parent permission (e.g., Interact) ON now immediately enables its children (Door, Chest, etc.) without requiring a page close/reopen. Root cause: `Disabled` state was only ever set to `true` but never explicitly reset to `false` on update, and toggling sent an empty update instead of rebuilding the toggle tree
 - **Claim blocking in OG regions**: Fixed `isChunkProtected()` using 16-block chunk size (`<< 4`) instead of Hytale's 32-block chunks (`<< 5`), causing protection checks to examine the wrong area and fail to block claims
 - **New player map terrain crash**: Fixed crash when opening new player map in terrain mode — `#FactionLegend.Visible` selector targeted an element only present in the flat template
+
+### Migration Guide
+
+**Recommended: Switch to HyperProtect-Mixin**
+
+HyperFactions v0.9.0 introduces [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) as the **recommended** mixin system, replacing OrbisGuard-Mixins. HyperProtect-Mixin provides 20 protection hooks designed specifically for HyperFactions, including explosion damage, fire spread, block placement, builder tools, transport, keep inventory, and durability protection.
+
+**Installation:**
+1. Download [Hyxin](https://www.curseforge.com/hytale/bootstrap/hyxin) and [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) from CurseForge
+2. Place both JARs in your server's `earlyplugins/` folder (NOT `mods/`)
+3. Ensure `--accept-early-plugins` is in your server start script
+4. Remove OrbisGuard-Mixins from `earlyplugins/` (optional but recommended)
+5. Restart the server
+
+**Alternatively**, enable auto-download in config or use `/f admin update mixin` to install HyperProtect-Mixin from within the game.
+
+**OrbisGuard Compatibility Note:**
+We recommend **not** using OrbisGuard alongside HyperFactions, as both mods implement their own protection systems that can conflict with each other. If you need OrbisGuard for non-faction worlds, HyperFactions supports a dual-provider mode — keep both OrbisGuard **and** OrbisGuard-Mixins installed, and HyperFactions will route hooks appropriately. However, for the simplest and most reliable setup, use **only** HyperProtect-Mixin.
 
 ## [0.8.1] - 2026-02-17
 
