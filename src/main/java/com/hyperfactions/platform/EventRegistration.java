@@ -100,7 +100,7 @@ public class EventRegistration {
             PlayerChatEvent.class,
             publicChatListener::onPlayerChatAsync
         );
-        plugin.getLogger().at(Level.INFO).log("Registered public chat formatter at %s priority", chatPriority);
+        Logger.debug("Registered public chat formatter at %s priority", chatPriority);
 
         // Create listeners
         PlayerListener playerListener = new PlayerListener(hyperFactions);
@@ -125,10 +125,8 @@ public class EventRegistration {
         // Register update notification listener (if update checking is enabled)
         if (hyperFactions.getUpdateNotificationListener() != null) {
             hyperFactions.getUpdateNotificationListener().register(plugin.getEventRegistry());
-            plugin.getLogger().at(Level.INFO).log("Registered update notification listener");
+            Logger.debug("Registered update notification listener");
         }
-
-        plugin.getLogger().at(Level.INFO).log("Registered event listeners");
 
         return new RegistrationResult(playerListener, protectionListener, publicChatListener);
     }
@@ -160,7 +158,7 @@ public class EventRegistration {
             plugin.getEntityStoreRegistry().registerSystem(new PlayerDeathSystem(hyperFactions));
             plugin.getEntityStoreRegistry().registerSystem(new PlayerRespawnSystem(hyperFactions));
 
-            plugin.getLogger().at(Level.INFO).log("Registered block, item, and player protection systems");
+            Logger.debug("Registered block, item, and player ECS protection systems");
         } catch (Exception e) {
             plugin.getLogger().at(Level.WARNING).withCause(e).log("Failed to register block protection systems");
         }
@@ -177,7 +175,7 @@ public class EventRegistration {
     private void registerHarvestPickupProtection(ProtectionListener protectionListener) {
         try {
             plugin.getEntityStoreRegistry().registerSystem(new HarvestPickupProtectionSystem(hyperFactions, protectionListener));
-            plugin.getLogger().at(Level.INFO).log("Registered harvest pickup protection system");
+            Logger.debug("Registered harvest pickup ECS protection system");
         } catch (Exception e) {
             plugin.getLogger().at(Level.WARNING).withCause(e).log("Failed to register harvest pickup protection system");
         }
@@ -191,7 +189,7 @@ public class EventRegistration {
             // Cancel teleport on damage
             plugin.getEntityStoreRegistry().registerSystem(new TeleportCancelOnDamageSystem(hyperFactions));
 
-            plugin.getLogger().at(Level.INFO).log("Registered teleport systems");
+            Logger.debug("Registered teleport cancel-on-damage ECS system");
         } catch (Exception e) {
             plugin.getLogger().at(Level.WARNING).withCause(e).log("Failed to register teleport systems");
         }
@@ -209,7 +207,7 @@ public class EventRegistration {
             territoryTickingSystem = new TerritoryTickingSystem(hyperFactions);
             plugin.getEntityStoreRegistry().registerSystem((ISystem) territoryTickingSystem);
 
-            plugin.getLogger().at(Level.INFO).log("Registered territory ticking system");
+            Logger.debug("Registered territory ticking ECS system");
         } catch (Exception e) {
             plugin.getLogger().at(Level.WARNING).withCause(e).log("Failed to register territory ticking system");
         }

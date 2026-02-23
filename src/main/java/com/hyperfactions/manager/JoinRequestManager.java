@@ -445,7 +445,7 @@ public class JoinRequestManager {
      */
     private void load() {
         if (!Files.exists(dataFile)) {
-            Logger.info("No join requests file found, starting fresh");
+            Logger.info("[Storage] No join requests file found, starting fresh");
             return;
         }
 
@@ -470,7 +470,7 @@ public class JoinRequestManager {
                 loaded++;
             }
 
-            Logger.info("Loaded %d join requests (%d expired and skipped)", loaded, expired);
+            Logger.info("[Storage] Loaded %d join requests (%d expired and skipped)", loaded, expired);
         } catch (Exception e) {
             Logger.severe("Failed to load join requests", e);
         }

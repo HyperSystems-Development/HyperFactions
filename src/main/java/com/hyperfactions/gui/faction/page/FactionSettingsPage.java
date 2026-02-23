@@ -198,6 +198,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
             buildToggle(cmd, events, cap + "BenchToggle", level + "BenchUse", perms.get(level + "BenchUse"), canEdit, config, interactOff);
             buildToggle(cmd, events, cap + "ProcessingToggle", level + "ProcessingUse", perms.get(level + "ProcessingUse"), canEdit, config, interactOff);
             buildToggle(cmd, events, cap + "SeatToggle", level + "SeatUse", perms.get(level + "SeatUse"), canEdit, config, interactOff);
+            buildToggle(cmd, events, cap + "TransportToggle", level + "TransportUse", perms.get(level + "TransportUse"), canEdit, config, interactOff);
         }
 
         // Mob spawning toggles — children disabled when master is off
@@ -237,10 +238,9 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
         boolean shouldDisable = parentDisabled || locked || !canEdit;
 
         cmd.set(selector + " #CheckBox.Value", displayValue);
+        cmd.set(selector + " #CheckBox.Disabled", shouldDisable);
 
-        if (shouldDisable) {
-            cmd.set(selector + " #CheckBox.Disabled", true);
-        } else {
+        if (!shouldDisable) {
             events.addEventBinding(
                     CustomUIEventBindingType.ValueChanged,
                     selector + " #CheckBox",

@@ -16,7 +16,7 @@ import java.util.*;
  * <p>
  * Parent-child relationships:
  * <ul>
- *   <li>{level}Interact → {level}DoorUse, {level}ContainerUse, {level}BenchUse, {level}ProcessingUse, {level}SeatUse</li>
+ *   <li>{level}Interact → {level}DoorUse, {level}ContainerUse, {level}BenchUse, {level}ProcessingUse, {level}SeatUse, {level}TransportUse</li>
  *   <li>mobSpawning → hostileMobSpawning, passiveMobSpawning, neutralMobSpawning</li>
  * </ul>
  */
@@ -45,6 +45,7 @@ public final class FactionPermissions {
     public static final String SUFFIX_BENCH_USE = "BenchUse";
     public static final String SUFFIX_PROCESSING_USE = "ProcessingUse";
     public static final String SUFFIX_SEAT_USE = "SeatUse";
+    public static final String SUFFIX_TRANSPORT_USE = "TransportUse";
 
     // =========================================================================
     // OUTSIDER FLAGS
@@ -58,6 +59,7 @@ public final class FactionPermissions {
     public static final String OUTSIDER_BENCH_USE = "outsiderBenchUse";
     public static final String OUTSIDER_PROCESSING_USE = "outsiderProcessingUse";
     public static final String OUTSIDER_SEAT_USE = "outsiderSeatUse";
+    public static final String OUTSIDER_TRANSPORT_USE = "outsiderTransportUse";
 
     // =========================================================================
     // ALLY FLAGS
@@ -71,6 +73,7 @@ public final class FactionPermissions {
     public static final String ALLY_BENCH_USE = "allyBenchUse";
     public static final String ALLY_PROCESSING_USE = "allyProcessingUse";
     public static final String ALLY_SEAT_USE = "allySeatUse";
+    public static final String ALLY_TRANSPORT_USE = "allyTransportUse";
 
     // =========================================================================
     // MEMBER FLAGS
@@ -84,6 +87,7 @@ public final class FactionPermissions {
     public static final String MEMBER_BENCH_USE = "memberBenchUse";
     public static final String MEMBER_PROCESSING_USE = "memberProcessingUse";
     public static final String MEMBER_SEAT_USE = "memberSeatUse";
+    public static final String MEMBER_TRANSPORT_USE = "memberTransportUse";
 
     // =========================================================================
     // OFFICER FLAGS
@@ -97,6 +101,7 @@ public final class FactionPermissions {
     public static final String OFFICER_BENCH_USE = "officerBenchUse";
     public static final String OFFICER_PROCESSING_USE = "officerProcessingUse";
     public static final String OFFICER_SEAT_USE = "officerSeatUse";
+    public static final String OFFICER_TRANSPORT_USE = "officerTransportUse";
 
     // =========================================================================
     // MOB SPAWNING FLAGS
@@ -129,24 +134,24 @@ public final class FactionPermissions {
     // ALL FLAGS
     // =========================================================================
 
-    /** All 41 flag names for iteration, validation, and serialization. */
+    /** All 45 flag names for iteration, validation, and serialization. */
     public static final List<String> ALL_FLAGS = List.of(
-        // Outsider (8)
+        // Outsider (9)
         OUTSIDER_BREAK, OUTSIDER_PLACE, OUTSIDER_INTERACT,
         OUTSIDER_DOOR_USE, OUTSIDER_CONTAINER_USE, OUTSIDER_BENCH_USE,
-        OUTSIDER_PROCESSING_USE, OUTSIDER_SEAT_USE,
-        // Ally (8)
+        OUTSIDER_PROCESSING_USE, OUTSIDER_SEAT_USE, OUTSIDER_TRANSPORT_USE,
+        // Ally (9)
         ALLY_BREAK, ALLY_PLACE, ALLY_INTERACT,
         ALLY_DOOR_USE, ALLY_CONTAINER_USE, ALLY_BENCH_USE,
-        ALLY_PROCESSING_USE, ALLY_SEAT_USE,
-        // Member (8)
+        ALLY_PROCESSING_USE, ALLY_SEAT_USE, ALLY_TRANSPORT_USE,
+        // Member (9)
         MEMBER_BREAK, MEMBER_PLACE, MEMBER_INTERACT,
         MEMBER_DOOR_USE, MEMBER_CONTAINER_USE, MEMBER_BENCH_USE,
-        MEMBER_PROCESSING_USE, MEMBER_SEAT_USE,
-        // Officer (8)
+        MEMBER_PROCESSING_USE, MEMBER_SEAT_USE, MEMBER_TRANSPORT_USE,
+        // Officer (9)
         OFFICER_BREAK, OFFICER_PLACE, OFFICER_INTERACT,
         OFFICER_DOOR_USE, OFFICER_CONTAINER_USE, OFFICER_BENCH_USE,
-        OFFICER_PROCESSING_USE, OFFICER_SEAT_USE,
+        OFFICER_PROCESSING_USE, OFFICER_SEAT_USE, OFFICER_TRANSPORT_USE,
         // Mob Spawning (4)
         MOB_SPAWNING, HOSTILE_MOB_SPAWNING, PASSIVE_MOB_SPAWNING, NEUTRAL_MOB_SPAWNING,
         // Global (2)
@@ -162,13 +167,13 @@ public final class FactionPermissions {
     private static final String[] LEVEL_SUFFIXES = {
         SUFFIX_BREAK, SUFFIX_PLACE, SUFFIX_INTERACT,
         SUFFIX_DOOR_USE, SUFFIX_CONTAINER_USE, SUFFIX_BENCH_USE,
-        SUFFIX_PROCESSING_USE, SUFFIX_SEAT_USE
+        SUFFIX_PROCESSING_USE, SUFFIX_SEAT_USE, SUFFIX_TRANSPORT_USE
     };
 
     /** Interaction child suffixes (children of Interact). */
     private static final String[] INTERACT_CHILD_SUFFIXES = {
         SUFFIX_DOOR_USE, SUFFIX_CONTAINER_USE, SUFFIX_BENCH_USE,
-        SUFFIX_PROCESSING_USE, SUFFIX_SEAT_USE
+        SUFFIX_PROCESSING_USE, SUFFIX_SEAT_USE, SUFFIX_TRANSPORT_USE
     };
 
     // =========================================================================
@@ -219,8 +224,9 @@ public final class FactionPermissions {
         defaults.put(OUTSIDER_BENCH_USE, false);
         defaults.put(OUTSIDER_PROCESSING_USE, false);
         defaults.put(OUTSIDER_SEAT_USE, false);
+        defaults.put(OUTSIDER_TRANSPORT_USE, false);
 
-        // Ally: interact + doors/seats
+        // Ally: interact + doors/seats/teleporters/portals
         defaults.put(ALLY_BREAK, false);
         defaults.put(ALLY_PLACE, false);
         defaults.put(ALLY_INTERACT, true);
@@ -229,6 +235,7 @@ public final class FactionPermissions {
         defaults.put(ALLY_BENCH_USE, false);
         defaults.put(ALLY_PROCESSING_USE, false);
         defaults.put(ALLY_SEAT_USE, true);
+        defaults.put(ALLY_TRANSPORT_USE, true);
 
         // Member: full access
         defaults.put(MEMBER_BREAK, true);
@@ -239,6 +246,7 @@ public final class FactionPermissions {
         defaults.put(MEMBER_BENCH_USE, true);
         defaults.put(MEMBER_PROCESSING_USE, true);
         defaults.put(MEMBER_SEAT_USE, true);
+        defaults.put(MEMBER_TRANSPORT_USE, true);
 
         // Officer: full access
         defaults.put(OFFICER_BREAK, true);
@@ -249,6 +257,7 @@ public final class FactionPermissions {
         defaults.put(OFFICER_BENCH_USE, true);
         defaults.put(OFFICER_PROCESSING_USE, true);
         defaults.put(OFFICER_SEAT_USE, true);
+        defaults.put(OFFICER_TRANSPORT_USE, true);
 
         // Mob spawning: allowed by default (same as no protection)
         defaults.put(MOB_SPAWNING, true);
@@ -460,6 +469,7 @@ public final class FactionPermissions {
                 case "BenchUse" -> "Bench Use";
                 case "ProcessingUse" -> "Processing Use";
                 case "SeatUse" -> "Seat Use";
+                case "TransportUse" -> "Transport";
                 default -> suffix;
             };
             return levelDisplay + " " + suffixDisplay;

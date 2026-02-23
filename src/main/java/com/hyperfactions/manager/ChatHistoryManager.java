@@ -237,7 +237,7 @@ public class ChatHistoryManager {
             Thread.currentThread().interrupt();
         }
 
-        Logger.info("Chat history manager shut down");
+        Logger.info("[Shutdown] Chat history manager shut down");
     }
 
     // === Private helpers ===

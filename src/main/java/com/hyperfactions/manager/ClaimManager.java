@@ -233,7 +233,7 @@ public class ClaimManager {
             }
         }
 
-        Logger.info("Built claim index with %d claims for %d factions", claimIndex.size(), factionClaimsIndex.size());
+        Logger.info("[Startup] Built claim index with %d claims for %d factions", claimIndex.size(), factionClaimsIndex.size());
     }
 
     /**
@@ -601,7 +601,7 @@ public class ClaimManager {
 
         Logger.debugClaim("Overclaim success: chunk=%s, attacker=%s, defender=%s, defenderClaims=%d/%d",
             key, attackerFaction.name(), defenderFaction.name(), defenderFaction.getClaimCount() - 1, defenderMaxClaims);
-        Logger.info("Faction '%s' overclaimed chunk from '%s'", attackerFaction.name(), defenderFaction.name());
+        Logger.info("[Claims] Faction '%s' overclaimed chunk from '%s'", attackerFaction.name(), defenderFaction.name());
 
         // Notify defender faction members that they lost territory
         notifyFactionMembers(defenderId,
@@ -752,7 +752,7 @@ public class ClaimManager {
                 int orphanedClaims = factionClaimsIndex.getOrDefault(factionId, Collections.emptySet()).size();
                 unclaimAll(factionId);
                 claimsRemoved += orphanedClaims;
-                Logger.info("Claim decay: Removed %d orphaned claims (faction no longer exists)", orphanedClaims);
+                Logger.info("[ClaimDecay] Removed %d orphaned claims (faction no longer exists)", orphanedClaims);
                 continue;
             }
 
@@ -787,13 +787,13 @@ public class ClaimManager {
                 factionsDecayed++;
                 claimsRemoved += claims;
 
-                Logger.info("Claim decay: Faction '%s' lost %d claims (inactive for %d days, threshold: %d days)",
+                Logger.info("[ClaimDecay] Faction '%s' lost %d claims (inactive for %d days, threshold: %d days)",
                     faction.name(), claims, daysSinceActive, daysThreshold);
             }
         }
 
         if (factionsDecayed > 0) {
-            Logger.info("Claim decay complete: %d factions affected, %d total claims removed",
+            Logger.info("[ClaimDecay] Complete: %d factions affected, %d total claims removed",
                 factionsDecayed, claimsRemoved);
         } else {
             Logger.debugClaim("Claim decay tick: no inactive factions found (threshold: %d days)", daysThreshold);

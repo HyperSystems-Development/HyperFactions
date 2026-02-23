@@ -42,8 +42,7 @@ public class WorldSetup {
                     HyperFactionsWorldMapProvider.class,
                     HyperFactionsWorldMapProvider.CODEC
             );
-            plugin.getLogger().at(Level.INFO).log("Registered HyperFactions world map provider (ID: %s)",
-                    HyperFactionsWorldMapProvider.ID);
+            Logger.debug("Registered world map provider (ID: %s)", HyperFactionsWorldMapProvider.ID);
         } catch (Exception e) {
             plugin.getLogger().at(Level.WARNING).withCause(e).log("Failed to register world map provider");
         }
@@ -133,7 +132,7 @@ public class WorldSetup {
                 });
             }
 
-            plugin.getLogger().at(Level.INFO).log("Spawn suppression initialized");
+            Logger.info("[Startup] Spawn suppression initialized");
         } catch (Exception e) {
             plugin.getLogger().at(Level.WARNING).withCause(e).log("Failed to initialize spawn suppression");
         }
@@ -217,32 +216,31 @@ public class WorldSetup {
     }
 
     /**
-     * Logs a summary of protection coverage at startup.
-     * Informs admins which protections are active and which require additional plugins.
+     * Logs a concise summary of protection coverage at startup.
      */
     public void logProtectionCoverage() {
-        boolean orbisGuardAvailable = OrbisGuardIntegration.isAvailable();
+        var parts = new java.util.ArrayList<String>();
+        parts.add("ECS events");
+        parts.add("interaction codecs");
 
-        plugin.getLogger().at(Level.INFO).log("=== HyperFactions Protection Coverage ===");
-        plugin.getLogger().at(Level.INFO).log("ECS Events (native): Block break/place, Use, Harvest drops, Damage - ENABLED");
-        plugin.getLogger().at(Level.INFO).log("Interaction Codecs: Fluid place/pickup protection - ENABLED");
-        plugin.getLogger().at(Level.INFO).log("Mixin Hooks (registered): F-key pickup, Auto pickup, NPC Spawn control");
-        plugin.getLogger().at(Level.INFO).log("  -> Requires Hyxin + OrbisGuard-Mixins in earlyplugins/ to activate");
-
-        if (orbisGuardAvailable) {
-            plugin.getLogger().at(Level.INFO).log("OrbisGuard API: Claim conflict detection - ENABLED");
-        } else {
-            plugin.getLogger().at(Level.INFO).log("OrbisGuard: Not detected (optional)");
+        // Mixin provider (HyperProtect-Mixin or OrbisGuard-Mixins)
+        var provider = com.hyperfactions.integration.protection.ProtectionMixinBridge.getProvider();
+        if (provider != com.hyperfactions.integration.protection.ProtectionMixinBridge.MixinProvider.NONE) {
+            parts.add("mixin hooks (" + com.hyperfactions.integration.protection.ProtectionMixinBridge.getStatusSummary() + ")");
         }
 
+        // OrbisGuard API (claim conflict detection — separate from mixin hooks)
+        if (OrbisGuardIntegration.isAvailable()) {
+            parts.add("OrbisGuard API");
+        }
+
+        // GravestonePlugin integration
         boolean gsAvailable = hyperFactions.getProtectionChecker().getGravestoneIntegration() != null
                 && hyperFactions.getProtectionChecker().getGravestoneIntegration().isAvailable();
         if (gsAvailable) {
-            plugin.getLogger().at(Level.INFO).log("GravestonePlugin: v2 API — AccessChecker + events - ENABLED");
-        } else {
-            plugin.getLogger().at(Level.INFO).log("GravestonePlugin: Not detected (optional)");
+            parts.add("GravestonePlugin");
         }
 
-        plugin.getLogger().at(Level.INFO).log("=========================================");
+        Logger.info("[Protection] Active: %s", String.join(", ", parts));
     }
 }

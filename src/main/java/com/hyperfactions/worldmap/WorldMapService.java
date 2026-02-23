@@ -62,7 +62,7 @@ public class WorldMapService {
         }
         refreshScheduler = new WorldMapRefreshScheduler(worldMapConfig, this);
         refreshScheduler.start();
-        Logger.info("[WorldMap] Refresh scheduler initialized with mode: %s",
+        Logger.debug("[WorldMap] Refresh scheduler initialized with mode: %s",
                 worldMapConfig.getRefreshMode().getConfigName());
     }
 
@@ -115,7 +115,7 @@ public class WorldMapService {
             world.getWorldConfig().setWorldMapProvider(new HyperFactionsWorldMapProvider());
 
             registeredWorlds.add(worldName);
-            Logger.info("Registered HyperFactions world map for world: %s (replaced %s)", worldName, currentGeneratorName);
+            Logger.debug("Registered world map for world: %s (replaced %s)", worldName, currentGeneratorName);
 
         } catch (Exception e) {
             Logger.warn("Failed to register world map for world %s: %s", worldName, e.getMessage());

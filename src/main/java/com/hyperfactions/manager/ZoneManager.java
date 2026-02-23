@@ -173,7 +173,7 @@ public class ZoneManager {
             zonesByName.clear();
             zonesByName.putAll(newZonesByName);
 
-            Logger.info("Loaded %d zones with %d total chunks", zonesById.size(), zoneIndex.size());
+            Logger.info("[Startup] Loaded %d zones with %d total chunks", zonesById.size(), zoneIndex.size());
         }).exceptionally(ex -> {
             Logger.severe("CRITICAL: Exception during zone loading - keeping existing data", (Throwable) ex);
             return null;
@@ -404,7 +404,7 @@ public class ZoneManager {
         // Save async
         saveAll();
 
-        Logger.info("Created empty %s '%s' in %s", type.getDisplayName(), name, world);
+        Logger.info("[Zone] Created empty %s '%s' in %s", type.getDisplayName(), name, world);
         notifyZoneChange(null); // Empty zone, full refresh for map update
         return ZoneResult.SUCCESS;
     }
@@ -482,7 +482,7 @@ public class ZoneManager {
             zoneIndex.put(chunk, zone);
         }
 
-        Logger.info("Created %s '%s' with %d chunks in %s", type.getDisplayName(), name, chunks.size(), world);
+        Logger.info("[Zone] Created %s '%s' with %d chunks in %s", type.getDisplayName(), name, chunks.size(), world);
 
         // Save and notify
         return saveAll().thenApply(v -> {
@@ -531,7 +531,7 @@ public class ZoneManager {
         // Save async
         saveAll();
 
-        Logger.info("Created %s '%s' at %d, %d in %s", type.getDisplayName(), name, chunkX, chunkZ, world);
+        Logger.info("[Zone] Created %s '%s' at %d, %d in %s", type.getDisplayName(), name, chunkX, chunkZ, world);
         notifyZoneChange(Set.of(key));
         return ZoneResult.SUCCESS;
     }
@@ -576,7 +576,7 @@ public class ZoneManager {
         Zone updated = zone.withChunk(chunkX, chunkZ);
         updateZone(updated);
 
-        Logger.info("Claimed chunk (%d, %d) for zone '%s'", chunkX, chunkZ, zone.name());
+        Logger.info("[Zone] Claimed chunk (%d, %d) for zone '%s'", chunkX, chunkZ, zone.name());
         notifyZoneChange(Set.of(key));
         return ZoneResult.SUCCESS;
     }
@@ -608,7 +608,7 @@ public class ZoneManager {
         Zone updated = zone.withoutChunk(chunkX, chunkZ);
         updateZone(updated);
 
-        Logger.info("Unclaimed chunk (%d, %d) from zone '%s'", chunkX, chunkZ, zone.name());
+        Logger.info("[Zone] Unclaimed chunk (%d, %d) from zone '%s'", chunkX, chunkZ, zone.name());
         notifyZoneChange(Set.of(key));
         return ZoneResult.SUCCESS;
     }
@@ -687,7 +687,7 @@ public class ZoneManager {
             Zone updated = new Zone(zone.id(), zone.name(), zone.type(), zone.world(),
                                    newChunks, zone.createdAt(), zone.createdBy(), zone.flags());
             updateZone(updated);
-            Logger.info("Claimed %d chunks in radius for zone '%s'", claimed, zone.name());
+            Logger.info("[Zone] Claimed %d chunks in radius for zone '%s'", claimed, zone.name());
             notifyZoneChange(claimedChunks);
         }
 
@@ -716,7 +716,7 @@ public class ZoneManager {
         // Save async
         saveAll();
 
-        Logger.info("Removed %s '%s' with %d chunks", zone.type().getDisplayName(), zone.name(), zone.getChunkCount());
+        Logger.info("[Zone] Removed %s '%s' with %d chunks", zone.type().getDisplayName(), zone.name(), zone.getChunkCount());
         notifyZoneChange(zone.chunks());
         return ZoneResult.SUCCESS;
     }
@@ -772,7 +772,7 @@ public class ZoneManager {
 
         updateZone(updated);
 
-        Logger.info("Changed zone '%s' from %s to %s (resetFlags=%s)",
+        Logger.info("[Zone] Changed zone '%s' from %s to %s (resetFlags=%s)",
                 zone.name(), zone.type().getDisplayName(), newType.getDisplayName(), resetFlags);
         notifyZoneChange(zone.chunks());
         return ZoneResult.SUCCESS;
@@ -834,7 +834,7 @@ public class ZoneManager {
         Zone updated = zone.withFlag(flagName, value);
         updateZone(updated);
 
-        Logger.info("Set flag '%s' to %s on zone '%s'", flagName, value, zone.name());
+        Logger.info("[Zone] Set flag '%s' to %s on zone '%s'", flagName, value, zone.name());
         return ZoneResult.SUCCESS;
     }
 
@@ -854,7 +854,7 @@ public class ZoneManager {
         Zone updated = zone.withoutFlag(flagName);
         updateZone(updated);
 
-        Logger.info("Cleared flag '%s' from zone '%s' (using default)", flagName, zone.name());
+        Logger.info("[Zone] Cleared flag '%s' from zone '%s' (using default)", flagName, zone.name());
         return ZoneResult.SUCCESS;
     }
 
@@ -873,7 +873,7 @@ public class ZoneManager {
         Zone updated = zone.withFlags(null);
         updateZone(updated);
 
-        Logger.info("Cleared all custom flags from zone '%s' (using type defaults)", zone.name());
+        Logger.info("[Zone] Cleared all custom flags from zone '%s' (using type defaults)", zone.name());
         return ZoneResult.SUCCESS;
     }
 

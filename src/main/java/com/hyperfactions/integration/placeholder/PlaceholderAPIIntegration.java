@@ -32,7 +32,7 @@ public final class PlaceholderAPIIntegration {
         try {
             Class.forName("at.helpch.placeholderapi.PlaceholderAPI");
         } catch (ClassNotFoundException e) {
-            Logger.info("PlaceholderAPI not found - placeholders disabled");
+            Logger.info("[Integration] PlaceholderAPI not found - placeholders disabled");
             return;
         }
 
@@ -42,7 +42,7 @@ public final class PlaceholderAPIIntegration {
             boolean registered = expansion.register();
             if (registered) {
                 available = true;
-                Logger.info("PlaceholderAPI expansion registered (%%factions_*%%)");
+                Logger.info("[Integration] PlaceholderAPI expansion registered (%%factions_*%%)");
             } else {
                 Logger.warn("PlaceholderAPI expansion registration failed");
                 expansion = null;

@@ -1,6 +1,6 @@
 // Admin Faction Settings Page - Three-Column Layout with Boxed Sections
 // Left: General, Recruitment, Home, Danger Zone
-// Middle: Territory Permissions (Building grid + Interaction grid)
+// Middle: Territory Permissions (rotated grid - permissions as rows, roles as columns)
 // Right: Color, Mob Spawning, Faction Settings (PvP + Officers)
 
 $C = "../../Common.ui";
@@ -272,10 +272,11 @@ $C.@PageOverlay {
           Background: (Color: #334455);
         }
 
-        // === MIDDLE COLUMN - Territory Permissions ===
+        // === MIDDLE COLUMN - Territory Permissions (Rotated Grid) ===
         Group #MiddleColumn {
           Anchor: (Width: 370);
-          LayoutMode: Top;
+          LayoutMode: TopScrolling;
+          ScrollbarStyle: $C.@DefaultScrollbarStyle;
           Padding: (Left: 8, Right: 8, Top: 0, Bottom: 0);
 
           // Lock hint
@@ -292,9 +293,9 @@ $C.@PageOverlay {
             }
           }
 
-          // ---- BUILDING PERMISSIONS ----
+          // ---- TERRITORY PERMISSIONS ----
           Label {
-            Text: "Building Permissions";
+            Text: "Territory Permissions";
             Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
             Anchor: (Height: 18, Bottom: 4);
           }
@@ -303,260 +304,220 @@ $C.@PageOverlay {
             Background: (Color: #334455);
           }
 
-          Group #BuildingBox {
+          Group #PermissionsBox {
             Background: (Color: #1a2a3a);
             Padding: (Left: 10, Right: 10, Top: 8, Bottom: 8);
             LayoutMode: Top;
-            Anchor: (Bottom: 12);
 
-            // Header row
+            // Column header row: [label spacer] [Out] [Ally] [Mem] [Off]
+            // Checkbox visual renders ~8px from left inside @CheckBoxWithLabel template
             Group {
               LayoutMode: Left;
-              Anchor: (Height: 20, Bottom: 2);
+              Anchor: (Height: 20, Bottom: 4);
+              Padding: (Left: 6, Right: 6);
 
-              Label { Anchor: (Width: 80); }
+              Label { Anchor: (Width: 122); }
+              Label {
+                Text: "Out";
+                Style: (FontSize: 9, TextColor: #AAAAAA, RenderBold: true);
+                Anchor: (Width: 52);
+              }
+              Label {
+                Text: "Ally";
+                Style: (FontSize: 9, TextColor: #55FF55, RenderBold: true);
+                Anchor: (Width: 52);
+              }
+              Label {
+                Text: "Mem";
+                Style: (FontSize: 9, TextColor: #00FFFF, RenderBold: true);
+                Anchor: (Width: 52);
+              }
+              Label {
+                Text: "Off";
+                Style: (FontSize: 9, TextColor: #FFD700, RenderBold: true);
+                Anchor: (Width: 52);
+              }
+            }
+
+            // ---- BUILDING category ----
+            Label {
+              Text: "BUILDING";
+              Style: (FontSize: 9, TextColor: #666688, RenderBold: true);
+              Anchor: (Height: 16, Bottom: 2);
+            }
+
+            // Break row
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 28, Bottom: 1);
+              Background: (Color: #0d1520);
+              Padding: (Left: 6, Right: 6);
+
               Label {
                 Text: "Break";
-                Style: (FontSize: 10, TextColor: #888888, RenderBold: true);
-                Anchor: (Width: 55);
+                Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+                Anchor: (Width: 114);
               }
+              $C.@CheckBoxWithLabel #OutsiderBreakToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 52); }
+              $C.@CheckBoxWithLabel #AllyBreakToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 52); }
+              $C.@CheckBoxWithLabel #MemberBreakToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 52); }
+              $C.@CheckBoxWithLabel #OfficerBreakToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 52); }
+            }
+
+            // Place row
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 28, Bottom: 6);
+              Background: (Color: #111a28);
+              Padding: (Left: 6, Right: 6);
+
               Label {
                 Text: "Place";
-                Style: (FontSize: 10, TextColor: #888888, RenderBold: true);
-                Anchor: (Width: 55);
+                Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+                Anchor: (Width: 114);
               }
+              $C.@CheckBoxWithLabel #OutsiderPlaceToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 52); }
+              $C.@CheckBoxWithLabel #AllyPlaceToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 52); }
+              $C.@CheckBoxWithLabel #MemberPlaceToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 52); }
+              $C.@CheckBoxWithLabel #OfficerPlaceToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 52); }
             }
 
-            // Outsiders
-            Group {
-              LayoutMode: Left;
-              Anchor: (Height: 28, Bottom: 1);
-              Background: (Color: #0d1520);
-              Padding: (Left: 6, Right: 6);
-
-              Label {
-                Text: "Outsiders";
-                Style: (FontSize: 11, TextColor: #AAAAAA, VerticalAlignment: Center);
-                Anchor: (Width: 74);
-              }
-              $C.@CheckBoxWithLabel #OutsiderBreakToggle {
-                @Text = ""; @Checked = false;
-                Anchor: (Height: 22, Width: 55);
-              }
-              $C.@CheckBoxWithLabel #OutsiderPlaceToggle {
-                @Text = ""; @Checked = false;
-                Anchor: (Height: 22, Width: 55);
-              }
-            }
-
-            // Allies
-            Group {
-              LayoutMode: Left;
-              Anchor: (Height: 28, Bottom: 1);
-              Background: (Color: #111a28);
-              Padding: (Left: 6, Right: 6);
-
-              Label {
-                Text: "Allies";
-                Style: (FontSize: 11, TextColor: #55FF55, VerticalAlignment: Center);
-                Anchor: (Width: 74);
-              }
-              $C.@CheckBoxWithLabel #AllyBreakToggle {
-                @Text = ""; @Checked = false;
-                Anchor: (Height: 22, Width: 55);
-              }
-              $C.@CheckBoxWithLabel #AllyPlaceToggle {
-                @Text = ""; @Checked = false;
-                Anchor: (Height: 22, Width: 55);
-              }
-            }
-
-            // Members
-            Group {
-              LayoutMode: Left;
-              Anchor: (Height: 28, Bottom: 1);
-              Background: (Color: #0d1520);
-              Padding: (Left: 6, Right: 6);
-
-              Label {
-                Text: "Members";
-                Style: (FontSize: 11, TextColor: #00FFFF, VerticalAlignment: Center);
-                Anchor: (Width: 74);
-              }
-              $C.@CheckBoxWithLabel #MemberBreakToggle {
-                @Text = ""; @Checked = true;
-                Anchor: (Height: 22, Width: 55);
-              }
-              $C.@CheckBoxWithLabel #MemberPlaceToggle {
-                @Text = ""; @Checked = true;
-                Anchor: (Height: 22, Width: 55);
-              }
-            }
-
-            // Officers
-            Group {
-              LayoutMode: Left;
-              Anchor: (Height: 28);
-              Background: (Color: #111a28);
-              Padding: (Left: 6, Right: 6);
-
-              Label {
-                Text: "Officers";
-                Style: (FontSize: 11, TextColor: #FFD700, VerticalAlignment: Center);
-                Anchor: (Width: 74);
-              }
-              $C.@CheckBoxWithLabel #OfficerBreakToggle {
-                @Text = ""; @Checked = true;
-                Anchor: (Height: 22, Width: 55);
-              }
-              $C.@CheckBoxWithLabel #OfficerPlaceToggle {
-                @Text = ""; @Checked = true;
-                Anchor: (Height: 22, Width: 55);
-              }
-            }
-          }
-
-          // ---- INTERACTION PERMISSIONS ----
-          Group {
-            LayoutMode: Left;
-            Anchor: (Height: 18, Bottom: 2);
-
+            // ---- INTERACTION category ----
             Label {
-              Text: "Interaction Permissions";
-              Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
+              Text: "INTERACTION";
+              Style: (FontSize: 9, TextColor: #666688, RenderBold: true);
+              Anchor: (Height: 16, Bottom: 2);
             }
-          }
-          Label {
-            Text: "(children disabled when All is off)";
-            Style: (FontSize: 8, TextColor: #666666);
-            Anchor: (Height: 12, Bottom: 4);
-          }
-          Group {
-            Anchor: (Height: 1, Bottom: 8);
-            Background: (Color: #334455);
-          }
+            Label {
+              Text: "(children disabled when All is off)";
+              Style: (FontSize: 8, TextColor: #555566);
+              Anchor: (Height: 12, Bottom: 2);
+            }
 
-          Group #InteractionBox {
-            Background: (Color: #1a2a3a);
-            Padding: (Left: 10, Right: 10, Top: 8, Bottom: 8);
-            LayoutMode: Top;
-
-            // Header row
+            // All (parent) row
             Group {
               LayoutMode: Left;
-              Anchor: (Height: 20, Bottom: 2);
+              Anchor: (Height: 28, Bottom: 1);
+              Background: (Color: #0d1520);
+              Padding: (Left: 6, Right: 6);
 
-              Label { Anchor: (Width: 70); }
               Label {
                 Text: "All";
-                Style: (FontSize: 10, TextColor: #888888, RenderBold: true);
-                Anchor: (Width: 44);
+                Style: (FontSize: 11, TextColor: #CCCCCC, RenderBold: true, VerticalAlignment: Center);
+                Anchor: (Width: 114);
               }
+              $C.@CheckBoxWithLabel #OutsiderInteractToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 52); }
+              $C.@CheckBoxWithLabel #AllyInteractToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 52); }
+              $C.@CheckBoxWithLabel #MemberInteractToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 52); }
+              $C.@CheckBoxWithLabel #OfficerInteractToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 52); }
+            }
+
+            // Door (child) row
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 26, Bottom: 1);
+              Background: (Color: #0a1018);
+              Padding: (Left: 18, Right: 6);
+
               Label {
                 Text: "Door";
-                Style: (FontSize: 10, TextColor: #888888, RenderBold: true);
-                Anchor: (Width: 44);
+                Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
+                Anchor: (Width: 102);
               }
+              $C.@CheckBoxWithLabel #OutsiderDoorToggle { @Text = ""; @Checked = false; Anchor: (Height: 20, Width: 52); }
+              $C.@CheckBoxWithLabel #AllyDoorToggle { @Text = ""; @Checked = false; Anchor: (Height: 20, Width: 52); }
+              $C.@CheckBoxWithLabel #MemberDoorToggle { @Text = ""; @Checked = true; Anchor: (Height: 20, Width: 52); }
+              $C.@CheckBoxWithLabel #OfficerDoorToggle { @Text = ""; @Checked = true; Anchor: (Height: 20, Width: 52); }
+            }
+
+            // Chest (child) row
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 26, Bottom: 1);
+              Background: (Color: #0a1018);
+              Padding: (Left: 18, Right: 6);
+
               Label {
                 Text: "Chest";
-                Style: (FontSize: 10, TextColor: #888888, RenderBold: true);
-                Anchor: (Width: 44);
+                Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
+                Anchor: (Width: 102);
               }
+              $C.@CheckBoxWithLabel #OutsiderContainerToggle { @Text = ""; @Checked = false; Anchor: (Height: 20, Width: 52); }
+              $C.@CheckBoxWithLabel #AllyContainerToggle { @Text = ""; @Checked = false; Anchor: (Height: 20, Width: 52); }
+              $C.@CheckBoxWithLabel #MemberContainerToggle { @Text = ""; @Checked = true; Anchor: (Height: 20, Width: 52); }
+              $C.@CheckBoxWithLabel #OfficerContainerToggle { @Text = ""; @Checked = true; Anchor: (Height: 20, Width: 52); }
+            }
+
+            // Bench (child) row
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 26, Bottom: 1);
+              Background: (Color: #0a1018);
+              Padding: (Left: 18, Right: 6);
+
               Label {
                 Text: "Bench";
-                Style: (FontSize: 10, TextColor: #888888, RenderBold: true);
-                Anchor: (Width: 44);
+                Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
+                Anchor: (Width: 102);
               }
+              $C.@CheckBoxWithLabel #OutsiderBenchToggle { @Text = ""; @Checked = false; Anchor: (Height: 20, Width: 52); }
+              $C.@CheckBoxWithLabel #AllyBenchToggle { @Text = ""; @Checked = false; Anchor: (Height: 20, Width: 52); }
+              $C.@CheckBoxWithLabel #MemberBenchToggle { @Text = ""; @Checked = true; Anchor: (Height: 20, Width: 52); }
+              $C.@CheckBoxWithLabel #OfficerBenchToggle { @Text = ""; @Checked = true; Anchor: (Height: 20, Width: 52); }
+            }
+
+            // Processing (child) row
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 26, Bottom: 1);
+              Background: (Color: #0a1018);
+              Padding: (Left: 18, Right: 6);
+
               Label {
-                Text: "Proc";
-                Style: (FontSize: 10, TextColor: #888888, RenderBold: true);
-                Anchor: (Width: 44);
+                Text: "Processing";
+                Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
+                Anchor: (Width: 102);
               }
+              $C.@CheckBoxWithLabel #OutsiderProcessingToggle { @Text = ""; @Checked = false; Anchor: (Height: 20, Width: 52); }
+              $C.@CheckBoxWithLabel #AllyProcessingToggle { @Text = ""; @Checked = false; Anchor: (Height: 20, Width: 52); }
+              $C.@CheckBoxWithLabel #MemberProcessingToggle { @Text = ""; @Checked = true; Anchor: (Height: 20, Width: 52); }
+              $C.@CheckBoxWithLabel #OfficerProcessingToggle { @Text = ""; @Checked = true; Anchor: (Height: 20, Width: 52); }
+            }
+
+            // Seat (child) row
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 26, Bottom: 1);
+              Background: (Color: #0a1018);
+              Padding: (Left: 18, Right: 6);
+
               Label {
                 Text: "Seat";
-                Style: (FontSize: 10, TextColor: #888888, RenderBold: true);
-                Anchor: (Width: 44);
+                Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
+                Anchor: (Width: 102);
               }
+              $C.@CheckBoxWithLabel #OutsiderSeatToggle { @Text = ""; @Checked = false; Anchor: (Height: 20, Width: 52); }
+              $C.@CheckBoxWithLabel #AllySeatToggle { @Text = ""; @Checked = false; Anchor: (Height: 20, Width: 52); }
+              $C.@CheckBoxWithLabel #MemberSeatToggle { @Text = ""; @Checked = true; Anchor: (Height: 20, Width: 52); }
+              $C.@CheckBoxWithLabel #OfficerSeatToggle { @Text = ""; @Checked = true; Anchor: (Height: 20, Width: 52); }
             }
 
-            // Outsiders
+            // Transport (child) row
             Group {
               LayoutMode: Left;
-              Anchor: (Height: 28, Bottom: 1);
-              Background: (Color: #0d1520);
-              Padding: (Left: 6, Right: 6);
+              Anchor: (Height: 26);
+              Background: (Color: #0a1018);
+              Padding: (Left: 18, Right: 6);
 
               Label {
-                Text: "Outsiders";
-                Style: (FontSize: 11, TextColor: #AAAAAA, VerticalAlignment: Center);
-                Anchor: (Width: 64);
+                Text: "Transport";
+                Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
+                Anchor: (Width: 102);
               }
-              $C.@CheckBoxWithLabel #OutsiderInteractToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 44); }
-              $C.@CheckBoxWithLabel #OutsiderDoorToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 44); }
-              $C.@CheckBoxWithLabel #OutsiderContainerToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 44); }
-              $C.@CheckBoxWithLabel #OutsiderBenchToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 44); }
-              $C.@CheckBoxWithLabel #OutsiderProcessingToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 44); }
-              $C.@CheckBoxWithLabel #OutsiderSeatToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 44); }
-            }
-
-            // Allies
-            Group {
-              LayoutMode: Left;
-              Anchor: (Height: 28, Bottom: 1);
-              Background: (Color: #111a28);
-              Padding: (Left: 6, Right: 6);
-
-              Label {
-                Text: "Allies";
-                Style: (FontSize: 11, TextColor: #55FF55, VerticalAlignment: Center);
-                Anchor: (Width: 64);
-              }
-              $C.@CheckBoxWithLabel #AllyInteractToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 44); }
-              $C.@CheckBoxWithLabel #AllyDoorToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 44); }
-              $C.@CheckBoxWithLabel #AllyContainerToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 44); }
-              $C.@CheckBoxWithLabel #AllyBenchToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 44); }
-              $C.@CheckBoxWithLabel #AllyProcessingToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 44); }
-              $C.@CheckBoxWithLabel #AllySeatToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 44); }
-            }
-
-            // Members
-            Group {
-              LayoutMode: Left;
-              Anchor: (Height: 28, Bottom: 1);
-              Background: (Color: #0d1520);
-              Padding: (Left: 6, Right: 6);
-
-              Label {
-                Text: "Members";
-                Style: (FontSize: 11, TextColor: #00FFFF, VerticalAlignment: Center);
-                Anchor: (Width: 64);
-              }
-              $C.@CheckBoxWithLabel #MemberInteractToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 44); }
-              $C.@CheckBoxWithLabel #MemberDoorToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 44); }
-              $C.@CheckBoxWithLabel #MemberContainerToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 44); }
-              $C.@CheckBoxWithLabel #MemberBenchToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 44); }
-              $C.@CheckBoxWithLabel #MemberProcessingToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 44); }
-              $C.@CheckBoxWithLabel #MemberSeatToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 44); }
-            }
-
-            // Officers
-            Group {
-              LayoutMode: Left;
-              Anchor: (Height: 28);
-              Background: (Color: #111a28);
-              Padding: (Left: 6, Right: 6);
-
-              Label {
-                Text: "Officers";
-                Style: (FontSize: 11, TextColor: #FFD700, VerticalAlignment: Center);
-                Anchor: (Width: 64);
-              }
-              $C.@CheckBoxWithLabel #OfficerInteractToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 44); }
-              $C.@CheckBoxWithLabel #OfficerDoorToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 44); }
-              $C.@CheckBoxWithLabel #OfficerContainerToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 44); }
-              $C.@CheckBoxWithLabel #OfficerBenchToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 44); }
-              $C.@CheckBoxWithLabel #OfficerProcessingToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 44); }
-              $C.@CheckBoxWithLabel #OfficerSeatToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 44); }
+              $C.@CheckBoxWithLabel #OutsiderTransportToggle { @Text = ""; @Checked = false; Anchor: (Height: 20, Width: 52); }
+              $C.@CheckBoxWithLabel #AllyTransportToggle { @Text = ""; @Checked = false; Anchor: (Height: 20, Width: 52); }
+              $C.@CheckBoxWithLabel #MemberTransportToggle { @Text = ""; @Checked = true; Anchor: (Height: 20, Width: 52); }
+              $C.@CheckBoxWithLabel #OfficerTransportToggle { @Text = ""; @Checked = true; Anchor: (Height: 20, Width: 52); }
             }
           }
         }

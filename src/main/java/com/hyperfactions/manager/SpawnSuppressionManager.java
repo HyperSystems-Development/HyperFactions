@@ -94,7 +94,7 @@ public class SpawnSuppressionManager {
      */
     public void initialize() {
         resolveNPCGroups();
-        Logger.info("SpawnSuppressionManager initialized - hostile=%d, passive=%d, neutral=%d",
+        Logger.info("[Startup] Spawn suppression initialized - hostile=%d, passive=%d, neutral=%d",
             hostileGroupIndex, passiveGroupIndex, neutralGroupIndex);
     }
 
@@ -224,7 +224,7 @@ public class SpawnSuppressionManager {
             }
         }
 
-        Logger.info("Applied spawn suppression in world '%s': %d zones (%d chunks), %d factions (%d claim chunks)",
+        Logger.info("[SpawnSuppression] Applied to world '%s': %d zones (%d chunks), %d factions (%d claim chunks)",
             worldName, zonesProcessed, zoneChunks, factionsProcessed, claimChunks);
         return true;
     }

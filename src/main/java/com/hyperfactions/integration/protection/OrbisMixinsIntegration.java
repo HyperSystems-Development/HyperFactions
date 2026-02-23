@@ -6,6 +6,9 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
@@ -120,7 +123,7 @@ public final class OrbisMixinsIntegration {
             mixinsAvailable = generalFlagSet || anyMixinLoaded;
 
             if (mixinsAvailable) {
-                Logger.info("OrbisGuard-Mixins detected - enhanced protection hooks available");
+                Logger.debug("OrbisGuard-Mixins detected - enhanced protection hooks available");
                 Logger.debugMixin("Detection: generalFlag=%b, durability=%b, pickup=%b, death=%b, seating=%b",
                     generalFlagSet, durabilityMixinLoaded, pickupMixinLoaded, deathMixinLoaded, seatingMixinLoaded);
             } else {
@@ -178,7 +181,7 @@ public final class OrbisMixinsIntegration {
         // Log changes
         if (mixinsAvailable != oldMixins) {
             if (mixinsAvailable) {
-                Logger.info("OrbisGuard-Mixins now detected (late load)");
+                Logger.debug("OrbisGuard-Mixins now detected (late load)");
                 initError = null;
             }
         }
@@ -296,6 +299,74 @@ public final class OrbisMixinsIntegration {
         }
     }
 
+    // ========== Hook Chaining Support ==========
+    // When OrbisGuard registers hooks before us, we capture the originals and chain calls.
+    // This ensures OG's region-based checks still run alongside HF's faction-based checks.
+
+    /** Stores original hooks so we can chain calls and restore on unregister. */
+    private static final Map<String, Object> originalHooks = new ConcurrentHashMap<>();
+
+    /**
+     * Gets the existing hook at the given registry key before we overwrite it.
+     */
+    @Nullable
+    private static Object getExistingHook(String key) {
+        Object registry = System.getProperties().get(HOOK_REGISTRY_KEY);
+        if (registry instanceof Map) {
+            return ((Map<?, ?>) registry).get(key);
+        }
+        return null;
+    }
+
+    /**
+     * Captures and stores the existing hook before overwriting, then returns it.
+     * Used in register methods to enable chaining.
+     *
+     * @return the existing hook, or null if none registered
+     */
+    @Nullable
+    private static Object captureExisting(String key) {
+        Object existing = getExistingHook(key);
+        if (existing != null) {
+            originalHooks.putIfAbsent(key, existing);
+            Logger.debugMixin("Captured existing hook for chaining: %s (%s)",
+                key, existing.getClass().getSimpleName());
+        }
+        return existing;
+    }
+
+    /**
+     * Resolves a MethodHandle for calling a method on the original hook object.
+     * Returns null if the method doesn't exist (e.g., hook is from a different plugin).
+     */
+    @Nullable
+    private static MethodHandle resolveMethod(@NotNull Object hook, String methodName, MethodType methodType) {
+        try {
+            return MethodHandles.publicLookup()
+                .findVirtual(hook.getClass(), methodName, methodType)
+                .bindTo(hook);
+        } catch (NoSuchMethodException | IllegalAccessException e) {
+            Logger.debugMixin("Could not resolve chained method %s on %s: %s",
+                methodName, hook.getClass().getSimpleName(), e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Restores the original hook at the given key, or removes the key if no original.
+     * Called during unregistration to leave things as we found them.
+     */
+    private static void restoreOrRemoveHook(String key) {
+        Object original = originalHooks.remove(key);
+        if (original != null) {
+            Map<String, Object> registry = getOrCreateRegistry();
+            registry.put(key, original);
+            Logger.debugMixin("Restored original hook: %s", key);
+        } else {
+            unregisterHookFromRegistry(key);
+        }
+    }
+
     // ========== Pickup Protection Hook ==========
 
     /**
@@ -313,9 +384,10 @@ public final class OrbisMixinsIntegration {
      */
     public static boolean registerPickupHook(@NotNull PickupCheckCallback callback) {
         try {
-            PickupHookWrapper wrapper = new PickupHookWrapper(callback);
+            Object existing = captureExisting(OG_PICKUP_HOOK);
+            PickupHookWrapper wrapper = new PickupHookWrapper(callback, existing);
             registerHookInRegistry(OG_PICKUP_HOOK, wrapper);
-            Logger.info("Registered pickup protection hook");
+            Logger.debug("Registered pickup protection hook");
             return true;
         } catch (Exception e) {
             Logger.warn("Failed to register pickup hook: %s", e.getMessage());
@@ -324,7 +396,7 @@ public final class OrbisMixinsIntegration {
     }
 
     public static void unregisterPickupHook() {
-        unregisterHookFromRegistry(OG_PICKUP_HOOK);
+        restoreOrRemoveHook(OG_PICKUP_HOOK);
         Logger.debugMixin("Unregistered pickup hook");
     }
 
@@ -336,18 +408,35 @@ public final class OrbisMixinsIntegration {
 
     public static final class PickupHookWrapper {
         private final PickupCheckCallback callback;
+        private final @Nullable MethodHandle originalCheck;
 
-        public PickupHookWrapper(@NotNull PickupCheckCallback callback) {
+        public PickupHookWrapper(@NotNull PickupCheckCallback callback, @Nullable Object originalHook) {
             this.callback = callback;
+            this.originalCheck = originalHook != null
+                ? resolveMethod(originalHook, "check",
+                    MethodType.methodType(boolean.class, UUID.class, String.class,
+                        double.class, double.class, double.class, String.class))
+                : null;
         }
 
         /**
          * Called by OrbisGuard-Mixins via reflection.
-         * Method name and signature must match exactly:
-         * check(UUID, String, double, double, double, String) -> boolean
+         * Chains with original: both must allow for pickup to proceed.
          */
         public boolean check(UUID playerUuid, String worldName, double x, double y, double z, String mode) {
             try {
+                if (originalCheck != null) {
+                    try {
+                        boolean originalAllowed = (boolean) originalCheck.invoke(playerUuid, worldName, x, y, z, mode);
+                        if (!originalAllowed) {
+                            Logger.debugProtection("[Mixin:Pickup] Blocked by chained hook (OrbisGuard)");
+                            return false;
+                        }
+                    } catch (Throwable t) {
+                        Logger.debugMixin("Error invoking chained pickup hook: %s", t.getMessage());
+                    }
+                }
+
                 boolean allowed = callback.isPickupAllowed(playerUuid, worldName, x, y, z, mode);
                 Logger.debugProtection("[Mixin:Pickup] player=%s, world=%s, pos=(%.1f,%.1f,%.1f), mode=%s, allowed=%b",
                     playerUuid, worldName, x, y, z, mode, allowed);
@@ -366,9 +455,10 @@ public final class OrbisMixinsIntegration {
      */
     public static boolean registerHammerHook(@NotNull HammerCheckCallback callback) {
         try {
-            HammerHookWrapper wrapper = new HammerHookWrapper(callback);
+            Object existing = captureExisting(OG_HAMMER_HOOK);
+            HammerHookWrapper wrapper = new HammerHookWrapper(callback, existing);
             registerHookInRegistry(OG_HAMMER_HOOK, wrapper);
-            Logger.info("Registered hammer protection hook");
+            Logger.debug("Registered hammer protection hook");
             return true;
         } catch (Exception e) {
             Logger.warn("Failed to register hammer hook: %s", e.getMessage());
@@ -377,7 +467,7 @@ public final class OrbisMixinsIntegration {
     }
 
     public static void unregisterHammerHook() {
-        unregisterHookFromRegistry(OG_HAMMER_HOOK);
+        restoreOrRemoveHook(OG_HAMMER_HOOK);
     }
 
     @FunctionalInterface
@@ -396,16 +486,42 @@ public final class OrbisMixinsIntegration {
      */
     public static final class HammerHookWrapper {
         private final HammerCheckCallback callback;
+        private final @Nullable MethodHandle originalIsHammerAllowed;
+        private final @Nullable MethodHandle originalCheckMessage;
 
-        public HammerHookWrapper(@NotNull HammerCheckCallback callback) {
+        public HammerHookWrapper(@NotNull HammerCheckCallback callback, @Nullable Object originalHook) {
             this.callback = callback;
+            if (originalHook != null) {
+                MethodType boolType = MethodType.methodType(boolean.class,
+                    UUID.class, String.class, int.class, int.class, int.class);
+                MethodType strType = MethodType.methodType(String.class,
+                    UUID.class, String.class, int.class, int.class, int.class);
+                this.originalIsHammerAllowed = resolveMethod(originalHook, "isHammerAllowed", boolType);
+                this.originalCheckMessage = resolveMethod(originalHook, "checkMessage", strType);
+            } else {
+                this.originalIsHammerAllowed = null;
+                this.originalCheckMessage = null;
+            }
         }
 
         /**
          * Called by OrbisGuard's CycleBlockGroupInteraction codec replacement (boolean API).
+         * Chains: both must allow.
          */
         public boolean isHammerAllowed(UUID playerUuid, String worldName, int x, int y, int z) {
             try {
+                if (originalIsHammerAllowed != null) {
+                    try {
+                        boolean originalAllowed = (boolean) originalIsHammerAllowed.invoke(playerUuid, worldName, x, y, z);
+                        if (!originalAllowed) {
+                            Logger.debugProtection("[Mixin:Hammer] Blocked by chained hook (OrbisGuard)");
+                            return false;
+                        }
+                    } catch (Throwable t) {
+                        Logger.debugMixin("Error invoking chained hammer hook: %s", t.getMessage());
+                    }
+                }
+
                 String result = callback.checkHammer(playerUuid, worldName, x, y, z);
                 boolean allowed = result == null;
                 Logger.debugProtection("[Mixin:Hammer] player=%s, world=%s, pos=(%d,%d,%d), allowed=%b",
@@ -418,12 +534,24 @@ public final class OrbisMixinsIntegration {
         }
 
         /**
-         * Called by CycleBlockGroupInteractionMixin (OG-Mixins 0.8.3+) for hammer protection.
-         * The mixin is a safety net that works regardless of which plugin's codec override wins.
+         * Called by CycleBlockGroupInteractionMixin (OG-Mixins 0.8.3+).
+         * Chains: first non-null denial wins.
          * @return null if allowed, denial message if blocked
          */
         public String checkMessage(UUID playerUuid, String worldName, int x, int y, int z) {
             try {
+                if (originalCheckMessage != null) {
+                    try {
+                        String originalResult = (String) originalCheckMessage.invoke(playerUuid, worldName, x, y, z);
+                        if (originalResult != null) {
+                            Logger.debugProtection("[Mixin:HammerMessage] Blocked by chained hook (OrbisGuard)");
+                            return originalResult;
+                        }
+                    } catch (Throwable t) {
+                        Logger.debugMixin("Error invoking chained hammer checkMessage: %s", t.getMessage());
+                    }
+                }
+
                 String result = callback.checkHammer(playerUuid, worldName, x, y, z);
                 boolean allowed = result == null;
                 Logger.debugProtection("[Mixin:HammerMessage] player=%s, world=%s, pos=(%d,%d,%d), allowed=%b",
@@ -443,9 +571,10 @@ public final class OrbisMixinsIntegration {
      */
     public static boolean registerExplosionHook(@NotNull ExplosionCheckCallback callback) {
         try {
-            ExplosionHookWrapper wrapper = new ExplosionHookWrapper(callback);
+            Object existing = captureExisting(OG_EXPLOSION_HOOK);
+            ExplosionHookWrapper wrapper = new ExplosionHookWrapper(callback, existing);
             registerHookInRegistry(OG_EXPLOSION_HOOK, wrapper);
-            Logger.info("Registered explosion protection hook");
+            Logger.debug("Registered explosion protection hook");
             return true;
         } catch (Exception e) {
             Logger.warn("Failed to register explosion hook: %s", e.getMessage());
@@ -454,7 +583,7 @@ public final class OrbisMixinsIntegration {
     }
 
     public static void unregisterExplosionHook() {
-        unregisterHookFromRegistry(OG_EXPLOSION_HOOK);
+        restoreOrRemoveHook(OG_EXPLOSION_HOOK);
     }
 
     @FunctionalInterface
@@ -464,13 +593,35 @@ public final class OrbisMixinsIntegration {
 
     public static final class ExplosionHookWrapper {
         private final ExplosionCheckCallback callback;
+        private final @Nullable MethodHandle originalShouldBlockExplosion;
 
-        public ExplosionHookWrapper(@NotNull ExplosionCheckCallback callback) {
+        public ExplosionHookWrapper(@NotNull ExplosionCheckCallback callback, @Nullable Object originalHook) {
             this.callback = callback;
+            // OG's explosion hook takes (World, int, int, int) but World is cross-classloader,
+            // so we use Object to avoid ClassCastException
+            this.originalShouldBlockExplosion = originalHook != null
+                ? resolveMethod(originalHook, "shouldBlockExplosion",
+                    MethodType.methodType(boolean.class, World.class, int.class, int.class, int.class))
+                : null;
         }
 
+        /**
+         * Chains: if EITHER blocks, explosion is blocked.
+         */
         public boolean shouldBlockExplosion(World world, int x, int y, int z) {
             try {
+                if (originalShouldBlockExplosion != null) {
+                    try {
+                        boolean originalBlocked = (boolean) originalShouldBlockExplosion.invoke(world, x, y, z);
+                        if (originalBlocked) {
+                            Logger.debugProtection("[Mixin:Explosion] Blocked by chained hook (OrbisGuard)");
+                            return true;
+                        }
+                    } catch (Throwable t) {
+                        Logger.debugMixin("Error invoking chained explosion hook: %s", t.getMessage());
+                    }
+                }
+
                 String worldName = world != null ? world.getName() : "";
                 boolean blocked = callback.shouldBlockExplosion(worldName, x, y, z);
                 Logger.debugProtection("[Mixin:Explosion] world=%s, pos=(%d,%d,%d), blocked=%b",
@@ -478,7 +629,7 @@ public final class OrbisMixinsIntegration {
                 return blocked;
             } catch (Exception e) {
                 Logger.debugMixin("Error in explosion check: %s", e.getMessage());
-                return false; // Fail-open - don't block if check fails
+                return false; // Fail-open
             }
         }
     }
@@ -490,9 +641,10 @@ public final class OrbisMixinsIntegration {
      */
     public static boolean registerCommandHook(@NotNull CommandCheckCallback callback) {
         try {
-            CommandHookWrapper wrapper = new CommandHookWrapper(callback);
+            Object existing = captureExisting(OG_COMMAND_HOOK);
+            CommandHookWrapper wrapper = new CommandHookWrapper(callback, existing);
             registerHookInRegistry(OG_COMMAND_HOOK, wrapper);
-            Logger.info("Registered command protection hook");
+            Logger.debug("Registered command protection hook");
             return true;
         } catch (Exception e) {
             Logger.warn("Failed to register command hook: %s", e.getMessage());
@@ -501,7 +653,7 @@ public final class OrbisMixinsIntegration {
     }
 
     public static void unregisterCommandHook() {
-        unregisterHookFromRegistry(OG_COMMAND_HOOK);
+        restoreOrRemoveHook(OG_COMMAND_HOOK);
     }
 
     @FunctionalInterface
@@ -529,18 +681,48 @@ public final class OrbisMixinsIntegration {
     public static final class CommandHookWrapper {
         private final CommandCheckCallback callback;
         private volatile CommandCheckResult lastResult = CommandCheckResult.allow();
+        private final @Nullable MethodHandle originalShouldBlockCommand;
+        private final @Nullable MethodHandle originalGetDenialMessage;
 
-        public CommandHookWrapper(@NotNull CommandCheckCallback callback) {
+        public CommandHookWrapper(@NotNull CommandCheckCallback callback, @Nullable Object originalHook) {
             this.callback = callback;
+            if (originalHook != null) {
+                this.originalShouldBlockCommand = resolveMethod(originalHook, "shouldBlockCommand",
+                    MethodType.methodType(boolean.class, Player.class, String.class));
+                this.originalGetDenialMessage = resolveMethod(originalHook, "getDenialMessage",
+                    MethodType.methodType(String.class));
+            } else {
+                this.originalShouldBlockCommand = null;
+                this.originalGetDenialMessage = null;
+            }
         }
 
+        /**
+         * Chains: if EITHER blocks, command is blocked.
+         */
         public boolean shouldBlockCommand(Player player, String command) {
             try {
                 if (player == null || command == null) return false;
 
+                // Check original hook first
+                if (originalShouldBlockCommand != null) {
+                    try {
+                        boolean originalBlocked = (boolean) originalShouldBlockCommand.invoke(player, command);
+                        if (originalBlocked) {
+                            // Capture original's denial message for getDenialMessage()
+                            String msg = null;
+                            if (originalGetDenialMessage != null) {
+                                try { msg = (String) originalGetDenialMessage.invoke(); } catch (Throwable ignored) {}
+                            }
+                            lastResult = CommandCheckResult.deny(msg != null ? msg : "You cannot use that command here.");
+                            return true;
+                        }
+                    } catch (Throwable t) {
+                        Logger.debugMixin("Error invoking chained command hook: %s", t.getMessage());
+                    }
+                }
+
                 UUID uuid = player.getUuid();
-                // Note: OrbisGuard-Mixins passes the Player directly; we can get UUID and world from it
-                // Position lookup is complex; for now we pass 0,0,0 and let the callback handle it
                 String worldName = "";
                 int x = 0, y = 0, z = 0;
 
@@ -564,9 +746,10 @@ public final class OrbisMixinsIntegration {
      */
     public static boolean registerDeathHook(@NotNull DeathCheckCallback callback) {
         try {
-            DeathHookWrapper wrapper = new DeathHookWrapper(callback);
+            Object existing = captureExisting(OG_DEATH_HOOK);
+            DeathHookWrapper wrapper = new DeathHookWrapper(callback, existing);
             registerHookInRegistry(OG_DEATH_HOOK, wrapper);
-            Logger.info("Registered death (keep inventory) hook");
+            Logger.debug("Registered death (keep inventory) hook");
             return true;
         } catch (Exception e) {
             Logger.warn("Failed to register death hook: %s", e.getMessage());
@@ -575,7 +758,7 @@ public final class OrbisMixinsIntegration {
     }
 
     public static void unregisterDeathHook() {
-        unregisterHookFromRegistry(OG_DEATH_HOOK);
+        restoreOrRemoveHook(OG_DEATH_HOOK);
     }
 
     @FunctionalInterface
@@ -585,20 +768,41 @@ public final class OrbisMixinsIntegration {
 
     public static final class DeathHookWrapper {
         private final DeathCheckCallback callback;
+        private final @Nullable MethodHandle originalShouldKeepInventory;
 
-        public DeathHookWrapper(@NotNull DeathCheckCallback callback) {
+        public DeathHookWrapper(@NotNull DeathCheckCallback callback, @Nullable Object originalHook) {
             this.callback = callback;
+            this.originalShouldKeepInventory = originalHook != null
+                ? resolveMethod(originalHook, "shouldKeepInventory",
+                    MethodType.methodType(boolean.class, UUID.class, String.class,
+                        int.class, int.class, int.class))
+                : null;
         }
 
+        /**
+         * Chains: if EITHER says keep inventory, keep it.
+         */
         public boolean shouldKeepInventory(UUID playerUuid, String worldName, int x, int y, int z) {
             try {
+                if (originalShouldKeepInventory != null) {
+                    try {
+                        boolean originalKeep = (boolean) originalShouldKeepInventory.invoke(playerUuid, worldName, x, y, z);
+                        if (originalKeep) {
+                            Logger.debugCombat("[Mixin:Death] Keep inventory by chained hook (OrbisGuard)");
+                            return true;
+                        }
+                    } catch (Throwable t) {
+                        Logger.debugMixin("Error invoking chained death hook: %s", t.getMessage());
+                    }
+                }
+
                 boolean keepInventory = callback.shouldKeepInventory(playerUuid, worldName, x, y, z);
                 Logger.debugCombat("[Mixin:Death] player=%s, world=%s, pos=(%d,%d,%d), keepInventory=%b",
                     playerUuid, worldName, x, y, z, keepInventory);
                 return keepInventory;
             } catch (Exception e) {
                 Logger.debugMixin("Error in death check: %s", e.getMessage());
-                return false; // Fail-open - don't keep inventory if check fails
+                return false; // Fail-open
             }
         }
     }
@@ -610,9 +814,10 @@ public final class OrbisMixinsIntegration {
      */
     public static boolean registerDurabilityHook(@NotNull DurabilityCheckCallback callback) {
         try {
-            DurabilityHookWrapper wrapper = new DurabilityHookWrapper(callback);
+            Object existing = captureExisting(OG_DURABILITY_HOOK);
+            DurabilityHookWrapper wrapper = new DurabilityHookWrapper(callback, existing);
             registerHookInRegistry(OG_DURABILITY_HOOK, wrapper);
-            Logger.info("Registered durability protection hook");
+            Logger.debug("Registered durability protection hook");
             return true;
         } catch (Exception e) {
             Logger.warn("Failed to register durability hook: %s", e.getMessage());
@@ -621,7 +826,7 @@ public final class OrbisMixinsIntegration {
     }
 
     public static void unregisterDurabilityHook() {
-        unregisterHookFromRegistry(OG_DURABILITY_HOOK);
+        restoreOrRemoveHook(OG_DURABILITY_HOOK);
     }
 
     @FunctionalInterface
@@ -631,13 +836,34 @@ public final class OrbisMixinsIntegration {
 
     public static final class DurabilityHookWrapper {
         private final DurabilityCheckCallback callback;
+        private final @Nullable MethodHandle originalShouldPreventDurabilityLoss;
 
-        public DurabilityHookWrapper(@NotNull DurabilityCheckCallback callback) {
+        public DurabilityHookWrapper(@NotNull DurabilityCheckCallback callback, @Nullable Object originalHook) {
             this.callback = callback;
+            this.originalShouldPreventDurabilityLoss = originalHook != null
+                ? resolveMethod(originalHook, "shouldPreventDurabilityLoss",
+                    MethodType.methodType(boolean.class, UUID.class, String.class,
+                        int.class, int.class, int.class))
+                : null;
         }
 
+        /**
+         * Chains: if EITHER says prevent, durability loss is prevented.
+         */
         public boolean shouldPreventDurabilityLoss(UUID playerUuid, String worldName, int x, int y, int z) {
             try {
+                if (originalShouldPreventDurabilityLoss != null) {
+                    try {
+                        boolean originalPrevent = (boolean) originalShouldPreventDurabilityLoss.invoke(playerUuid, worldName, x, y, z);
+                        if (originalPrevent) {
+                            Logger.debugProtection("[Mixin:Durability] Prevented by chained hook (OrbisGuard)");
+                            return true;
+                        }
+                    } catch (Throwable t) {
+                        Logger.debugMixin("Error invoking chained durability hook: %s", t.getMessage());
+                    }
+                }
+
                 boolean prevent = callback.shouldPreventDurabilityLoss(playerUuid, worldName, x, y, z);
                 Logger.debugProtection("[Mixin:Durability] player=%s, world=%s, pos=(%d,%d,%d), preventLoss=%b",
                     playerUuid, worldName, x, y, z, prevent);
@@ -656,9 +882,10 @@ public final class OrbisMixinsIntegration {
      */
     public static boolean registerUseHook(@NotNull UseCheckCallback callback) {
         try {
-            UseHookWrapper wrapper = new UseHookWrapper(callback);
+            Object existing = captureExisting(OG_USE_HOOK);
+            UseHookWrapper wrapper = new UseHookWrapper(callback, existing);
             registerHookInRegistry(OG_USE_HOOK, wrapper);
-            Logger.info("Registered use protection hook");
+            Logger.debug("Registered use protection hook");
             return true;
         } catch (Exception e) {
             Logger.warn("Failed to register use hook: %s", e.getMessage());
@@ -667,7 +894,7 @@ public final class OrbisMixinsIntegration {
     }
 
     public static void unregisterUseHook() {
-        unregisterHookFromRegistry(OG_USE_HOOK);
+        restoreOrRemoveHook(OG_USE_HOOK);
     }
 
     @FunctionalInterface
@@ -677,13 +904,34 @@ public final class OrbisMixinsIntegration {
 
     public static final class UseHookWrapper {
         private final UseCheckCallback callback;
+        private final @Nullable MethodHandle originalIsUseAllowed;
 
-        public UseHookWrapper(@NotNull UseCheckCallback callback) {
+        public UseHookWrapper(@NotNull UseCheckCallback callback, @Nullable Object originalHook) {
             this.callback = callback;
+            this.originalIsUseAllowed = originalHook != null
+                ? resolveMethod(originalHook, "isUseAllowed",
+                    MethodType.methodType(boolean.class, UUID.class, String.class,
+                        int.class, int.class, int.class))
+                : null;
         }
 
+        /**
+         * Chains: both must allow for use to proceed.
+         */
         public boolean isUseAllowed(UUID playerUuid, String worldName, int x, int y, int z) {
             try {
+                if (originalIsUseAllowed != null) {
+                    try {
+                        boolean originalAllowed = (boolean) originalIsUseAllowed.invoke(playerUuid, worldName, x, y, z);
+                        if (!originalAllowed) {
+                            Logger.debugInteraction("[Mixin:Use] Blocked by chained hook (OrbisGuard)");
+                            return false;
+                        }
+                    } catch (Throwable t) {
+                        Logger.debugMixin("Error invoking chained use hook: %s", t.getMessage());
+                    }
+                }
+
                 boolean allowed = callback.isUseAllowed(playerUuid, worldName, x, y, z);
                 Logger.debugInteraction("[Mixin:Use] player=%s, world=%s, pos=(%d,%d,%d), allowed=%b",
                     playerUuid, worldName, x, y, z, allowed);
@@ -702,9 +950,10 @@ public final class OrbisMixinsIntegration {
      */
     public static boolean registerSeatHook(@NotNull SeatCheckCallback callback) {
         try {
-            SeatHookWrapper wrapper = new SeatHookWrapper(callback);
+            Object existing = captureExisting(OG_SEAT_HOOK);
+            SeatHookWrapper wrapper = new SeatHookWrapper(callback, existing);
             registerHookInRegistry(OG_SEAT_HOOK, wrapper);
-            Logger.info("Registered seat protection hook");
+            Logger.debug("Registered seat protection hook");
             return true;
         } catch (Exception e) {
             Logger.warn("Failed to register seat hook: %s", e.getMessage());
@@ -713,7 +962,7 @@ public final class OrbisMixinsIntegration {
     }
 
     public static void unregisterSeatHook() {
-        unregisterHookFromRegistry(OG_SEAT_HOOK);
+        restoreOrRemoveHook(OG_SEAT_HOOK);
     }
 
     @FunctionalInterface
@@ -723,13 +972,34 @@ public final class OrbisMixinsIntegration {
 
     public static final class SeatHookWrapper {
         private final SeatCheckCallback callback;
+        private final @Nullable MethodHandle originalIsSeatAllowed;
 
-        public SeatHookWrapper(@NotNull SeatCheckCallback callback) {
+        public SeatHookWrapper(@NotNull SeatCheckCallback callback, @Nullable Object originalHook) {
             this.callback = callback;
+            this.originalIsSeatAllowed = originalHook != null
+                ? resolveMethod(originalHook, "isSeatAllowed",
+                    MethodType.methodType(boolean.class, UUID.class, String.class,
+                        int.class, int.class, int.class))
+                : null;
         }
 
+        /**
+         * Chains: both must allow for seating to proceed.
+         */
         public boolean isSeatAllowed(UUID playerUuid, String worldName, int x, int y, int z) {
             try {
+                if (originalIsSeatAllowed != null) {
+                    try {
+                        boolean originalAllowed = (boolean) originalIsSeatAllowed.invoke(playerUuid, worldName, x, y, z);
+                        if (!originalAllowed) {
+                            Logger.debugInteraction("[Mixin:Seat] Blocked by chained hook (OrbisGuard)");
+                            return false;
+                        }
+                    } catch (Throwable t) {
+                        Logger.debugMixin("Error invoking chained seat hook: %s", t.getMessage());
+                    }
+                }
+
                 boolean allowed = callback.isSeatAllowed(playerUuid, worldName, x, y, z);
                 Logger.debugInteraction("[Mixin:Seat] player=%s, world=%s, pos=(%d,%d,%d), allowed=%b",
                     playerUuid, worldName, x, y, z, allowed);
@@ -748,9 +1018,10 @@ public final class OrbisMixinsIntegration {
      */
     public static boolean registerHarvestHook(@NotNull HarvestCheckCallback callback) {
         try {
-            HarvestHookWrapper wrapper = new HarvestHookWrapper(callback);
+            Object existing = captureExisting(OG_HARVEST_HOOK);
+            HarvestHookWrapper wrapper = new HarvestHookWrapper(callback, existing);
             registerHookInRegistry(OG_HARVEST_HOOK, wrapper);
-            Logger.info("Registered harvest protection hook");
+            Logger.debug("Registered harvest protection hook");
             return true;
         } catch (Exception e) {
             Logger.warn("Failed to register harvest hook: %s", e.getMessage());
@@ -759,7 +1030,7 @@ public final class OrbisMixinsIntegration {
     }
 
     public static void unregisterHarvestHook() {
-        unregisterHookFromRegistry(OG_HARVEST_HOOK);
+        restoreOrRemoveHook(OG_HARVEST_HOOK);
     }
 
     /**
@@ -783,23 +1054,44 @@ public final class OrbisMixinsIntegration {
      */
     public static final class HarvestHookWrapper {
         private final HarvestCheckCallback callback;
+        private final @Nullable MethodHandle originalCheck;
+        private final @Nullable MethodHandle originalCheckPickup;
+        private final @Nullable MethodHandle originalCheckScytheHarvest;
 
-        public HarvestHookWrapper(@NotNull HarvestCheckCallback callback) {
+        public HarvestHookWrapper(@NotNull HarvestCheckCallback callback, @Nullable Object originalHook) {
             this.callback = callback;
+            if (originalHook != null) {
+                MethodType strType = MethodType.methodType(String.class,
+                    UUID.class, String.class, int.class, int.class, int.class);
+                this.originalCheck = resolveMethod(originalHook, "check", strType);
+                this.originalCheckPickup = resolveMethod(originalHook, "checkPickup", strType);
+                this.originalCheckScytheHarvest = resolveMethod(originalHook, "checkScytheHarvest", strType);
+            } else {
+                this.originalCheck = null;
+                this.originalCheckPickup = null;
+                this.originalCheckScytheHarvest = null;
+            }
         }
 
         /**
          * Called by BlockHarvestUtilsMixin for block break permission.
-         * This sets the 'denied' ThreadLocal flag in the mixin.
-         * If we return non-null, the block removal is prevented entirely,
-         * which means no item drops and no pickup to intercept.
-         *
+         * Chains: first non-null denial wins.
          * @return null to allow, denial message to block
          */
         public String check(UUID playerUuid, String worldName, int x, int y, int z) {
             try {
-                // Check if manual pickup would be allowed - if not, block the harvest entirely
-                // This prevents the item from dropping in the first place
+                if (originalCheck != null) {
+                    try {
+                        String originalResult = (String) originalCheck.invoke(playerUuid, worldName, x, y, z);
+                        if (originalResult != null) {
+                            Logger.debugProtection("[Mixin:Harvest] Blocked by chained hook (OrbisGuard)");
+                            return originalResult;
+                        }
+                    } catch (Throwable t) {
+                        Logger.debugMixin("Error invoking chained harvest check: %s", t.getMessage());
+                    }
+                }
+
                 String result = callback.checkPickup(playerUuid, worldName, x, y, z);
                 boolean allowed = result == null;
                 Logger.debugProtection("[Mixin:Harvest] player=%s, world=%s, pos=(%d,%d,%d), allowed=%b",
@@ -813,11 +1105,23 @@ public final class OrbisMixinsIntegration {
 
         /**
          * Called by BlockHarvestUtilsMixin for pickup permission.
-         * This is where we check ITEM_PICKUP_MANUAL flag.
+         * Chains: first non-null denial wins.
          * @return null if allowed, denial message if blocked
          */
         public String checkPickup(UUID playerUuid, String worldName, int x, int y, int z) {
             try {
+                if (originalCheckPickup != null) {
+                    try {
+                        String originalResult = (String) originalCheckPickup.invoke(playerUuid, worldName, x, y, z);
+                        if (originalResult != null) {
+                            Logger.debugProtection("[Mixin:HarvestPickup] Blocked by chained hook (OrbisGuard)");
+                            return originalResult;
+                        }
+                    } catch (Throwable t) {
+                        Logger.debugMixin("Error invoking chained harvest pickup: %s", t.getMessage());
+                    }
+                }
+
                 String result = callback.checkPickup(playerUuid, worldName, x, y, z);
                 boolean allowed = result == null;
                 Logger.debugProtection("[Mixin:HarvestPickup] player=%s, world=%s, pos=(%d,%d,%d), allowed=%b",
@@ -831,13 +1135,23 @@ public final class OrbisMixinsIntegration {
 
         /**
          * Called by HarvestCropInteractionMixin (OG-Mixins 0.8.3+) for scythe/tool crop harvesting.
-         * Scythes use HarvestCropInteraction → FarmingUtil.harvest(), a completely different
-         * code path from F-key harvesting (BlockHarvestUtils.performPickupByInteraction).
+         * Chains: first non-null denial wins.
          * @return null if allowed, denial message if blocked
          */
         public String checkScytheHarvest(UUID playerUuid, String worldName, int x, int y, int z) {
             try {
-                // Same protection check as F-key harvesting — both should be blocked in protected territory
+                if (originalCheckScytheHarvest != null) {
+                    try {
+                        String originalResult = (String) originalCheckScytheHarvest.invoke(playerUuid, worldName, x, y, z);
+                        if (originalResult != null) {
+                            Logger.debugProtection("[Mixin:ScytheHarvest] Blocked by chained hook (OrbisGuard)");
+                            return originalResult;
+                        }
+                    } catch (Throwable t) {
+                        Logger.debugMixin("Error invoking chained scythe harvest: %s", t.getMessage());
+                    }
+                }
+
                 String result = callback.checkPickup(playerUuid, worldName, x, y, z);
                 boolean allowed = result == null;
                 Logger.debugProtection("[Mixin:ScytheHarvest] player=%s, world=%s, pos=(%d,%d,%d), allowed=%b",
@@ -857,9 +1171,10 @@ public final class OrbisMixinsIntegration {
      */
     public static boolean registerPlaceHook(@NotNull PlaceCheckCallback callback) {
         try {
-            PlaceHookWrapper wrapper = new PlaceHookWrapper(callback);
+            Object existing = captureExisting(OG_PLACE_HOOK);
+            PlaceHookWrapper wrapper = new PlaceHookWrapper(callback, existing);
             registerHookInRegistry(OG_PLACE_HOOK, wrapper);
-            Logger.info("Registered place protection hook");
+            Logger.debug("Registered place protection hook");
             return true;
         } catch (Exception e) {
             Logger.warn("Failed to register place hook: %s", e.getMessage());
@@ -868,7 +1183,7 @@ public final class OrbisMixinsIntegration {
     }
 
     public static void unregisterPlaceHook() {
-        unregisterHookFromRegistry(OG_PLACE_HOOK);
+        restoreOrRemoveHook(OG_PLACE_HOOK);
     }
 
     @FunctionalInterface
@@ -878,17 +1193,36 @@ public final class OrbisMixinsIntegration {
 
     public static final class PlaceHookWrapper {
         private final PlaceCheckCallback callback;
+        private final @Nullable MethodHandle originalIsPlaceAllowed;
 
-        public PlaceHookWrapper(@NotNull PlaceCheckCallback callback) {
+        public PlaceHookWrapper(@NotNull PlaceCheckCallback callback, @Nullable Object originalHook) {
             this.callback = callback;
+            this.originalIsPlaceAllowed = originalHook != null
+                ? resolveMethod(originalHook, "isPlaceAllowed",
+                    MethodType.methodType(boolean.class, UUID.class, String.class,
+                        int.class, int.class, int.class))
+                : null;
         }
 
+        /**
+         * Chains: both must allow for placement to proceed.
+         */
         public boolean isPlaceAllowed(UUID playerUuid, String worldName, int x, int y, int z) {
             try {
+                if (originalIsPlaceAllowed != null) {
+                    try {
+                        boolean originalAllowed = (boolean) originalIsPlaceAllowed.invoke(playerUuid, worldName, x, y, z);
+                        if (!originalAllowed) {
+                            Logger.debugProtection("[Mixin:Place] Blocked by chained hook (OrbisGuard)");
+                            return false;
+                        }
+                    } catch (Throwable t) {
+                        Logger.debugMixin("Error invoking chained place hook: %s", t.getMessage());
+                    }
+                }
+
                 boolean allowed = callback.isPlaceAllowed(playerUuid, worldName, x, y, z);
                 Logger.debugInteraction("[Mixin:Place] player=%s, world=%s, pos=(%d,%d,%d), allowed=%b",
-                    playerUuid, worldName, x, y, z, allowed);
-                Logger.debugProtection("[Mixin:Place] player=%s, world=%s, pos=(%d,%d,%d), allowed=%b",
                     playerUuid, worldName, x, y, z, allowed);
                 return allowed;
             } catch (Exception e) {
@@ -905,9 +1239,10 @@ public final class OrbisMixinsIntegration {
      */
     public static boolean registerSpawnHook(@NotNull SpawnCheckCallback callback) {
         try {
-            SpawnHookWrapper wrapper = new SpawnHookWrapper(callback);
+            Object existing = captureExisting(OG_SPAWN_HOOK);
+            SpawnHookWrapper wrapper = new SpawnHookWrapper(callback, existing);
             registerHookInRegistry(OG_SPAWN_HOOK, wrapper);
-            Logger.info("Registered spawn control hook");
+            Logger.debug("Registered spawn control hook");
             return true;
         } catch (Exception e) {
             Logger.warn("Failed to register spawn hook: %s", e.getMessage());
@@ -916,7 +1251,7 @@ public final class OrbisMixinsIntegration {
     }
 
     public static void unregisterSpawnHook() {
-        unregisterHookFromRegistry(OG_SPAWN_HOOK);
+        restoreOrRemoveHook(OG_SPAWN_HOOK);
     }
 
     @FunctionalInterface
@@ -930,17 +1265,39 @@ public final class OrbisMixinsIntegration {
 
     public static final class SpawnHookWrapper {
         private final SpawnCheckCallback callback;
+        private final @Nullable MethodHandle originalShouldBlockSpawn;
 
-        public SpawnHookWrapper(@NotNull SpawnCheckCallback callback) {
+        public SpawnHookWrapper(@NotNull SpawnCheckCallback callback, @Nullable Object originalHook) {
             this.callback = callback;
+            this.originalShouldBlockSpawn = originalHook != null
+                ? resolveMethod(originalHook, "shouldBlockSpawn",
+                    MethodType.methodType(boolean.class, String.class, int.class, int.class, int.class))
+                : null;
         }
 
         /**
          * Called by OrbisGuard-Mixins via reflection.
          * Method signature must match: shouldBlockSpawn(String, int, int, int) -> boolean
+         *
+         * Chains with original hook (e.g., OrbisGuard's): if EITHER blocks, spawn is blocked.
          */
         public boolean shouldBlockSpawn(String worldName, int x, int y, int z) {
             try {
+                // Check original hook first (OrbisGuard's region-based check)
+                if (originalShouldBlockSpawn != null) {
+                    try {
+                        boolean originalBlocked = (boolean) originalShouldBlockSpawn.invoke(worldName, x, y, z);
+                        if (originalBlocked) {
+                            Logger.debugSpawning("[Mixin:Spawn] Blocked by chained hook (OrbisGuard) world=%s, pos=(%d,%d,%d)",
+                                worldName, x, y, z);
+                            return true;
+                        }
+                    } catch (Throwable t) {
+                        Logger.debugMixin("Error invoking chained spawn hook: %s", t.getMessage());
+                    }
+                }
+
+                // Then check HyperFactions logic
                 boolean blocked = callback.shouldBlockSpawn(worldName, x, y, z);
                 Logger.debugSpawning("[Mixin:Spawn] world=%s, pos=(%d,%d,%d), blocked=%b",
                     worldName, x, y, z, blocked);

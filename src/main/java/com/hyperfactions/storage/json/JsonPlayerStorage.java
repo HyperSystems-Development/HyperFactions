@@ -52,7 +52,7 @@ public class JsonPlayerStorage implements PlayerStorage {
                 Files.createDirectories(playersDir);
                 // Clean up orphaned temp and backup files from previous crashes
                 StorageUtils.cleanupOrphanedFiles(playersDir);
-                Logger.info("Player storage initialized at %s", playersDir);
+                Logger.info("[Storage] Player storage initialized at %s", playersDir);
             } catch (IOException e) {
                 Logger.severe("Failed to create players directory", e);
             }
@@ -117,7 +117,7 @@ public class JsonPlayerStorage implements PlayerStorage {
             int totalFiles = 0;
 
             if (!Files.exists(playersDir)) {
-                Logger.info("Players directory does not exist yet, no player power to load");
+                Logger.info("[Storage] Players directory does not exist yet, no player power to load");
                 return powers;
             }
 
@@ -144,7 +144,7 @@ public class JsonPlayerStorage implements PlayerStorage {
                     failedFiles.size(), totalFiles, String.join(", ", failedFiles));
             }
 
-            Logger.info("Loaded %d/%d player power records successfully", powers.size(), totalFiles);
+            Logger.info("[Storage] Loaded %d/%d player power records successfully", powers.size(), totalFiles);
             return powers;
         });
     }
@@ -214,7 +214,7 @@ public class JsonPlayerStorage implements PlayerStorage {
                 if (!StorageUtils.recoverFromBackup(file)) {
                     return null;
                 }
-                Logger.info("Successfully recovered player data %s from backup", uuid);
+                Logger.info("[Storage] Successfully recovered player data %s from backup", uuid);
             } else {
                 return null;
             }
@@ -230,7 +230,7 @@ public class JsonPlayerStorage implements PlayerStorage {
                 try {
                     String json = Files.readString(file);
                     JsonObject obj = JsonParser.parseString(json).getAsJsonObject();
-                    Logger.info("Successfully loaded player data %s from recovered backup", uuid);
+                    Logger.info("[Storage] Successfully loaded player data %s from recovered backup", uuid);
                     return deserializePlayerData(obj);
                 } catch (Exception e2) {
                     Logger.severe("Backup recovery failed for player data %s", e2, uuid);

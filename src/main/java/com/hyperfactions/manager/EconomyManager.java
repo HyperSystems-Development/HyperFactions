@@ -107,7 +107,7 @@ public class EconomyManager implements EconomyAPI {
             }
         }
 
-        Logger.info("Loaded economy data for %d factions", economyCache.size());
+        Logger.info("[Startup] Loaded economy data for %d factions", economyCache.size());
     }
 
     /**

@@ -50,7 +50,7 @@ public class JsonZoneStorage implements ZoneStorage {
                 Files.createDirectories(dataDir);
                 // Clean up orphaned temp files from previous crashes
                 StorageUtils.cleanupOrphanedFiles(dataDir);
-                Logger.info("Zone storage initialized");
+                Logger.info("[Storage] Zone storage initialized");
             } catch (IOException e) {
                 Logger.severe("Failed to create data directory", e);
             }
@@ -73,13 +73,13 @@ public class JsonZoneStorage implements ZoneStorage {
                 if (StorageUtils.hasBackup(zonesFile)) {
                     Logger.warn("Zones file missing but backup exists, attempting recovery");
                     if (StorageUtils.recoverFromBackup(zonesFile)) {
-                        Logger.info("Successfully recovered zones file from backup");
+                        Logger.info("[Storage] Successfully recovered zones file from backup");
                     } else {
-                        Logger.info("Zones file does not exist yet, no zones to load");
+                        Logger.info("[Storage] Zones file does not exist yet, no zones to load");
                         return zones;
                     }
                 } else {
-                    Logger.info("Zones file does not exist yet, no zones to load");
+                    Logger.info("[Storage] Zones file does not exist yet, no zones to load");
                     return zones;
                 }
             }
@@ -115,7 +115,7 @@ public class JsonZoneStorage implements ZoneStorage {
                     Logger.severe("CRITICAL: Found %d zones in file but loaded 0 - possible data corruption!", totalZones);
                     // Attempt backup recovery
                     if (StorageUtils.recoverFromBackup(zonesFile)) {
-                        Logger.info("Attempting to load zones from recovered backup");
+                        Logger.info("[Storage] Attempting to load zones from recovered backup");
                         return loadAllZones().join(); // Recursive call with recovered file
                     }
                 }
@@ -132,7 +132,7 @@ public class JsonZoneStorage implements ZoneStorage {
                                 zones.add(deserializeZone(el.getAsJsonObject()));
                             } catch (Exception ignored) {}
                         }
-                        Logger.info("Successfully loaded %d zones from recovered backup", zones.size());
+                        Logger.info("[Storage] Successfully loaded %d zones from recovered backup", zones.size());
                         return zones;
                     } catch (Exception e2) {
                         Logger.severe("Backup recovery failed for zones file", e2);
@@ -141,7 +141,7 @@ public class JsonZoneStorage implements ZoneStorage {
                 throw new RuntimeException("Failed to load zones file", e);
             }
 
-            Logger.info("Loaded %d zones", zones.size());
+            Logger.info("[Storage] Loaded %d zones", zones.size());
             return zones;
         });
     }
@@ -249,7 +249,7 @@ public class JsonZoneStorage implements ZoneStorage {
             int chunkX = obj.get("chunkX").getAsInt();
             int chunkZ = obj.get("chunkZ").getAsInt();
             chunks.add(new ChunkKey(world, chunkX, chunkZ));
-            Logger.info("Migrated zone '%s' from single-chunk to multi-chunk format", name);
+            Logger.info("[Migration] Migrated zone '%s' from single-chunk to multi-chunk format", name);
         }
 
         // Deserialize flags if present
@@ -275,7 +275,7 @@ public class JsonZoneStorage implements ZoneStorage {
                 migrated = true;
             }
             if (migrated) {
-                Logger.info("Migrated zone '%s': removed obsolete flag keys", name);
+                Logger.info("[Migration] Migrated zone '%s': removed obsolete flag keys", name);
             }
             // If flags map is now empty, set to null
             if (flags.isEmpty()) {

@@ -86,7 +86,7 @@ public class VaultEconomyProvider {
             transactionSuccessMethod = responseClass.getMethod("transactionSuccess");
 
             available = true;
-            Logger.info("[VaultEconomyProvider] VaultUnlocked economy provider initialized");
+            Logger.info("[Integration] VaultUnlocked economy provider initialized");
 
         } catch (ClassNotFoundException | NoClassDefFoundError e) {
             permanentFailure = true;

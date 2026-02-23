@@ -197,6 +197,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
             buildToggle(cmd, events, cap + "BenchToggle", level + "BenchUse", perms.get(level + "BenchUse"), config, interactOff);
             buildToggle(cmd, events, cap + "ProcessingToggle", level + "ProcessingUse", perms.get(level + "ProcessingUse"), config, interactOff);
             buildToggle(cmd, events, cap + "SeatToggle", level + "SeatUse", perms.get(level + "SeatUse"), config, interactOff);
+            buildToggle(cmd, events, cap + "TransportToggle", level + "TransportUse", perms.get(level + "TransportUse"), config, interactOff);
         }
 
         // Mob spawning toggles — children disabled when master is off
@@ -232,10 +233,9 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
         boolean shouldDisable = parentDisabled || locked;
 
         cmd.set(selector + " #CheckBox.Value", displayValue);
+        cmd.set(selector + " #CheckBox.Disabled", shouldDisable);
 
-        if (shouldDisable) {
-            cmd.set(selector + " #CheckBox.Disabled", true);
-        } else {
+        if (!shouldDisable) {
             // Admin can toggle - bind ValueChanged event
             events.addEventBinding(
                     CustomUIEventBindingType.ValueChanged,

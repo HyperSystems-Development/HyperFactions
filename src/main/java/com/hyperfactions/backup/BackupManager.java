@@ -80,9 +80,9 @@ public class BackupManager {
         try {
             Files.createDirectories(backupsDir);
             initialized = true;
-            Logger.info("[BackupManager] Initialized, backup directory: %s", backupsDir);
+            Logger.info("[Backup] Initialized, backup directory: %s", backupsDir);
         } catch (IOException e) {
-            Logger.severe("[BackupManager] Failed to create backups directory: %s", e.getMessage());
+            Logger.severe("[Backup] Failed to create backups directory: %s", e.getMessage());
         }
     }
 
@@ -92,12 +92,12 @@ public class BackupManager {
      */
     public synchronized void startScheduledBackups() {
         if (scheduledTaskId > 0) {
-            Logger.debug("[BackupManager] Scheduled backups already running (task ID: %d)", scheduledTaskId);
+            Logger.debug("[Backup] Scheduled backups already running (task ID: %d)", scheduledTaskId);
             return;
         }
 
         if (!ConfigManager.get().isBackupEnabled()) {
-            Logger.info("[BackupManager] Backups are disabled in config");
+            Logger.info("[Backup] Backups are disabled in config");
             return;
         }
 
@@ -106,9 +106,9 @@ public class BackupManager {
         scheduledTaskId = hyperFactions.scheduleRepeatingTask(periodTicks, periodTicks, this::runScheduledBackup);
 
         if (scheduledTaskId > 0) {
-            Logger.info("[BackupManager] Scheduled backups enabled (hourly, task ID: %d)", scheduledTaskId);
+            Logger.info("[Backup] Scheduled backups enabled (hourly, task ID: %d)", scheduledTaskId);
         } else {
-            Logger.warn("[BackupManager] Failed to schedule backup task - task scheduler may not be available");
+            Logger.warn("[Backup] Failed to schedule backup task - task scheduler may not be available");
         }
     }
 
@@ -121,7 +121,7 @@ public class BackupManager {
         if (scheduledTaskId > 0) {
             hyperFactions.cancelTask(scheduledTaskId);
             scheduledTaskId = -1;
-            Logger.debug("[BackupManager] Cancelled existing backup task for restart");
+            Logger.debug("[Backup] Cancelled existing backup task for restart");
         }
 
         // Start with new config
@@ -142,7 +142,7 @@ public class BackupManager {
         // Wait for any in-progress backup to complete
         synchronized (backupLock) {
             if (backupInProgress) {
-                Logger.info("[BackupManager] Waiting for in-progress backup to complete...");
+                Logger.info("[Backup] Waiting for in-progress backup to complete...");
                 // Simple spin-wait with sleep (max ~10 seconds)
                 for (int i = 0; i < 20 && backupInProgress; i++) {
                     try {
@@ -157,7 +157,7 @@ public class BackupManager {
 
         // Create shutdown backup if enabled
         if (ConfigManager.get().isBackupOnShutdown()) {
-            Logger.info("[BackupManager] Creating shutdown backup...");
+            Logger.info("[Backup] Creating shutdown backup...");
             createBackup(BackupType.MANUAL, "shutdown", null).join();
             rotateShutdownBackups();
         }
@@ -170,7 +170,7 @@ public class BackupManager {
     private void runScheduledBackup() {
         synchronized (backupLock) {
             if (backupInProgress) {
-                Logger.warn("[BackupManager] Skipping scheduled backup - another backup is already in progress");
+                Logger.warn("[Backup] Skipping scheduled backup - another backup is already in progress");
                 return;
             }
             backupInProgress = true;
@@ -178,16 +178,16 @@ public class BackupManager {
 
         try {
             BackupType type = determineBackupType();
-            Logger.info("[BackupManager] Running scheduled %s backup", type.getDisplayName().toLowerCase());
+            Logger.info("[Backup] Running scheduled %s backup", type.getDisplayName().toLowerCase());
 
             createBackup(type, null, null).thenAccept(result -> {
                 try {
                     if (result instanceof BackupResult.Success success) {
-                        Logger.info("[BackupManager] %s backup created: %s (%s)",
+                        Logger.info("[Backup] %s backup created: %s (%s)",
                             type.getDisplayName(), success.metadata().name(), success.metadata().getFormattedSize());
                         performRotation();
                     } else if (result instanceof BackupResult.Failure failure) {
-                        Logger.severe("[BackupManager] %s backup failed: %s", type.getDisplayName(), failure.error());
+                        Logger.severe("[Backup] %s backup failed: %s", type.getDisplayName(), failure.error());
                     }
                 } finally {
                     synchronized (backupLock) {
@@ -196,7 +196,7 @@ public class BackupManager {
                     }
                 }
             }).exceptionally(ex -> {
-                Logger.severe("[BackupManager] Backup task failed with exception: %s", ex.getMessage());
+                Logger.severe("[Backup] Backup task failed with exception: %s", ex.getMessage());
                 synchronized (backupLock) {
                     backupInProgress = false;
                     backupLock.notifyAll();
@@ -208,7 +208,7 @@ public class BackupManager {
                 backupInProgress = false;
                 backupLock.notifyAll();
             }
-            Logger.severe("[BackupManager] Failed to start backup: %s", e.getMessage());
+            Logger.severe("[Backup] Failed to start backup: %s", e.getMessage());
         }
     }
 
@@ -300,7 +300,7 @@ public class BackupManager {
                 return new BackupResult.Success(metadata, backupFile);
 
             } catch (Exception e) {
-                Logger.severe("[BackupManager] Failed to create backup: %s", e.getMessage());
+                Logger.severe("[Backup] Failed to create backup: %s", e.getMessage());
                 return new BackupResult.Failure("Failed to create backup: " + e.getMessage());
             }
         });
@@ -340,11 +340,11 @@ public class BackupManager {
                     }
                 }
 
-                Logger.info("[BackupManager] Restored %d files from backup '%s'", filesRestored, backupName);
+                Logger.info("[Backup] Restored %d files from backup '%s'", filesRestored, backupName);
                 return new RestoreResult.Success(backupName, filesRestored);
 
             } catch (Exception e) {
-                Logger.severe("[BackupManager] Failed to restore backup: %s", e.getMessage());
+                Logger.severe("[Backup] Failed to restore backup: %s", e.getMessage());
                 return new RestoreResult.Failure("Failed to restore backup: " + e.getMessage());
             }
         });
@@ -365,10 +365,10 @@ public class BackupManager {
                     return false;
                 }
                 Files.delete(backupFile);
-                Logger.info("[BackupManager] Deleted backup: %s", backupName);
+                Logger.info("[Backup] Deleted backup: %s", backupName);
                 return true;
             } catch (Exception e) {
-                Logger.severe("[BackupManager] Failed to delete backup '%s': %s", backupName, e.getMessage());
+                Logger.severe("[Backup] Failed to delete backup '%s': %s", backupName, e.getMessage());
                 return false;
             }
         });
@@ -401,13 +401,13 @@ public class BackupManager {
                             ));
                         }
                     } catch (Exception e) {
-                        Logger.warn("[BackupManager] Could not read backup metadata for %s: %s",
+                        Logger.warn("[Backup] Could not read backup metadata for %s: %s",
                             file.getFileName(), e.getMessage());
                     }
                 }
             }
         } catch (IOException e) {
-            Logger.severe("[BackupManager] Failed to list backups: %s", e.getMessage());
+            Logger.severe("[Backup] Failed to list backups: %s", e.getMessage());
         }
 
         // Sort by timestamp, newest first
@@ -469,7 +469,7 @@ public class BackupManager {
             BackupMetadata toDelete = sorted.get(i);
             deleteBackup(toDelete.name()).thenAccept(success -> {
                 if (success) {
-                    Logger.debug("[BackupManager] Rotated out old backup: %s", toDelete.name());
+                    Logger.debug("[Backup] Rotated out old backup: %s", toDelete.name());
                 }
             });
         }
@@ -512,17 +512,17 @@ public class BackupManager {
                 Path toDelete = shutdownBackups.get(i);
                 try {
                     Files.delete(toDelete);
-                    Logger.debug("[BackupManager] Rotated out old shutdown backup: %s", toDelete.getFileName());
+                    Logger.debug("[Backup] Rotated out old shutdown backup: %s", toDelete.getFileName());
                 } catch (IOException e) {
-                    Logger.warn("[BackupManager] Failed to delete old shutdown backup %s: %s",
+                    Logger.warn("[Backup] Failed to delete old shutdown backup %s: %s",
                         toDelete.getFileName(), e.getMessage());
                 }
             }
 
             int deleted = shutdownBackups.size() - retention;
-            Logger.info("[BackupManager] Cleaned up %d old shutdown backup(s), keeping %d", deleted, retention);
+            Logger.info("[Backup] Cleaned up %d old shutdown backup(s), keeping %d", deleted, retention);
         } catch (IOException e) {
-            Logger.warn("[BackupManager] Failed to rotate shutdown backups: %s", e.getMessage());
+            Logger.warn("[Backup] Failed to rotate shutdown backups: %s", e.getMessage());
         }
     }
 

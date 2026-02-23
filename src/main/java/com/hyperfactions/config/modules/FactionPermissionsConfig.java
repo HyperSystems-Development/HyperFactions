@@ -47,7 +47,8 @@ public class FactionPermissionsConfig extends ModuleConfig {
         {"containerUse",  "ContainerUse"},
         {"benchUse",      "BenchUse"},
         {"processingUse", "ProcessingUse"},
-        {"seatUse",       "SeatUse"}
+        {"seatUse",       "SeatUse"},
+        {"transportUse",  "TransportUse"}
     };
 
     // JSON keys for mob spawning sub-flags

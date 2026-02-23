@@ -10,6 +10,7 @@ import com.hyperfactions.gui.faction.ChunkMapAsset;
 import com.hyperfactions.gui.faction.NavBarHelper;
 import com.hyperfactions.gui.newplayer.NewPlayerNavBarHelper;
 import com.hyperfactions.gui.faction.data.ChunkMapData;
+import com.hyperfactions.integration.protection.OrbisGuardIntegration;
 import com.hyperfactions.manager.*;
 import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.Logger;
@@ -28,6 +29,7 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
@@ -56,6 +58,7 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
     private static final String COLOR_WILDERNESS = "#1e293b"; // Dark slate - unclaimed (darker for contrast)
     private static final String COLOR_SAFEZONE = "#2dd4bf";   // Teal - safe zone
     private static final String COLOR_WARZONE = "#c084fc";    // Purple - war zone
+    private static final String COLOR_OG_PROTECTED = "#FF8C00"; // Dark orange - OrbisGuard region
 
     // Semi-transparent overlay colors for terrain mode (RRGGBBAA hex)
     private static final String ALPHA_OWN = "#4ade8080";       // 50% green
@@ -65,6 +68,7 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
     private static final String ALPHA_WILDERNESS = "#00000000"; // Fully transparent
     private static final String ALPHA_SAFEZONE = "#2dd4bf80";  // 50% teal
     private static final String ALPHA_WARZONE = "#c084fc80";   // 50% purple
+    private static final String ALPHA_OG_PROTECTED = "#FF8C0080"; // 50% dark orange
 
     private final PlayerRef playerRef;
     private final FactionManager factionManager;
@@ -135,6 +139,23 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
         // Current position info
         cmd.set("#PositionInfo.Text", String.format("Your Position: Chunk (%d, %d)", playerChunkX, playerChunkZ));
 
+        // Dynamic legend: add OrbisGuard protected region entry when OG is available
+        if (OrbisGuardIntegration.isAvailable()) {
+            if (terrainEnabled) {
+                // Terrain mode: append to row 2 (#LegendContainer[1])
+                cmd.appendInline("#LegendContainer[1]",
+                        "Group { LayoutMode: Left; Anchor: (Width: 110); " +
+                        "Group { Anchor: (Width: 10, Height: 10); Background: (Color: " + COLOR_OG_PROTECTED + "); } " +
+                        "Label { Text: \" Protected\"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); } }");
+            } else {
+                // Flat mode: append to column 3 (#LegendContainer[2])
+                cmd.appendInline("#LegendContainer[2]",
+                        "Group { LayoutMode: Left; Anchor: (Height: 16); " +
+                        "Group { Anchor: (Width: 12, Height: 12); Background: (Color: " + COLOR_OG_PROTECTED + "); } " +
+                        "Label { Text: \" Protected\"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); } }");
+            }
+        }
+
         // Build the chunk grid (terrain or flat mode)
         if (terrainEnabled) {
             buildTerrainMap(cmd, events, worldName, playerChunkX, playerChunkZ, viewerFaction);
@@ -197,6 +218,10 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
             isOfficer = member != null && member.isOfficerOrHigher();
         }
 
+        // Fetch OG regions once for the entire grid (avoids per-chunk reflection calls)
+        List<OrbisGuardIntegration.RegionInfo> ogRegions = OrbisGuardIntegration.isAvailable()
+                ? OrbisGuardIntegration.getRegionsForWorld(worldName) : List.of();
+
         // Build 9 rows (z-4 to z+4)
         for (int zOffset = -GRID_RADIUS_Z; zOffset <= GRID_RADIUS_Z; zOffset++) {
             int rowIndex = zOffset + GRID_RADIUS_Z; // 0-8
@@ -211,7 +236,7 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
                 int chunkX = centerX + xOffset;
 
                 // Get chunk info and color
-                ChunkInfo info = getChunkInfo(worldName, chunkX, chunkZ, viewerFactionId);
+                ChunkInfo info = getChunkInfo(worldName, chunkX, chunkZ, viewerFactionId, ogRegions);
                 boolean isPlayerPos = (xOffset == 0 && zOffset == 0);
 
                 // Create cell with territory color (always show real chunk color)
@@ -279,6 +304,10 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
             isOfficer = member != null && member.isOfficerOrHigher();
         }
 
+        // Fetch OG regions once for the entire grid
+        List<OrbisGuardIntegration.RegionInfo> ogRegions = OrbisGuardIntegration.isAvailable()
+                ? OrbisGuardIntegration.getRegionsForWorld(worldName) : List.of();
+
         // Build 17x17 grid using inline Groups (no borders, unlike TextButtons)
         for (int zOffset = -TERRAIN_GRID_RADIUS; zOffset <= TERRAIN_GRID_RADIUS; zOffset++) {
             int rowIndex = zOffset + TERRAIN_GRID_RADIUS;
@@ -291,7 +320,7 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
                 int colIndex = xOffset + TERRAIN_GRID_RADIUS;
                 int chunkX = centerX + xOffset;
 
-                ChunkInfo info = getChunkInfo(worldName, chunkX, chunkZ, viewerFactionId);
+                ChunkInfo info = getChunkInfo(worldName, chunkX, chunkZ, viewerFactionId, ogRegions);
                 String alphaColor = getTerrainOverlayColor(info.type);
 
                 // Create cell as inline Group with baked-in overlay color.
@@ -308,7 +337,8 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
 
                 // Click events need a TextButton overlay (Activating doesn't work on Groups).
                 // Only add the button on actionable cells to avoid border artifacts.
-                if (isOfficer && (info.type == ChunkType.WILDERNESS || info.type == ChunkType.OWN || info.type == ChunkType.ENEMY)) {
+                if (isOfficer && info.type != ChunkType.OG_PROTECTED &&
+                    (info.type == ChunkType.WILDERNESS || info.type == ChunkType.OWN || info.type == ChunkType.ENEMY)) {
                     cmd.append(cellSel, "HyperFactions/faction/chunk_map_terrain_btn.ui");
                     bindChunkEvents(events, cellSel + " #Btn", chunkX, chunkZ, info, viewerFactionId);
                 }
@@ -327,6 +357,7 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
             case OTHER -> ALPHA_OTHER;
             case SAFEZONE -> ALPHA_SAFEZONE;
             case WARZONE -> ALPHA_WARZONE;
+            case OG_PROTECTED -> ALPHA_OG_PROTECTED;
             case WILDERNESS -> ALPHA_WILDERNESS;
         };
     }
@@ -383,8 +414,9 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
     /**
      * Gets information about a chunk's ownership and display color.
      */
-    private ChunkInfo getChunkInfo(String worldName, int chunkX, int chunkZ, UUID viewerFactionId) {
-        // Check for zone first
+    private ChunkInfo getChunkInfo(String worldName, int chunkX, int chunkZ, UUID viewerFactionId,
+                                    List<OrbisGuardIntegration.RegionInfo> ogRegions) {
+        // Check for zone first (zones can overlap with OG regions — show zone)
         Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
         if (zone != null) {
             Logger.debug("[ChunkMapPage] Found zone '%s' at (%d, %d) in %s", zone.name(), chunkX, chunkZ, worldName);
@@ -392,6 +424,20 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
                 return new ChunkInfo(ChunkType.SAFEZONE, COLOR_SAFEZONE, null);
             } else {
                 return new ChunkInfo(ChunkType.WARZONE, COLOR_WARZONE, null);
+            }
+        }
+
+        // Check OrbisGuard protection (render whole chunk as protected if any OG region overlaps)
+        if (!ogRegions.isEmpty()) {
+            int minBlockX = chunkX << 5; // chunkX * 32
+            int maxBlockX = minBlockX + 31;
+            int minBlockZ = chunkZ << 5;
+            int maxBlockZ = minBlockZ + 31;
+            for (OrbisGuardIntegration.RegionInfo region : ogRegions) {
+                if (region.maxX() >= minBlockX && region.minX() <= maxBlockX &&
+                    region.maxZ() >= minBlockZ && region.minZ() <= maxBlockZ) {
+                    return new ChunkInfo(ChunkType.OG_PROTECTED, COLOR_OG_PROTECTED, null);
+                }
             }
         }
 
@@ -424,7 +470,7 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
      * Chunk type for event binding decisions.
      */
     private enum ChunkType {
-        WILDERNESS, OWN, ALLY, ENEMY, OTHER, SAFEZONE, WARZONE
+        WILDERNESS, OWN, ALLY, ENEMY, OTHER, SAFEZONE, WARZONE, OG_PROTECTED
     }
 
     /**

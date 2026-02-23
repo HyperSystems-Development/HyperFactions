@@ -9,51 +9,70 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+**Granular Friendly Fire Flags**
+- **`friendly_fire_faction`**: Controls whether same-faction members can damage each other (child of `friendly_fire`)
+- **`friendly_fire_ally`**: Controls whether allied faction members can damage each other (child of `friendly_fire`)
+- **3-level combat hierarchy**: `pvp_enabled` → `friendly_fire` → `friendly_fire_faction` / `friendly_fire_ally`. Projectile Damage and Mob Damage remain standalone
+- **Recursive parent check**: Admin zone settings GUI greys out grandchildren when any ancestor is OFF (e.g., faction/ally flags disabled when PvP is off)
+- **Config fallback preserved**: When zone `friendly_fire` is OFF, `config.factionDamage` and `config.allyDamage` still serve as independent overrides
+- **Block Interact as Interaction parent**: Moved Block Interact from the Building box into the Interaction box as the parent flag with indented children (Door Use, Container Use, etc.), matching the Mob Spawning pattern
+- **Backward compatible**: Existing zones with `friendly_fire=true` get both children defaulting to `true` (same behavior as before). No data migration needed
+
+**HyperProtect-Mixin Integration**
+- **ProtectionMixinBridge**: Facade that auto-detects which mixin system(s) are available (HyperProtect-Mixin, OrbisGuard-Mixins, or both) and provides a unified API. New `BOTH` provider mode registers OG hooks for OG-handled features and HP hooks for HP’s unique features. Falls back to JAR file detection in `earlyplugins/` when system properties aren’t set
+- **HyperProtectIntegration**: 20 hook wrappers using HyperProtect’s bridge-slot architecture (`AtomicReferenceArray` at `hyperprotect.bridge`), verdict protocol (ALLOW/DENY_WITH_MESSAGE/DENY_SILENT/DENY_MOD_HANDLES). Registers all hooks unconditionally with lazy bridge initialization (creates bridge if not yet present). Caches `ChatFormatter` MethodHandle at slot 15 for cross-classloader message formatting
+- **Auto-download HyperProtect-Mixin**: On startup, if HyperProtect-Mixin is not installed and `autoDownload` is enabled, downloads the latest release to `earlyplugins/` and prompts for server restart. Disabled by default — server logs instructions for manual install or how to enable. Gracefully handles repositories with no published releases (logs info, no crash/error)
+- **Auto-update checking for HyperProtect-Mixin**: When HyperProtect-Mixin is installed, checks for newer versions on startup via GitHub Releases API and notifies admins with version comparison (e.g., "v1.0.0 -> v1.1.0"). Configurable via `updates.hyperProtect.autoUpdate` (default: `true`)
+- **`/f admin update mixin`**: Manual command to check for and download HyperProtect-Mixin updates (or initial install). Works regardless of auto-download config — creates an on-the-fly UpdateChecker if needed
+- **`/f admin update toggle-mixin-download`**: Runtime command to toggle HP-Mixin auto-download on/off, persisted to config
+- **Config: `updates.hyperProtect` section**: New nested config section with `autoDownload` (bool), `autoUpdate` (bool), and `url` (GitHub Releases API endpoint) settings for managing HyperProtect-Mixin lifecycle
+- **7 new zone flags**: `explosion_damage`, `fire_spread`, `block_place`, `hammer_use`, `builder_tools_use`, `teleporter_use`, `portal_use` — all mixin-dependent, with SafeZone (false) and WarZone (true) defaults
+- **New “Transport” zone flag category**: Groups `teleporter_use` and `portal_use` flags
+- **Unified "Transport" faction permission**: Merged `teleporterUse` and `portalUse` into a single `transportUse` permission per role level (outsider/ally/member/officer). Both teleporter and portal interactions now check the same flag
+- **~15 new ProtectionChecker methods**: `shouldBlockExplosion`, `shouldBlockFireSpread`, `checkBuilderTool`, `checkTeleporter`, `checkPortal`, `shouldKeepInventory`, `shouldPreventDurability`, `canAccessContainer`, and more
+- **Admin zone settings GUI**: Updated for 31 total flags (was 24), new flag categories, mixin provider indicator
 - **Configurable power loss by death cause**: New `powerLossOnMobDeath` and `powerLossOnEnvironmentalDeath` config options in the `power` section (both default `true` for backward compatibility). Set either to `false` to skip the death power penalty for that cause type while still incrementing kill/death counters and announcing gravestone locations. PvP deaths always incur power loss. Zone flag `power_loss=false` takes priority over these settings
 - **Death cause tracking**: `DamageProtectionHandler` now records the type of each damage event (PVP, MOB, ENVIRONMENTAL) that passes through protection checks into `CombatTagManager`, which `PlayerDeathSystem` reads at death time to apply the correct power loss policy
+- **JitPack publishing**: Added `maven-publish` plugin and `jitpack.yml` — other developers can now depend on HyperFactions via `com.github.HyperSystemsDev:HyperFactions:<version>` from JitPack
+- **Standalone build support**: Build resolves Hytale server version independently when built outside the monorepo (JitPack, CI)
+- **Contributor docs**: Updated CONTRIBUTING.md and README.md with soft dependency download instructions and CurseForge links
+- **Developer docs**: Updated README and API reference with JitPack dependency instructions, marked WiFlow/Gravestone libs as optional
+
+**OrbisGuard Compatibility**
+- **Hook chaining**: All 11 OrbisGuard-Mixins hooks now chain with existing OG hooks instead of overwriting them. When OG registers hooks before HF, the originals are captured and called first — if OG denies the action (region protection), HF respects it; if OG allows, HF applies faction-based checks on top. Hooks are restored to originals on unregister
+- **OrbisGuard API integration**: New `OrbisGuardIntegration` class provides soft-dependency access to OG's region container via reflection and cached MethodHandles. Supports `getRegionsAt()` for point queries, `canCreateClaim()` for chunk-level AABB checks, and `getLoadedManagers()` for region enumeration
+- **Claim blocking in OG regions**: Claims are denied in any chunk that overlaps an OrbisGuard-protected region. Uses `canCreateClaim` API when available (checks corners, center, and full overlap), falls back to 5-point sampling (4 corners + center). Global (`__global__`) regions are excluded
+- **World map OG region rendering**: OrbisGuard regions are rendered on the world map (M key) as colored overlays using OG's 8-color palette with priority-based stacking, border detection, and opacity blending. Region candidates are pre-filtered per chunk via AABB overlap to minimize per-pixel work
+- **Territory Map GUI OG rendering**: Chunks overlapping OrbisGuard regions are shown as dark orange (`#FF8C00`) "Protected" cells in the `/f map` chunk grid. Click events are suppressed on protected chunks. Works in both flat and terrain rendering modes
+- **Dynamic legend entry**: When OrbisGuard is detected, a "Protected" legend entry with orange swatch is dynamically appended to the Territory Map GUI legend
+- **`RegionInfo` record**: Exposes OG region spatial data (id, world, type, priority, AABB bounds) with chunk coordinate helpers for map rendering
 
 ### Changed
 
+- **Faction settings UI redesign**: Rotated the permission grid — permissions are now rows with role columns (Out/Ally/Mem/Off) instead of role rows with permission columns. Fixes "Processing" truncation, eliminates crowding, and makes adding future permissions trivial (just add rows). Building and Interaction permissions unified into a single "Territory Permissions" section with parent-child indentation
+- **Faction permission flags**: Reduced from 49 to 45 flags by merging 8 teleporter/portal flags (4 each) into 4 transport flags. `ALL_FLAGS` updated accordingly
+- **Data migration**: `JsonFactionStorage` automatically migrates old `teleporterUse`/`portalUse` flags to `transportUse` on load using OR logic (permissive — allows if either was allowed)
+- **Plugin initialization**: Refactored `initializeOrbisIntegrations()` → `initializeProtectionMixins()` using ProtectionMixinBridge for mixin system detection and hook registration
+- **Conditional HarvestCrop codec**: `HyperFactionsHarvestCropInteraction` codec only registered when no mixin system is active (mixin handles harvest interception natively)
+- **Zone flags**: `ALL_FLAGS` expanded to 31, `MIXIN_DEPENDENT_FLAGS` expanded to 11, new parent-child relationships (`BUILD_ALLOWED` → `BLOCK_PLACE`, `HAMMER_USE`, `BUILDER_TOOLS_USE`)
+- **Admin integration handler**: Now uses ProtectionMixinBridge to show correct mixin provider status with version and hook details
+- **UpdateChecker**: Parameterized to support multiple artifacts (HyperFactions and HyperProtect-Mixin) with configurable target directories
+- **manifest.json**: Added `HyperProtect-Mixin` to SoftDependencies
 - **Maven build migration**: Hytale Server API now resolved from `maven.hytale.com` instead of local JAR files. Use `-Phytale_channel=pre-release` to build against the pre-release server
 - **Local soft dependencies**: Moved WiFlowPlaceholderAPI and GravestonePlugin references to local `libs/` directory with `fileTree` glob — version bumps only need a symlink update, no `build.gradle` edits
 - **GravestoneIntegration**: Refactored from direct API imports to pure reflection — compiles and runs without GravestonePlugin JAR present
 - **WiFlowPlaceholderIntegration**: Refactored bridge to pure reflection — compiles without WiFlowPlaceholderAPI JAR. WiFlowExpansion conditionally excluded from compilation when WiFlow is absent
 - **HyperPerms dependency**: Conditional resolution — uses project reference in monorepo, JitPack coordinate when building standalone
-
-### Added
-
-- **Contributor docs**: Updated CONTRIBUTING.md and README.md with soft dependency download instructions and CurseForge links
-- **JitPack publishing**: Added `maven-publish` plugin and `jitpack.yml` — other developers can now depend on HyperFactions via `com.github.HyperSystemsDev:HyperFactions:<version>` from JitPack
-- **Standalone build support**: Build resolves Hytale server version independently when built outside the monorepo (JitPack, CI)
-- **Developer docs**: Updated README and API reference with JitPack dependency instructions, marked WiFlow/Gravestone libs as optional
-
-## [0.8.2] - 2026-02-21
-
-**Closes:** [#49](https://github.com/HyperSystemsDev/HyperFactions/issues/49), [#50](https://github.com/HyperSystemsDev/HyperFactions/issues/50), [#51](https://github.com/HyperSystemsDev/HyperFactions/issues/51), [#52](https://github.com/HyperSystemsDev/HyperFactions/issues/52), [#53](https://github.com/HyperSystemsDev/HyperFactions/issues/53), [#55](https://github.com/HyperSystemsDev/HyperFactions/issues/55), [#56](https://github.com/HyperSystemsDev/HyperFactions/issues/56), [#57](https://github.com/HyperSystemsDev/HyperFactions/issues/57)
+- **Logger**: Migrated from `java.util.logging.Logger` to Hytale's `HytaleLogger` (Google Flogger) for proper log routing. All log calls updated to fluent `.at(Level).log()` API
+- **CallbackWiring**: Removed legacy OrbisGuard-specific wiring methods (`wireExplosionProtection`, `wireHarvestProtection`, `wireHammerProtection`) — all protection hooks now registered through `ProtectionMixinBridge`
+- **BackupManager**: Simplified backup directory handling and error reporting
+- **StorageUtils**: Streamlined file I/O operations
+- **HP-Mixin auto-download**: Default changed to `false` (opt-in). Detects on-disk JAR that failed to initialize and checks for updates against the existing version. When no JAR exists and auto-download is off, logs install instructions instead of silently skipping
 
 ### Fixed
 
-- **Kill reward for factionless victims** ([#51](https://github.com/HyperSystemsDev/HyperFactions/issues/51)): Killing factionless players no longer grants power. New `killRewardRequiresFaction` config option (default: `true`) — set to `false` to restore old behavior
-- **`/f stuck` always teleports to same location** ([#52](https://github.com/HyperSystemsDev/HyperFactions/issues/52)): Rewrote stuck teleport to walk in a random direction until finding a safe unclaimed chunk, instead of deterministic BFS that always found the same nearest chunk. Configurable search radius via `stuckMinRadius`, `stuckRadiusIncrease`, and `stuckMaxAttempts` config options
-- **Map markers visible to enemies** ([#49](https://github.com/HyperSystemsDev/HyperFactions/issues/49)): World map and compass player visibility now uses bidirectional relation checks — if either faction considers the other an enemy, both are hidden from each other's map (previously only checked one direction)
-- **Enemy relation not shown in `/f info`** ([#50](https://github.com/HyperSystemsDev/HyperFactions/issues/50)): `/f info` text mode now displays ally/enemy counts and bidirectional relation status ("They consider you: Enemy", "You consider them: Neutral") with color-coded formatting
-- **Boomshroom explosions damage across claim borders** ([#53](https://github.com/HyperSystemsDev/HyperFactions/issues/53)): Wired explosion protection hook to block explosions in claimed faction territory and safezones. Wilderness and warzone explosions still permitted
-- **Crops harvestable by outsiders** ([#55](https://github.com/HyperSystemsDev/HyperFactions/issues/55)): F-key crop harvesting now blocked in protected territory via OrbisGuard-Mixins harvest hook. Added scythe/tool harvest protection via `HyperFactionsHarvestCropInteraction` codec replacement as defense-in-depth
-- **Plants and flowers not protected** ([#57](https://github.com/HyperSystemsDev/HyperFactions/issues/57)): Expanded harvestable block detection to cover flowers, berry bushes, mushrooms, tall plants, ferns, grass, vines, seagrass, kelp, cactus, and sugar cane — not just `plant_crop` and `crop_` prefixed blocks
-- **Claim double-fire causing auto-unclaim** ([#56](https://github.com/HyperSystemsDev/HyperFactions/issues/56)): Added 500ms per-player debounce to claim and unclaim commands to prevent double-execution from rapid command dispatch
-- **Duplicate denial messages on harvest/hammer**: Harvest and hammer protection hooks now silently deny actions when UseBlockEvent already sends a denial message, preventing players from seeing two error messages
-
-### Added
-
-- **Hammer protection**: CycleBlockGroupInteraction (hammer tool) now blocked in safezones and enemy faction territory via OrbisGuard-Mixins hook — hammer was previously unprotected
-- **OrbisGuard-Mixins 0.8.3 support**: Added `checkScytheHarvest()` and `checkMessage()` hook methods for compatibility with new mixin entry points (HarvestCropInteractionMixin, CycleBlockGroupInteractionMixin)
-- **Bidirectional relation API**: New `RelationManager.getEffectiveRelation()` method — ENEMY wins if either side declares enemy, ALLY requires both sides, used across map filter and info display
-- **Bed debug logging**: Added diagnostic logging for bed block interactions in BlockBreakProtectionSystem to investigate post-overclaim bed protection ([#54](https://github.com/HyperSystemsDev/HyperFactions/issues/54))
-
-### Changed
-
-- **Teleport execution**: `/f stuck` and `/f home` teleports now execute on the correct world thread with post-teleport position verification
-- All harvest/pickup protection logging uses `Logger.debugProtection()` category instead of `Logger.info()`
+- **Permission toggle children not enabling**: Fixed parent-child checkbox state in faction settings — toggling a parent permission (e.g., Interact) ON now immediately enables its children (Door, Chest, etc.) without requiring a page close/reopen. Root cause: `Disabled` state was only ever set to `true` but never explicitly reset to `false` on update
+- **Claim blocking in OG regions**: Fixed `isChunkProtected()` using 16-block chunk size (`<< 4`) instead of Hytale's 32-block chunks (`<< 5`), causing protection checks to examine the wrong area and fail to block claims
 
 ## [0.8.1] - 2026-02-17
 

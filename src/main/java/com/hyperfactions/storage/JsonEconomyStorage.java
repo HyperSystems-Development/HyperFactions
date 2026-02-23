@@ -37,7 +37,7 @@ public class JsonEconomyStorage {
         return CompletableFuture.runAsync(() -> {
             try {
                 Files.createDirectories(economyDir);
-                Logger.info("Economy storage initialized at %s", economyDir);
+                Logger.info("[Storage] Economy storage initialized at %s", economyDir);
             } catch (IOException e) {
                 Logger.severe("Failed to create economy directory", e);
             }
@@ -74,7 +74,7 @@ public class JsonEconomyStorage {
                 Logger.severe("Failed to read economy directory", e);
             }
 
-            Logger.info("Loaded economy data for %d factions", economies.size());
+            Logger.info("[Storage] Loaded economy data for %d factions", economies.size());
             return economies;
         });
     }

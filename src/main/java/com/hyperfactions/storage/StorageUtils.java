@@ -95,7 +95,7 @@ public final class StorageUtils {
                 // Verification failed - temp file is corrupt
                 Files.deleteIfExists(tempFile);
                 String error = "Checksum verification failed: expected " + expectedChecksum + ", got " + actualChecksum;
-                Logger.severe("[StorageUtils] %s for %s", error, targetFile);
+                Logger.severe("[Storage] %s for %s", error, targetFile);
                 return new WriteResult.Failure(targetFile, error, null);
             }
 
@@ -104,7 +104,7 @@ public final class StorageUtils {
                 try {
                     Files.copy(targetFile, backupFile, StandardCopyOption.REPLACE_EXISTING);
                 } catch (IOException e) {
-                    Logger.warn("[StorageUtils] Could not create backup for %s: %s", targetFile, e.getMessage());
+                    Logger.warn("[Storage] Could not create backup for %s: %s", targetFile, e.getMessage());
                     // Continue anyway - backup is best-effort
                 }
             }
@@ -112,7 +112,7 @@ public final class StorageUtils {
             // Step 6: Atomic rename temp → target
             Files.move(tempFile, targetFile, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
 
-            Logger.debug("[StorageUtils] Atomic write successful: %s (checksum: %s)", targetFile.getFileName(), expectedChecksum.substring(0, 8));
+            Logger.debug("[Storage] Atomic write successful: %s (checksum: %s)", targetFile.getFileName(), expectedChecksum.substring(0, 8));
             return new WriteResult.Success(targetFile, expectedChecksum);
 
         } catch (IOException e) {
@@ -122,7 +122,7 @@ public final class StorageUtils {
             } catch (IOException ignored) {}
 
             String error = "I/O error during atomic write: " + e.getMessage();
-            Logger.severe("[StorageUtils] %s for %s", error, targetFile);
+            Logger.severe("[Storage] %s for %s", error, targetFile);
             return new WriteResult.Failure(targetFile, error, e);
 
         } catch (Exception e) {
@@ -132,7 +132,7 @@ public final class StorageUtils {
             } catch (IOException ignored) {}
 
             String error = "Unexpected error during atomic write: " + e.getMessage();
-            Logger.severe("[StorageUtils] %s for %s", error, targetFile);
+            Logger.severe("[Storage] %s for %s", error, targetFile);
             return new WriteResult.Failure(targetFile, error, e);
         }
     }
@@ -166,7 +166,7 @@ public final class StorageUtils {
         Path backupFile = targetFile.resolveSibling(targetFile.getFileName() + BAK_SUFFIX);
 
         if (!Files.exists(backupFile)) {
-            Logger.warn("[StorageUtils] No backup file found for %s", targetFile);
+            Logger.warn("[Storage] No backup file found for %s", targetFile);
             return false;
         }
 
@@ -174,17 +174,17 @@ public final class StorageUtils {
             // Verify backup is readable and valid
             String backupContent = Files.readString(backupFile);
             if (backupContent.isEmpty()) {
-                Logger.warn("[StorageUtils] Backup file is empty for %s", targetFile);
+                Logger.warn("[Storage] Backup file is empty for %s", targetFile);
                 return false;
             }
 
             // Copy backup to main file
             Files.copy(backupFile, targetFile, StandardCopyOption.REPLACE_EXISTING);
-            Logger.info("[StorageUtils] Recovered %s from backup (size: %d bytes)", targetFile.getFileName(), backupContent.length());
+            Logger.info("[Storage] Recovered %s from backup (size: %d bytes)", targetFile.getFileName(), backupContent.length());
             return true;
 
         } catch (IOException e) {
-            Logger.severe("[StorageUtils] Failed to recover %s from backup: %s", targetFile, e.getMessage());
+            Logger.severe("[Storage] Failed to recover %s from backup: %s", targetFile, e.getMessage());
             return false;
         }
     }
@@ -225,15 +225,15 @@ public final class StorageUtils {
         try {
             mainDeleted = Files.deleteIfExists(targetFile);
         } catch (IOException e) {
-            Logger.warn("[StorageUtils] Failed to delete %s: %s", targetFile.getFileName(), e.getMessage());
+            Logger.warn("[Storage] Failed to delete %s: %s", targetFile.getFileName(), e.getMessage());
         }
 
         try {
             if (Files.deleteIfExists(backupFile)) {
-                Logger.debug("[StorageUtils] Deleted backup file: %s", backupFile.getFileName());
+                Logger.debug("[Storage] Deleted backup file: %s", backupFile.getFileName());
             }
         } catch (IOException e) {
-            Logger.warn("[StorageUtils] Failed to delete backup %s: %s", backupFile.getFileName(), e.getMessage());
+            Logger.warn("[Storage] Failed to delete backup %s: %s", backupFile.getFileName(), e.getMessage());
         }
 
         return mainDeleted;
@@ -266,9 +266,9 @@ public final class StorageUtils {
                     try {
                         Files.delete(file);
                         cleaned++;
-                        Logger.debug("[StorageUtils] Cleaned orphaned temp file: %s", fileName);
+                        Logger.debug("[Storage] Cleaned orphaned temp file: %s", fileName);
                     } catch (IOException e) {
-                        Logger.warn("[StorageUtils] Failed to clean temp file %s: %s", fileName, e.getMessage());
+                        Logger.warn("[Storage] Failed to clean temp file %s: %s", fileName, e.getMessage());
                     }
                     continue;
                 }
@@ -281,19 +281,19 @@ public final class StorageUtils {
                         try {
                             Files.delete(file);
                             cleaned++;
-                            Logger.debug("[StorageUtils] Cleaned orphaned backup file: %s", fileName);
+                            Logger.debug("[Storage] Cleaned orphaned backup file: %s", fileName);
                         } catch (IOException e) {
-                            Logger.warn("[StorageUtils] Failed to clean backup file %s: %s", fileName, e.getMessage());
+                            Logger.warn("[Storage] Failed to clean backup file %s: %s", fileName, e.getMessage());
                         }
                     }
                 }
             }
         } catch (IOException e) {
-            Logger.warn("[StorageUtils] Failed to scan directory for cleanup: %s", e.getMessage());
+            Logger.warn("[Storage] Failed to scan directory for cleanup: %s", e.getMessage());
         }
 
         if (cleaned > 0) {
-            Logger.info("[StorageUtils] Cleaned up %d orphaned file(s) from %s", cleaned, directory.getFileName());
+            Logger.info("[Storage] Cleaned up %d orphaned file(s) from %s", cleaned, directory.getFileName());
         }
 
         return cleaned;

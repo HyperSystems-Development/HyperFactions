@@ -1,17 +1,19 @@
 package com.hyperfactions.util;
 
+import com.hypixel.hytale.logger.HytaleLogger;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.EnumSet;
 import java.util.logging.Level;
 
 /**
- * Wrapped logger with HyperFactions prefix, formatting, and category-based debug logging.
+ * Wrapped logger with category-based debug logging.
+ * Uses Hytale's HytaleLogger (Google Flogger) for proper log routing.
  */
 public final class Logger {
 
-    private static final String PREFIX = "[HyperFactions] ";
-    private static java.util.logging.Logger logger;
+    private static final String PREFIX = "";
+    private static HytaleLogger logger;
 
     /**
      * Debug categories for category-based debug logging.
@@ -49,11 +51,11 @@ public final class Logger {
     private Logger() {}
 
     /**
-     * Initializes the logger.
+     * Initializes the logger with the plugin's HytaleLogger.
      *
-     * @param parentLogger the parent logger from the plugin
+     * @param parentLogger the HytaleLogger from the plugin
      */
-    public static void init(@NotNull java.util.logging.Logger parentLogger) {
+    public static void init(@NotNull HytaleLogger parentLogger) {
         logger = parentLogger;
     }
 
@@ -66,7 +68,7 @@ public final class Logger {
      */
     public static void info(@NotNull String message) {
         if (logger != null) {
-            logger.info(PREFIX + message);
+            logger.at(Level.INFO).log("%s", PREFIX + message);
         } else {
             System.out.println(PREFIX + "[INFO] " + message);
         }
@@ -89,7 +91,7 @@ public final class Logger {
      */
     public static void warn(@NotNull String message) {
         if (logger != null) {
-            logger.warning(PREFIX + message);
+            logger.at(Level.WARNING).log("%s", PREFIX + message);
         } else {
             System.out.println(PREFIX + "[WARN] " + message);
         }
@@ -112,7 +114,7 @@ public final class Logger {
      */
     public static void severe(@NotNull String message) {
         if (logger != null) {
-            logger.severe(PREFIX + message);
+            logger.at(Level.SEVERE).log("%s", PREFIX + message);
         } else {
             System.err.println(PREFIX + "[SEVERE] " + message);
         }
@@ -138,7 +140,7 @@ public final class Logger {
     public static void severe(@NotNull String message, @NotNull Throwable throwable, Object... args) {
         String formatted = String.format(message, args);
         if (logger != null) {
-            logger.log(Level.SEVERE, PREFIX + formatted, throwable);
+            logger.at(Level.SEVERE).withCause(throwable).log("%s", PREFIX + formatted);
         } else {
             System.err.println(PREFIX + "[SEVERE] " + formatted);
             throwable.printStackTrace();
@@ -152,7 +154,7 @@ public final class Logger {
      */
     public static void debug(@NotNull String message) {
         if (logger != null) {
-            logger.fine(PREFIX + "[DEBUG] " + message);
+            logger.at(Level.FINE).log("%s", PREFIX + "[DEBUG] " + message);
         }
     }
 
@@ -347,7 +349,7 @@ public final class Logger {
     }
 
     /**
-     * Logs a mixin-related debug message (OrbisGuard-Mixins integration, hook registration).
+     * Logs a mixin-related debug message (mixin integration, hook registration).
      * Used for debugging mixin-dependent features like F-key pickup, keep inventory, etc.
      *
      * @param message the message format
@@ -407,12 +409,12 @@ public final class Logger {
 
         if (logToConsole) {
             if (logger != null) {
-                logger.info(logMessage); // Use INFO level for visibility
+                logger.at(Level.INFO).log("%s", logMessage); // Use INFO level for visibility
             } else {
                 System.out.println(logMessage);
             }
         } else if (logger != null) {
-            logger.fine(logMessage);
+            logger.at(Level.FINE).log("%s", logMessage);
         }
     }
 

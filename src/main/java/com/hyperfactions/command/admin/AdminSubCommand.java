@@ -199,7 +199,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
             case "sync" -> handleSync(ctx, player);
             case "integrations" -> integrationHandler.handleIntegrations(ctx);
             case "integration" -> integrationHandler.handleIntegrationDetail(ctx, subArgs);
-            case "update" -> updateHandler.handleAdminUpdate(ctx, senderUuid);
+            case "update" -> updateHandler.handleAdminUpdate(ctx, senderUuid, subArgs);
             case "rollback" -> updateHandler.handleAdminRollback(ctx);
             case "backup" -> backupHandler.handleAdminBackup(ctx, player, senderUuid, subArgs);
             case "import" -> importHandler.handleAdminImport(ctx, subArgs);
@@ -257,7 +257,9 @@ public class AdminSubCommand extends AbstractAsyncCommand {
         commands.add(new CommandHelp("/f admin config", "Server configuration"));
         commands.add(new CommandHelp("/f admin backup", "Backup management"));
         commands.add(new CommandHelp("/f admin import", "Import from other plugins"));
-        commands.add(new CommandHelp("/f admin update", "Check for updates"));
+        commands.add(new CommandHelp("/f admin update", "Check for & download updates"));
+        commands.add(new CommandHelp("/f admin update mixin", "Update HyperProtect-Mixin"));
+        commands.add(new CommandHelp("/f admin update toggle-mixin-download", "Toggle HP-Mixin auto-download"));
         commands.add(new CommandHelp("/f admin rollback", "Rollback to previous version"));
         commands.add(new CommandHelp("/f admin reload", "Reload configuration"));
         commands.add(new CommandHelp("/f admin sync", "Sync data from disk"));

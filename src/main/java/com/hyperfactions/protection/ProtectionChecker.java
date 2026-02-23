@@ -10,6 +10,7 @@ import com.hyperfactions.data.RelationType;
 import com.hyperfactions.data.Zone;
 import com.hyperfactions.data.ZoneFlags;
 import com.hyperfactions.integration.protection.GravestoneIntegration;
+import com.hyperfactions.integration.protection.OrbisMixinsIntegration;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.manager.*;
 import com.hyperfactions.util.ChunkUtil;
@@ -103,7 +104,9 @@ public class ProtectionChecker {
         PROCESSING,  // Furnaces/smelters
         SEAT,        // Seats/mounts
         DAMAGE,      // Damage entities (not players)
-        USE          // Use items (fallback)
+        USE,         // Use items (fallback)
+        TELEPORTER,  // Use teleporter blocks
+        PORTAL       // Use portal blocks
     }
 
     // === Interaction Protection ===
@@ -155,7 +158,7 @@ public class ProtectionChecker {
             // 3. Non-admin: Check standard bypass permissions
             String bypassPerm = switch (type) {
                 case BUILD -> "hyperfactions.bypass.build";
-                case INTERACT, DOOR, BENCH, PROCESSING, SEAT -> "hyperfactions.bypass.interact";
+                case INTERACT, DOOR, BENCH, PROCESSING, SEAT, TELEPORTER, PORTAL -> "hyperfactions.bypass.interact";
                 case CONTAINER -> "hyperfactions.bypass.container";
                 case DAMAGE -> "hyperfactions.bypass.damage";
                 case USE -> "hyperfactions.bypass.use";
@@ -179,6 +182,8 @@ public class ProtectionChecker {
                 case BENCH -> ZoneFlags.BENCH_USE;
                 case PROCESSING -> ZoneFlags.PROCESSING_USE;
                 case SEAT -> ZoneFlags.SEAT_USE;
+                case TELEPORTER -> ZoneFlags.TELEPORTER_USE;
+                case PORTAL -> ZoneFlags.PORTAL_USE;
                 case DAMAGE -> ZoneFlags.PVP_ENABLED;
             };
 
@@ -299,6 +304,7 @@ public class ProtectionChecker {
             case BENCH -> perms.get(level + "BenchUse");
             case PROCESSING -> perms.get(level + "ProcessingUse");
             case SEAT -> perms.get(level + "SeatUse");
+            case TELEPORTER, PORTAL -> perms.get(level + "TransportUse");
             case DAMAGE -> !"outsider".equals(level); // outsiders can't damage
         };
     }
@@ -367,20 +373,32 @@ public class ProtectionChecker {
             if (!pvpEnabled) {
                 return PvPResult.DENIED_SAFEZONE;
             }
-            // Zone has PvP enabled - check friendly fire if in zone
+            // Zone has PvP enabled - check friendly fire hierarchy
             boolean friendlyFireAllowed = zone.getEffectiveFlag(ZoneFlags.FRIENDLY_FIRE);
 
-            // Check same faction
+            // Check same faction (zone flag → child flag → config fallback)
             if (factionManager.areInSameFaction(attackerUuid, defenderUuid)) {
-                if (!friendlyFireAllowed && !config.isFactionDamage()) {
+                if (friendlyFireAllowed) {
+                    // Parent on — check granular faction child flag
+                    if (!zone.getEffectiveFlag(ZoneFlags.FRIENDLY_FIRE_FACTION)) {
+                        return PvPResult.DENIED_SAME_FACTION;
+                    }
+                } else if (!config.isFactionDamage()) {
+                    // Parent off and config doesn't allow — deny
                     return PvPResult.DENIED_SAME_FACTION;
                 }
             }
 
-            // Check ally
+            // Check ally (zone flag → child flag → config fallback)
             RelationType relation = relationManager.getPlayerRelation(attackerUuid, defenderUuid);
             if (relation == RelationType.ALLY) {
-                if (!friendlyFireAllowed && !config.isAllyDamage()) {
+                if (friendlyFireAllowed) {
+                    // Parent on — check granular ally child flag
+                    if (!zone.getEffectiveFlag(ZoneFlags.FRIENDLY_FIRE_ALLY)) {
+                        return PvPResult.DENIED_ALLY;
+                    }
+                } else if (!config.isAllyDamage()) {
+                    // Parent off and config doesn't allow — deny
                     return PvPResult.DENIED_ALLY;
                 }
             }
@@ -626,6 +644,460 @@ public class ProtectionChecker {
             case DENIED_TERRITORY_NO_PVP -> "PvP is disabled in this territory.";
             default -> "You cannot attack this player.";
         };
+    }
+
+    // === Mixin Hook Protection Methods ===
+    // These methods are called by HyperProtect/OrbisGuard mixin hooks.
+    // They accept block coordinates (int x, y, z) and return a String denial
+    // message (null = allowed).
+
+    /**
+     * Common protection check for mixin hooks.
+     * Checks bypass, specific zone flag, and faction claim permissions.
+     *
+     * @param playerUuid   the player's UUID
+     * @param worldName    the world name
+     * @param x            the block X coordinate
+     * @param y            the block Y coordinate
+     * @param z            the block Z coordinate
+     * @param zoneFlag     the specific zone flag to check
+     * @param factionType  the interaction type for faction permission resolution
+     * @return null if allowed, denial message if denied
+     */
+    @Nullable
+    private String checkMixinProtection(@NotNull UUID playerUuid, @NotNull String worldName,
+                                         int x, int y, int z,
+                                         @NotNull String zoneFlag,
+                                         @NotNull InteractionType factionType) {
+        int chunkX = ChunkUtil.toChunkCoord(x);
+        int chunkZ = ChunkUtil.toChunkCoord(z);
+
+        // 1. Admin bypass
+        if (plugin != null) {
+            HyperFactions hf = plugin.get();
+            if (hf != null && hf.isAdminBypassEnabled(playerUuid)) return null;
+        }
+
+        // 2. Standard bypass
+        boolean isAdmin = PermissionManager.get().hasPermission(playerUuid, "hyperfactions.admin.use");
+        if (!isAdmin) {
+            String bypassPerm = switch (factionType) {
+                case BUILD -> "hyperfactions.bypass.build";
+                case INTERACT, DOOR, BENCH, PROCESSING, SEAT, TELEPORTER, PORTAL -> "hyperfactions.bypass.interact";
+                case CONTAINER -> "hyperfactions.bypass.container";
+                case DAMAGE -> "hyperfactions.bypass.damage";
+                case USE -> "hyperfactions.bypass.use";
+            };
+            if (PermissionManager.get().hasPermission(playerUuid, bypassPerm) ||
+                PermissionManager.get().hasPermission(playerUuid, "hyperfactions.bypass.*")) {
+                return null;
+            }
+        }
+
+        // 3. Zone flag check
+        Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
+        if (zone != null) {
+            if (!zone.getEffectiveFlag(zoneFlag)) {
+                if (zone.isSafeZone()) return "You cannot do that in a SafeZone.";
+                if (zone.isWarZone()) return "You cannot do that in a WarZone.";
+                return "You cannot do that in this zone.";
+            }
+            if (zone.isWarZone()) return null;
+        }
+
+        // 4. Faction claim check
+        UUID claimOwner = claimManager.getClaimOwner(worldName, chunkX, chunkZ);
+        if (claimOwner == null) return null; // Wilderness
+
+        UUID playerFactionId = factionManager.getPlayerFactionId(playerUuid);
+        Faction ownerFaction = factionManager.getFaction(claimOwner);
+        FactionPermissions perms = null;
+        if (ownerFaction != null) {
+            perms = ConfigManager.get().getEffectiveFactionPermissions(ownerFaction.getEffectivePermissions());
+        }
+
+        // Same faction
+        if (playerFactionId != null && playerFactionId.equals(claimOwner)) {
+            FactionMember member = ownerFaction != null ? ownerFaction.getMember(playerUuid) : null;
+            boolean isOfficerOrLeader = member != null &&
+                member.role().getLevel() >= FactionRole.OFFICER.getLevel();
+            String level = isOfficerOrLeader ? "officer" : "member";
+            if (perms != null && !checkPermission(perms, level, factionType)) {
+                return "You don't have permission to do that here.";
+            }
+            return null;
+        }
+
+        // Ally
+        if (playerFactionId != null) {
+            RelationType relation = relationManager.getRelation(playerFactionId, claimOwner);
+            if (relation == RelationType.ALLY) {
+                if (perms != null && checkPermission(perms, "ally", factionType)) return null;
+                return "You don't have permission to do that here.";
+            }
+        }
+
+        // Outsider
+        if (perms != null && checkPermission(perms, "outsider", factionType)) return null;
+
+        return "You cannot do that in claimed territory.";
+    }
+
+    /**
+     * Checks if a player can break/build blocks (mixin hook version).
+     *
+     * @return null if allowed, denial message if denied
+     */
+    @Nullable
+    public String checkBuild(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+        return checkMixinProtection(playerUuid, worldName, x, y, z, ZoneFlags.BUILD_ALLOWED, InteractionType.BUILD);
+    }
+
+    /**
+     * Checks if a player can place blocks (mixin hook version).
+     *
+     * @return null if allowed, denial message if denied
+     */
+    @Nullable
+    public String checkPlace(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+        return checkMixinProtection(playerUuid, worldName, x, y, z, ZoneFlags.BLOCK_PLACE, InteractionType.BUILD);
+    }
+
+    /**
+     * Checks if a player can use the hammer (mixin hook version).
+     *
+     * @return null if allowed, denial message if denied
+     */
+    @Nullable
+    public String checkHammer(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+        return checkMixinProtection(playerUuid, worldName, x, y, z, ZoneFlags.HAMMER_USE, InteractionType.BUILD);
+    }
+
+    /**
+     * Checks if a player can use builder tools (mixin hook version).
+     *
+     * @return null if allowed, denial message if denied
+     */
+    @Nullable
+    public String checkBuilderTool(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+        return checkMixinProtection(playerUuid, worldName, x, y, z, ZoneFlags.BUILDER_TOOLS_USE, InteractionType.BUILD);
+    }
+
+    /**
+     * Checks if a player can interact with blocks (mixin hook version for ChangeState).
+     *
+     * @return null if allowed, denial message if denied
+     */
+    @Nullable
+    public String checkUse(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+        return checkMixinProtection(playerUuid, worldName, x, y, z, ZoneFlags.BLOCK_INTERACT, InteractionType.INTERACT);
+    }
+
+    /**
+     * Checks if a player can sit on seats (mixin hook version).
+     *
+     * @return null if allowed, denial message if denied
+     */
+    @Nullable
+    public String checkSeat(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+        return checkMixinProtection(playerUuid, worldName, x, y, z, ZoneFlags.SEAT_USE, InteractionType.SEAT);
+    }
+
+    /**
+     * Checks if a player can use teleporter blocks (mixin hook version).
+     *
+     * @return null if allowed, denial message if denied
+     */
+    @Nullable
+    public String checkTeleporter(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+        return checkMixinProtection(playerUuid, worldName, x, y, z, ZoneFlags.TELEPORTER_USE, InteractionType.TELEPORTER);
+    }
+
+    /**
+     * Checks if a player can use portal blocks (mixin hook version).
+     *
+     * @return null if allowed, denial message if denied
+     */
+    @Nullable
+    public String checkPortal(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+        return checkMixinProtection(playerUuid, worldName, x, y, z, ZoneFlags.PORTAL_USE, InteractionType.PORTAL);
+    }
+
+    /**
+     * Checks if a player can use crafting benches (mixin hook version).
+     *
+     * @return null if allowed, denial message if denied
+     */
+    @Nullable
+    public String checkBench(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+        return checkMixinProtection(playerUuid, worldName, x, y, z, ZoneFlags.BENCH_USE, InteractionType.BENCH);
+    }
+
+    /**
+     * Checks if a player can open containers (mixin hook version).
+     *
+     * @return null if allowed, denial message if denied
+     */
+    @Nullable
+    public String checkContainer(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+        return checkMixinProtection(playerUuid, worldName, x, y, z, ZoneFlags.CONTAINER_USE, InteractionType.CONTAINER);
+    }
+
+    /**
+     * Checks if entity damage should be blocked (PvP and mob damage combined).
+     *
+     * @param attackerUuid the attacker's UUID
+     * @param targetUuid   the target entity's UUID
+     * @param worldName    the world name
+     * @param x            the block X coordinate
+     * @param y            the block Y coordinate
+     * @param z            the block Z coordinate
+     * @return null if allowed, denial message if denied
+     */
+    @Nullable
+    public String checkEntityDamage(@NotNull UUID attackerUuid, @NotNull UUID targetUuid,
+                                     @NotNull String worldName, int x, int y, int z) {
+        // PvP check using existing canDamagePlayerChunk
+        int chunkX = ChunkUtil.toChunkCoord(x);
+        int chunkZ = ChunkUtil.toChunkCoord(z);
+
+        PvPResult result = canDamagePlayerChunk(attackerUuid, targetUuid, worldName, chunkX, chunkZ);
+        return isAllowed(result) ? null : getDenialMessage(result);
+    }
+
+    // === World-Level Mixin Checks (no player UUID) ===
+
+    /**
+     * Checks if explosions should be blocked at a location.
+     * Called by mixin hooks for world-level explosion events.
+     *
+     * @param worldName the world name
+     * @param x         the block X coordinate
+     * @param y         the block Y coordinate
+     * @param z         the block Z coordinate
+     * @return true if explosion should be BLOCKED
+     */
+    public boolean shouldBlockExplosion(@NotNull String worldName, int x, int y, int z) {
+        int chunkX = ChunkUtil.toChunkCoord(x);
+        int chunkZ = ChunkUtil.toChunkCoord(z);
+
+        // Check zone flag
+        Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
+        if (zone != null) {
+            boolean allowed = zone.getEffectiveFlag(ZoneFlags.EXPLOSION_DAMAGE);
+            if (!allowed) return true;
+            return false;
+        }
+
+        // Check faction claims — block explosions in claimed territory by default
+        UUID claimOwner = claimManager.getClaimOwner(worldName, chunkX, chunkZ);
+        if (claimOwner != null) {
+            return true; // Block explosions in all claims
+        }
+
+        return false; // Wilderness — allow
+    }
+
+    /**
+     * Checks if fire spread should be blocked at a location.
+     * Called by mixin hooks for world-level fire spread events.
+     *
+     * @param worldName the world name
+     * @param x         the block X coordinate
+     * @param y         the block Y coordinate
+     * @param z         the block Z coordinate
+     * @return true if fire spread should be BLOCKED
+     */
+    public boolean shouldBlockFireSpread(@NotNull String worldName, int x, int y, int z) {
+        int chunkX = ChunkUtil.toChunkCoord(x);
+        int chunkZ = ChunkUtil.toChunkCoord(z);
+
+        // Check zone flag
+        Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
+        if (zone != null) {
+            boolean allowed = zone.getEffectiveFlag(ZoneFlags.FIRE_SPREAD);
+            if (!allowed) return true;
+            return false;
+        }
+
+        // Check faction claims — block fire spread in claimed territory by default
+        UUID claimOwner = claimManager.getClaimOwner(worldName, chunkX, chunkZ);
+        if (claimOwner != null) {
+            return true;
+        }
+
+        return false; // Wilderness — allow
+    }
+
+    // === Player-Level Mixin Checks (boolean return) ===
+
+    /**
+     * Checks if a player should keep inventory on death.
+     * Called by mixin hooks for death loot events.
+     *
+     * @return true if inventory should be KEPT (drop blocked)
+     */
+    public boolean shouldKeepInventory(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+        int chunkX = ChunkUtil.toChunkCoord(x);
+        int chunkZ = ChunkUtil.toChunkCoord(z);
+
+        // Check zone flag
+        Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
+        if (zone != null) {
+            return zone.getEffectiveFlag(ZoneFlags.KEEP_INVENTORY);
+        }
+
+        // In claims, default: don't keep inventory (deaths have consequences)
+        return false;
+    }
+
+    /**
+     * Checks if durability loss should be prevented.
+     * Called by mixin hooks for item wear events.
+     *
+     * @return true if durability loss should be PREVENTED
+     */
+    public boolean shouldPreventDurability(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+        int chunkX = ChunkUtil.toChunkCoord(x);
+        int chunkZ = ChunkUtil.toChunkCoord(z);
+
+        // Check zone flag
+        Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
+        if (zone != null) {
+            return zone.getEffectiveFlag(ZoneFlags.INVINCIBLE_ITEMS);
+        }
+
+        // In claims, default: don't prevent durability loss
+        return false;
+    }
+
+    // === Command Protection ===
+
+    /**
+     * Checks if a command should be blocked for a player.
+     * Called by mixin hooks for command interception.
+     *
+     * @param playerUuid the player's UUID
+     * @param worldName  the world name (may be empty for position-less checks)
+     * @param x          the player's X coordinate
+     * @param y          the player's Y coordinate
+     * @param z          the player's Z coordinate
+     * @param command    the command being executed
+     * @return result containing whether to block and denial message
+     */
+    @NotNull
+    public OrbisMixinsIntegration.CommandCheckResult checkCommandBlock(
+            @NotNull UUID playerUuid, @NotNull String worldName,
+            int x, int y, int z, @NotNull String command) {
+        // Admin bypass
+        if (plugin != null) {
+            HyperFactions hf = plugin.get();
+            if (hf != null && hf.isAdminBypassEnabled(playerUuid)) {
+                return OrbisMixinsIntegration.CommandCheckResult.allow();
+            }
+        }
+
+        // Bypass permission
+        if (PermissionManager.get().hasPermission(playerUuid, "hyperfactions.bypass.command") ||
+            PermissionManager.get().hasPermission(playerUuid, "hyperfactions.bypass.*")) {
+            return OrbisMixinsIntegration.CommandCheckResult.allow();
+        }
+
+        // Check zone-based command blocking
+        if (!worldName.isEmpty()) {
+            int chunkX = ChunkUtil.toChunkCoord(x);
+            int chunkZ = ChunkUtil.toChunkCoord(z);
+            Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
+            if (zone != null) {
+                // Zones can define blocked commands via config (future expansion)
+                // For now, no zone-level command blocking
+            }
+        }
+
+        // Check combat tag command blocking (same rules as PlayerListener.onCommandPreprocess)
+        if (combatTagManager.isTagged(playerUuid)) {
+            String lowerCmd = command.toLowerCase();
+            if (lowerCmd.startsWith("/f home") || lowerCmd.startsWith("/faction home") ||
+                lowerCmd.startsWith("/home") || lowerCmd.startsWith("/spawn") ||
+                lowerCmd.startsWith("/tp") || lowerCmd.startsWith("/tpa")) {
+                return OrbisMixinsIntegration.CommandCheckResult.deny(
+                    "You cannot use that command while combat tagged.");
+            }
+        }
+
+        return OrbisMixinsIntegration.CommandCheckResult.allow();
+    }
+
+    // === Respawn Override ===
+
+    /**
+     * Gets a custom respawn location override.
+     * Called by mixin hooks for respawn interception.
+     *
+     * @param playerUuid the player's UUID
+     * @param worldName  the world name where the player died
+     * @param x          the death X coordinate
+     * @param y          the death Y coordinate
+     * @param z          the death Z coordinate
+     * @return double[3] with [x, y, z] to override respawn location, or null for default
+     */
+    @Nullable
+    public double[] getRespawnOverride(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+        int chunkX = ChunkUtil.toChunkCoord(x);
+        int chunkZ = ChunkUtil.toChunkCoord(z);
+
+        // Check faction home — if player dies in own faction territory, respawn at faction home
+        UUID claimOwner = claimManager.getClaimOwner(worldName, chunkX, chunkZ);
+        if (claimOwner != null) {
+            UUID playerFactionId = factionManager.getPlayerFactionId(playerUuid);
+            if (playerFactionId != null && playerFactionId.equals(claimOwner)) {
+                Faction faction = factionManager.getFaction(claimOwner);
+                if (faction != null && faction.hasHome()) {
+                    var home = faction.home();
+                    return new double[] { home.x(), home.y(), home.z() };
+                }
+            }
+        }
+
+        return null; // Use default respawn
+    }
+
+    // === Convenience Boolean Methods (for OG hook lambdas) ===
+
+    /**
+     * Checks if a player can build at block coordinates.
+     *
+     * @return true if allowed
+     */
+    public boolean canBuildAt(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+        return checkBuild(playerUuid, worldName, x, y, z) == null;
+    }
+
+    /**
+     * Checks if a player can interact (use) at block coordinates.
+     *
+     * @return true if allowed
+     */
+    public boolean canInteractAt(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+        return checkUse(playerUuid, worldName, x, y, z) == null;
+    }
+
+    /**
+     * Checks if a player can sit at block coordinates.
+     *
+     * @return true if allowed
+     */
+    public boolean canSeatAt(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+        return checkSeat(playerUuid, worldName, x, y, z) == null;
+    }
+
+    /**
+     * Checks if a player can place blocks at block coordinates.
+     *
+     * @return true if allowed
+     */
+    public boolean canPlaceAt(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+        return checkPlace(playerUuid, worldName, x, y, z) == null;
     }
 
     // === Gravestone Integration ===

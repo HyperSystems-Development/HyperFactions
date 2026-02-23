@@ -3,6 +3,7 @@ package com.hyperfactions.worldmap;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.Zone;
+import com.hyperfactions.integration.protection.OrbisGuardIntegration;
 import com.hyperfactions.manager.ClaimManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.ZoneManager;
@@ -20,6 +21,8 @@ import com.hypixel.hytale.server.core.universe.world.chunk.section.FluidSection;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -45,6 +48,11 @@ public class ClaimImageBuilder {
     // Overlay transparency (0.0 = fully transparent, 1.0 = fully opaque)
     private static final float OVERLAY_OPACITY = 0.45f;       // 45% opacity for territory fill
     private static final float BORDER_OPACITY = 0.75f;        // 75% opacity for borders (more visible)
+
+    // OrbisGuard region overlay (same color palette as OG's OrbisGuardMapImageBuilder)
+    private static final int[] OG_DEFAULT_COLORS = {4886745, 8311585, 16098851, 13632027, 9442302, 5301186, 16312092, 12390624};
+    private static final float OG_OVERLAY_OPACITY = 0.50f;    // 50% for region fill
+    private static final float OG_BORDER_OPACITY = 0.70f;     // 70% for region borders
 
     // Border size in pixels
     private static final int BORDER_SIZE = 2;
@@ -425,6 +433,30 @@ public class ClaimImageBuilder {
                 claimManager.getClaimOwner(worldName, chunkX - 1, chunkZ)
         };
 
+        // OrbisGuard region candidates for this chunk (block-level, not chunk-level)
+        List<OrbisGuardIntegration.RegionInfo> ogCandidates = null;
+        int ogMinBlockX = 0, ogMinBlockZ = 0;
+        if (OrbisGuardIntegration.isAvailable()) {
+            List<OrbisGuardIntegration.RegionInfo> allRegions = OrbisGuardIntegration.getRegionsForWorld(worldName);
+            if (!allRegions.isEmpty()) {
+                ogMinBlockX = ChunkUtil.minBlock(chunkX);
+                ogMinBlockZ = ChunkUtil.minBlock(chunkZ);
+                int ogMaxBlockX = ogMinBlockX + 31;
+                int ogMaxBlockZ = ogMinBlockZ + 31;
+                ogCandidates = new ArrayList<>();
+                for (OrbisGuardIntegration.RegionInfo region : allRegions) {
+                    // 2D AABB overlap test (ignore Y for map rendering)
+                    if (region.maxX() >= ogMinBlockX && region.minX() <= ogMaxBlockX &&
+                        region.maxZ() >= ogMinBlockZ && region.minZ() <= ogMaxBlockZ) {
+                        ogCandidates.add(region);
+                    }
+                }
+                if (ogCandidates.isEmpty()) {
+                    ogCandidates = null;
+                }
+            }
+        }
+
         // Second pass: generate pixels with claim overlays
         for (int ix = 0; ix < this.image.width; ++ix) {
             for (int iz = 0; iz < this.image.height; ++iz) {
@@ -440,7 +472,19 @@ public class ClaimImageBuilder {
                 // Get base block color
                 getBlockColor(blockId, tint, this.outColor);
 
-                // Apply claim overlay if enabled
+                // Apply OrbisGuard region overlay (per-pixel, block-level)
+                if (showClaimsOnMap && ogCandidates != null) {
+                    int blockX = ogMinBlockX + ix * 32 / this.image.width;
+                    int blockZ = ogMinBlockZ + iz * 32 / this.image.height;
+                    OrbisGuardIntegration.RegionInfo topOgRegion = getTopOgRegion(ogCandidates, blockX, blockZ);
+                    if (topOgRegion != null) {
+                        int regionColor = getOgRegionColor(topOgRegion);
+                        boolean ogBorder = isOgRegionBorder(topOgRegion, blockX, blockZ);
+                        blendOgColor(regionColor, this.outColor, ogBorder);
+                    }
+                }
+
+                // Apply claim overlay if enabled (renders ON TOP of OG regions)
                 if (showClaimsOnMap) {
                     if (isSafeZone) {
                         boolean isBorder = isBorderPixel(ix, iz, nearbySafeZones);
@@ -653,6 +697,62 @@ public class ClaimImageBuilder {
                 .thenCompose(ClaimImageBuilder::fetchChunk)
                 .thenCompose(b -> b != null ? b.sampleNeighborsSync() : CompletableFuture.completedFuture(null))
                 .thenApplyAsync(b -> b != null ? b.generateImageAsync() : null);
+    }
+
+    // ============ OrbisGuard Region Rendering ============
+
+    /**
+     * Finds the highest-priority OrbisGuard region containing the given block position (2D).
+     */
+    @Nullable
+    private static OrbisGuardIntegration.RegionInfo getTopOgRegion(
+            List<OrbisGuardIntegration.RegionInfo> candidates, int blockX, int blockZ) {
+        OrbisGuardIntegration.RegionInfo top = null;
+        int highestPriority = Integer.MIN_VALUE;
+        for (OrbisGuardIntegration.RegionInfo region : candidates) {
+            if (blockX >= region.minX() && blockX <= region.maxX() &&
+                blockZ >= region.minZ() && blockZ <= region.maxZ() &&
+                region.priority() > highestPriority) {
+                highestPriority = region.priority();
+                top = region;
+            }
+        }
+        return top;
+    }
+
+    /**
+     * Gets the color for an OrbisGuard region using OG's hash-based palette.
+     */
+    private static int getOgRegionColor(OrbisGuardIntegration.RegionInfo region) {
+        int colorIndex = Math.abs(region.id().hashCode()) % OG_DEFAULT_COLORS.length;
+        return OG_DEFAULT_COLORS[colorIndex];
+    }
+
+    /**
+     * Checks if a block position is on the edge of an OrbisGuard region (2D).
+     */
+    private static boolean isOgRegionBorder(OrbisGuardIntegration.RegionInfo region, int blockX, int blockZ) {
+        return blockX == region.minX() || blockX == region.maxX() ||
+               blockZ == region.minZ() || blockZ == region.maxZ();
+    }
+
+    /**
+     * Blends an OrbisGuard region color onto the terrain color with opacity.
+     */
+    private static void blendOgColor(int color, Color outColor, boolean isBorder) {
+        int r = (color >> 16) & 0xFF;
+        int g = (color >> 8) & 0xFF;
+        int b = color & 0xFF;
+        float opacity = isBorder ? OG_BORDER_OPACITY : OG_OVERLAY_OPACITY;
+        // Borders are darkened for visual definition (matches OG's 0.6x multiplier)
+        if (isBorder) {
+            r = (int) (r * 0.6f);
+            g = (int) (g * 0.6f);
+            b = (int) (b * 0.6f);
+        }
+        outColor.r = (int) (outColor.r * (1.0f - opacity) + r * opacity);
+        outColor.g = (int) (outColor.g * (1.0f - opacity) + g * opacity);
+        outColor.b = (int) (outColor.b * (1.0f - opacity) + b * opacity);
     }
 
     /**

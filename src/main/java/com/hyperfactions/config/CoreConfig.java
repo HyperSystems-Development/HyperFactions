@@ -87,6 +87,11 @@ public class CoreConfig extends ConfigFile {
     private String updateCheckUrl = "https://api.github.com/repos/ZenithDevHQ/HyperFactions/releases/latest";
     private String releaseChannel = "stable";
 
+    // HyperProtect-Mixin management
+    private boolean hyperProtectAutoDownload = false;
+    private boolean hyperProtectAutoUpdate = true;
+    private String hyperProtectUpdateUrl = "https://api.github.com/repos/HyperSystemsDev/HyperProtect-Mixin/releases/latest";
+
     // Auto-save settings
     private boolean autoSaveEnabled = true;
     private int autoSaveIntervalMinutes = 5;
@@ -226,6 +231,13 @@ public class CoreConfig extends ConfigFile {
             // Validate release channel
             if (!releaseChannel.equals("stable") && !releaseChannel.equals("prerelease")) {
                 releaseChannel = "stable";
+            }
+            // HyperProtect-Mixin sub-section
+            if (hasSection(updates, "hyperProtect")) {
+                JsonObject hp = updates.getAsJsonObject("hyperProtect");
+                hyperProtectAutoDownload = getBool(hp, "autoDownload", hyperProtectAutoDownload);
+                hyperProtectAutoUpdate = getBool(hp, "autoUpdate", hyperProtectAutoUpdate);
+                hyperProtectUpdateUrl = getString(hp, "url", hyperProtectUpdateUrl);
             }
         }
 
@@ -381,6 +393,11 @@ public class CoreConfig extends ConfigFile {
         updates.addProperty("enabled", updateCheckEnabled);
         updates.addProperty("url", updateCheckUrl);
         updates.addProperty("releaseChannel", releaseChannel);
+        JsonObject hyperProtect = new JsonObject();
+        hyperProtect.addProperty("autoDownload", hyperProtectAutoDownload);
+        hyperProtect.addProperty("autoUpdate", hyperProtectAutoUpdate);
+        hyperProtect.addProperty("url", hyperProtectUpdateUrl);
+        updates.add("hyperProtect", hyperProtect);
         root.add("updates", updates);
 
         // Auto-save settings
@@ -496,6 +513,12 @@ public class CoreConfig extends ConfigFile {
     @NotNull public String getUpdateCheckUrl() { return updateCheckUrl; }
     @NotNull public String getReleaseChannel() { return releaseChannel; }
     public boolean isPreReleaseChannel() { return "prerelease".equals(releaseChannel); }
+
+    // HyperProtect-Mixin management
+    public boolean isHyperProtectAutoDownload() { return hyperProtectAutoDownload; }
+    public boolean isHyperProtectAutoUpdate() { return hyperProtectAutoUpdate; }
+    @NotNull public String getHyperProtectUpdateUrl() { return hyperProtectUpdateUrl; }
+    public void setHyperProtectAutoDownload(boolean value) { this.hyperProtectAutoDownload = value; }
 
     // Auto-save
     public boolean isAutoSaveEnabled() { return autoSaveEnabled; }

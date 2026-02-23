@@ -4,6 +4,9 @@ import com.hyperfactions.HyperFactions;
 import com.hyperfactions.backup.BackupManager;
 import com.hyperfactions.backup.BackupType;
 import com.hyperfactions.command.util.CommandUtil;
+import com.hyperfactions.config.ConfigManager;
+import com.hyperfactions.config.CoreConfig;
+import com.hyperfactions.update.UpdateChecker;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 
@@ -11,7 +14,7 @@ import java.nio.file.Path;
 import java.util.UUID;
 
 /**
- * Handles /f admin update and /f admin rollback commands.
+ * Handles /f admin update, /f admin update mixin, and /f admin rollback commands.
  */
 public class AdminUpdateHandler {
 
@@ -31,7 +34,37 @@ public class AdminUpdateHandler {
         this.hyperFactions = hyperFactions;
     }
 
-    public void handleAdminUpdate(CommandContext ctx, UUID senderUuid) {
+    /**
+     * Dispatches /f admin update [subcommand].
+     * <ul>
+     *   <li>/f admin update — check/download HyperFactions update</li>
+     *   <li>/f admin update mixin — check/download HyperProtect-Mixin update</li>
+     *   <li>/f admin update toggle-mixin-download — toggle HP-Mixin auto-download on/off</li>
+     * </ul>
+     */
+    public void handleAdminUpdate(CommandContext ctx, UUID senderUuid, String[] subArgs) {
+        if (subArgs.length == 0) {
+            handleHyperFactionsUpdate(ctx, senderUuid);
+            return;
+        }
+
+        switch (subArgs[0].toLowerCase()) {
+            case "mixin" -> handleMixinUpdate(ctx);
+            case "toggle-mixin-download" -> handleToggleMixinDownload(ctx);
+            // Legacy alias
+            case "disable-mixin-download" -> handleToggleMixinDownload(ctx);
+            default -> {
+                ctx.sendMessage(prefix().insert(msg("Unknown update target: " + subArgs[0], COLOR_RED)));
+                ctx.sendMessage(msg("  /f admin update — update HyperFactions", COLOR_GRAY));
+                ctx.sendMessage(msg("  /f admin update mixin — update HyperProtect-Mixin", COLOR_GRAY));
+                ctx.sendMessage(msg("  /f admin update toggle-mixin-download — toggle auto-download", COLOR_GRAY));
+            }
+        }
+    }
+
+    // === HyperFactions Update (existing behavior) ===
+
+    private void handleHyperFactionsUpdate(CommandContext ctx, UUID senderUuid) {
         var updateChecker = hyperFactions.getUpdateChecker();
         if (updateChecker == null) {
             ctx.sendMessage(prefix().insert(msg("Update checker is not available.", COLOR_RED)));
@@ -45,7 +78,7 @@ public class AdminUpdateHandler {
                     ctx.sendMessage(prefix().insert(msg("Plugin is already up-to-date (v" + updateChecker.getCurrentVersion() + ")", COLOR_GREEN)));
                 } else {
                     ctx.sendMessage(prefix().insert(msg("Update available: v" + info.version(), COLOR_GREEN)));
-                    startDownload(ctx, senderUuid, updateChecker, info);
+                    startHyperFactionsDownload(ctx, senderUuid, updateChecker, info);
                 }
             });
             return;
@@ -57,12 +90,12 @@ public class AdminUpdateHandler {
             return;
         }
 
-        startDownload(ctx, senderUuid, updateChecker, info);
+        startHyperFactionsDownload(ctx, senderUuid, updateChecker, info);
     }
 
-    private void startDownload(CommandContext ctx, UUID senderUuid,
-                               com.hyperfactions.update.UpdateChecker updateChecker,
-                               com.hyperfactions.update.UpdateChecker.UpdateInfo info) {
+    private void startHyperFactionsDownload(CommandContext ctx, UUID senderUuid,
+                                            UpdateChecker updateChecker,
+                                            UpdateChecker.UpdateInfo info) {
         String currentVersion = updateChecker.getCurrentVersion();
 
         // Step 1: Create a data backup before downloading the update
@@ -93,7 +126,7 @@ public class AdminUpdateHandler {
                     if (cleaned > 0) {
                         ctx.sendMessage(msg("  Cleanup: Removed " + cleaned + " old backup(s)", COLOR_GRAY));
                     }
-                    ctx.sendMessage(msg("  Kept: HyperFactions-" + currentVersion + ".jar.backup (for rollback)", COLOR_GRAY));
+                    ctx.sendMessage(msg("  Kept: " + updateChecker.getArtifactName() + "-" + currentVersion + ".jar.backup (for rollback)", COLOR_GRAY));
 
                     // Step 4: Create rollback marker (safe to rollback until server restarts)
                     updateChecker.createRollbackMarker(currentVersion, info.version());
@@ -106,6 +139,78 @@ public class AdminUpdateHandler {
                 }
             });
     }
+
+    // === HyperProtect-Mixin Update ===
+
+    private void handleMixinUpdate(CommandContext ctx) {
+        var hpChecker = hyperFactions.getHyperProtectUpdateChecker();
+
+        if (hpChecker == null) {
+            // No update checker — either auto-download is disabled and HP isn't installed,
+            // or updates config is disabled entirely. Create one on-the-fly.
+            CoreConfig config = ConfigManager.get().core();
+            Path earlyPluginsDir = hyperFactions.getDataDir().getParent().getParent().resolve("earlyplugins");
+            String hpVersion = System.getProperty("hyperprotect.bridge.version", "0.0.0");
+
+            hpChecker = new UpdateChecker(
+                    hyperFactions.getDataDir(), hpVersion, config.getHyperProtectUpdateUrl(),
+                    false, "HyperProtect-Mixin", earlyPluginsDir);
+        }
+
+        boolean hpDetected = "true".equalsIgnoreCase(System.getProperty("hyperprotect.bridge.active"));
+        String currentVersion = hpDetected
+                ? System.getProperty("hyperprotect.bridge.version", "unknown")
+                : "not installed";
+
+        ctx.sendMessage(prefix().insert(msg("HyperProtect-Mixin: " + currentVersion, COLOR_CYAN)));
+        ctx.sendMessage(prefix().insert(msg("Checking for updates...", COLOR_YELLOW)));
+
+        final var checker = hpChecker;
+        checker.checkForUpdates(true).thenAccept(info -> {
+            if (info == null) {
+                if (hpDetected) {
+                    ctx.sendMessage(prefix().insert(msg("HyperProtect-Mixin is up-to-date.", COLOR_GREEN)));
+                } else {
+                    ctx.sendMessage(prefix().insert(msg("No HyperProtect-Mixin releases available yet.", COLOR_YELLOW)));
+                }
+                return;
+            }
+
+            ctx.sendMessage(prefix().insert(msg("Available: v" + info.version(), COLOR_GREEN)));
+            ctx.sendMessage(prefix().insert(msg("Downloading HyperProtect-Mixin v" + info.version() + "...", COLOR_YELLOW)));
+
+            checker.downloadUpdate(info).thenAccept(path -> {
+                if (path == null) {
+                    ctx.sendMessage(prefix().insert(msg("Failed to download. Check server logs.", COLOR_RED)));
+                } else {
+                    ctx.sendMessage(prefix().insert(msg("Downloaded successfully!", COLOR_GREEN)));
+                    ctx.sendMessage(msg("  File: " + path.getFileName(), COLOR_GRAY));
+                    ctx.sendMessage(msg("  Location: earlyplugins/", COLOR_GRAY));
+                    ctx.sendMessage(msg("  Restart the server to apply.", COLOR_YELLOW));
+                }
+            });
+        });
+    }
+
+    // === Toggle Mixin Auto-Download ===
+
+    private void handleToggleMixinDownload(CommandContext ctx) {
+        CoreConfig config = ConfigManager.get().core();
+        boolean newValue = !config.isHyperProtectAutoDownload();
+
+        config.setHyperProtectAutoDownload(newValue);
+        ConfigManager.get().saveAll();
+
+        if (newValue) {
+            ctx.sendMessage(prefix().insert(msg("HP-Mixin auto-download enabled.", COLOR_GREEN)));
+            ctx.sendMessage(msg("  HyperProtect-Mixin will be downloaded automatically on next startup if not installed.", COLOR_GRAY));
+        } else {
+            ctx.sendMessage(prefix().insert(msg("HP-Mixin auto-download disabled.", COLOR_GREEN)));
+            ctx.sendMessage(msg("  Use /f admin update mixin to download manually.", COLOR_GRAY));
+        }
+    }
+
+    // === Rollback ===
 
     public void handleAdminRollback(CommandContext ctx) {
         var updateChecker = hyperFactions.getUpdateChecker();
@@ -121,8 +226,9 @@ public class AdminUpdateHandler {
             return;
         }
 
+        String artifactName = updateChecker.getArtifactName();
         String backupVersion = latestBackup.getFileName().toString()
-                .replace("HyperFactions-", "")
+                .replace(artifactName + "-", "")
                 .replace(".jar.backup", "");
 
         // Check if rollback is safe (server hasn't restarted since update)
@@ -138,7 +244,7 @@ public class AdminUpdateHandler {
             ctx.sendMessage(msg("  2. Restore from the pre-update backup:", COLOR_GRAY));
             ctx.sendMessage(msg("     /f admin backup restore <backup-name>", COLOR_CYAN));
             ctx.sendMessage(msg("  3. Manually replace the JAR file:", COLOR_GRAY));
-            ctx.sendMessage(msg("     " + latestBackup.getFileName() + " -> HyperFactions-" + backupVersion + ".jar", COLOR_CYAN));
+            ctx.sendMessage(msg("     " + latestBackup.getFileName() + " -> " + artifactName + "-" + backupVersion + ".jar", COLOR_CYAN));
             ctx.sendMessage(msg("  4. Restart the server", COLOR_GRAY));
             ctx.sendMessage(msg("", COLOR_GRAY));
             ctx.sendMessage(msg("Use /f admin backup list to find the pre-update backup.", COLOR_YELLOW));
@@ -160,9 +266,9 @@ public class AdminUpdateHandler {
 
         if (result.success()) {
             ctx.sendMessage(prefix().insert(msg("Rollback successful!", COLOR_GREEN)));
-            ctx.sendMessage(msg("  Restored: HyperFactions-" + result.restoredVersion() + ".jar", COLOR_GRAY));
+            ctx.sendMessage(msg("  Restored: " + artifactName + "-" + result.restoredVersion() + ".jar", COLOR_GRAY));
             if (result.removedVersion() != null) {
-                ctx.sendMessage(msg("  Removed: HyperFactions-" + result.removedVersion() + ".jar", COLOR_GRAY));
+                ctx.sendMessage(msg("  Removed: " + artifactName + "-" + result.removedVersion() + ".jar", COLOR_GRAY));
             }
             ctx.sendMessage(msg("  Restart the server to apply the rollback.", COLOR_YELLOW));
         } else {

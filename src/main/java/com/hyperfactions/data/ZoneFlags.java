@@ -55,15 +55,42 @@ public final class ZoneFlags {
     /** Mixin type for NPC spawn interception. */
     public static final String MIXIN_SPAWN = "spawn";
 
+    /** Mixin type for explosion interception. */
+    public static final String MIXIN_EXPLOSION = "explosion";
+
+    /** Mixin type for fire spread interception. */
+    public static final String MIXIN_FIRE_SPREAD = "fire_spread";
+
+    /** Mixin type for builder tools (paste) interception. */
+    public static final String MIXIN_BUILDER_TOOLS = "builder_tools";
+
+    /** Mixin type for teleporter interception. */
+    public static final String MIXIN_TELEPORTER = "teleporter";
+
+    /** Mixin type for portal interception. */
+    public static final String MIXIN_PORTAL = "portal";
+
+    /** Mixin type for hammer cycling interception. */
+    public static final String MIXIN_HAMMER = "hammer";
+
+    /** Mixin type for block placement interception. */
+    public static final String MIXIN_PLACE = "block_place";
+
     // ==========================================================================
-    // COMBAT FLAGS (4)
+    // COMBAT FLAGS (6)
     // ==========================================================================
 
-    /** Whether PvP is enabled. Uses Damage event with EntitySource (player). */
+    /** Whether PvP is enabled (parent of FRIENDLY_FIRE). Uses Damage event with EntitySource (player). */
     public static final String PVP_ENABLED = "pvp_enabled";
 
-    /** Whether friendly fire (same faction) is allowed. Uses Damage + faction check. */
+    /** Whether friendly fire is allowed (child of PVP_ENABLED, parent of FACTION/ALLY). Uses Damage + faction check. */
     public static final String FRIENDLY_FIRE = "friendly_fire";
+
+    /** Whether same-faction players can damage each other (child of FRIENDLY_FIRE). */
+    public static final String FRIENDLY_FIRE_FACTION = "friendly_fire_faction";
+
+    /** Whether allied faction players can damage each other (child of FRIENDLY_FIRE). */
+    public static final String FRIENDLY_FIRE_ALLY = "friendly_fire_ally";
 
     /** Whether projectile damage is allowed. Uses Damage event with ProjectileSource. */
     public static final String PROJECTILE_DAMAGE = "projectile_damage";
@@ -72,11 +99,32 @@ public final class ZoneFlags {
     public static final String MOB_DAMAGE = "mob_damage";
 
     // ==========================================================================
-    // BUILDING FLAGS (2)
+    // BUILDING FLAGS (5)
     // ==========================================================================
 
     /** Whether players can place/break blocks. Uses BreakBlockEvent, PlaceBlockEvent. */
     public static final String BUILD_ALLOWED = "build_allowed";
+
+    /**
+     * Whether players can place blocks via mixin hook.
+     * REQUIRES: Mixin support (block_place interceptor)
+     * Child of BUILD_ALLOWED.
+     */
+    public static final String BLOCK_PLACE = "block_place";
+
+    /**
+     * Whether players can use the hammer (block cycling).
+     * REQUIRES: Mixin support (hammer interceptor)
+     * Child of BUILD_ALLOWED.
+     */
+    public static final String HAMMER_USE = "hammer_use";
+
+    /**
+     * Whether players can use builder tools (paste, copy).
+     * REQUIRES: Mixin support (builder_tools interceptor)
+     * Child of BUILD_ALLOWED.
+     */
+    public static final String BUILDER_TOOLS_USE = "builder_tools_use";
 
     /** Whether players can interact with blocks (general fallback). Uses UseBlockEvent. */
     public static final String BLOCK_INTERACT = "block_interact";
@@ -125,7 +173,23 @@ public final class ZoneFlags {
     public static final String INVINCIBLE_ITEMS = "invincible_items";
 
     // ==========================================================================
-    // DAMAGE FLAGS (2)
+    // TRANSPORT FLAGS (2)
+    // ==========================================================================
+
+    /**
+     * Whether players can use teleporter blocks.
+     * REQUIRES: Mixin support (teleporter interceptor)
+     */
+    public static final String TELEPORTER_USE = "teleporter_use";
+
+    /**
+     * Whether players can use portal blocks.
+     * REQUIRES: Mixin support (portal interceptor)
+     */
+    public static final String PORTAL_USE = "portal_use";
+
+    // ==========================================================================
+    // DAMAGE FLAGS (4)
     // ==========================================================================
 
     /** Whether players take fall damage. Uses Damage event with DamageCause.FALL. */
@@ -133,6 +197,18 @@ public final class ZoneFlags {
 
     /** Whether players take environmental damage (drowning, suffocation). Uses Damage with EnvironmentSource. */
     public static final String ENVIRONMENTAL_DAMAGE = "environmental_damage";
+
+    /**
+     * Whether explosions can damage blocks.
+     * REQUIRES: Mixin support (explosion interceptor)
+     */
+    public static final String EXPLOSION_DAMAGE = "explosion_damage";
+
+    /**
+     * Whether fire can spread.
+     * REQUIRES: Mixin support (fire_spread interceptor)
+     */
+    public static final String FIRE_SPREAD = "fire_spread";
 
     // ==========================================================================
     // DEATH FLAGS (2)
@@ -196,31 +272,41 @@ public final class ZoneFlags {
      * All available flag names for validation.
      */
     public static final String[] ALL_FLAGS = {
-        // Combat (4)
+        // Combat (6)
         PVP_ENABLED,
         FRIENDLY_FIRE,
+        FRIENDLY_FIRE_FACTION,
+        FRIENDLY_FIRE_ALLY,
         PROJECTILE_DAMAGE,
         MOB_DAMAGE,
-        // Building (2)
+        // Damage (4)
+        FALL_DAMAGE,
+        ENVIRONMENTAL_DAMAGE,
+        EXPLOSION_DAMAGE,
+        FIRE_SPREAD,
+        // Death (2)
+        KEEP_INVENTORY,
+        POWER_LOSS,
+        // Building (4)
         BUILD_ALLOWED,
+        BLOCK_PLACE,
+        HAMMER_USE,
+        BUILDER_TOOLS_USE,
+        // Interaction (6)
         BLOCK_INTERACT,
-        // Interaction (5)
         DOOR_USE,
         CONTAINER_USE,
         BENCH_USE,
         PROCESSING_USE,
         SEAT_USE,
+        // Transport (2)
+        TELEPORTER_USE,
+        PORTAL_USE,
         // Items (4)
         ITEM_DROP,
         ITEM_PICKUP,
         ITEM_PICKUP_MANUAL,
         INVINCIBLE_ITEMS,
-        // Damage (2)
-        FALL_DAMAGE,
-        ENVIRONMENTAL_DAMAGE,
-        // Death (2)
-        KEEP_INVENTORY,
-        POWER_LOSS,
         // Mob Spawning (5)
         MOB_SPAWNING,
         HOSTILE_MOB_SPAWNING,
@@ -235,13 +321,14 @@ public final class ZoneFlags {
      * Flag categories for UI organization.
      * Note: BLOCK_INTERACT is the parent of INTERACTION_FLAGS, MOB_SPAWNING is the parent of its children.
      */
-    public static final String[] COMBAT_FLAGS = { PVP_ENABLED, FRIENDLY_FIRE, PROJECTILE_DAMAGE, MOB_DAMAGE };
-    public static final String[] BUILDING_FLAGS = { BUILD_ALLOWED };
-    public static final String[] DAMAGE_FLAGS = { FALL_DAMAGE, ENVIRONMENTAL_DAMAGE };
+    public static final String[] COMBAT_FLAGS = { PVP_ENABLED, FRIENDLY_FIRE, FRIENDLY_FIRE_FACTION, FRIENDLY_FIRE_ALLY, PROJECTILE_DAMAGE, MOB_DAMAGE };
+    public static final String[] DAMAGE_FLAGS = { FALL_DAMAGE, ENVIRONMENTAL_DAMAGE, EXPLOSION_DAMAGE, FIRE_SPREAD };
     public static final String[] DEATH_FLAGS = { KEEP_INVENTORY, POWER_LOSS };
-    public static final String[] SPAWNING_FLAGS = { MOB_SPAWNING, HOSTILE_MOB_SPAWNING, PASSIVE_MOB_SPAWNING, NEUTRAL_MOB_SPAWNING, NPC_SPAWNING };
+    public static final String[] BUILDING_FLAGS = { BUILD_ALLOWED, BLOCK_PLACE, HAMMER_USE, BUILDER_TOOLS_USE };
     public static final String[] INTERACTION_FLAGS = { BLOCK_INTERACT, DOOR_USE, CONTAINER_USE, BENCH_USE, PROCESSING_USE, SEAT_USE };
+    public static final String[] TRANSPORT_FLAGS = { TELEPORTER_USE, PORTAL_USE };
     public static final String[] ITEM_FLAGS = { ITEM_DROP, ITEM_PICKUP, ITEM_PICKUP_MANUAL, INVINCIBLE_ITEMS };
+    public static final String[] SPAWNING_FLAGS = { MOB_SPAWNING, HOSTILE_MOB_SPAWNING, PASSIVE_MOB_SPAWNING, NEUTRAL_MOB_SPAWNING, NPC_SPAWNING };
     public static final String[] INTEGRATION_FLAGS = { GRAVESTONE_ACCESS };
 
     /**
@@ -252,7 +339,14 @@ public final class ZoneFlags {
         ITEM_PICKUP_MANUAL,  // Requires pickup mixin
         INVINCIBLE_ITEMS,    // Requires durability mixin
         KEEP_INVENTORY,      // Requires death mixin
-        NPC_SPAWNING         // Requires spawn mixin
+        NPC_SPAWNING,        // Requires spawn mixin
+        EXPLOSION_DAMAGE,    // Requires explosion mixin
+        FIRE_SPREAD,         // Requires fire_spread mixin
+        BUILDER_TOOLS_USE,   // Requires builder_tools mixin
+        TELEPORTER_USE,      // Requires teleporter mixin
+        PORTAL_USE,          // Requires portal mixin
+        HAMMER_USE,          // Requires hammer mixin
+        BLOCK_PLACE          // Requires block_place mixin
     };
 
     /**
@@ -296,10 +390,23 @@ public final class ZoneFlags {
             // Combat: All disabled in SafeZones
             case PVP_ENABLED -> false;
             case FRIENDLY_FIRE -> false;
+            case FRIENDLY_FIRE_FACTION -> true;   // Irrelevant when parent chain off, but default true for when toggled on
+            case FRIENDLY_FIRE_ALLY -> true;      // Irrelevant when parent chain off, but default true for when toggled on
             case PROJECTILE_DAMAGE -> false;
             case MOB_DAMAGE -> false;
+            // Damage: No damage in safe zones
+            case FALL_DAMAGE -> false;
+            case ENVIRONMENTAL_DAMAGE -> false;
+            case EXPLOSION_DAMAGE -> false;       // No explosions (mixin)
+            case FIRE_SPREAD -> false;            // No fire spread (mixin)
+            // Death: Keep inventory (mixin), no power loss
+            case KEEP_INVENTORY -> true;
+            case POWER_LOSS -> false;
             // Building: Disabled, but basic interaction allowed
             case BUILD_ALLOWED -> false;
+            case BLOCK_PLACE -> false;            // No block placement (mixin)
+            case HAMMER_USE -> false;             // No hammer cycling (mixin)
+            case BUILDER_TOOLS_USE -> false;      // No builder tools (mixin)
             case BLOCK_INTERACT -> true;
             // Interaction: Doors/seats allowed, but no containers/benches/processing
             case DOOR_USE -> true;
@@ -307,17 +414,14 @@ public final class ZoneFlags {
             case BENCH_USE -> false;
             case PROCESSING_USE -> false;
             case SEAT_USE -> true;
+            // Transport: Disabled in safe zones
+            case TELEPORTER_USE -> false;         // No teleporter use (mixin)
+            case PORTAL_USE -> false;             // No portal use (mixin)
             // Items: Auto pickup allowed, manual F-key blocked, items are invincible
             case ITEM_DROP -> false;
             case ITEM_PICKUP -> true;             // Auto pickup allowed
             case ITEM_PICKUP_MANUAL -> false;     // F-key pickup blocked (mixin)
             case INVINCIBLE_ITEMS -> true;        // No durability loss (mixin)
-            // Damage: No environmental damage in safe zones
-            case FALL_DAMAGE -> false;
-            case ENVIRONMENTAL_DAMAGE -> false;
-            // Death: Keep inventory (mixin), no power loss
-            case KEEP_INVENTORY -> true;
-            case POWER_LOSS -> false;
             // Mob Spawning: Entirely disabled in safe zones
             case MOB_SPAWNING -> false;
             case HOSTILE_MOB_SPAWNING -> false;
@@ -349,11 +453,24 @@ public final class ZoneFlags {
         return switch (flagName) {
             // Combat: PvP and mob damage enabled
             case PVP_ENABLED -> true;
-            case FRIENDLY_FIRE -> false;      // Faction members still protected
+            case FRIENDLY_FIRE -> false;              // Faction members still protected
+            case FRIENDLY_FIRE_FACTION -> true;       // Both allowed when parent toggled on
+            case FRIENDLY_FIRE_ALLY -> true;          // Both allowed when parent toggled on
             case PROJECTILE_DAMAGE -> true;
             case MOB_DAMAGE -> true;
+            // Damage: All damage enabled
+            case FALL_DAMAGE -> true;
+            case ENVIRONMENTAL_DAMAGE -> true;
+            case EXPLOSION_DAMAGE -> true;        // Explosions allowed
+            case FIRE_SPREAD -> true;             // Fire spread allowed
+            // Death: No keep inventory, no power loss in admin zones
+            case KEEP_INVENTORY -> false;
+            case POWER_LOSS -> false;
             // Building: Disabled to prevent griefing, but basic interaction allowed
             case BUILD_ALLOWED -> false;
+            case BLOCK_PLACE -> true;             // Block placement if build allowed
+            case HAMMER_USE -> true;              // Hammer cycling if build allowed
+            case BUILDER_TOOLS_USE -> true;       // Builder tools if build allowed
             case BLOCK_INTERACT -> true;
             // Interaction: Doors/seats allowed, but no containers/benches/processing
             case DOOR_USE -> true;
@@ -361,17 +478,14 @@ public final class ZoneFlags {
             case BENCH_USE -> false;
             case PROCESSING_USE -> false;
             case SEAT_USE -> true;
+            // Transport: Allowed in war zones
+            case TELEPORTER_USE -> true;
+            case PORTAL_USE -> true;
             // Items: All allowed - looting and item interactions permitted
             case ITEM_DROP -> true;
             case ITEM_PICKUP -> true;             // Auto pickup allowed
             case ITEM_PICKUP_MANUAL -> true;      // F-key pickup allowed
             case INVINCIBLE_ITEMS -> false;       // Items can break (no protection)
-            // Damage: All environmental damage enabled
-            case FALL_DAMAGE -> true;
-            case ENVIRONMENTAL_DAMAGE -> true;
-            // Death: No keep inventory, no power loss in admin zones
-            case KEEP_INVENTORY -> false;
-            case POWER_LOSS -> false;
             // Mob Spawning: All mob spawning enabled in war zones
             case MOB_SPAWNING -> true;
             case HOSTILE_MOB_SPAWNING -> true;
@@ -422,23 +536,32 @@ public final class ZoneFlags {
         return switch (flagName) {
             case PVP_ENABLED -> "PvP Enabled";
             case FRIENDLY_FIRE -> "Friendly Fire";
+            case FRIENDLY_FIRE_FACTION -> "Faction Damage";
+            case FRIENDLY_FIRE_ALLY -> "Ally Damage";
             case PROJECTILE_DAMAGE -> "Projectile Damage";
             case MOB_DAMAGE -> "Mob Damage";
+            case FALL_DAMAGE -> "Fall Damage";
+            case ENVIRONMENTAL_DAMAGE -> "Env. Damage";
+            case EXPLOSION_DAMAGE -> "Explosion Damage";
+            case FIRE_SPREAD -> "Fire Spread";
+            case KEEP_INVENTORY -> "Keep Inventory";
+            case POWER_LOSS -> "Power Loss";
             case BUILD_ALLOWED -> "Building Allowed";
+            case BLOCK_PLACE -> "Block Placement";
+            case HAMMER_USE -> "Hammer Use";
+            case BUILDER_TOOLS_USE -> "Builder Tools";
             case BLOCK_INTERACT -> "Block Interaction";
             case DOOR_USE -> "Door Use";
             case CONTAINER_USE -> "Container Use";
             case BENCH_USE -> "Bench Use";
             case PROCESSING_USE -> "Processing Use";
             case SEAT_USE -> "Seat Use";
+            case TELEPORTER_USE -> "Teleporter Use";
+            case PORTAL_USE -> "Portal Use";
             case ITEM_DROP -> "Item Drop";
             case ITEM_PICKUP -> "Auto Pickup";
             case ITEM_PICKUP_MANUAL -> "F-Key Pickup";
             case INVINCIBLE_ITEMS -> "Invincible Items";
-            case FALL_DAMAGE -> "Fall Damage";
-            case ENVIRONMENTAL_DAMAGE -> "Env. Damage";
-            case KEEP_INVENTORY -> "Keep Inventory";
-            case POWER_LOSS -> "Power Loss";
             case MOB_SPAWNING -> "Mob Spawning";
             case HOSTILE_MOB_SPAWNING -> "Hostile Mobs";
             case PASSIVE_MOB_SPAWNING -> "Passive Mobs";
@@ -458,25 +581,34 @@ public final class ZoneFlags {
     @NotNull
     public static String getDescription(String flagName) {
         return switch (flagName) {
-            case PVP_ENABLED -> "Players can damage other players";
-            case FRIENDLY_FIRE -> "Same-faction players can damage each other";
+            case PVP_ENABLED -> "Players can damage other players (parent)";
+            case FRIENDLY_FIRE -> "Allow friendly damage when PvP is on (parent)";
+            case FRIENDLY_FIRE_FACTION -> "Same-faction players can damage each other";
+            case FRIENDLY_FIRE_ALLY -> "Allied faction players can damage each other";
             case PROJECTILE_DAMAGE -> "Projectiles deal damage";
             case MOB_DAMAGE -> "Mobs can damage players";
-            case BUILD_ALLOWED -> "Players can place and break blocks";
-            case BLOCK_INTERACT -> "General block interaction (fallback)";
+            case FALL_DAMAGE -> "Fall damage applies";
+            case ENVIRONMENTAL_DAMAGE -> "Drowning, suffocation, etc.";
+            case EXPLOSION_DAMAGE -> "Explosions can damage blocks (requires mixin)";
+            case FIRE_SPREAD -> "Fire can spread to nearby blocks (requires mixin)";
+            case KEEP_INVENTORY -> "Keep items on death (requires mixin)";
+            case POWER_LOSS -> "Players lose faction power on death";
+            case BUILD_ALLOWED -> "Players can place and break blocks (parent)";
+            case BLOCK_PLACE -> "Block placement via mixin (requires mixin)";
+            case HAMMER_USE -> "Hammer block cycling (requires mixin)";
+            case BUILDER_TOOLS_USE -> "Builder tools paste/copy (requires mixin)";
+            case BLOCK_INTERACT -> "General block interaction (parent)";
             case DOOR_USE -> "Players can use doors and gates";
             case CONTAINER_USE -> "Players can use chests and storage";
             case BENCH_USE -> "Players can use crafting tables";
             case PROCESSING_USE -> "Players can use furnaces and smelters";
             case SEAT_USE -> "Players can sit on seats and mounts";
+            case TELEPORTER_USE -> "Players can use teleporter blocks (requires mixin)";
+            case PORTAL_USE -> "Players can use portal blocks (requires mixin)";
             case ITEM_DROP -> "Players can drop items";
             case ITEM_PICKUP -> "Auto-collect items when walking over them";
             case ITEM_PICKUP_MANUAL -> "Pick up items with F-key (requires mixin)";
             case INVINCIBLE_ITEMS -> "Items don't lose durability (requires mixin)";
-            case FALL_DAMAGE -> "Fall damage applies";
-            case ENVIRONMENTAL_DAMAGE -> "Drowning, suffocation, etc.";
-            case KEEP_INVENTORY -> "Keep items on death (requires mixin)";
-            case POWER_LOSS -> "Players lose faction power on death";
             case MOB_SPAWNING -> "Master toggle for mob spawning (parent)";
             case HOSTILE_MOB_SPAWNING -> "Aggressive mobs can spawn";
             case PASSIVE_MOB_SPAWNING -> "Non-aggressive mobs can spawn";
@@ -497,6 +629,11 @@ public final class ZoneFlags {
     @Nullable
     public static String getParentFlag(String flagName) {
         return switch (flagName) {
+            // Combat hierarchy: PVP_ENABLED → FRIENDLY_FIRE → FACTION/ALLY
+            case FRIENDLY_FIRE -> PVP_ENABLED;
+            case FRIENDLY_FIRE_FACTION, FRIENDLY_FIRE_ALLY -> FRIENDLY_FIRE;
+            // Building children have BUILD_ALLOWED as parent
+            case BLOCK_PLACE, HAMMER_USE, BUILDER_TOOLS_USE -> BUILD_ALLOWED;
             // Interaction flags have BLOCK_INTERACT as parent
             case DOOR_USE, CONTAINER_USE, BENCH_USE, PROCESSING_USE, SEAT_USE -> BLOCK_INTERACT;
             // Mob group flags have MOB_SPAWNING as parent
@@ -512,7 +649,8 @@ public final class ZoneFlags {
      * @return true if this is a parent flag
      */
     public static boolean isParentFlag(String flagName) {
-        return BLOCK_INTERACT.equals(flagName) || MOB_SPAWNING.equals(flagName);
+        return PVP_ENABLED.equals(flagName) || FRIENDLY_FIRE.equals(flagName) ||
+               BUILD_ALLOWED.equals(flagName) || BLOCK_INTERACT.equals(flagName) || MOB_SPAWNING.equals(flagName);
     }
 
     /**
@@ -524,6 +662,9 @@ public final class ZoneFlags {
     @NotNull
     public static String[] getChildFlags(String parentFlagName) {
         return switch (parentFlagName) {
+            case PVP_ENABLED -> new String[] { FRIENDLY_FIRE };
+            case FRIENDLY_FIRE -> new String[] { FRIENDLY_FIRE_FACTION, FRIENDLY_FIRE_ALLY };
+            case BUILD_ALLOWED -> new String[] { BLOCK_PLACE, HAMMER_USE, BUILDER_TOOLS_USE };
             case BLOCK_INTERACT -> new String[] { DOOR_USE, CONTAINER_USE, BENCH_USE, PROCESSING_USE, SEAT_USE };
             case MOB_SPAWNING -> new String[] { HOSTILE_MOB_SPAWNING, PASSIVE_MOB_SPAWNING, NEUTRAL_MOB_SPAWNING, NPC_SPAWNING };
             default -> new String[0];
@@ -557,6 +698,13 @@ public final class ZoneFlags {
             case INVINCIBLE_ITEMS -> MIXIN_DURABILITY;
             case KEEP_INVENTORY -> MIXIN_DEATH;
             case NPC_SPAWNING -> MIXIN_SPAWN;
+            case EXPLOSION_DAMAGE -> MIXIN_EXPLOSION;
+            case FIRE_SPREAD -> MIXIN_FIRE_SPREAD;
+            case BUILDER_TOOLS_USE -> MIXIN_BUILDER_TOOLS;
+            case TELEPORTER_USE -> MIXIN_TELEPORTER;
+            case PORTAL_USE -> MIXIN_PORTAL;
+            case HAMMER_USE -> MIXIN_HAMMER;
+            case BLOCK_PLACE -> MIXIN_PLACE;
             default -> null;
         };
     }
@@ -575,6 +723,13 @@ public final class ZoneFlags {
             case MIXIN_DURABILITY -> "Durability Mixin";
             case MIXIN_SEATING -> "Seating Mixin";
             case MIXIN_SPAWN -> "NPC Spawn Mixin";
+            case MIXIN_EXPLOSION -> "Explosion Mixin";
+            case MIXIN_FIRE_SPREAD -> "Fire Spread Mixin";
+            case MIXIN_BUILDER_TOOLS -> "Builder Tools Mixin";
+            case MIXIN_TELEPORTER -> "Teleporter Mixin";
+            case MIXIN_PORTAL -> "Portal Mixin";
+            case MIXIN_HAMMER -> "Hammer Mixin";
+            case MIXIN_PLACE -> "Block Place Mixin";
             default -> "Unknown Mixin";
         };
     }
@@ -593,6 +748,7 @@ public final class ZoneFlags {
         for (String f : DEATH_FLAGS) if (f.equals(flagName)) return "Death";
         for (String f : SPAWNING_FLAGS) if (f.equals(flagName)) return "Spawning";
         for (String f : INTERACTION_FLAGS) if (f.equals(flagName)) return "Interaction";
+        for (String f : TRANSPORT_FLAGS) if (f.equals(flagName)) return "Transport";
         for (String f : ITEM_FLAGS) if (f.equals(flagName)) return "Items";
         for (String f : INTEGRATION_FLAGS) if (f.equals(flagName)) return "Integration";
         return "Other";
@@ -612,6 +768,7 @@ public final class ZoneFlags {
         categories.put("Items", ITEM_FLAGS);
         categories.put("Damage", DAMAGE_FLAGS);
         categories.put("Death", DEATH_FLAGS);
+        categories.put("Transport", TRANSPORT_FLAGS);
         categories.put("Spawning", SPAWNING_FLAGS);
         categories.put("Integration", INTEGRATION_FLAGS);
         return categories;
@@ -626,11 +783,12 @@ public final class ZoneFlags {
     public static String[] getCategoryOrder() {
         return new String[] {
             "Combat",
-            "Building",
-            "Interaction",
-            "Items",
             "Damage",
             "Death",
+            "Building",
+            "Interaction",
+            "Transport",
+            "Items",
             "Spawning",
             "Integration"
         };

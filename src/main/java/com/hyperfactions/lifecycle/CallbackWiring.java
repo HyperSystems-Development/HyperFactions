@@ -9,8 +9,6 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.gui.GuiUpdateService;
 import com.hyperfactions.integration.economy.VaultEconomyProvider;
 import com.hyperfactions.manager.*;
-import com.hyperfactions.integration.protection.OrbisMixinsIntegration;
-import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.worldmap.MapPlayerFilterService;
 import com.hyperfactions.worldmap.WorldMapService;
@@ -47,9 +45,6 @@ public final class CallbackWiring {
         wireAnnouncementCallbacks(hf.getAnnouncementManager(), hf.getFactionManager(),
             hf.getClaimManager(), hf.getRelationManager());
         wireOverclaimNotification(hf);
-        wireExplosionProtection(hf);
-        wireHarvestProtection(hf);
-        wireHammerProtection(hf);
         wireEconomyCallbacks(hf);
     }
 
@@ -107,7 +102,7 @@ public final class CallbackWiring {
         combatTagManager.setOnCombatLogout(playerUuid -> {
             double penalty = ConfigManager.get().getLogoutPowerLoss();
             powerManager.applyCombatLogoutPenalty(playerUuid, penalty);
-            com.hyperfactions.util.Logger.info("Player %s combat logged - %.1f power penalty applied", playerUuid, penalty);
+            com.hyperfactions.util.Logger.info("[Combat] Player %s combat logged - %.1f power penalty applied", playerUuid, penalty);
         });
     }
 
@@ -165,105 +160,6 @@ public final class CallbackWiring {
             announcementManager.announceAllianceBroken(f1, f2));
     }
 
-
-    /**
-     * Wires explosion protection hook to block explosions in claimed territory and safezones.
-     */
-    private static void wireExplosionProtection(HyperFactions hf) {
-        OrbisMixinsIntegration.registerExplosionHook((worldName, x, y, z) -> {
-            int chunkX = ChunkUtil.toChunkCoord(x);
-            int chunkZ = ChunkUtil.toChunkCoord(z);
-
-            // Block explosions in claimed faction territory
-            UUID claimOwner = hf.getClaimManager().getClaimOwner(worldName, chunkX, chunkZ);
-            if (claimOwner != null) {
-                return true;
-            }
-
-            // Block explosions in safezones
-            if (hf.getZoneManager().isInSafeZone(worldName, chunkX, chunkZ)) {
-                return true;
-            }
-
-            // Allow in wilderness and warzones
-            return false;
-        });
-    }
-
-    /**
-     * Wires harvest protection hook to block F-key block pickup and crop harvesting
-     * in protected territory. This covers both zone protection (safezones) and
-     * faction claim protection (enemy territory).
-     *
-     * Crop harvesting and rubble pickup bypass UseBlockEvent entirely
-     * (goes through BlockHarvestUtils.performPickupByInteraction),
-     * so the OrbisGuard-Mixins harvest hook is required to intercept it.
-     */
-    private static void wireHarvestProtection(HyperFactions hf) {
-        OrbisMixinsIntegration.registerHarvestHook((playerUuid, worldName, x, y, z) -> {
-            if (hf.isAdminBypassEnabled(playerUuid)) {
-                return null;
-            }
-
-            // Check zone protection first (F-key pickup flag)
-            boolean zoneAllowed = hf.getProtectionChecker().canPickupItem(
-                playerUuid, worldName, x, 0, z, "manual");
-            if (!zoneAllowed) {
-                // Return empty string: blocks the action (non-null) but no message
-                // UseBlockEvent.Pre already sends the denial message to avoid duplicates
-                return "";
-            }
-
-            // Check faction claim protection
-            var result = hf.getProtectionChecker().canInteract(
-                playerUuid, worldName, (double) x, (double) z,
-                com.hyperfactions.protection.ProtectionChecker.InteractionType.INTERACT
-            );
-            if (!hf.getProtectionChecker().isAllowed(result)) {
-                return "";
-            }
-
-            return null;
-        });
-    }
-
-    /**
-     * Wires hammer protection hook to block hammer cycling (CycleBlockGroupInteraction)
-     * in protected territory. This covers both zone protection (safezones) and
-     * faction claim protection (enemy territory).
-     *
-     * OrbisGuard-Mixins 0.8.3+ provides CycleBlockGroupInteractionMixin as a safety net
-     * that checks permissions regardless of which plugin's codec override wins.
-     * The mixin calls checkMessage() on the hammer hook (returns null=allow, String=deny).
-     */
-    private static void wireHammerProtection(HyperFactions hf) {
-        OrbisMixinsIntegration.registerHammerHook((playerUuid, worldName, x, y, z) -> {
-            if (hf.isAdminBypassEnabled(playerUuid)) {
-                return null;
-            }
-
-            // Check zone protection (hammer is a BUILD action)
-            int chunkX = ChunkUtil.toChunkCoord(x);
-            int chunkZ = ChunkUtil.toChunkCoord(z);
-            if (hf.getZoneManager().isInSafeZone(worldName, chunkX, chunkZ)) {
-                // Return empty string: blocks the action (non-null) but no message
-                // UseBlockEvent.Pre already sends the denial message to avoid duplicates
-                return "";
-            }
-
-            // Check faction claim protection (BUILD type)
-            var result = hf.getProtectionChecker().canInteract(
-                playerUuid, worldName, (double) x, (double) z,
-                com.hyperfactions.protection.ProtectionChecker.InteractionType.BUILD
-            );
-            if (!hf.getProtectionChecker().isAllowed(result)) {
-                return "";
-            }
-
-            return null;
-        });
-    }
-
     /**
      * Wires economy callbacks for faction creation and disband.
      * On creation: initializes faction economy with starting balance.
@@ -290,14 +186,14 @@ public final class CallbackWiring {
                 UUID leaderId = faction.getLeaderId();
                 VaultEconomyProvider vault = econ.getVaultProvider();
                 if (leaderId != null && vault.deposit(leaderId, balance)) {
-                    Logger.info("Refunded %s to leader %s on faction %s disband",
+                    Logger.info("[Economy] Refunded %s to leader %s on faction %s disband",
                             econ.formatCurrency(balance), leaderId, faction.name());
                 } else {
                     Logger.warn("Failed to refund %s to leader on faction %s disband",
                             econ.formatCurrency(balance), faction.name());
                 }
             } else if (balance > 0) {
-                Logger.info("Destroyed %s balance on faction %s disband (refund disabled)",
+                Logger.info("[Economy] Destroyed %s balance on faction %s disband (refund disabled)",
                         econ.formatCurrency(balance), faction.name());
             }
 

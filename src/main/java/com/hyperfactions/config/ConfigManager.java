@@ -62,7 +62,7 @@ public class ConfigManager {
      */
     public void loadAll(@NotNull Path dataDir) {
         this.dataDir = dataDir;
-        Logger.info("[Config] Loading configuration from: %s", dataDir.toAbsolutePath());
+        Logger.debug("[Config] Loading configuration from: %s", dataDir.toAbsolutePath());
 
         // Step 1: Run pending migrations
         runMigrations();
@@ -101,7 +101,7 @@ public class ConfigManager {
         // Step 4: Validate all configs and log any issues
         validateAll();
 
-        Logger.info("[Config] Configuration loaded successfully");
+        Logger.debug("[Config] Configuration loaded successfully");
     }
 
     /**

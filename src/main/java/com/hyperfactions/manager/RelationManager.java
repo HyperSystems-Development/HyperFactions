@@ -369,7 +369,7 @@ public class RelationManager {
         pendingAllyRequests.computeIfAbsent(targetFactionId, k -> new ConcurrentHashMap<>())
             .put(actorFaction.id(), actorUuid);
 
-        Logger.info("Faction '%s' sent ally request to '%s'", actorFaction.name(), targetFaction.name());
+        Logger.info("[Diplomacy] Faction '%s' sent ally request to '%s'", actorFaction.name(), targetFaction.name());
 
         if (onAllyRequestReceived != null) {
             try { onAllyRequestReceived.accept(targetFactionId, actorFaction.id()); } catch (Exception e) { Logger.warn("Error in ally request callback: %s", e.getMessage()); }
@@ -419,7 +419,7 @@ public class RelationManager {
 
         Logger.debugRelation("Alliance accepted: faction1=%s, faction2=%s, accepter=%s, requester=%s",
             actorFaction.name(), fromFaction.name(), actorUuid, requesterUuid);
-        Logger.info("Factions '%s' and '%s' are now allies", actorFaction.name(), fromFaction.name());
+        Logger.info("[Diplomacy] Factions '%s' and '%s' are now allies", actorFaction.name(), fromFaction.name());
 
         if (onAllianceFormed != null) {
             try { onAllianceFormed.accept(actorFaction.name(), fromFaction.name()); } catch (Exception e) { Logger.warn("Error in alliance formed callback: %s", e.getMessage()); }
@@ -457,7 +457,7 @@ public class RelationManager {
 
         Faction targetFaction = factionManager.getFaction(targetFactionId);
         String targetName = targetFaction != null ? targetFaction.name() : "Unknown";
-        Logger.info("Faction '%s' cancelled ally request to '%s'", actorFaction.name(), targetName);
+        Logger.info("[Diplomacy] Faction '%s' cancelled ally request to '%s'", actorFaction.name(), targetName);
         return RelationResult.SUCCESS;
     }
 
@@ -525,7 +525,7 @@ public class RelationManager {
 
         Logger.debugRelation("Enemy declared: faction=%s, target=%s, actor=%s",
             actorFaction.name(), targetFaction.name(), actorUuid);
-        Logger.info("Faction '%s' declared '%s' as enemy", actorFaction.name(), targetFaction.name());
+        Logger.info("[Diplomacy] Faction '%s' declared '%s' as enemy", actorFaction.name(), targetFaction.name());
 
         if (wasAlly && onAllianceBroken != null) {
             try { onAllianceBroken.accept(actorFaction.name(), targetFaction.name()); } catch (Exception e) { Logger.warn("Error in alliance broken callback: %s", e.getMessage()); }
@@ -583,7 +583,7 @@ public class RelationManager {
 
         setRelation(actorFaction.id(), targetFactionId, RelationType.NEUTRAL, actorUuid);
 
-        Logger.info("Faction '%s' set '%s' as neutral", actorFaction.name(), targetFaction.name());
+        Logger.info("[Diplomacy] Faction '%s' set '%s' as neutral", actorFaction.name(), targetFaction.name());
 
         if (wasAlly && onAllianceBroken != null) {
             try { onAllianceBroken.accept(actorFaction.name(), targetFaction.name()); } catch (Exception e) { Logger.warn("Error in alliance broken callback: %s", e.getMessage()); }

@@ -84,7 +84,7 @@ public class HyperPermsProviderAdapter implements PermissionProvider {
             }
 
             available = true;
-            Logger.info("[PermissionManager] HyperPerms provider initialized");
+            Logger.info("[Permissions] HyperPerms provider initialized");
 
         } catch (ClassNotFoundException e) {
             available = false;

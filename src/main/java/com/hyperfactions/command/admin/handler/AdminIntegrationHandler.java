@@ -10,7 +10,8 @@ import com.hyperfactions.integration.placeholder.PlaceholderAPIIntegration;
 import com.hyperfactions.integration.placeholder.WiFlowPlaceholderIntegration;
 import com.hyperfactions.integration.protection.GravestoneIntegration;
 import com.hyperfactions.integration.protection.OrbisGuardIntegration;
-import com.hyperfactions.integration.protection.OrbisMixinsIntegration;
+import com.hyperfactions.integration.protection.ProtectionMixinBridge;
+import com.hyperfactions.update.UpdateChecker;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 
@@ -72,13 +73,36 @@ public class AdminIntegrationHandler {
         // --- Protection ---
         ctx.sendMessage(msg("  Protection:", COLOR_YELLOW));
 
-        boolean ogAvailable = OrbisGuardIntegration.isAvailable();
-        ctx.sendMessage(msg("    OrbisGuard API: " + (ogAvailable ? "Active" : "Not Detected"),
-                ogAvailable ? COLOR_GREEN : COLOR_GRAY));
+        ProtectionMixinBridge.MixinProvider provider = ProtectionMixinBridge.getProvider();
+        boolean ogApiAvailable = OrbisGuardIntegration.isAvailable();
 
-        boolean mixinsAvailable = OrbisMixinsIntegration.isMixinsAvailable();
-        ctx.sendMessage(msg("    OrbisGuard-Mixins: " + (mixinsAvailable ? "Active (11 hooks)" : "Not Detected"),
-                mixinsAvailable ? COLOR_GREEN : COLOR_GRAY));
+        switch (provider) {
+            case HYPERPROTECT -> {
+                String hpVersion = System.getProperty("hyperprotect.bridge.version", "unknown");
+                ctx.sendMessage(msg("    HyperProtect-Mixin: Active (v" + hpVersion + ")", COLOR_GREEN));
+                if (ogApiAvailable) {
+                    ctx.sendMessage(msg("    OrbisGuard API: Active (claim conflicts)", COLOR_GREEN));
+                }
+            }
+            case ORBISGUARD -> {
+                ctx.sendMessage(msg("    HyperProtect-Mixin: Not Detected", COLOR_GRAY));
+                ctx.sendMessage(msg("    OrbisGuard-Mixins: Active", COLOR_GREEN));
+                if (ogApiAvailable) {
+                    ctx.sendMessage(msg("    OrbisGuard API: Active (claim conflicts)", COLOR_GREEN));
+                }
+            }
+            case NONE -> {
+                ctx.sendMessage(msg("    HyperProtect-Mixin: Not Detected", COLOR_GRAY));
+                ctx.sendMessage(msg("    OrbisGuard-Mixins: Not Detected", COLOR_GRAY));
+                if (ogApiAvailable) {
+                    ctx.sendMessage(msg("    OrbisGuard API: Active (claim conflicts only)", COLOR_YELLOW));
+                }
+            }
+        }
+
+        String mixinStatus = ProtectionMixinBridge.getStatusSummary();
+        ctx.sendMessage(msg("    Mixin Hooks: " + mixinStatus,
+                provider != ProtectionMixinBridge.MixinProvider.NONE ? COLOR_GREEN : COLOR_GRAY));
 
         GravestoneIntegration gs = hyperFactions.getProtectionChecker().getGravestoneIntegration();
         boolean gsAvailable = gs != null && gs.isAvailable();
@@ -109,7 +133,7 @@ public class AdminIntegrationHandler {
     public void handleIntegrationDetail(CommandContext ctx, String[] args) {
         if (args.length == 0) {
             ctx.sendMessage(prefix().insert(msg("Usage: /f admin integration <name>", COLOR_RED)));
-            ctx.sendMessage(msg("  Available: hyperperms, luckperms, vaultunlocked, native, orbisguard, mixins, gravestones, papi, wiflow", COLOR_GRAY));
+            ctx.sendMessage(msg("  Available: hyperperms, luckperms, vaultunlocked, native, hyperprotect, orbisguard, mixins, gravestones, papi, wiflow", COLOR_GRAY));
             return;
         }
 
@@ -121,7 +145,7 @@ public class AdminIntegrationHandler {
             case "vaultunlocked", "vault", "vu" -> handleIntegrationVaultUnlocked(ctx);
             case "hytale", "native", "hytaleNative" -> handleIntegrationHytaleNative(ctx);
             case "orbisguard", "orbis", "og" -> handleIntegrationOrbisGuard(ctx);
-            case "mixins", "orbismixins", "om" -> handleIntegrationMixins(ctx);
+            case "mixins", "orbismixins", "om", "hyperprotect", "hpmixin" -> handleIntegrationMixins(ctx);
             case "placeholderapi", "papi" -> handleIntegrationPAPI(ctx);
             case "wiflow", "wflow" -> handleIntegrationWiFlow(ctx);
             default -> ctx.sendMessage(prefix().insert(msg("Unknown integration: " + name +
@@ -304,26 +328,64 @@ public class AdminIntegrationHandler {
     }
 
     public void handleIntegrationMixins(CommandContext ctx) {
-        boolean available = OrbisMixinsIntegration.isMixinsAvailable();
+        ProtectionMixinBridge.MixinProvider provider = ProtectionMixinBridge.getProvider();
+        boolean available = provider != ProtectionMixinBridge.MixinProvider.NONE;
 
-        ctx.sendMessage(prefix().insert(msg("OrbisGuard-Mixins Integration", COLOR_CYAN)));
-        ctx.sendMessage(msg("  Status: " + (available ? "Active" : "Not Detected"),
+        ctx.sendMessage(prefix().insert(msg("Mixin Protection Integration", COLOR_CYAN)));
+        ctx.sendMessage(msg("  Provider: " + provider, available ? COLOR_GREEN : COLOR_GRAY));
+        ctx.sendMessage(msg("  Priority: HYPERPROTECT > ORBISGUARD > NONE", COLOR_GRAY));
+        ctx.sendMessage(msg("  Status: " + ProtectionMixinBridge.getStatusSummary(),
                 available ? COLOR_GREEN : COLOR_GRAY));
 
+        if (provider == ProtectionMixinBridge.MixinProvider.HYPERPROTECT) {
+            String hpVersion = System.getProperty("hyperprotect.bridge.version", "unknown");
+            ctx.sendMessage(msg("  HyperProtect-Mixin:", COLOR_CYAN));
+            ctx.sendMessage(msg("    Version: " + hpVersion, COLOR_WHITE));
+
+            // Show update status if update checker exists
+            UpdateChecker hpChecker = hyperFactions.getHyperProtectUpdateChecker();
+            if (hpChecker != null && hpChecker.hasUpdateAvailable()) {
+                var cached = hpChecker.getCachedUpdate();
+                if (cached != null) {
+                    ctx.sendMessage(msg("    Update: v" + cached.version() + " available!", COLOR_YELLOW));
+                    ctx.sendMessage(msg("    Run: /f admin update mixin", COLOR_GRAY));
+                }
+            } else if (hpChecker != null) {
+                ctx.sendMessage(msg("    Update: Up-to-date", COLOR_GREEN));
+            }
+        } else if (provider == ProtectionMixinBridge.MixinProvider.ORBISGUARD) {
+            ctx.sendMessage(msg("  OrbisGuard-Mixins:", COLOR_CYAN));
+            ctx.sendMessage(msg("    Status: Active (limited feature set)", COLOR_YELLOW));
+            ctx.sendMessage(msg("    Recommendation: Install HyperProtect-Mixin for full coverage", COLOR_GRAY));
+            ctx.sendMessage(msg("    Run: /f admin update mixin", COLOR_GRAY));
+        }
+
         if (available) {
-            ctx.sendMessage(msg("  Registered Hooks:", COLOR_CYAN));
-            ctx.sendMessage(msg("    Pickup: " + (OrbisMixinsIntegration.isPickupMixinLoaded() ? "Loaded" : "Pending"),
-                    OrbisMixinsIntegration.isPickupMixinLoaded() ? COLOR_GREEN : COLOR_YELLOW));
-            ctx.sendMessage(msg("    Death: " + (OrbisMixinsIntegration.isDeathMixinLoaded() ? "Loaded" : "Pending"),
-                    OrbisMixinsIntegration.isDeathMixinLoaded() ? COLOR_GREEN : COLOR_YELLOW));
-            ctx.sendMessage(msg("    Durability: " + (OrbisMixinsIntegration.isDurabilityMixinLoaded() ? "Loaded" : "Pending"),
-                    OrbisMixinsIntegration.isDurabilityMixinLoaded() ? COLOR_GREEN : COLOR_YELLOW));
-            ctx.sendMessage(msg("    Seating: " + (OrbisMixinsIntegration.isSeatingMixinLoaded() ? "Loaded" : "Pending"),
-                    OrbisMixinsIntegration.isSeatingMixinLoaded() ? COLOR_GREEN : COLOR_YELLOW));
-            ctx.sendMessage(msg("  Additional hooks: hammer, explosion, command, use, harvest, place, spawn", COLOR_GRAY));
+            ctx.sendMessage(msg("  Feature Availability:", COLOR_CYAN));
+            String[] features = {
+                "block_break", "block_place", "explosion", "fire_spread",
+                "builder_tools", "hammer", "item_pickup", "death_drop",
+                "durability", "container_access", "container_open",
+                "mob_spawn", "teleporter", "portal", "seat",
+                "entity_damage", "command", "respawn"
+            };
+            int active = 0;
+            int total = features.length;
+            for (String feature : features) {
+                boolean featureAvailable = ProtectionMixinBridge.isMixinFeatureAvailable(feature);
+                if (featureAvailable) active++;
+                ctx.sendMessage(msg("    " + feature + ": " + (featureAvailable ? "Active" : "N/A"),
+                        featureAvailable ? COLOR_GREEN : COLOR_GRAY));
+            }
+            ctx.sendMessage(msg("  Coverage: " + active + "/" + total + " features",
+                    active == total ? COLOR_GREEN : COLOR_YELLOW));
         } else {
-            ctx.sendMessage(msg("  Mixin-dependent zone flags will be disabled:", COLOR_GRAY));
-            ctx.sendMessage(msg("    item_pickup_manual, invincible_items, keep_inventory, npc_spawning", COLOR_GRAY));
+            ctx.sendMessage(msg("  No mixin system detected.", COLOR_GRAY));
+            ctx.sendMessage(msg("  Install HyperProtect-Mixin or OrbisGuard-Mixins for:", COLOR_GRAY));
+            ctx.sendMessage(msg("    item pickup, death drops, durability, mob spawning,", COLOR_GRAY));
+            ctx.sendMessage(msg("    explosions, fire spread, hammers, builder tools,", COLOR_GRAY));
+            ctx.sendMessage(msg("    teleporters, portals, seating, and more", COLOR_GRAY));
+            ctx.sendMessage(msg("  Auto-download: /f admin update mixin", COLOR_GRAY));
         }
     }
 

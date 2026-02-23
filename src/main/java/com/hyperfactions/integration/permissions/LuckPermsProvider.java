@@ -97,7 +97,7 @@ public class LuckPermsProvider implements PermissionProvider {
             }
 
             available = true;
-            Logger.info("[PermissionManager] LuckPerms provider initialized");
+            Logger.info("[Permissions] LuckPerms provider initialized");
 
         } catch (ClassNotFoundException | NoClassDefFoundError e) {
             permanentFailure = true;

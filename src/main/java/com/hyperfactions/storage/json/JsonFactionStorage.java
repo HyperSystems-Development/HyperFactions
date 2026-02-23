@@ -46,7 +46,7 @@ public class JsonFactionStorage implements FactionStorage {
                 Files.createDirectories(factionsDir);
                 // Clean up orphaned temp and backup files from previous crashes
                 StorageUtils.cleanupOrphanedFiles(factionsDir);
-                Logger.info("Faction storage initialized at %s", factionsDir);
+                Logger.info("[Storage] Faction storage initialized at %s", factionsDir);
             } catch (IOException e) {
                 Logger.severe("Failed to create factions directory", e);
             }
@@ -67,7 +67,7 @@ public class JsonFactionStorage implements FactionStorage {
                 if (StorageUtils.hasBackup(file)) {
                     Logger.warn("Faction file %s missing but backup exists, attempting recovery", factionId);
                     if (StorageUtils.recoverFromBackup(file)) {
-                        Logger.info("Successfully recovered faction %s from backup", factionId);
+                        Logger.info("[Storage] Successfully recovered faction %s from backup", factionId);
                     } else {
                         return Optional.empty();
                     }
@@ -87,7 +87,7 @@ public class JsonFactionStorage implements FactionStorage {
                     try {
                         String json = Files.readString(file);
                         JsonObject obj = JsonParser.parseString(json).getAsJsonObject();
-                        Logger.info("Successfully loaded faction %s from recovered backup", factionId);
+                        Logger.info("[Storage] Successfully loaded faction %s from recovered backup", factionId);
                         return Optional.of(deserializeFaction(obj));
                     } catch (Exception e2) {
                         Logger.severe("Backup recovery failed for faction %s", e2, factionId);
@@ -142,7 +142,7 @@ public class JsonFactionStorage implements FactionStorage {
             int totalFiles = 0;
 
             if (!Files.exists(factionsDir)) {
-                Logger.info("Factions directory does not exist yet, no factions to load");
+                Logger.info("[Storage] Factions directory does not exist yet, no factions to load");
                 return factions;
             }
 
@@ -176,7 +176,7 @@ public class JsonFactionStorage implements FactionStorage {
                 Logger.severe("CRITICAL: Found %d faction files but loaded 0 factions - possible data corruption!", totalFiles);
             }
 
-            Logger.info("Loaded %d/%d factions successfully", factions.size(), totalFiles);
+            Logger.info("[Storage] Loaded %d/%d factions successfully", factions.size(), totalFiles);
             return factions;
         });
     }
@@ -402,6 +402,20 @@ public class JsonFactionStorage implements FactionStorage {
                 flags.put(level + "ProcessingUse", interact);
                 flags.put(level + "SeatUse", interact);
             }
+        }
+
+        // Migrate old teleporterUse/portalUse → transportUse
+        for (String level : FactionPermissions.ALL_LEVELS) {
+            String oldTeleporter = level + "TeleporterUse";
+            String oldPortal = level + "PortalUse";
+            String newTransport = level + "TransportUse";
+            if (!flags.containsKey(newTransport)) {
+                boolean t = flags.getOrDefault(oldTeleporter, false);
+                boolean p = flags.getOrDefault(oldPortal, false);
+                flags.put(newTransport, t || p);
+            }
+            flags.remove(oldTeleporter);
+            flags.remove(oldPortal);
         }
 
         // If no mob spawning flags, default to blocking all in claims

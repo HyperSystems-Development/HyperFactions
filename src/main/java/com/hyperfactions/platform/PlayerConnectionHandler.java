@@ -100,7 +100,7 @@ public class PlayerConnectionHandler {
         // Handle combat logout
         boolean wasCombatTagged = hyperFactions.getCombatTagManager().handleDisconnect(uuid);
         if (wasCombatTagged) {
-            Logger.info("Player %s combat logged!", username);
+            Logger.info("[Combat] Player %s combat logged!", username);
         }
 
         // Cancel pending teleport

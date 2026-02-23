@@ -142,7 +142,7 @@ public class MembershipHistoryHandler {
         }
 
         if (migrated > 0) {
-            Logger.info("Migrated membership history for %d existing faction members", migrated);
+            Logger.info("[Migration] Migrated membership history for %d existing faction members", migrated);
         }
     }
 }

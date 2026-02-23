@@ -140,7 +140,7 @@ public class FactionManager {
             nameToFaction.clear();
             nameToFaction.putAll(newNameToFaction);
 
-            Logger.info("Loaded %d factions with %d members indexed",
+            Logger.info("[Startup] Loaded %d factions with %d members indexed",
                 factions.size(), playerToFaction.size());
         }).exceptionally(ex -> {
             Logger.severe("CRITICAL: Exception during faction loading - keeping existing data", (Throwable) ex);
@@ -236,7 +236,7 @@ public class FactionManager {
                 }
             }
 
-            Logger.info("Sync complete: %d factions updated, %d members added, %d members updated",
+            Logger.info("[Sync] Sync complete: %d factions updated, %d members added, %d members updated",
                 factionsUpdated, membersAdded, membersUpdated);
 
             return new SyncResult(factionsUpdated, membersAdded, membersUpdated);
@@ -432,7 +432,7 @@ public class FactionManager {
         // Publish member join event for the creator (so membership history is recorded)
         EventBus.publish(new FactionMemberEvent(faction, leaderUuid, FactionMemberEvent.Type.JOIN));
 
-        Logger.info("Faction '%s' [%s] created by %s", name, generatedTag, leaderName);
+        Logger.info("[Faction] Faction '%s' [%s] created by %s", name, generatedTag, leaderName);
 
         if (onFactionCreated != null) {
             try { onFactionCreated.accept(name, leaderName); } catch (Exception e) { Logger.warn("Error in faction created callback: %s", e.getMessage()); }
@@ -530,7 +530,7 @@ public class FactionManager {
         // Fire event so listeners can clean up claims, relations, etc.
         EventBus.publish(new FactionDisbandEvent(faction, actorUuid));
 
-        Logger.info("Faction '%s' disbanded", faction.name());
+        Logger.info("[Faction] Faction '%s' disbanded", faction.name());
 
         if (onFactionDisbanded != null) {
             try { onFactionDisbanded.accept(faction.name()); } catch (Exception e) { Logger.warn("Error in faction disbanded callback: %s", e.getMessage()); }
@@ -627,7 +627,7 @@ public class FactionManager {
             // Publish member leave event
             EventBus.publish(new FactionMemberEvent(updated, playerUuid, FactionMemberEvent.Type.LEAVE));
 
-            Logger.info("Leader %s left faction '%s', %s promoted to leader",
+            Logger.info("[Faction] Leader %s left faction '%s', %s promoted to leader",
                     target.username(), faction.name(), promoted.username());
 
             if (onLeadershipTransferred != null) {
@@ -696,7 +696,7 @@ public class FactionManager {
         // Fire event so listeners can clean up claims, relations, etc.
         EventBus.publish(new FactionDisbandEvent(faction, disbandedBy));
 
-        Logger.info("Faction '%s' disbanded: %s", faction.name(), reason);
+        Logger.info("[Faction] Faction '%s' disbanded: %s", faction.name(), reason);
         return FactionResult.SUCCESS;
     }
 
@@ -855,7 +855,7 @@ public class FactionManager {
         factions.put(factionId, updated);
         storage.saveFaction(updated);
 
-        Logger.info("Faction '%s' leadership transferred to %s", faction.name(), target.username());
+        Logger.info("[Faction] Faction '%s' leadership transferred to %s", faction.name(), target.username());
 
         if (onLeadershipTransferred != null) {
             try { onLeadershipTransferred.accept(faction.name(), actor.username(), target.username()); } catch (Exception e) { Logger.warn("Error in leadership transferred callback: %s", e.getMessage()); }
@@ -1082,7 +1082,7 @@ public class FactionManager {
         // Save to storage
         storage.saveFaction(faction);
 
-        Logger.info("Imported faction '%s' with %d members", faction.name(), faction.getMemberCount());
+        Logger.info("[Import] Imported faction '%s' with %d members", faction.name(), faction.getMemberCount());
         return true;
     }
 

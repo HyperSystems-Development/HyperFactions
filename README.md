@@ -1,6 +1,6 @@
 # HyperFactions
 
-[![Discord](https://img.shields.io/badge/Discord-Join%20Us-7289DA?logo=discord&logoColor=white)](https://discord.gg/SNPjyfkYPc)
+[![Discord](https://img.shields.io/badge/Discord-Join%20Us-7289DA?logo=discord&logoColor=white)](https://discord.com/invite/aZaa5vcFYh)
 [![GitHub](https://img.shields.io/github/stars/HyperSystemsDev/HyperFactions?style=social)](https://github.com/HyperSystemsDev/HyperFactions)
 [![License: GPLv3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 
@@ -248,7 +248,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for full development setup and contributi
 
 ## Support
 
-- **Discord:** [Join our server](https://discord.gg/SNPjyfkYPc)
+- **Discord:** [Join our server](https://discord.com/invite/aZaa5vcFYh)
 - **GitHub Issues:** [Report bugs or request features](https://github.com/HyperSystemsDev/HyperFactions/issues)
 
 ---

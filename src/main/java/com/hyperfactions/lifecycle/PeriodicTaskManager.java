@@ -60,7 +60,7 @@ public class PeriodicTaskManager {
     private void startAutoSaveTask() {
         ConfigManager config = ConfigManager.get();
         if (!config.isAutoSaveEnabled()) {
-            Logger.info("Auto-save is disabled in config");
+            Logger.debug("Auto-save is disabled in config");
             return;
         }
 
@@ -74,7 +74,7 @@ public class PeriodicTaskManager {
         autoSaveTaskId = hyperFactions.scheduleRepeatingTask(periodTicks, periodTicks, hyperFactions::saveAllData);
 
         if (autoSaveTaskId > 0) {
-            Logger.info("Auto-save scheduled every %d minutes", intervalMinutes);
+            Logger.debug("Auto-save scheduled every %d minutes", intervalMinutes);
         }
     }
 
@@ -95,7 +95,7 @@ public class PeriodicTaskManager {
         });
 
         if (inviteCleanupTaskId > 0) {
-            Logger.info("Invite/request cleanup task scheduled every 5 minutes");
+            Logger.debug("Invite/request cleanup task scheduled every 5 minutes");
         }
     }
 
@@ -122,7 +122,7 @@ public class PeriodicTaskManager {
         });
 
         if (chatHistoryCleanupTaskId > 0) {
-            Logger.info("Chat history retention cleanup scheduled every %d minutes", intervalMinutes);
+            Logger.debug("Chat history retention cleanup scheduled every %d minutes", intervalMinutes);
         }
     }
 
@@ -167,7 +167,7 @@ public class PeriodicTaskManager {
         });
 
         if (upkeepTaskId > 0) {
-            Logger.info("Upkeep collection scheduled every %d hours", intervalHours);
+            Logger.debug("Upkeep collection scheduled every %d hours", intervalHours);
         }
     }
 }

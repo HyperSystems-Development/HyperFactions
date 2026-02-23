@@ -11,8 +11,8 @@ import com.hyperfactions.protection.interactions.HyperFactionsPlaceFluidInteract
 import com.hyperfactions.protection.interactions.HyperFactionsRefillContainerInteraction;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.integration.PermissionRegistrar;
-import com.hyperfactions.integration.protection.OrbisMixinsIntegration;
 import com.hyperfactions.integration.protection.OrbisGuardIntegration;
+import com.hyperfactions.integration.protection.ProtectionMixinBridge;
 import com.hypixel.hytale.server.core.event.events.BootEvent;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.config.Interaction;
 import com.hypixel.hytale.server.core.plugin.JavaPlugin;
@@ -82,13 +82,16 @@ public class HyperFactionsPlugin extends JavaPlugin {
         // Register interaction codec replacements (must be in setup, before assets load)
         registerInteractionCodecs();
 
+        // Initialize logger early so setup messages route through Hytale's logging
+        Logger.init(getLogger());
+
         // Initialize HyperFactions core
-        hyperFactions = new HyperFactions(getDataDirectory(), java.util.logging.Logger.getLogger("HyperFactions"));
+        hyperFactions = new HyperFactions(getDataDirectory(), getLogger());
 
         // Set API instance
         HyperFactionsAPI.setInstance(hyperFactions);
 
-        getLogger().at(Level.INFO).log("HyperFactions setup complete");
+        Logger.info("[Startup] HyperFactions setup complete");
     }
 
     @Override
@@ -125,6 +128,8 @@ public class HyperFactionsPlugin extends JavaPlugin {
         // Register territory tracking systems
         eventRegistration.registerTerritorySystems();
 
+        Logger.info("[Startup] Registered commands, events, and ECS systems");
+
         // Apply world map provider to already-loaded worlds
         // (AddWorldEvent may have fired before our listener was registered)
         worldSetup.applyToExistingWorlds();
@@ -135,8 +140,8 @@ public class HyperFactionsPlugin extends JavaPlugin {
         // Initialize spawn suppression manager (must be after TagSetPlugin is ready)
         worldSetup.initializeSpawnSuppression();
 
-        // Initialize OrbisGuard integrations and register pickup hooks
-        initializeOrbisIntegrations();
+        // Initialize protection mixin system and register all hooks
+        initializeProtectionMixins();
 
         // Log protection coverage summary
         worldSetup.logProtectionCoverage();
@@ -144,7 +149,7 @@ public class HyperFactionsPlugin extends JavaPlugin {
         // Register permission nodes with LuckPerms on BootEvent (after all plugins loaded)
         getEventRegistry().registerGlobal(BootEvent.class, e -> PermissionRegistrar.registerWithLuckPerms());
 
-        getLogger().at(Level.INFO).log("HyperFactions v%s enabled!", getManifest().getVersion());
+        Logger.info("[Startup] HyperFactions v%s enabled", getManifest().getVersion());
     }
 
     @Override
@@ -157,8 +162,8 @@ public class HyperFactionsPlugin extends JavaPlugin {
             hyperFactions.getCombatTagManager().handleDisconnect(playerUuid);
         }
 
-        // Unregister all OrbisGuard-Mixins hooks
-        OrbisMixinsIntegration.unregisterAllHooks();
+        // Unregister all mixin hooks (HP or OG)
+        ProtectionMixinBridge.unregisterAllHooks();
 
         // Clean up territory ticking system
         if (eventRegistration != null) {
@@ -177,7 +182,7 @@ public class HyperFactionsPlugin extends JavaPlugin {
         // Clear tracked players
         trackedPlayers.clear();
 
-        getLogger().at(Level.INFO).log("HyperFactions disabled");
+        Logger.info("[Shutdown] HyperFactions disabled");
     }
 
     /**
@@ -242,7 +247,7 @@ public class HyperFactionsPlugin extends JavaPlugin {
     private void registerCommands() {
         try {
             getCommandRegistry().registerCommand(new FactionCommand(hyperFactions, this));
-            getLogger().at(Level.INFO).log("Registered command: /faction (/f, /hf)");
+            Logger.debug("Registered command: /faction (/f, /hf)");
         } catch (Exception e) {
             getLogger().at(Level.SEVERE).withCause(e).log("Failed to register commands");
         }
@@ -266,44 +271,40 @@ public class HyperFactionsPlugin extends JavaPlugin {
             registry.register("RefillContainer",
                     HyperFactionsRefillContainerInteraction.class,
                     HyperFactionsRefillContainerInteraction.CODEC);
-            registry.register("HarvestCrop",
-                    HyperFactionsHarvestCropInteraction.class,
-                    HyperFactionsHarvestCropInteraction.CODEC);
-            getLogger().at(Level.INFO).log("Registered interaction protection codecs (fluid place/pickup + crop harvest)");
+            // Only register HarvestCrop codec when no mixin system is active — when a mixin
+            // system (HyperProtect or OrbisGuard) is present, it handles harvest interception natively
+            // via bytecode hooks, making the codec replacement unnecessary (and potentially conflicting).
+            // Early plugins set system properties during their static initializers, before setup() runs.
+            boolean hasMixinSystem = ProtectionMixinBridge.getProvider() != ProtectionMixinBridge.MixinProvider.NONE;
+            if (!hasMixinSystem) {
+                registry.register("HarvestCrop",
+                        HyperFactionsHarvestCropInteraction.class,
+                        HyperFactionsHarvestCropInteraction.CODEC);
+                Logger.debug("Registered interaction codecs (fluid place/pickup + crop harvest)");
+            } else {
+                Logger.debug("Registered interaction codecs (fluid place/pickup) — crop harvest handled by mixin system");
+            }
         } catch (Exception e) {
             getLogger().at(Level.WARNING).log("Failed to register interaction codecs: %s", e.getMessage());
         }
     }
 
     /**
-     * Initializes OrbisGuard integrations and registers pickup protection hooks.
+     * Initializes protection mixin system and registers all hooks.
      *
-     * OrbisGuard-Mixins provides hooks for F-key and auto item pickup protection.
-     * OrbisGuard provides region protection to prevent claiming in protected areas.
+     * Detects which mixin system is available (HyperProtect-Mixin or OrbisGuard-Mixins)
+     * and registers all applicable protection hooks with the active provider.
+     * Also initializes OrbisGuard API for claim conflict checking.
      */
-    private void initializeOrbisIntegrations() {
-        // Initialize OrbisGuard API detection (for claim conflict checking)
+    private void initializeProtectionMixins() {
+        // Initialize OrbisGuard API detection (for claim conflict checking — separate from mixins)
         OrbisGuardIntegration.init();
 
-        // Register mixin hooks unconditionally - the mixin will find them if loaded
-        // This matches how OrbisGuard registers its hooks
-        OrbisMixinsIntegration.registerPickupHook(
-                (playerUuid, worldName, x, y, z, mode) -> {
-                    // Delegate to ProtectionChecker with mode awareness
-                    // mode = "manual" for F-key pickup, "auto" for walking over items
-                    return hyperFactions.getProtectionChecker().canPickupItem(
-                            playerUuid, worldName, x, y, z, mode);
-                });
+        // Detect mixin system and register all hooks
+        ProtectionMixinBridge.init();
+        ProtectionMixinBridge.registerAllHooks(hyperFactions);
 
-        // Harvest hook is registered in CallbackWiring.wireHarvestProtection()
-        // (handles both zone and claim protection in one hook)
-
-        // Register spawn protection hook
-        OrbisMixinsIntegration.registerSpawnHook(
-                (worldName, x, y, z) -> {
-                    // Delegate to ProtectionChecker - returns true if spawn should be BLOCKED
-                    return hyperFactions.getProtectionChecker().shouldBlockSpawn(worldName, x, y, z);
-                });
+        Logger.debug("Protection mixin status: %s", ProtectionMixinBridge.getStatusSummary());
 
         // Note: Fluid placement protection is handled via interaction codec replacement
         // (HyperFactionsPlaceFluidInteraction), not via mixin hooks.
@@ -362,7 +363,7 @@ public class HyperFactionsPlugin extends JavaPlugin {
         // Start core periodic tasks (auto-save, invite cleanup)
         hyperFactions.startPeriodicTasks();
 
-        getLogger().at(Level.INFO).log("Started periodic tasks (including claim decay every hour)");
+        Logger.info("[Startup] Periodic tasks started");
     }
 
     /**

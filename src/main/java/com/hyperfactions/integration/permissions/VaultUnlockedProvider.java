@@ -124,7 +124,7 @@ public class VaultUnlockedProvider implements PermissionProvider {
             getPrimaryGroupMethod = findMethod(permissionClass, "primaryGroup", contextClass, subjectClass);
 
             available = true;
-            Logger.info("[PermissionManager] VaultUnlocked provider initialized");
+            Logger.info("[Permissions] VaultUnlocked provider initialized");
 
         } catch (ClassNotFoundException | NoClassDefFoundError e) {
             permanentFailure = true;

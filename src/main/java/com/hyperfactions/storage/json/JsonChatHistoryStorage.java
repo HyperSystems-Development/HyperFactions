@@ -47,7 +47,7 @@ public class JsonChatHistoryStorage implements ChatHistoryStorage {
             try {
                 Files.createDirectories(chatDir);
                 StorageUtils.cleanupOrphanedFiles(chatDir);
-                Logger.info("Chat history storage initialized at %s", chatDir);
+                Logger.info("[Storage] Chat history storage initialized at %s", chatDir);
             } catch (IOException e) {
                 Logger.severe("Failed to create chat history directory", e);
             }

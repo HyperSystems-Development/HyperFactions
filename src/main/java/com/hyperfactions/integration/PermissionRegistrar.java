@@ -58,7 +58,7 @@ public final class PermissionRegistrar {
                 count++;
             }
 
-            Logger.info("[PermissionRegistrar] Registered %d permission nodes with LuckPerms", count);
+            Logger.info("[Permissions] Registered %d permission nodes with LuckPerms", count);
 
         } catch (ClassNotFoundException | NoClassDefFoundError e) {
             // LuckPerms not installed — expected, no action needed

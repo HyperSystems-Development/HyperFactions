@@ -172,7 +172,7 @@ Tests use **JUnit Jupiter 5.10.2**. Place test files in `src/test/java/`.
 
 - **Bug reports:** Use the [Bug Report template](https://github.com/HyperSystemsDev/HyperFactions/issues/new?template=bug_report.md) on GitHub
 - **Feature requests:** Use the [Feature Request template](https://github.com/HyperSystemsDev/HyperFactions/issues/new?template=feature_request.md) on GitHub
-- **Discord:** Join [our server](https://discord.gg/SNPjyfkYPc) for discussion
+- **Discord:** Join [our server](https://discord.com/invite/aZaa5vcFYh) for discussion
 
 ## License
 

@@ -86,9 +86,9 @@ public class PermissionManager {
         initialized = true;
 
         if (providers.isEmpty()) {
-            Logger.info("[PermissionManager] No permission providers found - using fallback mode");
+            Logger.info("[Permissions] No permission providers found - using fallback mode");
         } else {
-            Logger.info("[PermissionManager] Initialized with %d provider(s): %s",
+            Logger.info("[Permissions] Initialized with %d provider(s): %s",
                 providers.size(), getProviderNames());
         }
     }

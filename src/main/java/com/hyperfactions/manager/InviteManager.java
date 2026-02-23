@@ -421,7 +421,7 @@ public class InviteManager {
      */
     private void load() {
         if (!Files.exists(dataFile)) {
-            Logger.info("No invites file found, starting fresh");
+            Logger.info("[Storage] No invites file found, starting fresh");
             return;
         }
 
@@ -446,7 +446,7 @@ public class InviteManager {
                 loaded++;
             }
 
-            Logger.info("Loaded %d invites (%d expired and skipped)", loaded, expired);
+            Logger.info("[Storage] Loaded %d invites (%d expired and skipped)", loaded, expired);
         } catch (Exception e) {
             Logger.severe("Failed to load invites", e);
         }

@@ -62,7 +62,7 @@ public class PowerManager {
             powerCache.clear();
             powerCache.putAll(newCache);
 
-            Logger.info("Loaded %d player power records", powerCache.size());
+            Logger.info("[Startup] Loaded %d player power records", powerCache.size());
         }).exceptionally(ex -> {
             Logger.severe("CRITICAL: Exception during player power loading - keeping existing data", (Throwable) ex);
             return null;

@@ -39,7 +39,7 @@ public final class WiFlowPlaceholderIntegration {
         try {
             Class.forName("com.wiflow.placeholderapi.WiFlowPlaceholderAPI");
         } catch (ClassNotFoundException e) {
-            Logger.info("WiFlow PlaceholderAPI not found - WiFlow placeholders disabled");
+            Logger.info("[Integration] WiFlow PlaceholderAPI not found - WiFlow placeholders disabled");
             return;
         }
 
@@ -60,7 +60,7 @@ public final class WiFlowPlaceholderIntegration {
                 // Cache unregister method for shutdown
                 unregisterMethod = apiClass.getMethod("unregisterExpansion", baseExpansionClass);
                 available = true;
-                Logger.info("WiFlow PlaceholderAPI expansion registered ({factions_*})");
+                Logger.info("[Integration] WiFlow PlaceholderAPI expansion registered ({factions_*})");
             } else {
                 Logger.warn("WiFlow PlaceholderAPI expansion registration failed");
                 expansion = null;

@@ -28,7 +28,6 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public final class UpdateChecker {
 
-    private static final String USER_AGENT = "HyperFactions-UpdateChecker";
     private static final int TIMEOUT_MS = 10000;
     private static final Gson GSON = new Gson();
 
@@ -36,26 +35,53 @@ public final class UpdateChecker {
     private final String currentVersion;
     private final String checkUrl;
     private final boolean includePreReleases;
+    private final String artifactName;
+    private final Path targetDirectory;
 
     private final AtomicReference<UpdateInfo> cachedUpdate = new AtomicReference<>();
     private volatile long lastCheckTime = 0;
     private static final long CACHE_DURATION_MS = 300000; // 5 minutes
 
     public UpdateChecker(@NotNull Path dataDirectory, @NotNull String currentVersion, @NotNull String checkUrl) {
-        this(dataDirectory, currentVersion, checkUrl, false);
+        this(dataDirectory, currentVersion, checkUrl, false, "HyperFactions", null);
     }
 
     public UpdateChecker(@NotNull Path dataDirectory, @NotNull String currentVersion, @NotNull String checkUrl, boolean includePreReleases) {
+        this(dataDirectory, currentVersion, checkUrl, includePreReleases, "HyperFactions", null);
+    }
+
+    /**
+     * Full constructor supporting multiple artifacts.
+     *
+     * @param dataDirectory    the plugin data directory
+     * @param currentVersion   the currently installed version
+     * @param checkUrl         the GitHub API URL for release checks
+     * @param includePreReleases whether to include pre-release versions
+     * @param artifactName     the JAR artifact name (e.g. "HyperFactions" or "HyperProtect-Mixin")
+     * @param targetDirectory  the directory to download/manage JARs in (defaults to dataDirectory.getParent())
+     */
+    public UpdateChecker(@NotNull Path dataDirectory, @NotNull String currentVersion,
+                         @NotNull String checkUrl, boolean includePreReleases,
+                         @NotNull String artifactName, @Nullable Path targetDirectory) {
         this.dataDirectory = dataDirectory;
         this.currentVersion = currentVersion;
         // Adjust URL based on release channel
         if (includePreReleases && checkUrl.endsWith("/releases/latest")) {
-            // Change to /releases to get all releases including pre-releases
             this.checkUrl = checkUrl.replace("/releases/latest", "/releases");
         } else {
             this.checkUrl = checkUrl;
         }
         this.includePreReleases = includePreReleases;
+        this.artifactName = artifactName;
+        this.targetDirectory = targetDirectory != null ? targetDirectory : dataDirectory.getParent();
+    }
+
+    /**
+     * Gets the artifact name this checker manages.
+     */
+    @NotNull
+    public String getArtifactName() {
+        return artifactName;
     }
 
     /**
@@ -89,19 +115,24 @@ public final class UpdateChecker {
 
         return CompletableFuture.supplyAsync(() -> {
             try {
-                Logger.info("[Update] Checking for updates from %s", checkUrl);
+                Logger.info("[Update:%s] Checking for updates from %s", artifactName, checkUrl);
 
                 URL url = URI.create(checkUrl).toURL();
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
-                conn.setRequestProperty("User-Agent", USER_AGENT);
+                conn.setRequestProperty("User-Agent", artifactName + "-UpdateChecker");
                 conn.setRequestProperty("Accept", "application/vnd.github+json");
                 conn.setConnectTimeout(TIMEOUT_MS);
                 conn.setReadTimeout(TIMEOUT_MS);
 
                 int responseCode = conn.getResponseCode();
+                if (responseCode == 404) {
+                    Logger.info("[Update:%s] No releases found yet (404)", artifactName);
+                    lastCheckTime = System.currentTimeMillis();
+                    return null;
+                }
                 if (responseCode != 200) {
-                    Logger.warn("[Update] Failed to check for updates: HTTP %d", responseCode);
+                    Logger.warn("[Update:%s] Failed to check for updates: HTTP %d", artifactName, responseCode);
                     return null;
                 }
 
@@ -124,7 +155,7 @@ public final class UpdateChecker {
                     // Array response from /releases endpoint
                     JsonArray releases = GSON.fromJson(json, JsonArray.class);
                     if (releases.isEmpty()) {
-                        Logger.info("[Update] No releases found");
+                        Logger.info("[Update:%s] No releases found", artifactName);
                         return null;
                     }
                     // First release in the array is the latest (including pre-releases)
@@ -161,16 +192,16 @@ public final class UpdateChecker {
                     UpdateInfo info = new UpdateInfo(latestVersion, downloadUrl, changelog, isPreRelease);
                     cachedUpdate.set(info);
                     String channelNote = isPreRelease ? " (pre-release)" : "";
-                    Logger.info("[Update] New version available: %s%s (current: %s)", latestVersion, channelNote, currentVersion);
+                    Logger.info("[Update:%s] New version available: %s%s (current: %s)", artifactName, latestVersion, channelNote, currentVersion);
                     return info;
                 } else {
                     cachedUpdate.set(null);
-                    Logger.info("[Update] Plugin is up-to-date (v%s)", currentVersion);
+                    Logger.info("[Update:%s] Plugin is up-to-date (v%s)", artifactName, currentVersion);
                     return null;
                 }
 
             } catch (Exception e) {
-                Logger.warn("[Update] Failed to check for updates: %s", e.getMessage());
+                Logger.warn("[Update:%s] Failed to check for updates: %s", artifactName, e.getMessage());
                 return null;
             }
         });
@@ -189,12 +220,12 @@ public final class UpdateChecker {
 
         return CompletableFuture.supplyAsync(() -> {
             try {
-                Logger.info("[Update] Downloading update v%s from %s", info.version(), info.downloadUrl());
+                Logger.info("[Update:%s] Downloading update v%s from %s", artifactName, info.version(), info.downloadUrl());
 
                 URL url = URI.create(info.downloadUrl()).toURL();
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
-                conn.setRequestProperty("User-Agent", USER_AGENT);
+                conn.setRequestProperty("User-Agent", artifactName + "-UpdateChecker");
                 conn.setConnectTimeout(TIMEOUT_MS);
                 conn.setReadTimeout(60000); // 60 second read timeout for downloads
 
@@ -203,17 +234,17 @@ public final class UpdateChecker {
 
                 int responseCode = conn.getResponseCode();
                 if (responseCode != 200) {
-                    Logger.warn("[Update] Failed to download update: HTTP %d", responseCode);
+                    Logger.warn("[Update:%s] Failed to download update: HTTP %d", artifactName, responseCode);
                     return null;
                 }
 
                 // Determine output path
-                Path modsFolder = dataDirectory.getParent();
-                Path updateFile = modsFolder.resolve("HyperFactions-" + info.version() + ".jar");
-                Path currentJar = modsFolder.resolve("HyperFactions-" + currentVersion + ".jar");
+                // targetDirectory is used instead of dataDirectory.getParent()
+                Path updateFile = targetDirectory.resolve(artifactName + "-" + info.version() + ".jar");
+                Path currentJar = targetDirectory.resolve(artifactName + "-" + currentVersion + ".jar");
 
                 // Download to temp file first
-                Path tempFile = modsFolder.resolve("HyperFactions-" + info.version() + ".jar.tmp");
+                Path tempFile = targetDirectory.resolve(artifactName + "-" + info.version() + ".jar.tmp");
 
                 try (InputStream in = conn.getInputStream()) {
                     Files.copy(in, tempFile, StandardCopyOption.REPLACE_EXISTING);
@@ -221,7 +252,7 @@ public final class UpdateChecker {
 
                 // Verify download (basic check - file size > 0)
                 if (Files.size(tempFile) < 1000) {
-                    Logger.warn("[Update] Downloaded file seems too small, aborting");
+                    Logger.warn("[Update:%s] Downloaded file seems too small, aborting", artifactName);
                     Files.deleteIfExists(tempFile);
                     return null;
                 }
@@ -232,21 +263,21 @@ public final class UpdateChecker {
                 // Backup current JAR if it exists
                 // On Windows, the JAR may be locked by the JVM - handle gracefully
                 if (Files.exists(currentJar)) {
-                    Path backupFile = modsFolder.resolve("HyperFactions-" + currentVersion + ".jar.backup");
+                    Path backupFile = targetDirectory.resolve(artifactName + "-" + currentVersion + ".jar.backup");
                     try {
                         Files.move(currentJar, backupFile, StandardCopyOption.REPLACE_EXISTING);
-                        Logger.info("[Update] Backed up current JAR to %s", backupFile.getFileName());
+                        Logger.info("[Update:%s] Backed up current JAR to %s", artifactName, backupFile.getFileName());
                     } catch (java.nio.file.FileSystemException e) {
                         // Windows locks loaded JARs - can't backup while running
-                        Logger.warn("[Update] Could not backup old JAR (file in use). Please delete %s manually after restart.", currentJar.getFileName());
+                        Logger.warn("[Update:%s] Could not backup old JAR (file in use). Please delete %s manually after restart.", artifactName, currentJar.getFileName());
                     }
                 }
 
-                Logger.info("[Update] Successfully downloaded update to %s", updateFile.getFileName());
+                Logger.info("[Update:%s] Successfully downloaded update to %s", artifactName, updateFile.getFileName());
                 return updateFile;
 
             } catch (Exception e) {
-                Logger.warn("[Update] Failed to download update: %s", e.getMessage());
+                Logger.warn("[Update:%s] Failed to download update: %s", artifactName, e.getMessage());
                 e.printStackTrace();
                 return null;
             }
@@ -276,21 +307,21 @@ public final class UpdateChecker {
      * @return the number of backup files deleted
      */
     public int cleanupOldBackups(@Nullable String keepVersion) {
-        Path modsFolder = dataDirectory.getParent();
+        // targetDirectory is used instead of dataDirectory.getParent()
         List<Path> backupFiles = new ArrayList<>();
 
         // Find all HyperFactions backup files
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(modsFolder, "HyperFactions-*.jar.backup")) {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(targetDirectory, artifactName + "-*.jar.backup")) {
             for (Path file : stream) {
                 backupFiles.add(file);
             }
         } catch (IOException e) {
-            Logger.warn("[Update] Failed to list backup files: %s", e.getMessage());
+            Logger.warn("[Update:%s] Failed to list backup files: %s", artifactName, e.getMessage());
             return 0;
         }
 
         if (backupFiles.isEmpty()) {
-            Logger.info("[Update] No old backup files to clean up");
+            Logger.info("[Update:%s] No old backup files to clean up", artifactName);
             return 0;
         }
 
@@ -310,14 +341,14 @@ public final class UpdateChecker {
             // Keep the specified version (the one we just upgraded from)
             if (keepVersion != null && fileVersion.equals(keepVersion)) {
                 keepVersionFound = true;
-                Logger.info("[Update] Keeping backup: %s (rollback version)", backupFile.getFileName());
+                Logger.info("[Update:%s] Keeping backup: %s (rollback version)", artifactName, backupFile.getFileName());
                 continue;
             }
 
             // If no keepVersion specified, keep the most recent (first in sorted list)
             if (keepVersion == null && !keepVersionFound) {
                 keepVersionFound = true;
-                Logger.info("[Update] Keeping backup: %s (most recent)", backupFile.getFileName());
+                Logger.info("[Update:%s] Keeping backup: %s (most recent)", artifactName, backupFile.getFileName());
                 continue;
             }
 
@@ -325,14 +356,14 @@ public final class UpdateChecker {
             try {
                 Files.delete(backupFile);
                 deleted++;
-                Logger.info("[Update] Cleanup: Removed old backup %s", backupFile.getFileName());
+                Logger.info("[Update:%s] Cleanup: Removed old backup %s", artifactName, backupFile.getFileName());
             } catch (IOException e) {
-                Logger.warn("[Update] Failed to delete backup %s: %s", backupFile.getFileName(), e.getMessage());
+                Logger.warn("[Update:%s] Failed to delete backup %s: %s", artifactName, backupFile.getFileName(), e.getMessage());
             }
         }
 
         if (deleted > 0) {
-            Logger.info("[Update] Cleanup complete: Removed %d old backup(s)", deleted);
+            Logger.info("[Update:%s] Cleanup complete: Removed %d old backup(s)", artifactName, deleted);
         }
 
         return deleted;
@@ -340,14 +371,15 @@ public final class UpdateChecker {
 
     /**
      * Extracts the version string from a backup filename.
-     * Example: "HyperFactions-0.5.2.jar.backup" -> "0.5.2"
+     * Example: "ArtifactName-0.5.2.jar.backup" -> "0.5.2"
      */
     @NotNull
     private String extractVersionFromBackup(@NotNull String filename) {
-        // Remove prefix "HyperFactions-" and suffix ".jar.backup"
+        // Remove prefix "ArtifactName-" and suffix ".jar.backup"
         String version = filename;
-        if (version.startsWith("HyperFactions-")) {
-            version = version.substring("HyperFactions-".length());
+        String prefix = artifactName + "-";
+        if (version.startsWith(prefix)) {
+            version = version.substring(prefix.length());
         }
         if (version.endsWith(".jar.backup")) {
             version = version.substring(0, version.length() - ".jar.backup".length());
@@ -433,9 +465,9 @@ public final class UpdateChecker {
         try {
             String content = "from=" + fromVersion + "\nto=" + toVersion + "\ntimestamp=" + System.currentTimeMillis();
             Files.writeString(markerFile, content);
-            Logger.debug("[Update] Created rollback marker: %s -> %s", fromVersion, toVersion);
+            Logger.debug("[Update:%s] Created rollback marker: %s -> %s", artifactName, fromVersion, toVersion);
         } catch (IOException e) {
-            Logger.warn("[Update] Failed to create rollback marker: %s", e.getMessage());
+            Logger.warn("[Update:%s] Failed to create rollback marker: %s", artifactName, e.getMessage());
         }
     }
 
@@ -447,10 +479,10 @@ public final class UpdateChecker {
         Path markerFile = dataDirectory.resolve(ROLLBACK_MARKER_FILE);
         try {
             if (Files.deleteIfExists(markerFile)) {
-                Logger.debug("[Update] Cleared rollback marker (server restarted with new version)");
+                Logger.debug("[Update:%s] Cleared rollback marker (server restarted with new version)", artifactName);
             }
         } catch (IOException e) {
-            Logger.warn("[Update] Failed to clear rollback marker: %s", e.getMessage());
+            Logger.warn("[Update:%s] Failed to clear rollback marker: %s", artifactName, e.getMessage());
         }
     }
 
@@ -493,7 +525,7 @@ public final class UpdateChecker {
                 return new RollbackInfo(fromVersion, toVersion, true);
             }
         } catch (IOException e) {
-            Logger.warn("[Update] Failed to read rollback marker: %s", e.getMessage());
+            Logger.warn("[Update:%s] Failed to read rollback marker: %s", artifactName, e.getMessage());
         }
 
         return null;
@@ -506,15 +538,15 @@ public final class UpdateChecker {
      */
     @Nullable
     public Path findLatestBackup() {
-        Path modsFolder = dataDirectory.getParent();
+        // targetDirectory is used instead of dataDirectory.getParent()
         List<Path> backupFiles = new ArrayList<>();
 
-        try (DirectoryStream<Path> stream = Files.newDirectoryStream(modsFolder, "HyperFactions-*.jar.backup")) {
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(targetDirectory, artifactName + "-*.jar.backup")) {
             for (Path file : stream) {
                 backupFiles.add(file);
             }
         } catch (IOException e) {
-            Logger.warn("[Update] Failed to list backup files: %s", e.getMessage());
+            Logger.warn("[Update:%s] Failed to list backup files: %s", artifactName, e.getMessage());
             return null;
         }
 
@@ -540,7 +572,7 @@ public final class UpdateChecker {
      */
     @NotNull
     public RollbackResult performRollback() {
-        Path modsFolder = dataDirectory.getParent();
+        // targetDirectory is used instead of dataDirectory.getParent()
         Path latestBackup = findLatestBackup();
 
         if (latestBackup == null) {
@@ -548,27 +580,27 @@ public final class UpdateChecker {
         }
 
         String backupVersion = extractVersionFromBackup(latestBackup.getFileName().toString());
-        Path currentJar = modsFolder.resolve("HyperFactions-" + currentVersion + ".jar");
+        Path currentJar = targetDirectory.resolve(artifactName + "-" + currentVersion + ".jar");
         Path newVersionJar = null;
 
         // Find the new version JAR (the one we're rolling back from)
         RollbackInfo info = getRollbackInfo();
         if (info != null) {
-            newVersionJar = modsFolder.resolve("HyperFactions-" + info.toVersion() + ".jar");
+            newVersionJar = targetDirectory.resolve(artifactName + "-" + info.toVersion() + ".jar");
         }
 
         try {
             // Step 1: If the new version JAR exists, delete it (or rename it)
             if (newVersionJar != null && Files.exists(newVersionJar)) {
-                Path rolledBackJar = modsFolder.resolve("HyperFactions-" + info.toVersion() + ".jar.rolledback");
+                Path rolledBackJar = targetDirectory.resolve(artifactName + "-" + info.toVersion() + ".jar.rolledback");
                 Files.move(newVersionJar, rolledBackJar, StandardCopyOption.REPLACE_EXISTING);
-                Logger.info("[Update] Moved new JAR to: %s", rolledBackJar.getFileName());
+                Logger.info("[Update:%s] Moved new JAR to: %s", artifactName, rolledBackJar.getFileName());
             }
 
             // Step 2: Restore the backup to its original name
-            Path restoredJar = modsFolder.resolve("HyperFactions-" + backupVersion + ".jar");
+            Path restoredJar = targetDirectory.resolve(artifactName + "-" + backupVersion + ".jar");
             Files.move(latestBackup, restoredJar, StandardCopyOption.REPLACE_EXISTING);
-            Logger.info("[Update] Restored backup: %s -> %s", latestBackup.getFileName(), restoredJar.getFileName());
+            Logger.info("[Update:%s] Restored backup: %s -> %s", artifactName, latestBackup.getFileName(), restoredJar.getFileName());
 
             // Step 3: Remove the rollback marker
             clearRollbackMarker();
@@ -576,7 +608,7 @@ public final class UpdateChecker {
             return new RollbackResult(true, backupVersion, info != null ? info.toVersion() : null, null);
 
         } catch (IOException e) {
-            Logger.severe("[Update] Rollback failed: %s", e.getMessage());
+            Logger.severe("[Update:%s] Rollback failed: %s", artifactName, e.getMessage());
             return new RollbackResult(false, backupVersion, null, "Failed to rollback: " + e.getMessage());
         }
     }

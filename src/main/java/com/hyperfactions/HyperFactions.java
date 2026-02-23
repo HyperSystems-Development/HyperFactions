@@ -8,9 +8,11 @@ import com.hyperfactions.lifecycle.CallbackWiring;
 import com.hyperfactions.lifecycle.MembershipHistoryHandler;
 import com.hyperfactions.lifecycle.PeriodicTaskManager;
 import com.hyperfactions.config.ConfigManager;
+import com.hyperfactions.config.CoreConfig;
 import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.integration.economy.VaultEconomyProvider;
 import com.hyperfactions.integration.protection.GravestoneIntegration;
+import com.hyperfactions.integration.protection.ProtectionMixinBridge;
 import com.hyperfactions.integration.permissions.HyperPermsIntegration;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.manager.*;
@@ -57,7 +59,7 @@ public class HyperFactions {
     public static final String VERSION = BuildInfo.VERSION;
 
     private final Path dataDir;
-    private final java.util.logging.Logger javaLogger;
+    private final com.hypixel.hytale.logger.HytaleLogger hytaleLogger;
 
     // Storage
     private FactionStorage factionStorage;
@@ -106,6 +108,7 @@ public class HyperFactions {
 
     // Update checker
     private UpdateChecker updateChecker;
+    private UpdateChecker hyperProtectUpdateChecker;
     private UpdateNotificationListener updateNotificationListener;
     private UpdateNotificationPreferences notificationPreferences;
 
@@ -166,11 +169,11 @@ public class HyperFactions {
      * Creates a new HyperFactions instance.
      *
      * @param dataDir    the plugin data directory
-     * @param javaLogger the Java logger
+     * @param hytaleLogger the Hytale logger
      */
-    public HyperFactions(@NotNull Path dataDir, @NotNull java.util.logging.Logger javaLogger) {
+    public HyperFactions(@NotNull Path dataDir, @NotNull com.hypixel.hytale.logger.HytaleLogger hytaleLogger) {
         this.dataDir = dataDir;
-        this.javaLogger = javaLogger;
+        this.hytaleLogger = hytaleLogger;
     }
 
     /**
@@ -178,8 +181,8 @@ public class HyperFactions {
      */
     public void enable() {
         // Initialize logger
-        Logger.init(javaLogger);
-        Logger.info("HyperFactions v%s starting... (build: %d)", VERSION, BuildInfo.BUILD_TIMESTAMP);
+        Logger.init(hytaleLogger);
+        Logger.debug("HyperFactions v%s starting (build: %d)", VERSION, BuildInfo.BUILD_TIMESTAMP);
 
         // Load configuration (uses new ConfigManager with migration support)
         ConfigManager.get().loadAll(dataDir);
@@ -242,10 +245,10 @@ public class HyperFactions {
 
         if (!ConfigManager.get().isEconomyEnabled()) {
             treasuryDisabledReason = "Economy features are not available on this server";
-            Logger.info("Treasury module disabled by server configuration");
+            Logger.debug("Treasury module disabled by server configuration");
         } else if (!vaultEconomyProvider.isAvailable()) {
             treasuryDisabledReason = "No economy plugin detected — install VaultUnlocked and an economy plugin";
-            Logger.info("Treasury module disabled (no economy provider — install VaultUnlocked + an economy plugin)");
+            Logger.debug("Treasury module disabled (no economy provider)");
         } else {
             // Both conditions met — activate treasury
             economyStorage = new JsonEconomyStorage(dataDir);
@@ -253,7 +256,7 @@ public class HyperFactions {
             economyManager = new EconomyManager(factionManager, vaultEconomyProvider, economyStorage);
             economyManager.loadAll();
             treasuryDisabledReason = null;
-            Logger.info("Treasury module enabled (VaultUnlocked economy detected)");
+            Logger.debug("Treasury module enabled (VaultUnlocked economy detected)");
         }
 
         // Initialize protection checker (with plugin reference for admin bypass toggle)
@@ -363,6 +366,9 @@ public class HyperFactions {
             updateNotificationListener = new UpdateNotificationListener(this);
         }
 
+        // HyperProtect-Mixin auto-download / update checking
+        initHyperProtectMixinLifecycle();
+
         // Start periodic tasks (auto-save, invite cleanup)
         // Note: These are started after platform sets callbacks via setRepeatingTaskScheduler()
         // The platform should call startPeriodicTasks() after setting up callbacks
@@ -375,10 +381,8 @@ public class HyperFactions {
             Class.forName("com.wiflow.placeholderapi.WiFlowPlaceholderAPI");
             com.hyperfactions.integration.placeholder.WiFlowPlaceholderIntegration.init(this);
         } catch (ClassNotFoundException e) {
-            Logger.info("WiFlow PlaceholderAPI not found - WiFlow placeholders disabled");
+            Logger.debug("WiFlow PlaceholderAPI not found — WiFlow placeholders disabled");
         }
-
-        Logger.info("HyperFactions enabled");
     }
 
     /**
@@ -400,7 +404,6 @@ public class HyperFactions {
      * Disables HyperFactions.
      */
     public void disable() {
-        Logger.info("HyperFactions disabling...");
 
         // Unregister PlaceholderAPI expansions
         try {
@@ -479,7 +482,6 @@ public class HyperFactions {
             cancelTask(taskId);
         }
 
-        Logger.info("HyperFactions disabled");
     }
 
     /**
@@ -526,6 +528,92 @@ public class HyperFactions {
     }
 
     /**
+     * Initializes HyperProtect-Mixin lifecycle management.
+     * - If HP is running: check for updates
+     * - If HP JAR exists on disk but didn't initialize: warn + check for updates
+     * - If no JAR on disk + autoDownload enabled: download latest release
+     * - If no JAR on disk + autoDownload disabled: log instructions for manual install
+     */
+    private void initHyperProtectMixinLifecycle() {
+        CoreConfig config = ConfigManager.get().core();
+        Path earlyPluginsDir = dataDir.toAbsolutePath().getParent().getParent().resolve("earlyplugins");
+        boolean hpDetected = "true".equalsIgnoreCase(System.getProperty("hyperprotect.bridge.active"))
+                || "true".equalsIgnoreCase(System.getProperty("hyperprotect.intercept.block_break"))
+                || ProtectionMixinBridge.getProvider() == ProtectionMixinBridge.MixinProvider.HYPERPROTECT;
+
+        if (hpDetected) {
+            // HP is installed and running — check for updates if enabled
+            if (config.isHyperProtectAutoUpdate()) {
+                String hpVersion = System.getProperty("hyperprotect.bridge.version", "0.0.0");
+                hyperProtectUpdateChecker = new UpdateChecker(
+                        dataDir, hpVersion, config.getHyperProtectUpdateUrl(),
+                        false, "HyperProtect-Mixin", earlyPluginsDir);
+                hyperProtectUpdateChecker.checkForUpdates(false).thenAccept(info -> {
+                    if (info != null) {
+                        Logger.info("[Update] HyperProtect-Mixin update available: v%s -> v%s", hpVersion, info.version());
+                        Logger.info("[Update] Run '/f admin update mixin' to download, then restart.");
+                    }
+                });
+            }
+            return;
+        }
+
+        // HP is NOT running — check if a JAR exists on disk
+        String diskVersion = null;
+        try (var stream = java.nio.file.Files.newDirectoryStream(earlyPluginsDir, "HyperProtect-Mixin-*.jar")) {
+            for (var jar : stream) {
+                String name = jar.getFileName().toString();
+                String v = name.substring("HyperProtect-Mixin-".length(), name.length() - ".jar".length());
+                if (diskVersion == null || v.compareTo(diskVersion) > 0) {
+                    diskVersion = v;
+                }
+            }
+        } catch (Exception ignored) {}
+
+        if (diskVersion != null) {
+            // JAR exists but didn't initialize — warn and check for updates
+            final String foundVersion = diskVersion;
+            Logger.warn("[Update] HyperProtect-Mixin v%s found in earlyplugins/ but did not initialize. Check for errors above.", foundVersion);
+            if (config.isHyperProtectAutoUpdate()) {
+                hyperProtectUpdateChecker = new UpdateChecker(
+                        dataDir, foundVersion, config.getHyperProtectUpdateUrl(),
+                        false, "HyperProtect-Mixin", earlyPluginsDir);
+                hyperProtectUpdateChecker.checkForUpdates(false).thenAccept(info -> {
+                    if (info != null) {
+                        Logger.info("[Update] HyperProtect-Mixin update available: v%s -> v%s", foundVersion, info.version());
+                        Logger.info("[Update] Run '/f admin update mixin' to download, then restart.");
+                    }
+                });
+            }
+        } else if (config.isHyperProtectAutoDownload()) {
+            // No JAR on disk + auto-download enabled — download latest release
+            Logger.info("[Update] HyperProtect-Mixin not detected. Attempting auto-download...");
+            hyperProtectUpdateChecker = new UpdateChecker(
+                    dataDir, "0.0.0", config.getHyperProtectUpdateUrl(),
+                    false, "HyperProtect-Mixin", earlyPluginsDir);
+            hyperProtectUpdateChecker.checkForUpdates(false).thenAccept(info -> {
+                if (info == null) {
+                    Logger.info("[Update] No HyperProtect-Mixin releases available yet. Will check again next restart.");
+                    return;
+                }
+                hyperProtectUpdateChecker.downloadUpdate(info).thenAccept(path -> {
+                    if (path != null) {
+                        Logger.info("[Update] HyperProtect-Mixin v%s downloaded to earlyplugins/. Restart server to activate.", info.version());
+                    } else {
+                        Logger.warn("Failed to download HyperProtect-Mixin. Install manually from GitHub.");
+                    }
+                });
+            });
+        } else {
+            // No JAR on disk + auto-download disabled — inform the user
+            Logger.info("[HyperProtect] HyperProtect-Mixin is not installed. For full protection features (explosions, fire spread, builder tools, etc.), install it:");
+            Logger.info("[HyperProtect]   - Run '/f admin update mixin' to download, or");
+            Logger.info("[HyperProtect]   - Set updates.hyperProtect.autoDownload=true in config.json, or");
+            Logger.info("[HyperProtect]   - Download manually from GitHub and place in earlyplugins/");
+        }
+    }
+
+    /**
      * Reloads the configuration and reinitializes managers that depend on config values.
      */
     public void reloadConfig() {
@@ -557,7 +645,7 @@ public class HyperFactions {
             confirmationManager.cleanupExpired();
         }
 
-        Logger.info("Configuration reloaded");
+        Logger.info("[Config] Configuration reloaded");
     }
 
     /**
@@ -694,7 +782,7 @@ public class HyperFactions {
      * Called periodically by auto-save and on shutdown.
      */
     public void saveAllData() {
-        Logger.info("Auto-saving data...");
+        Logger.info("[AutoSave] Saving data...");
         if (factionManager != null) {
             factionManager.saveAll().join();
         }
@@ -704,7 +792,7 @@ public class HyperFactions {
         if (zoneManager != null) {
             zoneManager.saveAll().join();
         }
-        Logger.info("Auto-save complete");
+        Logger.info("[AutoSave] Save complete");
     }
 
     // === Getters ===
@@ -845,6 +933,16 @@ public class HyperFactions {
     @Nullable
     public UpdateChecker getUpdateChecker() {
         return updateChecker;
+    }
+
+    /**
+     * Gets the HyperProtect-Mixin update checker.
+     *
+     * @return the mixin update checker, or null if not initialized
+     */
+    @Nullable
+    public UpdateChecker getHyperProtectUpdateChecker() {
+        return hyperProtectUpdateChecker;
     }
 
     /**
@@ -1000,7 +1098,7 @@ public class HyperFactions {
      */
     public void handleFactionDisband(@NotNull FactionDisbandEvent event) {
         UUID factionId = event.faction().id();
-        Logger.info("Cleaning up data for disbanded faction '%s' (ID: %s)",
+        Logger.info("[Faction] Cleaning up data for disbanded faction '%s' (ID: %s)",
                 event.faction().name(), factionId);
 
         // Clean up claims

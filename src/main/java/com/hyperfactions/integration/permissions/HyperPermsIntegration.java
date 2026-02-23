@@ -73,12 +73,12 @@ public final class HyperPermsIntegration {
             getUserManagerMethod = instanceClass.getMethod("getUserManager");
 
             available = true;
-            Logger.info("HyperPerms integration enabled successfully");
+            Logger.info("[Integration] HyperPerms integration enabled");
 
         } catch (ClassNotFoundException e) {
             available = false;
             initError = "HyperPerms not found";
-            Logger.info("HyperPerms not found - all players will have full access");
+            Logger.info("[Integration] HyperPerms not found - all players will have full access");
         } catch (NoSuchMethodException e) {
             available = false;
             initError = "Method not found: " + e.getMessage();
