@@ -202,7 +202,6 @@
 <ul>
     <li>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/hyxin" rel="nofollow">Hyxin</a></strong> + <strong><a href="https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin" rel="nofollow">HyperProtect-Mixin</a></strong> - <span style="color: #98c379;">Recommended</span> &mdash; 20 protection hooks including F-key pickup, keep inventory, explosion/fire protection, block placement, transport control, entity damage, and more</li>
     <li><strong><a href="https://www.curseforge.com/hytale/mods/hyxin" rel="nofollow">Hyxin</a></strong> + <strong><a href="https://www.curseforge.com/hytale/mods/orbisguard-mixins" rel="nofollow">OrbisGuard-Mixins</a></strong> - Alternative &mdash; 11 protection hooks. Both can run simultaneously (HyperFactions auto-detects and routes hooks accordingly)</li>
-    <li>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/hybounty" rel="nofollow">HyBounty</a></strong> - Place bounties on other players with protections against abuse</li>
 </ul>
 <h3>📊 Placeholder Systems</h3>
 <ul>
@@ -218,6 +217,11 @@
 <ul>
     <li><strong><a href="https://www.curseforge.com/hytale/mods/orbisguard" rel="nofollow">OrbisGuard</a></strong> - Auto-blocks claims in OG-protected regions, renders OG regions on world map and territory GUI with colored overlays</li>
 </ul>
+<h3>🤝 Direct Mod Integrations</h3>
+<ul>
+    <li>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/hybounty" rel="nofollow">HyBounty</a></strong> &mdash; Place bounties on other players with faction-aware protections against abuse</li>
+    <li>🪦 <strong><a href="https://www.curseforge.com/hytale/mods/gravestones" rel="nofollow">Gravestones</a></strong> &mdash; Faction-aware gravestone protection with per-zone access control, configurable ally/member access, and death location announcements</li>
+</ul>
 <h3>🔮 Upcoming Integrations</h3>
 <ul>
     <li>💰 <strong><a href="https://www.curseforge.com/hytale/mods/ecotale" rel="nofollow">Ecotale</a></strong> - Economy integration for faction banks, upkeep, and faction shops <span style="color: #e5c07b;">(Planned)</span></li>
@@ -225,7 +229,6 @@
     <li>🗣️ <strong><a href="https://www.curseforge.com/hytale/mods/npc-dialog" rel="nofollow">NPC Dialog</a></strong> - Faction NPCs and dialog interactions in claimed territory <span style="color: #e5c07b;">(Planned)</span></li>
     <li>📝 <strong><a href="https://www.curseforge.com/hytale/mods/npc-dialog-npc-quests-maker" rel="nofollow">NPC Quests Maker</a></strong> - Faction quests and mission systems <span style="color: #e5c07b;">(Planned)</span></li>
     <li>📋 <strong><a href="https://www.curseforge.com/hytale/mods/better-scoreboard" rel="nofollow">BetterScoreBoard</a></strong> - Faction data on the scoreboard HUD <span style="color: #abb2bf;">(Waiting on BetterScoreBoard to support PlaceholderAPI or WiFlow)</span></li>
-    <li><strong><span style="color: #abb2bf;">🪦 </span><a href="https://www.curseforge.com/hytale/mods/gravestones" rel="nofollow">Gravetones</a></strong> - Handle protections of items when player is killed <span style="color: #e5c07b;">(WIP pending <a href="https://github.com/zurkubusiness/gravestones/pull/2" target="_blank" rel="nofollow noopener">PR</a>)</span></li>
 </ul>
 <p>💡 <strong>Want HyperFactions to integrate with your plugin?</strong> Reach out to <strong>DMehaffy</strong> on <a href="https://discord.com/invite/aZaa5vcFYh" rel="nofollow">Discord</a> to discuss integration opportunities.</p>
 <p>&nbsp;</p>
@@ -378,6 +381,46 @@ dependencies {
     compileOnly 'com.github.HyperSystemsDev:HyperFactions:v0.9.0'
 }</pre>
 <p>See the full <a href="https://github.com/HyperSystemsDev/HyperFactions/blob/main/docs/api.md" rel="nofollow">Developer API Reference</a> on GitHub for API usage, event listeners, economy integration, and more.</p>
+<p>&nbsp;</p>
+<h2><span style="color: #5b8def;">🧩 The HyperSystems Suite</span></h2>
+<table>
+    <thead>
+    <tr>
+        <th>Mod</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/hyperperms">HyperPerms</a></strong></td>
+        <td>Advanced permissions management with groups, inheritance, and web editor</td>
+    </tr>
+    <tr>
+        <td>⚔️ <strong><a href="https://www.curseforge.com/hytale/mods/hyperfactions">HyperFactions</a></strong></td>
+        <td>Complete faction system with territory, diplomacy, economy, and 59 GUI pages</td>
+    </tr>
+    <tr>
+        <td>🛡️ <strong><a href="https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin">HyperProtect-Mixin</a></strong></td>
+        <td>Mixin-based protection hooks for HyperFactions zone flags</td>
+    </tr>
+    <tr>
+        <td>💰 <strong><a href="https://www.curseforge.com/hytale/mods/ecotale">Ecotale</a></strong></td>
+        <td>Economy system with balance HUD, admin GUI, and VaultUnlocked integration</td>
+    </tr>
+    <tr>
+        <td>💬 <strong><a href="https://www.curseforge.com/hytale/mods/werchat">Werchat</a></strong></td>
+        <td>Channel-based chat with private messaging, nicknames, and moderation</td>
+    </tr>
+    <tr>
+        <td>🌐 <strong>HyperBorder</strong></td>
+        <td>World border management <span style="color: #e5c07b;">(Coming Soon)</span></td>
+    </tr>
+    <tr>
+        <td>🔧 <strong>HyperEssentials</strong></td>
+        <td>Essential server tools — homes, warps, TPA, spawns, and more <span style="color: #e5c07b;">(Coming Soon)</span></td>
+    </tr>
+    </tbody>
+</table>
 <p>&nbsp;</p>
 <h2>🔗 Links</h2>
 <ul>

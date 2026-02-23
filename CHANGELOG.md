@@ -297,9 +297,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Placeholders not resolving for factionless players**: Both PlaceholderAPI and WiFlow expansions returned `null` for faction-specific placeholders when a player had no faction. WiFlow's parser treats `null` as "unknown placeholder" and preserves the raw text (e.g., `{factions_tag}` shown literally). Now returns empty string `""` for text placeholders and sensible defaults (`"0"`, `"false"`) for numeric/boolean ones.
 - **Set Relation search interrupting typing**: The Set Relation modal opened a brand new page on every keystroke via `ValueChanged`, destroying the text field focus. Now uses partial `sendUpdate()` like the Faction Browser page to preserve focus during search.
 
-**GravestonePlugin Integration**
-> **Note**: The gravestone integration requires a new release of [GravestonePlugin](https://github.com/zurkubusiness/gravestones) that includes the v2 API with AccessChecker and events. This is pending review in [zurkubusiness/gravestones#2](https://github.com/zurkubusiness/gravestones/pull/2). Until that PR is merged and released, the integration will detect the plugin but the AccessChecker will not be registered.
-
+**GravestonePlugin Integration** (now fully functional with GravestonePlugin v2 API)
 - Reflection-based soft dependency on Zurku's GravestonePlugin for faction-aware gravestone protection
 - New `GravestoneIntegration` class discovers running GravestonePlugin via Hytale's PluginManager
 - Faction-aware access control for gravestone break and collection events:
