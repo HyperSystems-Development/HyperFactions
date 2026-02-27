@@ -1,8 +1,7 @@
 package com.hyperfactions.importer.hyfactions;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents the Claims.json file structure from HyFactions.
@@ -10,6 +9,6 @@ import java.util.List;
  * @param Dimensions list of dimension entries with their claims
  */
 public record HyFactionClaims(
-    @Nullable List<HyFactionDimension> Dimensions
+  @Nullable List<HyFactionDimension> Dimensions
 ) {
 }

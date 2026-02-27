@@ -1,6 +1,6 @@
 # HyperFactions Config System
 
-> **Version**: 0.9.0 | **Config version**: 5 | **8 module configs**
+> **Version**: 0.10.0 | **Config version**: 6 | **11 config files**
 
 Architecture documentation for the HyperFactions configuration system.
 
@@ -9,20 +9,26 @@ Architecture documentation for the HyperFactions configuration system.
 HyperFactions uses a modular JSON-based configuration system with:
 
 - **ConfigManager** - Central coordinator for all config files
-- **CoreConfig** - Main `config.json` with core settings
+- **FactionsConfig** - Faction gameplay settings in `config/factions.json`
+- **ServerConfig** - Server behavior settings in `config/server.json` (includes `configVersion`)
 - **Module Configs** - 8 feature-specific configs in `config/` subdirectory
 - **Validation** - Automatic validation with warnings and auto-correction
-- **Migration** - Automatic config migration (v1→v2→v3→v4→v5) with backup/rollback
+- **Migration** - Automatic config migration (v1→v2→v3→v4→v5→v6) with backup/rollback
+
+> **Note:** `CoreConfig` and `config.json` are deprecated. The V5→V6 migration splits `config.json` into `config/factions.json` and `config/server.json`, then deletes `config.json`. New installs create only the split files. If migration fails, the plugin falls back to loading from the legacy `config.json`.
 
 ## Architecture
 
 ```
 ConfigManager (singleton)
      │
-     ├─► CoreConfig (config.json, configVersion: 5)
+     ├─► FactionsConfig (config/factions.json)
      │        │
-     │        └─► Faction, Power, Claims, Combat, Relations,
-     │            Invites, Teleport, Updates, AutoSave, Messages, GUI
+     │        └─► Roles, Faction, Power, Claims, Combat, Relations, Invites, Stuck
+     │
+     ├─► ServerConfig (config/server.json, configVersion: 6)
+     │        │
+     │        └─► Teleport, AutoSave, Messages, GUI, Permissions, Updates
      │
      └─► Module Configs (config/*.json)
               │
@@ -33,32 +39,61 @@ ConfigManager (singleton)
               ├─► FactionPermissionsConfig (faction-permissions.json)
               ├─► AnnouncementConfig (announcements.json)
               ├─► GravestoneConfig (gravestones.json)
-              └─► WorldMapConfig (worldmap.json)
+              ├─► WorldMapConfig (worldmap.json)
+              └─► WorldsConfig (worlds.json) — per-world behavior overrides
 ```
+
+> **Deprecated:** `CoreConfig` (`config.json`) is no longer used. It has been replaced by `FactionsConfig` and `ServerConfig`. Existing installs are automatically migrated (V5→V6).
 
 ## File Structure
 
 ```
 <server>/mods/com.hyperfactions_HyperFactions/
-├── config.json                    # Core configuration (v5)
-├── config/                        # Module configs
+├── config/                        # All configuration files
+│   ├── factions.json              # Faction gameplay (roles, faction, power, claims, combat, relations, invites, stuck)
+│   ├── server.json                # Server behavior (teleport, autoSave, messages, gui, permissions, updates, configVersion)
 │   ├── backup.json
 │   ├── chat.json
 │   ├── debug.json
 │   ├── economy.json
 │   ├── faction-permissions.json
-│   ├── announcements.json         # Event broadcast toggles
+│   ├── announcements.json         # Event broadcast toggles + territory notifications
 │   ├── gravestones.json           # Gravestone integration settings
-│   └── worldmap.json              # World map refresh modes
-├── factions/                      # Faction data (see storage.md)
-├── players/                       # Player data (see storage.md)
-├── backups/                       # Backup archives (see storage.md)
-└── zones.json                     # Zone data (see storage.md)
+│   ├── worldmap.json              # World map refresh modes
+│   └── worlds.json                # Per-world settings
+├── data/                          # All data files (see storage.md)
+│   ├── factions/                  # Per-faction data
+│   ├── players/                   # Per-player power data
+│   ├── chat/                      # Per-faction chat history
+│   ├── economy/                   # Per-faction treasury data
+│   ├── zones.json                 # Zone definitions
+│   ├── invites.json               # Pending invites
+│   ├── join_requests.json         # Pending join requests
+│   └── .version                   # Data layout version marker
+└── backups/                       # Backup archives (see storage.md)
 ```
+
+> **Note:** `config.json` no longer exists. It is deleted after the V5→V6 migration. New installs never create it.
 
 ## Config Migration
 
-Configuration is automatically migrated on startup. See [Data Import & Migration](data-import.md#config-migration-system) for the full migration chain (v1→v2→v3→v4→v5).
+Configuration is automatically migrated on startup. See [Data Import & Migration](data-import.md#config-migration-system) for the full migration chain (v1→v2→v3→v4→v5→v6).
+
+### V5→V6: Config Split
+
+The V5→V6 migration restructures the configuration layout:
+
+1. **Backs up** `config.json` before making changes
+2. **Splits** `config.json` into two new files:
+   - `config/factions.json` — faction gameplay settings (roles, faction, power, claims, combat, relations, invites, stuck)
+   - `config/server.json` — server behavior settings (teleport, autoSave, messages, gui, permissions, updates, configVersion)
+3. **Moves** `territoryNotificationsEnabled` to `config/announcements.json`
+4. **Replaces** `allowExplosionsInClaims` with 3 granular explosion flags in `config/factions.json` under `claims`
+5. **Adds** 9 new claim protection settings in `config/factions.json` under `claims`
+6. **Sets** `configVersion` to 6 in `config/server.json`
+7. **Deletes** `config.json` after successful migration
+
+**Legacy fallback:** If migration fails, the plugin can still load from the old `config.json`.
 
 ## Key Classes
 
@@ -66,7 +101,9 @@ Configuration is automatically migrated on startup. See [Data Import & Migration
 |-------|------|---------|
 | ConfigManager | [`config/ConfigManager.java`](../src/main/java/com/hyperfactions/config/ConfigManager.java) | Singleton coordinator |
 | ConfigFile | [`config/ConfigFile.java`](../src/main/java/com/hyperfactions/config/ConfigFile.java) | Base class for config files |
-| CoreConfig | [`config/CoreConfig.java`](../src/main/java/com/hyperfactions/config/CoreConfig.java) | Main config.json |
+| FactionsConfig | [`config/FactionsConfig.java`](../src/main/java/com/hyperfactions/config/FactionsConfig.java) | Faction gameplay (`config/factions.json`) |
+| ServerConfig | [`config/ServerConfig.java`](../src/main/java/com/hyperfactions/config/ServerConfig.java) | Server behavior (`config/server.json`) |
+| CoreConfig | [`config/CoreConfig.java`](../src/main/java/com/hyperfactions/config/CoreConfig.java) | **Deprecated** — legacy `config.json` fallback |
 | ModuleConfig | [`config/ModuleConfig.java`](../src/main/java/com/hyperfactions/config/ModuleConfig.java) | Base for module configs |
 | ValidationResult | [`config/ValidationResult.java`](../src/main/java/com/hyperfactions/config/ValidationResult.java) | Validation tracking |
 
@@ -82,7 +119,8 @@ public class ConfigManager {
     private static ConfigManager instance;
 
     private Path dataDir;
-    private CoreConfig coreConfig;
+    private FactionsConfig factionsConfig;
+    private ServerConfig serverConfig;
     private BackupConfig backupConfig;
     private ChatConfig chatConfig;
     private DebugConfig debugConfig;
@@ -99,20 +137,24 @@ public class ConfigManager {
     public void loadAll(Path dataDir) {
         this.dataDir = dataDir;
 
-        // 1. Run pending migrations
+        // 1. Run pending migrations (includes V5→V6 config split)
         runMigrations();
 
-        // 2. Load core config
-        coreConfig = new CoreConfig(dataDir.resolve("config.json"));
-        coreConfig.load();
-
-        // 3. Load module configs
+        // 2. Load faction gameplay config
         Path configDir = dataDir.resolve("config");
+        factionsConfig = new FactionsConfig(configDir.resolve("factions.json"));
+        factionsConfig.load();
+
+        // 3. Load server behavior config
+        serverConfig = new ServerConfig(configDir.resolve("server.json"));
+        serverConfig.load();
+
+        // 4. Load module configs
         backupConfig = new BackupConfig(configDir.resolve("backup.json"));
         chatConfig = new ChatConfig(configDir.resolve("chat.json"));
         // ... etc
 
-        // 4. Validate all configs
+        // 5. Validate all configs
         validateAll();
     }
 
@@ -130,7 +172,8 @@ int maxMembers = config.getMaxMembers();
 boolean pvpEnabled = config.isFactionDamage();
 
 // Access specific config objects
-CoreConfig core = config.core();
+FactionsConfig factions = config.factions();
+ServerConfig server = config.server();
 BackupConfig backup = config.backup();
 ```
 
@@ -141,18 +184,25 @@ BackupConfig backup = config.backup();
         │
         ▼
 2. Run pending migrations (MigrationRunner)
+   - Includes V5→V6: split config.json → config/factions.json + config/server.json
         │
         ▼
-3. Load CoreConfig
-   - Read config.json
+3. Load FactionsConfig
+   - Read config/factions.json
    - Apply defaults for missing keys
    - Save with new keys added
         │
         ▼
-4. Load Module Configs (same process)
+4. Load ServerConfig
+   - Read config/server.json
+   - Apply defaults for missing keys
+   - Save with new keys added
         │
         ▼
-5. Validate all configs
+5. Load Module Configs (same process)
+        │
+        ▼
+6. Validate all configs
    - Check value ranges
    - Log warnings for invalid values
    - Auto-correct where possible
@@ -200,9 +250,35 @@ public abstract class ConfigFile {
 }
 ```
 
-## Core Config Sections
+## FactionsConfig Sections
 
-[`config/CoreConfig.java`](../src/main/java/com/hyperfactions/config/CoreConfig.java)
+[`config/FactionsConfig.java`](../src/main/java/com/hyperfactions/config/FactionsConfig.java) — `config/factions.json`
+
+### roles
+
+Custom display names and abbreviations for faction roles. These are presentation-only — the internal role names (`Leader`, `Officer`, `Member`) stored in data files are unchanged.
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `roles.leader.displayName` | string | `"Leader"` | Display name for the Leader role |
+| `roles.leader.shortName` | string | `"LD"` | Short abbreviation (max 4 chars) |
+| `roles.officer.displayName` | string | `"Officer"` | Display name for the Officer role |
+| `roles.officer.shortName` | string | `"OF"` | Short abbreviation (max 4 chars) |
+| `roles.member.displayName` | string | `"Member"` | Display name for the Member role |
+| `roles.member.shortName` | string | `"MB"` | Short abbreviation (max 4 chars) |
+
+**Example — Mafia theme:**
+```json
+{
+  "roles": {
+    "leader": { "displayName": "Boss", "shortName": "BO" },
+    "officer": { "displayName": "Underboss", "shortName": "UB" },
+    "member": { "displayName": "Soldier", "shortName": "SO" }
+  }
+}
+```
+
+All GUIs, commands, log messages, and the `factions_role_display` / `factions_role_short` placeholders use these configured names. Changes take effect immediately after `/f admin reload`.
 
 ### faction
 
@@ -230,6 +306,7 @@ Power mechanics:
 | `regenPerMinute` | double | 0.1 | Power regeneration rate |
 | `regenWhenOffline` | bool | false | Regen while offline |
 | `killRewardRequiresFaction` | bool | true | Only gain power from killing factioned players |
+| `hardcoreMode` | bool | false | Shared faction power pool — deaths/kills affect the faction total directly, no per-death cap or floor |
 
 ### claims
 
@@ -243,6 +320,20 @@ Territory settings:
 | `decayDaysInactive` | int | 30 | Days before decay starts |
 | `worldWhitelist` | array | [] | Only these worlds allow claiming |
 | `worldBlacklist` | array | [] | These worlds block claiming |
+| `allowCreatureExplosions` | bool | false | Allow creature explosions (e.g. creepers) in claims |
+| `allowBlockExplosions` | bool | false | Allow block-based explosions (e.g. TNT) in claims |
+| `allowOtherExplosions` | bool | false | Allow other explosion types in claims |
+| `protectContainers` | bool | true | Protect containers (chests, barrels) in claims |
+| `protectRedstone` | bool | true | Protect redstone components in claims |
+| `protectDoors` | bool | true | Protect doors/gates in claims |
+| `protectFire` | bool | true | Prevent fire spread in claims |
+| `protectFrostWalker` | bool | true | Prevent frost walker in enemy claims |
+| `protectPistons` | bool | true | Prevent pistons pushing into claims |
+| `protectFluids` | bool | true | Prevent fluid flow into claims |
+| `protectEntityInteract` | bool | true | Protect entity interactions (armor stands, item frames) |
+| `protectVehicles` | bool | true | Protect vehicles (boats, minecarts) in claims |
+
+> **Migration note:** The old `allowExplosionsInClaims` boolean has been replaced by three granular flags: `allowCreatureExplosions`, `allowBlockExplosions`, and `allowOtherExplosions`.
 
 ### combat
 
@@ -256,6 +347,10 @@ Combat settings:
 | `taggedLogoutPenalty` | bool | true | Punish combat logout |
 | `spawnProtection.enabled` | bool | true | Enable spawn protection |
 | `spawnProtection.durationSeconds` | int | 5 | Protection duration |
+
+## ServerConfig Sections
+
+[`config/ServerConfig.java`](../src/main/java/com/hyperfactions/config/ServerConfig.java) — `config/server.json`
 
 ### teleport
 
@@ -291,6 +386,14 @@ Permission behavior:
 | `url` | string | GitHub Releases API | API endpoint for version checking |
 
 When `autoDownload` is disabled and HP-Mixin is not installed, the server logs install instructions. Use `/f admin update mixin` for manual install/update regardless of config. Use `/f admin update toggle-mixin-download` to toggle auto-download at runtime (persisted).
+
+### gui
+
+GUI behavior settings:
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `leaderboardKdRefreshSeconds` | int | 300 | Background cache refresh interval for aggregated faction K/D ratios on the leaderboard page |
 
 ## Module Configs
 
@@ -356,14 +459,25 @@ Territory permission defaults and locks:
     "outsiderBreak": false,
     "outsiderPlace": false,
     "outsiderInteract": false,
+    "outsiderCrateUse": false,
+    "outsiderNpcTame": false,
     "allyBreak": false,
     "allyPlace": false,
     "allyInteract": true,
+    "allyCrateUse": false,
+    "allyNpcTame": false,
     "memberBreak": true,
     "memberPlace": true,
     "memberInteract": true,
+    "memberCrateUse": true,
+    "memberNpcTame": true,
+    "officerCrateUse": true,
+    "officerNpcTame": true,
     "pvpEnabled": true,
-    "officersCanEdit": false
+    "officersCanEdit": false,
+    "treasuryDeposit": true,
+    "treasuryWithdraw": false,
+    "treasuryTransfer": false
   },
   "locks": {
     "pvpEnabled": false
@@ -374,9 +488,48 @@ Territory permission defaults and locks:
 }
 ```
 
-- **defaults** - Applied to new factions
+- **defaults** - Applied to new factions (includes `CrateUse`, `NpcTame`, and `treasury*` flags)
 - **locks** - When true, factions cannot change this setting
 - **forced** - Value used when a setting is locked
+
+### WorldsConfig
+
+[`config/modules/WorldsConfig.java`](../src/main/java/com/hyperfactions/config/modules/WorldsConfig.java)
+
+Per-world behavior overrides in `config/worlds.json`:
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `enabled` | bool | true | Enable per-world settings module |
+| `claimBlacklist` | array | [] | Worlds where claiming is unconditionally blocked |
+| `worlds` | object | `{}` | Per-world setting overrides (keyed by world name or wildcard pattern) |
+
+Per-world settings (4 per entry):
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `claiming` | bool | true | Whether claiming is allowed in this world |
+| `powerLoss` | bool | true | Whether power loss applies in this world |
+| `friendlyFireFaction` | bool | *(from global config)* | Same-faction PvP override |
+| `friendlyFireAlly` | bool | *(from global config)* | Ally PvP override |
+
+**Wildcard support**: Use `%` as a wildcard in world names (e.g., `arena_%` matches `arena_1`, `arena_pvp`). Priority resolution: exact name match > wildcard patterns (fewer wildcards = higher priority) > default policy.
+
+**Default rules**: A default `instance-%` wildcard rule blocks claiming in temporary instance worlds.
+
+**Example:**
+```json
+{
+  "enabled": true,
+  "claimBlacklist": ["lobby"],
+  "worlds": {
+    "arena_%": { "claiming": false, "powerLoss": false },
+    "instance-%": { "claiming": false }
+  }
+}
+```
+
+Admin commands: `/f admin world list|info|set|reset`
 
 ## Validation System
 
@@ -407,7 +560,7 @@ public class ValidationResult {
 }
 ```
 
-Example validation in CoreConfig:
+Example validation in FactionsConfig:
 
 ```java
 @Override
@@ -467,7 +620,8 @@ When `/f admin reload` is called:
 
 ```java
 public void reloadAll() {
-    coreConfig.reload();
+    factionsConfig.reload();
+    serverConfig.reload();
     backupConfig.reload();
     chatConfig.reload();
     debugConfig.reload();
@@ -482,10 +636,11 @@ public void reloadAll() {
 
 On first run, all config files are created with defaults:
 
-1. `config.json` created with all core settings
-2. `config/` directory created
-3. Module configs created with their defaults
-4. All files are pretty-printed JSON
+1. `config/` directory created
+2. `config/factions.json` created with faction gameplay defaults
+3. `config/server.json` created with server behavior defaults (including `configVersion: 6`)
+4. Module configs created with their defaults
+5. All files are pretty-printed JSON
 
 ## Accessing Config Values
 
@@ -500,7 +655,8 @@ double powerPerClaim = config.getPowerPerClaim();
 boolean pvpEnabled = config.isFactionDamage();
 
 // Via config object (for grouped access)
-CoreConfig core = config.core();
+FactionsConfig factions = config.factions();
+ServerConfig server = config.server();
 BackupConfig backup = config.backup();
 ```
 
@@ -530,7 +686,7 @@ public class ClaimManager {
 
 ## Adding New Config Options
 
-1. **Add to appropriate config class** (CoreConfig or a module):
+1. **Add to appropriate config class** (FactionsConfig, ServerConfig, or a module):
    ```java
    public int getNewSetting() {
        return data.get("newSection").getAsJsonObject()
@@ -557,7 +713,7 @@ public class ClaimManager {
 4. **Add convenience method to ConfigManager** (optional):
    ```java
    public int getNewSetting() {
-       return coreConfig.getNewSetting();
+       return factionsConfig.getNewSetting();  // or serverConfig for server settings
    }
    ```
 
@@ -567,7 +723,9 @@ public class ClaimManager {
 |-------|------|
 | ConfigManager | [`config/ConfigManager.java`](../src/main/java/com/hyperfactions/config/ConfigManager.java) |
 | ConfigFile | [`config/ConfigFile.java`](../src/main/java/com/hyperfactions/config/ConfigFile.java) |
-| CoreConfig | [`config/CoreConfig.java`](../src/main/java/com/hyperfactions/config/CoreConfig.java) |
+| FactionsConfig | [`config/FactionsConfig.java`](../src/main/java/com/hyperfactions/config/FactionsConfig.java) |
+| ServerConfig | [`config/ServerConfig.java`](../src/main/java/com/hyperfactions/config/ServerConfig.java) |
+| CoreConfig | [`config/CoreConfig.java`](../src/main/java/com/hyperfactions/config/CoreConfig.java) *(deprecated)* |
 | ModuleConfig | [`config/ModuleConfig.java`](../src/main/java/com/hyperfactions/config/ModuleConfig.java) |
 | ValidationResult | [`config/ValidationResult.java`](../src/main/java/com/hyperfactions/config/ValidationResult.java) |
 | BackupConfig | [`config/modules/BackupConfig.java`](../src/main/java/com/hyperfactions/config/modules/BackupConfig.java) |

@@ -9,19 +9,20 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
  */
 public class TransferConfirmData {
 
-    /** The button/action that triggered the event */
-    public String button;
+  /** The button/action that triggered the event. */
+  public String button;
 
-    /** Codec for serialization/deserialization */
-    public static final BuilderCodec<TransferConfirmData> CODEC = BuilderCodec
-            .builder(TransferConfirmData.class, TransferConfirmData::new)
-            .addField(
-                    new KeyedCodec<>("Button", Codec.STRING),
-                    (data, value) -> data.button = value,
-                    data -> data.button
-            )
-            .build();
+  /** Codec for serialization/deserialization. */
+  public static final BuilderCodec<TransferConfirmData> CODEC = BuilderCodec
+      .builder(TransferConfirmData.class, TransferConfirmData::new)
+      .addField(
+          new KeyedCodec<>("Button", Codec.STRING),
+          (data, value) -> data.button = value,
+          data -> data.button
+      )
+      .build();
 
-    public TransferConfirmData() {
-    }
+  /** Creates a new TransferConfirmData. */
+  public TransferConfirmData() {
+  }
 }

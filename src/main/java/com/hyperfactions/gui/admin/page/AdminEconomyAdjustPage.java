@@ -4,6 +4,7 @@ import com.hyperfactions.api.EconomyAPI;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionEconomy;
 import com.hyperfactions.gui.GuiManager;
+import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.admin.AdminNavBarHelper;
 import com.hyperfactions.gui.admin.data.AdminEconomyAdjustData;
 import com.hyperfactions.manager.EconomyManager;
@@ -20,189 +21,200 @@ import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-
-import org.jetbrains.annotations.Nullable;
-
+import java.math.BigDecimal;
 import java.util.UUID;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Admin Economy Adjust modal - allows adjusting a faction's treasury balance.
  */
 public class AdminEconomyAdjustPage extends InteractiveCustomUIPage<AdminEconomyAdjustData> {
 
-    private final PlayerRef playerRef;
-    private final FactionManager factionManager;
-    private final EconomyManager economyManager;
-    private final GuiManager guiManager;
-    private final UUID factionId;
+  private final PlayerRef playerRef;
 
-    public AdminEconomyAdjustPage(PlayerRef playerRef,
-                                  FactionManager factionManager,
-                                  EconomyManager economyManager,
-                                  GuiManager guiManager,
-                                  UUID factionId) {
-        super(playerRef, CustomPageLifetime.CanDismiss, AdminEconomyAdjustData.CODEC);
-        this.playerRef = playerRef;
-        this.factionManager = factionManager;
-        this.economyManager = economyManager;
-        this.guiManager = guiManager;
-        this.factionId = factionId;
+  private final FactionManager factionManager;
+
+  private final EconomyManager economyManager;
+
+  private final GuiManager guiManager;
+
+  private final UUID factionId;
+
+  /** Creates a new AdminEconomyAdjustPage. */
+  public AdminEconomyAdjustPage(PlayerRef playerRef,
+                 FactionManager factionManager,
+                 EconomyManager economyManager,
+                 GuiManager guiManager,
+                 UUID factionId) {
+    super(playerRef, CustomPageLifetime.CanDismiss, AdminEconomyAdjustData.CODEC);
+    this.playerRef = playerRef;
+    this.factionManager = factionManager;
+    this.economyManager = economyManager;
+    this.guiManager = guiManager;
+    this.factionId = factionId;
+  }
+
+  /** Builds . */
+  @Override
+  public void build(Ref<EntityStore> ref, UICommandBuilder cmd,
+           UIEventBuilder events, Store<EntityStore> store) {
+
+    // Load template
+    cmd.append(UIPaths.ADMIN_ECONOMY_ADJUST);
+
+    // Setup admin nav bar
+    AdminNavBarHelper.setupBar(playerRef, "economy", cmd, events);
+
+    // Get faction info
+    Faction faction = factionManager.getFaction(factionId);
+    if (faction == null) {
+      cmd.set("#TargetFactionName.Text", "Faction Not Found");
+      cmd.set("#CurrentBalance.Text", "N/A");
+      return;
     }
 
-    @Override
-    public void build(Ref<EntityStore> ref, UICommandBuilder cmd,
-                      UIEventBuilder events, Store<EntityStore> store) {
+    FactionEconomy economy = economyManager.getEconomy(factionId);
+    BigDecimal currentBalance = economy != null ? economy.balance() : BigDecimal.ZERO;
 
-        // Load template
-        cmd.append("HyperFactions/admin/admin_economy_adjust.ui");
+    cmd.set("#TargetFactionName.Text", faction.name());
+    cmd.set("#CurrentBalance.Text", economyManager.formatCurrency(currentBalance));
 
-        // Setup admin nav bar
-        AdminNavBarHelper.setupBar(playerRef, "economy", cmd, events);
+    // Preview event — fires when amount changes
+    events.addEventBinding(
+        CustomUIEventBindingType.Activating,
+        "#ConfirmBtn",
+        EventData.of("Button", "Confirm")
+            .append("@Amount", "#AmountInput.Value"),
+        false
+    );
 
-        // Get faction info
-        Faction faction = factionManager.getFaction(factionId);
-        if (faction == null) {
-            cmd.set("#TargetFactionName.Text", "Faction Not Found");
-            cmd.set("#CurrentBalance.Text", "N/A");
-            return;
-        }
+    events.addEventBinding(
+        CustomUIEventBindingType.Activating,
+        "#SetBalanceBtn",
+        EventData.of("Button", "SetBalance")
+            .append("@Amount", "#AmountInput.Value"),
+        false
+    );
 
-        FactionEconomy economy = economyManager.getEconomy(factionId);
-        double currentBalance = economy != null ? economy.balance() : 0;
+    // Back button
+    events.addEventBinding(
+        CustomUIEventBindingType.Activating,
+        "#BackBtn",
+        EventData.of("Button", "Back"),
+        false
+    );
+  }
 
-        cmd.set("#TargetFactionName.Text", faction.name());
-        cmd.set("#CurrentBalance.Text", economyManager.formatCurrency(currentBalance));
+  /** Handles data event. */
+  @Override
+  public void handleDataEvent(Ref<EntityStore> ref, Store<EntityStore> store,
+                AdminEconomyAdjustData data) {
+    super.handleDataEvent(ref, store, data);
 
-        // Preview event — fires when amount changes
-        events.addEventBinding(
-                CustomUIEventBindingType.Activating,
-                "#ConfirmBtn",
-                EventData.of("Button", "Confirm")
-                        .append("@Amount", "#AmountInput.Value"),
-                false
-        );
+    Player player = store.getComponent(ref, Player.getComponentType());
+    PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
 
-        events.addEventBinding(
-                CustomUIEventBindingType.Activating,
-                "#SetBalanceBtn",
-                EventData.of("Button", "SetBalance")
-                        .append("@Amount", "#AmountInput.Value"),
-                false
-        );
-
-        // Back button
-        events.addEventBinding(
-                CustomUIEventBindingType.Activating,
-                "#BackBtn",
-                EventData.of("Button", "Back"),
-                false
-        );
+    if (player == null || playerRef == null) {
+      return;
     }
 
-    @Override
-    public void handleDataEvent(Ref<EntityStore> ref, Store<EntityStore> store,
-                                AdminEconomyAdjustData data) {
-        super.handleDataEvent(ref, store, data);
-
-        Player player = store.getComponent(ref, Player.getComponentType());
-        PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
-
-        if (player == null || playerRef == null) {
-            return;
-        }
-
-        // Handle admin nav bar navigation
-        if (AdminNavBarHelper.handleNavEvent(data, player, ref, store, playerRef, guiManager)) {
-            return;
-        }
-
-        if (data.button == null) {
-            return;
-        }
-
-        switch (data.button) {
-            case "Confirm" -> {
-                double amount = parseAmountOrError(data.amount);
-                if (Double.isNaN(amount)) return;
-
-                if (amount == 0) {
-                    showError("Amount cannot be zero.");
-                    return;
-                }
-
-                String desc = amount >= 0
-                        ? "Admin added " + economyManager.formatCurrency(amount)
-                        : "Admin deducted " + economyManager.formatCurrency(Math.abs(amount));
-
-                Logger.debugEconomy("Admin adjust: faction=%s amount=%.2f by=%s",
-                        factionId, amount, playerRef.getUuid());
-
-                economyManager.adminAdjust(factionId, amount, playerRef.getUuid(), desc)
-                        .thenAccept(result -> handleResult(result, player, ref, store, playerRef))
-                        .exceptionally(ex -> {
-                            Logger.severe("Admin economy adjust failed for faction %s", ex, factionId);
-                            showError("An error occurred.");
-                            return null;
-                        });
-            }
-
-            case "SetBalance" -> {
-                double newBalance = parseAmountOrError(data.amount);
-                if (Double.isNaN(newBalance)) return;
-
-                if (newBalance < 0) {
-                    showError("Balance cannot be negative.");
-                    return;
-                }
-
-                Logger.debugEconomy("Admin set balance: faction=%s newBalance=%.2f by=%s",
-                        factionId, newBalance, playerRef.getUuid());
-
-                economyManager.setBalance(factionId, newBalance, playerRef.getUuid())
-                        .thenAccept(result -> handleResult(result, player, ref, store, playerRef))
-                        .exceptionally(ex -> {
-                            Logger.severe("Admin economy set balance failed for faction %s", ex, factionId);
-                            showError("An error occurred.");
-                            return null;
-                        });
-            }
-
-            case "Back" -> guiManager.openAdminEconomy(player, ref, store, playerRef);
-        }
+    // Handle admin nav bar navigation
+    if (AdminNavBarHelper.handleNavEvent(data, player, ref, store, playerRef, guiManager)) {
+      return;
     }
 
-    /**
-     * Parses the amount string from the UI input.
-     * Shows an error message and returns NaN if invalid.
-     */
-    private double parseAmountOrError(@Nullable String amount) {
-        if (amount == null || amount.isBlank()) {
-            showError("Please enter an amount.");
-            return Double.NaN;
-        }
-        try {
-            return Double.parseDouble(amount.trim());
-        } catch (NumberFormatException e) {
-            showError("Invalid number: " + amount);
-            return Double.NaN;
-        }
+    if (data.button == null) {
+      return;
     }
 
-    private void handleResult(EconomyAPI.TransactionResult result,
-                              Player player, Ref<EntityStore> ref,
-                              Store<EntityStore> store, PlayerRef playerRef) {
-        if (result == EconomyAPI.TransactionResult.SUCCESS) {
-            Logger.debugEconomy("Admin economy operation succeeded for faction %s", factionId);
-            guiManager.openAdminEconomy(player, ref, store, playerRef);
-        } else {
-            Logger.debugEconomy("Admin economy operation failed for faction %s: %s", factionId, result.name());
-            showError("Failed: " + result.name());
+    switch (data.button) {
+      case "Confirm" -> {
+        BigDecimal amount = parseAmountOrError(data.amount);
+        if (amount == null) {
+          return;
         }
-    }
 
-    private void showError(String message) {
-        UICommandBuilder cmd = new UICommandBuilder();
-        cmd.set("#ErrorMessage.Text", message);
-        sendUpdate(cmd, new UIEventBuilder(), false);
+        if (amount.compareTo(BigDecimal.ZERO) == 0) {
+          showError("Amount cannot be zero.");
+          return;
+        }
+
+        String desc = amount.compareTo(BigDecimal.ZERO) >= 0
+            ? "Admin added " + economyManager.formatCurrency(amount)
+            : "Admin deducted " + economyManager.formatCurrency(amount.abs());
+
+        Logger.debugEconomy("Admin adjust: faction=%s amount=%s by=%s",
+            factionId, amount.toPlainString(), playerRef.getUuid());
+
+        economyManager.adminAdjust(factionId, amount, playerRef.getUuid(), desc)
+            .thenAccept(result -> handleResult(result, player, ref, store, playerRef))
+            .exceptionally(ex -> {
+              Logger.severe("Admin economy adjust failed for faction %s", ex, factionId);
+              showError("An error occurred.");
+              return null;
+            });
+      }
+
+      case "SetBalance" -> {
+        BigDecimal newBalance = parseAmountOrError(data.amount);
+        if (newBalance == null) {
+          return;
+        }
+
+        if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
+          showError("Balance cannot be negative.");
+          return;
+        }
+
+        Logger.debugEconomy("Admin set balance: faction=%s newBalance=%s by=%s",
+            factionId, newBalance.toPlainString(), playerRef.getUuid());
+
+        economyManager.setBalance(factionId, newBalance, playerRef.getUuid())
+            .thenAccept(result -> handleResult(result, player, ref, store, playerRef))
+            .exceptionally(ex -> {
+              Logger.severe("Admin economy set balance failed for faction %s", ex, factionId);
+              showError("An error occurred.");
+              return null;
+            });
+      }
+
+      case "Back" -> guiManager.openAdminEconomy(player, ref, store, playerRef);
+      default -> throw new IllegalStateException("Unexpected value");
     }
+  }
+
+  /**
+   * Parses the amount string from the UI input.
+   * Shows an error message and returns null if invalid.
+   */
+  private @Nullable BigDecimal parseAmountOrError(@Nullable String amount) {
+    if (amount == null || amount.isBlank()) {
+      showError("Please enter an amount.");
+      return null;
+    }
+    try {
+      return new BigDecimal(amount.trim());
+    } catch (NumberFormatException e) {
+      showError("Invalid number: " + amount);
+      return null;
+    }
+  }
+
+  private void handleResult(EconomyAPI.TransactionResult result,
+               Player player, Ref<EntityStore> ref,
+               Store<EntityStore> store, PlayerRef playerRef) {
+    if (result == EconomyAPI.TransactionResult.SUCCESS) {
+      Logger.debugEconomy("Admin economy operation succeeded for faction %s", factionId);
+      guiManager.openAdminEconomy(player, ref, store, playerRef);
+    } else {
+      Logger.debugEconomy("Admin economy operation failed for faction %s: %s", factionId, result.name());
+      showError("Failed: " + result.name());
+    }
+  }
+
+  private void showError(String message) {
+    UICommandBuilder cmd = new UICommandBuilder();
+    cmd.set("#ErrorMessage.Text", message);
+    sendUpdate(cmd, new UIEventBuilder(), false);
+  }
 }

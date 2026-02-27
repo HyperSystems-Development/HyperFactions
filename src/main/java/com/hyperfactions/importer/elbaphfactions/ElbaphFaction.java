@@ -1,9 +1,8 @@
 package com.hyperfactions.importer.elbaphfactions;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
 import java.util.Map;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Gson-mapped record for ElbaphFactions factions.json entries.
@@ -58,96 +57,100 @@ import java.util.Map;
  * @param activityLog         activity log entries
  */
 public record ElbaphFaction(
-    @Nullable String id,
-    @Nullable String ownerUuid,
-    @Nullable String name,
-    @Nullable String tag,
-    @Nullable String description,
-    @Nullable List<String> memberUuids,
-    @Nullable Map<String, Object> memberRanks,
-    @Nullable List<String> allies,
-    @Nullable List<String> enemies,
-    @Nullable List<String> pendingAllyRequests,
-    long createdAt,
-    double currentPower,
-    double maxPower,
-    long lastPowerRegen,
-    int claimCount,
-    double factionPoints,
-    double factionPointsEarned,
-    double factionPointsSpent,
-    int totalKills,
-    int totalDeaths,
-    int warsWon,
-    long lastDeathTime,
-    int color,
-    boolean outsiderCanBreak,
-    boolean outsiderCanPlace,
-    boolean outsiderCanInteract,
-    boolean allyCanBreak,
-    boolean allyCanPlace,
-    boolean allyCanInteract,
-    boolean memberCanBreak,
-    boolean memberCanPlace,
-    boolean memberCanInteract,
-    boolean pvpEnabled,
-    boolean workersEnabled,
-    boolean guardsEnabled,
-    boolean farmersEnabled,
-    boolean lumberjacksEnabled,
-    boolean workerMessagesEnabled,
-    int teleporterSlots,
-    int teleportersPlaced,
-    double homeX,
-    double homeY,
-    double homeZ,
-    boolean homeSet,
-    @Nullable List<Object> farmPlots,
-    @Nullable List<Object> workers,
-    @Nullable List<Object> activityLog
+  @Nullable String id,
+  @Nullable String ownerUuid,
+  @Nullable String name,
+  @Nullable String tag,
+  @Nullable String description,
+  @Nullable List<String> memberUuids,
+  @Nullable Map<String, Object> memberRanks,
+  @Nullable List<String> allies,
+  @Nullable List<String> enemies,
+  @Nullable List<String> pendingAllyRequests,
+  long createdAt,
+  double currentPower,
+  double maxPower,
+  long lastPowerRegen,
+  int claimCount,
+  double factionPoints,
+  double factionPointsEarned,
+  double factionPointsSpent,
+  int totalKills,
+  int totalDeaths,
+  int warsWon,
+  long lastDeathTime,
+  int color,
+  boolean outsiderCanBreak,
+  boolean outsiderCanPlace,
+  boolean outsiderCanInteract,
+  boolean allyCanBreak,
+  boolean allyCanPlace,
+  boolean allyCanInteract,
+  boolean memberCanBreak,
+  boolean memberCanPlace,
+  boolean memberCanInteract,
+  boolean pvpEnabled,
+  boolean workersEnabled,
+  boolean guardsEnabled,
+  boolean farmersEnabled,
+  boolean lumberjacksEnabled,
+  boolean workerMessagesEnabled,
+  int teleporterSlots,
+  int teleportersPlaced,
+  double homeX,
+  double homeY,
+  double homeZ,
+  boolean homeSet,
+  @Nullable List<Object> farmPlots,
+  @Nullable List<Object> workers,
+  @Nullable List<Object> activityLog
 ) {
-    /**
-     * Checks if this faction has a home set.
-     */
-    public boolean hasHome() {
-        return homeSet;
-    }
+  /**
+   * Checks if this faction has a home set.
+   */
+  public boolean hasHome() {
+    return homeSet;
+  }
 
-    /**
-     * Gets the member count.
-     */
-    public int getMemberCount() {
-        return memberUuids != null ? memberUuids.size() : 0;
-    }
+  /**
+   * Gets the member count.
+   */
+  public int getMemberCount() {
+    return memberUuids != null ? memberUuids.size() : 0;
+  }
 
-    /**
-     * Gets a member's role from the memberRanks map.
-     * The map contains both role entries (uuid -> "LEADER") and
-     * lastLogin entries (uuid_lastLogin -> timestamp).
-     *
-     * @param uuid the member UUID string
-     * @return the role string, or null if not found
-     */
-    @Nullable
-    public String getMemberRole(@Nullable String uuid) {
-        if (memberRanks == null || uuid == null) return null;
-        Object value = memberRanks.get(uuid);
-        return value instanceof String ? (String) value : null;
+  /**
+   * Gets a member's role from the memberRanks map.
+   * The map contains both role entries (uuid -> "LEADER") and
+   * lastLogin entries (uuid_lastLogin -> timestamp).
+   *
+   * @param uuid the member UUID string
+   * @return the role string, or null if not found
+   */
+  @Nullable
+  public String getMemberRole(@Nullable String uuid) {
+    if (memberRanks == null || uuid == null) {
+      return null;
     }
+    Object value = memberRanks.get(uuid);
+    return value instanceof String ? (String) value : null;
+  }
 
-    /**
-     * Gets a member's last login timestamp from the memberRanks map.
-     * Stored as uuid_lastLogin -> timestamp (as Double from Gson).
-     *
-     * @param uuid the member UUID string
-     * @return the last login epoch millis, or 0 if not found
-     */
-    public long getMemberLastLogin(@Nullable String uuid) {
-        if (memberRanks == null || uuid == null) return 0;
-        Object value = memberRanks.get(uuid + "_lastLogin");
-        if (value instanceof Number number) {
-            return number.longValue();
-        }
-        return 0;
+  /**
+   * Gets a member's last login timestamp from the memberRanks map.
+   * Stored as uuid_lastLogin -> timestamp (as Double from Gson).
+   *
+   * @param uuid the member UUID string
+   * @return the last login epoch millis, or 0 if not found
+   */
+  public long getMemberLastLogin(@Nullable String uuid) {
+    if (memberRanks == null || uuid == null) {
+      return 0;
     }
+    Object value = memberRanks.get(uuid + "_lastLogin");
+    if (value instanceof Number number) {
+      return number.longValue();
+    }
+    return 0;
+  }
 }

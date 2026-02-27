@@ -3,505 +3,1184 @@ package com.hyperfactions.config;
 import com.hyperfactions.config.modules.*;
 import com.hyperfactions.config.modules.WorldMapConfig;
 import com.hyperfactions.data.FactionPermissions;
+import com.hyperfactions.data.FactionRole;
 import com.hyperfactions.migration.MigrationResult;
 import com.hyperfactions.migration.MigrationRunner;
 import com.hyperfactions.migration.MigrationType;
 import com.hyperfactions.util.Logger;
-import org.jetbrains.annotations.NotNull;
-
 import java.nio.file.Path;
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Central manager for all HyperFactions configuration.
+ *
  * <p>
  * Orchestrates loading of the core config and all module configs,
  * handles migrations, and provides unified access to all settings.
  */
 public class ConfigManager {
 
-    private static ConfigManager instance;
+  private static ConfigManager instance;
 
-    private Path dataDir;
-    private CoreConfig coreConfig;
-    private BackupConfig backupConfig;
-    private ChatConfig chatConfig;
-    private DebugConfig debugConfig;
-    private EconomyConfig economyConfig;
-    private FactionPermissionsConfig factionPermissionsConfig;
-    private WorldMapConfig worldMapConfig;
-    private AnnouncementConfig announcementConfig;
-    private GravestoneConfig gravestoneConfig;
+  private Path dataDir;
 
-    private ConfigManager() {}
+  private CoreConfig coreConfig;
 
-    /**
-     * Gets the singleton config manager instance.
-     *
-     * @return config manager
-     */
-    @NotNull
-    public static ConfigManager get() {
-        if (instance == null) {
-            instance = new ConfigManager();
+  private FactionsConfig factionsConfig;
+
+  private ServerConfig serverConfig;
+
+  private BackupConfig backupConfig;
+
+  private ChatConfig chatConfig;
+
+  private DebugConfig debugConfig;
+
+  private EconomyConfig economyConfig;
+
+  private FactionPermissionsConfig factionPermissionsConfig;
+
+  private WorldMapConfig worldMapConfig;
+
+  private AnnouncementConfig announcementConfig;
+
+  private GravestoneConfig gravestoneConfig;
+
+  private WorldsConfig worldsConfig;
+
+  private final WorldSettingsResolver worldSettingsResolver = new WorldSettingsResolver();
+
+  private ConfigManager() {}
+
+  /**
+   * Gets the singleton config manager instance.
+   *
+   * @return config manager
+   */
+  @NotNull
+  public static ConfigManager get() {
+    if (instance == null) {
+      instance = new ConfigManager();
+    }
+    return instance;
+  }
+
+  /**
+   * Loads all configuration files.
+   *
+   * <p>
+   * This method:
+   * <ol>
+   *   <li>Runs any pending config migrations</li>
+   *   <li>Loads factions + server configs (new structure)</li>
+   *   <li>Falls back to legacy config.json if new files are missing</li>
+   *   <li>Loads all module configs from config/ directory</li>
+   * </ol>
+   *
+   * @param dataDir the plugin data directory
+   */
+  public void loadAll(@NotNull Path dataDir) {
+    this.dataDir = dataDir;
+    Logger.debug("[Config] Loading configuration from: %s", dataDir.toAbsolutePath());
+
+    // Step 1: Run pending migrations
+    runMigrations();
+
+    // Step 2: Load factions + server configs (post-V6 structure)
+    Path configDir = dataDir.resolve("config");
+
+    factionsConfig = new FactionsConfig(configDir.resolve("factions.json"));
+    factionsConfig.load();
+
+    serverConfig = new ServerConfig(configDir.resolve("server.json"));
+    serverConfig.load();
+
+    // Step 2b: Legacy fallback — if config.json still exists (migration incomplete),
+    // load it and use its values to populate the new configs in-memory
+    Path legacyConfigPath = dataDir.resolve("config.json");
+    if (java.nio.file.Files.exists(legacyConfigPath)) {
+      Logger.info("[Config] Legacy config.json found — loading as fallback");
+      coreConfig = new CoreConfig(legacyConfigPath);
+      coreConfig.load();
+    }
+
+    // Step 3: Load remaining module configs
+    backupConfig = new BackupConfig(configDir.resolve("backup.json"));
+    backupConfig.load();
+
+    chatConfig = new ChatConfig(configDir.resolve("chat.json"));
+    chatConfig.load();
+
+    debugConfig = new DebugConfig(configDir.resolve("debug.json"));
+    debugConfig.load();
+
+    economyConfig = new EconomyConfig(configDir.resolve("economy.json"));
+    economyConfig.load();
+
+    factionPermissionsConfig = new FactionPermissionsConfig(configDir.resolve("faction-permissions.json"));
+    factionPermissionsConfig.load();
+
+    worldMapConfig = new WorldMapConfig(configDir.resolve("worldmap.json"));
+    worldMapConfig.load();
+
+    announcementConfig = new AnnouncementConfig(configDir.resolve("announcements.json"));
+    announcementConfig.load();
+
+    gravestoneConfig = new GravestoneConfig(configDir.resolve("gravestones.json"));
+    gravestoneConfig.load();
+
+    worldsConfig = new WorldsConfig(configDir.resolve("worlds.json"));
+    worldsConfig.load();
+
+    // Build the world settings resolver from loaded config
+    worldSettingsResolver.rebuild(worldsConfig);
+
+    // Step 4: Validate all configs and log any issues
+    validateAll();
+
+    Logger.debug("[Config] Configuration loaded successfully");
+  }
+
+  /**
+   * Validates all configuration files and logs any issues found.
+   *
+   * <p>
+   * This performs "soft" validation - invalid values are logged as warnings
+   * and auto-corrected when possible, but the plugin will continue to function.
+   */
+  private void validateAll() {
+    ValidationResult combined = new ValidationResult();
+
+    // Validate each config and merge results
+    factionsConfig.validateAndLog();
+    if (factionsConfig.getLastValidationResult() != null) {
+      combined.merge(factionsConfig.getLastValidationResult());
+    }
+
+    serverConfig.validateAndLog();
+    if (serverConfig.getLastValidationResult() != null) {
+      combined.merge(serverConfig.getLastValidationResult());
+    }
+
+    backupConfig.validateAndLog();
+    if (backupConfig.getLastValidationResult() != null) {
+      combined.merge(backupConfig.getLastValidationResult());
+    }
+
+    chatConfig.validateAndLog();
+    if (chatConfig.getLastValidationResult() != null) {
+      combined.merge(chatConfig.getLastValidationResult());
+    }
+
+    debugConfig.validateAndLog();
+    if (debugConfig.getLastValidationResult() != null) {
+      combined.merge(debugConfig.getLastValidationResult());
+    }
+
+    economyConfig.validateAndLog();
+    if (economyConfig.getLastValidationResult() != null) {
+      combined.merge(economyConfig.getLastValidationResult());
+    }
+
+    factionPermissionsConfig.validateAndLog();
+    if (factionPermissionsConfig.getLastValidationResult() != null) {
+      combined.merge(factionPermissionsConfig.getLastValidationResult());
+    }
+
+    worldMapConfig.validateAndLog();
+    if (worldMapConfig.getLastValidationResult() != null) {
+      combined.merge(worldMapConfig.getLastValidationResult());
+    }
+
+    announcementConfig.validateAndLog();
+    if (announcementConfig.getLastValidationResult() != null) {
+      combined.merge(announcementConfig.getLastValidationResult());
+    }
+
+    gravestoneConfig.validateAndLog();
+    if (gravestoneConfig.getLastValidationResult() != null) {
+      combined.merge(gravestoneConfig.getLastValidationResult());
+    }
+
+    worldsConfig.validateAndLog();
+    if (worldsConfig.getLastValidationResult() != null) {
+      combined.merge(worldsConfig.getLastValidationResult());
+    }
+
+    // Log summary
+    if (combined.hasIssues()) {
+      int warnings = combined.getWarnings().size();
+      int errors = combined.getErrors().size();
+      Logger.info("[Config] Validation complete: %d warning(s), %d error(s)", warnings, errors);
+    }
+  }
+
+  /**
+   * Runs any pending config migrations.
+   */
+  private void runMigrations() {
+    List<MigrationResult> results = MigrationRunner.runPendingMigrations(dataDir, MigrationType.CONFIG);
+
+    for (MigrationResult result : results) {
+      if (result.success()) {
+        Logger.info("[Config] Migration '%s' completed: v%d -> v%d",
+            result.migrationId(), result.fromVersion(), result.toVersion());
+      } else {
+        Logger.severe("[Config] Migration '%s' failed: %s",
+            result.migrationId(), result.errorMessage());
+        if (result.rolledBack()) {
+          Logger.info("[Config] Rolled back to previous config version");
         }
-        return instance;
+      }
     }
+  }
 
-    /**
-     * Loads all configuration files.
-     * <p>
-     * This method:
-     * <ol>
-     *   <li>Runs any pending config migrations</li>
-     *   <li>Loads the core config from config.json</li>
-     *   <li>Loads all module configs from config/ directory</li>
-     * </ol>
-     *
-     * @param dataDir the plugin data directory
-     */
-    public void loadAll(@NotNull Path dataDir) {
-        this.dataDir = dataDir;
-        Logger.debug("[Config] Loading configuration from: %s", dataDir.toAbsolutePath());
+  /**
+   * Reloads all configuration files.
+   */
+  public void reloadAll() {
+    Logger.info("[Config] Reloading configuration...");
 
-        // Step 1: Run pending migrations
-        runMigrations();
+    factionsConfig.reload();
+    serverConfig.reload();
+    backupConfig.reload();
+    chatConfig.reload();
+    debugConfig.reload();
+    economyConfig.reload();
+    factionPermissionsConfig.reload();
+    worldMapConfig.reload();
+    announcementConfig.reload();
+    gravestoneConfig.reload();
+    worldsConfig.reload();
 
-        // Step 2: Load core config
-        coreConfig = new CoreConfig(dataDir.resolve("config.json"));
-        coreConfig.load();
+    // Rebuild world settings resolver
+    worldSettingsResolver.rebuild(worldsConfig);
 
-        // Step 3: Load module configs from config/ subdirectory
-        Path configDir = dataDir.resolve("config");
+    // Re-validate after reload
+    validateAll();
 
-        backupConfig = new BackupConfig(configDir.resolve("backup.json"));
-        backupConfig.load();
+    Logger.info("[Config] Configuration reloaded");
+  }
 
-        chatConfig = new ChatConfig(configDir.resolve("chat.json"));
-        chatConfig.load();
+  /**
+   * Saves all configuration files.
+   */
+  public void saveAll() {
+    factionsConfig.save();
+    serverConfig.save();
+    backupConfig.save();
+    chatConfig.save();
+    debugConfig.save();
+    economyConfig.save();
+    factionPermissionsConfig.save();
+    worldMapConfig.save();
+    announcementConfig.save();
+    gravestoneConfig.save();
+    worldsConfig.save();
+  }
 
-        debugConfig = new DebugConfig(configDir.resolve("debug.json"));
-        debugConfig.load();
+  // === Config Accessors ===
 
-        economyConfig = new EconomyConfig(configDir.resolve("economy.json"));
-        economyConfig.load();
+  /**
+   * Gets the factions gameplay configuration.
+   *
+   * @return factions config
+   */
+  @NotNull
+  public FactionsConfig factions() {
+    return factionsConfig;
+  }
 
-        factionPermissionsConfig = new FactionPermissionsConfig(configDir.resolve("faction-permissions.json"));
-        factionPermissionsConfig.load();
+  /**
+   * Gets the server behavior configuration.
+   *
+   * @return server config
+   */
+  @NotNull
+  public ServerConfig server() {
+    return serverConfig;
+  }
 
-        worldMapConfig = new WorldMapConfig(configDir.resolve("worldmap.json"));
-        worldMapConfig.load();
+  /**
+   * Gets the legacy core configuration (for backward compatibility).
+   *
+   * @return core config, or null if config.json doesn't exist
+   * @deprecated Use {@link #factions()} or {@link #server()} instead
+   */
+  @Deprecated(since = "0.4.0", forRemoval = true)
+  @org.jetbrains.annotations.Nullable
+  public CoreConfig core() {
+    return coreConfig;
+  }
 
-        announcementConfig = new AnnouncementConfig(configDir.resolve("announcements.json"));
-        announcementConfig.load();
+  /**
+   * Gets the backup module configuration.
+   *
+   * @return backup config
+   */
+  @NotNull
+  public BackupConfig backup() {
+    return backupConfig;
+  }
 
-        gravestoneConfig = new GravestoneConfig(configDir.resolve("gravestones.json"));
-        gravestoneConfig.load();
+  /**
+   * Gets the chat module configuration.
+   *
+   * @return chat config
+   */
+  @NotNull
+  public ChatConfig chat() {
+    return chatConfig;
+  }
 
-        // Step 4: Validate all configs and log any issues
-        validateAll();
+  /**
+   * Gets the debug module configuration.
+   *
+   * @return debug config
+   */
+  @NotNull
+  public DebugConfig debug() {
+    return debugConfig;
+  }
 
-        Logger.debug("[Config] Configuration loaded successfully");
+  /**
+   * Gets the economy module configuration.
+   *
+   * @return economy config
+   */
+  @NotNull
+  public EconomyConfig economy() {
+    return economyConfig;
+  }
+
+  /**
+   * Gets the faction permissions module configuration.
+   *
+   * @return faction permissions config
+   */
+  @NotNull
+  public FactionPermissionsConfig factionPermissions() {
+    return factionPermissionsConfig;
+  }
+
+  /**
+   * Gets the world map module configuration.
+   *
+   * @return world map config
+   */
+  @NotNull
+  public WorldMapConfig worldMap() {
+    return worldMapConfig;
+  }
+
+  /**
+   * Gets the announcement module configuration.
+   *
+   * @return announcement config
+   */
+  @NotNull
+  public AnnouncementConfig announcements() {
+    return announcementConfig;
+  }
+
+  /**
+   * Gets the gravestone integration module configuration.
+   *
+   * @return gravestone config
+   */
+  @NotNull
+  public GravestoneConfig gravestones() {
+    return gravestoneConfig;
+  }
+
+  /**
+   * Gets the worlds module configuration.
+   *
+   * @return worlds config
+   */
+  @NotNull
+  public WorldsConfig worlds() {
+    return worldsConfig;
+  }
+
+  /**
+   * Gets the world settings resolver for per-world behavior queries.
+   *
+   * @return world settings resolver
+   */
+  @NotNull
+  public WorldSettingsResolver getWorldSettingsResolver() {
+    return worldSettingsResolver;
+  }
+
+  // === Convenience Methods ===
+
+  // Roles (from factions config)
+  /** Returns the role display name. */
+  @NotNull public String getRoleDisplayName(@NotNull FactionRole role) {
+    return factionsConfig.getRoleDisplayName(role);
+  }
+
+  /** Returns the role short name. */
+  @NotNull public String getRoleShortName(@NotNull FactionRole role) {
+    return factionsConfig.getRoleShortName(role);
+  }
+
+  // Faction (from factions config)
+  /** Returns the max members. */
+  public int getMaxMembers() {
+    return factionsConfig.getMaxMembers();
+  }
+
+  public int getMaxMembershipHistory() {
+    return factionsConfig.getMaxMembershipHistory();
+  }
+
+  /** Returns the max name length. */
+  public int getMaxNameLength() {
+    return factionsConfig.getMaxNameLength();
+  }
+
+  /** Returns the min name length. */
+  public int getMinNameLength() {
+    return factionsConfig.getMinNameLength();
+  }
+
+  /** Checks if allow colors. */
+  public boolean isAllowColors() {
+    return factionsConfig.isAllowColors();
+  }
+
+  // Power (from factions config)
+  /** Returns the max player power. */
+  public double getMaxPlayerPower() {
+    return factionsConfig.getMaxPlayerPower();
+  }
+
+  /** Returns the starting power. */
+  public double getStartingPower() {
+    return factionsConfig.getStartingPower();
+  }
+
+  /** Returns the power per claim. */
+  public double getPowerPerClaim() {
+    return factionsConfig.getPowerPerClaim();
+  }
+
+  /** Returns the death penalty. */
+  public double getDeathPenalty() {
+    return factionsConfig.getDeathPenalty();
+  }
+
+  /** Returns the kill reward. */
+  public double getKillReward() {
+    return factionsConfig.getKillReward();
+  }
+
+  /** Checks if kill reward requires faction. */
+  public boolean isKillRewardRequiresFaction() {
+    return factionsConfig.isKillRewardRequiresFaction();
+  }
+
+  public boolean isPowerLossOnMobDeath() {
+    return factionsConfig.isPowerLossOnMobDeath();
+  }
+
+  /** Checks if power loss on environmental death. */
+  public boolean isPowerLossOnEnvironmentalDeath() {
+    return factionsConfig.isPowerLossOnEnvironmentalDeath();
+  }
+
+  /** Returns the regen per minute. */
+  public double getRegenPerMinute() {
+    return factionsConfig.getRegenPerMinute();
+  }
+
+  public boolean isRegenWhenOffline() {
+    return factionsConfig.isRegenWhenOffline();
+  }
+
+  /** Checks if hardcore mode. */
+  public boolean isHardcoreMode() {
+    return factionsConfig.isHardcoreMode();
+  }
+
+  // Claims (from factions config)
+  /** Returns the max claims. */
+  public int getMaxClaims() {
+    return factionsConfig.getMaxClaims();
+  }
+
+  public boolean isOnlyAdjacent() {
+    return factionsConfig.isOnlyAdjacent();
+  }
+
+  /** Checks if prevent disconnect. */
+  public boolean isPreventDisconnect() {
+    return factionsConfig.isPreventDisconnect();
+  }
+
+  /** Checks if decay enabled. */
+  public boolean isDecayEnabled() {
+    return factionsConfig.isDecayEnabled();
+  }
+
+  /** Returns the decay days inactive. */
+  public int getDecayDaysInactive() {
+    return factionsConfig.getDecayDaysInactive();
+  }
+
+  /** Returns the world whitelist. */
+  @NotNull public List<String> getWorldWhitelist() {
+    return factionsConfig.getWorldWhitelist();
+  }
+
+  /** Returns the world blacklist. */
+  @NotNull public List<String> getWorldBlacklist() {
+    return factionsConfig.getWorldBlacklist();
+  }
+
+  /** Checks if world allowed. */
+  public boolean isWorldAllowed(@NotNull String worldName) {
+    if (worldsConfig != null && worldsConfig.isEnabled()) {
+      return worldSettingsResolver.isClaimingAllowed(worldName);
     }
+    return factionsConfig.isWorldAllowed(worldName);
+  }
 
-    /**
-     * Validates all configuration files and logs any issues found.
-     * <p>
-     * This performs "soft" validation - invalid values are logged as warnings
-     * and auto-corrected when possible, but the plugin will continue to function.
-     */
-    private void validateAll() {
-        ValidationResult combined = new ValidationResult();
+  public int calculateMaxClaims(double totalPower) {
+    return factionsConfig.calculateMaxClaims(totalPower);
+  }
 
-        // Validate each config and merge results
-        coreConfig.validateAndLog();
-        if (coreConfig.getLastValidationResult() != null) {
-            combined.merge(coreConfig.getLastValidationResult());
-        }
+  // Claim protection overrides (from factions config)
+  /**
+   * Checks if explosions are allowed in claims (legacy combined check).
+   * Returns true only if ALL explosion source types are allowed.
+   *
+   * @deprecated Use the individual explosion config methods instead
+   */
+  @Deprecated(since = "0.9.0", forRemoval = true)
+  public boolean isAllowExplosionsInClaims() {
+    return factionsConfig.isFactionlessExplosionsAllowed()
+        && factionsConfig.isEnemyExplosionsAllowed()
+        && factionsConfig.isNeutralExplosionsAllowed();
+  }
 
-        backupConfig.validateAndLog();
-        if (backupConfig.getLastValidationResult() != null) {
-            combined.merge(backupConfig.getLastValidationResult());
-        }
+  /** Checks if outsider pickup allowed. */
+  public boolean isOutsiderPickupAllowed() {
+    return factionsConfig.isOutsiderPickupAllowed();
+  }
 
-        chatConfig.validateAndLog();
-        if (chatConfig.getLastValidationResult() != null) {
-            combined.merge(chatConfig.getLastValidationResult());
-        }
+  /** Checks if outsider drop allowed. */
+  public boolean isOutsiderDropAllowed() {
+    return factionsConfig.isOutsiderDropAllowed();
+  }
 
-        debugConfig.validateAndLog();
-        if (debugConfig.getLastValidationResult() != null) {
-            combined.merge(debugConfig.getLastValidationResult());
-        }
+  /** Checks if factionless explosions allowed. */
+  public boolean isFactionlessExplosionsAllowed() {
+    return factionsConfig.isFactionlessExplosionsAllowed();
+  }
 
-        economyConfig.validateAndLog();
-        if (economyConfig.getLastValidationResult() != null) {
-            combined.merge(economyConfig.getLastValidationResult());
-        }
+  /** Checks if enemy explosions allowed. */
+  public boolean isEnemyExplosionsAllowed() {
+    return factionsConfig.isEnemyExplosionsAllowed();
+  }
 
-        factionPermissionsConfig.validateAndLog();
-        if (factionPermissionsConfig.getLastValidationResult() != null) {
-            combined.merge(factionPermissionsConfig.getLastValidationResult());
-        }
+  /** Checks if neutral explosions allowed. */
+  public boolean isNeutralExplosionsAllowed() {
+    return factionsConfig.isNeutralExplosionsAllowed();
+  }
 
-        worldMapConfig.validateAndLog();
-        if (worldMapConfig.getLastValidationResult() != null) {
-            combined.merge(worldMapConfig.getLastValidationResult());
-        }
+  /** Checks if fire spread allowed. */
+  public boolean isFireSpreadAllowed() {
+    return factionsConfig.isFireSpreadAllowed();
+  }
 
-        announcementConfig.validateAndLog();
-        if (announcementConfig.getLastValidationResult() != null) {
-            combined.merge(announcementConfig.getLastValidationResult());
-        }
+  /** Checks if factionless damage allowed. */
+  public boolean isFactionlessDamageAllowed() {
+    return factionsConfig.isFactionlessDamageAllowed();
+  }
 
-        gravestoneConfig.validateAndLog();
-        if (gravestoneConfig.getLastValidationResult() != null) {
-            combined.merge(gravestoneConfig.getLastValidationResult());
-        }
+  /** Checks if enemy damage allowed. */
+  public boolean isEnemyDamageAllowed() {
+    return factionsConfig.isEnemyDamageAllowed();
+  }
 
-        // Log summary
-        if (combined.hasIssues()) {
-            int warnings = combined.getWarnings().size();
-            int errors = combined.getErrors().size();
-            Logger.info("[Config] Validation complete: %d warning(s), %d error(s)", warnings, errors);
-        }
+  /** Checks if neutral damage allowed. */
+  public boolean isNeutralDamageAllowed() {
+    return factionsConfig.isNeutralDamageAllowed();
+  }
+
+  // Per-world settings
+  /** Checks if power loss enabled in world. */
+  public boolean isPowerLossEnabledInWorld(@NotNull String worldName) {
+    if (worldsConfig != null && worldsConfig.isEnabled()) {
+      return worldSettingsResolver.isPowerLossEnabled(worldName);
     }
+    return true;
+  }
 
-    /**
-     * Runs any pending config migrations.
-     */
-    private void runMigrations() {
-        List<MigrationResult> results = MigrationRunner.runPendingMigrations(dataDir, MigrationType.CONFIG);
+  // Combat (from factions config)
+  /** Returns the tag duration seconds. */
+  public int getTagDurationSeconds() {
+    return factionsConfig.getTagDurationSeconds();
+  }
 
-        for (MigrationResult result : results) {
-            if (result.success()) {
-                Logger.info("[Config] Migration '%s' completed: v%d -> v%d",
-                        result.migrationId(), result.fromVersion(), result.toVersion());
-            } else {
-                Logger.severe("[Config] Migration '%s' failed: %s",
-                        result.migrationId(), result.errorMessage());
-                if (result.rolledBack()) {
-                    Logger.info("[Config] Rolled back to previous config version");
-                }
-            }
-        }
+  /** Checks if ally damage. */
+  public boolean isAllyDamage() {
+    return factionsConfig.isAllyDamage();
+  }
+
+  public boolean isFactionDamage() {
+    return factionsConfig.isFactionDamage();
+  }
+
+  /** Checks if faction damage. */
+  public boolean isFactionDamage(@org.jetbrains.annotations.Nullable String worldName) {
+    if (worldName != null && worldsConfig != null && worldsConfig.isEnabled()) {
+      Boolean override = worldSettingsResolver.isFriendlyFireFactionAllowed(worldName);
+      if (override != null) {
+        return override;
+      }
     }
+    return factionsConfig.isFactionDamage();
+  }
 
-    /**
-     * Reloads all configuration files.
-     */
-    public void reloadAll() {
-        Logger.info("[Config] Reloading configuration...");
-
-        coreConfig.reload();
-        backupConfig.reload();
-        chatConfig.reload();
-        debugConfig.reload();
-        economyConfig.reload();
-        factionPermissionsConfig.reload();
-        worldMapConfig.reload();
-        announcementConfig.reload();
-        gravestoneConfig.reload();
-
-        // Re-validate after reload
-        validateAll();
-
-        Logger.info("[Config] Configuration reloaded");
+  public boolean isAllyDamage(@org.jetbrains.annotations.Nullable String worldName) {
+    if (worldName != null && worldsConfig != null && worldsConfig.isEnabled()) {
+      Boolean override = worldSettingsResolver.isFriendlyFireAllyAllowed(worldName);
+      if (override != null) {
+        return override;
+      }
     }
+    return factionsConfig.isAllyDamage();
+  }
 
-    /**
-     * Saves all configuration files.
-     */
-    public void saveAll() {
-        coreConfig.save();
-        backupConfig.save();
-        chatConfig.save();
-        debugConfig.save();
-        economyConfig.save();
-        factionPermissionsConfig.save();
-        worldMapConfig.save();
-        announcementConfig.save();
-        gravestoneConfig.save();
-    }
+  /** Checks if tagged logout penalty. */
+  public boolean isTaggedLogoutPenalty() {
+    return factionsConfig.isTaggedLogoutPenalty();
+  }
 
-    // === Config Accessors ===
+  /** Returns the logout power loss. */
+  public double getLogoutPowerLoss() {
+    return factionsConfig.getLogoutPowerLoss();
+  }
 
-    /**
-     * Gets the core configuration.
-     *
-     * @return core config
-     */
-    @NotNull
-    public CoreConfig core() {
-        return coreConfig;
-    }
+  public double getNeutralAttackPenalty() {
+    return factionsConfig.getNeutralAttackPenalty();
+  }
 
-    /**
-     * Gets the backup module configuration.
-     *
-     * @return backup config
-     */
-    @NotNull
-    public BackupConfig backup() {
-        return backupConfig;
-    }
+  // Spawn Protection (from factions config)
+  /** Checks if spawn protection enabled. */
+  public boolean isSpawnProtectionEnabled() {
+    return factionsConfig.isSpawnProtectionEnabled();
+  }
 
-    /**
-     * Gets the chat module configuration.
-     *
-     * @return chat config
-     */
-    @NotNull
-    public ChatConfig chat() {
-        return chatConfig;
-    }
+  /** Returns the spawn protection duration seconds. */
+  public int getSpawnProtectionDurationSeconds() {
+    return factionsConfig.getSpawnProtectionDurationSeconds();
+  }
 
-    /**
-     * Gets the debug module configuration.
-     *
-     * @return debug config
-     */
-    @NotNull
-    public DebugConfig debug() {
-        return debugConfig;
-    }
+  public boolean isSpawnProtectionBreakOnAttack() {
+    return factionsConfig.isSpawnProtectionBreakOnAttack();
+  }
 
-    /**
-     * Gets the economy module configuration.
-     *
-     * @return economy config
-     */
-    @NotNull
-    public EconomyConfig economy() {
-        return economyConfig;
-    }
+  /** Checks if spawn protection break on move. */
+  public boolean isSpawnProtectionBreakOnMove() {
+    return factionsConfig.isSpawnProtectionBreakOnMove();
+  }
 
-    /**
-     * Gets the faction permissions module configuration.
-     *
-     * @return faction permissions config
-     */
-    @NotNull
-    public FactionPermissionsConfig factionPermissions() {
-        return factionPermissionsConfig;
-    }
+  // Relations (from factions config)
+  /** Returns the max allies. */
+  public int getMaxAllies() {
+    return factionsConfig.getMaxAllies();
+  }
 
-    /**
-     * Gets the world map module configuration.
-     *
-     * @return world map config
-     */
-    @NotNull
-    public WorldMapConfig worldMap() {
-        return worldMapConfig;
-    }
+  /** Returns the max enemies. */
+  public int getMaxEnemies() {
+    return factionsConfig.getMaxEnemies();
+  }
 
-    /**
-     * Gets the announcement module configuration.
-     *
-     * @return announcement config
-     */
-    @NotNull
-    public AnnouncementConfig announcements() {
-        return announcementConfig;
-    }
+  // Invites (from factions config)
+  /** Returns the invite expiration minutes. */
+  public int getInviteExpirationMinutes() {
+    return factionsConfig.getInviteExpirationMinutes();
+  }
 
-    /**
-     * Gets the gravestone integration module configuration.
-     *
-     * @return gravestone config
-     */
-    @NotNull
-    public GravestoneConfig gravestones() {
-        return gravestoneConfig;
-    }
+  public int getJoinRequestExpirationHours() {
+    return factionsConfig.getJoinRequestExpirationHours();
+  }
 
-    // === Convenience Methods (for backward compatibility) ===
+  /** Returns the invite expiration ms. */
+  public long getInviteExpirationMs() {
+    return factionsConfig.getInviteExpirationMs();
+  }
 
-    // Faction
-    public int getMaxMembers() { return coreConfig.getMaxMembers(); }
-    public int getMaxMembershipHistory() { return coreConfig.getMaxMembershipHistory(); }
-    public int getMaxNameLength() { return coreConfig.getMaxNameLength(); }
-    public int getMinNameLength() { return coreConfig.getMinNameLength(); }
-    public boolean isAllowColors() { return coreConfig.isAllowColors(); }
+  /** Returns the join request expiration ms. */
+  public long getJoinRequestExpirationMs() {
+    return factionsConfig.getJoinRequestExpirationMs();
+  }
 
-    // Power
-    public double getMaxPlayerPower() { return coreConfig.getMaxPlayerPower(); }
-    public double getStartingPower() { return coreConfig.getStartingPower(); }
-    public double getPowerPerClaim() { return coreConfig.getPowerPerClaim(); }
-    public double getDeathPenalty() { return coreConfig.getDeathPenalty(); }
-    public double getKillReward() { return coreConfig.getKillReward(); }
+  // Stuck (from factions config)
+  /** Returns the stuck min radius. */
+  public int getStuckMinRadius() {
+    return factionsConfig.getStuckMinRadius();
+  }
 
-    public boolean isKillRewardRequiresFaction() { return coreConfig.isKillRewardRequiresFaction(); }
-    public boolean isPowerLossOnMobDeath() { return coreConfig.isPowerLossOnMobDeath(); }
-    public boolean isPowerLossOnEnvironmentalDeath() { return coreConfig.isPowerLossOnEnvironmentalDeath(); }
-    public double getRegenPerMinute() { return coreConfig.getRegenPerMinute(); }
-    public boolean isRegenWhenOffline() { return coreConfig.isRegenWhenOffline(); }
+  /** Returns the stuck radius increase. */
+  public int getStuckRadiusIncrease() {
+    return factionsConfig.getStuckRadiusIncrease();
+  }
 
-    // Claims
-    public int getMaxClaims() { return coreConfig.getMaxClaims(); }
-    public boolean isOnlyAdjacent() { return coreConfig.isOnlyAdjacent(); }
-    public boolean isPreventDisconnect() { return coreConfig.isPreventDisconnect(); }
-    public boolean isDecayEnabled() { return coreConfig.isDecayEnabled(); }
-    public int getDecayDaysInactive() { return coreConfig.getDecayDaysInactive(); }
-    @NotNull public List<String> getWorldWhitelist() { return coreConfig.getWorldWhitelist(); }
-    @NotNull public List<String> getWorldBlacklist() { return coreConfig.getWorldBlacklist(); }
-    public boolean isWorldAllowed(@NotNull String worldName) { return coreConfig.isWorldAllowed(worldName); }
-    public int calculateMaxClaims(double totalPower) { return coreConfig.calculateMaxClaims(totalPower); }
+  public int getStuckMaxAttempts() {
+    return factionsConfig.getStuckMaxAttempts();
+  }
 
-    // Combat
-    public int getTagDurationSeconds() { return coreConfig.getTagDurationSeconds(); }
-    public boolean isAllyDamage() { return coreConfig.isAllyDamage(); }
-    public boolean isFactionDamage() { return coreConfig.isFactionDamage(); }
-    public boolean isTaggedLogoutPenalty() { return coreConfig.isTaggedLogoutPenalty(); }
-    public double getLogoutPowerLoss() { return coreConfig.getLogoutPowerLoss(); }
-    public double getNeutralAttackPenalty() { return coreConfig.getNeutralAttackPenalty(); }
+  /** Returns the stuck warmup seconds. */
+  public int getStuckWarmupSeconds() {
+    return factionsConfig.getStuckWarmupSeconds();
+  }
 
-    // Spawn Protection
-    public boolean isSpawnProtectionEnabled() { return coreConfig.isSpawnProtectionEnabled(); }
-    public int getSpawnProtectionDurationSeconds() { return coreConfig.getSpawnProtectionDurationSeconds(); }
-    public boolean isSpawnProtectionBreakOnAttack() { return coreConfig.isSpawnProtectionBreakOnAttack(); }
-    public boolean isSpawnProtectionBreakOnMove() { return coreConfig.isSpawnProtectionBreakOnMove(); }
+  /** Returns the stuck cooldown seconds. */
+  public int getStuckCooldownSeconds() {
+    return factionsConfig.getStuckCooldownSeconds();
+  }
 
-    // Relations
-    public int getMaxAllies() { return coreConfig.getMaxAllies(); }
-    public int getMaxEnemies() { return coreConfig.getMaxEnemies(); }
+  // Teleport (from server config)
+  /** Returns the warmup seconds. */
+  public int getWarmupSeconds() {
+    return serverConfig.getWarmupSeconds();
+  }
 
-    // Invites
-    public int getInviteExpirationMinutes() { return coreConfig.getInviteExpirationMinutes(); }
-    public int getJoinRequestExpirationHours() { return coreConfig.getJoinRequestExpirationHours(); }
-    public long getInviteExpirationMs() { return coreConfig.getInviteExpirationMs(); }
-    public long getJoinRequestExpirationMs() { return coreConfig.getJoinRequestExpirationMs(); }
+  /** Returns the cooldown seconds. */
+  public int getCooldownSeconds() {
+    return serverConfig.getCooldownSeconds();
+  }
 
-    // Stuck
-    public int getStuckMinRadius() { return coreConfig.getStuckMinRadius(); }
-    public int getStuckRadiusIncrease() { return coreConfig.getStuckRadiusIncrease(); }
-    public int getStuckMaxAttempts() { return coreConfig.getStuckMaxAttempts(); }
-    public int getStuckWarmupSeconds() { return coreConfig.getStuckWarmupSeconds(); }
-    public int getStuckCooldownSeconds() { return coreConfig.getStuckCooldownSeconds(); }
+  public boolean isCancelOnMove() {
+    return serverConfig.isCancelOnMove();
+  }
 
-    // Teleport
-    public int getWarmupSeconds() { return coreConfig.getWarmupSeconds(); }
-    public int getCooldownSeconds() { return coreConfig.getCooldownSeconds(); }
-    public boolean isCancelOnMove() { return coreConfig.isCancelOnMove(); }
-    public boolean isCancelOnDamage() { return coreConfig.isCancelOnDamage(); }
+  /** Checks if cancel on damage. */
+  public boolean isCancelOnDamage() {
+    return serverConfig.isCancelOnDamage();
+  }
 
-    // Updates
-    public boolean isUpdateCheckEnabled() { return coreConfig.isUpdateCheckEnabled(); }
-    @NotNull public String getUpdateCheckUrl() { return coreConfig.getUpdateCheckUrl(); }
-    @NotNull public String getReleaseChannel() { return coreConfig.getReleaseChannel(); }
-    public boolean isPreReleaseChannel() { return coreConfig.isPreReleaseChannel(); }
+  // Updates (from server config)
+  /** Checks if update check enabled. */
+  public boolean isUpdateCheckEnabled() {
+    return serverConfig.isUpdateCheckEnabled();
+  }
 
-    // Auto-save
-    public boolean isAutoSaveEnabled() { return coreConfig.isAutoSaveEnabled(); }
-    public int getAutoSaveIntervalMinutes() { return coreConfig.getAutoSaveIntervalMinutes(); }
+  /** Returns the update check url. */
+  @NotNull public String getUpdateCheckUrl() {
+    return serverConfig.getUpdateCheckUrl();
+  }
 
-    // Backup (from module)
-    public boolean isBackupEnabled() { return backupConfig.isEnabled(); }
-    public int getBackupHourlyRetention() { return backupConfig.getHourlyRetention(); }
-    public int getBackupDailyRetention() { return backupConfig.getDailyRetention(); }
-    public int getBackupWeeklyRetention() { return backupConfig.getWeeklyRetention(); }
-    public int getBackupManualRetention() { return backupConfig.getManualRetention(); }
-    public boolean isBackupOnShutdown() { return backupConfig.isOnShutdown(); }
-    public int getBackupShutdownRetention() { return backupConfig.getShutdownRetention(); }
+  /** Returns the release channel. */
+  @NotNull public String getReleaseChannel() {
+    return serverConfig.getReleaseChannel();
+  }
 
-    // Economy (from module)
-    public boolean isEconomyEnabled() { return economyConfig.isEnabled(); }
-    @NotNull public String getEconomyCurrencyName() { return economyConfig.getCurrencyName(); }
-    @NotNull public String getEconomyCurrencyNamePlural() { return economyConfig.getCurrencyNamePlural(); }
-    @NotNull public String getEconomyCurrencySymbol() { return economyConfig.getCurrencySymbol(); }
-    public double getEconomyStartingBalance() { return economyConfig.getStartingBalance(); }
-    public boolean isEconomyDisbandRefundToLeader() { return economyConfig.isDisbandRefundToLeader(); }
-    @NotNull public com.hyperfactions.data.FactionEconomy.TreasuryLimits getDefaultTreasuryLimits() { return economyConfig.getDefaultTreasuryLimits(); }
-    @NotNull public com.hyperfactions.config.modules.EconomyConfig getEconomyConfig() { return economyConfig; }
-    public double getDepositFeePercent() { return economyConfig.getDepositFeePercent(); }
-    public double getWithdrawFeePercent() { return economyConfig.getWithdrawFeePercent(); }
-    public double getTransferFeePercent() { return economyConfig.getTransferFeePercent(); }
-    public boolean isUpkeepEnabled() { return economyConfig.isUpkeepEnabled(); }
-    public double getUpkeepCostPerChunk() { return economyConfig.getUpkeepCostPerChunk(); }
-    public int getUpkeepIntervalHours() { return economyConfig.getUpkeepIntervalHours(); }
-    public int getUpkeepGracePeriodHours() { return economyConfig.getUpkeepGracePeriodHours(); }
-    public boolean isUpkeepAutoPayDefault() { return economyConfig.isUpkeepAutoPayDefault(); }
+  public boolean isPreReleaseChannel() {
+    return serverConfig.isPreReleaseChannel();
+  }
 
-    // Messages (v3 structured prefix)
-    @NotNull public String getPrefixText() { return coreConfig.getPrefixText(); }
-    @NotNull public String getPrefixColor() { return coreConfig.getPrefixColor(); }
-    @NotNull public String getPrefixBracketColor() { return coreConfig.getPrefixBracketColor(); }
-    @NotNull public String getPrimaryColor() { return coreConfig.getPrimaryColor(); }
+  // Auto-save (from server config)
+  /** Checks if auto save enabled. */
+  public boolean isAutoSaveEnabled() {
+    return serverConfig.isAutoSaveEnabled();
+  }
 
-    // GUI
-    @NotNull public String getGuiTitle() { return coreConfig.getGuiTitle(); }
-    public boolean isTerrainMapEnabled() { return coreConfig.isTerrainMapEnabled(); }
+  /** Returns the auto save interval minutes. */
+  public int getAutoSaveIntervalMinutes() {
+    return serverConfig.getAutoSaveIntervalMinutes();
+  }
 
-    // Territory Notifications
-    public boolean isTerritoryNotificationsEnabled() { return coreConfig.isTerritoryNotificationsEnabled(); }
+  // Backup (from module)
+  /** Checks if backup enabled. */
+  public boolean isBackupEnabled() {
+    return backupConfig.isEnabled();
+  }
 
-    // World Map (from worldmap.json module config)
-    public boolean isWorldMapMarkersEnabled() { return worldMapConfig.isEnabled(); }
+  /** Returns the backup hourly retention. */
+  public int getBackupHourlyRetention() {
+    return backupConfig.getHourlyRetention();
+  }
 
-    // Debug (from module)
-    public boolean isDebugEnabledByDefault() { return debugConfig.isEnabledByDefault(); }
-    public boolean isDebugLogToConsole() { return debugConfig.isLogToConsole(); }
-    public boolean isDebugPower() { return debugConfig.isPower(); }
-    public boolean isDebugClaim() { return debugConfig.isClaim(); }
-    public boolean isDebugCombat() { return debugConfig.isCombat(); }
-    public boolean isDebugProtection() { return debugConfig.isProtection(); }
-    public boolean isDebugRelation() { return debugConfig.isRelation(); }
-    public boolean isDebugTerritory() { return debugConfig.isTerritory(); }
-    public boolean isDebugWorldmap() { return debugConfig.isWorldmap(); }
-    public boolean isDebugIntegration() { return debugConfig.isIntegration(); }
+  /** Returns the backup daily retention. */
+  public int getBackupDailyRetention() {
+    return backupConfig.getDailyRetention();
+  }
 
-    // Debug setters
-    public void setDebugPower(boolean enabled) { debugConfig.setPower(enabled); }
-    public void setDebugClaim(boolean enabled) { debugConfig.setClaim(enabled); }
-    public void setDebugCombat(boolean enabled) { debugConfig.setCombat(enabled); }
-    public void setDebugProtection(boolean enabled) { debugConfig.setProtection(enabled); }
-    public void setDebugRelation(boolean enabled) { debugConfig.setRelation(enabled); }
-    public void setDebugTerritory(boolean enabled) { debugConfig.setTerritory(enabled); }
-    public void setDebugWorldmap(boolean enabled) { debugConfig.setWorldmap(enabled); }
-    public void setDebugIntegration(boolean enabled) { debugConfig.setIntegration(enabled); }
-    public void enableAllDebug() { debugConfig.enableAll(); }
-    public void disableAllDebug() { debugConfig.disableAll(); }
-    public void applyDebugSettings() { debugConfig.applyToLogger(); }
+  /** Returns the backup weekly retention. */
+  public int getBackupWeeklyRetention() {
+    return backupConfig.getWeeklyRetention();
+  }
 
-    // Chat (from module)
-    public boolean isChatFormattingEnabled() { return chatConfig.isEnabled(); }
-    @NotNull public String getChatFormat() { return chatConfig.getFormat(); }
-    @NotNull public String getChatTagDisplay() { return chatConfig.getTagDisplay(); }
-    @NotNull public String getChatTagFormat() { return chatConfig.getTagFormat(); }
-    @NotNull public String getChatNoFactionTag() { return chatConfig.getNoFactionTag(); }
-    @NotNull public String getChatNoFactionTagColor() { return chatConfig.getNoFactionTagColor(); }
-    @NotNull public String getChatPlayerNameColor() { return chatConfig.getPlayerNameColor(); }
-    @NotNull public String getChatEventPriority() { return chatConfig.getPriority(); }
-    @NotNull public String getChatRelationColorOwn() { return chatConfig.getRelationColorOwn(); }
-    @NotNull public String getChatRelationColorAlly() { return chatConfig.getRelationColorAlly(); }
-    @NotNull public String getChatRelationColorNeutral() { return chatConfig.getRelationColorNeutral(); }
-    @NotNull public String getChatRelationColorEnemy() { return chatConfig.getRelationColorEnemy(); }
+  /** Returns the backup manual retention. */
+  public int getBackupManualRetention() {
+    return backupConfig.getManualRetention();
+  }
 
-    // Faction Chat (from chat module factionChat section)
-    @NotNull public String getFactionChatColor() { return chatConfig.getFactionChatColor(); }
-    @NotNull public String getFactionChatPrefix() { return chatConfig.getFactionChatPrefix(); }
-    @NotNull public String getAllyChatColor() { return chatConfig.getAllyChatColor(); }
-    @NotNull public String getAllyChatPrefix() { return chatConfig.getAllyChatPrefix(); }
-    @NotNull public String getSenderNameColor() { return chatConfig.getSenderNameColor(); }
-    @NotNull public String getMessageColor() { return chatConfig.getMessageColor(); }
-    public boolean isChatHistoryEnabled() { return chatConfig.isHistoryEnabled(); }
-    public int getChatHistoryMaxMessages() { return chatConfig.getHistoryMaxMessages(); }
-    public int getChatHistoryRetentionDays() { return chatConfig.getHistoryRetentionDays(); }
-    public int getChatHistoryCleanupIntervalMinutes() { return chatConfig.getHistoryCleanupIntervalMinutes(); }
+  /** Checks if backup on shutdown. */
+  public boolean isBackupOnShutdown() {
+    return backupConfig.isOnShutdown();
+  }
 
-    // Permissions
-    public boolean isAdminRequiresOp() { return coreConfig.isAdminRequiresOp(); }
-    public boolean isAllowWithoutPermissionMod() { return coreConfig.isAllowWithoutPermissionMod(); }
+  public int getBackupShutdownRetention() {
+    return backupConfig.getShutdownRetention();
+  }
 
-    // Faction Permissions (from module)
-    @NotNull public FactionPermissions getDefaultFactionPermissions() {
-        return factionPermissionsConfig.getDefaultFactionPermissions();
-    }
-    @NotNull public FactionPermissions getEffectiveFactionPermissions(@NotNull FactionPermissions factionPerms) {
-        return factionPermissionsConfig.getEffectiveFactionPermissions(factionPerms);
-    }
-    public boolean isPermissionLocked(@NotNull String permissionName) {
-        return factionPermissionsConfig.isPermissionLocked(permissionName);
-    }
+  // Economy (from module)
+  /** Checks if economy enabled. */
+  public boolean isEconomyEnabled() {
+    return economyConfig.isEnabled();
+  }
+
+  /** Returns the economy currency name. */
+  @NotNull public String getEconomyCurrencyName() {
+    return economyConfig.getCurrencyName();
+  }
+
+  /** Returns the economy currency name plural. */
+  @NotNull public String getEconomyCurrencyNamePlural() {
+    return economyConfig.getCurrencyNamePlural();
+  }
+
+  /** Returns the economy currency symbol. */
+  @NotNull public String getEconomyCurrencySymbol() {
+    return economyConfig.getCurrencySymbol();
+  }
+
+  @NotNull public java.math.BigDecimal getEconomyStartingBalance() {
+    return economyConfig.getStartingBalance();
+  }
+
+  /** Checks if economy disband refund to leader. */
+  public boolean isEconomyDisbandRefundToLeader() {
+    return economyConfig.isDisbandRefundToLeader();
+  }
+
+  @NotNull public com.hyperfactions.data.FactionEconomy.TreasuryLimits getDefaultTreasuryLimits() {
+    return economyConfig.getDefaultTreasuryLimits();
+  }
+
+  @NotNull public com.hyperfactions.config.modules.EconomyConfig getEconomyConfig() {
+    return economyConfig;
+  }
+
+  @NotNull public java.math.BigDecimal getDepositFeePercent() {
+    return economyConfig.getDepositFeePercent();
+  }
+
+  @NotNull public java.math.BigDecimal getWithdrawFeePercent() {
+    return economyConfig.getWithdrawFeePercent();
+  }
+
+  @NotNull public java.math.BigDecimal getTransferFeePercent() {
+    return economyConfig.getTransferFeePercent();
+  }
+
+  /** Checks if upkeep enabled. */
+  public boolean isUpkeepEnabled() {
+    return economyConfig.isUpkeepEnabled();
+  }
+
+  @NotNull public java.math.BigDecimal getUpkeepCostPerChunk() {
+    return economyConfig.getUpkeepCostPerChunk();
+  }
+
+  public int getUpkeepIntervalHours() {
+    return economyConfig.getUpkeepIntervalHours();
+  }
+
+  /** Returns the upkeep grace period hours. */
+  public int getUpkeepGracePeriodHours() {
+    return economyConfig.getUpkeepGracePeriodHours();
+  }
+
+  /** Checks if upkeep auto pay default. */
+  public boolean isUpkeepAutoPayDefault() {
+    return economyConfig.isUpkeepAutoPayDefault();
+  }
+
+  // Messages (from server config)
+  /** Returns the prefix text. */
+  @NotNull public String getPrefixText() {
+    return serverConfig.getPrefixText();
+  }
+
+  /** Returns the prefix color. */
+  @NotNull public String getPrefixColor() {
+    return serverConfig.getPrefixColor();
+  }
+
+  /** Returns the prefix bracket color. */
+  @NotNull public String getPrefixBracketColor() {
+    return serverConfig.getPrefixBracketColor();
+  }
+
+  /** Returns the primary color. */
+  @NotNull public String getPrimaryColor() {
+    return serverConfig.getPrimaryColor();
+  }
+
+  // GUI (from server config)
+  @NotNull public String getGuiTitle() {
+    return serverConfig.getGuiTitle();
+  }
+
+  /** Checks if terrain map enabled. */
+  public boolean isTerrainMapEnabled() {
+    return serverConfig.isTerrainMapEnabled();
+  }
+
+  // Territory Notifications (from announcements config)
+  public boolean isTerritoryNotificationsEnabled() {
+    return announcementConfig.isTerritoryNotificationsEnabled();
+  }
+
+  // World Map (from worldmap.json module config)
+  public boolean isWorldMapMarkersEnabled() {
+    return worldMapConfig.isEnabled();
+  }
+
+  // Debug (from module)
+  /** Checks if debug enabled by default. */
+  public boolean isDebugEnabledByDefault() {
+    return debugConfig.isEnabledByDefault();
+  }
+
+  /** Checks if debug log to console. */
+  public boolean isDebugLogToConsole() {
+    return debugConfig.isLogToConsole();
+  }
+
+  /** Checks if debug power. */
+  public boolean isDebugPower() {
+    return debugConfig.isPower();
+  }
+
+  /** Checks if debug claim. */
+  public boolean isDebugClaim() {
+    return debugConfig.isClaim();
+  }
+
+  /** Checks if debug combat. */
+  public boolean isDebugCombat() {
+    return debugConfig.isCombat();
+  }
+
+  /** Checks if debug protection. */
+  public boolean isDebugProtection() {
+    return debugConfig.isProtection();
+  }
+
+  /** Checks if debug relation. */
+  public boolean isDebugRelation() {
+    return debugConfig.isRelation();
+  }
+
+  /** Checks if debug territory. */
+  public boolean isDebugTerritory() {
+    return debugConfig.isTerritory();
+  }
+
+  /** Checks if debug worldmap. */
+  public boolean isDebugWorldmap() {
+    return debugConfig.isWorldmap();
+  }
+
+  /** Checks if debug integration. */
+  public boolean isDebugIntegration() {
+    return debugConfig.isIntegration();
+  }
+
+  // Debug setters
+  /** Sets the debug power. */
+  public void setDebugPower(boolean enabled) {
+    debugConfig.setPower(enabled);
+  }
+
+  /** Sets the debug claim. */
+  public void setDebugClaim(boolean enabled) {
+    debugConfig.setClaim(enabled);
+  }
+
+  /** Sets the debug combat. */
+  public void setDebugCombat(boolean enabled) {
+    debugConfig.setCombat(enabled);
+  }
+
+  public void setDebugProtection(boolean enabled) {
+    debugConfig.setProtection(enabled);
+  }
+
+  public void setDebugRelation(boolean enabled) {
+    debugConfig.setRelation(enabled);
+  }
+
+  /** Sets the debug territory. */
+  public void setDebugTerritory(boolean enabled) {
+    debugConfig.setTerritory(enabled);
+  }
+
+  /** Sets the debug worldmap. */
+  public void setDebugWorldmap(boolean enabled) {
+    debugConfig.setWorldmap(enabled);
+  }
+
+  public void setDebugIntegration(boolean enabled) {
+    debugConfig.setIntegration(enabled);
+  }
+
+  /** Enables this component. */
+  public void enableAllDebug() {
+    debugConfig.enableAll();
+  }
+
+  /** Disables this component. */
+  public void disableAllDebug() {
+    debugConfig.disableAll();
+  }
+
+  /** Applies debug settings. */
+  public void applyDebugSettings() {
+    debugConfig.applyToLogger();
+  }
+
+  // Chat (from module)
+  /** Checks if chat formatting enabled. */
+  public boolean isChatFormattingEnabled() {
+    return chatConfig.isEnabled();
+  }
+
+  /** Returns the chat format. */
+  @NotNull public String getChatFormat() {
+    return chatConfig.getFormat();
+  }
+
+  /** Returns the chat tag display. */
+  @NotNull public String getChatTagDisplay() {
+    return chatConfig.getTagDisplay();
+  }
+
+  /** Returns the chat tag format. */
+  @NotNull public String getChatTagFormat() {
+    return chatConfig.getTagFormat();
+  }
+
+  /** Returns the chat no faction tag. */
+  @NotNull public String getChatNoFactionTag() {
+    return chatConfig.getNoFactionTag();
+  }
+
+  /** Returns the chat no faction tag color. */
+  @NotNull public String getChatNoFactionTagColor() {
+    return chatConfig.getNoFactionTagColor();
+  }
+
+  @NotNull public String getChatPlayerNameColor() {
+    return chatConfig.getPlayerNameColor();
+  }
+
+  /** Returns the chat event priority. */
+  @NotNull public String getChatEventPriority() {
+    return chatConfig.getPriority();
+  }
+
+  /** Returns the chat relation color own. */
+  @NotNull public String getChatRelationColorOwn() {
+    return chatConfig.getRelationColorOwn();
+  }
+
+  /** Returns the chat relation color ally. */
+  @NotNull public String getChatRelationColorAlly() {
+    return chatConfig.getRelationColorAlly();
+  }
+
+  @NotNull public String getChatRelationColorNeutral() {
+    return chatConfig.getRelationColorNeutral();
+  }
+
+  /** Returns the chat relation color enemy. */
+  @NotNull public String getChatRelationColorEnemy() {
+    return chatConfig.getRelationColorEnemy();
+  }
+
+  // Faction Chat (from chat module factionChat section)
+  @NotNull public String getFactionChatColor() {
+    return chatConfig.getFactionChatColor();
+  }
+
+  /** Returns the faction chat prefix. */
+  @NotNull public String getFactionChatPrefix() {
+    return chatConfig.getFactionChatPrefix();
+  }
+
+  /** Returns the ally chat color. */
+  @NotNull public String getAllyChatColor() {
+    return chatConfig.getAllyChatColor();
+  }
+
+  /** Returns the ally chat prefix. */
+  @NotNull public String getAllyChatPrefix() {
+    return chatConfig.getAllyChatPrefix();
+  }
+
+  /** Returns the sender name color. */
+  @NotNull public String getSenderNameColor() {
+    return chatConfig.getSenderNameColor();
+  }
+
+  /** Returns the message color. */
+  @NotNull public String getMessageColor() {
+    return chatConfig.getMessageColor();
+  }
+
+  public boolean isChatHistoryEnabled() {
+    return chatConfig.isHistoryEnabled();
+  }
+
+  /** Returns the chat history max messages. */
+  public int getChatHistoryMaxMessages() {
+    return chatConfig.getHistoryMaxMessages();
+  }
+
+  /** Returns the chat history retention days. */
+  public int getChatHistoryRetentionDays() {
+    return chatConfig.getHistoryRetentionDays();
+  }
+
+  /** Returns the chat history cleanup interval minutes. */
+  public int getChatHistoryCleanupIntervalMinutes() {
+    return chatConfig.getHistoryCleanupIntervalMinutes();
+  }
+
+  // Permissions (from server config)
+  public boolean isAdminRequiresOp() {
+    return serverConfig.isAdminRequiresOp();
+  }
+
+  /** Checks if allow without permission mod. */
+  public boolean isAllowWithoutPermissionMod() {
+    return serverConfig.isAllowWithoutPermissionMod();
+  }
+
+  // Faction Permissions (from module)
+  /** Returns the default faction permissions. */
+  @NotNull public FactionPermissions getDefaultFactionPermissions() {
+    return factionPermissionsConfig.getDefaultFactionPermissions();
+  }
+
+  @NotNull public FactionPermissions getEffectiveFactionPermissions(@NotNull FactionPermissions factionPerms) {
+    return factionPermissionsConfig.getEffectiveFactionPermissions(factionPerms);
+  }
+
+  /** Checks if permission locked. */
+  public boolean isPermissionLocked(@NotNull String permissionName) {
+    return factionPermissionsConfig.isPermissionLocked(permissionName);
+  }
 }

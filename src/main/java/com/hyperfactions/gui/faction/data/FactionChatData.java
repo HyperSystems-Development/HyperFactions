@@ -11,40 +11,42 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
  */
 public class FactionChatData implements NavAwareData {
 
-    /** The button/action that triggered the event */
-    public String button;
+  /** The button/action that triggered the event. */
+  public String button;
 
-    /** NavBar target */
-    public String navBar;
+  /** NavBar target. */
+  public String navBar;
 
-    /** Chat input text captured from the TextField */
-    public String chatInput;
+  /** Chat input text captured from the TextField. */
+  public String chatInput;
 
-    /** Codec for serialization/deserialization */
-    public static final BuilderCodec<FactionChatData> CODEC = BuilderCodec
-            .builder(FactionChatData.class, FactionChatData::new)
-            .addField(
-                    new KeyedCodec<>("Button", Codec.STRING),
-                    (data, value) -> data.button = value,
-                    data -> data.button
-            )
-            .addField(
-                    new KeyedCodec<>("NavBar", Codec.STRING),
-                    (data, value) -> data.navBar = value,
-                    data -> data.navBar
-            )
-            .addField(
-                    new KeyedCodec<>("@ChatInput", Codec.STRING),
-                    (data, value) -> data.chatInput = value,
-                    data -> data.chatInput
-            )
-            .build();
+  /** Codec for serialization/deserialization. */
+  public static final BuilderCodec<FactionChatData> CODEC = BuilderCodec
+      .builder(FactionChatData.class, FactionChatData::new)
+      .addField(
+          new KeyedCodec<>("Button", Codec.STRING),
+          (data, value) -> data.button = value,
+          data -> data.button
+      )
+      .addField(
+          new KeyedCodec<>("NavBar", Codec.STRING),
+          (data, value) -> data.navBar = value,
+          data -> data.navBar
+      )
+      .addField(
+          new KeyedCodec<>("@ChatInput", Codec.STRING),
+          (data, value) -> data.chatInput = value,
+          data -> data.chatInput
+      )
+      .build();
 
-    public FactionChatData() {
-    }
+  /** Creates a new FactionChatData. */
+  public FactionChatData() {
+  }
 
-    @Override
-    public String getNavBar() {
-        return navBar;
-    }
+  /** Returns the nav bar. */
+  @Override
+  public String getNavBar() {
+    return navBar;
+  }
 }

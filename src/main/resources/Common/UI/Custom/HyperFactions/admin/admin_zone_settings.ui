@@ -1,6 +1,6 @@
 // Admin Zone Settings Page
 // Configure zone flags visually
-// Shows all 33 core flags with toggle buttons in 2-column layout with boxes
+// Shows all 36 core flags with toggle buttons in 3-column layout with boxes
 // Integration flags are on a separate sub-page (admin_zone_integration_flags.ui)
 // Mixin-dependent flags show "(mixin)" when unavailable
 
@@ -12,7 +12,7 @@ $C.@PageOverlay {
   $Nav.@HyperFactionsAdminNavBar #HyperFactionsAdminNavBar {}
 
   $C.@DecoratedContainer {
-    Anchor: (Width: 720, Height: 840);
+    Anchor: (Width: 880, Height: 680);
 
     #Title {
       Group {
@@ -57,16 +57,16 @@ $C.@PageOverlay {
         Background: (Color: #00AAAA);
       }
 
-      // === Two-Column Layout ===
+      // === Three-Column Layout ===
       Group #FlagsContainer {
         LayoutMode: Left;
         FlexWeight: 1;
 
-        // ===== LEFT COLUMN (Combat, Damage, Death, Building) =====
+        // ===== LEFT COLUMN (Combat, Damage, Death) =====
         Group #LeftColumn {
-          Anchor: (Width: 330);
+          FlexWeight: 1;
           LayoutMode: Top;
-          Padding: (Left: 0, Right: 10, Top: 0, Bottom: 0);
+          Padding: (Left: 0, Right: 5, Top: 0, Bottom: 0);
 
           // --- Combat Box ---
           Group #CombatBox {
@@ -325,7 +325,7 @@ $C.@PageOverlay {
             Background: (Color: #1a2a3a);
             Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
             LayoutMode: Top;
-            Anchor: (Bottom: 8);
+            Anchor: (Bottom: 0);
 
             Group {
               Anchor: (Height: 18, Bottom: 4);
@@ -377,13 +377,20 @@ $C.@PageOverlay {
               }
             }
           }
+        }
+
+        // ===== MIDDLE COLUMN (Building, Interaction, Entity Interaction) =====
+        Group #MiddleColumn {
+          FlexWeight: 1;
+          LayoutMode: Top;
+          Padding: (Left: 5, Right: 5, Top: 0, Bottom: 0);
 
           // --- Building Box ---
           Group #BuildingBox {
             Background: (Color: #1a2a3a);
             Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
             LayoutMode: Top;
-            Anchor: (Bottom: 0);
+            Anchor: (Bottom: 8);
 
             Group {
               Anchor: (Height: 18, Bottom: 0);
@@ -487,13 +494,6 @@ $C.@PageOverlay {
               }
             }
           }
-        }
-
-        // ===== RIGHT COLUMN (Interaction, Transport, Items, Spawning) =====
-        Group #RightColumn {
-          Anchor: (Width: 330);
-          LayoutMode: Top;
-          Padding: (Left: 10, Right: 0, Top: 0, Bottom: 0);
 
           // --- Interaction Box ---
           Group #InteractionBox {
@@ -648,6 +648,92 @@ $C.@PageOverlay {
               }
             }
           }
+
+          // --- Entity Interaction Box ---
+          Group #EntityInteractionBox {
+            Background: (Color: #1a2a3a);
+            Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+            LayoutMode: Top;
+            Anchor: (Bottom: 0);
+
+            Group {
+              Anchor: (Height: 18, Bottom: 4);
+              Label {
+                Text: "Entity Interaction";
+                Style: (FontSize: 11, TextColor: #00AAAA, RenderBold: true);
+              }
+            }
+
+            // Flag 33: crate_pickup (mixin: use)
+            Group {
+              Anchor: (Height: 24);
+              LayoutMode: Left;
+              Label #Flag33Name {
+                Text: "Crate Pickup";
+                Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+                Anchor: (Width: 110);
+              }
+              Label { FlexWeight: 1; }
+              Label #Flag33Default {
+                Text: "(default)";
+                Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
+                Anchor: (Width: 55);
+              }
+              $C.@CheckBoxWithLabel #Flag33Toggle {
+                @Text = ""; @Checked = false;
+                Anchor: (Height: 20, Width: 44);
+              }
+            }
+
+            // Flag 34: crate_place (mixin: use)
+            Group {
+              Anchor: (Height: 24);
+              LayoutMode: Left;
+              Label #Flag34Name {
+                Text: "Crate Place";
+                Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+                Anchor: (Width: 110);
+              }
+              Label { FlexWeight: 1; }
+              Label #Flag34Default {
+                Text: "(default)";
+                Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
+                Anchor: (Width: 55);
+              }
+              $C.@CheckBoxWithLabel #Flag34Toggle {
+                @Text = ""; @Checked = false;
+                Anchor: (Height: 20, Width: 44);
+              }
+            }
+
+            // Flag 35: npc_tame (mixin: use)
+            Group {
+              Anchor: (Height: 24);
+              LayoutMode: Left;
+              Label #Flag35Name {
+                Text: "NPC Tame";
+                Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+                Anchor: (Width: 110);
+              }
+              Label { FlexWeight: 1; }
+              Label #Flag35Default {
+                Text: "(default)";
+                Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
+                Anchor: (Width: 55);
+              }
+              $C.@CheckBoxWithLabel #Flag35Toggle {
+                @Text = ""; @Checked = false;
+                Anchor: (Height: 20, Width: 44);
+              }
+            }
+          }
+        }
+
+        // ===== RIGHT COLUMN (Transport, Items, Spawning) =====
+        Group #RightColumn {
+          FlexWeight: 1;
+          LayoutMode: Top;
+          Padding: (Left: 5, Right: 0, Top: 0, Bottom: 0);
 
           // --- Transport Box ---
           Group #TransportBox {

@@ -12,23 +12,24 @@ import org.jetbrains.annotations.Nullable;
  * @param TargetPlayer optional target player name (for INVITE actions)
  */
 public record HyFactionLog(
-    @Nullable String Action,
-    @Nullable String UserUUID,
-    @Nullable String UserName,
-    @Nullable String Date,
-    @Nullable String TargetPlayer
+  @Nullable String Action,
+  @Nullable String UserUUID,
+  @Nullable String UserName,
+  @Nullable String Date,
+  @Nullable String TargetPlayer
 ) {
-    /**
-     * Converts the ISO 8601 date string to epoch milliseconds.
-     *
-     * @return epoch millis, or current time if parsing fails
-     */
-    public long toEpochMillis() {
-        if (Date == null || Date.isEmpty()) {
-            return System.currentTimeMillis();
-        }
-        // Reuse the tracker's parsing logic
-        HyFactionTracker tracker = new HyFactionTracker(UserUUID, UserName, Date);
-        return tracker.toEpochMillis();
+  /**
+   * Converts the ISO 8601 date string to epoch milliseconds.
+   *
+   * @return epoch millis, or current time if parsing fails
+   */
+  public long toEpochMillis() {
+    if (Date == null || Date.isEmpty()) {
+      return System.currentTimeMillis();
     }
+
+    // Reuse the tracker's parsing logic
+    HyFactionTracker tracker = new HyFactionTracker(UserUUID, UserName, Date);
+    return tracker.toEpochMillis();
+  }
 }

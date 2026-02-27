@@ -1,0 +1,234 @@
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+$Nav = "admin_nav_bar.ui";
+
+$C.@PageOverlay {
+  $Nav.@HyperFactionsAdminNavBar #HyperFactionsAdminNavBar {}
+
+  $C.@Container {
+    Anchor: (Width: 720, Height: 470);
+
+    #Title {
+      $C.@Title {
+        @Text = "Version and Integrations";
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+      Padding: (Left: 15, Right: 15, Top: 10, Bottom: 10);
+
+      // Version Info Cards Row
+      Group #VersionRow {
+        Anchor: (Height: 80, Bottom: 12);
+        LayoutMode: Left;
+
+        // HyperFactions Version
+        Group {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 12, Right: 12, Top: 10, Bottom: 10);
+          LayoutMode: Top;
+          Anchor: (Right: 5);
+
+          Label {
+            Text: "HyperFactions";
+            Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
+            Anchor: (Height: 16);
+          }
+          Label #FactionsVersion {
+            Text: "...";
+            Style: (FontSize: 22, TextColor: #00FFFF, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
+            FlexWeight: 1;
+          }
+        }
+
+        // Hytale Server Version
+        Group {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 12, Right: 12, Top: 10, Bottom: 10);
+          LayoutMode: Top;
+          Anchor: (Left: 5, Right: 5);
+
+          Label {
+            Text: "Hytale Server";
+            Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
+            Anchor: (Height: 16);
+          }
+          Label #ServerVersion {
+            Text: "...";
+            Style: (FontSize: 13, TextColor: #888888, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
+            FlexWeight: 1;
+          }
+        }
+
+        // Java Version
+        Group {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 12, Right: 12, Top: 10, Bottom: 10);
+          LayoutMode: Top;
+          Anchor: (Left: 5);
+
+          Label {
+            Text: "Java";
+            Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
+            Anchor: (Height: 16);
+          }
+          Label #JavaVersion {
+            Text: "...";
+            Style: (FontSize: 22, TextColor: #888888, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
+            FlexWeight: 1;
+          }
+        }
+      }
+
+      // Two-column integration status
+      Group #IntegrationsRow {
+        FlexWeight: 1;
+        LayoutMode: Left;
+
+        // Left Column
+        Group #LeftColumn {
+          FlexWeight: 1;
+          LayoutMode: Top;
+          Anchor: (Right: 6);
+
+          // PERMISSIONS Section
+          Label {
+            Text: "PERMISSIONS";
+            Style: (FontSize: 11, TextColor: #00FFFF, RenderBold: true);
+            Anchor: (Height: 22, Bottom: 4);
+          }
+
+          // HyperPerms row
+          Group {
+            Anchor: (Height: 20, Bottom: 2);
+            LayoutMode: Left;
+            Label { Text: "HyperPerms"; Style: (FontSize: 11, TextColor: #888888); Anchor: (Width: 105); }
+            Label #HyperPermsStatus { Text: "..."; Style: (FontSize: 11, TextColor: #888888); FlexWeight: 1; }
+          }
+
+          // LuckPerms row
+          Group {
+            Anchor: (Height: 20, Bottom: 2);
+            LayoutMode: Left;
+            Label { Text: "LuckPerms"; Style: (FontSize: 11, TextColor: #888888); Anchor: (Width: 105); }
+            Label #LuckPermsStatus { Text: "..."; Style: (FontSize: 11, TextColor: #888888); FlexWeight: 1; }
+          }
+
+          // VaultUnlocked row
+          Group {
+            Anchor: (Height: 20, Bottom: 2);
+            LayoutMode: Left;
+            Label { Text: "VaultUnlocked"; Style: (FontSize: 11, TextColor: #888888); Anchor: (Width: 105); }
+            Label #VaultUnlockedStatus { Text: "..."; Style: (FontSize: 11, TextColor: #888888); FlexWeight: 1; }
+          }
+
+          // HytaleNative row
+          Group {
+            Anchor: (Height: 20, Bottom: 12);
+            LayoutMode: Left;
+            Label { Text: "HytaleNative"; Style: (FontSize: 11, TextColor: #888888); Anchor: (Width: 105); }
+            Label #NativeStatus { Text: "..."; Style: (FontSize: 11, TextColor: #888888); FlexWeight: 1; }
+          }
+
+          // PLACEHOLDERS Section
+          Label {
+            Text: "PLACEHOLDERS";
+            Style: (FontSize: 11, TextColor: #00FFFF, RenderBold: true);
+            Anchor: (Height: 22, Bottom: 4);
+          }
+
+          // PlaceholderAPI row
+          Group {
+            Anchor: (Height: 20, Bottom: 2);
+            LayoutMode: Left;
+            Label { Text: "PlaceholderAPI"; Style: (FontSize: 11, TextColor: #888888); Anchor: (Width: 105); }
+            Label #PlaceholderAPIStatus { Text: "..."; Style: (FontSize: 11, TextColor: #888888); FlexWeight: 1; }
+          }
+
+          // WiFlow PAPI row
+          Group {
+            Anchor: (Height: 20, Bottom: 2);
+            LayoutMode: Left;
+            Label { Text: "WiFlow PAPI"; Style: (FontSize: 11, TextColor: #888888); Anchor: (Width: 105); }
+            Label #WiFlowPAPIStatus { Text: "..."; Style: (FontSize: 11, TextColor: #888888); FlexWeight: 1; }
+          }
+
+          // ECONOMY Section
+          Label {
+            Text: "ECONOMY";
+            Style: (FontSize: 11, TextColor: #00FFFF, RenderBold: true);
+            Anchor: (Height: 22, Top: 10, Bottom: 4);
+          }
+
+          // Treasury row
+          Group {
+            Anchor: (Height: 20, Bottom: 2);
+            LayoutMode: Left;
+            Label { Text: "Treasury"; Style: (FontSize: 11, TextColor: #888888); Anchor: (Width: 105); }
+            Label #TreasuryStatus { Text: "..."; Style: (FontSize: 11, TextColor: #888888); FlexWeight: 1; }
+          }
+        }
+
+        // Right Column
+        Group #RightColumn {
+          FlexWeight: 1;
+          LayoutMode: Top;
+          Anchor: (Left: 6);
+
+          // PROTECTION Section
+          Label {
+            Text: "PROTECTION";
+            Style: (FontSize: 11, TextColor: #00FFFF, RenderBold: true);
+            Anchor: (Height: 22, Bottom: 4);
+          }
+
+          // HyperProtect row
+          Group {
+            Anchor: (Height: 20, Bottom: 2);
+            LayoutMode: Left;
+            Label { Text: "HyperProtect"; Style: (FontSize: 11, TextColor: #888888); Anchor: (Width: 105); }
+            Label #HyperProtectStatus { Text: "..."; Style: (FontSize: 11, TextColor: #888888); FlexWeight: 1; }
+          }
+
+          // OG Mixins row
+          Group {
+            Anchor: (Height: 20, Bottom: 2);
+            LayoutMode: Left;
+            Label { Text: "OG Mixins"; Style: (FontSize: 11, TextColor: #888888); Anchor: (Width: 105); }
+            Label #OrbisGuardMixinsStatus { Text: "..."; Style: (FontSize: 11, TextColor: #888888); FlexWeight: 1; }
+          }
+
+          // OG API row
+          Group {
+            Anchor: (Height: 20, Bottom: 2);
+            LayoutMode: Left;
+            Label { Text: "OrbisGuard API"; Style: (FontSize: 11, TextColor: #888888); Anchor: (Width: 105); }
+            Label #OrbisGuardApiStatus { Text: "..."; Style: (FontSize: 11, TextColor: #888888); FlexWeight: 1; }
+          }
+
+          // Mixin Hooks row
+          Group {
+            Anchor: (Height: 20, Bottom: 2);
+            LayoutMode: Left;
+            Label { Text: "Mixin Hooks"; Style: (FontSize: 11, TextColor: #888888); Anchor: (Width: 105); }
+            Label #MixinHooksStatus { Text: "..."; Style: (FontSize: 11, TextColor: #888888); FlexWeight: 1; }
+          }
+
+          // Gravestones row
+          Group {
+            Anchor: (Height: 20, Bottom: 2);
+            LayoutMode: Left;
+            Label { Text: "Gravestones"; Style: (FontSize: 11, TextColor: #888888); Anchor: (Width: 105); }
+            Label #GravestonesStatus { Text: "..."; Style: (FontSize: 11, TextColor: #888888); FlexWeight: 1; }
+          }
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

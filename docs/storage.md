@@ -1,6 +1,6 @@
 # HyperFactions Storage Layer
 
-> **Version**: 0.9.0
+> **Version**: 0.10.0
 
 Architecture documentation for the HyperFactions data persistence system.
 
@@ -13,7 +13,9 @@ HyperFactions uses an interface-based storage layer with:
 - **Async Operations** - All I/O returns `CompletableFuture` for non-blocking
 - **Data Models** - Java records for immutable data structures
 - **Auto-Save** - Periodic saves with configurable interval
-- **Migration Support** - Automatic data format upgrades (v1→v2→v3→v4)
+- **Safe-Save** - Atomic writes with SHA-256 checksums, backup recovery, `.bak` auto-cleanup
+- **Per-UUID Locking** - `JsonPlayerStorage` uses per-UUID locks to prevent concurrent load-modify-save race conditions (e.g., simultaneous deaths losing kill/death increments)
+- **Migration Support** - Automatic config (v1→v6) and data (v0→v1) format upgrades
 - **Backup System** - GFS rotation with hourly/daily/weekly/manual/migration types
 - **Import Directories** - Data import from ElbaphFactions and HyFactions
 
@@ -43,15 +45,23 @@ BackupManager ─────────────────► ZIP archive
 
 ```
 <server>/mods/com.hyperfactions_HyperFactions/
-├── config.json                    # Core configuration (v4)
-├── config/                        # Module configs (7 files)
-├── factions/                      # Per-faction JSON files
-│   ├── <uuid>.json
-│   └── ...
-├── players/                       # Per-player power data
-│   ├── <uuid>.json
-│   └── ...
-├── zones.json                     # All zones in one file
+├── config/                        # Configuration files
+│   ├── factions.json              # Faction gameplay settings
+│   ├── server.json                # Server behavior settings
+│   └── ...                        # Other module configs
+├── data/                          # All data files (migrated from root in v0→v1)
+│   ├── factions/                  # Per-faction JSON files
+│   │   └── {uuid}.json
+│   ├── players/                   # Per-player power data
+│   │   └── {uuid}.json
+│   ├── chat/                      # Per-faction chat history
+│   │   └── {factionId}.json
+│   ├── economy/                   # Per-faction treasury data
+│   │   └── {factionId}.json
+│   ├── zones.json                 # All zones in one file
+│   ├── invites.json               # Pending faction invites
+│   ├── join_requests.json         # Pending join requests
+│   └── .version                   # Data layout version marker (currently: 1)
 └── backups/                       # Backup archives
     ├── hourly_2025-01-15_12-00-00.zip
     ├── daily_2025-01-15_00-00-00.zip
@@ -79,9 +89,12 @@ The `BackupManager` implements GFS (Grandfather-Father-Son) rotation for automat
 Each ZIP archive contains:
 - `data/factions/` — All faction JSON files
 - `data/players/` — All player power JSON files
-- `zones.json` — Zone definitions
-- `config.json` — Core configuration
-- `config/` — Module config directory
+- `data/chat/` — Per-faction chat history files
+- `data/economy/` — Per-faction treasury data files
+- `data/zones.json` — Zone definitions
+- `data/invites.json` — Pending faction invites
+- `data/join_requests.json` — Pending join requests
+- `config/` — Configuration files (factions.json, server.json, etc.)
 
 ### Key Operations
 
@@ -105,29 +118,36 @@ See [Data Import & Migration](data-import.md) for import directory details and c
 | JsonFactionStorage | [`storage/json/JsonFactionStorage.java`](../src/main/java/com/hyperfactions/storage/json/JsonFactionStorage.java) | JSON faction storage |
 | JsonPlayerStorage | [`storage/json/JsonPlayerStorage.java`](../src/main/java/com/hyperfactions/storage/json/JsonPlayerStorage.java) | JSON player storage |
 | JsonZoneStorage | [`storage/json/JsonZoneStorage.java`](../src/main/java/com/hyperfactions/storage/json/JsonZoneStorage.java) | JSON zone storage |
+| ChatHistoryStorage | [`storage/ChatHistoryStorage.java`](../src/main/java/com/hyperfactions/storage/ChatHistoryStorage.java) | Chat history storage interface |
+| JsonChatHistoryStorage | [`storage/json/JsonChatHistoryStorage.java`](../src/main/java/com/hyperfactions/storage/json/JsonChatHistoryStorage.java) | JSON chat history storage |
+| JsonEconomyStorage | [`storage/JsonEconomyStorage.java`](../src/main/java/com/hyperfactions/storage/JsonEconomyStorage.java) | JSON economy/treasury storage |
+| StorageUtils | [`storage/StorageUtils.java`](../src/main/java/com/hyperfactions/storage/StorageUtils.java) | Atomic write, checksum, backup recovery |
 | StorageHealth | [`storage/StorageHealth.java`](../src/main/java/com/hyperfactions/storage/StorageHealth.java) | Storage health monitoring |
 
 ## Data Directory Structure
 
 ```
 <server>/mods/com.hyperfactions_HyperFactions/
-├── config.json                    # Configuration (see config.md)
-├── config/                        # Module configs
-├── zones.json                     # All zones in single file
+├── config/                        # Configuration files (see config.md)
+│   ├── factions.json              # Faction gameplay settings
+│   ├── server.json                # Server behavior settings
+│   └── ...                        # Other module configs
+├── data/                          # All data files
+│   ├── factions/                  # One file per faction
+│   │   └── {uuid}.json
+│   ├── players/                   # One file per player
+│   │   └── {uuid}.json
+│   ├── chat/                      # Per-faction chat history
+│   │   └── {factionId}.json
+│   ├── economy/                   # Per-faction treasury data
+│   │   └── {factionId}.json
+│   ├── zones.json                 # All zones in single file
+│   ├── invites.json               # Pending faction invites
+│   ├── join_requests.json         # Pending join requests
+│   └── .version                   # Data layout version (1)
 ├── update_preferences.json        # Update notification preferences
-├── factions/                      # One file per faction
-│   ├── {uuid}.json
-│   ├── {uuid}.json
-│   └── ...
-├── players/                       # One file per player
-│   ├── {uuid}.json
-│   ├── {uuid}.json
-│   └── ...
-└── backups/                       # Backup storage
-    ├── hourly/
-    ├── daily/
-    ├── weekly/
-    └── manual/
+└── backups/                       # Backup storage (ZIP archives)
+    └── backup_*.zip
 ```
 
 ## Storage Interfaces
@@ -245,12 +265,13 @@ public class JsonFactionStorage implements FactionStorage {
 
 [`storage/json/JsonPlayerStorage.java`](../src/main/java/com/hyperfactions/storage/json/JsonPlayerStorage.java)
 
-Stores one JSON file per player in `players/` directory:
+Stores one JSON file per player in `players/` directory. Uses per-UUID locking to prevent race conditions from concurrent kill/death tracking:
 
 ```java
 public class JsonPlayerStorage implements PlayerStorage {
 
     private final Path playersDir;
+    private final ConcurrentHashMap<UUID, ReentrantLock> playerLocks = new ConcurrentHashMap<>();
 
     @Override
     public CompletableFuture<Void> savePlayerPower(PlayerPower power) {
@@ -259,8 +280,28 @@ public class JsonPlayerStorage implements PlayerStorage {
             // Write JSON...
         });
     }
+
+    /**
+     * Atomically update player data under a per-UUID lock.
+     * Prevents lost updates from concurrent deaths/kills.
+     */
+    public CompletableFuture<Void> updatePlayerData(UUID uuid, UnaryOperator<PlayerData> updater) {
+        return CompletableFuture.runAsync(() -> {
+            ReentrantLock lock = playerLocks.computeIfAbsent(uuid, k -> new ReentrantLock());
+            lock.lock();
+            try {
+                PlayerData data = loadPlayerDataSync(uuid);
+                PlayerData updated = updater.apply(data);
+                savePlayerDataSync(updated);
+            } finally {
+                lock.unlock();
+            }
+        });
+    }
 }
 ```
+
+The `updatePlayerData` method ensures that concurrent operations (e.g., two simultaneous deaths) do not lose increments through unsynchronized load-modify-save cycles.
 
 ### JsonZoneStorage
 
@@ -542,7 +583,7 @@ public void updateFaction(Faction faction) {
 
 ## Auto-Save System
 
-Configured in `config.json`:
+Configured in `config/server.json`:
 
 ```json
 {
@@ -572,7 +613,49 @@ public void saveAllData() {
 }
 ```
 
+## Safe-Save Mechanism
+
+[`storage/StorageUtils.java`](../src/main/java/com/hyperfactions/storage/StorageUtils.java)
+
+All 7 storage types use `StorageUtils.writeAtomic()` for crash-safe writes:
+
+1. Write content to a temp file (`file.{counter}.tmp`)
+2. Compute SHA-256 checksum of content
+3. Read back temp file and verify checksum matches
+4. Copy existing file to `.bak` backup
+5. Atomic rename: temp → target
+6. Delete `.bak` file (cleanup after successful write)
+
+If the process crashes during steps 1-4, the original file is untouched. If it crashes during step 5, the `.bak` file provides recovery. On startup, `cleanupOrphanedFiles()` removes any stray `.tmp` or orphaned `.bak` files.
+
+### Storage Types Using writeAtomic()
+
+| Storage | File Pattern | Notes |
+|---------|-------------|-------|
+| JsonFactionStorage | `data/factions/{uuid}.json` | One file per faction |
+| JsonPlayerStorage | `data/players/{uuid}.json` | One file per player |
+| JsonZoneStorage | `data/zones.json` | Single file for all zones |
+| JsonChatHistoryStorage | `data/chat/{factionId}.json` | One file per faction |
+| JsonEconomyStorage | `data/economy/{factionId}.json` | One file per faction |
+| InviteManager | `data/invites.json` | Single file |
+| JoinRequestManager | `data/join_requests.json` | Single file |
+
 ## Data Migration
+
+### Data Directory Migration (v0→v1)
+
+[`migration/migrations/data/DataV0ToV1Migration.java`](../src/main/java/com/hyperfactions/migration/migrations/data/DataV0ToV1Migration.java)
+
+Moves data files from the plugin root into a `data/` subdirectory. The migration:
+- Creates `data/` directory
+- Moves: `factions/`, `players/`, `chat/`, `economy/`, `zones.json`, `invites.json`, `join_requests.json`
+- Also moves any `.bak` files alongside their data files
+- Writes `data/.version` with `1` (last step — if crash before this, migration re-runs)
+- MigrationRunner creates ZIP backup before execution for rollback support
+
+**Detection:** Runs when `data/.version` doesn't exist AND at least one old-path item exists.
+
+### Zone Format Migration
 
 [`migration/MigrationRunner.java`](../src/main/java/com/hyperfactions/migration/MigrationRunner.java)
 
@@ -678,11 +761,16 @@ public void createBackup(BackupType type) {
     // Save all data first
     hyperFactions.saveAllData();
 
-    // Copy data directories to backup
-    copyDirectory(dataDir.resolve("factions"), backupDir);
-    copyDirectory(dataDir.resolve("players"), backupDir);
-    copyFile(dataDir.resolve("zones.json"), backupDir);
-    copyFile(dataDir.resolve("config.json"), backupDir);
+    // Copy data directories to backup (from data/ subdirectory)
+    Path dataPath = dataDir.resolve("data");
+    copyDirectory(dataPath.resolve("factions"), backupDir);
+    copyDirectory(dataPath.resolve("players"), backupDir);
+    copyDirectory(dataPath.resolve("chat"), backupDir);
+    copyDirectory(dataPath.resolve("economy"), backupDir);
+    copyFile(dataPath.resolve("zones.json"), backupDir);
+    copyFile(dataPath.resolve("invites.json"), backupDir);
+    copyFile(dataPath.resolve("join_requests.json"), backupDir);
+    copyDirectory(dataDir.resolve("config"), backupDir);
 }
 ```
 
@@ -710,4 +798,9 @@ JSON files can be manually edited while the server is stopped:
 | PlayerPower | [`data/PlayerPower.java`](../src/main/java/com/hyperfactions/data/PlayerPower.java) |
 | Zone | [`data/Zone.java`](../src/main/java/com/hyperfactions/data/Zone.java) |
 | ChunkKey | [`data/ChunkKey.java`](../src/main/java/com/hyperfactions/data/ChunkKey.java) |
+| ChatHistoryStorage | [`storage/ChatHistoryStorage.java`](../src/main/java/com/hyperfactions/storage/ChatHistoryStorage.java) |
+| JsonChatHistoryStorage | [`storage/json/JsonChatHistoryStorage.java`](../src/main/java/com/hyperfactions/storage/json/JsonChatHistoryStorage.java) |
+| JsonEconomyStorage | [`storage/JsonEconomyStorage.java`](../src/main/java/com/hyperfactions/storage/JsonEconomyStorage.java) |
+| StorageUtils | [`storage/StorageUtils.java`](../src/main/java/com/hyperfactions/storage/StorageUtils.java) |
+| DataV0ToV1Migration | [`migration/migrations/data/DataV0ToV1Migration.java`](../src/main/java/com/hyperfactions/migration/migrations/data/DataV0ToV1Migration.java) |
 | BackupManager | [`backup/BackupManager.java`](../src/main/java/com/hyperfactions/backup/BackupManager.java) |

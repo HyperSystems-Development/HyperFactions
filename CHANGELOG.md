@@ -7,7 +7,198 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-*No changes yet*
+**Closes:** [#59](https://github.com/HyperSystemsDev/HyperFactions/issues/59), [#61](https://github.com/HyperSystemsDev/HyperFactions/issues/61), [#62](https://github.com/HyperSystemsDev/HyperFactions/issues/62), [#65](https://github.com/HyperSystemsDev/HyperFactions/issues/65), [#66](https://github.com/HyperSystemsDev/HyperFactions/issues/66), [#67](https://github.com/HyperSystemsDev/HyperFactions/issues/67), [#68](https://github.com/HyperSystemsDev/HyperFactions/issues/68), [#69](https://github.com/HyperSystemsDev/HyperFactions/issues/69), [#71](https://github.com/HyperSystemsDev/HyperFactions/issues/71), [#72](https://github.com/HyperSystemsDev/HyperFactions/issues/72)
+
+### Added
+
+#### Gameplay
+
+**Per-World Settings** ([#59](https://github.com/HyperSystemsDev/HyperFactions/issues/59))
+- New `config/worlds.json` module config for per-world behavior overrides
+- Four settings per world: `claiming`, `powerLoss`, `friendlyFireFaction`, `friendlyFireAlly`
+- Wildcard pattern support using `%` (e.g., `arena_%` matches `arena_1`, `arena_pvp`)
+- Priority resolution: exact name match → wildcard patterns (fewer wildcards = higher priority) → default policy
+- `claimBlacklist` for unconditionally blocking claims in specific worlds
+- Legacy `worldWhitelist`/`worldBlacklist` in CoreConfig still works as fallback when worlds module is disabled
+- Admin commands: `/f admin world list|info|set|reset`
+
+**Faction Leaderboard** ([#67](https://github.com/HyperSystemsDev/HyperFactions/issues/67))
+- New `/f leaderboard` command (alias `/f top`) with sortable rankings
+- Sort modes: POWER, TERRITORY, BALANCE, MEMBERS, K/D (default)
+- 10 entries per page with pagination, numbered rankings
+- Integrated into faction nav bar between map and relations
+- Aggregated faction K/D ratio from member stats with configurable background cache refresh (`gui.leaderboardKdRefreshSeconds`, default 300s)
+
+**Faction Power Hardcore Mode** ([#69](https://github.com/HyperSystemsDev/HyperFactions/issues/69))
+- New `power.hardcoreMode` config option (default: false)
+- Shared faction power pool — deaths/kills affect the faction total directly
+- No per-death cap or floor — faction power can reach 0
+- Power regen applies to the faction pool when enabled
+
+**Persistent Admin Bypass** ([#71](https://github.com/HyperSystemsDev/HyperFactions/issues/71))
+- Admin bypass state now persists across server restarts
+- Stored in `PlayerData`, restored on connect if player has `hyperfactions.admin.use`
+- Automatically cleared if player no longer has the permission
+
+**Configurable Role Display Names**
+- New `roles` section in `config/factions.json` for custom role names and abbreviations
+- Server owners can rename roles (e.g., "Boss" / "Underboss" / "Soldier") and set short forms (e.g., "BO" / "UB" / "SO")
+- New placeholders: `factions_role_display` (custom name), `factions_role_short` (abbreviation)
+- All GUIs, commands, and log messages use configured display names
+- Existing `factions_role` placeholder unchanged (returns internal name)
+
+**Instance World Protection**
+- Default `instance-%` wildcard rule in `config/worlds.json` blocks claiming in temporary instance worlds (power loss defers to global config)
+- `/f sethome` now blocked in worlds where claiming is disallowed
+- Automatic cleanup of stale claims and homes in disallowed worlds on startup and config reload
+
+#### Protection
+
+**Capture Crate & NPC Tame Protection**
+- 2 new per-role faction permission flags: `CrateUse` (covers both crate pickup and placement), `NpcTame` (8 new flags total across outsider/ally/member/officer)
+- 3 new zone flags: `crate_pickup`, `crate_place`, `npc_tame` — separate zone-level control for crate pickup, crate placement, and NPC taming
+- Faction owners can independently control capture crate use and NPC taming per relationship level
+- Defaults: member/officer = allowed, ally/outsider = denied
+- Configurable in `config/faction-permissions.json` with server lock support
+- NPC interaction protection handler uses `NPC_TAME` interaction type for event-based NPC interaction blocking
+- Requires HyperProtect-Mixin v1.0.0+ for mixin-based protection (CaptureCrateGate, NPC entries in SimpleInstantInteractionGate)
+
+**Zone Notification Settings**
+- Per-zone notification toggle: suppress entry/leave title notifications for specific zones
+- Customizable upper title text (default: zone status like "PvP Disabled")
+- Customizable lower title text (default: zone name)
+- Admin commands: `/f admin zone notify <zone> <true|false>`, `/f admin zone title <zone> upper|lower <text|clear>`
+- Zone info (`/f admin zone info`) now displays notification settings
+
+#### GUI & Admin
+
+**Activity Log** ([#68](https://github.com/HyperSystemsDev/HyperFactions/issues/68))
+- Wired existing `LogsViewerPage` into faction nav bar
+- `/f logs` command for viewing faction activity
+- New `AdminActivityLogPage` aggregating logs from all factions
+- Type filter, player filter, time filter (1h/24h/7d)
+- `/f admin log` command and admin nav bar integration
+
+**Admin K/D Management**
+- Per-player K/D reset button on admin player info page (two-column redesign)
+- New "Actions" page in admin nav with global K/D reset (two-step confirmation)
+- Admin commands: `/f admin info [faction]` and `/f admin who [player]` to open admin GUIs directly
+
+**Admin Info Page Redesign**
+- Admin player info now uses two-column layout: stats/info/history on left, controls on right
+- Admin player info now mirrors `/f who` data: first joined, last online, faction card with View Faction button, and scrollable membership history
+- Admin faction info now uses two-column layout: leadership on left, power/economy/disband controls on right
+- Disband button added to admin faction info page (danger zone section)
+
+**Admin Version Page**
+- New `/f admin version` command — opens GUI for players, prints integration status for console
+- Admin Version page in nav bar (after Help) showing HyperFactions version, server version, Java version
+- Integration status display: HyperPerms, LuckPerms, VaultUnlocked, HytaleNative, HyperProtect, OrbisGuard Mixins, OrbisGuard API, Mixin Hooks, Gravestones, PlaceholderAPI, WiFlow PAPI, Treasury
+- Treasury status shows economy provider name via VaultUnlocked (e.g. "Active (Ecotale)")
+- Color-coded status: green (active), yellow (installed but limited), gray (not found)
+
+**Admin Zone Properties Page**
+- New consolidated zone properties page combining name editing, type changing, and notification settings
+- Zone list entry replaces separate "Rename" and "Type" buttons with single "Settings" button
+- Type change modal navigates back to properties page (instead of zone list) when accessed from properties
+- Flags page back button returns to properties when opened from properties context
+
+#### Config & Storage
+
+**Config Restructure — Split config.json into Module Configs**
+- New `config/factions.json` for all faction gameplay settings (faction, power, claims, combat, relations, invites, stuck)
+- New `config/server.json` for server behavior settings (teleport, autoSave, messages, gui, permissions, updates, configVersion)
+- 9 new claim protection server overrides in `config/factions.json` under `claims`:
+  - `outsiderPickupAllowed` — control outsider item pickup in claims (previously hardcoded deny)
+  - `outsiderDropAllowed` — control outsider item drop in claims
+  - `factionlessExplosionsAllowed`, `enemyExplosionsAllowed`, `neutralExplosionsAllowed` — granular explosion control replacing `allowExplosionsInClaims`
+  - `fireSpreadAllowed` — control fire spread in claims (previously hardcoded block)
+  - `factionlessDamageAllowed`, `enemyDamageAllowed`, `neutralDamageAllowed` — outsider entity damage control
+- V5→V6 config migration: automatically splits `config.json`, transforms `allowExplosionsInClaims` into 3 granular flags, preserves all existing values
+- Legacy fallback: plugin loads from old `config.json` if migration fails or hasn't run
+- Treasury permission flags (`treasuryDeposit`, `treasuryWithdraw`, `treasuryTransfer`) added to `faction-permissions.json` for server-level defaults and locks
+- `territoryNotifications.enabled` moved to `config/announcements.json`
+- Allow Explosions in Claims ([#65](https://github.com/HyperSystemsDev/HyperFactions/issues/65)) — original `territory.allowExplosionsInClaims` toggle, superseded by the 3 granular explosion flags above
+
+**Data Directory Restructure**
+- All data files now live under `data/` subdirectory (factions, players, chat, economy, zones, invites, join requests)
+- `DataV0ToV1Migration` automatically moves existing data files into `data/` on first startup
+- `data/.version` marker tracks data layout version independently from config version
+- Fresh installs create `data/` directory directly (no migration needed)
+
+**Atomic Writes & Backup Expansion**
+- All storage types now use `StorageUtils.writeAtomic()` for crash-safe writes (economy, invites, join requests upgraded from direct writes)
+- `.bak` files cleaned up after successful atomic writes — no more indefinite accumulation
+- Backup system now includes chat history, economy, invites, and join requests in ZIP archives
+
+#### Placeholders
+
+**Expanded Placeholders** ([#72](https://github.com/HyperSystemsDev/HyperFactions/issues/72))
+- Colored variants: `name_colored`, `tag_colored`, `name_colored_legacy`, `tag_colored_legacy`
+- Legacy color code: `color_legacy` (nearest `&X` code from hex color)
+- Relational placeholders (PAPI only): `rel_factions_relation`, `rel_factions_relation_color`
+
+**Treasury Placeholders** ([#66](https://github.com/HyperSystemsDev/HyperFactions/issues/66))
+- `treasury_balance` — formatted via `EconomyManager.formatCurrency()`
+- `treasury_balance_raw` — raw BigDecimal with scale 2
+- `treasury_autopay` — true/false
+- `treasury_limit` — max treasury limit
+
+### Changed
+
+**Treasury BigDecimal Refactor**
+- All treasury/economy values converted from `double` to `BigDecimal` for currency precision
+- ~21 files updated: data models, manager, storage, config, VaultUnlocked provider, commands, GUI pages
+- Uses `BigDecimal.ZERO`, `RoundingMode.HALF_UP` with scale 2, string constructor for initialization
+- JSON backward compatible: `getAsBigDecimal()` handles both old double and new string formats
+
+**Protection Hardening**
+- ECS protection systems hardened to fail-closed — all 7 ECS protection systems now cancel events when world name cannot be determined or an exception occurs (previously silently allowed the action)
+- Anti-pillar exploit fix — denied block placements now teleport the player to their current position with velocity reset, preventing ghost-block pillar climbing on client-predicted blocks
+- Optimized protection evaluation — BlockBreak and BlockPlace systems now evaluate `canInteract()` once and reuse the result for both the check and the denial message (was called twice)
+- NPC interaction handler registered — `NpcInteractionProtectionHandler` now registered in `EventRegistration` for F-key tame and contextual NPC use events
+
+**Claim Protection Config**
+- `allowExplosionsInClaims` replaced by 3 granular explosion flags (factionless/enemy/neutral)
+- Explosion check in claims now uses combined 3-way logic (all must be false to block — mixin hooks lack player context)
+- Fire spread in claims now configurable via `fireSpreadAllowed` (was hardcoded block)
+- Outsider item pickup in claims now configurable via `outsiderPickupAllowed` (was hardcoded deny)
+- Outsider item drops in claims now checked against `outsiderDropAllowed` config (was zone-only)
+- Outsider entity damage in claims now checked against 3-way damage config by relation (factionless/enemy/neutral)
+
+**Code Cleanup & Refactoring**
+- Extracted `CommandUtil.parseRawArgs()` — 36 command files now use shared arg parsing helper instead of duplicated 3-line pattern
+- Extracted `UIPaths.java` — 110 centralized UI template path constants replacing 150 hardcoded `"HyperFactions/..."` strings across 70 files
+- Extracted `NavBarUtil` + `NavEntry` interface — shared navigation bar button building logic used by all 3 nav bar helpers
+- Split `GuiManager` (2834 → 1089 lines) — 81 page opener methods extracted into `FactionPageOpener` (35), `AdminPageOpener` (38), `NewPlayerPageOpener` (8); public API unchanged via delegation
+- All bare `@Deprecated` annotations now include `forRemoval = true` with version info
+- Codebase-wide style enforcement: 2-space indentation, Google Java Style import ordering, Javadoc on all public APIs, consistent brace placement, operator wrapping, and blank line separators across all 399 source files
+- Added Checkstyle 10.26.1 with customized Google Java Style config (`config/checkstyle/checkstyle.xml`) — warnings-only mode, 120-char line limit, star imports allowed, relaxed Javadoc scope
+- Extracted `GuiColors.java` — centralized semantic color constants and resolution methods (`forRole()`, `forLeaveReason()`, `forLogType()`, `forPowerLevel()`, `forOnlineStatus()`, `forRank()`, relation colors). Replaced duplicated `getRoleColor()`/`getReasonColor()`/`getLogTypeColor()` methods across 8 GUI page files
+
+**Other Changes**
+- Debug logging standardized — all ECS systems use `[ECS:*]` prefix, all OrbisGuard hooks use `[OG:*]` prefix via `Logger.debugInteraction()`
+- `CoreConfig` deprecated — replaced by `FactionsConfig` and `ServerConfig`
+- `pvpEnabled()` and `officersCanEdit()` accessors in `FactionPermissions` now use `get()` instead of `getRaw()` for consistent parent-child flag resolution
+- Admin zone flags page restructured from 2-column to 3-column layout for better visual balance across 36 flags (Combat/Damage/Death | Building/Interaction/Entity Interaction | Transport/Items/Spawning)
+
+### Removed
+
+- 22 unused backward-compat accessor/builder methods in `FactionPermissions` (dead code with zero callers)
+
+### Fixed
+
+- **HyperProtect version display**: `HyperProtectIntegration` hardcoded the version as "1.0.0" when lazily creating the bridge (Hyxin never calls early plugin `setup()`); now detects the actual version from the JAR filename in `earlyplugins/`
+- **HyperProtect-Mixin update checker showing v0.0.0**: `initHyperProtectMixinLifecycle()` read the system property before `HyperProtectIntegration.registerAllHooks()` set it; now detects version from JAR filename on disk before branching, and sets the system property early for AdminVersionPage
+- **Old GitHub URL not migrated**: Default update checker URL in `ServerConfig` and `CoreConfig` still referenced the old `ZenithDevHQ` organization; updated defaults to `HyperSystemsDev` and added migration that auto-corrects the old URL on load (custom URLs preserved)
+- **Config files not saving new keys**: Modules like `FactionPermissionsConfig` that bypass base `getInt`/`getBool` helpers didn't trigger `needsSave` when new flags were added in code updates; `ConfigFile.load()` now recursively compares serialized keys against the on-disk JSON and auto-saves when new keys are detected
+- **Admin player info color inconsistencies**: Officer role color was `#87CEEB` (light blue) instead of `#00AAFF` (standard blue); offline player status was `#FF5555` (red) instead of `#888888` (gray). Both now use centralized `GuiColors` constants
+- **Kill/death tracking race conditions**: Concurrent deaths could lose increments due to unsynchronized load-modify-save cycles; power regen could overwrite kill/death data. Added per-UUID locking to `JsonPlayerStorage` and atomic `updatePlayerData` method
+- **Logs viewer page crash**: `#Title.Text` selector targeted a Group instead of a Label
+- **Dashboard "View All" button**: Now navigates to activity logs page (was disabled)
+- **Atomic write failures on Windows**: `ATOMIC_MOVE` can fail when antivirus or file indexer holds a handle on the target file; `StorageUtils.writeAtomic()` now retries with backoff (3 attempts, 50/100/150ms) then falls back to non-atomic move (safe — `.bak` backup already exists)
+- **Backup orphaned files** ([#61](https://github.com/HyperSystemsDev/HyperFactions/issues/61)): `BackupManager` now skips `.tmp`/`.bak` orphans and cleans up before backup. Incomplete backup ZIPs are deleted on failure
+- **Warzone power loss** ([#62](https://github.com/HyperSystemsDev/HyperFactions/issues/62)): Zone check failure now defaults to **no power loss** (fail-safe) instead of silently falling through. Logged at WARN instead of DEBUG
 
 ## [0.9.0] - 2026-02-22
 

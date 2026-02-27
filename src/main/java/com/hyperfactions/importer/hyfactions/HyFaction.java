@@ -1,9 +1,8 @@
 package com.hyperfactions.importer.hyfactions;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
 import java.util.Map;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a faction from HyFactions.
@@ -29,40 +28,40 @@ import java.util.Map;
  * @param Relations         map of target faction UUID to relation type ("ally", "enemy")
  */
 public record HyFaction(
-    @Nullable String Id,
-    @Nullable String Owner,
-    @Nullable String Name,
-    @Nullable List<String> Members,
-    int Color,
-    @Nullable HyFactionTracker CreatedTracker,
-    @Nullable HyFactionTracker ModifiedTracker,
-    int TotalPower,
-    @Nullable String HomeDimension,
-    double HomeX,
-    double HomeY,
-    double HomeZ,
-    float HomeYaw,
-    float HomePitch,
-    @Nullable Map<String, String> MemberGrades,
-    @Nullable Map<String, Object> MemberPermissions,
-    @Nullable List<HyFactionLog> Logs,
-    @Nullable Map<String, String> Relations
+  @Nullable String Id,
+  @Nullable String Owner,
+  @Nullable String Name,
+  @Nullable List<String> Members,
+  int Color,
+  @Nullable HyFactionTracker CreatedTracker,
+  @Nullable HyFactionTracker ModifiedTracker,
+  int TotalPower,
+  @Nullable String HomeDimension,
+  double HomeX,
+  double HomeY,
+  double HomeZ,
+  float HomeYaw,
+  float HomePitch,
+  @Nullable Map<String, String> MemberGrades,
+  @Nullable Map<String, Object> MemberPermissions,
+  @Nullable List<HyFactionLog> Logs,
+  @Nullable Map<String, String> Relations
 ) {
-    /**
-     * Checks if this faction has a home set.
-     *
-     * @return true if home dimension is set
-     */
-    public boolean hasHome() {
-        return HomeDimension != null && !HomeDimension.isEmpty();
-    }
+  /**
+   * Checks if this faction has a home set.
+   *
+   * @return true if home dimension is set
+   */
+  public boolean hasHome() {
+    return HomeDimension != null && !HomeDimension.isEmpty();
+  }
 
-    /**
-     * Gets the member count.
-     *
-     * @return number of members, or 0 if null
-     */
-    public int getMemberCount() {
-        return Members != null ? Members.size() : 0;
-    }
+  /**
+   * Gets the member count.
+   *
+   * @return number of members, or 0 if null
+   */
+  public int getMemberCount() {
+    return Members != null ? Members.size() : 0;
+  }
 }

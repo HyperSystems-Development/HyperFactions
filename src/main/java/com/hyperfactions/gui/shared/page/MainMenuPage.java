@@ -2,6 +2,7 @@ package com.hyperfactions.gui.shared.page;
 
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.gui.GuiManager;
+import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.shared.data.MainMenuData;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.manager.FactionManager;
@@ -16,7 +17,6 @@ import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-
 import java.util.UUID;
 
 /**
@@ -25,191 +25,197 @@ import java.util.UUID;
  */
 public class MainMenuPage extends InteractiveCustomUIPage<MainMenuData> {
 
-    private final PlayerRef playerRef;
-    private final FactionManager factionManager;
-    private final GuiManager guiManager;
+  private final PlayerRef playerRef;
 
-    public MainMenuPage(PlayerRef playerRef,
-                        FactionManager factionManager,
-                        GuiManager guiManager) {
-        super(playerRef, CustomPageLifetime.CanDismiss, MainMenuData.CODEC);
-        this.playerRef = playerRef;
-        this.factionManager = factionManager;
-        this.guiManager = guiManager;
+  private final FactionManager factionManager;
+
+  private final GuiManager guiManager;
+
+  /** Creates a new MainMenuPage. */
+  public MainMenuPage(PlayerRef playerRef,
+            FactionManager factionManager,
+            GuiManager guiManager) {
+    super(playerRef, CustomPageLifetime.CanDismiss, MainMenuData.CODEC);
+    this.playerRef = playerRef;
+    this.factionManager = factionManager;
+    this.guiManager = guiManager;
+  }
+
+  /** Builds . */
+  @Override
+  public void build(Ref<EntityStore> ref, UICommandBuilder cmd,
+           UIEventBuilder events, Store<EntityStore> store) {
+
+    UUID uuid = playerRef.getUuid();
+    Faction faction = factionManager.getPlayerFaction(uuid);
+    boolean hasAdmin = PermissionManager.get().hasPermission(uuid, "hyperfactions.admin");
+
+    // Load the main menu template
+    cmd.append(UIPaths.MAIN_MENU);
+
+    // Set title
+    cmd.set("#MenuTitle.Text", "HyperFactions");
+
+    // Section: My Faction
+    if (faction != null) {
+      cmd.append("#MyFactionSection", UIPaths.MENU_SECTION);
+      cmd.set("#MyFactionSection #SectionTitle.Text", "My Faction");
+      cmd.append("#MyFactionSection #SectionContent", UIPaths.MAIN_MENU_FACTION);
+      cmd.set("#MyFactionSection #FactionNameLabel.Text", faction.name());
+
+      events.addEventBinding(
+          CustomUIEventBindingType.Activating,
+          "#MyFactionSection #ViewFactionBtn",
+          EventData.of("Button", "MyFaction"),
+          false
+      );
+
+      events.addEventBinding(
+          CustomUIEventBindingType.Activating,
+          "#MyFactionSection #MembersBtn",
+          EventData.of("Button", "Members"),
+          false
+      );
+
+      events.addEventBinding(
+          CustomUIEventBindingType.Activating,
+          "#MyFactionSection #RelationsBtn",
+          EventData.of("Button", "Relations"),
+          false
+      );
+    } else {
+      cmd.append("#MyFactionSection", UIPaths.MENU_SECTION);
+      cmd.set("#MyFactionSection #SectionTitle.Text", "Get Started");
+      cmd.append("#MyFactionSection #SectionContent", UIPaths.MAIN_MENU_NO_FACTION);
+
+      events.addEventBinding(
+          CustomUIEventBindingType.Activating,
+          "#MyFactionSection #CreateFactionBtn",
+          EventData.of("Button", "CreateFaction"),
+          false
+      );
     }
 
-    @Override
-    public void build(Ref<EntityStore> ref, UICommandBuilder cmd,
-                      UIEventBuilder events, Store<EntityStore> store) {
+    // Section: Territory
+    cmd.append("#TerritorySection", UIPaths.MENU_SECTION);
+    cmd.set("#TerritorySection #SectionTitle.Text", "Territory");
+    cmd.append("#TerritorySection #SectionContent", UIPaths.MAIN_MENU_TERRITORY);
 
-        UUID uuid = playerRef.getUuid();
-        Faction faction = factionManager.getPlayerFaction(uuid);
-        boolean hasAdmin = PermissionManager.get().hasPermission(uuid, "hyperfactions.admin");
+    events.addEventBinding(
+        CustomUIEventBindingType.Activating,
+        "#TerritorySection #MapBtn",
+        EventData.of("Button", "Map"),
+        false
+    );
 
-        // Load the main menu template
-        cmd.append("HyperFactions/shared/main_menu.ui");
+    if (faction != null) {
+      events.addEventBinding(
+          CustomUIEventBindingType.Activating,
+          "#TerritorySection #ClaimBtn",
+          EventData.of("Button", "Claim"),
+          false
+      );
+    }
 
-        // Set title
-        cmd.set("#MenuTitle.Text", "HyperFactions");
+    // Section: Browse
+    cmd.append("#BrowseSection", UIPaths.MENU_SECTION);
+    cmd.set("#BrowseSection #SectionTitle.Text", "Browse");
+    cmd.append("#BrowseSection #SectionContent", UIPaths.MAIN_MENU_BROWSE);
 
-        // Section: My Faction
+    events.addEventBinding(
+        CustomUIEventBindingType.Activating,
+        "#BrowseSection #BrowseFactionsBtn",
+        EventData.of("Button", "BrowseFactions"),
+        false
+    );
+
+    // Section: Admin (if permission)
+    if (hasAdmin) {
+      cmd.append("#AdminSection", UIPaths.MENU_SECTION);
+      cmd.set("#AdminSection #SectionTitle.Text", "Admin");
+      cmd.append("#AdminSection #SectionContent", UIPaths.MAIN_MENU_ADMIN);
+
+      events.addEventBinding(
+          CustomUIEventBindingType.Activating,
+          "#AdminSection #AdminPanelBtn",
+          EventData.of("Button", "AdminPanel"),
+          false
+      );
+
+      events.addEventBinding(
+          CustomUIEventBindingType.Activating,
+          "#AdminSection #ZonesBtn",
+          EventData.of("Button", "AdminZones"),
+          false
+      );
+    }
+  }
+
+  /** Handles data event. */
+  @Override
+  public void handleDataEvent(Ref<EntityStore> ref, Store<EntityStore> store,
+                MainMenuData data) {
+    super.handleDataEvent(ref, store, data);
+
+    Player player = store.getComponent(ref, Player.getComponentType());
+    PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
+
+    if (player == null || playerRef == null || data.button == null) {
+      return;
+    }
+
+    UUID uuid = playerRef.getUuid();
+    Faction faction = factionManager.getPlayerFaction(uuid);
+
+    switch (data.button) {
+      case "MyFaction" -> {
         if (faction != null) {
-            cmd.append("#MyFactionSection", "HyperFactions/shared/menu_section.ui");
-            cmd.set("#MyFactionSection #SectionTitle.Text", "My Faction");
-            cmd.append("#MyFactionSection #SectionContent", "HyperFactions/shared/main_menu_faction.ui");
-            cmd.set("#MyFactionSection #FactionNameLabel.Text", faction.name());
-
-            events.addEventBinding(
-                    CustomUIEventBindingType.Activating,
-                    "#MyFactionSection #ViewFactionBtn",
-                    EventData.of("Button", "MyFaction"),
-                    false
-            );
-
-            events.addEventBinding(
-                    CustomUIEventBindingType.Activating,
-                    "#MyFactionSection #MembersBtn",
-                    EventData.of("Button", "Members"),
-                    false
-            );
-
-            events.addEventBinding(
-                    CustomUIEventBindingType.Activating,
-                    "#MyFactionSection #RelationsBtn",
-                    EventData.of("Button", "Relations"),
-                    false
-            );
-        } else {
-            cmd.append("#MyFactionSection", "HyperFactions/shared/menu_section.ui");
-            cmd.set("#MyFactionSection #SectionTitle.Text", "Get Started");
-            cmd.append("#MyFactionSection #SectionContent", "HyperFactions/shared/main_menu_no_faction.ui");
-
-            events.addEventBinding(
-                    CustomUIEventBindingType.Activating,
-                    "#MyFactionSection #CreateFactionBtn",
-                    EventData.of("Button", "CreateFaction"),
-                    false
-            );
+          guiManager.openFactionMain(player, ref, store, playerRef);
         }
+      }
 
-        // Section: Territory
-        cmd.append("#TerritorySection", "HyperFactions/shared/menu_section.ui");
-        cmd.set("#TerritorySection #SectionTitle.Text", "Territory");
-        cmd.append("#TerritorySection #SectionContent", "HyperFactions/shared/main_menu_territory.ui");
-
-        events.addEventBinding(
-                CustomUIEventBindingType.Activating,
-                "#TerritorySection #MapBtn",
-                EventData.of("Button", "Map"),
-                false
-        );
-
+      case "Members" -> {
         if (faction != null) {
-            events.addEventBinding(
-                    CustomUIEventBindingType.Activating,
-                    "#TerritorySection #ClaimBtn",
-                    EventData.of("Button", "Claim"),
-                    false
-            );
+          guiManager.openFactionMembers(player, ref, store, playerRef, faction);
         }
+      }
 
-        // Section: Browse
-        cmd.append("#BrowseSection", "HyperFactions/shared/menu_section.ui");
-        cmd.set("#BrowseSection #SectionTitle.Text", "Browse");
-        cmd.append("#BrowseSection #SectionContent", "HyperFactions/shared/main_menu_browse.ui");
-
-        events.addEventBinding(
-                CustomUIEventBindingType.Activating,
-                "#BrowseSection #BrowseFactionsBtn",
-                EventData.of("Button", "BrowseFactions"),
-                false
-        );
-
-        // Section: Admin (if permission)
-        if (hasAdmin) {
-            cmd.append("#AdminSection", "HyperFactions/shared/menu_section.ui");
-            cmd.set("#AdminSection #SectionTitle.Text", "Admin");
-            cmd.append("#AdminSection #SectionContent", "HyperFactions/shared/main_menu_admin.ui");
-
-            events.addEventBinding(
-                    CustomUIEventBindingType.Activating,
-                    "#AdminSection #AdminPanelBtn",
-                    EventData.of("Button", "AdminPanel"),
-                    false
-            );
-
-            events.addEventBinding(
-                    CustomUIEventBindingType.Activating,
-                    "#AdminSection #ZonesBtn",
-                    EventData.of("Button", "AdminZones"),
-                    false
-            );
+      case "Relations" -> {
+        if (faction != null) {
+          guiManager.openFactionRelations(player, ref, store, playerRef, faction);
         }
+      }
+
+      case "CreateFaction" -> guiManager.openCreateFaction(player, ref, store, playerRef);
+
+      case "Map" -> guiManager.openChunkMap(player, ref, store, playerRef);
+
+      case "Claim" -> {
+        if (faction != null) {
+          guiManager.closePage(player, ref, store);
+          player.sendMessage(
+            com.hypixel.hytale.server.core.Message.raw("Use ")
+              .color("#AAAAAA")
+              .insert(com.hypixel.hytale.server.core.Message.raw("/f claim").color("#55FF55"))
+              .insert(com.hypixel.hytale.server.core.Message.raw(" to claim territory.").color("#AAAAAA"))
+          );
+        }
+      }
+
+      case "BrowseFactions" -> guiManager.openFactionBrowser(player, ref, store, playerRef);
+
+      case "AdminPanel" -> {
+        if (PermissionManager.get().hasPermission(uuid, "hyperfactions.admin")) {
+          guiManager.openAdminMain(player, ref, store, playerRef);
+        }
+      }
+
+      case "AdminZones" -> {
+        if (PermissionManager.get().hasPermission(uuid, "hyperfactions.admin.zones")) {
+          guiManager.openAdminZone(player, ref, store, playerRef);
+        }
+      }
+      default -> throw new IllegalStateException("Unexpected value");
     }
-
-    @Override
-    public void handleDataEvent(Ref<EntityStore> ref, Store<EntityStore> store,
-                                MainMenuData data) {
-        super.handleDataEvent(ref, store, data);
-
-        Player player = store.getComponent(ref, Player.getComponentType());
-        PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
-
-        if (player == null || playerRef == null || data.button == null) {
-            return;
-        }
-
-        UUID uuid = playerRef.getUuid();
-        Faction faction = factionManager.getPlayerFaction(uuid);
-
-        switch (data.button) {
-            case "MyFaction" -> {
-                if (faction != null) {
-                    guiManager.openFactionMain(player, ref, store, playerRef);
-                }
-            }
-
-            case "Members" -> {
-                if (faction != null) {
-                    guiManager.openFactionMembers(player, ref, store, playerRef, faction);
-                }
-            }
-
-            case "Relations" -> {
-                if (faction != null) {
-                    guiManager.openFactionRelations(player, ref, store, playerRef, faction);
-                }
-            }
-
-            case "CreateFaction" -> guiManager.openCreateFaction(player, ref, store, playerRef);
-
-            case "Map" -> guiManager.openChunkMap(player, ref, store, playerRef);
-
-            case "Claim" -> {
-                if (faction != null) {
-                    guiManager.closePage(player, ref, store);
-                    player.sendMessage(
-                        com.hypixel.hytale.server.core.Message.raw("Use ")
-                            .color("#AAAAAA")
-                            .insert(com.hypixel.hytale.server.core.Message.raw("/f claim").color("#55FF55"))
-                            .insert(com.hypixel.hytale.server.core.Message.raw(" to claim territory.").color("#AAAAAA"))
-                    );
-                }
-            }
-
-            case "BrowseFactions" -> guiManager.openFactionBrowser(player, ref, store, playerRef);
-
-            case "AdminPanel" -> {
-                if (PermissionManager.get().hasPermission(uuid, "hyperfactions.admin")) {
-                    guiManager.openAdminMain(player, ref, store, playerRef);
-                }
-            }
-
-            case "AdminZones" -> {
-                if (PermissionManager.get().hasPermission(uuid, "hyperfactions.admin.zones")) {
-                    guiManager.openAdminZone(player, ref, store, playerRef);
-                }
-            }
-        }
-    }
+  }
 }

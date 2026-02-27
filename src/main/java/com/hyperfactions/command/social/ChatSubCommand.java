@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
  * Toggles between chat modes or sets a specific mode.
  * Aliases: c
  *
- * Usage:
+ * <p>Usage:
  *   /f c       - Cycle: Normal -> Faction -> Ally -> Normal
  *   /f c f     - Set to Faction chat
  *   /f c a     - Set to Ally chat
@@ -27,62 +27,68 @@ import org.jetbrains.annotations.NotNull;
  */
 public class ChatSubCommand extends FactionSubCommand {
 
-    public ChatSubCommand(@NotNull HyperFactions hyperFactions, @NotNull HyperFactionsPlugin plugin) {
-        super("chat", "Toggle faction/ally chat mode", hyperFactions, plugin);
-        addAliases("c");
+  /** Creates a new ChatSubCommand. */
+  public ChatSubCommand(@NotNull HyperFactions hyperFactions, @NotNull HyperFactionsPlugin plugin) {
+    super("chat", "Toggle faction/ally chat mode", hyperFactions, plugin);
+    addAliases("c");
+  }
+
+  /** Executes the command. */
+  @Override
+  protected void execute(@NotNull CommandContext ctx,
+             @NotNull Store<EntityStore> store,
+             @NotNull Ref<EntityStore> ref,
+             @NotNull PlayerRef player,
+             @NotNull World currentWorld) {
+
+    Faction faction = requireFaction(ctx, player);
+    if (faction == null) {
+      return;
     }
 
-    @Override
-    protected void execute(@NotNull CommandContext ctx,
-                          @NotNull Store<EntityStore> store,
-                          @NotNull Ref<EntityStore> ref,
-                          @NotNull PlayerRef player,
-                          @NotNull World currentWorld) {
+    ChatManager chatManager = hyperFactions.getChatManager();
 
-        Faction faction = requireFaction(ctx, player);
-        if (faction == null) return;
+    // Parse arguments
+    String input = ctx.getInputString();
+    String[] parts = input != null ? input.trim().split("\\s+") : new String[0];
+    // parts[0] = "faction/f/hf", parts[1] = "chat/c", parts[2] = mode (optional)
+    String mode = parts.length > 2 ? parts[2].toLowerCase() : null;
 
-        ChatManager chatManager = hyperFactions.getChatManager();
+    ChatManager.ToggleResult result;
 
-        // Parse arguments
-        String input = ctx.getInputString();
-        String[] parts = input != null ? input.trim().split("\\s+") : new String[0];
-        // parts[0] = "faction/f/hf", parts[1] = "chat/c", parts[2] = mode (optional)
-        String mode = parts.length > 2 ? parts[2].toLowerCase() : null;
-
-        ChatManager.ToggleResult result;
-
-        if (mode == null) {
-            // No argument - cycle through modes
-            result = chatManager.cycleChannelChecked(player.getUuid());
-        } else {
-            result = switch (mode) {
-                case "f", "faction" -> chatManager.setFactionChatChecked(player.getUuid());
-                case "a", "ally" -> chatManager.setAllyChatChecked(player.getUuid());
-                case "off", "normal", "public" -> {
-                    chatManager.setNormalChat(player.getUuid());
-                    yield new ChatManager.ToggleResult(ChatManager.ChatResult.SUCCESS, ChatManager.ChatChannel.NORMAL);
-                }
-                default -> {
-                    ctx.sendMessage(prefix().insert(msg("Usage: /f c [f|a|off]", COLOR_RED)));
-                    yield null;
-                }
-            };
+    if (mode == null) {
+      // No argument - cycle through modes
+      result = chatManager.cycleChannelChecked(player.getUuid());
+    } else {
+      result = switch (mode) {
+        case "f", "faction" -> chatManager.setFactionChatChecked(player.getUuid());
+        case "a", "ally" -> chatManager.setAllyChatChecked(player.getUuid());
+        case "off", "normal", "public" -> {
+          chatManager.setNormalChat(player.getUuid());
+          yield new ChatManager.ToggleResult(ChatManager.ChatResult.SUCCESS, ChatManager.ChatChannel.NORMAL);
         }
-
-        if (result == null) return;
-
-        if (!result.isSuccess()) {
-            ctx.sendMessage(prefix().insert(msg("You don't have permission for that chat mode.", COLOR_RED)));
-            return;
+        default -> {
+          ctx.sendMessage(prefix().insert(msg("Usage: /f c [f|a|off]", COLOR_RED)));
+          yield null;
         }
-
-        ChatManager.ChatChannel channel = result.channel();
-        String display = ChatManager.getChannelDisplay(channel);
-        String color = ChatManager.getChannelColor(channel);
-
-        ctx.sendMessage(prefix()
-                .insert(msg("Chat mode set to ", COLOR_GRAY))
-                .insert(msg(display, color)));
+      };
     }
+
+    if (result == null) {
+      return;
+    }
+
+    if (!result.isSuccess()) {
+      ctx.sendMessage(prefix().insert(msg("You don't have permission for that chat mode.", COLOR_RED)));
+      return;
+    }
+
+    ChatManager.ChatChannel channel = result.channel();
+    String display = ChatManager.getChannelDisplay(channel);
+    String color = ChatManager.getChannelColor(channel);
+
+    ctx.sendMessage(prefix()
+        .insert(msg("Chat mode set to ", COLOR_GRAY))
+        .insert(msg(display, color)));
+  }
 }

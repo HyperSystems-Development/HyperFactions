@@ -1,8 +1,7 @@
 package com.hyperfactions.importer.hyfactions;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents the SafeZones.json file structure from HyFactions.
@@ -10,6 +9,6 @@ import java.util.List;
  * @param SafeZones list of safe zone chunks
  */
 public record HyFactionSafeZones(
-    @Nullable List<HyFactionZoneChunk> SafeZones
+  @Nullable List<HyFactionZoneChunk> SafeZones
 ) {
 }

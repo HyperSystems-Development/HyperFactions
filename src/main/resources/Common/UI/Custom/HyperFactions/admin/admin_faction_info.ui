@@ -1,5 +1,5 @@
 // Admin Faction Info Page
-// Card-based stat layout matching admin dashboard and faction dashboard style
+// Two-column layout: stats (full width), then Left = leadership/info, Right = controls
 // Back button returns to AdminFactionsPage
 
 $C = "../../Common.ui";
@@ -10,7 +10,7 @@ $C.@PageOverlay {
   $Nav.@HyperFactionsAdminNavBar #HyperFactionsAdminNavBar {}
 
   $C.@Container {
-    Anchor: (Width: 580, Height: 600);
+    Anchor: (Width: 640, Height: 600);
 
     #Title {
       $C.@Title {
@@ -22,7 +22,7 @@ $C.@PageOverlay {
       LayoutMode: Top;
       Padding: (Left: 20, Right: 20, Top: 12, Bottom: 12);
 
-      // === Header Section ===
+      // === Header Section (full width) ===
       Group #HeaderSection {
         Anchor: (Height: 55, Bottom: 8);
         LayoutMode: Top;
@@ -59,16 +59,16 @@ $C.@PageOverlay {
         }
       }
 
-      // === Stats Row 1: Power, Claims, Members ===
+      // === Stats Row 1: Power, Claims, Members (full width) ===
       Group #StatsRow1 {
-        Anchor: (Height: 75, Bottom: 8);
+        Anchor: (Height: 70, Bottom: 6);
         LayoutMode: Left;
 
         // Power card
         Group {
           FlexWeight: 1;
           Background: (Color: #1a2a3a);
-          Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+          Padding: (Left: 10, Right: 10, Top: 6, Bottom: 6);
           LayoutMode: Top;
           Anchor: (Right: 4);
 
@@ -79,7 +79,7 @@ $C.@PageOverlay {
           }
           Label #PowerValue {
             Text: "0.0 / 0.0";
-            Style: (FontSize: 20, TextColor: #44CC44, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
+            Style: (FontSize: 18, TextColor: #44CC44, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
             FlexWeight: 1;
           }
           Label {
@@ -93,7 +93,7 @@ $C.@PageOverlay {
         Group {
           FlexWeight: 1;
           Background: (Color: #1a2a3a);
-          Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+          Padding: (Left: 10, Right: 10, Top: 6, Bottom: 6);
           LayoutMode: Top;
           Anchor: (Left: 4, Right: 4);
 
@@ -104,7 +104,7 @@ $C.@PageOverlay {
           }
           Label #ClaimsValue {
             Text: "0 / 0";
-            Style: (FontSize: 20, TextColor: #FFAA00, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
+            Style: (FontSize: 18, TextColor: #FFAA00, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
             FlexWeight: 1;
           }
           Label {
@@ -118,7 +118,7 @@ $C.@PageOverlay {
         Group {
           FlexWeight: 1;
           Background: (Color: #1a2a3a);
-          Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+          Padding: (Left: 10, Right: 10, Top: 6, Bottom: 6);
           LayoutMode: Top;
           Anchor: (Left: 4);
 
@@ -129,7 +129,7 @@ $C.@PageOverlay {
           }
           Label #MembersValue {
             Text: "0 / 0";
-            Style: (FontSize: 20, TextColor: #00FFFF, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
+            Style: (FontSize: 18, TextColor: #00FFFF, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
             FlexWeight: 1;
           }
           Label #RecruitmentValue {
@@ -140,16 +140,16 @@ $C.@PageOverlay {
         }
       }
 
-      // === Stats Row 2: Relations, Status, Info/Treasury ===
+      // === Stats Row 2: Relations, Status, Info/Treasury (full width) ===
       Group #StatsRow2 {
-        Anchor: (Height: 75, Bottom: 10);
+        Anchor: (Height: 70, Bottom: 8);
         LayoutMode: Left;
 
         // Relations card (ally / enemy split)
         Group {
           FlexWeight: 1;
           Background: (Color: #1a2a3a);
-          Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+          Padding: (Left: 10, Right: 10, Top: 6, Bottom: 6);
           LayoutMode: Top;
           Anchor: (Right: 4);
 
@@ -164,7 +164,7 @@ $C.@PageOverlay {
 
             Label #AlliesValue {
               Text: "0";
-              Style: (FontSize: 18, TextColor: #55FF55, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
+              Style: (FontSize: 16, TextColor: #55FF55, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
               FlexWeight: 1;
             }
             Label {
@@ -174,7 +174,7 @@ $C.@PageOverlay {
             }
             Label #EnemiesValue {
               Text: "0";
-              Style: (FontSize: 18, TextColor: #FF5555, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
+              Style: (FontSize: 16, TextColor: #FF5555, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
               FlexWeight: 1;
             }
           }
@@ -189,7 +189,7 @@ $C.@PageOverlay {
         Group {
           FlexWeight: 1;
           Background: (Color: #1a2a3a);
-          Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+          Padding: (Left: 10, Right: 10, Top: 6, Bottom: 6);
           LayoutMode: Top;
           Anchor: (Left: 4, Right: 4);
 
@@ -200,7 +200,7 @@ $C.@PageOverlay {
           }
           Label #RaidableValue {
             Text: "Protected";
-            Style: (FontSize: 18, TextColor: #44cc44, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
+            Style: (FontSize: 16, TextColor: #44cc44, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
             FlexWeight: 1;
           }
           Label #FoundedValue {
@@ -214,7 +214,7 @@ $C.@PageOverlay {
         Group {
           FlexWeight: 1;
           Background: (Color: #1a2a3a);
-          Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+          Padding: (Left: 10, Right: 10, Top: 6, Bottom: 6);
           LayoutMode: Top;
           Anchor: (Left: 4);
 
@@ -232,7 +232,7 @@ $C.@PageOverlay {
 
             Label #TreasuryValue {
               Text: "0";
-              Style: (FontSize: 20, TextColor: #FFD700, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
+              Style: (FontSize: 18, TextColor: #FFD700, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
               FlexWeight: 1;
             }
             Label {
@@ -250,147 +250,199 @@ $C.@PageOverlay {
         Background: (Color: #00AAAA);
       }
 
-      // === Leadership Card ===
-      Group #LeadershipSection {
-        Anchor: (Height: 50, Bottom: 8);
-        Background: (Color: #1a2a3a);
-        Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+      // === Two-Column Body ===
+      Group #TwoColumnBody {
+        FlexWeight: 1;
         LayoutMode: Left;
+        Anchor: (Bottom: 8);
 
-        Label {
-          Text: "Leader:";
-          Style: (FontSize: 12, TextColor: #FFD700, RenderBold: true, VerticalAlignment: Center);
-          Anchor: (Width: 65);
-        }
+        // === LEFT COLUMN — Leadership & Info ===
+        Group #LeftColumn {
+          Anchor: (Width: 280);
+          LayoutMode: Top;
+          Padding: (Right: 10);
 
-        Label #LeaderName {
-          Text: "Unknown";
-          Style: (FontSize: 12, TextColor: #FFFFFF, VerticalAlignment: Center);
-        }
+          // Leadership Card
+          Group #LeadershipSection {
+            Background: (Color: #1a2a3a);
+            Padding: (Left: 12, Right: 12, Top: 10, Bottom: 10);
+            LayoutMode: Top;
 
-        Label { Anchor: (Width: 30); }
+            Label {
+              Text: "Leadership";
+              Style: (FontSize: 11, TextColor: #666666, RenderBold: true);
+              Anchor: (Height: 16, Bottom: 6);
+            }
 
-        Label {
-          Text: "Officers:";
-          Style: (FontSize: 12, TextColor: #87CEEB, RenderBold: true, VerticalAlignment: Center);
-          Anchor: (Width: 70);
-        }
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 22, Bottom: 4);
 
-        Label #OfficersValue {
-          Text: "None";
-          Style: (FontSize: 12, TextColor: #FFFFFF, VerticalAlignment: Center);
-        }
-      }
+              Label {
+                Text: "Leader:";
+                Style: (FontSize: 12, TextColor: #FFD700, RenderBold: true, VerticalAlignment: Center);
+                Anchor: (Width: 60);
+              }
+              Label #LeaderName {
+                Text: "Unknown";
+                Style: (FontSize: 12, TextColor: #FFFFFF, VerticalAlignment: Center);
+              }
+            }
 
-      // Cyan divider
-      Group {
-        Anchor: (Height: 1, Bottom: 8);
-        Background: (Color: #00AAAA);
-      }
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 22);
 
-      // === Power Management Section ===
-      Group {
-        Anchor: (Height: 20, Bottom: 5);
-        Label {
-          Text: "Power Management";
-          Style: (FontSize: 11, TextColor: #666666, RenderBold: true);
-        }
-      }
-
-      Group #PowerManagement {
-        Anchor: (Height: 30, Bottom: 8);
-        LayoutMode: Left;
-
-        TextButton #PowerSubFive {
-          Text: "-5 All";
-          Anchor: (Height: 26, Width: 55, Right: 4);
-          Style: $S.@RedButtonStyle;
-        }
-
-        TextButton #PowerSubOne {
-          Text: "-1 All";
-          Anchor: (Height: 26, Width: 55, Right: 4);
-          Style: $S.@RedButtonStyle;
-        }
-
-        TextButton #PowerAddOne {
-          Text: "+1 All";
-          Anchor: (Height: 26, Width: 55, Right: 4);
-          Style: $S.@ButtonStyle;
-        }
-
-        TextButton #PowerAddFive {
-          Text: "+5 All";
-          Anchor: (Height: 26, Width: 55, Right: 8);
-          Style: $S.@ButtonStyle;
-        }
-
-        TextButton #PowerResetAll {
-          Text: "Reset All";
-          Anchor: (Height: 26, Width: 75);
-          Style: $S.@CyanButtonStyle;
-        }
-      }
-
-      // === Economy Management Section (hidden when economy disabled) ===
-      Group #EconomyManagement {
-        Anchor: (Height: 55);
-        LayoutMode: Top;
-        Visible: false;
-
-        Group {
-          Anchor: (Height: 20, Bottom: 5);
-          Label {
-            Text: "Economy Management";
-            Style: (FontSize: 11, TextColor: #666666, RenderBold: true);
+              Label {
+                Text: "Officers:";
+                Style: (FontSize: 12, TextColor: #87CEEB, RenderBold: true, VerticalAlignment: Center);
+                Anchor: (Width: 60);
+              }
+              Label #OfficersValue {
+                Text: "None";
+                Style: (FontSize: 12, TextColor: #FFFFFF, VerticalAlignment: Center);
+              }
+            }
           }
         }
 
-        Group {
-          Anchor: (Height: 30);
-          LayoutMode: Left;
+        // === RIGHT COLUMN — Controls ===
+        Group #RightColumn {
+          FlexWeight: 1;
+          LayoutMode: Top;
+          Padding: (Left: 10);
 
-          TextButton #EconAdjustBtn {
-            Text: "Adjust Balance";
-            Anchor: (Height: 26, Width: 120, Right: 8);
-            Style: $S.@CyanButtonStyle;
+          // Power Management
+          Group {
+            Background: (Color: #1a2a3a);
+            Padding: (Left: 12, Right: 12, Top: 10, Bottom: 10);
+            LayoutMode: Top;
+            Anchor: (Bottom: 6);
+
+            Label {
+              Text: "Power Management";
+              Style: (FontSize: 11, TextColor: #666666, RenderBold: true);
+              Anchor: (Height: 16, Bottom: 6);
+            }
+
+            Group #PowerManagement {
+              Anchor: (Height: 30, Bottom: 6);
+              LayoutMode: Left;
+
+              TextButton #PowerSubFive {
+                Text: "-5 All";
+                Anchor: (Height: 26, Width: 52, Right: 3);
+                Style: $S.@RedButtonStyle;
+              }
+
+              TextButton #PowerSubOne {
+                Text: "-1 All";
+                Anchor: (Height: 26, Width: 52, Right: 3);
+                Style: $S.@RedButtonStyle;
+              }
+
+              TextButton #PowerAddOne {
+                Text: "+1 All";
+                Anchor: (Height: 26, Width: 52, Right: 3);
+                Style: $S.@ButtonStyle;
+              }
+
+              TextButton #PowerAddFive {
+                Text: "+5 All";
+                Anchor: (Height: 26, Width: 52);
+                Style: $S.@ButtonStyle;
+              }
+            }
+
+            Group {
+              Anchor: (Height: 30);
+              LayoutMode: Left;
+
+              TextButton #PowerResetAll {
+                Text: "Reset All Power";
+                Anchor: (Height: 26, Width: 130);
+                Style: $S.@CyanButtonStyle;
+              }
+            }
           }
 
-          TextButton #EconViewLogBtn {
-            Text: "View Treasury";
-            Anchor: (Height: 26, Width: 120);
-            Style: $S.@ButtonStyle;
+          // Economy Management Section (hidden when economy disabled)
+          Group #EconomyManagement {
+            Background: (Color: #1a2a3a);
+            Padding: (Left: 12, Right: 12, Top: 10, Bottom: 10);
+            LayoutMode: Top;
+            Visible: false;
+            Anchor: (Bottom: 6);
+
+            Label {
+              Text: "Economy Management";
+              Style: (FontSize: 11, TextColor: #666666, RenderBold: true);
+              Anchor: (Height: 16, Bottom: 6);
+            }
+
+            Group {
+              Anchor: (Height: 30);
+              LayoutMode: Left;
+
+              TextButton #EconAdjustBtn {
+                Text: "Adjust Balance";
+                Anchor: (Height: 26, Width: 115, Right: 6);
+                Style: $S.@CyanButtonStyle;
+              }
+
+              TextButton #EconViewLogBtn {
+                Text: "View Treasury";
+                Anchor: (Height: 26, Width: 115);
+                Style: $S.@ButtonStyle;
+              }
+            }
+          }
+
+          // Danger Zone
+          Group {
+            Background: (Color: #2a1a1a);
+            Padding: (Left: 12, Right: 12, Top: 10, Bottom: 10);
+            LayoutMode: Top;
+
+            Label {
+              Text: "Danger Zone";
+              Style: (FontSize: 11, TextColor: #FF5555, RenderBold: true);
+              Anchor: (Height: 16, Bottom: 6);
+            }
+
+            TextButton #DisbandBtn {
+              Text: "Disband Faction";
+              Anchor: (Height: 26);
+              Style: $S.@RedButtonStyle;
+            }
           }
         }
       }
 
-      // Spacer to push buttons to bottom
-      Label { FlexWeight: 1; }
-
-      // === Bottom Action Buttons ===
+      // === Bottom Action Buttons (full width) ===
       Group #ActionButtons {
         Anchor: (Height: 35);
         LayoutMode: Left;
 
         TextButton #ViewMembersBtn {
           Text: "Members";
-          Anchor: (Height: 30, Width: 90);
+          Anchor: (Height: 30, Width: 85);
           Style: $S.@ButtonStyle;
         }
 
-        Label { Anchor: (Width: 8); }
+        Label { Anchor: (Width: 6); }
 
         TextButton #ViewRelationsBtn {
           Text: "Relations";
-          Anchor: (Height: 30, Width: 95);
+          Anchor: (Height: 30, Width: 85);
           Style: $S.@ButtonStyle;
         }
 
-        Label { Anchor: (Width: 8); }
+        Label { Anchor: (Width: 6); }
 
         TextButton #ViewSettingsBtn {
           Text: "Settings";
-          Anchor: (Height: 30, Width: 90);
+          Anchor: (Height: 30, Width: 85);
           Style: $S.@ButtonStyle;
         }
 

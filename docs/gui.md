@@ -1,6 +1,6 @@
 # HyperFactions GUI System
 
-> **Version**: 0.9.0 | **59 pages** across **3 registries**
+> **Version**: 0.10.0 | **64 pages** across **3 registries**
 
 Architecture documentation for the HyperFactions GUI system using Hytale's CustomUI.
 
@@ -8,8 +8,11 @@ Architecture documentation for the HyperFactions GUI system using Hytale's Custo
 
 HyperFactions uses Hytale's `InteractiveCustomUIPage` system with:
 
-- **GuiManager** (~2,000 lines) - Central coordinator for opening pages
+- **GuiManager** - Central coordinator (page registration + delegation to openers)
+- **3 Page Openers** - FactionPageOpener, AdminPageOpener, NewPlayerPageOpener
 - **3 Page Registries** - Type-safe navigation between pages
+- **UIPaths** - Centralized UI template path constants
+- **NavBarUtil + NavEntry** - Shared navigation bar logic
 - **Data Models** - Records for page state
 - **Shared Components** - Reusable modals and UI elements
 - **Help System** - Integrated help pages
@@ -51,30 +54,32 @@ stateDiagram-v2
 ## Architecture
 
 ```
-GuiManager
+GuiManager (registration + delegation)
      │
-     ├─► Faction Pages (FactionPageRegistry)
+     ├─► FactionPageOpener (35 methods)
      │        ├─► FactionMainPage (dashboard)
      │        ├─► FactionMembersPage
      │        ├─► FactionRelationsPage
      │        ├─► FactionSettingsPage
-     │        ├─► FactionEconomyPage
+     │        ├─► TreasuryPage
      │        └─► ... (15+ pages)
      │
-     ├─► New Player Pages (NewPlayerPageRegistry)
-     │        ├─► CreateFactionStep1Page
+     ├─► NewPlayerPageOpener (8 methods)
+     │        ├─► NewPlayerBrowsePage
+     │        ├─► CreateFactionPage
      │        ├─► InvitesPage
-     │        ├─► BrowseFactionsPage
      │        ├─► HelpPage
      │        └─► ... (5+ pages)
      │
-     ├─► Admin Pages (AdminPageRegistry)
+     ├─► AdminPageOpener (38 methods)
      │        ├─► AdminMainPage
      │        ├─► AdminZoneMapPage
      │        ├─► AdminFactionsPage
      │        └─► ... (12+ pages)
      │
      └─► Shared Components
+              ├─► UIPaths (centralized template paths)
+              ├─► NavBarUtil + NavEntry (shared nav logic)
               ├─► InputModal
               ├─► ColorPickerModal
               └─► ConfirmationModal
@@ -84,42 +89,55 @@ GuiManager
 
 | Class | Path | Purpose |
 |-------|------|---------|
-| GuiManager | [`gui/GuiManager.java`](../src/main/java/com/hyperfactions/gui/GuiManager.java) | Central GUI coordinator |
+| GuiManager | [`gui/GuiManager.java`](../src/main/java/com/hyperfactions/gui/GuiManager.java) | Central coordinator (registration + delegation) |
+| FactionPageOpener | [`gui/FactionPageOpener.java`](../src/main/java/com/hyperfactions/gui/FactionPageOpener.java) | Faction page opening (35 methods) |
+| AdminPageOpener | [`gui/AdminPageOpener.java`](../src/main/java/com/hyperfactions/gui/AdminPageOpener.java) | Admin page opening (38 methods) |
+| NewPlayerPageOpener | [`gui/NewPlayerPageOpener.java`](../src/main/java/com/hyperfactions/gui/NewPlayerPageOpener.java) | New player page opening (8 methods) |
+| UIPaths | [`gui/UIPaths.java`](../src/main/java/com/hyperfactions/gui/UIPaths.java) | Centralized UI template path constants |
 | GuiType | [`gui/GuiType.java`](../src/main/java/com/hyperfactions/gui/GuiType.java) | Page type enumeration |
 | FactionPageRegistry | [`gui/faction/FactionPageRegistry.java`](../src/main/java/com/hyperfactions/gui/faction/FactionPageRegistry.java) | Faction page navigation |
 | NewPlayerPageRegistry | [`gui/newplayer/NewPlayerPageRegistry.java`](../src/main/java/com/hyperfactions/gui/newplayer/NewPlayerPageRegistry.java) | New player page navigation |
 | AdminPageRegistry | [`gui/admin/AdminPageRegistry.java`](../src/main/java/com/hyperfactions/gui/admin/AdminPageRegistry.java) | Admin page navigation |
+| NavBarUtil | [`gui/shared/NavBarUtil.java`](../src/main/java/com/hyperfactions/gui/shared/NavBarUtil.java) | Shared nav bar button builder |
+| NavEntry | [`gui/shared/NavEntry.java`](../src/main/java/com/hyperfactions/gui/shared/NavEntry.java) | Navigation entry interface |
 
 ## GuiManager
 
 [`gui/GuiManager.java`](../src/main/java/com/hyperfactions/gui/GuiManager.java)
 
-Central coordinator that decides which page flow to use:
+Central coordinator that handles page registration and delegates page opening to focused opener classes:
 
 ```java
 public class GuiManager {
 
-    private final Supplier<HyperFactions> plugin;
     private final Supplier<FactionManager> factionManager;
     // ... other manager suppliers
 
+    private final FactionPageOpener factionPageOpener;
+    private final AdminPageOpener adminPageOpener;
+    private final NewPlayerPageOpener newPlayerPageOpener;
+
+    public GuiManager(...) {
+        // Register pages with all three registries
+        registerPages();
+        registerNewPlayerPages();
+        registerAdminPages();
+
+        // Initialize page opener delegates
+        this.factionPageOpener = new FactionPageOpener(this);
+        this.adminPageOpener = new AdminPageOpener(this);
+        this.newPlayerPageOpener = new NewPlayerPageOpener(this);
+    }
+
+    // All openXxx() methods delegate to the appropriate opener
     public void openFactionMain(Player player, Ref<EntityStore> ref,
                                 Store<EntityStore> store, PlayerRef playerRef) {
-        UUID playerUuid = playerRef.getUuid();
-        Faction faction = factionManager.get().getPlayerFaction(playerUuid);
-
-        if (faction != null) {
-            // Player has faction - show faction dashboard
-            openFactionPage(player, ref, store, playerRef, FactionPageRegistry.Entry.MAIN);
-        } else {
-            // No faction - show new player menu
-            openNewPlayerPage(player, ref, store, playerRef, NewPlayerPageRegistry.Entry.MAIN);
-        }
+        factionPageOpener.openFactionMain(player, ref, store, playerRef);
     }
 
     public void openAdminMain(Player player, Ref<EntityStore> ref,
                               Store<EntityStore> store, PlayerRef playerRef) {
-        openAdminPage(player, ref, store, playerRef, AdminPageRegistry.Entry.MAIN);
+        adminPageOpener.openAdminMain(player, ref, store, playerRef);
     }
 }
 ```
@@ -465,7 +483,11 @@ private void onRenameClicked() {
 
 ```
 gui/
-├── GuiManager.java               # Central coordinator
+├── GuiManager.java               # Central coordinator (registration + delegation)
+├── FactionPageOpener.java        # Faction page opening methods (35 methods)
+├── AdminPageOpener.java          # Admin page opening methods (38 methods)
+├── NewPlayerPageOpener.java      # New player page opening methods (8 methods)
+├── UIPaths.java                  # Centralized UI template path constants
 ├── GuiType.java                  # Page type enum
 ├── ActivePageTracker.java        # Live data refresh tracking
 ├── RefreshablePage.java          # Refreshable page interface
@@ -486,8 +508,14 @@ gui/
 │   │   ├── FactionInvitesPage.java
 │   │   ├── FactionModulesPage.java
 │   │   ├── FactionChatPage.java
+│   │   ├── FactionLeaderboardPage.java
 │   │   ├── LogsViewerPage.java
 │   │   ├── PlayerInfoPage.java
+│   │   ├── TreasuryPage.java
+│   │   ├── TreasuryDepositModalPage.java
+│   │   ├── TreasurySettingsPage.java
+│   │   ├── TreasuryTransferSearchPage.java
+│   │   ├── TreasuryTransferConfirmPage.java
 │   │   ├── SetRelationModalPage.java
 │   │   ├── DisbandConfirmPage.java
 │   │   ├── LeaveConfirmPage.java
@@ -522,6 +550,12 @@ gui/
 │   │   ├── AdminConfigPage.java
 │   │   ├── AdminBackupsPage.java
 │   │   ├── AdminUpdatesPage.java
+│   │   ├── AdminActivityLogPage.java
+│   │   ├── AdminActionsPage.java
+│   │   ├── AdminEconomyPage.java
+│   │   ├── AdminEconomyAdjustPage.java
+│   │   ├── AdminVersionPage.java
+│   │   ├── AdminZonePropertiesPage.java
 │   │   ├── AdminHelpPage.java
 │   │   ├── AdminDisbandConfirmPage.java
 │   │   └── AdminUnclaimAllConfirmPage.java
@@ -543,6 +577,8 @@ gui/
 │       └── NewPlayerPageData.java
 │
 ├── shared/                      # Shared components
+│   ├── NavEntry.java            # Navigation entry interface
+│   ├── NavBarUtil.java          # Shared nav bar button builder
 │   ├── component/
 │   │   ├── InputModal.java
 │   │   └── ConfirmationModal.java
@@ -600,6 +636,48 @@ public class FactionSettingsPage extends InteractiveCustomUIPage {
 }
 ```
 
+## New Pages in v0.10.0
+
+### Admin Pages
+
+#### AdminActionsPage
+Global admin quick actions: K/D reset (per-player and server-wide), bulk operations. Accessible from admin nav bar.
+
+#### AdminActivityLogPage
+Server-wide faction activity browser. Aggregates logs across all factions with filters for log type, player name, and time range (1h/24h/7d/all). Paginated with expandable entries showing actor, target, and details.
+
+#### AdminEconomyPage
+Server economy overview with sortable faction balance list. Shows total server economy, average balance, and per-faction treasury details. Links to AdminEconomyAdjustPage for individual adjustments.
+
+#### AdminEconomyAdjustPage
+Per-faction treasury adjustment modal. Supports set, add, and remove operations with admin audit logging. Opened from AdminEconomyPage.
+
+#### AdminVersionPage
+Displays mod version, server version, build info, and integration status for all 12 supported mods (HyperPerms, LuckPerms, VaultUnlocked, Ecotale, PAPI, WiFlow, OrbisGuard, HyperProtect-Mixin, OG-Mixins, Gravestones, HyBounty, MultipleHUD). Green/red status indicators.
+
+#### AdminZonePropertiesPage
+Consolidated zone property editor. Edit zone name, type (SafeZone/WarZone), and notification settings (entry/leave title suppression, custom text) in a single page. Opened from AdminZonePage.
+
+### Faction Pages
+
+#### FactionLeaderboardPage
+Sortable faction leaderboard with 5 sort modes: K/D (default), Power, Territory, Balance, Members. 10 entries per page with pagination. Top 3 get gold/silver/bronze rank colors. Own faction row highlighted. Accessible from nav bar and `/f leaderboard`.
+
+#### TreasuryPage
+Faction treasury management hub. Shows balance, recent transactions, and autopay status. Links to deposit, withdrawal, transfer, and settings sub-pages. Requires economy integration (Ecotale/VaultUnlocked).
+
+#### TreasuryDepositModalPage
+Deposit modal with amount input and confirmation. Validates against player balance. Shows current treasury and player balance.
+
+#### TreasurySettingsPage
+Treasury autopay and access settings. Configure auto-deposit percentage, withdrawal permissions per role, and transfer limits.
+
+#### TreasuryTransferSearchPage
+Inter-faction transfer search. Browse and search target factions for treasury transfers. Shows faction names with balance preview.
+
+#### TreasuryTransferConfirmPage
+Transfer confirmation modal. Shows source faction, target faction, amount, and fee (if configured). Requires officer+ permission.
+
 ## Adding New Pages
 
 1. **Create data record** in appropriate `data/` package:
@@ -644,10 +722,16 @@ public class FactionSettingsPage extends InteractiveCustomUIPage {
 
 | Class | Path |
 |-------|------|
+| GuiColors | [`gui/GuiColors.java`](../src/main/java/com/hyperfactions/gui/GuiColors.java) |
 | GuiManager | [`gui/GuiManager.java`](../src/main/java/com/hyperfactions/gui/GuiManager.java) |
+| FactionPageOpener | [`gui/FactionPageOpener.java`](../src/main/java/com/hyperfactions/gui/FactionPageOpener.java) |
+| AdminPageOpener | [`gui/AdminPageOpener.java`](../src/main/java/com/hyperfactions/gui/AdminPageOpener.java) |
+| NewPlayerPageOpener | [`gui/NewPlayerPageOpener.java`](../src/main/java/com/hyperfactions/gui/NewPlayerPageOpener.java) |
+| UIPaths | [`gui/UIPaths.java`](../src/main/java/com/hyperfactions/gui/UIPaths.java) |
 | FactionPageRegistry | [`gui/faction/FactionPageRegistry.java`](../src/main/java/com/hyperfactions/gui/faction/FactionPageRegistry.java) |
 | NewPlayerPageRegistry | [`gui/newplayer/NewPlayerPageRegistry.java`](../src/main/java/com/hyperfactions/gui/newplayer/NewPlayerPageRegistry.java) |
-| NewPlayerNavBarHelper | [`gui/newplayer/NewPlayerNavBarHelper.java`](../src/main/java/com/hyperfactions/gui/newplayer/NewPlayerNavBarHelper.java) |
 | AdminPageRegistry | [`gui/admin/AdminPageRegistry.java`](../src/main/java/com/hyperfactions/gui/admin/AdminPageRegistry.java) |
+| NavBarUtil | [`gui/shared/NavBarUtil.java`](../src/main/java/com/hyperfactions/gui/shared/NavBarUtil.java) |
+| NavEntry | [`gui/shared/NavEntry.java`](../src/main/java/com/hyperfactions/gui/shared/NavEntry.java) |
 | NavBarHelper | [`gui/faction/NavBarHelper.java`](../src/main/java/com/hyperfactions/gui/faction/NavBarHelper.java) |
 | InputModal | [`gui/shared/component/InputModal.java`](../src/main/java/com/hyperfactions/gui/shared/component/InputModal.java) |

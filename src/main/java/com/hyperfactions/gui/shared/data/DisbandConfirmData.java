@@ -9,19 +9,20 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
  */
 public class DisbandConfirmData {
 
-    /** The button/action that triggered the event */
-    public String button;
+  /** The button/action that triggered the event. */
+  public String button;
 
-    /** Codec for serialization/deserialization */
-    public static final BuilderCodec<DisbandConfirmData> CODEC = BuilderCodec
-            .builder(DisbandConfirmData.class, DisbandConfirmData::new)
-            .addField(
-                    new KeyedCodec<>("Button", Codec.STRING),
-                    (data, value) -> data.button = value,
-                    data -> data.button
-            )
-            .build();
+  /** Codec for serialization/deserialization. */
+  public static final BuilderCodec<DisbandConfirmData> CODEC = BuilderCodec
+      .builder(DisbandConfirmData.class, DisbandConfirmData::new)
+      .addField(
+          new KeyedCodec<>("Button", Codec.STRING),
+          (data, value) -> data.button = value,
+          data -> data.button
+      )
+      .build();
 
-    public DisbandConfirmData() {
-    }
+  /** Creates a new DisbandConfirmData. */
+  public DisbandConfirmData() {
+  }
 }

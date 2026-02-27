@@ -1,0 +1,253 @@
+// Admin Zone Properties Page
+// Configure zone name, type, and notification settings
+// Separate from flags page (AdminZoneSettingsPage)
+
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+$Nav = "admin_nav_bar.ui";
+
+$C.@PageOverlay {
+  $Nav.@HyperFactionsAdminNavBar #HyperFactionsAdminNavBar {}
+
+  $C.@DecoratedContainer {
+    Anchor: (Width: 560, Height: 620);
+
+    #Title {
+      Group {
+        $C.@Title {
+          @Text = "Admin: Zone Settings";
+        }
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+      Padding: (Left: 20, Right: 20, Top: 12, Bottom: 12);
+
+      // === Zone Info Header ===
+      Group #HeaderSection {
+        Anchor: (Height: 32, Bottom: 8);
+        LayoutMode: Left;
+
+        Label #ZoneName {
+          Text: "Zone Name";
+          Style: (FontSize: 16, TextColor: #00FFFF, RenderBold: true, VerticalAlignment: Center);
+        }
+
+        Label { Anchor: (Width: 12); }
+
+        Label #TypeBadge {
+          Text: "SAFE";
+          Style: (FontSize: 12, TextColor: #55FF55, RenderBold: true, VerticalAlignment: Center);
+        }
+
+        Label { Anchor: (Width: 12); }
+
+        Label #ChunkCount {
+          Text: "0 chunks";
+          Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
+        }
+      }
+
+      // Divider
+      Group {
+        Anchor: (Height: 1, Bottom: 8);
+        Background: (Color: #00AAAA);
+      }
+
+      // === General Section ===
+      Group #GeneralBox {
+        Background: (Color: #1a2a3a);
+        Padding: (Left: 12, Right: 12, Top: 12, Bottom: 12);
+        LayoutMode: Top;
+        Anchor: (Bottom: 12);
+
+        Label {
+          Text: "General";
+          Style: (FontSize: 13, TextColor: #00AAAA, RenderBold: true);
+          Anchor: (Height: 20, Bottom: 4);
+        }
+
+        // Name subsection
+        Label {
+          Text: "Zone Name";
+          Style: (FontSize: 11, TextColor: #888888);
+          Anchor: (Height: 16, Bottom: 2);
+        }
+        Group #NameRow {
+          Anchor: (Height: 28, Bottom: 4);
+          LayoutMode: Left;
+
+          $C.@TextField #NameInput {
+            Anchor: (Height: 28);
+            FlexWeight: 1;
+          }
+          Group { Anchor: (Width: 6); }
+          TextButton #SaveNameBtn {
+            Text: "Save";
+            Style: $S.@ButtonStyle;
+            Anchor: (Width: 55, Height: 28);
+          }
+        }
+        Label #NameError {
+          Visible: false;
+          Style: (FontSize: 10, TextColor: #FF5555);
+          Anchor: (Height: 14);
+        }
+
+        // Separator
+        Group {
+          Anchor: (Height: 1, Top: 4, Bottom: 8);
+          Background: (Color: #2a3a4a);
+        }
+
+        // Type subsection
+        Label {
+          Text: "Zone Type";
+          Style: (FontSize: 11, TextColor: #888888);
+          Anchor: (Height: 16, Bottom: 2);
+        }
+        Group #TypeRow {
+          Anchor: (Height: 28);
+          LayoutMode: Left;
+
+          Label #CurrentType {
+            Text: "SafeZone";
+            Style: (FontSize: 13, TextColor: #55FF55, VerticalAlignment: Center);
+            FlexWeight: 1;
+          }
+          Group { Anchor: (Width: 6); }
+          TextButton #ChangeTypeBtn {
+            Text: "Change Type";
+            Style: $S.@ButtonStyle;
+            Anchor: (Width: 105, Height: 28);
+          }
+        }
+      }
+
+      // === Notifications Section ===
+      Group #NotificationsBox {
+        Background: (Color: #1a2a3a);
+        Padding: (Left: 12, Right: 12, Top: 12, Bottom: 12);
+        LayoutMode: Top;
+        Anchor: (Bottom: 12);
+
+        Label {
+          Text: "Notifications";
+          Style: (FontSize: 13, TextColor: #00AAAA, RenderBold: true);
+          Anchor: (Height: 20, Bottom: 4);
+        }
+
+        // Toggle
+        $C.@CheckBoxWithLabel #NotifyToggle {
+          @Text = "Show Entry Notification";
+          @Checked = true;
+          Anchor: (Height: 28, Bottom: 4);
+        }
+
+        // Separator
+        Group {
+          Anchor: (Height: 1, Bottom: 8);
+          Background: (Color: #2a3a4a);
+        }
+
+        // Upper title
+        Label {
+          Text: "Upper Title (small text above zone name)";
+          Style: (FontSize: 11, TextColor: #888888);
+          Anchor: (Height: 16);
+        }
+        Label #UpperCurrent {
+          Text: "Current: (default)";
+          Style: (FontSize: 11, TextColor: #AAAAAA);
+          Anchor: (Height: 16, Bottom: 2);
+        }
+        Group #UpperRow {
+          Anchor: (Height: 28, Bottom: 8);
+          LayoutMode: Left;
+
+          $C.@TextField #UpperTitleInput {
+            Anchor: (Height: 28);
+            FlexWeight: 1;
+          }
+          Group { Anchor: (Width: 6); }
+          TextButton #SaveUpperBtn {
+            Text: "Save";
+            Style: $S.@ButtonStyle;
+            Anchor: (Width: 55, Height: 28);
+          }
+          Group { Anchor: (Width: 6); }
+          TextButton #ClearUpperBtn {
+            Text: "Clear";
+            Style: $S.@RedButtonStyle;
+            Anchor: (Width: 55, Height: 28);
+          }
+        }
+
+        // Separator
+        Group {
+          Anchor: (Height: 1, Bottom: 8);
+          Background: (Color: #2a3a4a);
+        }
+
+        // Lower title
+        Label {
+          Text: "Lower Title (large zone name text)";
+          Style: (FontSize: 11, TextColor: #888888);
+          Anchor: (Height: 16);
+        }
+        Label #LowerCurrent {
+          Text: "Current: (default)";
+          Style: (FontSize: 11, TextColor: #AAAAAA);
+          Anchor: (Height: 16, Bottom: 2);
+        }
+        Group #LowerRow {
+          Anchor: (Height: 28);
+          LayoutMode: Left;
+
+          $C.@TextField #LowerTitleInput {
+            Anchor: (Height: 28);
+            FlexWeight: 1;
+          }
+          Group { Anchor: (Width: 6); }
+          TextButton #SaveLowerBtn {
+            Text: "Save";
+            Style: $S.@ButtonStyle;
+            Anchor: (Width: 55, Height: 28);
+          }
+          Group { Anchor: (Width: 6); }
+          TextButton #ClearLowerBtn {
+            Text: "Clear";
+            Style: $S.@RedButtonStyle;
+            Anchor: (Width: 55, Height: 28);
+          }
+        }
+      }
+
+      // Spacer to push buttons to bottom
+      Label { FlexWeight: 1; }
+
+      // === Footer ===
+      Group #Footer {
+        Anchor: (Height: 40);
+        LayoutMode: Left;
+
+        TextButton #FlagsBtn {
+          Text: "Edit Flags";
+          Style: $S.@CyanButtonStyle;
+          Anchor: (Width: 120, Height: 32);
+        }
+
+        Label { FlexWeight: 1; }
+
+        TextButton #BackBtn {
+          Text: "Back to Zones";
+          Style: $S.@ButtonStyle;
+          Anchor: (Width: 130, Height: 32);
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

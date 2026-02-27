@@ -1,0 +1,56 @@
+// Admin Actions Page
+// Server-wide quick actions (global K/D reset, etc.)
+
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+$Nav = "admin_nav_bar.ui";
+
+$C.@PageOverlay {
+  $Nav.@HyperFactionsAdminNavBar #HyperFactionsAdminNavBar {}
+
+  $C.@Container {
+    Anchor: (Width: 500, Height: 400);
+
+    #Title {
+      $C.@Title {
+        @Text = "Admin: Server Actions";
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+      Padding: (Left: 20, Right: 20, Top: 15, Bottom: 15);
+
+      // === Combat Statistics Section ===
+      Group {
+        Background: (Color: #1a2a3a);
+        Padding: (Left: 16, Right: 16, Top: 14, Bottom: 14);
+        LayoutMode: Top;
+        Anchor: (Bottom: 12);
+
+        Label {
+          Text: "Combat Statistics";
+          Style: (FontSize: 14, TextColor: #FFFFFF, RenderBold: true);
+          Anchor: (Height: 22, Bottom: 8);
+        }
+
+        Label {
+          Text: "Reset kills and deaths for ALL players on the server. This action cannot be undone.";
+          Style: (FontSize: 11, TextColor: #888888);
+          Anchor: (Height: 32, Bottom: 10);
+        }
+
+        TextButton #ResetAllKDBtn {
+          Text: "Reset All K/D";
+          Anchor: (Height: 30, Width: 160);
+          Style: $S.@RedButtonStyle;
+        }
+      }
+
+      // Spacer
+      Label { FlexWeight: 1; }
+    }
+  }
+}
+
+$C.@BackButton {}

@@ -15,12 +15,11 @@ import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.util.EventTitleUtil;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Handles territory entry/exit notifications for players.
@@ -28,260 +27,270 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class TerritoryNotifier {
 
-    private final FactionManager factionManager;
-    private final ClaimManager claimManager;
-    private final ZoneManager zoneManager;
-    private final RelationManager relationManager;
+  private final FactionManager factionManager;
 
-    // Tracks the previous territory for each player
-    private final Map<UUID, TerritoryInfo> previousTerritories = new ConcurrentHashMap<>();
+  private final ClaimManager claimManager;
 
-    // Tracks the last chunk for each player (to detect chunk changes)
-    private final Map<UUID, ChunkKey> lastChunks = new ConcurrentHashMap<>();
+  private final ZoneManager zoneManager;
 
-    public TerritoryNotifier(
-            @NotNull FactionManager factionManager,
-            @NotNull ClaimManager claimManager,
-            @NotNull ZoneManager zoneManager,
-            @NotNull RelationManager relationManager) {
-        this.factionManager = factionManager;
-        this.claimManager = claimManager;
-        this.zoneManager = zoneManager;
-        this.relationManager = relationManager;
+  private final RelationManager relationManager;
+
+  // Tracks the previous territory for each player
+  private final Map<UUID, TerritoryInfo> previousTerritories = new ConcurrentHashMap<>();
+
+  // Tracks the last chunk for each player (to detect chunk changes)
+  private final Map<UUID, ChunkKey> lastChunks = new ConcurrentHashMap<>();
+
+  /** Creates a new TerritoryNotifier. */
+  public TerritoryNotifier(
+      @NotNull FactionManager factionManager,
+      @NotNull ClaimManager claimManager,
+      @NotNull ZoneManager zoneManager,
+      @NotNull RelationManager relationManager) {
+    this.factionManager = factionManager;
+    this.claimManager = claimManager;
+    this.zoneManager = zoneManager;
+    this.relationManager = relationManager;
+  }
+
+  /**
+   * Called when a player's position is updated.
+   * Checks if they moved to a new chunk and handles territory notifications.
+   *
+   * @param playerRef the player reference
+   * @param world     the world name
+   * @param x         the player's X coordinate
+   * @param z         the player's Z coordinate
+   */
+  public void onPlayerMove(@NotNull PlayerRef playerRef, @NotNull String world, double x, double z) {
+    if (!ConfigManager.get().isTerritoryNotificationsEnabled()) {
+      return;
     }
 
-    /**
-     * Called when a player's position is updated.
-     * Checks if they moved to a new chunk and handles territory notifications.
-     *
-     * @param playerRef the player reference
-     * @param world     the world name
-     * @param x         the player's X coordinate
-     * @param z         the player's Z coordinate
-     */
-    public void onPlayerMove(@NotNull PlayerRef playerRef, @NotNull String world, double x, double z) {
-        if (!ConfigManager.get().isTerritoryNotificationsEnabled()) {
-            return;
-        }
+    UUID playerUuid = playerRef.getUuid();
+    int chunkX = ChunkUtil.toChunkCoord(x);
+    int chunkZ = ChunkUtil.toChunkCoord(z);
+    ChunkKey currentChunk = new ChunkKey(world, chunkX, chunkZ);
 
-        UUID playerUuid = playerRef.getUuid();
-        int chunkX = ChunkUtil.toChunkCoord(x);
-        int chunkZ = ChunkUtil.toChunkCoord(z);
-        ChunkKey currentChunk = new ChunkKey(world, chunkX, chunkZ);
-
-        // Check if chunk changed
-        ChunkKey lastChunk = lastChunks.get(playerUuid);
-        if (currentChunk.equals(lastChunk)) {
-            return; // Same chunk, no notification needed
-        }
-
-        // Update last chunk
-        lastChunks.put(playerUuid, currentChunk);
-
-        // Get territory info for new location
-        TerritoryInfo currentTerritory = getTerritoryAt(world, chunkX, chunkZ, playerUuid);
-        TerritoryInfo previousTerritory = previousTerritories.get(playerUuid);
-
-        // Check if territory changed
-        if (currentTerritory.isDifferentFrom(previousTerritory)) {
-            // Update stored territory
-            previousTerritories.put(playerUuid, currentTerritory);
-
-            // Send notification
-            sendTerritoryNotification(playerRef, currentTerritory);
-        }
+    // Check if chunk changed
+    ChunkKey lastChunk = lastChunks.get(playerUuid);
+    if (currentChunk.equals(lastChunk)) {
+      return; // Same chunk, no notification needed
     }
 
-    /**
-     * Sends a territory notification to a player using EventTitleUtil.
-     * This displays a centered banner notification on screen.
-     *
-     * @param playerRef the player reference
-     * @param territory the territory info
-     */
-    private void sendTerritoryNotification(@NotNull PlayerRef playerRef, @NotNull TerritoryInfo territory) {
-        try {
-            // Build primary message (territory name)
-            Message primaryMessage = Message.raw(territory.getPrimaryText())
-                    .color(territory.getDisplayColor());
+    // Update last chunk
+    lastChunks.put(playerUuid, currentChunk);
 
-            // Build secondary message (territory type description)
-            String secondaryText = territory.getSecondaryText();
-            Message secondaryMessage = secondaryText != null
-                    ? Message.raw(secondaryText).color("#AAAAAA")
-                    : Message.raw("");
+    // Get territory info for new location
+    TerritoryInfo currentTerritory = getTerritoryAt(world, chunkX, chunkZ, playerUuid);
+    TerritoryInfo previousTerritory = previousTerritories.get(playerUuid);
 
-            // Send event title notification (centered banner)
-            // Parameters: playerRef, primaryTitle, secondaryTitle, isMajor, icon, duration, fadeIn, fadeOut
-            EventTitleUtil.showEventTitleToPlayer(
-                    playerRef,
-                    primaryMessage,
-                    secondaryMessage,
-                    false,  // isMajor - false for territory notifications (less intrusive)
-                    null,   // No icon
-                    2.0f,   // Display duration (seconds)
-                    0.3f,   // Fade in duration (seconds)
-                    0.5f    // Fade out duration (seconds)
-            );
+    // Check if territory changed
+    if (currentTerritory.isDifferentFrom(previousTerritory)) {
+      // Update stored territory
+      previousTerritories.put(playerUuid, currentTerritory);
 
-            Logger.debugTerritory("Sent territory notification to %s: %s",
-                    playerRef.getUsername(), territory.getPrimaryText());
+      // Send notification
+      sendTerritoryNotification(playerRef, currentTerritory);
+    }
+  }
 
-        } catch (Exception e) {
-            // Fallback to chat message if notification fails
-            Logger.warn("Failed to send territory notification, falling back to chat: %s", e.getMessage());
-            sendChatFallback(playerRef, territory);
-        }
+  /**
+   * Sends a territory notification to a player using EventTitleUtil.
+   * This displays a centered banner notification on screen.
+   *
+   * @param playerRef the player reference
+   * @param territory the territory info
+   */
+  private void sendTerritoryNotification(@NotNull PlayerRef playerRef, @NotNull TerritoryInfo territory) {
+    if (!territory.isNotificationEnabled()) {
+      Logger.debugTerritory("Notification suppressed for %s: %s",
+          playerRef.getUsername(), territory.getPrimaryText());
+      return;
     }
 
-    /**
-     * Sends a chat message as fallback if notification fails.
-     *
-     * @param playerRef the player reference
-     * @param territory the territory info
-     */
-    private void sendChatFallback(@NotNull PlayerRef playerRef, @NotNull TerritoryInfo territory) {
-        try {
-            String secondaryText = territory.getSecondaryText();
-            Message message = Message.raw("~ " + territory.getPrimaryText())
-                    .color(territory.getDisplayColor());
+    try {
+      // Build primary message (territory name)
+      Message primaryMessage = Message.raw(territory.getPrimaryText())
+          .color(territory.getDisplayColor());
 
-            if (secondaryText != null) {
-                message = message.join(Message.raw(" - " + secondaryText).color("#AAAAAA"));
-            }
+      // Build secondary message (territory type description)
+      String secondaryText = territory.getSecondaryText();
+      Message secondaryMessage = secondaryText != null
+          ? Message.raw(secondaryText).color("#AAAAAA")
+          : Message.raw("");
 
-            playerRef.sendMessage(message);
-        } catch (Exception e) {
-            Logger.warn("Failed to send territory chat fallback: %s", e.getMessage());
-        }
+      // Send event title notification (centered banner)
+      // Parameters: playerRef, primaryTitle, secondaryTitle, isMajor, icon, duration, fadeIn, fadeOut
+      EventTitleUtil.showEventTitleToPlayer(
+          playerRef,
+          primaryMessage,
+          secondaryMessage,
+          false,  // isMajor - false for territory notifications (less intrusive)
+          null,   // No icon
+          2.0f,   // Display duration (seconds)
+          0.3f,   // Fade in duration (seconds)
+          0.5f    // Fade out duration (seconds)
+      );
+
+      Logger.debugTerritory("Sent territory notification to %s: %s",
+          playerRef.getUsername(), territory.getPrimaryText());
+
+    } catch (Exception e) {
+      // Fallback to chat message if notification fails
+      Logger.warn("Failed to send territory notification, falling back to chat: %s", e.getMessage());
+      sendChatFallback(playerRef, territory);
+    }
+  }
+
+  /**
+   * Sends a chat message as fallback if notification fails.
+   *
+   * @param playerRef the player reference
+   * @param territory the territory info
+   */
+  private void sendChatFallback(@NotNull PlayerRef playerRef, @NotNull TerritoryInfo territory) {
+    try {
+      String secondaryText = territory.getSecondaryText();
+      Message message = Message.raw("~ " + territory.getPrimaryText())
+          .color(territory.getDisplayColor());
+
+      if (secondaryText != null) {
+        message = message.join(Message.raw(" - " + secondaryText).color("#AAAAAA"));
+      }
+
+      playerRef.sendMessage(message);
+    } catch (Exception e) {
+      Logger.warn("Failed to send territory chat fallback: %s", e.getMessage());
+    }
+  }
+
+  /**
+   * Gets territory information at a specific chunk location.
+   *
+   * @param world      the world name
+   * @param chunkX     the chunk X
+   * @param chunkZ     the chunk Z
+   * @param playerUuid the player's UUID (for relation calculation)
+   * @return the territory info
+   */
+  @NotNull
+  public TerritoryInfo getTerritoryAt(@NotNull String world, int chunkX, int chunkZ, @NotNull UUID playerUuid) {
+    // Check for zone first (SafeZone/WarZone take priority)
+    Zone zone = zoneManager.getZone(world, chunkX, chunkZ);
+    if (zone != null) {
+      return zone.isSafeZone()
+          ? TerritoryInfo.safeZone(zone)
+          : TerritoryInfo.warZone(zone);
     }
 
-    /**
-     * Gets territory information at a specific chunk location.
-     *
-     * @param world      the world name
-     * @param chunkX     the chunk X
-     * @param chunkZ     the chunk Z
-     * @param playerUuid the player's UUID (for relation calculation)
-     * @return the territory info
-     */
-    @NotNull
-    public TerritoryInfo getTerritoryAt(@NotNull String world, int chunkX, int chunkZ, @NotNull UUID playerUuid) {
-        // Check for zone first (SafeZone/WarZone take priority)
-        Zone zone = zoneManager.getZone(world, chunkX, chunkZ);
-        if (zone != null) {
-            return zone.isSafeZone()
-                    ? TerritoryInfo.safeZone(zone.name())
-                    : TerritoryInfo.warZone(zone.name());
-        }
-
-        // Check for faction claim
-        UUID claimOwner = claimManager.getClaimOwner(world, chunkX, chunkZ);
-        if (claimOwner != null) {
-            Faction faction = factionManager.getFaction(claimOwner);
-            if (faction != null) {
-                RelationType relation = getPlayerRelation(playerUuid, claimOwner);
-                return TerritoryInfo.factionClaim(claimOwner, faction.name(), faction.tag(), relation);
-            }
-        }
-
-        // Default to wilderness
-        return TerritoryInfo.wilderness();
+    // Check for faction claim
+    UUID claimOwner = claimManager.getClaimOwner(world, chunkX, chunkZ);
+    if (claimOwner != null) {
+      Faction faction = factionManager.getFaction(claimOwner);
+      if (faction != null) {
+        RelationType relation = getPlayerRelation(playerUuid, claimOwner);
+        return TerritoryInfo.factionClaim(claimOwner, faction.name(), faction.tag(), relation);
+      }
     }
 
-    /**
-     * Gets the player's relation to a faction.
-     *
-     * @param playerUuid the player's UUID
-     * @param factionId  the faction ID
-     * @return the relation type
-     */
-    @NotNull
-    private RelationType getPlayerRelation(@NotNull UUID playerUuid, @NotNull UUID factionId) {
-        UUID playerFactionId = factionManager.getPlayerFactionId(playerUuid);
+    // Default to wilderness
+    return TerritoryInfo.wilderness();
+  }
 
-        // Player is in this faction (their own territory)
-        if (factionId.equals(playerFactionId)) {
-            return RelationType.OWN;
-        }
+  /**
+   * Gets the player's relation to a faction.
+   *
+   * @param playerUuid the player's UUID
+   * @param factionId  the faction ID
+   * @return the relation type
+   */
+  @NotNull
+  private RelationType getPlayerRelation(@NotNull UUID playerUuid, @NotNull UUID factionId) {
+    UUID playerFactionId = factionManager.getPlayerFactionId(playerUuid);
 
-        // Player has no faction (treat as neutral)
-        if (playerFactionId == null) {
-            return RelationType.NEUTRAL;
-        }
-
-        // Get actual relation between factions
-        return relationManager.getRelation(playerFactionId, factionId);
+    // Player is in this faction (their own territory)
+    if (factionId.equals(playerFactionId)) {
+      return RelationType.OWN;
     }
 
-    /**
-     * Called when a player connects.
-     * Initializes their territory tracking.
-     *
-     * @param playerRef the player reference
-     * @param world     the world name
-     * @param x         the spawn X coordinate
-     * @param z         the spawn Z coordinate
-     */
-    public void onPlayerConnect(@NotNull PlayerRef playerRef, @NotNull String world, double x, double z) {
-        if (!ConfigManager.get().isTerritoryNotificationsEnabled()) {
-            return;
-        }
-
-        UUID playerUuid = playerRef.getUuid();
-        int chunkX = ChunkUtil.toChunkCoord(x);
-        int chunkZ = ChunkUtil.toChunkCoord(z);
-
-        // Set initial chunk and territory
-        ChunkKey currentChunk = new ChunkKey(world, chunkX, chunkZ);
-        lastChunks.put(playerUuid, currentChunk);
-
-        TerritoryInfo territory = getTerritoryAt(world, chunkX, chunkZ, playerUuid);
-        previousTerritories.put(playerUuid, territory);
-
-        // Send initial notification
-        sendTerritoryNotification(playerRef, territory);
+    // Player has no faction (treat as neutral)
+    if (playerFactionId == null) {
+      return RelationType.NEUTRAL;
     }
 
-    /**
-     * Called when a player disconnects.
-     * Cleans up their territory tracking data.
-     *
-     * @param playerUuid the player's UUID
-     */
-    public void onPlayerDisconnect(@NotNull UUID playerUuid) {
-        previousTerritories.remove(playerUuid);
-        lastChunks.remove(playerUuid);
+    // Get actual relation between factions
+    return relationManager.getRelation(playerFactionId, factionId);
+  }
+
+  /**
+   * Called when a player connects.
+   * Initializes their territory tracking.
+   *
+   * @param playerRef the player reference
+   * @param world     the world name
+   * @param x         the spawn X coordinate
+   * @param z         the spawn Z coordinate
+   */
+  public void onPlayerConnect(@NotNull PlayerRef playerRef, @NotNull String world, double x, double z) {
+    if (!ConfigManager.get().isTerritoryNotificationsEnabled()) {
+      return;
     }
 
-    /**
-     * Gets the last known territory for a player.
-     *
-     * @param playerUuid the player's UUID
-     * @return the last known territory, or null if not tracked
-     */
-    @Nullable
-    public TerritoryInfo getLastTerritory(@NotNull UUID playerUuid) {
-        return previousTerritories.get(playerUuid);
-    }
+    UUID playerUuid = playerRef.getUuid();
+    int chunkX = ChunkUtil.toChunkCoord(x);
+    int chunkZ = ChunkUtil.toChunkCoord(z);
 
-    /**
-     * Gets the last known chunk for a player.
-     *
-     * @param playerUuid the player's UUID
-     * @return the last known chunk, or null if not tracked
-     */
-    @Nullable
-    public ChunkKey getLastChunk(@NotNull UUID playerUuid) {
-        return lastChunks.get(playerUuid);
-    }
+    // Set initial chunk and territory
+    ChunkKey currentChunk = new ChunkKey(world, chunkX, chunkZ);
+    lastChunks.put(playerUuid, currentChunk);
 
-    /**
-     * Clears all tracking data.
-     * Called on plugin shutdown.
-     */
-    public void shutdown() {
-        previousTerritories.clear();
-        lastChunks.clear();
-    }
+    TerritoryInfo territory = getTerritoryAt(world, chunkX, chunkZ, playerUuid);
+    previousTerritories.put(playerUuid, territory);
+
+    // Send initial notification
+    sendTerritoryNotification(playerRef, territory);
+  }
+
+  /**
+   * Called when a player disconnects.
+   * Cleans up their territory tracking data.
+   *
+   * @param playerUuid the player's UUID
+   */
+  public void onPlayerDisconnect(@NotNull UUID playerUuid) {
+    previousTerritories.remove(playerUuid);
+    lastChunks.remove(playerUuid);
+  }
+
+  /**
+   * Gets the last known territory for a player.
+   *
+   * @param playerUuid the player's UUID
+   * @return the last known territory, or null if not tracked
+   */
+  @Nullable
+  public TerritoryInfo getLastTerritory(@NotNull UUID playerUuid) {
+    return previousTerritories.get(playerUuid);
+  }
+
+  /**
+   * Gets the last known chunk for a player.
+   *
+   * @param playerUuid the player's UUID
+   * @return the last known chunk, or null if not tracked
+   */
+  @Nullable
+  public ChunkKey getLastChunk(@NotNull UUID playerUuid) {
+    return lastChunks.get(playerUuid);
+  }
+
+  /**
+   * Clears all tracking data.
+   * Called on plugin shutdown.
+   */
+  public void shutdown() {
+    previousTerritories.clear();
+    lastChunks.clear();
+  }
 }

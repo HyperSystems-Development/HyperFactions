@@ -9,27 +9,28 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
  */
 public class TreasuryTransferConfirmData {
 
-    /** The button/action that triggered the event */
-    public String button;
+  /** The button/action that triggered the event. */
+  public String button;
 
-    /** Amount value from TextField */
-    public String amount;
+  /** Amount value from TextField. */
+  public String amount;
 
-    /** Codec for serialization/deserialization */
-    public static final BuilderCodec<TreasuryTransferConfirmData> CODEC = BuilderCodec
-            .builder(TreasuryTransferConfirmData.class, TreasuryTransferConfirmData::new)
-            .addField(
-                    new KeyedCodec<>("Button", Codec.STRING),
-                    (data, value) -> data.button = value,
-                    data -> data.button
-            )
-            .addField(
-                    new KeyedCodec<>("@Amount", Codec.STRING),
-                    (data, value) -> data.amount = value,
-                    data -> data.amount
-            )
-            .build();
+  /** Codec for serialization/deserialization. */
+  public static final BuilderCodec<TreasuryTransferConfirmData> CODEC = BuilderCodec
+      .builder(TreasuryTransferConfirmData.class, TreasuryTransferConfirmData::new)
+      .addField(
+          new KeyedCodec<>("Button", Codec.STRING),
+          (data, value) -> data.button = value,
+          data -> data.button
+      )
+      .addField(
+          new KeyedCodec<>("@Amount", Codec.STRING),
+          (data, value) -> data.amount = value,
+          data -> data.amount
+      )
+      .build();
 
-    public TreasuryTransferConfirmData() {
-    }
+  /** Creates a new TreasuryTransferConfirmData. */
+  public TreasuryTransferConfirmData() {
+  }
 }

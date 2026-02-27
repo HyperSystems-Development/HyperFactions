@@ -24,88 +24,91 @@ import org.jetbrains.annotations.NotNull;
  */
 public class BlockBreakProtectionSystem extends EntityEventSystem<EntityStore, BreakBlockEvent> {
 
-    private final HyperFactions hyperFactions;
-    private final ProtectionListener protectionListener;
+  private final HyperFactions hyperFactions;
 
-    public BlockBreakProtectionSystem(@NotNull HyperFactions hyperFactions,
-                                       @NotNull ProtectionListener protectionListener) {
-        super(BreakBlockEvent.class);
-        this.hyperFactions = hyperFactions;
-        this.protectionListener = protectionListener;
-    }
+  private final ProtectionListener protectionListener;
 
-    @Override
-    public Query<EntityStore> getQuery() {
-        return Archetype.empty();
-    }
+  /** Creates a new BlockBreakProtectionSystem. */
+  public BlockBreakProtectionSystem(@NotNull HyperFactions hyperFactions,
+                   @NotNull ProtectionListener protectionListener) {
+    super(BreakBlockEvent.class);
+    this.hyperFactions = hyperFactions;
+    this.protectionListener = protectionListener;
+  }
 
-    @Override
-    public void handle(int entityIndex, ArchetypeChunk<EntityStore> chunk,
-                       Store<EntityStore> store, CommandBuffer<EntityStore> commandBuffer,
-                       BreakBlockEvent event) {
-        try {
-            PlayerRef player = chunk.getComponent(entityIndex, PlayerRef.getComponentType());
-            if (player == null) return;
+  /** Returns the query. */
+  @Override
+  public Query<EntityStore> getQuery() {
+    return Archetype.empty();
+  }
 
-            Vector3i pos = event.getTargetBlock();
-            String worldName = getWorldName(store);
-            if (worldName == null) return;
+  /** Handles . */
+  @Override
+  public void handle(int entityIndex, ArchetypeChunk<EntityStore> chunk,
+           Store<EntityStore> store, CommandBuffer<EntityStore> commandBuffer,
+           BreakBlockEvent event) {
+    try {
+      PlayerRef player = chunk.getComponent(entityIndex, PlayerRef.getComponentType());
+      if (player == null) { // Non-player entity (NPC) — allow
+        return;
+      }
 
-            // Gravestone block — bypass ALL normal protection when integration is active
-            // Access control is handled by our registered GravestoneAccessChecker in the gravestone plugin
-            BlockType blockType = event.getBlockType();
-            String blockId = blockType != null ? blockType.getId() : null;
+      Vector3i pos = event.getTargetBlock();
+      String worldName = getWorldName(store);
 
-            // Debug: log bed block interactions to diagnose #54
-            if (blockId != null && blockId.toLowerCase().contains("bed")) {
-                Logger.debugProtection("BreakBlockEvent for BED: player=%s, blockId=%s, pos=(%d,%d,%d), world=%s",
-                    player.getUuid(), blockId, pos.getX(), pos.getY(), pos.getZ(), worldName);
-            }
-            if (blockId != null && blockId.contains("Gravestone")) {
-                var gsIntegration = hyperFactions.getProtectionChecker().getGravestoneIntegration();
-                if (gsIntegration != null && gsIntegration.isAvailable()) {
-                    Logger.debugIntegration("Gravestone break bypassed normal protection for %s at (%d,%d,%d)",
-                            player.getUuid(), pos.getX(), pos.getY(), pos.getZ());
-                    return;  // Let gravestone plugin handle via AccessChecker
-                }
-                // No integration — fall through to normal build protection
-            }
+      BlockType blockType = event.getBlockType();
+      String blockId = blockType != null ? blockType.getId() : null;
 
-            boolean blocked = protectionListener.onBlockBreak(
-                player.getUuid(),
-                worldName,
-                pos.getX(), pos.getY(), pos.getZ()
-            );
+      Logger.debugInteraction("[ECS:BreakBlock] player=%s, world=%s, pos=(%d,%d,%d), blockId=%s, alreadyCancelled=%b",
+        player.getUuid(), worldName, pos.getX(), pos.getY(), pos.getZ(), blockId, event.isCancelled());
 
-            // Debug: log bed break protection result to diagnose #54
-            if (blockId != null && blockId.toLowerCase().contains("bed")) {
-                ProtectionChecker.ProtectionResult bedResult = hyperFactions.getProtectionChecker().canInteract(
-                    player.getUuid(), worldName, pos.getX(), pos.getZ(),
-                    ProtectionChecker.InteractionType.BUILD
-                );
-                Logger.debugProtection("BED break result: player=%s, blocked=%s, result=%s, blockId=%s",
-                    player.getUuid(), blocked, bedResult, blockId);
-            }
+      if (worldName == null) {
+        // Fail-closed: can't determine world, deny to be safe
+        event.setCancelled(true);
+        Logger.warn("Block break cancelled: could not determine world name for player %s", player.getUuid());
+        return;
+      }
 
-            if (blocked) {
-                event.setCancelled(true);
-                player.sendMessage(Message.raw(protectionListener.getDenialMessage(
-                    hyperFactions.getProtectionChecker().canInteract(
-                        player.getUuid(), worldName, pos.getX(), pos.getZ(),
-                        ProtectionChecker.InteractionType.BUILD
-                    )
-                )).color("#FF5555"));
-            }
-        } catch (Exception e) {
-            Logger.severe("Error processing block break event", e);
+      // Gravestone block — bypass ALL normal protection when integration is active
+      // Access control is handled by our registered GravestoneAccessChecker in the gravestone plugin
+      if (blockId != null && blockId.contains("Gravestone")) {
+        var gsIntegration = hyperFactions.getProtectionChecker().getGravestoneIntegration();
+        if (gsIntegration != null && gsIntegration.isAvailable()) {
+          Logger.debugInteraction("[ECS:BreakBlock] BYPASS gravestone for %s at (%d,%d,%d)",
+              player.getUuid(), pos.getX(), pos.getY(), pos.getZ());
+          return;  // Let gravestone plugin handle via AccessChecker
         }
-    }
 
-    private String getWorldName(Store<EntityStore> store) {
-        try {
-            return store.getExternalData().getWorld().getName();
-        } catch (Exception e) {
-            return null;
-        }
+        // No integration — fall through to normal build protection
+      }
+
+      // Evaluate protection once and cache result
+      ProtectionChecker.ProtectionResult result = hyperFactions.getProtectionChecker().canInteract(
+        player.getUuid(), worldName, pos.getX(), pos.getZ(),
+        ProtectionChecker.InteractionType.BUILD
+      );
+
+      boolean blocked = !hyperFactions.getProtectionChecker().isAllowed(result);
+
+      Logger.debugInteraction("[ECS:BreakBlock] player=%s, result=%s, blocked=%b, pos=(%d,%d,%d), world=%s",
+        player.getUuid(), result, blocked, pos.getX(), pos.getY(), pos.getZ(), worldName);
+
+      if (blocked) {
+        event.setCancelled(true);
+        player.sendMessage(Message.raw(protectionListener.getDenialMessage(result)).color("#FF5555"));
+      }
+    } catch (Exception e) {
+      // Fail-closed: cancel on any exception to prevent unauthorized block breaks
+      event.setCancelled(true);
+      Logger.severe("Block break cancelled due to protection error (fail-closed)", e);
     }
+  }
+
+  private String getWorldName(Store<EntityStore> store) {
+    try {
+      return store.getExternalData().getWorld().getName();
+    } catch (Exception e) {
+      return null;
+    }
+  }
 }

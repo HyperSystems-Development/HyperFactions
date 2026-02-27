@@ -1,8 +1,7 @@
 package com.hyperfactions.importer.hyfactions;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents the NameCache.json file structure from HyFactions.
@@ -10,6 +9,6 @@ import java.util.List;
  * @param Values list of UUID to username mappings
  */
 public record HyFactionNameCache(
-    @Nullable List<HyFactionNameEntry> Values
+  @Nullable List<HyFactionNameEntry> Values
 ) {
 }

@@ -2,10 +2,9 @@ package com.hyperfactions.integration.protection;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.util.Logger;
-import org.jetbrains.annotations.NotNull;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Facade that detects which mixin system(s) are available (HyperProtect, OrbisGuard, or both)
@@ -29,269 +28,328 @@ import java.nio.file.Path;
  */
 public final class ProtectionMixinBridge {
 
-    public enum MixinProvider { NONE, ORBISGUARD, HYPERPROTECT, BOTH }
+  /** MixinProvider enum. */
+  public enum MixinProvider { NONE, ORBISGUARD, HYPERPROTECT, BOTH }
 
-    private static volatile MixinProvider activeProvider = MixinProvider.NONE;
-    private static volatile boolean initialized = false;
+  private static volatile MixinProvider activeProvider = MixinProvider.NONE;
 
-    private ProtectionMixinBridge() {}
+  private static volatile boolean initialized = false;
 
-    /**
-     * Detects which mixin system(s) are available.
-     * Called during plugin startup.
-     */
-    public static void init() {
-        if (initialized) return;
+  private ProtectionMixinBridge() {}
 
-        boolean hpDetected = "true".equalsIgnoreCase(System.getProperty("hyperprotect.bridge.active"))
-                || "true".equalsIgnoreCase(System.getProperty("hyperprotect.intercept.block_break"))
-                || "true".equalsIgnoreCase(System.getProperty("hyperprotect.intercept.block_place"))
-                || isJarInstalled("HyperProtect-Mixin");
+  /**
+   * Detects which mixin system(s) are available.
+   * Called during plugin startup.
+   */
+  public static void init() {
+    if (initialized) {
+      return;
+    }
 
-        OrbisMixinsIntegration.init();
-        boolean ogDetected = OrbisMixinsIntegration.isMixinsAvailable()
-                || isJarInstalled("OrbisGuard-Mixins");
+    boolean hpDetected = "true".equalsIgnoreCase(System.getProperty("hyperprotect.bridge.active"))
+        || "true".equalsIgnoreCase(System.getProperty("hyperprotect.intercept.block_break"))
+        || "true".equalsIgnoreCase(System.getProperty("hyperprotect.intercept.block_place"))
+        || isJarInstalled("HyperProtect-Mixin");
 
-        if (hpDetected && ogDetected) {
-            activeProvider = MixinProvider.BOTH;
-            Logger.debug("Mixin provider: BOTH detected (HP compatible mode + OG)");
-        } else if (hpDetected) {
-            activeProvider = MixinProvider.HYPERPROTECT;
-            Logger.debug("Mixin provider: HyperProtect-Mixin detected (standalone)");
-        } else if (ogDetected) {
-            activeProvider = MixinProvider.ORBISGUARD;
-            Logger.debug("Mixin provider: OrbisGuard-Mixins detected");
-        } else {
-            activeProvider = MixinProvider.NONE;
-            Logger.debug("Mixin provider: none detected");
+    OrbisMixinsIntegration.init();
+    boolean ogDetected = OrbisMixinsIntegration.isMixinsAvailable()
+        || isJarInstalled("OrbisGuard-Mixins");
+
+    if (hpDetected && ogDetected) {
+      activeProvider = MixinProvider.BOTH;
+      Logger.debug("Mixin provider: BOTH detected (HP compatible mode + OG)");
+    } else if (hpDetected) {
+      activeProvider = MixinProvider.HYPERPROTECT;
+      Logger.debug("Mixin provider: HyperProtect-Mixin detected (standalone)");
+    } else if (ogDetected) {
+      activeProvider = MixinProvider.ORBISGUARD;
+      Logger.debug("Mixin provider: OrbisGuard-Mixins detected");
+    } else {
+      activeProvider = MixinProvider.NONE;
+      Logger.debug("Mixin provider: none detected");
+    }
+
+    initialized = true;
+  }
+
+  /**
+   * Checks if a JAR with the given prefix exists in the earlyplugins/ directory.
+   */
+  private static boolean isJarInstalled(String jarPrefix) {
+    try {
+      Path serverDir = Path.of(System.getProperty("user.dir"));
+      Path epDir = serverDir.resolve("earlyplugins");
+      if (Files.isDirectory(epDir)) {
+        try (var stream = Files.list(epDir)) {
+          return stream.anyMatch(p ->
+              p.getFileName().toString().startsWith(jarPrefix)
+              && p.getFileName().toString().endsWith(".jar"));
         }
+      }
+    } catch (Exception e) {
+      Logger.debugMixin("Failed to check earlyplugins/ for %s: %s", jarPrefix, e.getMessage());
+    }
+    return false;
+  }
 
-        initialized = true;
+  /**
+   * Returns the currently active mixin provider.
+   */
+  @NotNull
+  public static MixinProvider getProvider() {
+    if (!initialized) {
+      init();
+    }
+    return activeProvider;
+  }
+
+  /**
+   * Whether any mixin system is available.
+   */
+  public static boolean isMixinsAvailable() {
+    if (!initialized) {
+      init();
+    }
+    return activeProvider != MixinProvider.NONE;
+  }
+
+  /**
+   * Checks if a specific mixin feature is available.
+   *
+   * @param featureName the feature name (e.g. "block_break", "explosion", "hammer")
+   * @return true if the feature's interceptor is loaded
+   */
+  public static boolean isMixinFeatureAvailable(@NotNull String featureName) {
+    if (!initialized) {
+      init();
     }
 
-    /**
-     * Checks if a JAR with the given prefix exists in the earlyplugins/ directory.
-     */
-    private static boolean isJarInstalled(String jarPrefix) {
-        try {
-            Path serverDir = Path.of(System.getProperty("user.dir"));
-            Path epDir = serverDir.resolve("earlyplugins");
-            if (Files.isDirectory(epDir)) {
-                try (var stream = Files.list(epDir)) {
-                    return stream.anyMatch(p ->
-                            p.getFileName().toString().startsWith(jarPrefix)
-                            && p.getFileName().toString().endsWith(".jar"));
-                }
-            }
-        } catch (Exception e) {
-            Logger.debugMixin("Failed to check earlyplugins/ for %s: %s", jarPrefix, e.getMessage());
-        }
-        return false;
+    return switch (activeProvider) {
+      case HYPERPROTECT -> isHyperProtectFeatureAvailable(featureName);
+      case ORBISGUARD -> isOrbisGuardFeatureAvailable(featureName);
+      case BOTH -> isHyperProtectFeatureAvailable(featureName)
+           || isOrbisGuardFeatureAvailable(featureName);
+      case NONE -> false;
+    };
+  }
+
+  private static boolean isHyperProtectFeatureAvailable(String featureName) {
+    // In BOTH/compatible mode, HP only has its unique features active.
+    // Check the mode system property to determine which features HP provides.
+    boolean compatMode = "compatible".equals(System.getProperty("hyperprotect.mode"));
+
+    if (compatMode) {
+      // Only features from HP's 5 unique mixins
+      return switch (featureName) {
+        case "container_open", "block_place", "entity_damage",
+          "teleporter", "portal", "hammer", "use", "seat",
+          "respawn", "interaction_log" -> true;
+        default -> false;
+      };
     }
 
-    /**
-     * Returns the currently active mixin provider.
-     */
-    @NotNull
-    public static MixinProvider getProvider() {
-        if (!initialized) init();
-        return activeProvider;
+    // Standalone mode: all HP features available
+    return switch (featureName) {
+      case "block_break", "explosion", "fire_spread", "builder_tools",
+        "item_pickup", "death_drop", "durability", "container_access",
+        "mob_spawn", "teleporter", "portal", "command", "interaction_log",
+        "entity_damage", "container_open", "block_place",
+        "hammer", "use", "seat", "respawn" -> true;
+      default -> false;
+    };
+  }
+
+  private static boolean isOrbisGuardFeatureAvailable(String featureName) {
+    // OG has limited feature detection — most hooks are always present if mixins are loaded
+    if (!OrbisMixinsIntegration.isMixinsAvailable()) {
+      return false;
     }
 
-    /**
-     * Whether any mixin system is available.
-     */
-    public static boolean isMixinsAvailable() {
-        if (!initialized) init();
-        return activeProvider != MixinProvider.NONE;
+    return switch (featureName) {
+      case "block_break" -> true; // harvest mixin
+      case "item_pickup" -> OrbisMixinsIntegration.isPickupMixinLoaded();
+      case "death_drop" -> OrbisMixinsIntegration.isDeathMixinLoaded();
+      case "durability" -> OrbisMixinsIntegration.isDurabilityMixinLoaded();
+      case "mob_spawn" -> true; // spawn mixin
+      case "explosion" -> true;
+      case "command" -> true;
+      case "hammer", "use", "seat", "block_place" -> true; // interaction hooks
+      // OG doesn't have these hooks
+      case "fire_spread", "builder_tools", "container_access",
+        "teleporter", "portal", "entity_damage",
+        "container_open", "interaction_log", "respawn" -> false;
+      default -> false;
+    };
+  }
+
+  /**
+   * Gets a human-readable status summary for logging/GUI.
+   */
+  @NotNull
+  public static String getStatusSummary() {
+    if (!initialized) {
+      init();
     }
 
-    /**
-     * Checks if a specific mixin feature is available.
-     *
-     * @param featureName the feature name (e.g. "block_break", "explosion", "hammer")
-     * @return true if the feature's interceptor is loaded
-     */
-    public static boolean isMixinFeatureAvailable(@NotNull String featureName) {
-        if (!initialized) init();
+    return switch (activeProvider) {
+      case HYPERPROTECT -> "HYPERPROTECT (20 hooks active)";
+      case ORBISGUARD -> "ORBISGUARD (" + OrbisMixinsIntegration.getStatusSummary() + ")";
+      case BOTH -> "BOTH (OG: 11 hooks + HP: 5 unique mixins)";
+      case NONE -> "NONE";
+    };
+  }
 
-        return switch (activeProvider) {
-            case HYPERPROTECT -> isHyperProtectFeatureAvailable(featureName);
-            case ORBISGUARD -> isOrbisGuardFeatureAvailable(featureName);
-            case BOTH -> isHyperProtectFeatureAvailable(featureName)
-                      || isOrbisGuardFeatureAvailable(featureName);
-            case NONE -> false;
-        };
+  /**
+   * Registers all applicable hooks with the active mixin system(s).
+   *
+   * <p>For HyperProtect, registers ALL hooks unconditionally because Hyxin does NOT call
+   * the early plugin's setup() — system properties aren't set until mixin target classes
+   * load. The bridge is created lazily and hooks are populated at all slots so they're
+   * ready when mixin interceptors eventually fire.
+   *
+   * <p>For BOTH mode, registers OG hooks for OG-handled features and HP hooks only
+   * for HP's unique features (5 mixins).
+   *
+   * @param hf the HyperFactions instance (provides ProtectionChecker access)
+   */
+  public static void registerAllHooks(@NotNull HyperFactions hf) {
+    if (!initialized) {
+      init();
     }
 
-    private static boolean isHyperProtectFeatureAvailable(String featureName) {
-        // In BOTH/compatible mode, HP only has its unique features active.
-        // Check the mode system property to determine which features HP provides.
-        boolean compatMode = "compatible".equals(System.getProperty("hyperprotect.mode"));
-
-        if (compatMode) {
-            // Only features from HP's 5 unique mixins
-            return switch (featureName) {
-                case "container_open", "block_place", "entity_damage",
-                     "teleporter", "portal", "hammer", "use", "seat",
-                     "respawn", "interaction_log" -> true;
-                default -> false;
-            };
-        }
-
-        // Standalone mode: all HP features available
-        return switch (featureName) {
-            case "block_break", "explosion", "fire_spread", "builder_tools",
-                 "item_pickup", "death_drop", "durability", "container_access",
-                 "mob_spawn", "teleporter", "portal", "command", "interaction_log",
-                 "entity_damage", "container_open", "block_place",
-                 "hammer", "use", "seat", "respawn" -> true;
-            default -> false;
-        };
+    switch (activeProvider) {
+      case HYPERPROTECT -> {
+        HyperProtectIntegration.registerAllHooks(hf);
+        Logger.debug("Registered 20 protection hooks via HyperProtect bridge (standalone)");
+      }
+      case ORBISGUARD -> {
+        registerAllOrbisGuardHooks(hf);
+        Logger.debug("Registered protection hooks via OrbisGuard registry");
+      }
+      case BOTH -> {
+        // Register OG hooks for the 11 features OG handles
+        registerAllOrbisGuardHooks(hf);
+        // Register HP hooks ONLY for unique features (5 mixins)
+        HyperProtectIntegration.registerUniqueHooks(hf);
+        Logger.debug("Registered protection hooks via BOTH systems (OG: 11 + HP: unique)");
+      }
+      case NONE -> Logger.debug("No mixin provider — mixin-dependent protection disabled");
+      default -> throw new IllegalStateException("Unexpected value");
     }
+  }
 
-    private static boolean isOrbisGuardFeatureAvailable(String featureName) {
-        // OG has limited feature detection — most hooks are always present if mixins are loaded
-        if (!OrbisMixinsIntegration.isMixinsAvailable()) return false;
-
-        return switch (featureName) {
-            case "block_break" -> true; // harvest mixin
-            case "item_pickup" -> OrbisMixinsIntegration.isPickupMixinLoaded();
-            case "death_drop" -> OrbisMixinsIntegration.isDeathMixinLoaded();
-            case "durability" -> OrbisMixinsIntegration.isDurabilityMixinLoaded();
-            case "mob_spawn" -> true; // spawn mixin
-            case "explosion" -> true;
-            case "command" -> true;
-            case "hammer", "use", "seat", "block_place" -> true; // interaction hooks
-            // OG doesn't have these hooks
-            case "fire_spread", "builder_tools", "container_access",
-                 "teleporter", "portal", "entity_damage",
-                 "container_open", "interaction_log", "respawn" -> false;
-            default -> false;
-        };
+  /**
+   * Unregisters all hooks from the active mixin system(s).
+   */
+  public static void unregisterAllHooks() {
+    switch (activeProvider) {
+      case HYPERPROTECT -> HyperProtectIntegration.unregisterAllHooks();
+      case ORBISGUARD -> OrbisMixinsIntegration.unregisterAllHooks();
+      case BOTH -> {
+        OrbisMixinsIntegration.unregisterAllHooks();
+        HyperProtectIntegration.unregisterUniqueHooks();
+      }
+      case NONE -> {}
+      default -> throw new IllegalStateException("Unexpected value");
     }
+  }
 
-    /**
-     * Gets a human-readable status summary for logging/GUI.
-     */
-    @NotNull
-    public static String getStatusSummary() {
-        if (!initialized) init();
+  /**
+   * Registers all applicable OrbisGuard hooks.
+   * Wires all 11 OG hooks (previously only 3 were registered).
+   */
+  private static void registerAllOrbisGuardHooks(@NotNull HyperFactions hf) {
+    // === Previously wired (3 hooks) ===
 
-        return switch (activeProvider) {
-            case HYPERPROTECT -> "HYPERPROTECT (20 hooks active)";
-            case ORBISGUARD -> "ORBISGUARD (" + OrbisMixinsIntegration.getStatusSummary() + ")";
-            case BOTH -> "BOTH (OG: 11 hooks + HP: 5 unique mixins)";
-            case NONE -> "NONE";
-        };
-    }
+    OrbisMixinsIntegration.registerPickupHook(
+        (playerUuid, worldName, x, y, z, mode) -> {
+          boolean allowed = hf.getProtectionChecker().canPickupItem(playerUuid, worldName, x, y, z, mode);
+          Logger.debugInteraction("[OG:Pickup] player=%s, world=%s, pos=(%.1f,%.1f,%.1f), mode=%s, allowed=%b",
+            playerUuid, worldName, x, y, z, mode, allowed);
+          return allowed;
+        });
 
-    /**
-     * Registers all applicable hooks with the active mixin system(s).
-     *
-     * <p>For HyperProtect, registers ALL hooks unconditionally because Hyxin does NOT call
-     * the early plugin's setup() — system properties aren't set until mixin target classes
-     * load. The bridge is created lazily and hooks are populated at all slots so they're
-     * ready when mixin interceptors eventually fire.
-     *
-     * <p>For BOTH mode, registers OG hooks for OG-handled features and HP hooks only
-     * for HP's unique features (5 mixins).
-     *
-     * @param hf the HyperFactions instance (provides ProtectionChecker access)
-     */
-    public static void registerAllHooks(@NotNull HyperFactions hf) {
-        if (!initialized) init();
+    OrbisMixinsIntegration.registerHarvestHook(
+        (playerUuid, worldName, x, y, z) -> {
+          boolean allowed = hf.getProtectionChecker().canPickupItem(
+              playerUuid, worldName, x, 0, z, "manual");
+          Logger.debugInteraction("[OG:Harvest] player=%s, world=%s, pos=(%d,%d,%d), allowed=%b",
+            playerUuid, worldName, x, y, z, allowed);
+          return allowed ? null : "You cannot pick up items manually here.";
+        });
 
-        switch (activeProvider) {
-            case HYPERPROTECT -> {
-                HyperProtectIntegration.registerAllHooks(hf);
-                Logger.debug("Registered 20 protection hooks via HyperProtect bridge (standalone)");
-            }
-            case ORBISGUARD -> {
-                registerAllOrbisGuardHooks(hf);
-                Logger.debug("Registered protection hooks via OrbisGuard registry");
-            }
-            case BOTH -> {
-                // Register OG hooks for the 11 features OG handles
-                registerAllOrbisGuardHooks(hf);
-                // Register HP hooks ONLY for unique features (5 mixins)
-                HyperProtectIntegration.registerUniqueHooks(hf);
-                Logger.debug("Registered protection hooks via BOTH systems (OG: 11 + HP: unique)");
-            }
-            case NONE -> Logger.debug("No mixin provider — mixin-dependent protection disabled");
-        }
-    }
+    OrbisMixinsIntegration.registerSpawnHook(
+        (worldName, x, y, z) -> {
+          boolean blocked = hf.getProtectionChecker().shouldBlockSpawn(worldName, x, y, z);
+          Logger.debugSpawning("[OG:Spawn] world=%s, pos=(%d,%d,%d), blocked=%b",
+            worldName, x, y, z, blocked);
+          return blocked;
+        });
 
-    /**
-     * Unregisters all hooks from the active mixin system(s).
-     */
-    public static void unregisterAllHooks() {
-        switch (activeProvider) {
-            case HYPERPROTECT -> HyperProtectIntegration.unregisterAllHooks();
-            case ORBISGUARD -> OrbisMixinsIntegration.unregisterAllHooks();
-            case BOTH -> {
-                OrbisMixinsIntegration.unregisterAllHooks();
-                HyperProtectIntegration.unregisterUniqueHooks();
-            }
-            case NONE -> {}
-        }
-    }
+    // === Newly wired OG hooks (8 hooks) ===
 
-    /**
-     * Registers all applicable OrbisGuard hooks.
-     * Wires all 11 OG hooks (previously only 3 were registered).
-     */
-    private static void registerAllOrbisGuardHooks(@NotNull HyperFactions hf) {
-        // === Previously wired (3 hooks) ===
+    OrbisMixinsIntegration.registerExplosionHook(
+        (worldName, x, y, z) -> {
+          boolean blocked = hf.getProtectionChecker().shouldBlockExplosion(worldName, x, y, z);
+          Logger.debugInteraction("[OG:Explosion] world=%s, pos=(%d,%d,%d), blocked=%b",
+            worldName, x, y, z, blocked);
+          return blocked;
+        });
 
-        OrbisMixinsIntegration.registerPickupHook(
-                (playerUuid, worldName, x, y, z, mode) ->
-                    hf.getProtectionChecker().canPickupItem(playerUuid, worldName, x, y, z, mode));
+    OrbisMixinsIntegration.registerCommandHook(
+        (playerUuid, worldName, x, y, z, command) -> {
+          var result = hf.getProtectionChecker().checkCommandBlock(playerUuid, worldName, x, y, z, command);
+          Logger.debugInteraction("[OG:Command] player=%s, command=%s, blocked=%b",
+            playerUuid, command, result.block());
+          return result;
+        });
 
-        OrbisMixinsIntegration.registerHarvestHook(
-                (playerUuid, worldName, x, y, z) -> {
-                    boolean allowed = hf.getProtectionChecker().canPickupItem(
-                            playerUuid, worldName, x, 0, z, "manual");
-                    return allowed ? null : "You cannot pick up items manually here.";
-                });
+    OrbisMixinsIntegration.registerDeathHook(
+        (playerUuid, worldName, x, y, z) -> {
+          boolean keep = hf.getProtectionChecker().shouldKeepInventory(playerUuid, worldName, x, y, z);
+          Logger.debugInteraction("[OG:Death] player=%s, world=%s, pos=(%d,%d,%d), keepInventory=%b",
+            playerUuid, worldName, x, y, z, keep);
+          return keep;
+        });
 
-        OrbisMixinsIntegration.registerSpawnHook(
-                (worldName, x, y, z) ->
-                    hf.getProtectionChecker().shouldBlockSpawn(worldName, x, y, z));
+    OrbisMixinsIntegration.registerDurabilityHook(
+        (playerUuid, worldName, x, y, z) -> {
+          boolean prevent = hf.getProtectionChecker().shouldPreventDurability(playerUuid, worldName, x, y, z);
+          Logger.debugInteraction("[OG:Durability] player=%s, world=%s, pos=(%d,%d,%d), preventWear=%b",
+            playerUuid, worldName, x, y, z, prevent);
+          return prevent;
+        });
 
-        // === Newly wired OG hooks (8 hooks) ===
+    OrbisMixinsIntegration.registerHammerHook(
+        (playerUuid, worldName, x, y, z) -> {
+          boolean allowed = hf.getProtectionChecker().canBuildAt(playerUuid, worldName, x, y, z);
+          Logger.debugInteraction("[OG:Hammer] player=%s, world=%s, pos=(%d,%d,%d), allowed=%b",
+            playerUuid, worldName, x, y, z, allowed);
+          return allowed ? null : "You cannot use hammers here.";
+        });
 
-        OrbisMixinsIntegration.registerExplosionHook(
-                (worldName, x, y, z) ->
-                    hf.getProtectionChecker().shouldBlockExplosion(worldName, x, y, z));
+    OrbisMixinsIntegration.registerUseHook(
+        (playerUuid, worldName, x, y, z) -> {
+          boolean allowed = hf.getProtectionChecker().canInteractAt(playerUuid, worldName, x, y, z);
+          Logger.debugInteraction("[OG:Use] player=%s, world=%s, pos=(%d,%d,%d), allowed=%b",
+            playerUuid, worldName, x, y, z, allowed);
+          return allowed;
+        });
 
-        OrbisMixinsIntegration.registerCommandHook(
-                (playerUuid, worldName, x, y, z, command) ->
-                    hf.getProtectionChecker().checkCommandBlock(playerUuid, worldName, x, y, z, command));
+    OrbisMixinsIntegration.registerSeatHook(
+        (playerUuid, worldName, x, y, z) -> {
+          boolean allowed = hf.getProtectionChecker().canSeatAt(playerUuid, worldName, x, y, z);
+          Logger.debugInteraction("[OG:Seat] player=%s, world=%s, pos=(%d,%d,%d), allowed=%b",
+            playerUuid, worldName, x, y, z, allowed);
+          return allowed;
+        });
 
-        OrbisMixinsIntegration.registerDeathHook(
-                (playerUuid, worldName, x, y, z) ->
-                    hf.getProtectionChecker().shouldKeepInventory(playerUuid, worldName, x, y, z));
-
-        OrbisMixinsIntegration.registerDurabilityHook(
-                (playerUuid, worldName, x, y, z) ->
-                    hf.getProtectionChecker().shouldPreventDurability(playerUuid, worldName, x, y, z));
-
-        OrbisMixinsIntegration.registerHammerHook(
-                (playerUuid, worldName, x, y, z) ->
-                    hf.getProtectionChecker().canBuildAt(playerUuid, worldName, x, y, z)
-                            ? null : "You cannot use hammers here.");
-
-        OrbisMixinsIntegration.registerUseHook(
-                (playerUuid, worldName, x, y, z) ->
-                    hf.getProtectionChecker().canInteractAt(playerUuid, worldName, x, y, z));
-
-        OrbisMixinsIntegration.registerSeatHook(
-                (playerUuid, worldName, x, y, z) ->
-                    hf.getProtectionChecker().canSeatAt(playerUuid, worldName, x, y, z));
-
-        OrbisMixinsIntegration.registerPlaceHook(
-                (playerUuid, worldName, x, y, z) ->
-                    hf.getProtectionChecker().canPlaceAt(playerUuid, worldName, x, y, z));
-    }
+    OrbisMixinsIntegration.registerPlaceHook(
+        (playerUuid, worldName, x, y, z) -> {
+          boolean allowed = hf.getProtectionChecker().canPlaceAt(playerUuid, worldName, x, y, z);
+          Logger.debugInteraction("[OG:Place] player=%s, world=%s, pos=(%d,%d,%d), allowed=%b",
+            playerUuid, worldName, x, y, z, allowed);
+          return allowed;
+        });
+  }
 }

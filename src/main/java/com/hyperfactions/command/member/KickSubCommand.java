@@ -4,6 +4,7 @@ import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
 import com.hyperfactions.command.FactionCommandContext;
 import com.hyperfactions.command.FactionSubCommand;
+import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.manager.FactionManager;
@@ -18,75 +19,78 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Subcommand: /f kick <player>
+ * Subcommand: /f kick {@code <player>}
  * Kicks a member from the faction (officer+).
  */
 public class KickSubCommand extends FactionSubCommand {
 
-    public KickSubCommand(@NotNull HyperFactions hyperFactions, @NotNull HyperFactionsPlugin plugin) {
-        super("kick", "Kick a member", hyperFactions, plugin);
+  /** Creates a new KickSubCommand. */
+  public KickSubCommand(@NotNull HyperFactions hyperFactions, @NotNull HyperFactionsPlugin plugin) {
+    super("kick", "Kick a member", hyperFactions, plugin);
+  }
+
+  /** Executes the command. */
+  @Override
+  protected void execute(@NotNull CommandContext ctx,
+             @NotNull Store<EntityStore> store,
+             @NotNull Ref<EntityStore> ref,
+             @NotNull PlayerRef player,
+             @NotNull World currentWorld) {
+
+    if (!hasPermission(player, Permissions.KICK)) {
+      ctx.sendMessage(prefix().insert(msg("You don't have permission to kick members.", COLOR_RED)));
+      return;
     }
 
-    @Override
-    protected void execute(@NotNull CommandContext ctx,
-                          @NotNull Store<EntityStore> store,
-                          @NotNull Ref<EntityStore> ref,
-                          @NotNull PlayerRef player,
-                          @NotNull World currentWorld) {
-
-        if (!hasPermission(player, Permissions.KICK)) {
-            ctx.sendMessage(prefix().insert(msg("You don't have permission to kick members.", COLOR_RED)));
-            return;
-        }
-
-        Faction faction = requireFaction(ctx, player);
-        if (faction == null) return;
-
-        String input = ctx.getInputString();
-        String[] parts = input != null ? input.trim().split("\\s+") : new String[0];
-        String[] rawArgs = parts.length > 2 ? java.util.Arrays.copyOfRange(parts, 2, parts.length) : new String[0];
-        FactionCommandContext fctx = parseContext(rawArgs);
-
-        if (!fctx.hasArgs()) {
-            ctx.sendMessage(prefix().insert(msg("Usage: /f kick <player>", COLOR_RED)));
-            return;
-        }
-
-        String targetName = fctx.getArg(0);
-        FactionMember target = faction.members().values().stream()
-            .filter(m -> m.username().equalsIgnoreCase(targetName))
-            .findFirst().orElse(null);
-
-        if (target == null) {
-            ctx.sendMessage(prefix().insert(msg("Player '" + targetName + "' is not in your faction.", COLOR_RED)));
-            return;
-        }
-
-        FactionManager.FactionResult result = hyperFactions.getFactionManager().removeMember(
-            faction.id(), target.uuid(), player.getUuid(), true
-        );
-
-        switch (result) {
-            case SUCCESS -> {
-                ctx.sendMessage(prefix().insert(msg("Kicked ", COLOR_GREEN))
-                    .insert(msg(target.username(), COLOR_YELLOW)).insert(msg(" from the faction.", COLOR_GREEN)));
-                broadcastToFaction(faction.id(), prefix().insert(msg(target.username(), COLOR_YELLOW))
-                    .insert(msg(" was kicked from the faction.", COLOR_RED)));
-                PlayerRef targetPlayer = plugin.getTrackedPlayer(target.uuid());
-                if (targetPlayer != null) {
-                    targetPlayer.sendMessage(prefix().insert(msg("You have been kicked from the faction.", COLOR_RED)));
-                }
-                // Show members page after action (if not text mode)
-                if (!fctx.isTextMode()) {
-                    Player playerEntity = store.getComponent(ref, Player.getComponentType());
-                    if (playerEntity != null) {
-                        hyperFactions.getGuiManager().openFactionMembers(playerEntity, ref, store, player, faction);
-                    }
-                }
-            }
-            case NOT_OFFICER -> ctx.sendMessage(prefix().insert(msg("You don't have permission to kick that player.", COLOR_RED)));
-            case CANNOT_KICK_LEADER -> ctx.sendMessage(prefix().insert(msg("You cannot kick the faction leader.", COLOR_RED)));
-            default -> ctx.sendMessage(prefix().insert(msg("Failed to kick player.", COLOR_RED)));
-        }
+    Faction faction = requireFaction(ctx, player);
+    if (faction == null) {
+      return;
     }
+
+    String[] rawArgs = CommandUtil.parseRawArgs(ctx.getInputString(), 2);
+    FactionCommandContext fctx = parseContext(rawArgs);
+
+    if (!fctx.hasArgs()) {
+      ctx.sendMessage(prefix().insert(msg("Usage: /f kick <player>", COLOR_RED)));
+      return;
+    }
+
+    String targetName = fctx.getArg(0);
+    FactionMember target = faction.members().values().stream()
+      .filter(m -> m.username().equalsIgnoreCase(targetName))
+      .findFirst().orElse(null);
+
+    if (target == null) {
+      ctx.sendMessage(prefix().insert(msg("Player '" + targetName + "' is not in your faction.", COLOR_RED)));
+      return;
+    }
+
+    FactionManager.FactionResult result = hyperFactions.getFactionManager().removeMember(
+      faction.id(), target.uuid(), player.getUuid(), true
+    );
+
+    switch (result) {
+      case SUCCESS -> {
+        ctx.sendMessage(prefix().insert(msg("Kicked ", COLOR_GREEN))
+          .insert(msg(target.username(), COLOR_YELLOW)).insert(msg(" from the faction.", COLOR_GREEN)));
+        broadcastToFaction(faction.id(), prefix().insert(msg(target.username(), COLOR_YELLOW))
+          .insert(msg(" was kicked from the faction.", COLOR_RED)));
+        PlayerRef targetPlayer = plugin.getTrackedPlayer(target.uuid());
+        if (targetPlayer != null) {
+          targetPlayer.sendMessage(prefix().insert(msg("You have been kicked from the faction.", COLOR_RED)));
+        }
+
+        // Show members page after action (if not text mode)
+        if (!fctx.isTextMode()) {
+          Player playerEntity = store.getComponent(ref, Player.getComponentType());
+          if (playerEntity != null) {
+            hyperFactions.getGuiManager().openFactionMembers(playerEntity, ref, store, player, faction);
+          }
+        }
+      }
+      case NOT_OFFICER -> ctx.sendMessage(prefix().insert(msg("You don't have permission to kick that player.", COLOR_RED)));
+      case CANNOT_KICK_LEADER -> ctx.sendMessage(prefix().insert(msg("You cannot kick the faction leader.", COLOR_RED)));
+      default -> ctx.sendMessage(prefix().insert(msg("Failed to kick player.", COLOR_RED)));
+    }
+  }
 }

@@ -10,33 +10,35 @@ import org.jetbrains.annotations.Nullable;
  */
 public class AdminBackupsData implements AdminNavAwareData {
 
-    /** The button/action that triggered the event */
-    public String button;
+  /** The button/action that triggered the event. */
+  public String button;
 
-    /** Admin nav bar target (for navigation) */
-    public String adminNavBar;
+  /** Admin nav bar target (for navigation). */
+  public String adminNavBar;
 
-    /** Codec for serialization/deserialization */
-    public static final BuilderCodec<AdminBackupsData> CODEC = BuilderCodec
-            .builder(AdminBackupsData.class, AdminBackupsData::new)
-            .addField(
-                    new KeyedCodec<>("Button", Codec.STRING),
-                    (data, value) -> data.button = value,
-                    data -> data.button
-            )
-            .addField(
-                    new KeyedCodec<>("AdminNavBar", Codec.STRING),
-                    (data, value) -> data.adminNavBar = value,
-                    data -> data.adminNavBar
-            )
-            .build();
+  /** Codec for serialization/deserialization. */
+  public static final BuilderCodec<AdminBackupsData> CODEC = BuilderCodec
+      .builder(AdminBackupsData.class, AdminBackupsData::new)
+      .addField(
+          new KeyedCodec<>("Button", Codec.STRING),
+          (data, value) -> data.button = value,
+          data -> data.button
+      )
+      .addField(
+          new KeyedCodec<>("AdminNavBar", Codec.STRING),
+          (data, value) -> data.adminNavBar = value,
+          data -> data.adminNavBar
+      )
+      .build();
 
-    public AdminBackupsData() {
-    }
+  /** Creates a new AdminBackupsData. */
+  public AdminBackupsData() {
+  }
 
-    @Override
-    @Nullable
-    public String getAdminNavBar() {
-        return adminNavBar;
-    }
+  /** Returns the admin nav bar. */
+  @Override
+  @Nullable
+  public String getAdminNavBar() {
+    return adminNavBar;
+  }
 }

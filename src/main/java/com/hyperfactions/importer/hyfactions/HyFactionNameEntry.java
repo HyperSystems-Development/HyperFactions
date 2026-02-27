@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Nullable;
  * @param Name the player's username
  */
 public record HyFactionNameEntry(
-    @Nullable String UUID,
-    @Nullable String Name
+  @Nullable String UUID,
+  @Nullable String Name
 ) {
 }

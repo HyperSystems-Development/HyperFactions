@@ -20,29 +20,33 @@ import org.jetbrains.annotations.NotNull;
  */
 public class SettingsSubCommand extends FactionSubCommand {
 
-    public SettingsSubCommand(@NotNull HyperFactions hyperFactions, @NotNull HyperFactionsPlugin plugin) {
-        super("settings", "Open faction settings", hyperFactions, plugin);
+  /** Creates a new SettingsSubCommand. */
+  public SettingsSubCommand(@NotNull HyperFactions hyperFactions, @NotNull HyperFactionsPlugin plugin) {
+    super("settings", "Open faction settings", hyperFactions, plugin);
+  }
+
+  /** Executes the command. */
+  @Override
+  protected void execute(@NotNull CommandContext ctx,
+             @NotNull Store<EntityStore> store,
+             @NotNull Ref<EntityStore> ref,
+             @NotNull PlayerRef player,
+             @NotNull World currentWorld) {
+
+    Faction faction = requireFaction(ctx, player);
+    if (faction == null) {
+      return;
     }
 
-    @Override
-    protected void execute(@NotNull CommandContext ctx,
-                          @NotNull Store<EntityStore> store,
-                          @NotNull Ref<EntityStore> ref,
-                          @NotNull PlayerRef player,
-                          @NotNull World currentWorld) {
-
-        Faction faction = requireFaction(ctx, player);
-        if (faction == null) return;
-
-        FactionMember member = faction.getMember(player.getUuid());
-        if (member == null || !member.isOfficerOrHigher()) {
-            ctx.sendMessage(prefix().insert(msg("You must be an officer to access settings.", COLOR_RED)));
-            return;
-        }
-
-        Player playerEntity = store.getComponent(ref, Player.getComponentType());
-        if (playerEntity != null) {
-            hyperFactions.getGuiManager().openFactionSettings(playerEntity, ref, store, player, faction);
-        }
+    FactionMember member = faction.getMember(player.getUuid());
+    if (member == null || !member.isOfficerOrHigher()) {
+      ctx.sendMessage(prefix().insert(msg("You must be an officer to access settings.", COLOR_RED)));
+      return;
     }
+
+    Player playerEntity = store.getComponent(ref, Player.getComponentType());
+    if (playerEntity != null) {
+      hyperFactions.getGuiManager().openFactionSettings(playerEntity, ref, store, player, faction);
+    }
+  }
 }

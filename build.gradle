@@ -1,11 +1,12 @@
 plugins {
     id 'java'
+    id 'checkstyle'
     id 'maven-publish'
     id 'com.gradleup.shadow' version '9.3.1'
 }
 
 group = 'com.hyperfactions'
-version = '0.9.0'
+version = '0.10.0'
 
 // Shared version property avoids accessing project at execution time
 def buildVersion = objects.property(String).convention(version)
@@ -151,6 +152,20 @@ test {
     useJUnitPlatform()
 }
 
+checkstyle {
+    toolVersion = '10.26.1'
+    configFile = file('config/checkstyle/checkstyle.xml')
+    ignoreFailures = true
+    showViolations = true
+}
+
+tasks.withType(Checkstyle).configureEach {
+    reports {
+        xml.required = true
+        html.required = true
+    }
+}
+
 build {
     dependsOn shadowJar
 }
@@ -158,6 +173,17 @@ build {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
     options.compilerArgs.addAll(['-Xlint:all', '-Xlint:-processing'])
+}
+
+javadoc {
+    options.encoding = 'UTF-8'
+    options.charSet = 'UTF-8'
+    options.memberLevel = JavadocMemberLevel.PUBLIC
+    options.addStringOption('Xdoclint:none', '-quiet')
+    options.links(
+        'https://docs.oracle.com/en/java/javase/21/docs/api/'
+    )
+    failOnError = false
 }
 
 // Ensure build info is generated and HyperPerms shadowJar is built before compiling

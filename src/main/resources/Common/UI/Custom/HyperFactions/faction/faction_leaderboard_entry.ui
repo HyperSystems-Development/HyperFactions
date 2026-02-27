@@ -1,0 +1,79 @@
+// Faction Leaderboard Entry
+// Single row in the leaderboard with rank, name, and stats
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+
+Group {
+  Anchor: (Height: 40, Bottom: 2);
+
+  // Row content
+  Group #RowContent {
+    Anchor: (Left: 0, Right: 0, Top: 0, Bottom: 0);
+    Background: (Color: #1a2a3a);
+    Padding: (Left: 12, Right: 12, Top: 4, Bottom: 4);
+    LayoutMode: Left;
+
+    // Rank number
+    Label #Rank {
+      Text: "1";
+      Style: (FontSize: 16, TextColor: #FFD700, RenderBold: true, VerticalAlignment: Center, HorizontalAlignment: Center);
+      Anchor: (Width: 35);
+    }
+
+    // Faction name and tag
+    Group {
+      Anchor: (Width: 200);
+      LayoutMode: Top;
+
+      Group {
+        LayoutMode: Left;
+        Anchor: (Height: 20);
+
+        Label #FactionName {
+          Text: "Faction";
+          Style: (FontSize: 13, TextColor: #00FFFF, RenderBold: true, VerticalAlignment: Center);
+        }
+
+        Label #FactionTag {
+          Text: "";
+          Style: (FontSize: 10, TextColor: #888888, VerticalAlignment: Center);
+          Anchor: (Left: 6);
+        }
+      }
+
+      Label #LeaderName {
+        Text: "Leader: Unknown";
+        Style: (FontSize: 9, TextColor: #999999, VerticalAlignment: Center);
+        Anchor: (Height: 12);
+      }
+    }
+
+    // Primary stat (changes based on sort mode)
+    Label #StatValue {
+      Text: "0";
+      Style: (FontSize: 14, TextColor: #44CC44, RenderBold: true, VerticalAlignment: Center, HorizontalAlignment: Center);
+      Anchor: (Width: 100);
+    }
+
+    // Claims
+    Label #ClaimsValue {
+      Text: "0";
+      Style: (FontSize: 12, TextColor: #FFAA00, VerticalAlignment: Center, HorizontalAlignment: Center);
+      Anchor: (Width: 70);
+    }
+
+    // Members
+    Label #MembersValue {
+      Text: "0";
+      Style: (FontSize: 12, TextColor: #888888, VerticalAlignment: Center, HorizontalAlignment: Center);
+      Anchor: (Width: 70);
+    }
+  }
+
+  // Clickable overlay
+  TextButton #RowButton {
+    Text: "";
+    Anchor: (Left: 0, Right: 0, Top: 0, Bottom: 0);
+    Style: $S.@InvisibleButtonStyle;
+  }
+}

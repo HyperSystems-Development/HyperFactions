@@ -9,19 +9,20 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
  */
 public class MainMenuData {
 
-    /** The button/action that triggered the event */
-    public String button;
+  /** The button/action that triggered the event. */
+  public String button;
 
-    /** Codec for serialization/deserialization */
-    public static final BuilderCodec<MainMenuData> CODEC = BuilderCodec
-            .builder(MainMenuData.class, MainMenuData::new)
-            .addField(
-                    new KeyedCodec<>("Button", Codec.STRING),
-                    (data, value) -> data.button = value,
-                    data -> data.button
-            )
-            .build();
+  /** Codec for serialization/deserialization. */
+  public static final BuilderCodec<MainMenuData> CODEC = BuilderCodec
+      .builder(MainMenuData.class, MainMenuData::new)
+      .addField(
+          new KeyedCodec<>("Button", Codec.STRING),
+          (data, value) -> data.button = value,
+          data -> data.button
+      )
+      .build();
 
-    public MainMenuData() {
-    }
+  /** Creates a new MainMenuData. */
+  public MainMenuData() {
+  }
 }

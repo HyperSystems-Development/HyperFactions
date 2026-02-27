@@ -4,6 +4,7 @@ import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
 import com.hyperfactions.command.FactionCommandContext;
 import com.hyperfactions.command.FactionSubCommand;
+import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionLog;
 import com.hyperfactions.data.FactionMember;
@@ -23,60 +24,62 @@ import org.jetbrains.annotations.NotNull;
  */
 public class CloseSubCommand extends FactionSubCommand {
 
-    public CloseSubCommand(@NotNull HyperFactions hyperFactions, @NotNull HyperFactionsPlugin plugin) {
-        super("close", "Require invite to join", hyperFactions, plugin);
+  /** Creates a new CloseSubCommand. */
+  public CloseSubCommand(@NotNull HyperFactions hyperFactions, @NotNull HyperFactionsPlugin plugin) {
+    super("close", "Require invite to join", hyperFactions, plugin);
+  }
+
+  /** Executes the command. */
+  @Override
+  protected void execute(@NotNull CommandContext ctx,
+             @NotNull Store<EntityStore> store,
+             @NotNull Ref<EntityStore> ref,
+             @NotNull PlayerRef player,
+             @NotNull World currentWorld) {
+
+    if (!hasPermission(player, Permissions.CLOSE)) {
+      ctx.sendMessage(prefix().insert(msg("You don't have permission.", COLOR_RED)));
+      return;
     }
 
-    @Override
-    protected void execute(@NotNull CommandContext ctx,
-                          @NotNull Store<EntityStore> store,
-                          @NotNull Ref<EntityStore> ref,
-                          @NotNull PlayerRef player,
-                          @NotNull World currentWorld) {
-
-        if (!hasPermission(player, Permissions.CLOSE)) {
-            ctx.sendMessage(prefix().insert(msg("You don't have permission.", COLOR_RED)));
-            return;
-        }
-
-        Faction faction = requireFaction(ctx, player);
-        if (faction == null) return;
-
-        FactionMember member = faction.getMember(player.getUuid());
-        if (member == null || !member.isLeader()) {
-            ctx.sendMessage(prefix().insert(msg("Only the leader can change this setting.", COLOR_RED)));
-            return;
-        }
-
-        if (!faction.open()) {
-            ctx.sendMessage(prefix().insert(msg("Your faction is already closed.", COLOR_YELLOW)));
-            return;
-        }
-
-        Faction updated = faction.withOpen(false)
-            .withLog(FactionLog.create(FactionLog.LogType.SETTINGS_CHANGE,
-                "Faction set to invite-only", player.getUuid()));
-
-        hyperFactions.getFactionManager().updateFaction(updated);
-
-        ctx.sendMessage(prefix().insert(msg("Your faction is now invite-only.", COLOR_GREEN)));
-        broadcastToFaction(faction.id(), prefix().insert(msg(player.getUsername(), COLOR_YELLOW))
-            .insert(msg(" closed the faction to invite-only.", COLOR_GREEN)));
-
-        // After action, open settings page if not text mode
-        String input = ctx.getInputString();
-        String[] parts = input != null ? input.trim().split("\\s+") : new String[0];
-        String[] rawArgs = parts.length > 2 ? java.util.Arrays.copyOfRange(parts, 2, parts.length) : new String[0];
-        FactionCommandContext fctx = parseContext(rawArgs);
-
-        if (!fctx.isTextMode()) {
-            Player playerEntity = store.getComponent(ref, Player.getComponentType());
-            if (playerEntity != null) {
-                Faction refreshed = hyperFactions.getFactionManager().getFaction(faction.id());
-                if (refreshed != null) {
-                    hyperFactions.getGuiManager().openFactionSettings(playerEntity, ref, store, player, refreshed);
-                }
-            }
-        }
+    Faction faction = requireFaction(ctx, player);
+    if (faction == null) {
+      return;
     }
+
+    FactionMember member = faction.getMember(player.getUuid());
+    if (member == null || !member.isLeader()) {
+      ctx.sendMessage(prefix().insert(msg("Only the leader can change this setting.", COLOR_RED)));
+      return;
+    }
+
+    if (!faction.open()) {
+      ctx.sendMessage(prefix().insert(msg("Your faction is already closed.", COLOR_YELLOW)));
+      return;
+    }
+
+    Faction updated = faction.withOpen(false)
+      .withLog(FactionLog.create(FactionLog.LogType.SETTINGS_CHANGE,
+        "Faction set to invite-only", player.getUuid()));
+
+    hyperFactions.getFactionManager().updateFaction(updated);
+
+    ctx.sendMessage(prefix().insert(msg("Your faction is now invite-only.", COLOR_GREEN)));
+    broadcastToFaction(faction.id(), prefix().insert(msg(player.getUsername(), COLOR_YELLOW))
+      .insert(msg(" closed the faction to invite-only.", COLOR_GREEN)));
+
+    // After action, open settings page if not text mode
+    String[] rawArgs = CommandUtil.parseRawArgs(ctx.getInputString(), 2);
+    FactionCommandContext fctx = parseContext(rawArgs);
+
+    if (!fctx.isTextMode()) {
+      Player playerEntity = store.getComponent(ref, Player.getComponentType());
+      if (playerEntity != null) {
+        Faction refreshed = hyperFactions.getFactionManager().getFaction(faction.id());
+        if (refreshed != null) {
+          hyperFactions.getGuiManager().openFactionSettings(playerEntity, ref, store, player, refreshed);
+        }
+      }
+    }
+  }
 }

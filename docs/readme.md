@@ -1,6 +1,6 @@
 # HyperFactions Developer Documentation
 
-> **Version**: 0.9.0 | **377 classes** | **69 packages** | **20 managers** | **42 commands** | **60 permissions**
+> **Version**: 0.10.0 | **377 classes** | **69 packages** | **20 managers** | **52 commands** | **60 permissions**
 
 Developer documentation for HyperFactions - a comprehensive faction management plugin for Hytale servers.
 
@@ -17,10 +17,10 @@ Developer documentation for HyperFactions - a comprehensive faction management p
 
 | Document | Description |
 |----------|-------------|
-| [commands.md](commands.md) | Command system - 42 subcommands across 10 categories |
+| [commands.md](commands.md) | Command system - 52 subcommands across 10 categories |
 | [permissions.md](permissions.md) | Permission framework - 60 nodes, chain-based resolution |
-| [config.md](config.md) | Config system - ConfigManager, 8 modules, config v5 migration |
-| [storage.md](storage.md) | Storage layer - interfaces, JSON adapters, backup system |
+| [config.md](config.md) | Config system - ConfigManager, 11 config files, config v6 migration |
+| [storage.md](storage.md) | Storage layer - interfaces, JSON adapters, safe-save, data directory, backup system |
 | [gui.md](gui.md) | GUI system - 59 pages, 3 registries, navigation flows |
 | [protection.md](protection.md) | Protection system - ECS handlers, protection mixin hooks (HyperProtect-Mixin / OrbisGuard-Mixins) |
 
@@ -30,14 +30,14 @@ Developer documentation for HyperFactions - a comprehensive faction management p
 |----------|-------------|
 | [api.md](api.md) | Developer API reference - HyperFactionsAPI, EconomyAPI, EventBus |
 | [integrations.md](integrations.md) | Integration breakdown - permissions, PAPI, WiFlow, HyperProtect-Mixin, OrbisGuard, Gravestones, world map |
-| [placeholders.md](placeholders.md) | Placeholder reference - all 35 PAPI & WiFlow placeholders with examples |
+| [placeholders.md](placeholders.md) | Placeholder reference - all 48 PAPI & WiFlow placeholders with examples |
 
 ### Feature Documentation
 
 | Document | Description |
 |----------|-------------|
 | [announcements.md](announcements.md) | Announcement system - 7 event types, config, admin exclusions |
-| [data-import.md](data-import.md) | Data import & migration - ElbaphFactions/HyFactions importers, config v1→v5 |
+| [data-import.md](data-import.md) | Data import & migration - ElbaphFactions/HyFactions importers, config v1→v6, data v0→v1 |
 
 ## Quick Start
 
@@ -89,7 +89,7 @@ src/main/java/com/hyperfactions/         (377 classes, 69 packages)
 ├── platform/                   # Hytale plugin entry point + extracted handlers
 ├── lifecycle/                  # Plugin lifecycle helpers (callbacks, tasks, history)
 ├── manager/                    # Business logic (15 core managers)
-├── command/                    # Command system (42 subcommands)
+├── command/                    # Command system (52 subcommands)
 │   └── admin/handler/          # Admin command handlers (8 handler classes)
 ├── gui/                        # CustomUI pages (59 pages)
 │   ├── faction/                # Faction member pages + registry
@@ -105,7 +105,7 @@ src/main/java/com/hyperfactions/         (377 classes, 69 packages)
 │   ├── protection/             # Protection integrations (HyperProtect-Mixin, OrbisGuard, Gravestones)
 │   └── placeholder/            # Placeholder integrations (PAPI, WiFlow)
 ├── backup/                     # GFS backup management
-├── migration/                  # Config migration (v1→v2→v3→v4→v5)
+├── migration/                  # Config migration (v1→v6) and data migration (v0→v1)
 ├── importer/                   # ElbaphFactions + HyFactions importers
 ├── worldmap/                   # World map integration (5 refresh modes)
 ├── territory/                  # Territory notifications

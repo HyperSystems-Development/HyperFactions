@@ -2,8 +2,9 @@ package com.hyperfactions.gui.faction.page;
 
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.gui.GuiManager;
-import com.hyperfactions.gui.faction.data.FactionPageData;
+import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.faction.NavBarHelper;
+import com.hyperfactions.gui.faction.data.FactionPageData;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -21,49 +22,54 @@ import org.jetbrains.annotations.Nullable;
  */
 public class FactionHelpPage extends InteractiveCustomUIPage<FactionPageData> {
 
-    private static final String PAGE_ID = "help";
+  private static final String PAGE_ID = "help";
 
-    private final PlayerRef playerRef;
-    private final GuiManager guiManager;
-    private final Faction faction;
+  private final PlayerRef playerRef;
 
-    public FactionHelpPage(PlayerRef playerRef, GuiManager guiManager, @Nullable Faction faction) {
-        super(playerRef, CustomPageLifetime.CanDismiss, FactionPageData.CODEC);
-        this.playerRef = playerRef;
-        this.guiManager = guiManager;
-        this.faction = faction;
+  private final GuiManager guiManager;
+
+  private final Faction faction;
+
+  /** Creates a new FactionHelpPage. */
+  public FactionHelpPage(PlayerRef playerRef, GuiManager guiManager, @Nullable Faction faction) {
+    super(playerRef, CustomPageLifetime.CanDismiss, FactionPageData.CODEC);
+    this.playerRef = playerRef;
+    this.guiManager = guiManager;
+    this.faction = faction;
+  }
+
+  /** Builds . */
+  @Override
+  public void build(Ref<EntityStore> ref, UICommandBuilder cmd,
+           UIEventBuilder events, Store<EntityStore> store) {
+
+    // Load the same help template (content is the same)
+    cmd.append(UIPaths.NEWPLAYER_HELP);
+
+    // Setup faction navigation bar
+    NavBarHelper.setupBar(playerRef, faction, PAGE_ID, cmd, events);
+  }
+
+  /** Handles data event. */
+  @Override
+  public void handleDataEvent(Ref<EntityStore> ref, Store<EntityStore> store,
+                FactionPageData data) {
+    super.handleDataEvent(ref, store, data);
+
+    Player player = store.getComponent(ref, Player.getComponentType());
+    PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
+
+    if (player == null || playerRef == null || data.button == null) {
+      sendUpdate();
+      return;
     }
 
-    @Override
-    public void build(Ref<EntityStore> ref, UICommandBuilder cmd,
-                      UIEventBuilder events, Store<EntityStore> store) {
-
-        // Load the same help template (content is the same)
-        cmd.append("HyperFactions/newplayer/help.ui");
-
-        // Setup faction navigation bar
-        NavBarHelper.setupBar(playerRef, faction, PAGE_ID, cmd, events);
+    // Handle faction navigation
+    if (NavBarHelper.handleNavEvent(data, player, ref, store, playerRef, faction, guiManager)) {
+      return;
     }
 
-    @Override
-    public void handleDataEvent(Ref<EntityStore> ref, Store<EntityStore> store,
-                                FactionPageData data) {
-        super.handleDataEvent(ref, store, data);
-
-        Player player = store.getComponent(ref, Player.getComponentType());
-        PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
-
-        if (player == null || playerRef == null || data.button == null) {
-            sendUpdate();
-            return;
-        }
-
-        // Handle faction navigation
-        if (NavBarHelper.handleNavEvent(data, player, ref, store, playerRef, faction, guiManager)) {
-            return;
-        }
-
-        // Default - just refresh
-        sendUpdate();
-    }
+    // Default - just refresh
+    sendUpdate();
+  }
 }

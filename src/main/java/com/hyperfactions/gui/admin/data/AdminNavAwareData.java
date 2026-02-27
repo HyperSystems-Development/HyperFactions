@@ -9,12 +9,12 @@ import org.jetbrains.annotations.Nullable;
  */
 public interface AdminNavAwareData {
 
-    /**
-     * Gets the admin navigation bar target page ID.
-     * This is set when an admin nav bar button is clicked.
-     *
-     * @return The target page ID, or null if not a nav event
-     */
-    @Nullable
-    String getAdminNavBar();
+  /**
+   * Gets the admin navigation bar target page ID.
+   * This is set when an admin nav bar button is clicked.
+   *
+   * @return The target page ID, or null if not a nav event
+   */
+  @Nullable
+  String getAdminNavBar();
 }

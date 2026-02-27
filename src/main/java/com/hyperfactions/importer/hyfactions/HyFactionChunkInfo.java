@@ -12,17 +12,17 @@ import org.jetbrains.annotations.Nullable;
  * @param CreatedTracker when this chunk was claimed
  */
 public record HyFactionChunkInfo(
-    @Nullable String UUID,
-    int ChunkX,
-    int ChunkY,
-    @Nullable HyFactionTracker CreatedTracker
+  @Nullable String UUID,
+  int ChunkX,
+  int ChunkY,
+  @Nullable HyFactionTracker CreatedTracker
 ) {
-    /**
-     * Gets the chunk Z coordinate (HyFactions uses ChunkY for Z).
-     *
-     * @return the chunk Z coordinate
-     */
-    public int getChunkZ() {
-        return ChunkY;
-    }
+  /**
+   * Gets the chunk Z coordinate (HyFactions uses ChunkY for Z).
+   *
+   * @return the chunk Z coordinate
+   */
+  public int getChunkZ() {
+    return ChunkY;
+  }
 }

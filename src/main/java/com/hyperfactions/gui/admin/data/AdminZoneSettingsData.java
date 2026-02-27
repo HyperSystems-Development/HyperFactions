@@ -10,49 +10,51 @@ import org.jetbrains.annotations.Nullable;
  */
 public class AdminZoneSettingsData implements AdminNavAwareData {
 
-    /** The button/action that triggered the event */
-    public String button;
+  /** The button/action that triggered the event. */
+  public String button;
 
-    /** Target zone ID */
-    public String zoneId;
+  /** Target zone ID. */
+  public String zoneId;
 
-    /** Flag name to toggle */
-    public String flag;
+  /** Flag name to toggle. */
+  public String flag;
 
-    /** Admin nav bar target (for navigation) */
-    public String adminNavBar;
+  /** Admin nav bar target (for navigation). */
+  public String adminNavBar;
 
-    /** Codec for serialization/deserialization */
-    public static final BuilderCodec<AdminZoneSettingsData> CODEC = BuilderCodec
-            .builder(AdminZoneSettingsData.class, AdminZoneSettingsData::new)
-            .addField(
-                    new KeyedCodec<>("Button", Codec.STRING),
-                    (data, value) -> data.button = value,
-                    data -> data.button
-            )
-            .addField(
-                    new KeyedCodec<>("ZoneId", Codec.STRING),
-                    (data, value) -> data.zoneId = value,
-                    data -> data.zoneId
-            )
-            .addField(
-                    new KeyedCodec<>("Flag", Codec.STRING),
-                    (data, value) -> data.flag = value,
-                    data -> data.flag
-            )
-            .addField(
-                    new KeyedCodec<>("AdminNavBar", Codec.STRING),
-                    (data, value) -> data.adminNavBar = value,
-                    data -> data.adminNavBar
-            )
-            .build();
+  /** Codec for serialization/deserialization. */
+  public static final BuilderCodec<AdminZoneSettingsData> CODEC = BuilderCodec
+      .builder(AdminZoneSettingsData.class, AdminZoneSettingsData::new)
+      .addField(
+          new KeyedCodec<>("Button", Codec.STRING),
+          (data, value) -> data.button = value,
+          data -> data.button
+      )
+      .addField(
+          new KeyedCodec<>("ZoneId", Codec.STRING),
+          (data, value) -> data.zoneId = value,
+          data -> data.zoneId
+      )
+      .addField(
+          new KeyedCodec<>("Flag", Codec.STRING),
+          (data, value) -> data.flag = value,
+          data -> data.flag
+      )
+      .addField(
+          new KeyedCodec<>("AdminNavBar", Codec.STRING),
+          (data, value) -> data.adminNavBar = value,
+          data -> data.adminNavBar
+      )
+      .build();
 
-    public AdminZoneSettingsData() {
-    }
+  /** Creates a new AdminZoneSettingsData. */
+  public AdminZoneSettingsData() {
+  }
 
-    @Override
-    @Nullable
-    public String getAdminNavBar() {
-        return adminNavBar;
-    }
+  /** Returns the admin nav bar. */
+  @Override
+  @Nullable
+  public String getAdminNavBar() {
+    return adminNavBar;
+  }
 }

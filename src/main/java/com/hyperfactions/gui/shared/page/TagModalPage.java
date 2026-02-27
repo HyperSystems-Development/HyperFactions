@@ -4,15 +4,15 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.data.FactionRole;
 import com.hyperfactions.gui.GuiManager;
+import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.shared.data.TagModalData;
 import com.hyperfactions.manager.FactionManager;
+import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.worldmap.WorldMapService;
-import org.jetbrains.annotations.Nullable;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
-import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
@@ -21,9 +21,9 @@ import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-
 import java.util.UUID;
 import java.util.regex.Pattern;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Modal for editing faction tag.
@@ -31,190 +31,202 @@ import java.util.regex.Pattern;
  */
 public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
 
-    private static final int MIN_TAG_LENGTH = 1;
-    private static final int MAX_TAG_LENGTH = 5;
-    private static final Pattern TAG_PATTERN = Pattern.compile("^[a-zA-Z0-9]+$");
+  private static final int MIN_TAG_LENGTH = 1;
 
-    private final PlayerRef playerRef;
-    private final FactionManager factionManager;
-    private final GuiManager guiManager;
-    private final Faction faction;
-    @Nullable
-    private final WorldMapService worldMapService;
-    private final boolean adminMode;
+  private static final int MAX_TAG_LENGTH = 5;
 
-    public TagModalPage(PlayerRef playerRef,
-                        FactionManager factionManager,
-                        GuiManager guiManager,
-                        Faction faction,
-                        @Nullable WorldMapService worldMapService) {
-        this(playerRef, factionManager, guiManager, faction, worldMapService, false);
+  private static final Pattern TAG_PATTERN = Pattern.compile("^[a-zA-Z0-9]+$");
+
+  private final PlayerRef playerRef;
+
+  private final FactionManager factionManager;
+
+  private final GuiManager guiManager;
+
+  private final Faction faction;
+
+  @Nullable
+  private final WorldMapService worldMapService;
+
+  private final boolean adminMode;
+
+  /** Creates a new TagModalPage. */
+  public TagModalPage(PlayerRef playerRef,
+            FactionManager factionManager,
+            GuiManager guiManager,
+            Faction faction,
+            @Nullable WorldMapService worldMapService) {
+    this(playerRef, factionManager, guiManager, faction, worldMapService, false);
+  }
+
+  /** Creates a new TagModalPage. */
+  public TagModalPage(PlayerRef playerRef,
+            FactionManager factionManager,
+            GuiManager guiManager,
+            Faction faction,
+            @Nullable WorldMapService worldMapService,
+            boolean adminMode) {
+    super(playerRef, CustomPageLifetime.CanDismiss, TagModalData.CODEC);
+    this.playerRef = playerRef;
+    this.factionManager = factionManager;
+    this.guiManager = guiManager;
+    this.faction = faction;
+    this.worldMapService = worldMapService;
+    this.adminMode = adminMode;
+  }
+
+  /** Builds . */
+  @Override
+  public void build(Ref<EntityStore> ref, UICommandBuilder cmd,
+           UIEventBuilder events, Store<EntityStore> store) {
+
+    // Load the modal template
+    cmd.append(UIPaths.TAG_MODAL);
+
+    // Show current tag
+    String currentTag = faction.tag();
+    if (currentTag == null || currentTag.isEmpty()) {
+      cmd.set("#CurrentTag.Text", "(None)");
+    } else {
+      cmd.set("#CurrentTag.Text", "[" + currentTag.toUpperCase() + "]");
     }
 
-    public TagModalPage(PlayerRef playerRef,
-                        FactionManager factionManager,
-                        GuiManager guiManager,
-                        Faction faction,
-                        @Nullable WorldMapService worldMapService,
-                        boolean adminMode) {
-        super(playerRef, CustomPageLifetime.CanDismiss, TagModalData.CODEC);
-        this.playerRef = playerRef;
-        this.factionManager = factionManager;
-        this.guiManager = guiManager;
-        this.faction = faction;
-        this.worldMapService = worldMapService;
-        this.adminMode = adminMode;
+    // Cancel button
+    events.addEventBinding(
+        CustomUIEventBindingType.Activating,
+        "#CancelBtn",
+        EventData.of("Button", "Cancel"),
+        false
+    );
+
+    // Save button - captures text input value
+    events.addEventBinding(
+        CustomUIEventBindingType.Activating,
+        "#SaveBtn",
+        EventData.of("Button", "Save").append("@Tag", "#TagInput.Value"),
+        false
+    );
+  }
+
+  /** Handles data event. */
+  @Override
+  public void handleDataEvent(Ref<EntityStore> ref, Store<EntityStore> store,
+                TagModalData data) {
+    super.handleDataEvent(ref, store, data);
+
+    Player player = store.getComponent(ref, Player.getComponentType());
+    PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
+
+    if (player == null || playerRef == null || data.button == null) {
+      return;
     }
 
-    @Override
-    public void build(Ref<EntityStore> ref, UICommandBuilder cmd,
-                      UIEventBuilder events, Store<EntityStore> store) {
+    UUID uuid = playerRef.getUuid();
+    FactionMember member = faction.getMember(uuid);
 
-        // Load the modal template
-        cmd.append("HyperFactions/shared/tag_modal.ui");
+    // Verify officer permission (skip in admin mode)
+    if (!adminMode && (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel())) {
+      player.sendMessage(MessageUtil.errorText("You don't have permission to edit the tag."));
+      guiManager.openFactionSettings(player, ref, store, playerRef,
+          factionManager.getFaction(faction.id()));
+      return;
+    }
 
-        // Show current tag
-        String currentTag = faction.tag();
-        if (currentTag == null || currentTag.isEmpty()) {
-            cmd.set("#CurrentTag.Text", "(None)");
+    switch (data.button) {
+      case "Cancel" -> {
+        if (adminMode) {
+          guiManager.openAdminFactionSettings(player, ref, store, playerRef, faction.id());
         } else {
-            cmd.set("#CurrentTag.Text", "[" + currentTag.toUpperCase() + "]");
+          guiManager.openFactionSettings(player, ref, store, playerRef,
+              factionManager.getFaction(faction.id()));
         }
+      }
 
-        // Cancel button
-        events.addEventBinding(
-                CustomUIEventBindingType.Activating,
-                "#CancelBtn",
-                EventData.of("Button", "Cancel"),
-                false
-        );
+      case "Save" -> {
+        String newTag = data.tag;
 
-        // Save button - captures text input value
-        events.addEventBinding(
-                CustomUIEventBindingType.Activating,
-                "#SaveBtn",
-                EventData.of("Button", "Save").append("@Tag", "#TagInput.Value"),
-                false
-        );
-    }
+        // Empty clears tag
+        if (newTag == null || newTag.trim().isEmpty()) {
+          Faction updatedFaction = faction.withTag(null);
+          factionManager.updateFaction(updatedFaction);
 
-    @Override
-    public void handleDataEvent(Ref<EntityStore> ref, Store<EntityStore> store,
-                                TagModalData data) {
-        super.handleDataEvent(ref, store, data);
+          // Refresh world maps to remove faction tag (respects configured refresh mode)
+          if (worldMapService != null) {
+            worldMapService.triggerFactionWideRefresh(faction.id());
+          }
 
-        Player player = store.getComponent(ref, Player.getComponentType());
-        PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
-
-        if (player == null || playerRef == null || data.button == null) {
-            return;
-        }
-
-        UUID uuid = playerRef.getUuid();
-        FactionMember member = faction.getMember(uuid);
-
-        // Verify officer permission (skip in admin mode)
-        if (!adminMode && (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel())) {
-            player.sendMessage(MessageUtil.errorText("You don't have permission to edit the tag."));
+          String prefix = adminMode ? "[Admin] " : "";
+          player.sendMessage(Message.raw(prefix + "Faction tag cleared.").color("#AAAAAA"));
+          if (adminMode) {
+            guiManager.openAdminFactionSettings(player, ref, store, playerRef, faction.id());
+          } else {
             guiManager.openFactionSettings(player, ref, store, playerRef,
-                    factionManager.getFaction(faction.id()));
-            return;
+                factionManager.getFaction(faction.id()));
+          }
+          return;
         }
 
-        switch (data.button) {
-            case "Cancel" -> {
-                if (adminMode) {
-                    guiManager.openAdminFactionSettings(player, ref, store, playerRef, faction.id());
-                } else {
-                    guiManager.openFactionSettings(player, ref, store, playerRef,
-                            factionManager.getFaction(faction.id()));
-                }
-            }
+        newTag = newTag.trim().toUpperCase();
 
-            case "Save" -> {
-                String newTag = data.tag;
-
-                // Empty clears tag
-                if (newTag == null || newTag.trim().isEmpty()) {
-                    Faction updatedFaction = faction.withTag(null);
-                    factionManager.updateFaction(updatedFaction);
-
-                    // Refresh world maps to remove faction tag (respects configured refresh mode)
-                    if (worldMapService != null) {
-                        worldMapService.triggerFactionWideRefresh(faction.id());
-                    }
-
-                    String prefix = adminMode ? "[Admin] " : "";
-                    player.sendMessage(Message.raw(prefix + "Faction tag cleared.").color("#AAAAAA"));
-                    if (adminMode) {
-                        guiManager.openAdminFactionSettings(player, ref, store, playerRef, faction.id());
-                    } else {
-                        guiManager.openFactionSettings(player, ref, store, playerRef,
-                                factionManager.getFaction(faction.id()));
-                    }
-                    return;
-                }
-
-                newTag = newTag.trim().toUpperCase();
-
-                // Validate length
-                if (newTag.length() < MIN_TAG_LENGTH) {
-                    player.sendMessage(MessageUtil.errorText("Tag must be at least " + MIN_TAG_LENGTH + " character."));
-                    sendUpdate();
-                    return;
-                }
-
-                if (newTag.length() > MAX_TAG_LENGTH) {
-                    player.sendMessage(MessageUtil.errorText("Tag cannot exceed " + MAX_TAG_LENGTH + " characters."));
-                    sendUpdate();
-                    return;
-                }
-
-                // Validate format (alphanumeric only)
-                if (!TAG_PATTERN.matcher(newTag).matches()) {
-                    player.sendMessage(MessageUtil.errorText("Tag can only contain letters and numbers."));
-                    sendUpdate();
-                    return;
-                }
-
-                // Check if same as current
-                if (newTag.equalsIgnoreCase(faction.tag())) {
-                    player.sendMessage(MessageUtil.text("That's already your faction's tag.", MessageUtil.COLOR_GOLD));
-                    sendUpdate();
-                    return;
-                }
-
-                // Check uniqueness
-                Faction existing = factionManager.getFactionByTag(newTag);
-                if (existing != null && !existing.id().equals(faction.id())) {
-                    player.sendMessage(MessageUtil.errorText("A faction with that tag already exists."));
-                    sendUpdate();
-                    return;
-                }
-
-                // Update the faction
-                Faction updatedFaction = faction.withTag(newTag);
-                factionManager.updateFaction(updatedFaction);
-
-                // Refresh world maps to show new faction tag (respects configured refresh mode)
-                if (worldMapService != null) {
-                    worldMapService.triggerFactionWideRefresh(faction.id());
-                }
-
-                String prefix = adminMode ? "[Admin] " : "";
-                player.sendMessage(
-                        Message.raw(prefix + "Faction tag set to ").color("#AAAAAA")
-                                .insert(Message.raw("[" + newTag + "]").color("#FFAA00"))
-                                .insert(Message.raw("!").color("#AAAAAA"))
-                );
-
-                if (adminMode) {
-                    guiManager.openAdminFactionSettings(player, ref, store, playerRef, faction.id());
-                } else {
-                    guiManager.openFactionSettings(player, ref, store, playerRef,
-                            factionManager.getFaction(faction.id()));
-                }
-            }
+        // Validate length
+        if (newTag.length() < MIN_TAG_LENGTH) {
+          player.sendMessage(MessageUtil.errorText("Tag must be at least " + MIN_TAG_LENGTH + " character."));
+          sendUpdate();
+          return;
         }
+
+        if (newTag.length() > MAX_TAG_LENGTH) {
+          player.sendMessage(MessageUtil.errorText("Tag cannot exceed " + MAX_TAG_LENGTH + " characters."));
+          sendUpdate();
+          return;
+        }
+
+        // Validate format (alphanumeric only)
+        if (!TAG_PATTERN.matcher(newTag).matches()) {
+          player.sendMessage(MessageUtil.errorText("Tag can only contain letters and numbers."));
+          sendUpdate();
+          return;
+        }
+
+        // Check if same as current
+        if (newTag.equalsIgnoreCase(faction.tag())) {
+          player.sendMessage(MessageUtil.text("That's already your faction's tag.", MessageUtil.COLOR_GOLD));
+          sendUpdate();
+          return;
+        }
+
+        // Check uniqueness
+        Faction existing = factionManager.getFactionByTag(newTag);
+        if (existing != null && !existing.id().equals(faction.id())) {
+          player.sendMessage(MessageUtil.errorText("A faction with that tag already exists."));
+          sendUpdate();
+          return;
+        }
+
+        // Update the faction
+        Faction updatedFaction = faction.withTag(newTag);
+        factionManager.updateFaction(updatedFaction);
+
+        // Refresh world maps to show new faction tag (respects configured refresh mode)
+        if (worldMapService != null) {
+          worldMapService.triggerFactionWideRefresh(faction.id());
+        }
+
+        String prefix = adminMode ? "[Admin] " : "";
+        player.sendMessage(
+            Message.raw(prefix + "Faction tag set to ").color("#AAAAAA")
+                .insert(Message.raw("[" + newTag + "]").color("#FFAA00"))
+                .insert(Message.raw("!").color("#AAAAAA"))
+        );
+
+        if (adminMode) {
+          guiManager.openAdminFactionSettings(player, ref, store, playerRef, faction.id());
+        } else {
+          guiManager.openFactionSettings(player, ref, store, playerRef,
+              factionManager.getFaction(faction.id()));
+        }
+      }
+      default -> throw new IllegalStateException("Unexpected value");
     }
+  }
 }

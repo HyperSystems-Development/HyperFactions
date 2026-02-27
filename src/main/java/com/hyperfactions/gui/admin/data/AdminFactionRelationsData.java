@@ -10,57 +10,59 @@ import org.jetbrains.annotations.Nullable;
  */
 public class AdminFactionRelationsData implements AdminNavAwareData {
 
-    /** The button/action that triggered the event */
-    public String button;
+  /** The button/action that triggered the event. */
+  public String button;
 
-    /** Source faction ID */
-    public String factionId;
+  /** Source faction ID. */
+  public String factionId;
 
-    /** Target faction ID (for setting relations) */
-    public String targetFactionId;
+  /** Target faction ID (for setting relations). */
+  public String targetFactionId;
 
-    /** Search query (for faction search) */
-    public String searchQuery;
+  /** Search query (for faction search). */
+  public String searchQuery;
 
-    /** Admin nav bar target (for navigation) */
-    public String adminNavBar;
+  /** Admin nav bar target (for navigation). */
+  public String adminNavBar;
 
-    /** Codec for serialization/deserialization */
-    public static final BuilderCodec<AdminFactionRelationsData> CODEC = BuilderCodec
-            .builder(AdminFactionRelationsData.class, AdminFactionRelationsData::new)
-            .addField(
-                    new KeyedCodec<>("Button", Codec.STRING),
-                    (data, value) -> data.button = value,
-                    data -> data.button
-            )
-            .addField(
-                    new KeyedCodec<>("FactionId", Codec.STRING),
-                    (data, value) -> data.factionId = value,
-                    data -> data.factionId
-            )
-            .addField(
-                    new KeyedCodec<>("TargetFactionId", Codec.STRING),
-                    (data, value) -> data.targetFactionId = value,
-                    data -> data.targetFactionId
-            )
-            .addField(
-                    new KeyedCodec<>("SearchQuery", Codec.STRING),
-                    (data, value) -> data.searchQuery = value,
-                    data -> data.searchQuery
-            )
-            .addField(
-                    new KeyedCodec<>("AdminNavBar", Codec.STRING),
-                    (data, value) -> data.adminNavBar = value,
-                    data -> data.adminNavBar
-            )
-            .build();
+  /** Codec for serialization/deserialization. */
+  public static final BuilderCodec<AdminFactionRelationsData> CODEC = BuilderCodec
+      .builder(AdminFactionRelationsData.class, AdminFactionRelationsData::new)
+      .addField(
+          new KeyedCodec<>("Button", Codec.STRING),
+          (data, value) -> data.button = value,
+          data -> data.button
+      )
+      .addField(
+          new KeyedCodec<>("FactionId", Codec.STRING),
+          (data, value) -> data.factionId = value,
+          data -> data.factionId
+      )
+      .addField(
+          new KeyedCodec<>("TargetFactionId", Codec.STRING),
+          (data, value) -> data.targetFactionId = value,
+          data -> data.targetFactionId
+      )
+      .addField(
+          new KeyedCodec<>("SearchQuery", Codec.STRING),
+          (data, value) -> data.searchQuery = value,
+          data -> data.searchQuery
+      )
+      .addField(
+          new KeyedCodec<>("AdminNavBar", Codec.STRING),
+          (data, value) -> data.adminNavBar = value,
+          data -> data.adminNavBar
+      )
+      .build();
 
-    public AdminFactionRelationsData() {
-    }
+  /** Creates a new AdminFactionRelationsData. */
+  public AdminFactionRelationsData() {
+  }
 
-    @Override
-    @Nullable
-    public String getAdminNavBar() {
-        return adminNavBar;
-    }
+  /** Returns the admin nav bar. */
+  @Override
+  @Nullable
+  public String getAdminNavBar() {
+    return adminNavBar;
+  }
 }

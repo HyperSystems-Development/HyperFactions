@@ -22,53 +22,54 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
  * Adds HyperFactions protection checks (zones + faction territory) before allowing
  * fluid placement (water/lava buckets).
  *
- * Registered as a codec replacement for "PlaceFluid" so all bucket interactions
+ * <p>Registered as a codec replacement for "PlaceFluid" so all bucket interactions
  * route through our protection system without requiring mixins.
  */
 public class HyperFactionsPlaceFluidInteraction extends PlaceFluidInteraction {
 
-    public static final BuilderCodec<HyperFactionsPlaceFluidInteraction> CODEC =
-            BuilderCodec.builder(
-                    HyperFactionsPlaceFluidInteraction.class,
-                    HyperFactionsPlaceFluidInteraction::new,
-                    PlaceFluidInteraction.CODEC
-            ).build();
+  public static final BuilderCodec<HyperFactionsPlaceFluidInteraction> CODEC =
+      BuilderCodec.builder(
+          HyperFactionsPlaceFluidInteraction.class,
+          HyperFactionsPlaceFluidInteraction::new,
+          PlaceFluidInteraction.CODEC
+      ).build();
 
-    @Override
-    protected void interactWithBlock(World world, CommandBuffer<EntityStore> commandBuffer,
-                                      InteractionType type, InteractionContext context,
-                                      ItemStack itemInHand, Vector3i targetBlock,
-                                      CooldownHandler cooldownHandler) {
-        Ref<EntityStore> ref = context.getEntity();
-        PlayerRef playerRef = commandBuffer.getComponent(ref, PlayerRef.getComponentType());
+  /** Interact With Block. */
+  @Override
+  protected void interactWithBlock(World world, CommandBuffer<EntityStore> commandBuffer,
+                   InteractionType type, InteractionContext context,
+                   ItemStack itemInHand, Vector3i targetBlock,
+                   CooldownHandler cooldownHandler) {
+    Ref<EntityStore> ref = context.getEntity();
+    PlayerRef playerRef = commandBuffer.getComponent(ref, PlayerRef.getComponentType());
 
-        if (playerRef != null) {
-            HyperFactionsPlugin plugin = HyperFactionsPlugin.getInstance();
-            if (plugin != null) {
-                ProtectionChecker checker = plugin.getHyperFactions().getProtectionChecker();
-                ProtectionChecker.ProtectionResult result = checker.canInteract(
-                        playerRef.getUuid(),
-                        world.getName(),
-                        targetBlock.getX(), targetBlock.getZ(),
-                        ProtectionChecker.InteractionType.BUILD
-                );
+    if (playerRef != null) {
+      HyperFactionsPlugin plugin = HyperFactionsPlugin.getInstance();
+      if (plugin != null) {
+        ProtectionChecker checker = plugin.getHyperFactions().getProtectionChecker();
+        ProtectionChecker.ProtectionResult result = checker.canInteract(
+            playerRef.getUuid(),
+            world.getName(),
+            targetBlock.getX(), targetBlock.getZ(),
+            ProtectionChecker.InteractionType.BUILD
+        );
 
-                if (!checker.isAllowed(result)) {
-                    Logger.debugProtection("Fluid placement blocked for %s at (%d,%d,%d) in %s: %s",
-                            playerRef.getUsername(), targetBlock.getX(), targetBlock.getY(),
-                            targetBlock.getZ(), world.getName(), result);
-                    playerRef.sendMessage(
-                            Message.raw(checker.getDenialMessage(result)).color("#FF5555")
-                    );
-                    return;
-                }
-
-                Logger.debugProtection("Fluid placement allowed for %s at (%d,%d,%d) in %s: %s",
-                        playerRef.getUsername(), targetBlock.getX(), targetBlock.getY(),
-                        targetBlock.getZ(), world.getName(), result);
-            }
+        if (!checker.isAllowed(result)) {
+          Logger.debugProtection("Fluid placement blocked for %s at (%d,%d,%d) in %s: %s",
+              playerRef.getUsername(), targetBlock.getX(), targetBlock.getY(),
+              targetBlock.getZ(), world.getName(), result);
+          playerRef.sendMessage(
+              Message.raw(checker.getDenialMessage(result)).color("#FF5555")
+          );
+          return;
         }
 
-        super.interactWithBlock(world, commandBuffer, type, context, itemInHand, targetBlock, cooldownHandler);
+        Logger.debugProtection("Fluid placement allowed for %s at (%d,%d,%d) in %s: %s",
+            playerRef.getUsername(), targetBlock.getX(), targetBlock.getY(),
+            targetBlock.getZ(), world.getName(), result);
+      }
     }
+
+    super.interactWithBlock(world, commandBuffer, type, context, itemInHand, targetBlock, cooldownHandler);
+  }
 }

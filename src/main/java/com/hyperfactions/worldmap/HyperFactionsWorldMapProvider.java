@@ -13,12 +13,14 @@ import com.hypixel.hytale.server.core.universe.world.worldmap.provider.IWorldMap
  */
 public class HyperFactionsWorldMapProvider implements IWorldMapProvider {
 
-    public static final String ID = "HyperFactions";
-    public static final BuilderCodec<HyperFactionsWorldMapProvider> CODEC =
-            BuilderCodec.builder(HyperFactionsWorldMapProvider.class, HyperFactionsWorldMapProvider::new).build();
+  public static final String ID = "HyperFactions";
 
-    @Override
-    public IWorldMap getGenerator(World world) throws WorldMapLoadException {
-        return HyperFactionsWorldMap.INSTANCE;
-    }
+  public static final BuilderCodec<HyperFactionsWorldMapProvider> CODEC =
+      BuilderCodec.builder(HyperFactionsWorldMapProvider.class, HyperFactionsWorldMapProvider::new).build();
+
+  /** Returns the generator. */
+  @Override
+  public IWorldMap getGenerator(World world) throws WorldMapLoadException {
+    return HyperFactionsWorldMap.INSTANCE;
+  }
 }

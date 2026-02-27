@@ -11,64 +11,66 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
  */
 public class FactionMembersData implements NavAwareData {
 
-    /** The button/action that triggered the event */
-    public String button;
+  /** The button/action that triggered the event. */
+  public String button;
 
-    /** NavBar target (page ID when nav button clicked) */
-    public String navBar;
+  /** NavBar target (page ID when nav button clicked). */
+  public String navBar;
 
-    /** Search query from text input (uses @SearchQuery binding) */
-    public String searchQuery;
+  /** Search query from text input (uses @SearchQuery binding). */
+  public String searchQuery;
 
-    /** Target player UUID */
-    public String playerUuid;
+  /** Target player UUID. */
+  public String playerUuid;
 
-    /** Target player name */
-    public String target;
+  /** Target player name. */
+  public String target;
 
-    /** Sort mode from dropdown */
-    public String sortMode;
+  /** Sort mode from dropdown. */
+  public String sortMode;
 
-    /** Codec for serialization/deserialization */
-    public static final BuilderCodec<FactionMembersData> CODEC = BuilderCodec
-            .builder(FactionMembersData.class, FactionMembersData::new)
-            .addField(
-                    new KeyedCodec<>("Button", Codec.STRING),
-                    (data, value) -> data.button = value,
-                    data -> data.button
-            )
-            .addField(
-                    new KeyedCodec<>("NavBar", Codec.STRING),
-                    (data, value) -> data.navBar = value,
-                    data -> data.navBar
-            )
-            .addField(
-                    new KeyedCodec<>("@SearchQuery", Codec.STRING),
-                    (data, value) -> data.searchQuery = value,
-                    data -> data.searchQuery
-            )
-            .addField(
-                    new KeyedCodec<>("PlayerUuid", Codec.STRING),
-                    (data, value) -> data.playerUuid = value,
-                    data -> data.playerUuid
-            )
-            .addField(
-                    new KeyedCodec<>("Target", Codec.STRING),
-                    (data, value) -> data.target = value,
-                    data -> data.target
-            )
-            .addField(
-                    new KeyedCodec<>("@SortMode", Codec.STRING),
-                    (data, value) -> data.sortMode = value,
-                    data -> data.sortMode
-            )
-            .build();
+  /** Codec for serialization/deserialization. */
+  public static final BuilderCodec<FactionMembersData> CODEC = BuilderCodec
+      .builder(FactionMembersData.class, FactionMembersData::new)
+      .addField(
+          new KeyedCodec<>("Button", Codec.STRING),
+          (data, value) -> data.button = value,
+          data -> data.button
+      )
+      .addField(
+          new KeyedCodec<>("NavBar", Codec.STRING),
+          (data, value) -> data.navBar = value,
+          data -> data.navBar
+      )
+      .addField(
+          new KeyedCodec<>("@SearchQuery", Codec.STRING),
+          (data, value) -> data.searchQuery = value,
+          data -> data.searchQuery
+      )
+      .addField(
+          new KeyedCodec<>("PlayerUuid", Codec.STRING),
+          (data, value) -> data.playerUuid = value,
+          data -> data.playerUuid
+      )
+      .addField(
+          new KeyedCodec<>("Target", Codec.STRING),
+          (data, value) -> data.target = value,
+          data -> data.target
+      )
+      .addField(
+          new KeyedCodec<>("@SortMode", Codec.STRING),
+          (data, value) -> data.sortMode = value,
+          data -> data.sortMode
+      )
+      .build();
 
-    public FactionMembersData() {
-    }
+  /** Creates a new FactionMembersData. */
+  public FactionMembersData() {
+  }
 
-    @Override
-    public String getNavBar() {
-        return navBar;
-    }
+  /** Returns the nav bar. */
+  @Override
+  public String getNavBar() {
+    return navBar;
+  }
 }

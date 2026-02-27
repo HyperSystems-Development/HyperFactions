@@ -1,0 +1,27 @@
+// Faction Log Entry
+// Appended into #LogsList per log entry
+
+Group {
+  Anchor: (Height: 32, Bottom: 2);
+  Background: (Color: #0d1520);
+  Padding: (Left: 12, Right: 12, Top: 4, Bottom: 4);
+  LayoutMode: Left;
+
+  Label #LogTime {
+    Text: "just now";
+    Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
+    Anchor: (Width: 90);
+  }
+
+  Label #LogType {
+    Text: "Type";
+    Style: (FontSize: 10, TextColor: #00AAAA, RenderBold: true, VerticalAlignment: Center);
+    Anchor: (Width: 75);
+  }
+
+  Label #LogMessage {
+    Text: "Activity description";
+    Style: (FontSize: 11, TextColor: #AAAAAA, VerticalAlignment: Center);
+    FlexWeight: 1;
+  }
+}

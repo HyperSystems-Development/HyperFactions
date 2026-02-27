@@ -166,21 +166,13 @@ Group {
 
       Group { Anchor: (Width: 6); }
 
-      TextButton #RenameBtn {
-        Text: "Rename";
-        Anchor: (Height: 28, Width: 70);
+      TextButton #SettingsBtn2 {
+        Text: "Settings";
+        Anchor: (Height: 28, Width: 80);
         Style: $S.@ButtonStyle;
       }
 
       Group { FlexWeight: 1; }
-
-      TextButton #TypeBtn {
-        Text: "Type";
-        Anchor: (Height: 28, Width: 55);
-        Style: $S.@ButtonStyle;
-      }
-
-      Group { Anchor: (Width: 6); }
 
       TextButton #DeleteBtn {
         Text: "Delete";

@@ -9,27 +9,28 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
  */
 public class DescriptionModalData {
 
-    /** The button/action that triggered the event */
-    public String button;
+  /** The button/action that triggered the event. */
+  public String button;
 
-    /** The new faction description entered by user */
-    public String description;
+  /** The new faction description entered by user. */
+  public String description;
 
-    /** Codec for serialization/deserialization */
-    public static final BuilderCodec<DescriptionModalData> CODEC = BuilderCodec
-            .builder(DescriptionModalData.class, DescriptionModalData::new)
-            .addField(
-                    new KeyedCodec<>("Button", Codec.STRING),
-                    (data, value) -> data.button = value,
-                    data -> data.button
-            )
-            .addField(
-                    new KeyedCodec<>("@Description", Codec.STRING),
-                    (data, value) -> data.description = value,
-                    data -> data.description
-            )
-            .build();
+  /** Codec for serialization/deserialization. */
+  public static final BuilderCodec<DescriptionModalData> CODEC = BuilderCodec
+      .builder(DescriptionModalData.class, DescriptionModalData::new)
+      .addField(
+          new KeyedCodec<>("Button", Codec.STRING),
+          (data, value) -> data.button = value,
+          data -> data.button
+      )
+      .addField(
+          new KeyedCodec<>("@Description", Codec.STRING),
+          (data, value) -> data.description = value,
+          data -> data.description
+      )
+      .build();
 
-    public DescriptionModalData() {
-    }
+  /** Creates a new DescriptionModalData. */
+  public DescriptionModalData() {
+  }
 }

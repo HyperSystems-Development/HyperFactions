@@ -10,8 +10,8 @@ import org.jetbrains.annotations.Nullable;
  * @param chunkZ    the chunk Z coordinate
  */
 public record HyFactionZoneChunk(
-    @Nullable String dimension,
-    int chunkX,
-    int chunkZ
+  @Nullable String dimension,
+  int chunkX,
+  int chunkZ
 ) {
 }

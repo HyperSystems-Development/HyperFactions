@@ -1,6 +1,6 @@
 # HyperFactions Data Import & Migration
 
-> **Version**: 0.9.0 | **Packages**: `com.hyperfactions.importer`, `com.hyperfactions.migration`
+> **Version**: 0.10.0 | **Packages**: `com.hyperfactions.importer`, `com.hyperfactions.migration`
 
 HyperFactions supports importing data from other faction plugins and automatically migrating its own configuration between versions.
 
@@ -143,12 +143,25 @@ HyperFactions automatically migrates configuration files between versions on sta
 
 Migrations are applied in sequence. The `MigrationRegistry` builds the chain automatically based on version numbers:
 
+**Config Migrations** (run by `ConfigManager.loadAll()`):
+
 | Migration | From | To | Description |
 |-----------|------|----|-------------|
 | `ConfigV1ToV2Migration` | v1 | v2 | Split monolithic config into modules |
 | `ConfigV2ToV3Migration` | v2 | v3 | Move world map config, convert prefix colors |
 | `ConfigV3ToV4Migration` | v3 | v4 | Restructure permissions, add interaction sub-types |
 | `ConfigV4ToV5Migration` | v4 | v5 | Remove `warzonePowerLoss`, add per-zone `power_loss` flag |
+| `ConfigV5ToV6Migration` | v5 | v6 | Split `config.json` into `config/factions.json` + `config/server.json` |
+
+**Data Migrations** (run before storage init in `HyperFactions.enable()`):
+
+| Migration | From | To | Description |
+|-----------|------|----|-------------|
+| `DataV0ToV1Migration` | v0 | v1 | Move data files into `data/` subdirectory |
+
+### DataV0ToV1Migration
+
+Moves all data files from the plugin root into a `data/` subdirectory for cleaner filesystem layout. Files moved: `factions/`, `players/`, `chat/`, `economy/`, `zones.json`, `invites.json`, `join_requests.json`. Uses `data/.version` marker (absent = needs migration, `1` = already migrated). See [storage.md](storage.md#data-directory-migration-v0v1) for details.
 
 ### v1 to v2: Monolithic to Modular
 

@@ -7,9 +7,9 @@ package com.hyperfactions.gui;
  */
 public interface RefreshablePage {
 
-    /**
-     * Refreshes the page content with current data.
-     * Must be called on the world thread.
-     */
-    void refreshContent();
+  /**
+   * Refreshes the page content with current data.
+   * Must be called on the world thread.
+   */
+  void refreshContent();
 }

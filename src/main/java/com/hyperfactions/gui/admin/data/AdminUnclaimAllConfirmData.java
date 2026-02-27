@@ -9,19 +9,20 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
  */
 public class AdminUnclaimAllConfirmData {
 
-    /** The button that was clicked (Cancel or Confirm) */
-    public String button;
+  /** The button that was clicked (Cancel or Confirm). */
+  public String button;
 
-    /** Codec for serialization/deserialization */
-    public static final BuilderCodec<AdminUnclaimAllConfirmData> CODEC = BuilderCodec
-            .builder(AdminUnclaimAllConfirmData.class, AdminUnclaimAllConfirmData::new)
-            .addField(
-                    new KeyedCodec<>("Button", Codec.STRING),
-                    (data, value) -> data.button = value,
-                    data -> data.button
-            )
-            .build();
+  /** Codec for serialization/deserialization. */
+  public static final BuilderCodec<AdminUnclaimAllConfirmData> CODEC = BuilderCodec
+      .builder(AdminUnclaimAllConfirmData.class, AdminUnclaimAllConfirmData::new)
+      .addField(
+          new KeyedCodec<>("Button", Codec.STRING),
+          (data, value) -> data.button = value,
+          data -> data.button
+      )
+      .build();
 
-    public AdminUnclaimAllConfirmData() {
-    }
+  /** Creates a new AdminUnclaimAllConfirmData. */
+  public AdminUnclaimAllConfirmData() {
+  }
 }

@@ -1,8 +1,7 @@
 package com.hyperfactions.importer.hyfactions;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.List;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a dimension entry from HyFactions Claims.json.
@@ -11,7 +10,7 @@ import java.util.List;
  * @param ChunkInfo list of chunk claims in this dimension
  */
 public record HyFactionDimension(
-    @Nullable String Dimension,
-    @Nullable List<HyFactionChunkInfo> ChunkInfo
+  @Nullable String Dimension,
+  @Nullable List<HyFactionChunkInfo> ChunkInfo
 ) {
 }

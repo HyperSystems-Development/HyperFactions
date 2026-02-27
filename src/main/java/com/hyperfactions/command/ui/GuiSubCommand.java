@@ -20,29 +20,31 @@ import org.jetbrains.annotations.NotNull;
  */
 public class GuiSubCommand extends FactionSubCommand {
 
-    public GuiSubCommand(@NotNull HyperFactions hyperFactions, @NotNull HyperFactionsPlugin plugin) {
-        super("gui", "Open faction GUI", hyperFactions, plugin);
-        addAliases("menu");
+  /** Creates a new GuiSubCommand. */
+  public GuiSubCommand(@NotNull HyperFactions hyperFactions, @NotNull HyperFactionsPlugin plugin) {
+    super("gui", "Open faction GUI", hyperFactions, plugin);
+    addAliases("menu");
+  }
+
+  /** Executes the command. */
+  @Override
+  protected void execute(@NotNull CommandContext ctx,
+             @NotNull Store<EntityStore> store,
+             @NotNull Ref<EntityStore> ref,
+             @NotNull PlayerRef playerRef,
+             @NotNull World currentWorld) {
+
+    if (!hasPermission(playerRef, Permissions.USE)) {
+      ctx.sendMessage(prefix().insert(msg("You don't have permission.", COLOR_RED)));
+      return;
     }
 
-    @Override
-    protected void execute(@NotNull CommandContext ctx,
-                          @NotNull Store<EntityStore> store,
-                          @NotNull Ref<EntityStore> ref,
-                          @NotNull PlayerRef playerRef,
-                          @NotNull World currentWorld) {
-
-        if (!hasPermission(playerRef, Permissions.USE)) {
-            ctx.sendMessage(prefix().insert(msg("You don't have permission.", COLOR_RED)));
-            return;
-        }
-
-        Player player = store.getComponent(ref, Player.getComponentType());
-        if (player == null) {
-            ctx.sendMessage(prefix().insert(msg("Could not find player entity.", COLOR_RED)));
-            return;
-        }
-
-        hyperFactions.getGuiManager().openFactionMain(player, ref, store, playerRef);
+    Player player = store.getComponent(ref, Player.getComponentType());
+    if (player == null) {
+      ctx.sendMessage(prefix().insert(msg("Could not find player entity.", COLOR_RED)));
+      return;
     }
+
+    hyperFactions.getGuiManager().openFactionMain(player, ref, store, playerRef);
+  }
 }

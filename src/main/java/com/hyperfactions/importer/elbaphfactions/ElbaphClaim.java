@@ -14,11 +14,11 @@ import org.jetbrains.annotations.Nullable;
  * @param claimedBy the UUID of the entity that claimed (faction UUID in ElbaphFactions)
  */
 public record ElbaphClaim(
-    @Nullable String dimension,
-    int x,
-    int z,
-    @Nullable String factionId,
-    long claimedAt,
-    @Nullable String claimedBy
+  @Nullable String dimension,
+  int x,
+  int z,
+  @Nullable String factionId,
+  long claimedAt,
+  @Nullable String claimedBy
 ) {
 }

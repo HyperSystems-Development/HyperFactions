@@ -1,0 +1,121 @@
+// Faction Activity Logs Page
+// Paginated view of faction activity logs with type filter dropdown
+
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+$Nav = "../nav/nav_bar.ui";
+
+$C.@PageOverlay {
+  $Nav.@HyperFactionsNavBar #HyperFactionsNavBar {}
+
+  $C.@Container {
+    Anchor: (Width: 700, Height: 520);
+
+    #Title {
+      $C.@Title #LogsTitle {
+        @Text = "Activity Logs";
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+      Padding: (Left: 15, Right: 15, Top: 10, Bottom: 10);
+
+      // Filter row
+      Group {
+        Anchor: (Height: 35, Bottom: 8);
+        LayoutMode: Left;
+
+        Label #LogCount {
+          Text: "0 entries";
+          Style: (FontSize: 13, TextColor: #888888, VerticalAlignment: Center);
+          Anchor: (Width: 100);
+        }
+
+        Group { FlexWeight: 1; }
+
+        Label {
+          Text: "Filter:";
+          Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
+          Anchor: (Width: 40);
+        }
+        DropdownBox #FilterDropdown {
+          Style: $C.@DefaultDropdownBoxStyle;
+          Anchor: (Height: 28, Width: 150);
+        }
+      }
+
+      // Column headers
+      Group {
+        Anchor: (Height: 22, Bottom: 4);
+        LayoutMode: Left;
+        Padding: (Left: 12, Right: 12);
+
+        Label {
+          Text: "Time";
+          Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
+          Anchor: (Width: 90);
+        }
+        Label {
+          Text: "Type";
+          Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
+          Anchor: (Width: 75);
+        }
+        Label {
+          Text: "Message";
+          Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
+          FlexWeight: 1;
+        }
+      }
+
+      // Divider
+      Group {
+        Anchor: (Height: 1, Bottom: 4);
+        Background: (Color: #00AAAA);
+      }
+
+      // Scrollable log list
+      Group #LogsList {
+        FlexWeight: 1;
+        LayoutMode: TopScrolling;
+        ScrollbarStyle: $C.@DefaultScrollbarStyle;
+      }
+
+      // Divider
+      Group {
+        Anchor: (Height: 1, Top: 8, Bottom: 8);
+        Background: (Color: #00AAAA);
+      }
+
+      // Pagination
+      Group #Pagination {
+        Anchor: (Height: 35);
+        LayoutMode: Left;
+
+        TextButton #PrevBtn {
+          Text: "< Prev";
+          Anchor: (Height: 26, Width: 80);
+          Style: $S.@ButtonStyle;
+        }
+
+        Label { FlexWeight: 1; }
+
+        Label #PageInfo {
+          Text: "1/1";
+          Style: (FontSize: 14, TextColor: #888888, HorizontalAlignment: Center, VerticalAlignment: Center);
+          Anchor: (Width: 60);
+        }
+
+        Label { FlexWeight: 1; }
+
+        TextButton #NextBtn {
+          Text: "Next >";
+          Anchor: (Height: 26, Width: 80);
+          Style: $S.@ButtonStyle;
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

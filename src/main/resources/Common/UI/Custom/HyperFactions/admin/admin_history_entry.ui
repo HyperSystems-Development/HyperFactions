@@ -1,0 +1,62 @@
+// Admin History Entry - Compact membership history row for admin player info
+// Fits in ~260px left column
+
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+
+Group {
+  Anchor: (Height: 34, Bottom: 2);
+  Background: (Color: #1a2a3a);
+  LayoutMode: Left;
+  Padding: (Left: 8, Right: 8, Top: 3, Bottom: 3);
+
+  // Role color indicator bar
+  Group #RoleBar {
+    Anchor: (Width: 3, Top: 3, Bottom: 3);
+    Background: (Color: #888888);
+  }
+
+  Group { Anchor: (Width: 6); }
+
+  // Faction name + role
+  Group {
+    Anchor: (Width: 80);
+    LayoutMode: Top;
+
+    Label #HFactionName {
+      Text: "Faction";
+      Style: (FontSize: 10, TextColor: #CCCCCC, RenderBold: true, VerticalAlignment: Center);
+      Anchor: (Height: 14);
+    }
+
+    Label #HRole {
+      Text: "Member";
+      Style: (FontSize: 8, TextColor: #888888, VerticalAlignment: Center);
+      Anchor: (Height: 12);
+    }
+  }
+
+  // Dates
+  Group {
+    FlexWeight: 1;
+    LayoutMode: Top;
+
+    Label #HJoined {
+      Text: "Joined: --";
+      Style: (FontSize: 8, TextColor: #777777, VerticalAlignment: Center);
+      Anchor: (Height: 13);
+    }
+
+    Label #HLeft {
+      Text: "Left: --";
+      Style: (FontSize: 8, TextColor: #777777, VerticalAlignment: Center);
+      Anchor: (Height: 13);
+    }
+  }
+
+  // Leave reason badge
+  Label #HReason {
+    Text: "LEFT";
+    Style: (FontSize: 9, TextColor: #888888, RenderBold: true, VerticalAlignment: Center);
+  }
+}

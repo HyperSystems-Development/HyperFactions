@@ -8,15 +8,16 @@ import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.data.FactionPermissions;
 import com.hyperfactions.data.FactionRole;
 import com.hyperfactions.gui.GuiManager;
+import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.faction.FactionPageRegistry;
-import com.hyperfactions.gui.faction.data.FactionSettingsData;
 import com.hyperfactions.gui.faction.NavBarHelper;
+import com.hyperfactions.gui.faction.data.FactionSettingsData;
 import com.hyperfactions.integration.PermissionManager;
-import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.manager.ClaimManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.TeleportManager;
 import com.hyperfactions.util.ChunkUtil;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.math.vector.Vector3d;
@@ -37,7 +38,6 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
-
 import java.util.List;
 import java.util.UUID;
 
@@ -48,542 +48,556 @@ import java.util.UUID;
  */
 public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettingsData> {
 
-    private static final String PAGE_ID = "settings";
+  private static final String PAGE_ID = "settings";
 
-    private final PlayerRef playerRef;
-    private final FactionManager factionManager;
-    private final ClaimManager claimManager;
-    private final GuiManager guiManager;
-    private final HyperFactions hyperFactions;
-    private final Faction faction;
+  private final PlayerRef playerRef;
 
-    public FactionSettingsPage(PlayerRef playerRef,
-                               FactionManager factionManager,
-                               ClaimManager claimManager,
-                               GuiManager guiManager,
-                               HyperFactions hyperFactions,
-                               Faction faction) {
-        super(playerRef, CustomPageLifetime.CanDismiss, FactionSettingsData.CODEC);
-        this.playerRef = playerRef;
-        this.factionManager = factionManager;
-        this.claimManager = claimManager;
-        this.guiManager = guiManager;
-        this.hyperFactions = hyperFactions;
-        this.faction = faction;
+  private final FactionManager factionManager;
+
+  private final ClaimManager claimManager;
+
+  private final GuiManager guiManager;
+
+  private final HyperFactions hyperFactions;
+
+  private final Faction faction;
+
+  /** Creates a new FactionSettingsPage. */
+  public FactionSettingsPage(PlayerRef playerRef,
+               FactionManager factionManager,
+               ClaimManager claimManager,
+               GuiManager guiManager,
+               HyperFactions hyperFactions,
+               Faction faction) {
+    super(playerRef, CustomPageLifetime.CanDismiss, FactionSettingsData.CODEC);
+    this.playerRef = playerRef;
+    this.factionManager = factionManager;
+    this.claimManager = claimManager;
+    this.guiManager = guiManager;
+    this.hyperFactions = hyperFactions;
+    this.faction = faction;
+  }
+
+  /** Builds . */
+  @Override
+  public void build(Ref<EntityStore> ref, UICommandBuilder cmd,
+           UIEventBuilder events, Store<EntityStore> store) {
+
+    UUID uuid = playerRef.getUuid();
+    FactionMember member = faction.getMember(uuid);
+
+    // Permission check - officer or leader only
+    if (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel()) {
+      cmd.append(UIPaths.ERROR_PAGE);
+      cmd.set("#ErrorMessage.Text", "Only officers and leaders can change faction settings.");
+      events.addEventBinding(
+          CustomUIEventBindingType.Activating,
+          "#CloseBtn",
+          EventData.of("Button", "Close"),
+          false
+      );
+      return;
     }
 
-    @Override
-    public void build(Ref<EntityStore> ref, UICommandBuilder cmd,
-                      UIEventBuilder events, Store<EntityStore> store) {
+    boolean isLeader = member.role() == FactionRole.LEADER;
 
-        UUID uuid = playerRef.getUuid();
-        FactionMember member = faction.getMember(uuid);
+    // Load the unified settings template
+    cmd.append(UIPaths.FACTION_SETTINGS);
 
-        // Permission check - officer or leader only
-        if (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel()) {
-            cmd.append("HyperFactions/shared/error_page.ui");
-            cmd.set("#ErrorMessage.Text", "Only officers and leaders can change faction settings.");
-            events.addEventBinding(
-                    CustomUIEventBindingType.Activating,
-                    "#CloseBtn",
-                    EventData.of("Button", "Close"),
-                    false
-            );
-            return;
-        }
+    // Setup navigation bar
+    NavBarHelper.setupBar(playerRef, faction, PAGE_ID, cmd, events);
 
-        boolean isLeader = member.role() == FactionRole.LEADER;
+    // === LEFT COLUMN ===
+    buildGeneralSettings(cmd, events);
+    buildHomeSection(cmd, events);
+    buildModulesSection(events);
 
-        // Load the unified settings template
-        cmd.append("HyperFactions/faction/faction_settings.ui");
+    // === RIGHT COLUMN ===
+    buildColorSection(cmd, events);
+    buildPermissions(cmd, events, isLeader);
 
-        // Setup navigation bar
-        NavBarHelper.setupBar(playerRef, faction, PAGE_ID, cmd, events);
+    // Danger zone for leaders
+    if (isLeader) {
+      cmd.set("#DangerZone.Visible", true);
+      events.addEventBinding(
+          CustomUIEventBindingType.Activating,
+          "#DisbandBtn",
+          EventData.of("Button", "Disband"),
+          false
+      );
+    }
+  }
 
-        // === LEFT COLUMN ===
-        buildGeneralSettings(cmd, events);
-        buildHomeSection(cmd, events);
-        buildModulesSection(events);
+  // =========================================================================
+  // GENERAL SETTINGS (Left Column)
+  // =========================================================================
 
-        // === RIGHT COLUMN ===
-        buildColorSection(cmd, events);
-        buildPermissions(cmd, events, isLeader);
+  private void buildGeneralSettings(UICommandBuilder cmd, UIEventBuilder events) {
+    // Name
+    cmd.set("#NameValue.Text", faction.name());
+    events.addEventBinding(CustomUIEventBindingType.Activating, "#NameEditBtn",
+        EventData.of("Button", "OpenRenameModal"), false);
 
-        // Danger zone for leaders
-        if (isLeader) {
-            cmd.set("#DangerZone.Visible", true);
-            events.addEventBinding(
-                    CustomUIEventBindingType.Activating,
-                    "#DisbandBtn",
-                    EventData.of("Button", "Disband"),
-                    false
-            );
-        }
+    // Tag
+    String tagDisplay = faction.tag() != null && !faction.tag().isEmpty()
+        ? "[" + faction.tag().toUpperCase() + "]"
+        : "(None)";
+    cmd.set("#TagValue.Text", tagDisplay);
+    events.addEventBinding(CustomUIEventBindingType.Activating, "#TagEditBtn",
+        EventData.of("Button", "OpenTagModal"), false);
+
+    // Description
+    String desc = faction.description() != null && !faction.description().isEmpty()
+        ? faction.description()
+        : "(None)";
+    cmd.set("#DescValue.Text", desc);
+    events.addEventBinding(CustomUIEventBindingType.Activating, "#DescEditBtn",
+        EventData.of("Button", "OpenDescriptionModal"), false);
+
+    // Recruitment dropdown
+    cmd.set("#RecruitmentDropdown.Entries", List.of(
+        new DropdownEntryInfo(LocalizableString.fromString("Open"), "OPEN"),
+        new DropdownEntryInfo(LocalizableString.fromString("Invite Only"), "INVITE_ONLY")
+    ));
+    cmd.set("#RecruitmentDropdown.Value", faction.open() ? "OPEN" : "INVITE_ONLY");
+    events.addEventBinding(CustomUIEventBindingType.ValueChanged, "#RecruitmentDropdown",
+        EventData.of("Button", "RecruitmentChanged")
+            .append("@Recruitment", "#RecruitmentDropdown.Value"), false);
+  }
+
+  // =========================================================================
+  // COLOR / APPEARANCE (Right Column)
+  // =========================================================================
+
+  private void buildColorSection(UICommandBuilder cmd, UIEventBuilder events) {
+    String colorHex = faction.color();
+    cmd.set("#ColorPreview.Background.Color", colorHex);
+    cmd.set("#ColorValue.Text", colorHex);
+    cmd.set("#FactionColorPicker.Value", colorHex);
+    events.addEventBinding(CustomUIEventBindingType.ValueChanged, "#FactionColorPicker",
+        EventData.of("Button", "ColorChanged")
+            .append("@Color", "#FactionColorPicker.Value"), false);
+  }
+
+  // =========================================================================
+  // PERMISSIONS + FACTION SETTINGS (Right Column)
+  // =========================================================================
+
+  private void buildPermissions(UICommandBuilder cmd, UIEventBuilder events, boolean isLeader) {
+    boolean canEdit = canEditPermissions(playerRef.getUuid(), faction);
+
+    FactionPermissions perms = ConfigManager.get().getEffectiveFactionPermissions(
+        faction.getEffectivePermissions()
+    );
+    ConfigManager config = ConfigManager.get();
+
+    // Build toggles for all 4 levels
+    for (String level : FactionPermissions.ALL_LEVELS) {
+      String cap = capitalize(level);
+      buildToggle(cmd, events, cap + "BreakToggle", level + "Break", perms.get(level + "Break"), canEdit, config, false);
+      buildToggle(cmd, events, cap + "PlaceToggle", level + "Place", perms.get(level + "Place"), canEdit, config, false);
+      buildToggle(cmd, events, cap + "InteractToggle", level + "Interact", perms.get(level + "Interact"), canEdit, config, false);
+
+      // Interaction sub-flags — disabled when parent interact is off
+      boolean interactOff = !perms.get(level + "Interact");
+      buildToggle(cmd, events, cap + "DoorToggle", level + "DoorUse", perms.get(level + "DoorUse"), canEdit, config, interactOff);
+      buildToggle(cmd, events, cap + "ContainerToggle", level + "ContainerUse", perms.get(level + "ContainerUse"), canEdit, config, interactOff);
+      buildToggle(cmd, events, cap + "BenchToggle", level + "BenchUse", perms.get(level + "BenchUse"), canEdit, config, interactOff);
+      buildToggle(cmd, events, cap + "ProcessingToggle", level + "ProcessingUse", perms.get(level + "ProcessingUse"), canEdit, config, interactOff);
+      buildToggle(cmd, events, cap + "SeatToggle", level + "SeatUse", perms.get(level + "SeatUse"), canEdit, config, interactOff);
+      buildToggle(cmd, events, cap + "TransportToggle", level + "TransportUse", perms.get(level + "TransportUse"), canEdit, config, interactOff);
     }
 
-    // =========================================================================
-    // GENERAL SETTINGS (Left Column)
-    // =========================================================================
+    // Mob spawning toggles — children disabled when master is off
+    boolean mobSpawning = perms.get(FactionPermissions.MOB_SPAWNING);
+    boolean mobParentOff = !mobSpawning;
+    buildToggle(cmd, events, "MobSpawningToggle", "mobSpawning", mobSpawning, canEdit, config, false);
+    buildToggle(cmd, events, "HostileMobToggle", "hostileMobSpawning", perms.get(FactionPermissions.HOSTILE_MOB_SPAWNING), canEdit, config, mobParentOff);
+    buildToggle(cmd, events, "PassiveMobToggle", "passiveMobSpawning", perms.get(FactionPermissions.PASSIVE_MOB_SPAWNING), canEdit, config, mobParentOff);
+    buildToggle(cmd, events, "NeutralMobToggle", "neutralMobSpawning", perms.get(FactionPermissions.NEUTRAL_MOB_SPAWNING), canEdit, config, mobParentOff);
 
-    private void buildGeneralSettings(UICommandBuilder cmd, UIEventBuilder events) {
-        // Name
-        cmd.set("#NameValue.Text", faction.name());
-        events.addEventBinding(CustomUIEventBindingType.Activating, "#NameEditBtn",
-                EventData.of("Button", "OpenRenameModal"), false);
+    // PvP toggle
+    buildToggle(cmd, events, "PvPToggle", "pvpEnabled", perms.pvpEnabled(), canEdit, config, false);
+    cmd.set("#PvPStatus.Text", perms.pvpEnabled() ? "Enabled" : "Disabled");
+    cmd.set("#PvPStatus.Style.TextColor", perms.pvpEnabled() ? "#55FF55" : "#FF5555");
 
-        // Tag
-        String tagDisplay = faction.tag() != null && !faction.tag().isEmpty()
-                ? "[" + faction.tag().toUpperCase() + "]"
-                : "(None)";
-        cmd.set("#TagValue.Text", tagDisplay);
-        events.addEventBinding(CustomUIEventBindingType.Activating, "#TagEditBtn",
-                EventData.of("Button", "OpenTagModal"), false);
+    // Officers can edit - only leader can change this
+    if (isLeader) {
+      buildToggle(cmd, events, "OfficersCanEditToggle", "officersCanEdit", perms.officersCanEdit(), true, config, false);
+    } else {
+      cmd.set("#OfficerSettingRow.Visible", false);
+    }
+  }
 
-        // Description
-        String desc = faction.description() != null && !faction.description().isEmpty()
-                ? faction.description()
-                : "(None)";
-        cmd.set("#DescValue.Text", desc);
-        events.addEventBinding(CustomUIEventBindingType.Activating, "#DescEditBtn",
-                EventData.of("Button", "OpenDescriptionModal"), false);
+  private static String capitalize(String s) {
+    if (s == null || s.isEmpty()) {
+      return s;
+    }
+    return Character.toUpperCase(s.charAt(0)) + s.substring(1);
+  }
 
-        // Recruitment dropdown
-        cmd.set("#RecruitmentDropdown.Entries", List.of(
-                new DropdownEntryInfo(LocalizableString.fromString("Open"), "OPEN"),
-                new DropdownEntryInfo(LocalizableString.fromString("Invite Only"), "INVITE_ONLY")
-        ));
-        cmd.set("#RecruitmentDropdown.Value", faction.open() ? "OPEN" : "INVITE_ONLY");
-        events.addEventBinding(CustomUIEventBindingType.ValueChanged, "#RecruitmentDropdown",
-                EventData.of("Button", "RecruitmentChanged")
-                        .append("@Recruitment", "#RecruitmentDropdown.Value"), false);
+  private void buildToggle(UICommandBuilder cmd, UIEventBuilder events,
+              String elementId, String permName, boolean currentValue,
+              boolean canEdit, ConfigManager config, boolean parentDisabled) {
+    boolean locked = config.isPermissionLocked(permName);
+    String selector = "#" + elementId;
+
+    // When parent is disabled, show unchecked and disable the checkbox
+    boolean displayValue = parentDisabled ? false : currentValue;
+    boolean shouldDisable = parentDisabled || locked || !canEdit;
+
+    cmd.set(selector + " #CheckBox.Value", displayValue);
+    cmd.set(selector + " #CheckBox.Disabled", shouldDisable);
+
+    if (!shouldDisable) {
+      events.addEventBinding(
+          CustomUIEventBindingType.ValueChanged,
+          selector + " #CheckBox",
+          EventData.of("Button", "TogglePerm").append("Perm", permName),
+          false
+      );
+    }
+  }
+
+  private boolean canEditPermissions(UUID uuid, Faction faction) {
+    FactionMember member = faction.getMember(uuid);
+    if (member == null) {
+      return false;
     }
 
-    // =========================================================================
-    // COLOR / APPEARANCE (Right Column)
-    // =========================================================================
+    FactionRole role = member.role();
 
-    private void buildColorSection(UICommandBuilder cmd, UIEventBuilder events) {
-        String colorHex = faction.color();
-        cmd.set("#ColorPreview.Background.Color", colorHex);
-        cmd.set("#ColorValue.Text", colorHex);
-        cmd.set("#FactionColorPicker.Value", colorHex);
-        events.addEventBinding(CustomUIEventBindingType.ValueChanged, "#FactionColorPicker",
-                EventData.of("Button", "ColorChanged")
-                        .append("@Color", "#FactionColorPicker.Value"), false);
+    if (role == FactionRole.LEADER) {
+      return true;
     }
 
-    // =========================================================================
-    // PERMISSIONS + FACTION SETTINGS (Right Column)
-    // =========================================================================
-
-    private void buildPermissions(UICommandBuilder cmd, UIEventBuilder events, boolean isLeader) {
-        boolean canEdit = canEditPermissions(playerRef.getUuid(), faction);
-
-        FactionPermissions perms = ConfigManager.get().getEffectiveFactionPermissions(
-                faction.getEffectivePermissions()
-        );
-        ConfigManager config = ConfigManager.get();
-
-        // Build toggles for all 4 levels
-        for (String level : FactionPermissions.ALL_LEVELS) {
-            String cap = capitalize(level);
-            buildToggle(cmd, events, cap + "BreakToggle", level + "Break", perms.get(level + "Break"), canEdit, config, false);
-            buildToggle(cmd, events, cap + "PlaceToggle", level + "Place", perms.get(level + "Place"), canEdit, config, false);
-            buildToggle(cmd, events, cap + "InteractToggle", level + "Interact", perms.get(level + "Interact"), canEdit, config, false);
-
-            // Interaction sub-flags — disabled when parent interact is off
-            boolean interactOff = !perms.get(level + "Interact");
-            buildToggle(cmd, events, cap + "DoorToggle", level + "DoorUse", perms.get(level + "DoorUse"), canEdit, config, interactOff);
-            buildToggle(cmd, events, cap + "ContainerToggle", level + "ContainerUse", perms.get(level + "ContainerUse"), canEdit, config, interactOff);
-            buildToggle(cmd, events, cap + "BenchToggle", level + "BenchUse", perms.get(level + "BenchUse"), canEdit, config, interactOff);
-            buildToggle(cmd, events, cap + "ProcessingToggle", level + "ProcessingUse", perms.get(level + "ProcessingUse"), canEdit, config, interactOff);
-            buildToggle(cmd, events, cap + "SeatToggle", level + "SeatUse", perms.get(level + "SeatUse"), canEdit, config, interactOff);
-            buildToggle(cmd, events, cap + "TransportToggle", level + "TransportUse", perms.get(level + "TransportUse"), canEdit, config, interactOff);
-        }
-
-        // Mob spawning toggles — children disabled when master is off
-        boolean mobSpawning = perms.get(FactionPermissions.MOB_SPAWNING);
-        boolean mobParentOff = !mobSpawning;
-        buildToggle(cmd, events, "MobSpawningToggle", "mobSpawning", mobSpawning, canEdit, config, false);
-        buildToggle(cmd, events, "HostileMobToggle", "hostileMobSpawning", perms.get(FactionPermissions.HOSTILE_MOB_SPAWNING), canEdit, config, mobParentOff);
-        buildToggle(cmd, events, "PassiveMobToggle", "passiveMobSpawning", perms.get(FactionPermissions.PASSIVE_MOB_SPAWNING), canEdit, config, mobParentOff);
-        buildToggle(cmd, events, "NeutralMobToggle", "neutralMobSpawning", perms.get(FactionPermissions.NEUTRAL_MOB_SPAWNING), canEdit, config, mobParentOff);
-
-        // PvP toggle
-        buildToggle(cmd, events, "PvPToggle", "pvpEnabled", perms.pvpEnabled(), canEdit, config, false);
-        cmd.set("#PvPStatus.Text", perms.pvpEnabled() ? "Enabled" : "Disabled");
-        cmd.set("#PvPStatus.Style.TextColor", perms.pvpEnabled() ? "#55FF55" : "#FF5555");
-
-        // Officers can edit - only leader can change this
-        if (isLeader) {
-            buildToggle(cmd, events, "OfficersCanEditToggle", "officersCanEdit", perms.officersCanEdit(), true, config, false);
-        } else {
-            cmd.set("#OfficerSettingRow.Visible", false);
-        }
+    if (role == FactionRole.OFFICER) {
+      FactionPermissions perms = faction.getEffectivePermissions();
+      return perms.officersCanEdit()
+         && PermissionManager.get().hasPermission(uuid, Permissions.FACTION_PERMISSIONS);
     }
 
-    private static String capitalize(String s) {
-        if (s == null || s.isEmpty()) return s;
-        return Character.toUpperCase(s.charAt(0)) + s.substring(1);
+    return false;
+  }
+
+  // =========================================================================
+  // HOME LOCATION (Left Column)
+  // =========================================================================
+
+  private void buildHomeSection(UICommandBuilder cmd, UIEventBuilder events) {
+    if (faction.home() != null) {
+      Faction.FactionHome home = faction.home();
+      String worldName = home.world();
+      if (worldName.contains("/")) {
+        worldName = worldName.substring(worldName.lastIndexOf('/') + 1);
+      }
+      String homeText = String.format("%s (%.0f, %.0f, %.0f)",
+          worldName, home.x(), home.y(), home.z());
+      cmd.set("#HomeLocation.Text", homeText);
+    } else {
+      cmd.set("#HomeLocation.Text", "Not set");
+      cmd.set("#TeleportHomeBtn.Disabled", true);
+      cmd.set("#DeleteHomeBtn.Disabled", true);
     }
 
-    private void buildToggle(UICommandBuilder cmd, UIEventBuilder events,
-                             String elementId, String permName, boolean currentValue,
-                             boolean canEdit, ConfigManager config, boolean parentDisabled) {
-        boolean locked = config.isPermissionLocked(permName);
-        String selector = "#" + elementId;
+    events.addEventBinding(CustomUIEventBindingType.Activating, "#SetHomeBtn",
+        EventData.of("Button", "SetHome"), false);
+    events.addEventBinding(CustomUIEventBindingType.Activating, "#TeleportHomeBtn",
+        EventData.of("Button", "TeleportHome"), false);
+    events.addEventBinding(CustomUIEventBindingType.Activating, "#DeleteHomeBtn",
+        EventData.of("Button", "DeleteHome"), false);
+  }
 
-        // When parent is disabled, show unchecked and disable the checkbox
-        boolean displayValue = parentDisabled ? false : currentValue;
-        boolean shouldDisable = parentDisabled || locked || !canEdit;
+  // =========================================================================
+  // MODULES (Left Column)
+  // =========================================================================
 
-        cmd.set(selector + " #CheckBox.Value", displayValue);
-        cmd.set(selector + " #CheckBox.Disabled", shouldDisable);
+  private void buildModulesSection(UIEventBuilder events) {
+    events.addEventBinding(CustomUIEventBindingType.Activating, "#ModulesBtn",
+        EventData.of("Button", "OpenModules"), false);
+  }
 
-        if (!shouldDisable) {
-            events.addEventBinding(
-                    CustomUIEventBindingType.ValueChanged,
-                    selector + " #CheckBox",
-                    EventData.of("Button", "TogglePerm").append("Perm", permName),
-                    false
-            );
-        }
+  // =========================================================================
+  // EVENT HANDLING
+  // =========================================================================
+
+  /** Handles data event. */
+  @Override
+  public void handleDataEvent(Ref<EntityStore> ref, Store<EntityStore> store,
+                FactionSettingsData data) {
+    super.handleDataEvent(ref, store, data);
+
+    Player player = store.getComponent(ref, Player.getComponentType());
+    PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
+
+    if (player == null || playerRef == null || data.button == null) {
+      sendUpdate();
+      return;
     }
 
-    private boolean canEditPermissions(UUID uuid, Faction faction) {
-        FactionMember member = faction.getMember(uuid);
-        if (member == null) return false;
-
-        FactionRole role = member.role();
-
-        if (role == FactionRole.LEADER) return true;
-
-        if (role == FactionRole.OFFICER) {
-            FactionPermissions perms = faction.getEffectivePermissions();
-            return perms.officersCanEdit() &&
-                   PermissionManager.get().hasPermission(uuid, Permissions.FACTION_PERMISSIONS);
+    // Handle navigation
+    if ("Nav".equals(data.button) && data.navBar != null) {
+      FactionPageRegistry.Entry entry = FactionPageRegistry.getInstance().getEntry(data.navBar);
+      if (entry != null) {
+        Faction currentFaction = factionManager.getFaction(faction.id());
+        var page = entry.guiSupplier().create(player, ref, store, playerRef, currentFaction, guiManager);
+        if (page != null) {
+          player.getPageManager().openCustomPage(ref, store, page);
+          return;
         }
-
-        return false;
+      }
+      sendUpdate();
+      return;
     }
 
-    // =========================================================================
-    // HOME LOCATION (Left Column)
-    // =========================================================================
-
-    private void buildHomeSection(UICommandBuilder cmd, UIEventBuilder events) {
-        if (faction.home() != null) {
-            Faction.FactionHome home = faction.home();
-            String worldName = home.world();
-            if (worldName.contains("/")) {
-                worldName = worldName.substring(worldName.lastIndexOf('/') + 1);
-            }
-            String homeText = String.format("%s (%.0f, %.0f, %.0f)",
-                    worldName, home.x(), home.y(), home.z());
-            cmd.set("#HomeLocation.Text", homeText);
-        } else {
-            cmd.set("#HomeLocation.Text", "Not set");
-            cmd.set("#TeleportHomeBtn.Disabled", true);
-            cmd.set("#DeleteHomeBtn.Disabled", true);
-        }
-
-        events.addEventBinding(CustomUIEventBindingType.Activating, "#SetHomeBtn",
-                EventData.of("Button", "SetHome"), false);
-        events.addEventBinding(CustomUIEventBindingType.Activating, "#TeleportHomeBtn",
-                EventData.of("Button", "TeleportHome"), false);
-        events.addEventBinding(CustomUIEventBindingType.Activating, "#DeleteHomeBtn",
-                EventData.of("Button", "DeleteHome"), false);
+    // Handle close button (from error page)
+    if ("Close".equals(data.button)) {
+      guiManager.openFactionMain(player, ref, store, playerRef);
+      return;
     }
 
-    // =========================================================================
-    // MODULES (Left Column)
-    // =========================================================================
+    UUID uuid = playerRef.getUuid();
+    FactionMember member = faction.getMember(uuid);
 
-    private void buildModulesSection(UIEventBuilder events) {
-        events.addEventBinding(CustomUIEventBindingType.Activating, "#ModulesBtn",
-                EventData.of("Button", "OpenModules"), false);
+    // Verify permissions
+    if (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel()) {
+      player.sendMessage(MessageUtil.errorText("You don't have permission to change settings."));
+      sendUpdate();
+      return;
     }
 
-    // =========================================================================
-    // EVENT HANDLING
-    // =========================================================================
+    boolean isLeader = member.role() == FactionRole.LEADER;
 
-    @Override
-    public void handleDataEvent(Ref<EntityStore> ref, Store<EntityStore> store,
-                                FactionSettingsData data) {
-        super.handleDataEvent(ref, store, data);
-
-        Player player = store.getComponent(ref, Player.getComponentType());
-        PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
-
-        if (player == null || playerRef == null || data.button == null) {
-            sendUpdate();
-            return;
+    switch (data.button) {
+      case "TogglePerm" -> handleTogglePerm(player, ref, store, data, isLeader);
+      case "ColorChanged" -> handleColorChanged(player, ref, store, data);
+      case "RecruitmentChanged" -> handleRecruitmentChanged(player, ref, store, data);
+      case "OpenRenameModal" -> guiManager.openRenameModal(player, ref, store, playerRef, faction);
+      case "OpenDescriptionModal" -> guiManager.openDescriptionModal(player, ref, store, playerRef, faction);
+      case "OpenTagModal" -> guiManager.openTagModal(player, ref, store, playerRef, faction);
+      case "SetHome" -> handleSetHome(player, ref, store, uuid);
+      case "TeleportHome" -> handleTeleportHome(player, ref, store, uuid);
+      case "DeleteHome" -> handleDeleteHome(player, ref, store, uuid);
+      case "OpenModules" -> guiManager.openFactionModules(player, ref, store, playerRef, faction);
+      case "Disband" -> {
+        if (!isLeader) {
+          player.sendMessage(MessageUtil.errorText("Only the leader can disband the faction."));
+          sendUpdate();
+          return;
         }
+        guiManager.openDisbandConfirm(player, ref, store, playerRef, faction);
+      }
+      default -> sendUpdate();
+    }
+  }
 
-        // Handle navigation
-        if ("Nav".equals(data.button) && data.navBar != null) {
-            FactionPageRegistry.Entry entry = FactionPageRegistry.getInstance().getEntry(data.navBar);
-            if (entry != null) {
-                Faction currentFaction = factionManager.getFaction(faction.id());
-                var page = entry.guiSupplier().create(player, ref, store, playerRef, currentFaction, guiManager);
-                if (page != null) {
-                    player.getPageManager().openCustomPage(ref, store, page);
-                    return;
-                }
-            }
-            sendUpdate();
-            return;
-        }
-
-        // Handle close button (from error page)
-        if ("Close".equals(data.button)) {
-            guiManager.openFactionMain(player, ref, store, playerRef);
-            return;
-        }
-
-        UUID uuid = playerRef.getUuid();
-        FactionMember member = faction.getMember(uuid);
-
-        // Verify permissions
-        if (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel()) {
-            player.sendMessage(MessageUtil.errorText("You don't have permission to change settings."));
-            sendUpdate();
-            return;
-        }
-
-        boolean isLeader = member.role() == FactionRole.LEADER;
-
-        switch (data.button) {
-            case "TogglePerm" -> handleTogglePerm(player, ref, store, data, isLeader);
-            case "ColorChanged" -> handleColorChanged(player, ref, store, data);
-            case "RecruitmentChanged" -> handleRecruitmentChanged(player, ref, store, data);
-            case "OpenRenameModal" -> guiManager.openRenameModal(player, ref, store, playerRef, faction);
-            case "OpenDescriptionModal" -> guiManager.openDescriptionModal(player, ref, store, playerRef, faction);
-            case "OpenTagModal" -> guiManager.openTagModal(player, ref, store, playerRef, faction);
-            case "SetHome" -> handleSetHome(player, ref, store, uuid);
-            case "TeleportHome" -> handleTeleportHome(player, ref, store, uuid);
-            case "DeleteHome" -> handleDeleteHome(player, ref, store, uuid);
-            case "OpenModules" -> guiManager.openFactionModules(player, ref, store, playerRef, faction);
-            case "Disband" -> {
-                if (!isLeader) {
-                    player.sendMessage(MessageUtil.errorText("Only the leader can disband the faction."));
-                    sendUpdate();
-                    return;
-                }
-                guiManager.openDisbandConfirm(player, ref, store, playerRef, faction);
-            }
-            default -> sendUpdate();
-        }
+  private void handleTogglePerm(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
+                 FactionSettingsData data, boolean isLeader) {
+    String permName = data.perm;
+    if (permName == null) {
+      sendUpdate();
+      return;
     }
 
-    private void handleTogglePerm(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
-                                  FactionSettingsData data, boolean isLeader) {
-        String permName = data.perm;
-        if (permName == null) {
-            sendUpdate();
-            return;
-        }
+    ConfigManager config = ConfigManager.get();
 
-        ConfigManager config = ConfigManager.get();
-
-        if (config.isPermissionLocked(permName)) {
-            player.sendMessage(MessageUtil.errorText("This setting is locked by the server."));
-            sendUpdate();
-            return;
-        }
-
-        if (!canEditPermissions(playerRef.getUuid(), faction)) {
-            player.sendMessage(MessageUtil.errorText("You don't have permission to edit territory permissions."));
-            sendUpdate();
-            return;
-        }
-
-        if ("officersCanEdit".equals(permName) && !isLeader) {
-            player.sendMessage(MessageUtil.errorText("Only the leader can change officer access."));
-            sendUpdate();
-            return;
-        }
-
-        FactionPermissions current = faction.getEffectivePermissions();
-        FactionPermissions updated = current.toggle(permName);
-
-        Faction updatedFaction = faction.withPermissions(updated);
-        factionManager.updateFaction(updatedFaction);
-
-        // Re-open page with fresh data
-        Faction freshFaction = factionManager.getFaction(faction.id());
-        guiManager.openFactionSettings(player, ref, store, playerRef, freshFaction);
+    if (config.isPermissionLocked(permName)) {
+      player.sendMessage(MessageUtil.errorText("This setting is locked by the server."));
+      sendUpdate();
+      return;
     }
 
-    private void handleColorChanged(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
-                                     FactionSettingsData data) {
-        String rawColor = data.color;
-        if (rawColor == null || rawColor.isEmpty()) {
-            sendUpdate();
-            return;
-        }
-
-        // ColorPicker returns #RRGGBBAA — strip alpha to get #RRGGBB
-        String hexColor = rawColor.length() >= 7 ? rawColor.substring(0, 7).toUpperCase() : rawColor.toUpperCase();
-
-        if (!hexColor.matches("#[0-9A-F]{6}")) {
-            sendUpdate();
-            return;
-        }
-
-        Faction updatedFaction = faction.withColor(hexColor);
-        factionManager.updateFaction(updatedFaction);
-
-        var worldMapService = hyperFactions.getWorldMapService();
-        if (worldMapService != null) {
-            worldMapService.triggerFactionWideRefresh(faction.id());
-        }
-
-        Faction freshFaction = factionManager.getFaction(faction.id());
-        guiManager.openFactionSettings(player, ref, store, playerRef, freshFaction);
+    if (!canEditPermissions(playerRef.getUuid(), faction)) {
+      player.sendMessage(MessageUtil.errorText("You don't have permission to edit territory permissions."));
+      sendUpdate();
+      return;
     }
 
-    private void handleRecruitmentChanged(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
-                                            FactionSettingsData data) {
-        String value = data.recruitment;
-        if (value == null) {
-            sendUpdate();
-            return;
-        }
-
-        boolean isOpen = "OPEN".equals(value);
-        Faction updatedFaction = faction.withOpen(isOpen);
-        factionManager.updateFaction(updatedFaction);
-
-        player.sendMessage(Message.raw("Recruitment set to " + (isOpen ? "Open" : "Invite Only") + ".").color("#55FF55"));
-
-        Faction freshFaction = factionManager.getFaction(faction.id());
-        guiManager.openFactionSettings(player, ref, store, playerRef, freshFaction);
+    if ("officersCanEdit".equals(permName) && !isLeader) {
+      player.sendMessage(MessageUtil.errorText("Only the leader can change officer access."));
+      sendUpdate();
+      return;
     }
 
-    private void handleSetHome(Player player, Ref<EntityStore> ref, Store<EntityStore> store, UUID uuid) {
-        TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
-        World world = player.getWorld();
-        if (transform != null && world != null) {
-            var pos = transform.getPosition();
-            String worldName = world.getName();
+    FactionPermissions current = faction.getEffectivePermissions();
+    FactionPermissions updated = current.toggle(permName);
 
-            int chunkX = ChunkUtil.toChunkCoord(pos.x);
-            int chunkZ = ChunkUtil.toChunkCoord(pos.z);
-            UUID claimOwner = claimManager.getClaimOwner(worldName, chunkX, chunkZ);
-            if (claimOwner == null || !claimOwner.equals(faction.id())) {
-                player.sendMessage(MessageUtil.errorText("You must be in your faction's territory to set home."));
-                sendUpdate();
-                return;
-            }
+    Faction updatedFaction = faction.withPermissions(updated);
+    factionManager.updateFaction(updatedFaction);
 
-            Faction.FactionHome newHome = Faction.FactionHome.create(
-                    worldName, pos.x, pos.y, pos.z, 0f, 0f, uuid
-            );
+    // Re-open page with fresh data
+    Faction freshFaction = factionManager.getFaction(faction.id());
+    guiManager.openFactionSettings(player, ref, store, playerRef, freshFaction);
+  }
 
-            Faction updatedFaction = faction.withHome(newHome);
-            factionManager.updateFaction(updatedFaction);
-
-            player.sendMessage(MessageUtil.successText("Faction home set to your current location!"));
-
-            guiManager.openFactionSettings(player, ref, store, playerRef,
-                    factionManager.getFaction(faction.id()));
-        } else {
-            player.sendMessage(MessageUtil.errorText("Could not determine your location."));
-            sendUpdate();
-        }
+  private void handleColorChanged(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
+                  FactionSettingsData data) {
+    String rawColor = data.color;
+    if (rawColor == null || rawColor.isEmpty()) {
+      sendUpdate();
+      return;
     }
 
-    private void handleTeleportHome(Player player, Ref<EntityStore> ref, Store<EntityStore> store, UUID uuid) {
-        if (faction.home() == null) {
-            player.sendMessage(MessageUtil.errorText("No faction home set."));
-            sendUpdate();
-            return;
-        }
+    // ColorPicker returns #RRGGBBAA — strip alpha to get #RRGGBB
+    String hexColor = rawColor.length() >= 7 ? rawColor.substring(0, 7).toUpperCase() : rawColor.toUpperCase();
 
-        // Close GUI first
-        guiManager.closePage(player, ref, store);
-
-        TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
-        if (transform == null) {
-            player.sendMessage(MessageUtil.errorText("Could not determine your location."));
-            return;
-        }
-
-        Vector3d pos = transform.getPosition();
-        World world = player.getWorld();
-        if (world == null) {
-            player.sendMessage(MessageUtil.errorText("Could not determine your world."));
-            return;
-        }
-
-        TeleportManager.StartLocation startLoc = new TeleportManager.StartLocation(
-                world.getName(), pos.getX(), pos.getY(), pos.getZ()
-        );
-
-        TeleportManager.TeleportResult result = hyperFactions.getTeleportManager().teleportToHome(
-                uuid,
-                startLoc,
-                f -> executeTeleport(store, ref, world, f),
-                player::sendMessage,
-                () -> hyperFactions.getCombatTagManager().isTagged(uuid)
-        );
-
-        handleTeleportResult(player, result);
+    if (!hexColor.matches("#[0-9A-F]{6}")) {
+      sendUpdate();
+      return;
     }
 
-    private TeleportManager.TeleportResult executeTeleport(Store<EntityStore> store, Ref<EntityStore> ref,
-                                                           World currentWorld, Faction faction) {
-        Faction.FactionHome home = faction.home();
-        if (home == null) {
-            return TeleportManager.TeleportResult.NO_HOME;
-        }
+    Faction updatedFaction = faction.withColor(hexColor);
+    factionManager.updateFaction(updatedFaction);
 
-        World targetWorld;
-        if (currentWorld.getName().equals(home.world())) {
-            targetWorld = currentWorld;
-        } else {
-            targetWorld = Universe.get().getWorld(home.world());
-            if (targetWorld == null) {
-                return TeleportManager.TeleportResult.WORLD_NOT_FOUND;
-            }
-        }
-
-        targetWorld.execute(() -> {
-            Vector3d position = new Vector3d(home.x(), home.y(), home.z());
-            Vector3f rotation = new Vector3f(home.pitch(), home.yaw(), 0);
-            Teleport teleport = Teleport.createForPlayer(targetWorld, position, rotation);
-            store.addComponent(ref, Teleport.getComponentType(), teleport);
-        });
-
-        return TeleportManager.TeleportResult.SUCCESS_INSTANT;
+    var worldMapService = hyperFactions.getWorldMapService();
+    if (worldMapService != null) {
+      worldMapService.triggerFactionWideRefresh(faction.id());
     }
 
-    private void handleTeleportResult(Player player, TeleportManager.TeleportResult result) {
-        switch (result) {
-            case NOT_IN_FACTION -> player.sendMessage(MessageUtil.errorText("You are not in a faction."));
-            case NO_HOME -> player.sendMessage(MessageUtil.errorText("Your faction has no home set."));
-            case COMBAT_TAGGED -> player.sendMessage(MessageUtil.errorText("You cannot teleport while in combat!"));
-            case SUCCESS_INSTANT -> player.sendMessage(MessageUtil.successText("Teleported to faction home!"));
-            case ON_COOLDOWN, SUCCESS_WARMUP -> {} // Message sent by TeleportManager
-            default -> {}
-        }
+    Faction freshFaction = factionManager.getFaction(faction.id());
+    guiManager.openFactionSettings(player, ref, store, playerRef, freshFaction);
+  }
+
+  private void handleRecruitmentChanged(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
+                      FactionSettingsData data) {
+    String value = data.recruitment;
+    if (value == null) {
+      sendUpdate();
+      return;
     }
 
-    private void handleDeleteHome(Player player, Ref<EntityStore> ref, Store<EntityStore> store, UUID uuid) {
-        if (faction.home() == null) {
-            player.sendMessage(MessageUtil.text("Your faction does not have a home set.", MessageUtil.COLOR_GOLD));
-            sendUpdate();
-            return;
-        }
+    boolean isOpen = "OPEN".equals(value);
+    Faction updatedFaction = faction.withOpen(isOpen);
+    factionManager.updateFaction(updatedFaction);
 
-        Faction updatedFaction = faction.withHome(null);
-        factionManager.updateFaction(updatedFaction);
+    player.sendMessage(Message.raw("Recruitment set to " + (isOpen ? "Open" : "Invite Only") + ".").color("#55FF55"));
 
-        player.sendMessage(MessageUtil.successText("Faction home deleted!"));
+    Faction freshFaction = factionManager.getFaction(faction.id());
+    guiManager.openFactionSettings(player, ref, store, playerRef, freshFaction);
+  }
 
-        guiManager.openFactionSettings(player, ref, store, playerRef,
-                factionManager.getFaction(faction.id()));
+  private void handleSetHome(Player player, Ref<EntityStore> ref, Store<EntityStore> store, UUID uuid) {
+    TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
+    World world = player.getWorld();
+    if (transform != null && world != null) {
+      var pos = transform.getPosition();
+      String worldName = world.getName();
+
+      int chunkX = ChunkUtil.toChunkCoord(pos.x);
+      int chunkZ = ChunkUtil.toChunkCoord(pos.z);
+      UUID claimOwner = claimManager.getClaimOwner(worldName, chunkX, chunkZ);
+      if (claimOwner == null || !claimOwner.equals(faction.id())) {
+        player.sendMessage(MessageUtil.errorText("You must be in your faction's territory to set home."));
+        sendUpdate();
+        return;
+      }
+
+      Faction.FactionHome newHome = Faction.FactionHome.create(
+          worldName, pos.x, pos.y, pos.z, 0f, 0f, uuid
+      );
+
+      Faction updatedFaction = faction.withHome(newHome);
+      factionManager.updateFaction(updatedFaction);
+
+      player.sendMessage(MessageUtil.successText("Faction home set to your current location!"));
+
+      guiManager.openFactionSettings(player, ref, store, playerRef,
+          factionManager.getFaction(faction.id()));
+    } else {
+      player.sendMessage(MessageUtil.errorText("Could not determine your location."));
+      sendUpdate();
     }
+  }
+
+  private void handleTeleportHome(Player player, Ref<EntityStore> ref, Store<EntityStore> store, UUID uuid) {
+    if (faction.home() == null) {
+      player.sendMessage(MessageUtil.errorText("No faction home set."));
+      sendUpdate();
+      return;
+    }
+
+    // Close GUI first
+    guiManager.closePage(player, ref, store);
+
+    TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
+    if (transform == null) {
+      player.sendMessage(MessageUtil.errorText("Could not determine your location."));
+      return;
+    }
+
+    Vector3d pos = transform.getPosition();
+    World world = player.getWorld();
+    if (world == null) {
+      player.sendMessage(MessageUtil.errorText("Could not determine your world."));
+      return;
+    }
+
+    TeleportManager.StartLocation startLoc = new TeleportManager.StartLocation(
+        world.getName(), pos.getX(), pos.getY(), pos.getZ()
+    );
+
+    TeleportManager.TeleportResult result = hyperFactions.getTeleportManager().teleportToHome(
+        uuid,
+        startLoc,
+        f -> executeTeleport(store, ref, world, f),
+        player::sendMessage,
+        () -> hyperFactions.getCombatTagManager().isTagged(uuid)
+    );
+
+    handleTeleportResult(player, result);
+  }
+
+  private TeleportManager.TeleportResult executeTeleport(Store<EntityStore> store, Ref<EntityStore> ref,
+                             World currentWorld, Faction faction) {
+    Faction.FactionHome home = faction.home();
+    if (home == null) {
+      return TeleportManager.TeleportResult.NO_HOME;
+    }
+
+    World targetWorld;
+    if (currentWorld.getName().equals(home.world())) {
+      targetWorld = currentWorld;
+    } else {
+      targetWorld = Universe.get().getWorld(home.world());
+      if (targetWorld == null) {
+        return TeleportManager.TeleportResult.WORLD_NOT_FOUND;
+      }
+    }
+
+    targetWorld.execute(() -> {
+      Vector3d position = new Vector3d(home.x(), home.y(), home.z());
+      Vector3f rotation = new Vector3f(home.pitch(), home.yaw(), 0);
+      Teleport teleport = Teleport.createForPlayer(targetWorld, position, rotation);
+      store.addComponent(ref, Teleport.getComponentType(), teleport);
+    });
+
+    return TeleportManager.TeleportResult.SUCCESS_INSTANT;
+  }
+
+  private void handleTeleportResult(Player player, TeleportManager.TeleportResult result) {
+    switch (result) {
+      case NOT_IN_FACTION -> player.sendMessage(MessageUtil.errorText("You are not in a faction."));
+      case NO_HOME -> player.sendMessage(MessageUtil.errorText("Your faction has no home set."));
+      case COMBAT_TAGGED -> player.sendMessage(MessageUtil.errorText("You cannot teleport while in combat!"));
+      case SUCCESS_INSTANT -> player.sendMessage(MessageUtil.successText("Teleported to faction home!"));
+      case ON_COOLDOWN, SUCCESS_WARMUP -> {} // Message sent by TeleportManager
+      default -> {}
+    }
+  }
+
+  private void handleDeleteHome(Player player, Ref<EntityStore> ref, Store<EntityStore> store, UUID uuid) {
+    if (faction.home() == null) {
+      player.sendMessage(MessageUtil.text("Your faction does not have a home set.", MessageUtil.COLOR_GOLD));
+      sendUpdate();
+      return;
+    }
+
+    Faction updatedFaction = faction.withHome(null);
+    factionManager.updateFaction(updatedFaction);
+
+    player.sendMessage(MessageUtil.successText("Faction home deleted!"));
+
+    guiManager.openFactionSettings(player, ref, store, playerRef,
+        factionManager.getFaction(faction.id()));
+  }
 }

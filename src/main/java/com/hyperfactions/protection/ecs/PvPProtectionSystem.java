@@ -10,8 +10,9 @@ import org.jetbrains.annotations.NotNull;
  */
 public class PvPProtectionSystem extends DamageProtectionSystem {
 
-    public PvPProtectionSystem(@NotNull HyperFactions hyperFactions,
-                                @NotNull ProtectionListener protectionListener) {
-        super(hyperFactions, protectionListener);
-    }
+  /** Creates a new PvPProtectionSystem. */
+  public PvPProtectionSystem(@NotNull HyperFactions hyperFactions,
+                @NotNull ProtectionListener protectionListener) {
+    super(hyperFactions, protectionListener);
+  }
 }

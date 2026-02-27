@@ -1,0 +1,154 @@
+// Admin Activity Log Page
+// Server-wide faction activity log with type, time, and player filters
+
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+$Nav = "admin_nav_bar.ui";
+
+$C.@PageOverlay {
+  $Nav.@HyperFactionsAdminNavBar #HyperFactionsAdminNavBar {}
+
+  $C.@Container {
+    Anchor: (Width: 750, Height: 560);
+
+    #Title {
+      $C.@Title {
+        @Text = "Admin: Activity Log";
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+      Padding: (Left: 15, Right: 15, Top: 10, Bottom: 10);
+
+      // Filter row
+      Group {
+        Anchor: (Height: 38, Bottom: 8);
+        LayoutMode: Left;
+
+        Label {
+          Text: "Type:";
+          Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
+          Anchor: (Width: 35);
+        }
+        DropdownBox #TypeDropdown {
+          Style: $C.@DefaultDropdownBoxStyle;
+          Anchor: (Height: 28, Width: 130);
+        }
+
+        Label { Anchor: (Width: 12); }
+
+        Label {
+          Text: "Time:";
+          Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
+          Anchor: (Width: 35);
+        }
+        DropdownBox #TimeDropdown {
+          Style: $C.@DefaultDropdownBoxStyle;
+          Anchor: (Height: 28, Width: 100);
+        }
+
+        Label { Anchor: (Width: 12); }
+
+        Label {
+          Text: "Player:";
+          Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
+          Anchor: (Width: 45);
+        }
+        $C.@TextField #PlayerSearch {
+          FlexWeight: 1;
+          Anchor: (Height: 32);
+        }
+      }
+
+      // Header with log count
+      Group {
+        Anchor: (Height: 28, Bottom: 4);
+        LayoutMode: Left;
+
+        Label #LogCount {
+          Text: "0 entries";
+          Style: (FontSize: 12, TextColor: #888888, VerticalAlignment: Center);
+          Anchor: (Width: 120);
+        }
+      }
+
+      // Column Headers
+      Group {
+        Anchor: (Height: 22, Bottom: 4);
+        LayoutMode: Left;
+        Padding: (Left: 12, Right: 12);
+
+        Label {
+          Text: "Time";
+          Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
+          Anchor: (Width: 80);
+        }
+        Label {
+          Text: "Type";
+          Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
+          Anchor: (Width: 65);
+        }
+        Label {
+          Text: "Faction";
+          Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
+          Anchor: (Width: 120);
+        }
+        Label {
+          Text: "Message";
+          Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
+          FlexWeight: 1;
+        }
+      }
+
+      // Divider
+      Group {
+        Anchor: (Height: 1, Bottom: 4);
+        Background: (Color: #00AAAA);
+      }
+
+      // Scrollable Log List
+      Group #LogList {
+        FlexWeight: 1;
+        LayoutMode: TopScrolling;
+        ScrollbarStyle: $C.@DefaultScrollbarStyle;
+      }
+
+      // Divider
+      Group {
+        Anchor: (Height: 1, Top: 8, Bottom: 8);
+        Background: (Color: #00AAAA);
+      }
+
+      // Pagination
+      Group #Pagination {
+        Anchor: (Height: 35);
+        LayoutMode: Left;
+
+        TextButton #PrevBtn {
+          Text: "< Prev";
+          Anchor: (Height: 26, Width: 80);
+          Style: $S.@ButtonStyle;
+        }
+
+        Label { FlexWeight: 1; }
+
+        Label #PageInfo {
+          Text: "1/1";
+          Style: (FontSize: 14, TextColor: #888888, HorizontalAlignment: Center, VerticalAlignment: Center);
+          Anchor: (Width: 60);
+        }
+
+        Label { FlexWeight: 1; }
+
+        TextButton #NextBtn {
+          Text: "Next >";
+          Anchor: (Height: 26, Width: 80);
+          Style: $S.@ButtonStyle;
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

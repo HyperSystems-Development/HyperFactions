@@ -1,6 +1,6 @@
 # HyperFactions Placeholders
 
-> **Version**: 0.9.0 | **Expansion Identifier**: `factions` | **35 placeholders**
+> **Version**: 0.10.0 | **Expansion Identifier**: `factions` | **49 placeholders**
 
 HyperFactions exposes faction data as placeholders through two placeholder APIs: **PlaceholderAPI (PAPI)** and **WiFlow PlaceholderAPI**. Both APIs support the same set of placeholders with identical behavior.
 
@@ -39,7 +39,7 @@ All placeholders return a value even when the player has no faction. This ensure
 
 | Type | Default | Examples |
 |------|---------|----------|
-| Text placeholders | `""` (empty string) | `name`, `tag`, `display`, `color`, `role`, `description`, `leader`, `leader_id`, `open`, `created` |
+| Text placeholders | `""` (empty string) | `name`, `tag`, `display`, `color`, `role`, `role_display`, `role_short`, `description`, `leader`, `leader_id`, `open`, `created` |
 | Numeric placeholders | `"0"` or `"0.0"` | `faction_power`, `faction_maxpower`, `faction_power_percent`, `land`, `land_max`, `members`, `members_online`, `allies`, `enemies`, `neutrals`, `relations` |
 | Boolean placeholders | `"false"` | `raidable` |
 | Home placeholders | `""` (empty string) | `home_world`, `home_x`, `home_y`, `home_z`, `home_coords`, `home_yaw`, `home_pitch` |
@@ -57,7 +57,7 @@ All placeholders return a value even when the player has no faction. This ensure
 
 ## Player Faction Info
 
-12 placeholders for basic faction information.
+19 placeholders for basic faction information.
 
 | Placeholder | Description | Returns | Example |
 |-------------|-------------|---------|---------|
@@ -67,12 +67,19 @@ All placeholders return a value even when the player has no faction. This ensure
 | `tag` | Faction short tag | String or `""` | `WAR` |
 | `display` | Display text (tag, name, or none based on config) | String or `""` | `WAR` |
 | `color` | Faction color hex code | Hex string or `""` | `#FF5555` |
-| `role` | Player's faction role | Role name or `""` | `Leader`, `Officer`, `Member` |
+| `role` | Player's faction role (internal name) | Role name or `""` | `Leader`, `Officer`, `Member` |
+| `role_display` | Player's faction role (configured display name) | Display name or `""` | `Boss`, `Underboss`, `Soldier` |
+| `role_short` | Player's faction role (configured abbreviation) | Short name or `""` | `BO`, `UB`, `SO` |
 | `description` | Faction description text | String or `""` | `The best faction` |
 | `leader` | Faction leader's username | String or `""` | `Steve` |
 | `leader_id` | Faction leader's UUID | UUID string or `""` | `d4e5f6a7-...` |
 | `open` | Whether faction accepts join requests | `"false"` if no faction | `true` |
 | `created` | Faction creation date | `yyyy-MM-dd` or `""` | `2025-01-15` |
+| `name_colored` | Faction name with hex color prefix | String or `""` | `#FF5555Warriors` |
+| `tag_colored` | Faction tag with hex color prefix | String or `""` | `#FF5555WAR` |
+| `name_colored_legacy` | Faction name with legacy `&X` color code | String or `""` | `&cWarriors` |
+| `tag_colored_legacy` | Faction tag with legacy `&X` color code | String or `""` | `&cWAR` |
+| `color_legacy` | Nearest legacy `&X` color code from hex color | String or `""` | `&c` |
 
 ### Display Placeholder Behavior
 
@@ -162,6 +169,32 @@ All home placeholders return `""` (empty string) if the player has no faction or
 
 ---
 
+## Treasury
+
+4 placeholders for faction economy data. Requires VaultUnlocked integration.
+
+| Placeholder | Description | Returns | Example |
+|-------------|-------------|---------|---------|
+| `treasury_balance` | Faction treasury balance (formatted via EconomyManager) | String or `""` | `$1,234.56` |
+| `treasury_balance_raw` | Raw treasury balance (BigDecimal, scale 2) | String or `""` | `1234.56` |
+| `treasury_autopay` | Whether auto-pay is enabled | String or `""` | `true` |
+| `treasury_limit` | Maximum treasury limit | String or `""` | `100000.00` |
+
+---
+
+## Relational Placeholders (PAPI Only)
+
+2 relational placeholders available only through PlaceholderAPI's relational expansion system. These resolve based on the relationship between two players' factions.
+
+| Placeholder | Description | Returns | Example |
+|-------------|-------------|---------|---------|
+| `rel_factions_relation` | Relation type between two players' factions | Relation name or `""` | `ALLY`, `ENEMY`, `NEUTRAL` |
+| `rel_factions_relation_color` | Color code for the relation between two players | Hex color or `""` | `#FF69B4` |
+
+> **Note**: Relational placeholders use the PAPI format `%rel_factions_<placeholder>%` and are only available through PlaceholderAPI (not WiFlow).
+
+---
+
 ## Configuration
 
 ### PAPI Integration
@@ -215,8 +248,11 @@ Location: {factions_territory}
 # Prefix with faction tag
 [{factions_tag}] {player_name}: {message}
 
-# Show role
-[{factions_role}] {player_name}
+# Show custom role name
+[{factions_role_display}] {player_name}
+
+# Show role abbreviation in scoreboard
+{factions_role_short} | {player_name}
 ```
 
 ### Chat Formatting (PAPI)
@@ -227,6 +263,9 @@ Location: {factions_territory}
 
 # Show faction color + name
 %factions_color%%factions_name%
+
+# Show custom role name
+[%factions_role_display%] %player_name%
 ```
 
 ### Conditional Display
@@ -241,8 +280,8 @@ Faction-specific placeholders return empty strings or zero values for factionles
 
 | File | Purpose |
 |------|---------|
-| [`integration/placeholder/HyperFactionsExpansion.java`](../src/main/java/com/hyperfactions/integration/placeholder/HyperFactionsExpansion.java) | PAPI expansion (33 placeholders) |
-| [`integration/placeholder/WiFlowExpansion.java`](../src/main/java/com/hyperfactions/integration/placeholder/WiFlowExpansion.java) | WiFlow expansion (33 placeholders) |
+| [`integration/placeholder/HyperFactionsExpansion.java`](../src/main/java/com/hyperfactions/integration/placeholder/HyperFactionsExpansion.java) | PAPI expansion (49 placeholders incl. 2 relational) |
+| [`integration/placeholder/WiFlowExpansion.java`](../src/main/java/com/hyperfactions/integration/placeholder/WiFlowExpansion.java) | WiFlow expansion (47 placeholders) |
 | [`integration/placeholder/PlaceholderAPIIntegration.java`](../src/main/java/com/hyperfactions/integration/placeholder/PlaceholderAPIIntegration.java) | PAPI detection and registration |
 | [`integration/placeholder/WiFlowPlaceholderIntegration.java`](../src/main/java/com/hyperfactions/integration/placeholder/WiFlowPlaceholderIntegration.java) | WiFlow detection and registration |
 
@@ -270,37 +309,52 @@ Complete side-by-side table of every placeholder in both formats.
 | 4 | `%factions_tag%` | `{factions_tag}` | Faction short tag | `WAR` |
 | 5 | `%factions_display%` | `{factions_display}` | Display text (config-dependent) | `WAR` |
 | 6 | `%factions_color%` | `{factions_color}` | Faction color hex | `#FF5555` |
-| 7 | `%factions_role%` | `{factions_role}` | Player's role | `Officer` |
-| 8 | `%factions_description%` | `{factions_description}` | Faction description | `The best faction` |
-| 9 | `%factions_leader%` | `{factions_leader}` | Leader's username | `Steve` |
-| 10 | `%factions_leader_id%` | `{factions_leader_id}` | Leader's UUID | `d4e5f6a7-...` |
-| 11 | `%factions_open%` | `{factions_open}` | Open status | `true` |
-| 12 | `%factions_created%` | `{factions_created}` | Creation date | `2025-01-15` |
+| 7 | `%factions_role%` | `{factions_role}` | Player's role (internal) | `Officer` |
+| 8 | `%factions_role_display%` | `{factions_role_display}` | Player's role (configured name) | `Underboss` |
+| 9 | `%factions_role_short%` | `{factions_role_short}` | Player's role (abbreviation) | `UB` |
+| 10 | `%factions_description%` | `{factions_description}` | Faction description | `The best faction` |
+| 11 | `%factions_leader%` | `{factions_leader}` | Leader's username | `Steve` |
+| 12 | `%factions_leader_id%` | `{factions_leader_id}` | Leader's UUID | `d4e5f6a7-...` |
+| 13 | `%factions_open%` | `{factions_open}` | Open status | `true` |
+| 14 | `%factions_created%` | `{factions_created}` | Creation date | `2025-01-15` |
+| 15 | `%factions_name_colored%` | `{factions_name_colored}` | Faction name with hex color | `#FF5555Warriors` |
+| 16 | `%factions_tag_colored%` | `{factions_tag_colored}` | Faction tag with hex color | `#FF5555WAR` |
+| 17 | `%factions_name_colored_legacy%` | `{factions_name_colored_legacy}` | Name with legacy color | `&cWarriors` |
+| 18 | `%factions_tag_colored_legacy%` | `{factions_tag_colored_legacy}` | Tag with legacy color | `&cWAR` |
+| 19 | `%factions_color_legacy%` | `{factions_color_legacy}` | Nearest legacy color code | `&c` |
 | | **Power** | | | |
-| 13 | `%factions_power%` | `{factions_power}` | Player power | `8.5` |
-| 14 | `%factions_maxpower%` | `{factions_maxpower}` | Player max power | `10.0` |
-| 15 | `%factions_power_percent%` | `{factions_power_percent}` | Player power % | `85` |
-| 16 | `%factions_faction_power%` | `{factions_faction_power}` | Faction total power | `42.5` |
-| 17 | `%factions_faction_maxpower%` | `{factions_faction_maxpower}` | Faction max power | `50.0` |
-| 18 | `%factions_faction_power_percent%` | `{factions_faction_power_percent}` | Faction power % | `85` |
-| 19 | `%factions_raidable%` | `{factions_raidable}` | Raidable status | `false` |
+| 20 | `%factions_power%` | `{factions_power}` | Player power | `8.5` |
+| 21 | `%factions_maxpower%` | `{factions_maxpower}` | Player max power | `10.0` |
+| 22 | `%factions_power_percent%` | `{factions_power_percent}` | Player power % | `85` |
+| 23 | `%factions_faction_power%` | `{factions_faction_power}` | Faction total power | `42.5` |
+| 24 | `%factions_faction_maxpower%` | `{factions_faction_maxpower}` | Faction max power | `50.0` |
+| 25 | `%factions_faction_power_percent%` | `{factions_faction_power_percent}` | Faction power % | `85` |
+| 26 | `%factions_raidable%` | `{factions_raidable}` | Raidable status | `false` |
 | | **Territory** | | | |
-| 20 | `%factions_land%` | `{factions_land}` | Claimed chunk count | `12` |
-| 21 | `%factions_land_max%` | `{factions_land_max}` | Max claimable chunks | `20` |
-| 22 | `%factions_territory%` | `{factions_territory}` | Owner of current chunk | `Warriors` |
-| 23 | `%factions_territory_type%` | `{factions_territory_type}` | Territory type | `Claimed` |
+| 27 | `%factions_land%` | `{factions_land}` | Claimed chunk count | `12` |
+| 28 | `%factions_land_max%` | `{factions_land_max}` | Max claimable chunks | `20` |
+| 29 | `%factions_territory%` | `{factions_territory}` | Owner of current chunk | `Warriors` |
+| 30 | `%factions_territory_type%` | `{factions_territory_type}` | Territory type | `Claimed` |
 | | **Faction Home** | | | |
-| 24 | `%factions_home_world%` | `{factions_home_world}` | Home world name | `world` |
-| 25 | `%factions_home_x%` | `{factions_home_x}` | Home X coordinate | `123.45` |
-| 26 | `%factions_home_y%` | `{factions_home_y}` | Home Y coordinate | `64.00` |
-| 27 | `%factions_home_z%` | `{factions_home_z}` | Home Z coordinate | `-456.78` |
-| 28 | `%factions_home_coords%` | `{factions_home_coords}` | Home X, Y, Z combined | `123.45, 64.00, -456.78` |
-| 29 | `%factions_home_yaw%` | `{factions_home_yaw}` | Home yaw angle | `90.00` |
-| 30 | `%factions_home_pitch%` | `{factions_home_pitch}` | Home pitch angle | `0.00` |
+| 31 | `%factions_home_world%` | `{factions_home_world}` | Home world name | `world` |
+| 32 | `%factions_home_x%` | `{factions_home_x}` | Home X coordinate | `123.45` |
+| 33 | `%factions_home_y%` | `{factions_home_y}` | Home Y coordinate | `64.00` |
+| 34 | `%factions_home_z%` | `{factions_home_z}` | Home Z coordinate | `-456.78` |
+| 35 | `%factions_home_coords%` | `{factions_home_coords}` | Home X, Y, Z combined | `123.45, 64.00, -456.78` |
+| 36 | `%factions_home_yaw%` | `{factions_home_yaw}` | Home yaw angle | `90.00` |
+| 37 | `%factions_home_pitch%` | `{factions_home_pitch}` | Home pitch angle | `0.00` |
 | | **Members & Relations** | | | |
-| 31 | `%factions_members%` | `{factions_members}` | Total member count | `5` |
-| 32 | `%factions_members_online%` | `{factions_members_online}` | Online member count | `3` |
-| 33 | `%factions_allies%` | `{factions_allies}` | Allied faction count | `2` |
-| 34 | `%factions_enemies%` | `{factions_enemies}` | Enemy faction count | `1` |
-| 35 | `%factions_neutrals%` | `{factions_neutrals}` | Neutral relation count | `4` |
-| 36 | `%factions_relations%` | `{factions_relations}` | Total relation count | `7` |
+| 38 | `%factions_members%` | `{factions_members}` | Total member count | `5` |
+| 39 | `%factions_members_online%` | `{factions_members_online}` | Online member count | `3` |
+| 40 | `%factions_allies%` | `{factions_allies}` | Allied faction count | `2` |
+| 41 | `%factions_enemies%` | `{factions_enemies}` | Enemy faction count | `1` |
+| 42 | `%factions_neutrals%` | `{factions_neutrals}` | Neutral relation count | `4` |
+| 43 | `%factions_relations%` | `{factions_relations}` | Total relation count | `7` |
+| | **Treasury** | | | |
+| 44 | `%factions_treasury_balance%` | `{factions_treasury_balance}` | Treasury balance (formatted) | `$1,234.56` |
+| 45 | `%factions_treasury_balance_raw%` | `{factions_treasury_balance_raw}` | Treasury balance (raw) | `1234.56` |
+| 46 | `%factions_treasury_autopay%` | `{factions_treasury_autopay}` | Auto-pay enabled | `true` |
+| 47 | `%factions_treasury_limit%` | `{factions_treasury_limit}` | Treasury limit | `100000.00` |
+| | **Relational (PAPI Only)** | | | |
+| 48 | `%rel_factions_relation%` | *(PAPI only)* | Relation between two players | `ALLY` |
+| 49 | `%rel_factions_relation_color%` | *(PAPI only)* | Relation color between two players | `#FF69B4` |

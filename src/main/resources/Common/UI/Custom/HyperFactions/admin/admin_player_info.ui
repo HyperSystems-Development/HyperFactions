@@ -1,6 +1,5 @@
 // Admin Player Info Page
-// Card-based stat layout matching admin dashboard style
-// Back button returns to AdminFactionMembersPage
+// Full-width stats row at top, two-column body: Left = history, Right = admin controls
 
 $C = "../../Common.ui";
 $S = "../shared/styles.ui";
@@ -10,7 +9,7 @@ $C.@PageOverlay {
   $Nav.@HyperFactionsAdminNavBar #HyperFactionsAdminNavBar {}
 
   $C.@Container {
-    Anchor: (Width: 560, Height: 580);
+    Anchor: (Width: 720, Height: 600);
 
     #Title {
       $C.@Title {
@@ -20,77 +19,113 @@ $C.@PageOverlay {
 
     #Content {
       LayoutMode: Top;
-      Padding: (Left: 20, Right: 20, Top: 15, Bottom: 15);
+      Padding: (Left: 20, Right: 20, Top: 10, Bottom: 10);
 
-      // === Header Section ===
+      // === Header Section (full width) ===
       Group #HeaderSection {
-        Anchor: (Height: 55, Bottom: 8);
+        Anchor: (Height: 48, Bottom: 4);
         LayoutMode: Top;
 
         // Player name, status, faction row
         Group {
           LayoutMode: Left;
-          Anchor: (Height: 28);
+          Anchor: (Height: 26);
 
           Label #PlayerName {
             Text: "PlayerName";
             Style: (FontSize: 18, TextColor: #4a9eff, RenderBold: true, VerticalAlignment: Center);
           }
 
-          Label { Anchor: (Width: 10); }
+          Label { Anchor: (Width: 8); }
 
           Label #OnlineStatus {
             Text: "Online";
-            Style: (FontSize: 12, TextColor: #55FF55, RenderBold: true, VerticalAlignment: Center);
+            Style: (FontSize: 11, TextColor: #55FF55, RenderBold: true, VerticalAlignment: Center);
           }
 
           Label { FlexWeight: 1; }
 
           Label #FactionName {
             Text: "";
-            Style: (FontSize: 14, TextColor: #00FFFF, RenderBold: true, VerticalAlignment: Center);
+            Style: (FontSize: 13, TextColor: #00FFFF, RenderBold: true, VerticalAlignment: Center);
           }
         }
 
-        // Role subtitle
+        // First Joined / Last Online subtitle
         Group {
           LayoutMode: Left;
-          Anchor: (Height: 18);
+          Anchor: (Height: 16);
 
-          Label #RoleLabel {
+          Label {
+            Text: "First joined:";
+            Style: (FontSize: 9, TextColor: #666666, VerticalAlignment: Center);
+            Anchor: (Width: 68);
+          }
+          Label #FirstJoinedValue {
             Text: "";
-            Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
+            Style: (FontSize: 9, TextColor: #AAAAAA, VerticalAlignment: Center);
+            Anchor: (Width: 120);
+          }
+
+          Label {
+            Text: "Last online:";
+            Style: (FontSize: 9, TextColor: #666666, VerticalAlignment: Center);
+            Anchor: (Width: 64);
+          }
+          Label #LastOnlineValue {
+            Text: "";
+            Style: (FontSize: 9, TextColor: #AAAAAA, VerticalAlignment: Center);
+            Anchor: (Width: 80);
+          }
+
+          Label { FlexWeight: 1; }
+
+          Label {
+            Text: "UUID:";
+            Style: (FontSize: 8, TextColor: #444444, VerticalAlignment: Center);
+            Anchor: (Width: 28);
+          }
+          Label #UuidValue {
+            Text: "";
+            Style: (FontSize: 8, TextColor: #444444, VerticalAlignment: Center);
           }
         }
       }
 
-      // === Stats Row - 3 stat cards ===
+      // Cyan divider
+      Group {
+        Anchor: (Height: 1, Bottom: 5);
+        Background: (Color: #00AAAA);
+      }
+
+      // === Full-Width Stats Row (4 cards) ===
       Group #StatsRow {
-        Anchor: (Height: 75, Bottom: 10);
+        Anchor: (Height: 56, Bottom: 5);
         LayoutMode: Left;
 
         // Power card
         Group {
           FlexWeight: 1;
           Background: (Color: #1a2a3a);
-          Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+          Padding: (Left: 8, Right: 8, Top: 6, Bottom: 6);
           LayoutMode: Top;
-          Anchor: (Right: 4);
+          Anchor: (Right: 3);
 
           Label {
             Text: "Power";
-            Style: (FontSize: 9, TextColor: #666666);
-            Anchor: (Height: 14);
+            Style: (FontSize: 8, TextColor: #666666);
+            Anchor: (Height: 12);
           }
           Label #PowerValue {
             Text: "0 / 0";
-            Style: (FontSize: 20, TextColor: #FFFFFF, RenderBold: true);
-            FlexWeight: 1;
+            Style: (FontSize: 13, TextColor: #FFFFFF, RenderBold: true);
+            Anchor: (Height: 18);
           }
-          Label #MaxOverrideLabel {
-            Text: "";
-            Style: (FontSize: 9, TextColor: #888888);
-            Anchor: (Height: 14);
+          ProgressBar #PowerBar {
+            Anchor: (Height: 4);
+            Value: 0.5;
+            Bar: (Color: #55FF55);
+            Background: (Color: #0d1520);
           }
         }
 
@@ -98,39 +133,37 @@ $C.@PageOverlay {
         Group {
           FlexWeight: 1;
           Background: (Color: #1a2a3a);
-          Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+          Padding: (Left: 8, Right: 8, Top: 6, Bottom: 6);
           LayoutMode: Top;
-          Anchor: (Left: 4, Right: 4);
+          Anchor: (Left: 3, Right: 3);
 
           Label {
             Text: "Combat";
-            Style: (FontSize: 9, TextColor: #666666);
-            Anchor: (Height: 14);
+            Style: (FontSize: 8, TextColor: #666666);
+            Anchor: (Height: 12);
           }
           Group {
-            FlexWeight: 1;
+            Anchor: (Height: 18);
             LayoutMode: Left;
 
             Label #KillsValue {
               Text: "0";
-              Style: (FontSize: 16, TextColor: #55FF55, RenderBold: true, VerticalAlignment: Center);
-              FlexWeight: 1;
+              Style: (FontSize: 13, TextColor: #55FF55, RenderBold: true, VerticalAlignment: Center);
             }
             Label {
-              Text: "/";
-              Style: (FontSize: 14, TextColor: #444444, VerticalAlignment: Center);
-              Anchor: (Width: 12);
+              Text: " / ";
+              Style: (FontSize: 10, TextColor: #444444, VerticalAlignment: Center);
+              Anchor: (Width: 14);
             }
             Label #DeathsValue {
               Text: "0";
-              Style: (FontSize: 16, TextColor: #FF5555, RenderBold: true, VerticalAlignment: Center);
-              FlexWeight: 1;
+              Style: (FontSize: 13, TextColor: #FF5555, RenderBold: true, VerticalAlignment: Center);
             }
           }
           Label {
-            Text: "kills / deaths";
-            Style: (FontSize: 9, TextColor: #444444);
-            Anchor: (Height: 14);
+            Text: "K / D";
+            Style: (FontSize: 8, TextColor: #444444);
+            Anchor: (Height: 10);
           }
         }
 
@@ -138,232 +171,288 @@ $C.@PageOverlay {
         Group {
           FlexWeight: 1;
           Background: (Color: #1a2a3a);
-          Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+          Padding: (Left: 8, Right: 8, Top: 6, Bottom: 6);
           LayoutMode: Top;
-          Anchor: (Left: 4);
+          Anchor: (Left: 3, Right: 3);
 
           Label {
             Text: "K/D Ratio";
-            Style: (FontSize: 9, TextColor: #666666);
-            Anchor: (Height: 14);
+            Style: (FontSize: 8, TextColor: #666666);
+            Anchor: (Height: 12);
           }
           Label #KDRValue {
             Text: "0.00";
-            Style: (FontSize: 20, TextColor: #FFFFFF, RenderBold: true);
-            FlexWeight: 1;
+            Style: (FontSize: 13, TextColor: #FFFFFF, RenderBold: true);
+            Anchor: (Height: 18);
           }
-          Label {
+          Label #MaxOverrideLabel {
             Text: "";
-            Style: (FontSize: 9, TextColor: #444444);
-            Anchor: (Height: 14);
+            Style: (FontSize: 8, TextColor: #888888);
+            Anchor: (Height: 10);
           }
         }
-      }
 
-      // Cyan divider
-      Group {
-        Anchor: (Height: 1, Bottom: 8);
-        Background: (Color: #00AAAA);
-      }
-
-      // === Power Management Section ===
-      Group {
-        Background: (Color: #1a2a3a);
-        Padding: (Left: 12, Right: 12, Top: 10, Bottom: 10);
-        LayoutMode: Top;
-        Anchor: (Height: 126, Bottom: 8);
-
-        // Section header row with power bar preview
-        Group {
-          LayoutMode: Left;
-          Anchor: (Height: 20, Bottom: 4);
+        // Faction card (compact)
+        Group #FactionSection {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 8, Right: 8, Top: 6, Bottom: 6);
+          LayoutMode: Top;
+          Anchor: (Left: 3);
 
           Label {
-            Text: "Power Management";
-            Style: (FontSize: 11, TextColor: #666666, RenderBold: true, VerticalAlignment: Center);
+            Text: "Faction";
+            Style: (FontSize: 8, TextColor: #666666);
+            Anchor: (Height: 12);
           }
 
-          Label { FlexWeight: 1; }
+          // Shows when in a faction
+          Group #FactionInfo {
+            LayoutMode: Top;
 
-          Label #MaxPowerValue {
-            Text: "20.0";
-            Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
-          }
-        }
+            Label #FactionNameValue {
+              Text: "None";
+              Style: (FontSize: 13, TextColor: #00FFFF, RenderBold: true);
+              Anchor: (Height: 18);
+            }
 
-        // Power bar
-        ProgressBar #PowerBar {
-          Anchor: (Height: 8, Bottom: 8);
-          Value: 0.5;
-          Bar: (Color: #55FF55);
-          Background: (Color: #0d1520);
-        }
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 14);
 
-        // Quick adjust buttons row
-        Group {
-          LayoutMode: Left;
-          Anchor: (Height: 30, Bottom: 6);
-
-          TextButton #SubFive {
-            Text: "-5";
-            Anchor: (Height: 26, Width: 42, Right: 4);
-            Style: $S.@RedButtonStyle;
-          }
-
-          TextButton #SubOne {
-            Text: "-1";
-            Anchor: (Height: 26, Width: 42, Right: 6);
-            Style: $S.@RedButtonStyle;
+              Label #FactionRoleValue {
+                Text: "";
+                Style: (FontSize: 9, TextColor: #FFFFFF, VerticalAlignment: Center);
+              }
+              Label { FlexWeight: 1; }
+              TextButton #ViewFactionBtn {
+                Text: "View";
+                Anchor: (Height: 14, Width: 38);
+                Style: $S.@CyanButtonStyle;
+              }
+            }
           }
 
-          $C.@TextField #PowerInput {
-            Anchor: (Height: 26, Width: 80, Right: 6);
-            Style: (FontSize: 12, TextColor: #FFFFFF);
-          }
-
-          TextButton #AddOne {
-            Text: "+1";
-            Anchor: (Height: 26, Width: 42, Right: 4);
-            Style: $S.@ButtonStyle;
-          }
-
-          TextButton #AddFive {
-            Text: "+5";
-            Anchor: (Height: 26, Width: 42, Right: 8);
-            Style: $S.@ButtonStyle;
-          }
-
-          TextButton #SetPowerBtn {
-            Text: "Set";
-            Anchor: (Height: 26, Width: 50, Right: 4);
-            Style: $S.@CyanButtonStyle;
-          }
-
-          TextButton #ResetPowerBtn {
-            Text: "Reset";
-            Anchor: (Height: 26, Width: 55);
-            Style: $S.@RedButtonStyle;
-          }
-        }
-
-        // Max power row
-        Group {
-          LayoutMode: Left;
-          Anchor: (Height: 30);
-
-          Label {
-            Text: "Max Power:";
-            Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
-            Anchor: (Width: 80);
-          }
-
-          $C.@TextField #MaxPowerInput {
-            Anchor: (Height: 26, Width: 80, Right: 6);
-            Style: (FontSize: 12, TextColor: #FFFFFF);
-          }
-
-          TextButton #SetMaxBtn {
-            Text: "Set Max";
-            Anchor: (Height: 26, Width: 70, Right: 4);
-            Style: $S.@CyanButtonStyle;
-          }
-
-          TextButton #ResetMaxBtn {
-            Text: "Reset";
-            Anchor: (Height: 26, Width: 55);
-            Style: $S.@RedButtonStyle;
+          // Shows when NOT in a faction
+          Label #NoFactionLabel {
+            Text: "None";
+            Style: (FontSize: 10, TextColor: #555555);
+            Anchor: (Height: 20);
           }
         }
       }
 
-      // Cyan divider
-      Group {
-        Anchor: (Height: 1, Bottom: 8);
-        Background: (Color: #00AAAA);
-      }
-
-      // === Bypass Toggles Section ===
-      Group {
-        Background: (Color: #1a2a3a);
-        Padding: (Left: 12, Right: 12, Top: 10, Bottom: 10);
-        LayoutMode: Top;
-        Anchor: (Height: 104, Bottom: 8);
-
-        // Section header
-        Group {
-          Anchor: (Height: 20, Bottom: 4);
-
-          Label {
-            Text: "Power Bypass Toggles";
-            Style: (FontSize: 11, TextColor: #666666, RenderBold: true);
-          }
-        }
-
-        // No Loss toggle row
-        Group {
-          LayoutMode: Left;
-          Anchor: (Height: 28, Bottom: 4);
-
-          $C.@CheckBoxWithLabel #NoLossCheck {
-            @Text = "Disable Power Loss";
-            @Checked = false;
-            Anchor: (Height: 24, Width: 200);
-          }
-
-          Label #NoLossStatus {
-            Text: "Off";
-            Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
-            Anchor: (Left: 8);
-          }
-        }
-
-        // No Decay toggle row
-        Group {
-          LayoutMode: Left;
-          Anchor: (Height: 28);
-
-          $C.@CheckBoxWithLabel #NoDecayCheck {
-            @Text = "Disable Claim Decay";
-            @Checked = false;
-            Anchor: (Height: 24, Width: 200);
-          }
-
-          Label #NoDecayStatus {
-            Text: "Off";
-            Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
-            Anchor: (Left: 8);
-          }
-        }
-      }
-
-      // UUID row
-      Group {
+      // === Two-Column Body ===
+      Group #TwoColumnBody {
+        FlexWeight: 1;
         LayoutMode: Left;
-        Anchor: (Height: 20);
 
-        Label {
-          Text: "UUID:";
-          Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
-          Anchor: (Width: 35);
+        // === LEFT COLUMN — Membership History ===
+        Group #LeftColumn {
+          FlexWeight: 1;
+          LayoutMode: Top;
+          Padding: (Right: 8);
+
+          // Membership History header
+          Group {
+            Anchor: (Height: 16, Bottom: 3);
+            LayoutMode: Left;
+
+            Label {
+              Text: "Membership History";
+              Style: (FontSize: 10, TextColor: #666666, RenderBold: true, VerticalAlignment: Center);
+            }
+            Label { Anchor: (Width: 6); }
+            Label #HistoryCount {
+              Text: "";
+              Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
+            }
+          }
+
+          // History list (scrollable)
+          Group #HistoryList {
+            FlexWeight: 1;
+            LayoutMode: TopScrolling;
+            ScrollbarStyle: $C.@DefaultScrollbarStyle;
+          }
         }
 
-        Label #UuidValue {
-          Text: "";
-          Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
+        // === RIGHT COLUMN — Admin Controls ===
+        Group #RightColumn {
+          FlexWeight: 1;
+          LayoutMode: Top;
+          Padding: (Left: 8);
+
+          // Admin Controls header (aligns with Membership History header)
+          Label {
+            Text: "Admin Controls";
+            Style: (FontSize: 10, TextColor: #666666, RenderBold: true, VerticalAlignment: Center);
+            Anchor: (Height: 16, Bottom: 3);
+          }
+
+          // Power Management Section
+          Group {
+            Background: (Color: #1a2a3a);
+            Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+            LayoutMode: Top;
+            Anchor: (Bottom: 5);
+
+            // Section header with max power display
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 18, Bottom: 3);
+
+              Label {
+                Text: "Power Management";
+                Style: (FontSize: 10, TextColor: #666666, RenderBold: true, VerticalAlignment: Center);
+              }
+              Label { FlexWeight: 1; }
+              Label #MaxPowerValue {
+                Text: "20.0";
+                Style: (FontSize: 10, TextColor: #888888, VerticalAlignment: Center);
+              }
+            }
+
+            // Quick adjust buttons
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 26, Bottom: 4);
+
+              TextButton #SubFive {
+                Text: "-5";
+                Anchor: (Height: 24, Width: 34, Right: 2);
+                Style: $S.@RedButtonStyle;
+              }
+              TextButton #SubOne {
+                Text: "-1";
+                Anchor: (Height: 24, Width: 34, Right: 3);
+                Style: $S.@RedButtonStyle;
+              }
+              $C.@TextField #PowerInput {
+                Anchor: (Height: 24, Width: 52, Right: 3);
+                Style: (FontSize: 11, TextColor: #FFFFFF);
+              }
+              TextButton #AddOne {
+                Text: "+1";
+                Anchor: (Height: 24, Width: 34, Right: 2);
+                Style: $S.@ButtonStyle;
+              }
+              TextButton #AddFive {
+                Text: "+5";
+                Anchor: (Height: 24, Width: 34, Right: 3);
+                Style: $S.@ButtonStyle;
+              }
+              TextButton #SetPowerBtn {
+                Text: "Set";
+                Anchor: (Height: 24, Width: 36, Right: 2);
+                Style: $S.@CyanButtonStyle;
+              }
+              TextButton #ResetPowerBtn {
+                Text: "Reset";
+                Anchor: (Height: 24, Width: 44);
+                Style: $S.@RedButtonStyle;
+              }
+            }
+
+            // Max power row
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 26);
+
+              Label {
+                Text: "Max:";
+                Style: (FontSize: 11, TextColor: #AAAAAA, VerticalAlignment: Center);
+                Anchor: (Width: 33);
+              }
+              $C.@TextField #MaxPowerInput {
+                Anchor: (Height: 24, Width: 56, Right: 3);
+                Style: (FontSize: 11, TextColor: #FFFFFF);
+              }
+              TextButton #SetMaxBtn {
+                Text: "Set Max";
+                Anchor: (Height: 24, Width: 58, Right: 2);
+                Style: $S.@CyanButtonStyle;
+              }
+              TextButton #ResetMaxBtn {
+                Text: "Reset";
+                Anchor: (Height: 24, Width: 44);
+                Style: $S.@RedButtonStyle;
+              }
+            }
+          }
+
+          // Combat Actions Section
+          Group {
+            Background: (Color: #1a2a3a);
+            Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+            LayoutMode: Top;
+            Anchor: (Bottom: 5);
+
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 26);
+
+              Label {
+                Text: "Combat";
+                Style: (FontSize: 10, TextColor: #666666, RenderBold: true, VerticalAlignment: Center);
+              }
+              Label { FlexWeight: 1; }
+              TextButton #ResetKDBtn {
+                Text: "Reset K/D";
+                Anchor: (Height: 24, Width: 110);
+                Style: $S.@RedButtonStyle;
+              }
+            }
+          }
+
+          // Bypass Toggles Section
+          Group {
+            Background: (Color: #1a2a3a);
+            Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+            LayoutMode: Top;
+
+            Label {
+              Text: "Power Bypass Toggles";
+              Style: (FontSize: 10, TextColor: #666666, RenderBold: true);
+              Anchor: (Height: 16, Bottom: 3);
+            }
+
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 26, Bottom: 3);
+
+              $C.@CheckBoxWithLabel #NoLossCheck {
+                @Text = "Disable Power Loss";
+                @Checked = false;
+                Anchor: (Height: 22, Width: 175);
+              }
+            }
+
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 26);
+
+              $C.@CheckBoxWithLabel #NoDecayCheck {
+                @Text = "Disable Claim Decay";
+                @Checked = false;
+                Anchor: (Height: 22, Width: 175);
+              }
+            }
+          }
+
+          // Spacer
+          Label { FlexWeight: 1; }
         }
       }
 
-      // Spacer
-      Label { FlexWeight: 1; }
-
-      // === Bottom Action Buttons ===
+      // === Bottom Action Buttons (full width) ===
       Group #ActionButtons {
-        Anchor: (Height: 35);
+        Anchor: (Height: 32);
         LayoutMode: Left;
 
         TextButton #KickBtn {
           Text: "Kick from Faction";
-          Anchor: (Height: 30, Width: 140);
+          Anchor: (Height: 28, Width: 140);
           Style: $S.@RedButtonStyle;
         }
 
@@ -371,7 +460,7 @@ $C.@PageOverlay {
 
         TextButton #BackBtn {
           Text: "Back";
-          Anchor: (Height: 30, Width: 70);
+          Anchor: (Height: 28, Width: 70);
           Style: $S.@ButtonStyle;
         }
       }

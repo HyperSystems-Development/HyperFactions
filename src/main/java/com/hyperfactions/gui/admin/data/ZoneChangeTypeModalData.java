@@ -9,19 +9,20 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
  */
 public class ZoneChangeTypeModalData {
 
-    /** The button/action that triggered the event */
-    public String button;
+  /** The button/action that triggered the event. */
+  public String button;
 
-    /** Codec for serialization/deserialization */
-    public static final BuilderCodec<ZoneChangeTypeModalData> CODEC = BuilderCodec
-            .builder(ZoneChangeTypeModalData.class, ZoneChangeTypeModalData::new)
-            .addField(
-                    new KeyedCodec<>("Button", Codec.STRING),
-                    (data, value) -> data.button = value,
-                    data -> data.button
-            )
-            .build();
+  /** Codec for serialization/deserialization. */
+  public static final BuilderCodec<ZoneChangeTypeModalData> CODEC = BuilderCodec
+      .builder(ZoneChangeTypeModalData.class, ZoneChangeTypeModalData::new)
+      .addField(
+          new KeyedCodec<>("Button", Codec.STRING),
+          (data, value) -> data.button = value,
+          data -> data.button
+      )
+      .build();
 
-    public ZoneChangeTypeModalData() {
-    }
+  /** Creates a new ZoneChangeTypeModalData. */
+  public ZoneChangeTypeModalData() {
+  }
 }

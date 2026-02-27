@@ -1,6 +1,7 @@
 package com.hyperfactions.gui.admin.page;
 
 import com.hyperfactions.gui.GuiManager;
+import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.admin.AdminNavBarHelper;
 import com.hyperfactions.gui.admin.data.AdminConfigData;
 import com.hypixel.hytale.component.Ref;
@@ -18,47 +19,52 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
  */
 public class AdminConfigPage extends InteractiveCustomUIPage<AdminConfigData> {
 
-    private final PlayerRef playerRef;
-    private final GuiManager guiManager;
+  private final PlayerRef playerRef;
 
-    public AdminConfigPage(PlayerRef playerRef, GuiManager guiManager) {
-        super(playerRef, CustomPageLifetime.CanDismiss, AdminConfigData.CODEC);
-        this.playerRef = playerRef;
-        this.guiManager = guiManager;
+  private final GuiManager guiManager;
+
+  /** Creates a new AdminConfigPage. */
+  public AdminConfigPage(PlayerRef playerRef, GuiManager guiManager) {
+    super(playerRef, CustomPageLifetime.CanDismiss, AdminConfigData.CODEC);
+    this.playerRef = playerRef;
+    this.guiManager = guiManager;
+  }
+
+  /** Builds . */
+  @Override
+  public void build(Ref<EntityStore> ref, UICommandBuilder cmd,
+           UIEventBuilder events, Store<EntityStore> store) {
+    // Load the placeholder template first (nav bar elements must exist before setupBar)
+    cmd.append(UIPaths.ADMIN_CONFIG);
+
+    // Setup admin nav bar (must be after template load)
+    AdminNavBarHelper.setupBar(playerRef, "config", cmd, events);
+  }
+
+  /** Handles data event. */
+  @Override
+  public void handleDataEvent(Ref<EntityStore> ref, Store<EntityStore> store,
+                AdminConfigData data) {
+    super.handleDataEvent(ref, store, data);
+
+    Player player = store.getComponent(ref, Player.getComponentType());
+    PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
+
+    if (player == null || playerRef == null) {
+      return;
     }
 
-    @Override
-    public void build(Ref<EntityStore> ref, UICommandBuilder cmd,
-                      UIEventBuilder events, Store<EntityStore> store) {
-        // Load the placeholder template first (nav bar elements must exist before setupBar)
-        cmd.append("HyperFactions/admin/admin_config.ui");
-
-        // Setup admin nav bar (must be after template load)
-        AdminNavBarHelper.setupBar(playerRef, "config", cmd, events);
+    // Handle admin nav bar navigation
+    if (AdminNavBarHelper.handleNavEvent(data, player, ref, store, playerRef, guiManager)) {
+      return;
     }
 
-    @Override
-    public void handleDataEvent(Ref<EntityStore> ref, Store<EntityStore> store,
-                                AdminConfigData data) {
-        super.handleDataEvent(ref, store, data);
-
-        Player player = store.getComponent(ref, Player.getComponentType());
-        PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
-
-        if (player == null || playerRef == null) {
-            return;
-        }
-
-        // Handle admin nav bar navigation
-        if (AdminNavBarHelper.handleNavEvent(data, player, ref, store, playerRef, guiManager)) {
-            return;
-        }
-
-        // Handle other button events (placeholder for future implementation)
-        if (data.button != null) {
-            switch (data.button) {
-                case "Back" -> guiManager.closePage(player, ref, store);
-            }
-        }
+    // Handle other button events (placeholder for future implementation)
+    if (data.button != null) {
+      switch (data.button) {
+        case "Back" -> guiManager.closePage(player, ref, store);
+        default -> throw new IllegalStateException("Unexpected value");
+      }
     }
+  }
 }

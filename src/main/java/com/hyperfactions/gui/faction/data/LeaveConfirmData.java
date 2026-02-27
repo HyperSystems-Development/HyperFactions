@@ -9,19 +9,20 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
  */
 public class LeaveConfirmData {
 
-    /** The button/action that triggered the event ("Cancel" or "Leave") */
-    public String button;
+  /** The button/action that triggered the event ("Cancel" or "Leave"). */
+  public String button;
 
-    /** Codec for serialization/deserialization */
-    public static final BuilderCodec<LeaveConfirmData> CODEC = BuilderCodec
-            .builder(LeaveConfirmData.class, LeaveConfirmData::new)
-            .addField(
-                    new KeyedCodec<>("Button", Codec.STRING),
-                    (data, value) -> data.button = value,
-                    data -> data.button
-            )
-            .build();
+  /** Codec for serialization/deserialization. */
+  public static final BuilderCodec<LeaveConfirmData> CODEC = BuilderCodec
+      .builder(LeaveConfirmData.class, LeaveConfirmData::new)
+      .addField(
+          new KeyedCodec<>("Button", Codec.STRING),
+          (data, value) -> data.button = value,
+          data -> data.button
+      )
+      .build();
 
-    public LeaveConfirmData() {
-    }
+  /** Creates a new LeaveConfirmData. */
+  public LeaveConfirmData() {
+  }
 }

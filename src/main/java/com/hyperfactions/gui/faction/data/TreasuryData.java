@@ -12,32 +12,34 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
  */
 public class TreasuryData implements NavAwareData {
 
-    /** The button/action that triggered the event */
-    public String button;
+  /** The button/action that triggered the event. */
+  public String button;
 
-    /** NavBar target (page ID when nav button clicked) */
-    public String navBar;
+  /** NavBar target (page ID when nav button clicked). */
+  public String navBar;
 
-    /** Codec for serialization/deserialization */
-    public static final BuilderCodec<TreasuryData> CODEC = BuilderCodec
-            .builder(TreasuryData.class, TreasuryData::new)
-            .addField(
-                    new KeyedCodec<>("Button", Codec.STRING),
-                    (data, value) -> data.button = value,
-                    data -> data.button
-            )
-            .addField(
-                    new KeyedCodec<>("NavBar", Codec.STRING),
-                    (data, value) -> data.navBar = value,
-                    data -> data.navBar
-            )
-            .build();
+  /** Codec for serialization/deserialization. */
+  public static final BuilderCodec<TreasuryData> CODEC = BuilderCodec
+      .builder(TreasuryData.class, TreasuryData::new)
+      .addField(
+          new KeyedCodec<>("Button", Codec.STRING),
+          (data, value) -> data.button = value,
+          data -> data.button
+      )
+      .addField(
+          new KeyedCodec<>("NavBar", Codec.STRING),
+          (data, value) -> data.navBar = value,
+          data -> data.navBar
+      )
+      .build();
 
-    public TreasuryData() {
-    }
+  /** Creates a new TreasuryData. */
+  public TreasuryData() {
+  }
 
-    @Override
-    public String getNavBar() {
-        return navBar;
-    }
+  /** Returns the nav bar. */
+  @Override
+  public String getNavBar() {
+    return navBar;
+  }
 }

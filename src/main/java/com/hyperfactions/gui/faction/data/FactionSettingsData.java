@@ -11,56 +11,58 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
  */
 public class FactionSettingsData implements NavAwareData {
 
-    /** The button/action that triggered the event */
-    public String button;
+  /** The button/action that triggered the event. */
+  public String button;
 
-    /** Navigation target from NavBar button */
-    public String navBar;
+  /** Navigation target from NavBar button. */
+  public String navBar;
 
-    /** Permission name for toggle actions (e.g., "outsiderBreak", "pvpEnabled") */
-    public String perm;
+  /** Permission name for toggle actions (e.g., "outsiderBreak", "pvpEnabled"). */
+  public String perm;
 
-    /** Selected color hex code */
-    public String color;
+  /** Selected color hex code. */
+  public String color;
 
-    /** Recruitment dropdown value (OPEN or INVITE_ONLY) */
-    public String recruitment;
+  /** Recruitment dropdown value (OPEN or INVITE_ONLY). */
+  public String recruitment;
 
-    /** Codec for serialization/deserialization */
-    public static final BuilderCodec<FactionSettingsData> CODEC = BuilderCodec
-            .builder(FactionSettingsData.class, FactionSettingsData::new)
-            .addField(
-                    new KeyedCodec<>("Button", Codec.STRING),
-                    (data, value) -> data.button = value,
-                    data -> data.button
-            )
-            .addField(
-                    new KeyedCodec<>("NavBar", Codec.STRING),
-                    (data, value) -> data.navBar = value,
-                    data -> data.navBar
-            )
-            .addField(
-                    new KeyedCodec<>("Perm", Codec.STRING),
-                    (data, value) -> data.perm = value,
-                    data -> data.perm
-            )
-            .addField(
-                    new KeyedCodec<>("@Color", Codec.STRING),
-                    (data, value) -> data.color = value,
-                    data -> data.color
-            )
-            .addField(
-                    new KeyedCodec<>("@Recruitment", Codec.STRING),
-                    (data, value) -> data.recruitment = value,
-                    data -> data.recruitment
-            )
-            .build();
+  /** Codec for serialization/deserialization. */
+  public static final BuilderCodec<FactionSettingsData> CODEC = BuilderCodec
+      .builder(FactionSettingsData.class, FactionSettingsData::new)
+      .addField(
+          new KeyedCodec<>("Button", Codec.STRING),
+          (data, value) -> data.button = value,
+          data -> data.button
+      )
+      .addField(
+          new KeyedCodec<>("NavBar", Codec.STRING),
+          (data, value) -> data.navBar = value,
+          data -> data.navBar
+      )
+      .addField(
+          new KeyedCodec<>("Perm", Codec.STRING),
+          (data, value) -> data.perm = value,
+          data -> data.perm
+      )
+      .addField(
+          new KeyedCodec<>("@Color", Codec.STRING),
+          (data, value) -> data.color = value,
+          data -> data.color
+      )
+      .addField(
+          new KeyedCodec<>("@Recruitment", Codec.STRING),
+          (data, value) -> data.recruitment = value,
+          data -> data.recruitment
+      )
+      .build();
 
-    public FactionSettingsData() {
-    }
+  /** Creates a new FactionSettingsData. */
+  public FactionSettingsData() {
+  }
 
-    @Override
-    public String getNavBar() {
-        return navBar;
-    }
+  /** Returns the nav bar. */
+  @Override
+  public String getNavBar() {
+    return navBar;
+  }
 }

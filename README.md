@@ -8,7 +8,7 @@ A comprehensive faction management mod for Hytale servers featuring territory cl
 
 ## Overview
 
-HyperFactions transforms your Hytale server into a dynamic faction-based environment where players create factions, claim territories, forge alliances, manage treasuries, and engage in strategic PvP combat. With 59 interactive GUI pages, 42 commands, and deep integration with the HyperSystems ecosystem, it provides a complete faction experience out of the box.
+HyperFactions transforms your Hytale server into a dynamic faction-based environment where players create factions, claim territories, forge alliances, manage treasuries, and engage in strategic PvP combat. With 65+ interactive GUI pages, 44 commands, and deep integration with the HyperSystems ecosystem, it provides a complete faction experience out of the box.
 
 **Main Commands:** `/faction` | `/f` | `/hf`
 
@@ -22,7 +22,7 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 |---------|--------|
 | Create, disband, rename factions | Implemented |
 | Customizable colors and descriptions | Implemented |
-| Three-tier roles (Leader, Officer, Member) | Implemented |
+| Three-tier roles with customizable display names | Implemented |
 | Smart invitation system with expiration | Implemented |
 | Join requests for closed factions | Implemented |
 | Configurable member limits | Implemented |
@@ -38,6 +38,7 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 | Overclaiming for strategic warfare | Implemented |
 | Inactive faction claim decay | Implemented |
 | Multi-world support | Implemented |
+| Per-world settings (wildcard patterns) | Implemented |
 | Terrain-based map mode | Implemented |
 
 ### Power System
@@ -48,6 +49,8 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 | Death penalty (configurable) | Implemented |
 | Auto-regeneration at intervals | Implemented |
 | Per-zone power loss flags | Implemented |
+| Hardcore mode (shared faction pool) | Implemented |
+| Per-world power loss control | Implemented |
 | Admin power management | Implemented |
 
 ### Diplomacy
@@ -89,19 +92,20 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 | Feature | Status |
 |---------|--------|
 | Block, item, PvP protection | Implemented |
-| [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) (20 hooks, recommended) | Implemented |
+| [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) (22 hooks, recommended) | Implemented |
 | OrbisGuard-Mixins (11 hooks, alternative) | Implemented |
 | Dual-provider auto-detection | Implemented |
 | Mob spawn suppression | Implemented |
 | Gravestones integration | Implemented |
-| Zone flags (31) | Implemented |
+| Zone flags (40) | Implemented |
 | Command blocking in zones | Implemented |
 
 ### GUI
 
 | Feature | Status |
 |---------|--------|
-| 59 interactive pages across 3 registries | Implemented |
+| 60+ interactive pages across 3 registries | Implemented |
+| Faction leaderboard | Implemented |
 | Admin dashboard | Implemented |
 | Faction browser with search | Implemented |
 | Territory map with terrain imagery | Implemented |
@@ -114,7 +118,7 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 | Zone management (SafeZone, WarZone) | Implemented |
 | Backup system (GFS rotation) | Implemented |
 | Data import (ElbaphFactions, HyFactions) | Implemented |
-| Config migration (v1-v5) | Implemented |
+| Config migration (v1-v6) | Implemented |
 | Update checker | Implemented |
 | Admin GUI: Config editor | [Planned #40](https://github.com/HyperSystemsDev/HyperFactions/issues/40) |
 | Admin GUI: Backup manager | [Planned #41](https://github.com/HyperSystemsDev/HyperFactions/issues/41) |
@@ -127,7 +131,7 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 | HyperPerms | Implemented |
 | LuckPerms | Implemented |
 | VaultUnlocked | Implemented |
-| PlaceholderAPI (35 placeholders) | Implemented |
+| PlaceholderAPI (49 placeholders, incl. relational) | Implemented |
 | WiFlow | Implemented |
 | [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) (recommended) | Implemented |
 | OrbisGuard / OrbisGuard-Mixins | Implemented |
@@ -145,7 +149,7 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 | War declarations | [Planned #37](https://github.com/HyperSystemsDev/HyperFactions/issues/37) |
 | Faction vaults | [Planned #35](https://github.com/HyperSystemsDev/HyperFactions/issues/35) |
 | Server-managed factions | [Planned #33](https://github.com/HyperSystemsDev/HyperFactions/issues/33) |
-| Relational placeholders | [Planned #26](https://github.com/HyperSystemsDev/HyperFactions/issues/26) |
+| ~~Relational placeholders~~ | [Done in 0.10.0](https://github.com/HyperSystemsDev/HyperFactions/issues/72) |
 | NPC integrations | [Considering #21](https://github.com/HyperSystemsDev/HyperFactions/issues/21) |
 | Localization | [Planned #19](https://github.com/HyperSystemsDev/HyperFactions/issues/19) |
 | CurseForge updates | [Planned #17](https://github.com/HyperSystemsDev/HyperFactions/issues/17) |
@@ -156,10 +160,10 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 
 1. **Download** the latest release from [GitHub Releases](https://github.com/HyperSystemsDev/HyperFactions/releases) or [CurseForge](https://www.curseforge.com/hytale/mods/hyperfactions)
 2. **Install** by placing `HyperFactions-<version>.jar` in your server's `mods/` directory
-3. **Configure** by editing `mods/com.hyperfactions_HyperFactions/config.json` after first startup
+3. **Configure** by editing files in `mods/com.hyperfactions_HyperFactions/config/` after first startup — `factions.json` for faction gameplay settings, `server.json` for server behavior settings
 4. **Create a faction** with `/f create MyFaction` and claim territory with `/f claim`
 
-**Recommended:** Install [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) in `earlyplugins/` for full protection coverage (20 hook types including teleporter/portal blocking, entity damage, and respawn override).
+**Recommended:** Install [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) in `earlyplugins/` for full protection coverage (22 hook types including teleporter/portal blocking, entity damage, capture crate/NPC tame protection, and respawn override).
 
 **Optional:** Install [HyperPerms](https://github.com/HyperSystemsDev/HyperPerms) for enhanced permission control with groups, tracks, and contextual permissions.
 
@@ -180,9 +184,9 @@ Comprehensive developer and admin documentation is available in the [`docs/`](do
 
 | Document | Description |
 |----------|-------------|
-| [commands.md](docs/commands.md) | 42 subcommands across 10 categories with full syntax |
+| [commands.md](docs/commands.md) | 52 subcommands across 10 categories with full syntax |
 | [permissions.md](docs/permissions.md) | 60 permission nodes, chain-based resolution |
-| [config.md](docs/config.md) | ConfigManager, 8 module configs, migration (v1-v5) |
+| [config.md](docs/config.md) | ConfigManager, 10 config files, migration (v1-v6) |
 | [storage.md](docs/storage.md) | Interface-based storage, JSON adapters, backup system |
 | [gui.md](docs/gui.md) | 59 pages, 3 registries, navigation flows |
 | [protection.md](docs/protection.md) | ECS handlers, HyperProtect-Mixin / OrbisGuard-Mixins, zone flags |
@@ -193,7 +197,7 @@ Comprehensive developer and admin documentation is available in the [`docs/`](do
 |----------|-------------|
 | [api.md](docs/api.md) | HyperFactionsAPI, EconomyAPI, EventBus for third-party mods |
 | [integrations.md](docs/integrations.md) | HyperPerms, LuckPerms, PAPI, WiFlow, HyperProtect-Mixin, OrbisGuard, Gravestones |
-| [placeholders.md](docs/placeholders.md) | All 35 PAPI & WiFlow placeholders with examples |
+| [placeholders.md](docs/placeholders.md) | All 49 PAPI & WiFlow placeholders with examples |
 
 ### Feature Documentation
 
@@ -216,7 +220,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'com.github.HyperSystemsDev:HyperFactions:v0.9.0'
+    compileOnly 'com.github.HyperSystemsDev:HyperFactions:v0.10.0'
 }
 ```
 

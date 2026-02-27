@@ -1,6 +1,6 @@
 # HyperFactions Integration Breakdown
 
-> **Version**: 0.9.0 | **Package**: `com.hyperfactions.integration`
+> **Version**: 0.10.0 | **Package**: `com.hyperfactions.integration`
 
 HyperFactions integrates with external plugins through soft dependencies. All integrations use reflection-based detection and fail-open design — if a dependency is missing, the feature gracefully degrades.
 
@@ -156,7 +156,7 @@ When no provider can answer:
 
 Registered via `PlaceholderExpansion` from the PlaceholderAPI library. Persists across reloads (`persist() = true`).
 
-> **Full Placeholder Reference**: See [placeholders.md](placeholders.md) for complete list of all 35 placeholders with null behavior, usage examples, and configuration details.
+> **Full Placeholder Reference**: See [placeholders.md](placeholders.md) for complete list of all 49 placeholders with null behavior, usage examples, and configuration details.
 
 ---
 
@@ -167,7 +167,7 @@ Registered via `PlaceholderExpansion` from the PlaceholderAPI library. Persists 
 
 WiFlow uses curly braces instead of percent signs but supports the same placeholders as PAPI. The `WiFlowExpansion` class mirrors `HyperFactionsExpansion` exactly, using WiFlow's `PlaceholderContext` instead of PAPI's `PlayerRef`.
 
-> **Full Placeholder Reference**: See [placeholders.md](placeholders.md) for complete list of all 35 placeholders with null behavior, usage examples, and configuration details.
+> **Full Placeholder Reference**: See [placeholders.md](placeholders.md) for complete list of all 49 placeholders with null behavior, usage examples, and configuration details.
 
 ---
 

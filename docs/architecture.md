@@ -1,6 +1,6 @@
 # HyperFactions Architecture
 
-> **Version**: 0.9.0 | **377 classes** across **69 packages**
+> **Version**: 0.10.0 | **377 classes** across **69 packages**
 
 ## Overview
 
@@ -69,7 +69,7 @@ src/main/java/com/hyperfactions/
 │   ├── FactionCommand.java         # Main /f dispatcher
 │   ├── FactionSubCommand.java      # Base class with requireFaction() helper
 │   ├── FactionCommandContext.java  # Execution context with --text flag
-│   ├── util/CommandUtil.java       # Shared utilities (delegates to MessageUtil)
+│   ├── util/CommandUtil.java       # Shared utilities (parseRawArgs, MessageUtil delegates)
 │   ├── admin/                      # Admin commands
 │   │   ├── AdminSubCommand.java    # Router delegating to handler/ classes
 │   │   └── handler/               # Admin command handlers
@@ -91,7 +91,11 @@ src/main/java/com/hyperfactions/
 │   └── ui/                         # UI commands (gui, settings)
 │
 ├── gui/                            # CustomUI system
-│   ├── GuiManager.java             # Central GUI coordinator
+│   ├── GuiManager.java             # Central GUI coordinator (registration + delegation)
+│   ├── FactionPageOpener.java      # Faction page opening methods (35 methods)
+│   ├── AdminPageOpener.java        # Admin page opening methods (38 methods)
+│   ├── NewPlayerPageOpener.java    # New player page opening methods (8 methods)
+│   ├── UIPaths.java                # Centralized UI template path constants
 │   ├── GuiType.java                # Page type enumeration
 │   ├── ActivePageTracker.java      # Live data refresh tracking
 │   ├── RefreshablePage.java        # Refreshable page interface
@@ -113,6 +117,8 @@ src/main/java/com/hyperfactions/
 │   │   ├── page/                   # New player page implementations
 │   │   └── data/                   # New player data models
 │   ├── shared/                     # Shared components
+│   │   ├── NavEntry.java           # Navigation entry interface
+│   │   ├── NavBarUtil.java         # Shared nav bar button builder
 │   │   ├── component/              # Modals (InputModal, ConfirmationModal)
 │   │   ├── page/                   # Shared pages (MainMenu, modals)
 │   │   └── data/                   # Shared data models

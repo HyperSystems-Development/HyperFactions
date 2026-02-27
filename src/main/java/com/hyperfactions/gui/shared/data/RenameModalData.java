@@ -9,27 +9,28 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
  */
 public class RenameModalData {
 
-    /** The button/action that triggered the event */
-    public String button;
+  /** The button/action that triggered the event. */
+  public String button;
 
-    /** The new faction name entered by user */
-    public String name;
+  /** The new faction name entered by user. */
+  public String name;
 
-    /** Codec for serialization/deserialization */
-    public static final BuilderCodec<RenameModalData> CODEC = BuilderCodec
-            .builder(RenameModalData.class, RenameModalData::new)
-            .addField(
-                    new KeyedCodec<>("Button", Codec.STRING),
-                    (data, value) -> data.button = value,
-                    data -> data.button
-            )
-            .addField(
-                    new KeyedCodec<>("@Name", Codec.STRING),
-                    (data, value) -> data.name = value,
-                    data -> data.name
-            )
-            .build();
+  /** Codec for serialization/deserialization. */
+  public static final BuilderCodec<RenameModalData> CODEC = BuilderCodec
+      .builder(RenameModalData.class, RenameModalData::new)
+      .addField(
+          new KeyedCodec<>("Button", Codec.STRING),
+          (data, value) -> data.button = value,
+          data -> data.button
+      )
+      .addField(
+          new KeyedCodec<>("@Name", Codec.STRING),
+          (data, value) -> data.name = value,
+          data -> data.name
+      )
+      .build();
 
-    public RenameModalData() {
-    }
+  /** Creates a new RenameModalData. */
+  public RenameModalData() {
+  }
 }

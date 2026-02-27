@@ -10,49 +10,51 @@ import org.jetbrains.annotations.Nullable;
  */
 public class AdminFactionInfoData implements AdminNavAwareData {
 
-    /** The button/action that triggered the event */
-    public String button;
+  /** The button/action that triggered the event. */
+  public String button;
 
-    /** Target faction ID (for navigation) */
-    public String factionId;
+  /** Target faction ID (for navigation). */
+  public String factionId;
 
-    /** Amount value for bulk power operations */
-    public String amount;
+  /** Amount value for bulk power operations. */
+  public String amount;
 
-    /** Admin nav bar target (for navigation) */
-    public String adminNavBar;
+  /** Admin nav bar target (for navigation). */
+  public String adminNavBar;
 
-    /** Codec for serialization/deserialization */
-    public static final BuilderCodec<AdminFactionInfoData> CODEC = BuilderCodec
-            .builder(AdminFactionInfoData.class, AdminFactionInfoData::new)
-            .addField(
-                    new KeyedCodec<>("Button", Codec.STRING),
-                    (data, value) -> data.button = value,
-                    data -> data.button
-            )
-            .addField(
-                    new KeyedCodec<>("FactionId", Codec.STRING),
-                    (data, value) -> data.factionId = value,
-                    data -> data.factionId
-            )
-            .addField(
-                    new KeyedCodec<>("Amount", Codec.STRING),
-                    (data, value) -> data.amount = value,
-                    data -> data.amount
-            )
-            .addField(
-                    new KeyedCodec<>("AdminNavBar", Codec.STRING),
-                    (data, value) -> data.adminNavBar = value,
-                    data -> data.adminNavBar
-            )
-            .build();
+  /** Codec for serialization/deserialization. */
+  public static final BuilderCodec<AdminFactionInfoData> CODEC = BuilderCodec
+      .builder(AdminFactionInfoData.class, AdminFactionInfoData::new)
+      .addField(
+          new KeyedCodec<>("Button", Codec.STRING),
+          (data, value) -> data.button = value,
+          data -> data.button
+      )
+      .addField(
+          new KeyedCodec<>("FactionId", Codec.STRING),
+          (data, value) -> data.factionId = value,
+          data -> data.factionId
+      )
+      .addField(
+          new KeyedCodec<>("Amount", Codec.STRING),
+          (data, value) -> data.amount = value,
+          data -> data.amount
+      )
+      .addField(
+          new KeyedCodec<>("AdminNavBar", Codec.STRING),
+          (data, value) -> data.adminNavBar = value,
+          data -> data.adminNavBar
+      )
+      .build();
 
-    public AdminFactionInfoData() {
-    }
+  /** Creates a new AdminFactionInfoData. */
+  public AdminFactionInfoData() {
+  }
 
-    @Override
-    @Nullable
-    public String getAdminNavBar() {
-        return adminNavBar;
-    }
+  /** Returns the admin nav bar. */
+  @Override
+  @Nullable
+  public String getAdminNavBar() {
+    return adminNavBar;
+  }
 }

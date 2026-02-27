@@ -1,6 +1,6 @@
 # HyperFactions Command System
 
-> **Version**: 0.9.0 | **42 subcommands** across **10 categories**
+> **Version**: 0.10.0 | **44 subcommands** across **10 categories**
 
 Architecture documentation for the HyperFactions command system.
 
@@ -20,11 +20,11 @@ FactionCommand (dispatcher): /f, /hf, /faction, /hyperfactions
      │        ├─► command/territory/   (4 subcommands: claim, unclaim, overclaim, stuck)
      │        ├─► command/teleport/    (3 subcommands: home, sethome, delhome)
      │        ├─► command/relation/    (4 subcommands: ally, enemy, neutral, relations)
-     │        ├─► command/info/        (6 subcommands: info, list, map, members, who, power)
+     │        ├─► command/info/        (8 subcommands: info, list, map, members, who, power, leaderboard, logs)
      │        ├─► command/social/      (3 subcommands: request, invites, chat)
      │        ├─► command/ui/          (2 subcommands: gui, settings)
      │        ├─► HelpSubCommand       (1 subcommand: help)
-     │        └─► command/admin/       (17+ admin subcommands with nested routing)
+     │        └─► command/admin/       (25+ admin subcommands with nested routing)
      │
      └─► FactionCommandContext (execution state, --text flag)
 ```
@@ -165,7 +165,8 @@ command/
 │
 ├── teleport/                   # Teleportation
 │   ├── HomeSubCommand.java
-│   └── SetHomeSubCommand.java
+│   ├── SetHomeSubCommand.java
+│   └── DelHomeSubCommand.java
 │
 ├── relation/                   # Diplomacy
 │   ├── AllySubCommand.java
@@ -180,12 +181,20 @@ command/
 │   ├── MembersSubCommand.java
 │   ├── WhoSubCommand.java
 │   ├── PowerSubCommand.java
+│   ├── LeaderboardSubCommand.java
+│   ├── LogsSubCommand.java
 │   └── HelpSubCommand.java
 │
 ├── social/                     # Social features
 │   ├── RequestSubCommand.java
 │   ├── InvitesSubCommand.java
 │   └── ChatSubCommand.java
+│
+├── economy/                    # Economy
+│   ├── MoneySubCommand.java
+│   ├── BalanceSubCommand.java
+│   ├── DepositSubCommand.java
+│   └── WithdrawSubCommand.java
 │
 ├── ui/                         # UI commands
 │   ├── GuiSubCommand.java
@@ -201,7 +210,10 @@ command/
         ├── AdminUpdateHandler.java
         ├── AdminIntegrationHandler.java
         ├── AdminPowerHandler.java
-        └── AdminMapDecayHandler.java
+        ├── AdminMapDecayHandler.java
+        ├── AdminInfoHandler.java
+        ├── AdminWorldHandler.java
+        └── AdminEconomyHandler.java
 ```
 
 ### Category Summary
@@ -212,13 +224,18 @@ command/
 | member | invite, accept, leave, kick, promote, demote, transfer | `hyperfactions.member.*` |
 | territory | claim, unclaim, overclaim, stuck | `hyperfactions.territory.*` |
 | teleport | home, sethome, delhome | `hyperfactions.teleport.*` |
+| economy | money, balance, deposit, withdraw | `hyperfactions.economy.*` |
 | relation | ally, enemy, neutral, relations | `hyperfactions.relation.*` |
-| info | info, list, map, members, who, power, help | `hyperfactions.info.*` |
+| info | info, list, map, members, who, power, leaderboard, logs, help | `hyperfactions.info.*` |
 | social | request, invites, chat | `hyperfactions.member.*`, `hyperfactions.chat.*` |
 | ui | gui, settings | `hyperfactions.use` |
-| admin | zone, backup, reload, debug, bypass | `hyperfactions.admin.*` |
+| admin | zone, backup, reload, debug, bypass, info, who, version, log, world | `hyperfactions.admin.*` |
 
 ### Notable Command Behaviors
+
+**`/f leaderboard`** (alias `/f top`) — Opens a sortable faction leaderboard GUI. Sort modes: POWER, TERRITORY, BALANCE, MEMBERS, K/D (default). 10 entries per page with pagination. Also accessible from the faction nav bar.
+
+**`/f logs`** — Opens the faction activity log viewer. Shows timestamped entries with type and player filters (1h/24h/7d). Also accessible from the faction nav bar.
 
 **`/f stuck`** — Teleports the player to a random safe unclaimed chunk. Walks outward in a random direction from the player's position, increasing the search radius on each failed attempt. Configurable via `stuckMinRadius`, `stuckRadiusIncrease`, and `stuckMaxAttempts` in config.json. Uses the faction teleport warmup/cooldown system.
 
@@ -302,7 +319,7 @@ if (result == ClaimResult.NO_PERMISSION) {
 
 `AdminSubCommand` acts as a router that delegates to specialized handler classes in `command/admin/handler/`:
 
-- `AdminZoneHandler` - Zone create/delete/claim/unclaim/radius/list, zoneflag, safezone, warzone
+- `AdminZoneHandler` - Zone create/delete/claim/unclaim/radius/list/notify/title/properties, zoneflag, safezone, warzone
 - `AdminBackupHandler` - Backup create/list/restore/delete
 - `AdminDebugHandler` - Debug toggle, trace, diagnostics
 - `AdminImportHandler` - Data import from other faction plugins
@@ -310,6 +327,9 @@ if (result == ClaimResult.NO_PERMISSION) {
 - `AdminIntegrationHandler` - Integration status reporting
 - `AdminPowerHandler` - Power set/reset/modify
 - `AdminMapDecayHandler` - Map decay management
+- `AdminInfoHandler` - Admin info/who commands (open admin GUIs directly)
+- `AdminWorldHandler` - Per-world settings management (list/info/set/reset)
+- `AdminEconomyHandler` - Economy management and treasury adjustments
 
 Admin commands use nested subcommand structure:
 
@@ -321,11 +341,14 @@ Admin commands use nested subcommand structure:
 │   ├── claim
 │   ├── unclaim
 │   ├── radius
-│   └── list
+│   ├── list
+│   ├── notify <zone> <true|false>      # Toggle zone entry/leave notifications
+│   ├── title <zone> upper|lower <text|clear>  # Customize zone title text
+│   └── properties <zone>               # Open zone properties GUI
 ├── zoneflag      # Zone flag management
 ├── safezone      # Quick SafeZone creation
 ├── warzone       # Quick WarZone creation
-├── bypass        # Toggle admin bypass
+├── bypass        # Toggle admin bypass (persists across restarts)
 ├── backup        # Backup management
 │   ├── create
 │   ├── list
@@ -335,6 +358,15 @@ Admin commands use nested subcommand structure:
 ├── update        # Check for updates
 │   ├── mixin     # Check/download HyperProtect-Mixin
 │   └── toggle-mixin-download  # Toggle HP-Mixin auto-download
+├── info [faction]   # Open admin faction info GUI
+├── who [player]     # Open admin player info GUI
+├── version          # Show version and integration status
+├── log              # Open admin activity log GUI
+├── world            # Per-world settings management
+│   ├── list         # List all world overrides
+│   ├── info <world> # Show settings for a world
+│   ├── set <world> <key> <value>  # Set a per-world setting
+│   └── reset <world>              # Reset world to defaults
 └── debug         # Debug commands
 ```
 
