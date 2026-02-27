@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+*No changes yet*
+
+## [0.10.0] - 2026-02-27
+
 **Closes:** [#26](https://github.com/HyperSystemsDev/HyperFactions/issues/26), [#59](https://github.com/HyperSystemsDev/HyperFactions/issues/59), [#61](https://github.com/HyperSystemsDev/HyperFactions/issues/61), [#62](https://github.com/HyperSystemsDev/HyperFactions/issues/62), [#64](https://github.com/HyperSystemsDev/HyperFactions/issues/64), [#65](https://github.com/HyperSystemsDev/HyperFactions/issues/65), [#66](https://github.com/HyperSystemsDev/HyperFactions/issues/66), [#67](https://github.com/HyperSystemsDev/HyperFactions/issues/67), [#68](https://github.com/HyperSystemsDev/HyperFactions/issues/68), [#69](https://github.com/HyperSystemsDev/HyperFactions/issues/69), [#70](https://github.com/HyperSystemsDev/HyperFactions/issues/70), [#71](https://github.com/HyperSystemsDev/HyperFactions/issues/71), [#72](https://github.com/HyperSystemsDev/HyperFactions/issues/72)
+
+**Server Version:** `2026.02.19-1a311a592`
 
 ### Added
 
