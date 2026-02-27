@@ -1,8 +1,10 @@
 package com.hyperfactions.gui.faction.page;
 
+import com.hyperfactions.Permissions;
 import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.*;
+import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.gui.ActivePageTracker;
 import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.gui.RefreshablePage;
@@ -226,6 +228,12 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
       isOfficer = member != null && member.isOfficerOrHigher();
     }
 
+    // Compute permission booleans once (officer role + server permission)
+    UUID viewerUuid = playerRef.getUuid();
+    boolean canClaim = isOfficer && PermissionManager.get().hasPermission(viewerUuid, Permissions.CLAIM);
+    boolean canUnclaim = isOfficer && PermissionManager.get().hasPermission(viewerUuid, Permissions.UNCLAIM);
+    boolean canOverclaim = isOfficer && PermissionManager.get().hasPermission(viewerUuid, Permissions.OVERCLAIM);
+
     // Fetch OG regions once for the entire grid (avoids per-chunk reflection calls)
     List<OrbisGuardIntegration.RegionInfo> ogRegions = OrbisGuardIntegration.isAvailable()
         ? OrbisGuardIntegration.getRegionsForWorld(worldName) : List.of();
@@ -262,9 +270,10 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
         String cellSelector = "#ChunkGrid[" + rowIndex + "][" + colIndex + "]";
         cmd.append(cellSelector, UIPaths.CHUNK_BTN);
 
-        // Bind click events based on chunk ownership (only for officers)
-        if (isOfficer) {
-          bindChunkEvents(events, cellSelector + " #Btn", chunkX, chunkZ, info, viewerFactionId);
+        // Bind click events based on chunk ownership (requires officer role + permission)
+        if (canClaim || canUnclaim || canOverclaim) {
+          bindChunkEvents(events, cellSelector + " #Btn", chunkX, chunkZ, info, viewerFactionId,
+              canClaim, canUnclaim, canOverclaim);
         }
       }
     }
@@ -312,6 +321,12 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
       isOfficer = member != null && member.isOfficerOrHigher();
     }
 
+    // Compute permission booleans once (officer role + server permission)
+    UUID viewerUuid = playerRef.getUuid();
+    boolean canClaim = isOfficer && PermissionManager.get().hasPermission(viewerUuid, Permissions.CLAIM);
+    boolean canUnclaim = isOfficer && PermissionManager.get().hasPermission(viewerUuid, Permissions.UNCLAIM);
+    boolean canOverclaim = isOfficer && PermissionManager.get().hasPermission(viewerUuid, Permissions.OVERCLAIM);
+
     // Fetch OG regions once for the entire grid
     List<OrbisGuardIntegration.RegionInfo> ogRegions = OrbisGuardIntegration.isAvailable()
         ? OrbisGuardIntegration.getRegionsForWorld(worldName) : List.of();
@@ -344,11 +359,15 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
         }
 
         // Click events need a TextButton overlay (Activating doesn't work on Groups).
-        // Only add the button on actionable cells to avoid border artifacts.
-        if (isOfficer && info.type != ChunkType.OG_PROTECTED
-          && (info.type == ChunkType.WILDERNESS || info.type == ChunkType.OWN || info.type == ChunkType.ENEMY)) {
+        // Only add the button on actionable cells where the player has the matching permission.
+        boolean actionable = info.type != ChunkType.OG_PROTECTED
+            && ((info.type == ChunkType.WILDERNESS && canClaim)
+                || (info.type == ChunkType.OWN && canUnclaim)
+                || (info.type == ChunkType.ENEMY && canOverclaim));
+        if (actionable) {
           cmd.append(cellSel, UIPaths.CHUNK_MAP_TERRAIN_BTN);
-          bindChunkEvents(events, cellSel + " #Btn", chunkX, chunkZ, info, viewerFactionId);
+          bindChunkEvents(events, cellSel + " #Btn", chunkX, chunkZ, info, viewerFactionId,
+              canClaim, canUnclaim, canOverclaim);
         }
       }
     }
@@ -373,44 +392,52 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
   /**
    * Binds click events to a chunk cell based on its ownership state.
    * Events are bound to the #Cell Button element.
+   * Only binds events for actions the player has permission to perform.
    */
   private void bindChunkEvents(UIEventBuilder events, String cellSelector,
-                int chunkX, int chunkZ, ChunkInfo info, UUID viewerFactionId) {
+                int chunkX, int chunkZ, ChunkInfo info, UUID viewerFactionId,
+                boolean canClaim, boolean canUnclaim, boolean canOverclaim) {
     switch (info.type) {
       case WILDERNESS:
-        // Left-click wilderness to claim
-        events.addEventBinding(
-            CustomUIEventBindingType.Activating,
-            cellSelector,
-            EventData.of("Button", "Claim")
-                .append("ChunkX", String.valueOf(chunkX))
-                .append("ChunkZ", String.valueOf(chunkZ)),
-            false
-        );
+        if (canClaim) {
+          // Left-click wilderness to claim
+          events.addEventBinding(
+              CustomUIEventBindingType.Activating,
+              cellSelector,
+              EventData.of("Button", "Claim")
+                  .append("ChunkX", String.valueOf(chunkX))
+                  .append("ChunkZ", String.valueOf(chunkZ)),
+              false
+          );
+        }
         break;
 
       case OWN:
-        // Right-click own territory to unclaim
-        events.addEventBinding(
-            CustomUIEventBindingType.RightClicking,
-            cellSelector,
-            EventData.of("Button", "Unclaim")
-                .append("ChunkX", String.valueOf(chunkX))
-                .append("ChunkZ", String.valueOf(chunkZ)),
-            false
-        );
+        if (canUnclaim) {
+          // Right-click own territory to unclaim
+          events.addEventBinding(
+              CustomUIEventBindingType.RightClicking,
+              cellSelector,
+              EventData.of("Button", "Unclaim")
+                  .append("ChunkX", String.valueOf(chunkX))
+                  .append("ChunkZ", String.valueOf(chunkZ)),
+              false
+          );
+        }
         break;
 
       case ENEMY:
-        // Left-click enemy territory to attempt overclaim
-        events.addEventBinding(
-            CustomUIEventBindingType.Activating,
-            cellSelector,
-            EventData.of("Button", "Overclaim")
-                .append("ChunkX", String.valueOf(chunkX))
-                .append("ChunkZ", String.valueOf(chunkZ)),
-            false
-        );
+        if (canOverclaim) {
+          // Left-click enemy territory to attempt overclaim
+          events.addEventBinding(
+              CustomUIEventBindingType.Activating,
+              cellSelector,
+              EventData.of("Button", "Overclaim")
+                  .append("ChunkX", String.valueOf(chunkX))
+                  .append("ChunkZ", String.valueOf(chunkZ)),
+              false
+          );
+        }
         break;
 
       // ALLY, OTHER, SAFEZONE, WARZONE - no click actions

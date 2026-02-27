@@ -500,7 +500,7 @@ public final class ZoneFlags {
     return switch (flagName) {
       // Combat: PvP and mob damage enabled
       case PVP_ENABLED -> true;
-      case FRIENDLY_FIRE -> false;              // Faction members still protected
+      case FRIENDLY_FIRE -> true;               // Full PvP in warzones by default
       case FRIENDLY_FIRE_FACTION -> true;       // Both allowed when parent toggled on
       case FRIENDLY_FIRE_ALLY -> true;          // Both allowed when parent toggled on
       case PROJECTILE_DAMAGE -> true;

@@ -769,9 +769,18 @@ public class HyperFactionsExpansion extends PlaceholderExpansion implements Rela
     return switch (identifier.toLowerCase()) {
       case "relation" -> relation.getDisplayName();
       case "relation_color" -> {
-        // Convert §X to &X for consumer compatibility
+        // Return hex color (#RRGGBB) matching factions_color pattern
+        char code = relation.getColorCode().charAt(1); // §X → X
+        yield LegacyColorParser.codeToHex(code);
+      }
+      case "relation_color_legacy" -> {
+        // Return &X format matching factions_color_legacy pattern
         String code = relation.getColorCode();
         yield code.replace('\u00A7', '&');
+      }
+      case "relation_colored" -> {
+        // Return §XName for direct use in chat formatting
+        yield relation.getColorCode() + relation.getDisplayName();
       }
       default -> null;
     };

@@ -1,6 +1,6 @@
 # HyperFactions Placeholders
 
-> **Version**: 0.10.0 | **Expansion Identifier**: `factions` | **49 placeholders**
+> **Version**: 0.10.0 | **Expansion Identifier**: `factions` | **51 placeholders**
 
 HyperFactions exposes faction data as placeholders through two placeholder APIs: **PlaceholderAPI (PAPI)** and **WiFlow PlaceholderAPI**. Both APIs support the same set of placeholders with identical behavior.
 
@@ -184,12 +184,14 @@ All home placeholders return `""` (empty string) if the player has no faction or
 
 ## Relational Placeholders (PAPI Only)
 
-2 relational placeholders available only through PlaceholderAPI's relational expansion system. These resolve based on the relationship between two players' factions.
+4 relational placeholders available only through PlaceholderAPI's relational expansion system. These resolve based on the relationship between two players' factions.
 
 | Placeholder | Description | Returns | Example |
 |-------------|-------------|---------|---------|
 | `rel_factions_relation` | Relation type between two players' factions | Relation name or `""` | `ALLY`, `ENEMY`, `NEUTRAL` |
-| `rel_factions_relation_color` | Color code for the relation between two players | Hex color or `""` | `#FF69B4` |
+| `rel_factions_relation_color` | Hex color for the relation between two players | Hex color `#RRGGBB` or `""` | `#FF5555` |
+| `rel_factions_relation_color_legacy` | Legacy color code for the relation | `&X` format or `""` | `&c` |
+| `rel_factions_relation_colored` | Relation name with color prefix | `§XName` or `""` | `§cEnemy` |
 
 > **Note**: Relational placeholders use the PAPI format `%rel_factions_<placeholder>%` and are only available through PlaceholderAPI (not WiFlow).
 
@@ -280,7 +282,7 @@ Faction-specific placeholders return empty strings or zero values for factionles
 
 | File | Purpose |
 |------|---------|
-| [`integration/placeholder/HyperFactionsExpansion.java`](../src/main/java/com/hyperfactions/integration/placeholder/HyperFactionsExpansion.java) | PAPI expansion (49 placeholders incl. 2 relational) |
+| [`integration/placeholder/HyperFactionsExpansion.java`](../src/main/java/com/hyperfactions/integration/placeholder/HyperFactionsExpansion.java) | PAPI expansion (51 placeholders incl. 4 relational) |
 | [`integration/placeholder/WiFlowExpansion.java`](../src/main/java/com/hyperfactions/integration/placeholder/WiFlowExpansion.java) | WiFlow expansion (47 placeholders) |
 | [`integration/placeholder/PlaceholderAPIIntegration.java`](../src/main/java/com/hyperfactions/integration/placeholder/PlaceholderAPIIntegration.java) | PAPI detection and registration |
 | [`integration/placeholder/WiFlowPlaceholderIntegration.java`](../src/main/java/com/hyperfactions/integration/placeholder/WiFlowPlaceholderIntegration.java) | WiFlow detection and registration |
@@ -357,4 +359,6 @@ Complete side-by-side table of every placeholder in both formats.
 | 47 | `%factions_treasury_limit%` | `{factions_treasury_limit}` | Treasury limit | `100000.00` |
 | | **Relational (PAPI Only)** | | | |
 | 48 | `%rel_factions_relation%` | *(PAPI only)* | Relation between two players | `ALLY` |
-| 49 | `%rel_factions_relation_color%` | *(PAPI only)* | Relation color between two players | `#FF69B4` |
+| 49 | `%rel_factions_relation_color%` | *(PAPI only)* | Relation hex color | `#FF5555` |
+| 50 | `%rel_factions_relation_color_legacy%` | *(PAPI only)* | Relation legacy color code | `&c` |
+| 51 | `%rel_factions_relation_colored%` | *(PAPI only)* | Relation name with color prefix | `§cEnemy` |

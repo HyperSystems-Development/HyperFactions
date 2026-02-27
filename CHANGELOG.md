@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-**Closes:** [#59](https://github.com/HyperSystemsDev/HyperFactions/issues/59), [#61](https://github.com/HyperSystemsDev/HyperFactions/issues/61), [#62](https://github.com/HyperSystemsDev/HyperFactions/issues/62), [#65](https://github.com/HyperSystemsDev/HyperFactions/issues/65), [#66](https://github.com/HyperSystemsDev/HyperFactions/issues/66), [#67](https://github.com/HyperSystemsDev/HyperFactions/issues/67), [#68](https://github.com/HyperSystemsDev/HyperFactions/issues/68), [#69](https://github.com/HyperSystemsDev/HyperFactions/issues/69), [#71](https://github.com/HyperSystemsDev/HyperFactions/issues/71), [#72](https://github.com/HyperSystemsDev/HyperFactions/issues/72)
+**Closes:** [#26](https://github.com/HyperSystemsDev/HyperFactions/issues/26), [#59](https://github.com/HyperSystemsDev/HyperFactions/issues/59), [#61](https://github.com/HyperSystemsDev/HyperFactions/issues/61), [#62](https://github.com/HyperSystemsDev/HyperFactions/issues/62), [#64](https://github.com/HyperSystemsDev/HyperFactions/issues/64), [#65](https://github.com/HyperSystemsDev/HyperFactions/issues/65), [#66](https://github.com/HyperSystemsDev/HyperFactions/issues/66), [#67](https://github.com/HyperSystemsDev/HyperFactions/issues/67), [#68](https://github.com/HyperSystemsDev/HyperFactions/issues/68), [#69](https://github.com/HyperSystemsDev/HyperFactions/issues/69), [#70](https://github.com/HyperSystemsDev/HyperFactions/issues/70), [#71](https://github.com/HyperSystemsDev/HyperFactions/issues/71), [#72](https://github.com/HyperSystemsDev/HyperFactions/issues/72)
 
 ### Added
 
@@ -144,6 +144,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `treasury_autopay` — true/false
 - `treasury_limit` — max treasury limit
 
+**Relational Placeholders** ([#26](https://github.com/HyperSystemsDev/HyperFactions/issues/26))
+- `relation_color` — now returns hex color (`#RRGGBB`) via `LegacyColorParser.codeToHex()` (was returning `&X` legacy format)
+- `relation_color_legacy` — new, returns `&X` legacy color code for the relation
+- `relation_colored` — new, returns `§XName` (color code + display name) for direct chat use
+
 ### Changed
 
 **Treasury BigDecimal Refactor**
@@ -199,6 +204,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Atomic write failures on Windows**: `ATOMIC_MOVE` can fail when antivirus or file indexer holds a handle on the target file; `StorageUtils.writeAtomic()` now retries with backoff (3 attempts, 50/100/150ms) then falls back to non-atomic move (safe — `.bak` backup already exists)
 - **Backup orphaned files** ([#61](https://github.com/HyperSystemsDev/HyperFactions/issues/61)): `BackupManager` now skips `.tmp`/`.bak` orphans and cleans up before backup. Incomplete backup ZIPs are deleted on failure
 - **Warzone power loss** ([#62](https://github.com/HyperSystemsDev/HyperFactions/issues/62)): Zone check failure now defaults to **no power loss** (fail-safe) instead of silently falling through. Logged at WARN instead of DEBUG
+- **Chunk map buttons ignore permissions** ([#64](https://github.com/HyperSystemsDev/HyperFactions/issues/64)): Claim/unclaim/overclaim buttons on chunk map now require the corresponding `hyperfactions.territory.*` permission in addition to officer role; previously only checked `isOfficer`
+- **Warzone friendly fire default blocks ally PvP** ([#70](https://github.com/HyperSystemsDev/HyperFactions/issues/70)): Changed `FRIENDLY_FIRE` warzone default from `false` to `true` so PvP-enabled warzones allow full combat by default (including between faction members and allies)
 
 ## [0.9.0] - 2026-02-22
 
