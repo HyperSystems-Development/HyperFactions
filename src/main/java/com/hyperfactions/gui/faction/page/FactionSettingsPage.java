@@ -206,6 +206,11 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
       buildToggle(cmd, events, cap + "ProcessingToggle", level + "ProcessingUse", perms.get(level + "ProcessingUse"), canEdit, config, interactOff);
       buildToggle(cmd, events, cap + "SeatToggle", level + "SeatUse", perms.get(level + "SeatUse"), canEdit, config, interactOff);
       buildToggle(cmd, events, cap + "TransportToggle", level + "TransportUse", perms.get(level + "TransportUse"), canEdit, config, interactOff);
+
+      // Standalone flags (not children of Interact)
+      buildToggle(cmd, events, cap + "CrateToggle", level + "CrateUse", perms.get(level + "CrateUse"), canEdit, config, false);
+      buildToggle(cmd, events, cap + "NpcTameToggle", level + "NpcTame", perms.get(level + "NpcTame"), canEdit, config, false);
+      buildToggle(cmd, events, cap + "PveDamageToggle", level + "PveDamage", perms.get(level + "PveDamage"), canEdit, config, false);
     }
 
     // Mob spawning toggles — children disabled when master is off

@@ -63,6 +63,8 @@ public final class FactionPermissions {
 
   public static final String SUFFIX_NPC_TAME = "NpcTame";
 
+  public static final String SUFFIX_PVE_DAMAGE = "PveDamage";
+
   // =========================================================================
   // OUTSIDER FLAGS
   // =========================================================================
@@ -88,6 +90,8 @@ public final class FactionPermissions {
   public static final String OUTSIDER_CRATE_USE = "outsiderCrateUse";
 
   public static final String OUTSIDER_NPC_TAME = "outsiderNpcTame";
+
+  public static final String OUTSIDER_PVE_DAMAGE = "outsiderPveDamage";
 
   // =========================================================================
   // ALLY FLAGS
@@ -115,6 +119,8 @@ public final class FactionPermissions {
 
   public static final String ALLY_NPC_TAME = "allyNpcTame";
 
+  public static final String ALLY_PVE_DAMAGE = "allyPveDamage";
+
   // =========================================================================
   // MEMBER FLAGS
   // =========================================================================
@@ -141,6 +147,8 @@ public final class FactionPermissions {
 
   public static final String MEMBER_NPC_TAME = "memberNpcTame";
 
+  public static final String MEMBER_PVE_DAMAGE = "memberPveDamage";
+
   // =========================================================================
   // OFFICER FLAGS
   // =========================================================================
@@ -166,6 +174,8 @@ public final class FactionPermissions {
   public static final String OFFICER_CRATE_USE = "officerCrateUse";
 
   public static final String OFFICER_NPC_TAME = "officerNpcTame";
+
+  public static final String OFFICER_PVE_DAMAGE = "officerPveDamage";
 
   // =========================================================================
   // MOB SPAWNING FLAGS
@@ -204,28 +214,28 @@ public final class FactionPermissions {
   // ALL FLAGS
   // =========================================================================
 
-  /** All 53 flag names for iteration, validation, and serialization. */
+  /** All 57 flag names for iteration, validation, and serialization. */
   public static final List<String> ALL_FLAGS = List.of(
-    // Outsider (11)
+    // Outsider (12)
     OUTSIDER_BREAK, OUTSIDER_PLACE, OUTSIDER_INTERACT,
     OUTSIDER_DOOR_USE, OUTSIDER_CONTAINER_USE, OUTSIDER_BENCH_USE,
     OUTSIDER_PROCESSING_USE, OUTSIDER_SEAT_USE, OUTSIDER_TRANSPORT_USE,
-    OUTSIDER_CRATE_USE, OUTSIDER_NPC_TAME,
-    // Ally (11)
+    OUTSIDER_CRATE_USE, OUTSIDER_NPC_TAME, OUTSIDER_PVE_DAMAGE,
+    // Ally (12)
     ALLY_BREAK, ALLY_PLACE, ALLY_INTERACT,
     ALLY_DOOR_USE, ALLY_CONTAINER_USE, ALLY_BENCH_USE,
     ALLY_PROCESSING_USE, ALLY_SEAT_USE, ALLY_TRANSPORT_USE,
-    ALLY_CRATE_USE, ALLY_NPC_TAME,
-    // Member (11)
+    ALLY_CRATE_USE, ALLY_NPC_TAME, ALLY_PVE_DAMAGE,
+    // Member (12)
     MEMBER_BREAK, MEMBER_PLACE, MEMBER_INTERACT,
     MEMBER_DOOR_USE, MEMBER_CONTAINER_USE, MEMBER_BENCH_USE,
     MEMBER_PROCESSING_USE, MEMBER_SEAT_USE, MEMBER_TRANSPORT_USE,
-    MEMBER_CRATE_USE, MEMBER_NPC_TAME,
-    // Officer (11)
+    MEMBER_CRATE_USE, MEMBER_NPC_TAME, MEMBER_PVE_DAMAGE,
+    // Officer (12)
     OFFICER_BREAK, OFFICER_PLACE, OFFICER_INTERACT,
     OFFICER_DOOR_USE, OFFICER_CONTAINER_USE, OFFICER_BENCH_USE,
     OFFICER_PROCESSING_USE, OFFICER_SEAT_USE, OFFICER_TRANSPORT_USE,
-    OFFICER_CRATE_USE, OFFICER_NPC_TAME,
+    OFFICER_CRATE_USE, OFFICER_NPC_TAME, OFFICER_PVE_DAMAGE,
     // Mob Spawning (4)
     MOB_SPAWNING, HOSTILE_MOB_SPAWNING, PASSIVE_MOB_SPAWNING, NEUTRAL_MOB_SPAWNING,
     // Global (2)
@@ -242,7 +252,7 @@ public final class FactionPermissions {
     SUFFIX_BREAK, SUFFIX_PLACE, SUFFIX_INTERACT,
     SUFFIX_DOOR_USE, SUFFIX_CONTAINER_USE, SUFFIX_BENCH_USE,
     SUFFIX_PROCESSING_USE, SUFFIX_SEAT_USE, SUFFIX_TRANSPORT_USE,
-    SUFFIX_CRATE_USE, SUFFIX_NPC_TAME
+    SUFFIX_CRATE_USE, SUFFIX_NPC_TAME, SUFFIX_PVE_DAMAGE
   };
 
   /** Interaction child suffixes (children of Interact). */
@@ -302,6 +312,7 @@ public final class FactionPermissions {
     defaults.put(OUTSIDER_TRANSPORT_USE, false);
     defaults.put(OUTSIDER_CRATE_USE, false);
     defaults.put(OUTSIDER_NPC_TAME, false);
+    defaults.put(OUTSIDER_PVE_DAMAGE, false);
 
     // Ally: interact + doors/seats/teleporters/portals
     defaults.put(ALLY_BREAK, false);
@@ -315,6 +326,7 @@ public final class FactionPermissions {
     defaults.put(ALLY_TRANSPORT_USE, true);
     defaults.put(ALLY_CRATE_USE, false);
     defaults.put(ALLY_NPC_TAME, false);
+    defaults.put(ALLY_PVE_DAMAGE, true);
 
     // Member: full access
     defaults.put(MEMBER_BREAK, true);
@@ -328,6 +340,7 @@ public final class FactionPermissions {
     defaults.put(MEMBER_TRANSPORT_USE, true);
     defaults.put(MEMBER_CRATE_USE, true);
     defaults.put(MEMBER_NPC_TAME, true);
+    defaults.put(MEMBER_PVE_DAMAGE, true);
 
     // Officer: full access
     defaults.put(OFFICER_BREAK, true);
@@ -341,6 +354,7 @@ public final class FactionPermissions {
     defaults.put(OFFICER_TRANSPORT_USE, true);
     defaults.put(OFFICER_CRATE_USE, true);
     defaults.put(OFFICER_NPC_TAME, true);
+    defaults.put(OFFICER_PVE_DAMAGE, true);
 
     // Mob spawning: allowed by default (same as no protection)
     defaults.put(MOB_SPAWNING, true);
@@ -560,6 +574,7 @@ public final class FactionPermissions {
         case "TransportUse" -> "Transport";
         case "CrateUse" -> "Crate Use";
         case "NpcTame" -> "NPC Tame";
+        case "PveDamage" -> "PvE Damage";
         default -> suffix;
       };
       return levelDisplay + " " + suffixDisplay;

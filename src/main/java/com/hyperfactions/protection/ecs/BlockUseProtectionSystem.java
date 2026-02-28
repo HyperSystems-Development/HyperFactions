@@ -3,6 +3,7 @@ package com.hyperfactions.protection.ecs;
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.protection.ProtectionChecker;
 import com.hyperfactions.protection.ProtectionListener;
+import com.hyperfactions.protection.ProtectionMessageDebounce;
 import com.hyperfactions.protection.zone.ZoneInteractionProtection;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.MessageUtil;
@@ -102,7 +103,7 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
         boolean cropHarvestAllowed = zoneProtection.isManualPickupAllowed(worldName, pos.getX(), pos.getZ());
         if (!cropHarvestAllowed) {
           event.setCancelled(true);
-          player.sendMessage(MessageUtil.errorText("You cannot harvest plants in this zone."));
+          ProtectionMessageDebounce.sendIfNotOnCooldown(player, "zone_harvest", MessageUtil.errorText("You cannot harvest plants in this zone."));
           Logger.debugProtection("Plant harvest blocked by zone (ITEM_PICKUP_MANUAL=false) at %s/%d/%d for player %s",
             worldName, pos.getX(), pos.getZ(), player.getUuid());
           return;
@@ -114,7 +115,7 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
         );
         if (blocked) {
           event.setCancelled(true);
-          player.sendMessage(Message.raw(protectionListener.getDenialMessage(
+          ProtectionMessageDebounce.sendIfNotOnCooldown(player, "block_interact", Message.raw(protectionListener.getDenialMessage(
             hyperFactions.getProtectionChecker().canInteract(
               player.getUuid(), worldName, pos.getX(), pos.getZ(),
               ProtectionChecker.InteractionType.INTERACT
@@ -139,7 +140,7 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
           case SEAT -> "seat use";
           case OTHER -> "block interaction";
         };
-        player.sendMessage(MessageUtil.errorText("You cannot use " + flagName + " in this zone."));
+        ProtectionMessageDebounce.sendIfNotOnCooldown(player, "zone_use", MessageUtil.errorText("You cannot use " + flagName + " in this zone."));
         return;
       }
 
@@ -167,7 +168,7 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
 
       if (blocked) {
         event.setCancelled(true);
-        player.sendMessage(Message.raw(protectionListener.getDenialMessage(factionResult)).color("#FF5555"));
+        ProtectionMessageDebounce.sendIfNotOnCooldown(player, "block_use", Message.raw(protectionListener.getDenialMessage(factionResult)).color("#FF5555"));
       }
     } catch (Exception e) {
       // Fail-closed: cancel on any exception to prevent unauthorized block interaction

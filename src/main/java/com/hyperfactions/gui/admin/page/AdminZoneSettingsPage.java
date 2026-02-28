@@ -115,18 +115,18 @@ public class AdminZoneSettingsPage extends InteractiveCustomUIPage<AdminZoneSett
     cmd.set("#ZoneType.Style.TextColor", typeColor);
 
     // Build flag toggles by category (matching 3-column UI layout)
-    // Left column: Combat (0-5), Damage (6-9), Death (10-11)
+    // Left column: Combat (0-6), Damage (7-10), Death (11-12)
     buildFlagCategory(cmd, events, zone, "Combat", ZoneFlags.COMBAT_FLAGS, 0);
-    buildFlagCategory(cmd, events, zone, "Damage", ZoneFlags.DAMAGE_FLAGS, 6);
-    buildFlagCategory(cmd, events, zone, "Death", ZoneFlags.DEATH_FLAGS, 10);
-    // Middle column: Building (12-15), Interaction (16-21), Entity Interaction (33-35)
-    buildFlagCategory(cmd, events, zone, "Building", ZoneFlags.BUILDING_FLAGS, 12);
-    // Right column: Transport (22-23), Items (24-27), Spawning (28-32)
-    buildFlagCategory(cmd, events, zone, "Interaction", ZoneFlags.INTERACTION_FLAGS, 16);
-    buildFlagCategory(cmd, events, zone, "Transport", ZoneFlags.TRANSPORT_FLAGS, 22);
-    buildFlagCategory(cmd, events, zone, "Items", ZoneFlags.ITEM_FLAGS, 24);
-    buildFlagCategory(cmd, events, zone, "Spawning", ZoneFlags.SPAWNING_FLAGS, 28);
-    buildFlagCategory(cmd, events, zone, "Entity Interaction", ZoneFlags.ENTITY_INTERACTION_FLAGS, 33);
+    buildFlagCategory(cmd, events, zone, "Damage", ZoneFlags.DAMAGE_FLAGS, 7);
+    buildFlagCategory(cmd, events, zone, "Death", ZoneFlags.DEATH_FLAGS, 11);
+    // Middle column: Building (13-16), Interaction (17-22), Entity Interaction (34-36)
+    buildFlagCategory(cmd, events, zone, "Building", ZoneFlags.BUILDING_FLAGS, 13);
+    // Right column: Transport (23-24), Items (25-28), Spawning (29-33)
+    buildFlagCategory(cmd, events, zone, "Interaction", ZoneFlags.INTERACTION_FLAGS, 17);
+    buildFlagCategory(cmd, events, zone, "Transport", ZoneFlags.TRANSPORT_FLAGS, 23);
+    buildFlagCategory(cmd, events, zone, "Items", ZoneFlags.ITEM_FLAGS, 25);
+    buildFlagCategory(cmd, events, zone, "Spawning", ZoneFlags.SPAWNING_FLAGS, 29);
+    buildFlagCategory(cmd, events, zone, "Entity Interaction", ZoneFlags.ENTITY_INTERACTION_FLAGS, 34);
 
     // Reset to Defaults button
     if (!zone.getFlags().isEmpty()) {
@@ -355,18 +355,18 @@ public class AdminZoneSettingsPage extends InteractiveCustomUIPage<AdminZoneSett
     }
 
     // Rebuild flag toggles (matching 3-column UI layout)
-    // Left column: Combat (0-5), Damage (6-9), Death (10-11)
+    // Left column: Combat (0-6), Damage (7-10), Death (11-12)
     buildFlagCategory(cmd, events, zone, "Combat", ZoneFlags.COMBAT_FLAGS, 0);
-    buildFlagCategory(cmd, events, zone, "Damage", ZoneFlags.DAMAGE_FLAGS, 6);
-    buildFlagCategory(cmd, events, zone, "Death", ZoneFlags.DEATH_FLAGS, 10);
-    // Middle column: Building (12-15), Interaction (16-21), Entity Interaction (33-35)
-    buildFlagCategory(cmd, events, zone, "Building", ZoneFlags.BUILDING_FLAGS, 12);
-    // Right column: Transport (22-23), Items (24-27), Spawning (28-32)
-    buildFlagCategory(cmd, events, zone, "Interaction", ZoneFlags.INTERACTION_FLAGS, 16);
-    buildFlagCategory(cmd, events, zone, "Transport", ZoneFlags.TRANSPORT_FLAGS, 22);
-    buildFlagCategory(cmd, events, zone, "Items", ZoneFlags.ITEM_FLAGS, 24);
-    buildFlagCategory(cmd, events, zone, "Spawning", ZoneFlags.SPAWNING_FLAGS, 28);
-    buildFlagCategory(cmd, events, zone, "Entity Interaction", ZoneFlags.ENTITY_INTERACTION_FLAGS, 33);
+    buildFlagCategory(cmd, events, zone, "Damage", ZoneFlags.DAMAGE_FLAGS, 7);
+    buildFlagCategory(cmd, events, zone, "Death", ZoneFlags.DEATH_FLAGS, 11);
+    // Middle column: Building (13-16), Interaction (17-22), Entity Interaction (34-36)
+    buildFlagCategory(cmd, events, zone, "Building", ZoneFlags.BUILDING_FLAGS, 13);
+    // Right column: Transport (23-24), Items (25-28), Spawning (29-33)
+    buildFlagCategory(cmd, events, zone, "Interaction", ZoneFlags.INTERACTION_FLAGS, 17);
+    buildFlagCategory(cmd, events, zone, "Transport", ZoneFlags.TRANSPORT_FLAGS, 23);
+    buildFlagCategory(cmd, events, zone, "Items", ZoneFlags.ITEM_FLAGS, 25);
+    buildFlagCategory(cmd, events, zone, "Spawning", ZoneFlags.SPAWNING_FLAGS, 29);
+    buildFlagCategory(cmd, events, zone, "Entity Interaction", ZoneFlags.ENTITY_INTERACTION_FLAGS, 34);
 
     // Update reset button state
     if (!zone.getFlags().isEmpty()) {

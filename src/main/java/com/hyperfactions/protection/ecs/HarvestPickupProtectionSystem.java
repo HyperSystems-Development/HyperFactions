@@ -3,6 +3,7 @@ package com.hyperfactions.protection.ecs;
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.protection.ProtectionChecker;
 import com.hyperfactions.protection.ProtectionListener;
+import com.hyperfactions.protection.ProtectionMessageDebounce;
 import com.hyperfactions.protection.zone.ZoneInteractionProtection;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.MessageUtil;
@@ -123,7 +124,7 @@ public class HarvestPickupProtectionSystem extends EntityEventSystem<EntityStore
       if (!zoneAllows) {
         event.setCancelled(true);
         event.setItemStack(ItemStack.EMPTY);  // Also clear the item stack
-        player.sendMessage(MessageUtil.errorText("You cannot pick up items manually in this zone."));
+        ProtectionMessageDebounce.sendIfNotOnCooldown(player, "zone_pickup", MessageUtil.errorText("You cannot pick up items manually in this zone."));
         Logger.debugInteraction("[ECS:HarvestPickup] BLOCKED by zone at %s/%d/%d for player %s", worldName, x, z, playerRef.getUuid());
         return;
       }
@@ -145,7 +146,7 @@ public class HarvestPickupProtectionSystem extends EntityEventSystem<EntityStore
           playerRef.getUuid(), worldName, x, z,
           ProtectionChecker.InteractionType.INTERACT
         );
-        player.sendMessage(Message.raw(protectionListener.getDenialMessage(result)).color("#FF5555"));
+        ProtectionMessageDebounce.sendIfNotOnCooldown(player, "harvest_pickup", Message.raw(protectionListener.getDenialMessage(result)).color("#FF5555"));
         Logger.debugInteraction("[ECS:HarvestPickup] BLOCKED by faction: %s for player %s", result, playerRef.getUuid());
       }
     } catch (Exception e) {

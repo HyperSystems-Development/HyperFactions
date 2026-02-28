@@ -52,7 +52,8 @@ public class FactionPermissionsConfig extends ModuleConfig {
     {"seatUse",       "SeatUse"},
     {"transportUse",  "TransportUse"},
     {"crateUse",      "CrateUse"},
-    {"npcTame",       "NpcTame"}
+    {"npcTame",       "NpcTame"},
+    {"pveDamage",     "PveDamage"}
   };
 
   // JSON keys for mob spawning sub-flags

@@ -100,6 +100,9 @@ public final class ZoneFlags {
   /** Whether mobs can damage players. Uses Damage event with EntitySource (non-player). */
   public static final String MOB_DAMAGE = "mob_damage";
 
+  /** Whether players can damage mobs/NPCs. Uses entity damage mixin hook (player attacker, non-player target). */
+  public static final String PVE_DAMAGE = "pve_damage";
+
   // ==========================================================================
   // BUILDING FLAGS (5)
   // ==========================================================================
@@ -303,6 +306,7 @@ public final class ZoneFlags {
     FRIENDLY_FIRE_ALLY,
     PROJECTILE_DAMAGE,
     MOB_DAMAGE,
+    PVE_DAMAGE,
     // Damage (4)
     FALL_DAMAGE,
     ENVIRONMENTAL_DAMAGE,
@@ -349,7 +353,7 @@ public final class ZoneFlags {
    * Flag categories for UI organization.
    * Note: BLOCK_INTERACT is the parent of INTERACTION_FLAGS, MOB_SPAWNING is the parent of its children.
    */
-  public static final String[] COMBAT_FLAGS = { PVP_ENABLED, FRIENDLY_FIRE, FRIENDLY_FIRE_FACTION, FRIENDLY_FIRE_ALLY, PROJECTILE_DAMAGE, MOB_DAMAGE };
+  public static final String[] COMBAT_FLAGS = { PVP_ENABLED, FRIENDLY_FIRE, FRIENDLY_FIRE_FACTION, FRIENDLY_FIRE_ALLY, PROJECTILE_DAMAGE, MOB_DAMAGE, PVE_DAMAGE };
 
   public static final String[] DAMAGE_FLAGS = { FALL_DAMAGE, ENVIRONMENTAL_DAMAGE, EXPLOSION_DAMAGE, FIRE_SPREAD };
 
@@ -437,6 +441,7 @@ public final class ZoneFlags {
       case FRIENDLY_FIRE_ALLY -> true;      // Irrelevant when parent chain off, but default true for when toggled on
       case PROJECTILE_DAMAGE -> false;
       case MOB_DAMAGE -> false;
+      case PVE_DAMAGE -> false;
       // Damage: No damage in safe zones
       case FALL_DAMAGE -> false;
       case ENVIRONMENTAL_DAMAGE -> false;
@@ -505,6 +510,7 @@ public final class ZoneFlags {
       case FRIENDLY_FIRE_ALLY -> true;          // Both allowed when parent toggled on
       case PROJECTILE_DAMAGE -> true;
       case MOB_DAMAGE -> true;
+      case PVE_DAMAGE -> true;
       // Damage: All damage enabled
       case FALL_DAMAGE -> true;
       case ENVIRONMENTAL_DAMAGE -> true;
@@ -590,7 +596,8 @@ public final class ZoneFlags {
       case FRIENDLY_FIRE_FACTION -> "Faction Damage";
       case FRIENDLY_FIRE_ALLY -> "Ally Damage";
       case PROJECTILE_DAMAGE -> "Projectile Damage";
-      case MOB_DAMAGE -> "Mob Damage";
+      case MOB_DAMAGE -> "Take Mob Damage";
+      case PVE_DAMAGE -> "Give Mob Damage";
       case FALL_DAMAGE -> "Fall Damage";
       case ENVIRONMENTAL_DAMAGE -> "Env. Damage";
       case EXPLOSION_DAMAGE -> "Explosion Damage";
@@ -641,6 +648,7 @@ public final class ZoneFlags {
       case FRIENDLY_FIRE_ALLY -> "Allied faction players can damage each other";
       case PROJECTILE_DAMAGE -> "Projectiles deal damage";
       case MOB_DAMAGE -> "Mobs can damage players";
+      case PVE_DAMAGE -> "Players can damage mobs";
       case FALL_DAMAGE -> "Fall damage applies";
       case ENVIRONMENTAL_DAMAGE -> "Drowning, suffocation, etc.";
       case EXPLOSION_DAMAGE -> "Explosions can damage blocks (requires mixin)";

@@ -74,6 +74,8 @@ public class HyperFactionsPlugin extends JavaPlugin {
 
   private ScheduledFuture<?> claimDecayTask;
 
+  private ScheduledFuture<?> debounceCleanupTask;
+
   /**
    * Creates a new HyperFactionsPlugin instance.
    *
@@ -374,6 +376,18 @@ public class HyperFactionsPlugin extends JavaPlugin {
     // Territory tracking is now handled by TerritoryTickingSystem (ECS)
     // which ticks reliably every game tick for all player entities
 
+    // Protection message debounce cleanup every 30 seconds
+    debounceCleanupTask = tickExecutor.scheduleAtFixedRate(
+      () -> {
+        try {
+          com.hyperfactions.protection.ProtectionMessageDebounce.cleanup();
+        } catch (Exception e) {
+          Logger.severe("Error in debounce cleanup tick", e);
+        }
+      },
+      30, 30, TimeUnit.SECONDS
+    );
+
     // Start core periodic tasks (auto-save, invite cleanup)
     hyperFactions.startPeriodicTasks();
 
@@ -392,6 +406,9 @@ public class HyperFactionsPlugin extends JavaPlugin {
     }
     if (claimDecayTask != null) {
       claimDecayTask.cancel(false);
+    }
+    if (debounceCleanupTask != null) {
+      debounceCleanupTask.cancel(false);
     }
     if (tickExecutor != null) {
       tickExecutor.shutdown();

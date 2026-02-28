@@ -2,6 +2,7 @@ package com.hyperfactions.protection.interactions;
 
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.protection.ProtectionChecker;
+import com.hyperfactions.protection.ProtectionMessageDebounce;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.component.CommandBuffer;
@@ -58,9 +59,8 @@ public class HyperFactionsPlaceFluidInteraction extends PlaceFluidInteraction {
           Logger.debugProtection("Fluid placement blocked for %s at (%d,%d,%d) in %s: %s",
               playerRef.getUsername(), targetBlock.getX(), targetBlock.getY(),
               targetBlock.getZ(), world.getName(), result);
-          playerRef.sendMessage(
-              Message.raw(checker.getDenialMessage(result)).color("#FF5555")
-          );
+          ProtectionMessageDebounce.sendIfNotOnCooldown(playerRef, "place_fluid",
+              Message.raw(checker.getDenialMessage(result)).color("#FF5555"));
           return;
         }
 

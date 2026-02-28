@@ -2,6 +2,7 @@ package com.hyperfactions.protection.interactions;
 
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.protection.ProtectionChecker;
+import com.hyperfactions.protection.ProtectionMessageDebounce;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.component.CommandBuffer;
@@ -144,9 +145,8 @@ public class HyperFactionsRefillContainerInteraction extends RefillContainerInte
         if (!checker.isAllowed(result)) {
           Logger.debugProtection("Fluid pickup blocked for %s at (%d,%d,%d) in %s: %s",
               playerRef.getUsername(), pos[0], pos[1], pos[2], world.getName(), result);
-          playerRef.sendMessage(
-              Message.raw(checker.getDenialMessage(result)).color("#FF5555")
-          );
+          ProtectionMessageDebounce.sendIfNotOnCooldown(playerRef, "refill_container",
+              Message.raw(checker.getDenialMessage(result)).color("#FF5555"));
           context.getState().state = InteractionState.Failed;
           return;
         }

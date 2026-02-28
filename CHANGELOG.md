@@ -9,6 +9,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 *No changes yet*
 
+## [0.10.2] - 2026-02-28
+
+**Server Version:** `2026.02.19-1a311a592`
+
+### Added
+
+**PvE Damage Permission Flag**
+- New per-role faction permission flag: `PveDamage` (4 flags total across outsider/ally/member/officer)
+- Faction owners can control who can kill mobs in their territory per relationship level
+- Defaults: member/officer = allowed, ally = allowed, outsider = denied
+- Configurable in `config/faction-permissions.json` with server lock support
+- Territory protection check: players without PvE permission cannot damage mobs in claimed territory
+- Faction settings, admin faction settings, and create faction GUIs all include PveDamage toggles
+- CrateUse and NpcTame toggles added to Create Faction GUI for parity with Faction Settings (9 → 12 permission rows)
+
+**Protection Message Debounce**
+- New centralized debounce system prevents chat spam from repeated protection denial messages
+- Per-player, per-action cooldown (2 seconds) — different action types have independent cooldowns
+- Integrated across all 9 protection systems: block break/place/use, harvest/pickup, fluid place/refill, NPC interact, PvP damage, crop harvest
+- Automatic cleanup of stale entries every 30 seconds
+
+## [0.10.1] - 2026-02-28
+
+**Server Version:** `2026.02.19-1a311a592`
+
+### Added
+
+**PvE Damage Zone Flag**
+- New `pve_damage` zone flag: controls whether players can damage mobs/NPCs within a zone
+- Added to Combat category in admin zone settings GUI
+- Safe zone preset defaults to PvE damage disabled; PvP zone preset defaults to enabled
+- Renamed `mob_damage` display name to "Take Mob Damage" for clarity; new flag displays as "Give Mob Damage"
+
+### Fixed
+
+- Mob-on-mob damage (both attacker and target UUIDs null) no longer triggers protection checks in mixin hook
+
 ## [0.10.0] - 2026-02-27
 
 **Closes:** [#26](https://github.com/HyperSystemsDev/HyperFactions/issues/26), [#59](https://github.com/HyperSystemsDev/HyperFactions/issues/59), [#61](https://github.com/HyperSystemsDev/HyperFactions/issues/61), [#62](https://github.com/HyperSystemsDev/HyperFactions/issues/62), [#64](https://github.com/HyperSystemsDev/HyperFactions/issues/64), [#65](https://github.com/HyperSystemsDev/HyperFactions/issues/65), [#66](https://github.com/HyperSystemsDev/HyperFactions/issues/66), [#67](https://github.com/HyperSystemsDev/HyperFactions/issues/67), [#68](https://github.com/HyperSystemsDev/HyperFactions/issues/68), [#69](https://github.com/HyperSystemsDev/HyperFactions/issues/69), [#70](https://github.com/HyperSystemsDev/HyperFactions/issues/70), [#71](https://github.com/HyperSystemsDev/HyperFactions/issues/71), [#72](https://github.com/HyperSystemsDev/HyperFactions/issues/72)

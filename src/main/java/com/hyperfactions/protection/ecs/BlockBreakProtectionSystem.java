@@ -3,6 +3,7 @@ package com.hyperfactions.protection.ecs;
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.protection.ProtectionChecker;
 import com.hyperfactions.protection.ProtectionListener;
+import com.hyperfactions.protection.ProtectionMessageDebounce;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.Archetype;
 import com.hypixel.hytale.component.ArchetypeChunk;
@@ -95,7 +96,7 @@ public class BlockBreakProtectionSystem extends EntityEventSystem<EntityStore, B
 
       if (blocked) {
         event.setCancelled(true);
-        player.sendMessage(Message.raw(protectionListener.getDenialMessage(result)).color("#FF5555"));
+        ProtectionMessageDebounce.sendIfNotOnCooldown(player, "block_break", Message.raw(protectionListener.getDenialMessage(result)).color("#FF5555"));
       }
     } catch (Exception e) {
       // Fail-closed: cancel on any exception to prevent unauthorized block breaks

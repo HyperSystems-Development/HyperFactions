@@ -116,7 +116,8 @@ public class ProtectionChecker {
     PORTAL,        // Use portal blocks
     CRATE_PICKUP,  // Capture crate entity pickup
     CRATE_PLACE,   // Capture crate entity release
-    NPC_TAME       // F-key NPC taming
+    NPC_TAME,      // F-key NPC taming
+    PVE_DAMAGE     // Damage non-player entities (mobs)
   }
 
   // === Interaction Protection ===
@@ -174,7 +175,7 @@ public class ProtectionChecker {
           case INTERACT, DOOR, BENCH, PROCESSING, SEAT, TELEPORTER, PORTAL,
             CRATE_PICKUP, CRATE_PLACE, NPC_TAME -> "hyperfactions.bypass.interact";
           case CONTAINER -> "hyperfactions.bypass.container";
-          case DAMAGE -> "hyperfactions.bypass.damage";
+          case DAMAGE, PVE_DAMAGE -> "hyperfactions.bypass.damage";
           case USE -> "hyperfactions.bypass.use";
         };
 
@@ -199,6 +200,7 @@ public class ProtectionChecker {
           case TELEPORTER -> ZoneFlags.TELEPORTER_USE;
           case PORTAL -> ZoneFlags.PORTAL_USE;
           case DAMAGE -> ZoneFlags.PVP_ENABLED;
+          case PVE_DAMAGE -> ZoneFlags.PVE_DAMAGE;
           case CRATE_PICKUP -> ZoneFlags.CRATE_PICKUP;
           case CRATE_PLACE -> ZoneFlags.CRATE_PLACE;
           case NPC_TAME -> ZoneFlags.NPC_TAME;
@@ -332,7 +334,8 @@ public class ProtectionChecker {
       case TELEPORTER, PORTAL -> perms.get(level + "TransportUse");
       case CRATE_PICKUP, CRATE_PLACE -> perms.get(level + "CrateUse");
       case NPC_TAME -> perms.get(level + "NpcTame");
-      case DAMAGE -> !"outsider".equals(level); // outsiders can't damage
+      case PVE_DAMAGE -> perms.get(level + "PveDamage");
+      case DAMAGE -> !"outsider".equals(level); // outsiders can't damage (PvP handled separately)
     };
   }
 
@@ -741,7 +744,7 @@ public class ProtectionChecker {
           case INTERACT, DOOR, BENCH, PROCESSING, SEAT, TELEPORTER, PORTAL,
             CRATE_PICKUP, CRATE_PLACE, NPC_TAME -> "hyperfactions.bypass.interact";
           case CONTAINER -> "hyperfactions.bypass.container";
-          case DAMAGE -> "hyperfactions.bypass.damage";
+          case DAMAGE, PVE_DAMAGE -> "hyperfactions.bypass.damage";
           case USE -> "hyperfactions.bypass.use";
         };
         if (PermissionManager.get().hasPermission(playerUuid, bypassPerm)
@@ -939,8 +942,8 @@ public class ProtectionChecker {
   /**
    * Checks if entity damage should be blocked (PvP and mob damage combined).
    *
-   * @param attackerUuid the attacker's UUID
-   * @param targetUuid   the target entity's UUID
+   * @param attackerUuid the attacker's UUID (null if non-player entity)
+   * @param targetUuid   the target entity's UUID (null if non-player entity)
    * @param worldName    the world name
    * @param x            the block X coordinate
    * @param y            the block Y coordinate
@@ -948,14 +951,97 @@ public class ProtectionChecker {
    * @return null if allowed, denial message if denied
    */
   @Nullable
-  public String checkEntityDamage(@NotNull UUID attackerUuid, @NotNull UUID targetUuid,
+  public String checkEntityDamage(@Nullable UUID attackerUuid, @Nullable UUID targetUuid,
                   @NotNull String worldName, int x, int y, int z) {
-    // PvP check using existing canDamagePlayerChunk
     int chunkX = ChunkUtil.toChunkCoord(x);
     int chunkZ = ChunkUtil.toChunkCoord(z);
 
+    // PvE: mob attacking player — check mob_damage flag
+    if (attackerUuid == null && targetUuid != null) {
+      Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
+      if (zone != null && !zone.getEffectiveFlag(ZoneFlags.MOB_DAMAGE)) {
+        return "Mob damage is disabled in this zone.";
+      }
+      return null;
+    }
+
+    // PvE: player attacking mob — check zone flag first, then territory claim
+    if (attackerUuid != null && targetUuid == null) {
+      Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
+      if (zone != null && !zone.getEffectiveFlag(ZoneFlags.PVE_DAMAGE)) {
+        return "PvE damage is disabled in this zone.";
+      }
+      // Check territory claim permissions
+      return checkPveInTerritory(attackerUuid, worldName, chunkX, chunkZ);
+    }
+
+    // PvP check using existing canDamagePlayerChunk
     PvPResult result = canDamagePlayerChunk(attackerUuid, targetUuid, worldName, chunkX, chunkZ);
     return isAllowed(result) ? null : getDenialMessage(result);
+  }
+
+  /**
+   * Checks if a player can damage mobs in faction territory.
+   * Follows the same pattern as canInteractChunk but for PVE_DAMAGE.
+   *
+   * @param attackerUuid the attacker's UUID
+   * @param worldName    the world name
+   * @param chunkX       the chunk X
+   * @param chunkZ       the chunk Z
+   * @return null if allowed, denial message if denied
+   */
+  @Nullable
+  private String checkPveInTerritory(@NotNull UUID attackerUuid, @NotNull String worldName,
+                     int chunkX, int chunkZ) {
+    // Admin bypass
+    boolean isAdmin = PermissionManager.get().hasPermission(attackerUuid, "hyperfactions.admin.use");
+    if (isAdmin && plugin != null) {
+      HyperFactions hf = plugin.get();
+      if (hf != null && hf.isAdminBypassEnabled(attackerUuid)) {
+        return null;
+      }
+    }
+    if (!isAdmin && (PermissionManager.get().hasPermission(attackerUuid, "hyperfactions.bypass.damage")
+        || PermissionManager.get().hasPermission(attackerUuid, "hyperfactions.bypass.*"))) {
+      return null;
+    }
+
+    // Unclaimed — allow
+    UUID claimOwner = claimManager.getClaimOwner(worldName, chunkX, chunkZ);
+    if (claimOwner == null) {
+      return null;
+    }
+
+    // Get faction permissions
+    Faction ownerFaction = factionManager.getFaction(claimOwner);
+    if (ownerFaction == null) {
+      return null;
+    }
+    FactionPermissions perms = ConfigManager.get().getEffectiveFactionPermissions(
+        ownerFaction.getEffectivePermissions()
+    );
+
+    // Resolve attacker's level relative to claiming faction
+    UUID attackerFactionId = factionManager.getPlayerFactionId(attackerUuid);
+    String level;
+    if (attackerFactionId != null && attackerFactionId.equals(claimOwner)) {
+      FactionMember member = ownerFaction.getMember(attackerUuid);
+      if (member != null && member.role().getLevel() >= FactionRole.OFFICER.getLevel()) {
+        level = "officer";
+      } else {
+        level = "member";
+      }
+    } else if (attackerFactionId != null) {
+      RelationType relation = relationManager.getRelation(attackerFactionId, claimOwner);
+      level = (relation == RelationType.ALLY) ? "ally" : "outsider";
+    } else {
+      level = "outsider";
+    }
+
+    if (!checkPermission(perms, level, InteractionType.PVE_DAMAGE)) {
+      return "You cannot damage mobs in this territory.";
+    }
+    return null;
   }
 
   // === World-Level Mixin Checks (no player UUID) ===

@@ -3,6 +3,7 @@ package com.hyperfactions.protection.ecs;
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.protection.ProtectionChecker;
 import com.hyperfactions.protection.ProtectionListener;
+import com.hyperfactions.protection.ProtectionMessageDebounce;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.Archetype;
 import com.hypixel.hytale.component.ArchetypeChunk;
@@ -84,7 +85,7 @@ public class BlockPlaceProtectionSystem extends EntityEventSystem<EntityStore, P
 
       if (blocked) {
         event.setCancelled(true);
-        player.sendMessage(Message.raw(protectionListener.getDenialMessage(result)).color("#FF5555"));
+        ProtectionMessageDebounce.sendIfNotOnCooldown(player, "block_place", Message.raw(protectionListener.getDenialMessage(result)).color("#FF5555"));
 
         // Anti-pillar: teleport player to their current position with velocity reset.
         // This prevents exploiting client-side block prediction to gain height on ghost blocks.

@@ -647,6 +647,10 @@ public final class HyperProtectIntegration {
     public int evaluateEntityDamage(UUID attackerUuid, UUID targetUuid, String worldName,
                     int x, int y, int z) {
       try {
+        // Both null means mob-on-mob — not our concern
+        if (attackerUuid == null && targetUuid == null) {
+          return ALLOW;
+        }
         String reason = checker.checkEntityDamage(attackerUuid, targetUuid, worldName, x, y, z);
         int verdict = reason == null ? ALLOW : DENY_WITH_MESSAGE;
         Logger.debugInteraction("[Mixin:EntityDamage] attacker=%s, target=%s, world=%s, pos=(%d,%d,%d), verdict=%s",

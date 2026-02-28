@@ -2,6 +2,7 @@ package com.hyperfactions.protection.interactions;
 
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.protection.ProtectionChecker;
+import com.hyperfactions.protection.ProtectionMessageDebounce;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.builtin.adventure.farming.interactions.HarvestCropInteraction;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
@@ -62,9 +63,8 @@ public class HyperFactionsHarvestCropInteraction extends HarvestCropInteraction 
         boolean zoneAllows = plugin.getHyperFactions().getZoneInteractionProtection()
             .isManualPickupAllowed(world.getName(), targetBlock.getX(), targetBlock.getZ());
         if (!zoneAllows) {
-          playerRef.sendMessage(
-              Message.raw("You cannot harvest plants in this zone.").color("#FF5555")
-          );
+          ProtectionMessageDebounce.sendIfNotOnCooldown(playerRef, "zone_harvest",
+              Message.raw("You cannot harvest plants in this zone.").color("#FF5555"));
           return;
         }
 
@@ -80,9 +80,8 @@ public class HyperFactionsHarvestCropInteraction extends HarvestCropInteraction 
           Logger.debugProtection("Crop harvest blocked for %s at (%d,%d,%d) in %s: %s",
               playerRef.getUsername(), targetBlock.getX(), targetBlock.getY(),
               targetBlock.getZ(), world.getName(), result);
-          playerRef.sendMessage(
-              Message.raw(checker.getDenialMessage(result)).color("#FF5555")
-          );
+          ProtectionMessageDebounce.sendIfNotOnCooldown(playerRef, "crop_harvest",
+              Message.raw(checker.getDenialMessage(result)).color("#FF5555"));
           return;
         }
       }

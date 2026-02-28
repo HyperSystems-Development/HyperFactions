@@ -519,6 +519,67 @@ $C.@PageOverlay {
               $C.@CheckBoxWithLabel #MemberTransportToggle { @Text = ""; @Checked = true; Anchor: (Height: 20, Width: 52); }
               $C.@CheckBoxWithLabel #OfficerTransportToggle { @Text = ""; @Checked = true; Anchor: (Height: 20, Width: 52); }
             }
+
+            // ---- OTHER PERMISSIONS category ----
+            Label {
+              Text: "OTHER";
+              Style: (FontSize: 9, TextColor: #666688, RenderBold: true);
+              Anchor: (Height: 16, Bottom: 2, Top: 6);
+            }
+
+            // Crate Use row
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 28, Bottom: 1);
+              Background: (Color: #0d1520);
+              Padding: (Left: 6, Right: 6);
+
+              Label {
+                Text: "Crate Use";
+                Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+                Anchor: (Width: 114);
+              }
+              $C.@CheckBoxWithLabel #OutsiderCrateToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 52); }
+              $C.@CheckBoxWithLabel #AllyCrateToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 52); }
+              $C.@CheckBoxWithLabel #MemberCrateToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 52); }
+              $C.@CheckBoxWithLabel #OfficerCrateToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 52); }
+            }
+
+            // NPC Tame row
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 28, Bottom: 1);
+              Background: (Color: #111a28);
+              Padding: (Left: 6, Right: 6);
+
+              Label {
+                Text: "NPC Tame";
+                Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+                Anchor: (Width: 114);
+              }
+              $C.@CheckBoxWithLabel #OutsiderNpcTameToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 52); }
+              $C.@CheckBoxWithLabel #AllyNpcTameToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 52); }
+              $C.@CheckBoxWithLabel #MemberNpcTameToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 52); }
+              $C.@CheckBoxWithLabel #OfficerNpcTameToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 52); }
+            }
+
+            // PvE Damage row
+            Group {
+              LayoutMode: Left;
+              Anchor: (Height: 28);
+              Background: (Color: #0d1520);
+              Padding: (Left: 6, Right: 6);
+
+              Label {
+                Text: "PvE Damage";
+                Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+                Anchor: (Width: 114);
+              }
+              $C.@CheckBoxWithLabel #OutsiderPveDamageToggle { @Text = ""; @Checked = false; Anchor: (Height: 22, Width: 52); }
+              $C.@CheckBoxWithLabel #AllyPveDamageToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 52); }
+              $C.@CheckBoxWithLabel #MemberPveDamageToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 52); }
+              $C.@CheckBoxWithLabel #OfficerPveDamageToggle { @Text = ""; @Checked = true; Anchor: (Height: 22, Width: 52); }
+            }
           }
         }
 

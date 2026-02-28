@@ -1,6 +1,7 @@
 package com.hyperfactions.protection;
 
 import com.hyperfactions.HyperFactions;
+import com.hyperfactions.protection.ProtectionMessageDebounce;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -95,7 +96,7 @@ public class NpcInteractionProtectionHandler {
       if (blocked) {
         event.setCancelled(true);
         String denyMsg = hyperFactions.getProtectionChecker().getDenialMessage(result);
-        player.sendMessage(Message.raw(denyMsg).color("#FF5555"));
+        ProtectionMessageDebounce.sendIfNotOnCooldown(player, "npc_interact", Message.raw(denyMsg).color("#FF5555"));
       }
     } catch (Exception e) {
       // Fail-open for NPC interactions to avoid breaking vanilla gameplay
