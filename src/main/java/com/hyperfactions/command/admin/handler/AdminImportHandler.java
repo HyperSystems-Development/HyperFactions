@@ -3,6 +3,7 @@ package com.hyperfactions.command.admin.handler;
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.importer.ElbaphFactionsImporter;
+import com.hyperfactions.importer.FactionsXImporter;
 import com.hyperfactions.importer.HyFactionsImporter;
 import com.hyperfactions.importer.ImportResult;
 import com.hyperfactions.util.CommandHelp;
@@ -59,6 +60,7 @@ public class AdminImportHandler {
     switch (subCmd) {
       case "hyfactions" -> handleImportHyFactions(ctx, subArgs);
       case "elbaphfactions" -> handleImportElbaphFactions(ctx, subArgs);
+      case "factionsx" -> handleImportFactionsX(ctx, subArgs);
       case "help", "?" -> showImportHelp(ctx);
       default -> {
         ctx.sendMessage(prefix().insert(msg("Unknown import source: " + subCmd, COLOR_RED)));
@@ -73,6 +75,8 @@ public class AdminImportHandler {
     commands.add(new CommandHelp("  Default path: mods/Kaws_Hyfaction", ""));
     commands.add(new CommandHelp("/f admin import elbaphfactions [path] [flags]", "Import from ElbaphFactions mod"));
     commands.add(new CommandHelp("  Default path: mods/ElbaphFactions", ""));
+    commands.add(new CommandHelp("/f admin import factionsx [path] [flags]", "Import from FactionsX mod"));
+    commands.add(new CommandHelp("  Default path: mods/FactionsX", ""));
     commands.add(new CommandHelp("  Flags:", ""));
     commands.add(new CommandHelp("    --dry-run / -n", "Simulate without changes"));
     commands.add(new CommandHelp("    --overwrite", "Replace existing factions"));
@@ -185,6 +189,59 @@ public class AdminImportHandler {
     final boolean finalDryRun = dryRun;
     CompletableFuture.supplyAsync(() -> importer.importFrom(dataPath))
       .thenAccept(result -> reportImportResult(ctx, result, finalDryRun, "ElbaphFactions"));
+  }
+
+  /** Handles import factions x. */
+  public void handleImportFactionsX(CommandContext ctx, String[] args) {
+    // Parse path (optional - default to mods/FactionsX)
+    String pathStr = "mods/FactionsX";
+    int flagStartIndex = 0;
+
+    if (args.length > 0 && !args[0].startsWith("-")) {
+      pathStr = args[0];
+      flagStartIndex = 1;
+    }
+
+    Path dataPath = Paths.get(pathStr);
+
+    boolean dryRun = false;
+    boolean overwrite = false;
+    boolean skipZones = false;
+    boolean skipPower = false;
+
+    for (int i = flagStartIndex; i < args.length; i++) {
+      String flag = args[i].toLowerCase();
+      switch (flag) {
+        case "--dry-run", "-n" -> dryRun = true;
+        case "--overwrite" -> overwrite = true;
+        case "--no-zones" -> skipZones = true;
+        case "--no-power" -> skipPower = true;
+        default -> throw new IllegalStateException("Unexpected value");
+      }
+    }
+
+    ctx.sendMessage(prefix().insert(msg("Importing from FactionsX...", COLOR_YELLOW)));
+    ctx.sendMessage(msg("  Path: " + dataPath, COLOR_GRAY));
+    if (dryRun) {
+      ctx.sendMessage(msg("  (Dry run - no changes will be made)", COLOR_GRAY));
+    }
+
+    FactionsXImporter importer = new FactionsXImporter(
+      hyperFactions.getFactionManager(),
+      hyperFactions.getClaimManager(),
+      hyperFactions.getZoneManager(),
+      hyperFactions.getPowerManager(),
+      hyperFactions.getBackupManager()
+    );
+
+    importer.setDryRun(dryRun);
+    importer.setOverwrite(overwrite);
+    importer.setSkipZones(skipZones);
+    importer.setSkipPower(skipPower);
+
+    final boolean finalDryRun = dryRun;
+    CompletableFuture.supplyAsync(() -> importer.importFrom(dataPath))
+      .thenAccept(result -> reportImportResult(ctx, result, finalDryRun, "FactionsX"));
   }
 
   private void reportImportResult(CommandContext ctx, ImportResult result, boolean dryRun, String sourceName) {
