@@ -522,6 +522,16 @@ public class HyFactionsImporter {
   public ImportResult importFrom(@NotNull Path sourcePath) {
     ImportResult.Builder result = ImportResult.builder().dryRun(dryRun);
 
+    // Check other importers aren't running
+    if (ElbaphFactionsImporter.isImportInProgress()) {
+      result.error("An ElbaphFactions import is already in progress. Please wait for it to complete.");
+      return result.build();
+    }
+    if (FactionsXImporter.isImportInProgress()) {
+      result.error("A FactionsX import is already in progress. Please wait for it to complete.");
+      return result.build();
+    }
+
     // Thread safety: prevent concurrent imports
     if (!importLock.tryLock()) {
       result.error("Another import is already in progress. Please wait for it to complete.");
