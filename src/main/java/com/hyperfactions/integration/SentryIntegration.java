@@ -4,6 +4,8 @@ import com.hyperfactions.BuildInfo;
 import com.hyperfactions.config.modules.SentryConfig;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.common.util.java.ManifestUtil;
+import com.hypixel.hytale.server.core.HytaleServer;
+import com.hypixel.hytale.server.core.HytaleServerConfig;
 import io.sentry.Sentry;
 import io.sentry.SentryLevel;
 import org.jetbrains.annotations.NotNull;
@@ -90,7 +92,25 @@ public final class SentryIntegration {
         String osArch = System.getProperty("os.arch", "unknown");
         scope.setTag("os", osName + " " + osArch);
 
+        // Pull Hytale server config info
+        String serverName = "unknown";
+        int maxPlayers = 0;
+        String motd = "";
+        try {
+          HytaleServerConfig serverConfig = HytaleServer.get().getConfig();
+          serverName = serverConfig.getServerName();
+          maxPlayers = serverConfig.getMaxPlayers();
+          motd = serverConfig.getMotd();
+        } catch (Exception ignored) {
+          // Server may not be fully initialized yet
+        }
+
+        scope.setTag("server.name", serverName);
+
         scope.setContexts("server", java.util.Map.of(
+            "server_name", serverName,
+            "max_players", maxPlayers,
+            "motd", motd != null && !motd.isEmpty() ? motd : "(none)",
             "hytale_version", serverVersion != null ? serverVersion : "unknown",
             "plugin_version", BuildInfo.VERSION,
             "java_version", System.getProperty("java.version", "unknown"),
