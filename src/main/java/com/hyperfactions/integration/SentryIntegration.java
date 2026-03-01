@@ -3,10 +3,10 @@ package com.hyperfactions.integration;
 import com.hyperfactions.BuildInfo;
 import com.hyperfactions.config.modules.SentryConfig;
 import com.hyperfactions.util.Logger;
+import com.hypixel.hytale.common.util.java.ManifestUtil;
 import io.sentry.Sentry;
 import io.sentry.SentryLevel;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Manages Sentry error tracking integration.
@@ -71,6 +71,33 @@ public final class SentryIntegration {
 
         // Send PII (player context etc.) — server-side, no browser data
         options.setSendDefaultPii(true);
+      });
+
+      // Set global tags — attached to every event
+      Sentry.configureScope(scope -> {
+        scope.setTag("plugin.version", BuildInfo.VERSION);
+        scope.setTag("java.version", System.getProperty("java.version", "unknown"));
+
+        String serverVersion = null;
+        try {
+          serverVersion = ManifestUtil.getVersion();
+        } catch (Exception ignored) {
+          // ManifestUtil may not be available yet
+        }
+        scope.setTag("hytale.server.version", serverVersion != null ? serverVersion : "unknown");
+
+        String osName = System.getProperty("os.name", "unknown");
+        String osArch = System.getProperty("os.arch", "unknown");
+        scope.setTag("os", osName + " " + osArch);
+
+        scope.setContexts("server", java.util.Map.of(
+            "hytale_version", serverVersion != null ? serverVersion : "unknown",
+            "plugin_version", BuildInfo.VERSION,
+            "java_version", System.getProperty("java.version", "unknown"),
+            "os", osName + " " + osArch,
+            "available_processors", Runtime.getRuntime().availableProcessors(),
+            "max_memory_mb", Runtime.getRuntime().maxMemory() / (1024 * 1024)
+        ));
       });
 
       initialized = true;
