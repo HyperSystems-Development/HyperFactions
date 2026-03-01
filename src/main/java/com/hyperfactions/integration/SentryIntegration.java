@@ -50,8 +50,24 @@ public final class SentryIntegration {
       Sentry.init(options -> {
         options.setDsn(dsn);
         options.setRelease("hyperfactions@" + BuildInfo.VERSION);
-        options.setEnvironment(config.getEnvironment());
         options.setDebug(config.isDebug());
+
+        // Auto-detect environment from server patchline, fall back to config value
+        String environment = config.getEnvironment();
+        try {
+          String patchline = ManifestUtil.getPatchline();
+          if (patchline != null && !patchline.isEmpty()) {
+            environment = switch (patchline) {
+              case "release" -> "production";
+              case "pre-release" -> "staging";
+              case "dev" -> "development";
+              default -> patchline;
+            };
+          }
+        } catch (Exception ignored) {
+          // ManifestUtil may not be available — use config value
+        }
+        options.setEnvironment(environment);
 
         // Performance monitoring (0.0 = off by default)
         double traceRate = config.getTracesSampleRate();
@@ -87,6 +103,15 @@ public final class SentryIntegration {
           // ManifestUtil may not be available yet
         }
         scope.setTag("hytale.server.version", serverVersion != null ? serverVersion : "unknown");
+
+        String patchline = "unknown";
+        try {
+          String pl = ManifestUtil.getPatchline();
+          if (pl != null && !pl.isEmpty()) {
+            patchline = pl;
+          }
+        } catch (Exception ignored) {}
+        scope.setTag("hytale.patchline", patchline);
 
         String osName = System.getProperty("os.name", "unknown");
         String osArch = System.getProperty("os.arch", "unknown");
