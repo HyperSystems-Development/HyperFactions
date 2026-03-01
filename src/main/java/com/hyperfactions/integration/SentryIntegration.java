@@ -247,19 +247,22 @@ public final class SentryIntegration {
 
     try {
       var plugins = HytaleServer.get().getPluginManager().getPlugins();
-      var modList = new java.util.LinkedHashMap<String, String>();
+      var modMap = new java.util.HashMap<String, Object>();
       for (PluginBase plugin : plugins) {
         var id = plugin.getIdentifier();
         var manifest = plugin.getManifest();
         String name = id.getGroup() + ":" + id.getName();
         String version = manifest.getVersion() != null ? manifest.getVersion().toString() : "unknown";
-        modList.put(name, version + " (" + plugin.getState() + ")");
+        modMap.put(name, version + " (" + plugin.getState() + ")");
       }
+      modMap.put("total_count", plugins.size());
 
       Sentry.configureScope(scope -> {
-        scope.setTag("mods.count", String.valueOf(modList.size()));
-        scope.setContexts("installed_mods", (java.util.Map<String, Object>) (java.util.Map<String, ?>) modList);
+        scope.setTag("mods.count", String.valueOf(plugins.size()));
+        scope.setContexts("installed_mods", modMap);
       });
+
+      Logger.debug("[Sentry] Refreshed installed mods list (%d plugins)", plugins.size());
     } catch (Exception e) {
       Logger.debug("Failed to collect installed mods for Sentry: %s", e.getMessage());
     }
