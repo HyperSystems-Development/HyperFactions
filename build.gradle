@@ -173,6 +173,7 @@ tasks.withType(Checkstyle).configureEach {
 
 build {
     dependsOn shadowJar
+    finalizedBy tasks.matching { it.name == 'sentryUploadSourceBundleJava' }
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -199,8 +200,8 @@ tasks.named('compileJava') {
     }
 }
 
-// Sentry's bundle ID generator uses the same generated sources dir — declare dependency
-tasks.matching { it.name == 'generateSentryBundleIdJava' }.configureEach {
+// Sentry tasks use the same generated sources dir as generateBuildInfo — declare dependencies
+tasks.matching { it.name.startsWith('sentry') || it.name.startsWith('generateSentry') }.configureEach {
     dependsOn 'generateBuildInfo'
 }
 
