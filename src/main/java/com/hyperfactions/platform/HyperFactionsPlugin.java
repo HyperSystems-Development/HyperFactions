@@ -104,9 +104,6 @@ public class HyperFactionsPlugin extends JavaPlugin {
     // Set API instance
     HyperFactionsAPI.setInstance(hyperFactions);
 
-    // Initialize Sentry error tracking (non-blocking, fail-safe)
-    SentryIntegration.init(ConfigManager.get().sentry());
-
     Logger.info("[Startup] HyperFactions setup complete");
   }
 
@@ -116,8 +113,11 @@ public class HyperFactionsPlugin extends JavaPlugin {
     // Configure platform callbacks
     configurePlatformCallbacks();
 
-    // Enable core
+    // Enable core (loads config, storage, managers)
     hyperFactions.enable();
+
+    // Initialize Sentry error tracking (after config is loaded, non-blocking, fail-safe)
+    SentryIntegration.init(ConfigManager.get().sentry());
 
     // Initialize GravestonePlugin integration (v2 direct API — needs EventRegistry)
     hyperFactions.initGravestoneIntegration(getEventRegistry());
