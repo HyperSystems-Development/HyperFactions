@@ -165,7 +165,11 @@ public class HyperFactionsPlugin extends JavaPlugin {
     worldSetup.logProtectionCoverage();
 
     // Register permission nodes with LuckPerms on BootEvent (after all plugins loaded)
-    getEventRegistry().registerGlobal(BootEvent.class, e -> PermissionRegistrar.registerWithLuckPerms());
+    // Also refresh Sentry mod list now that all plugins are loaded
+    getEventRegistry().registerGlobal(BootEvent.class, e -> {
+      PermissionRegistrar.registerWithLuckPerms();
+      SentryIntegration.refreshInstalledMods();
+    });
 
     Logger.info("[Startup] HyperFactions v%s enabled", getManifest().getVersion());
   }

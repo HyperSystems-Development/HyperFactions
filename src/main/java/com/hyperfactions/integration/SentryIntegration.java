@@ -6,6 +6,7 @@ import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.common.util.java.ManifestUtil;
 import com.hypixel.hytale.server.core.HytaleServer;
 import com.hypixel.hytale.server.core.HytaleServerConfig;
+import com.hypixel.hytale.server.core.plugin.PluginBase;
 import io.sentry.Sentry;
 import io.sentry.SentryLevel;
 import org.jetbrains.annotations.NotNull;
@@ -147,6 +148,9 @@ public final class SentryIntegration {
 
       initialized = true;
       Logger.info("[Sentry] Initialized (env=%s, debug=%s)", config.getEnvironment(), config.isDebug());
+
+      // Collect installed mods (may be incomplete during init — refreshed on boot)
+      refreshInstalledMods();
     } catch (Exception e) {
       Logger.severe("Failed to initialize Sentry: %s", e.getMessage());
     }
@@ -229,6 +233,35 @@ public final class SentryIntegration {
     } catch (Exception e) {
       Logger.debug("Sentry test event failed: %s", e.getMessage());
       return false;
+    }
+  }
+
+  /**
+   * Refreshes the installed mods context on the Sentry scope.
+   * Call after all plugins have loaded (e.g., on BootEvent) for a complete list.
+   */
+  public static void refreshInstalledMods() {
+    if (!initialized) {
+      return;
+    }
+
+    try {
+      var plugins = HytaleServer.get().getPluginManager().getPlugins();
+      var modList = new java.util.LinkedHashMap<String, String>();
+      for (PluginBase plugin : plugins) {
+        var id = plugin.getIdentifier();
+        var manifest = plugin.getManifest();
+        String name = id.getGroup() + ":" + id.getName();
+        String version = manifest.getVersion() != null ? manifest.getVersion().toString() : "unknown";
+        modList.put(name, version + " (" + plugin.getState() + ")");
+      }
+
+      Sentry.configureScope(scope -> {
+        scope.setTag("mods.count", String.valueOf(modList.size()));
+        scope.setContexts("installed_mods", (java.util.Map<String, Object>) (java.util.Map<String, ?>) modList);
+      });
+    } catch (Exception e) {
+      Logger.debug("Failed to collect installed mods for Sentry: %s", e.getMessage());
     }
   }
 
