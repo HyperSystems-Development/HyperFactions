@@ -4,6 +4,7 @@ import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
 import com.hyperfactions.command.admin.handler.AdminBackupHandler;
 import com.hyperfactions.command.admin.handler.AdminDebugHandler;
+import com.hyperfactions.integration.SentryIntegration;
 import com.hyperfactions.command.admin.handler.AdminEconomyHandler;
 import com.hyperfactions.command.admin.handler.AdminImportHandler;
 import com.hyperfactions.command.admin.handler.AdminIntegrationHandler;
@@ -284,6 +285,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
       case "economy", "econ", "treasury" -> economyHandler.handleAdminEconomy(ctx, player, senderUuid, subArgs);
       case "world", "worlds" -> worldHandler.handleAdminWorld(ctx, player, subArgs);
       case "version" -> handleVersion(ctx, store, ref, player, isPlayer);
+      case "sentrytest" -> handleSentryTest(ctx);
       case "log", "logs", "activitylog" -> {
         if (!requirePlayer(ctx, isPlayer)) {
           break;
@@ -375,6 +377,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
     commands.add(new CommandHelp("/f admin log", "View global activity log"));
     commands.add(new CommandHelp("/f admin world", "Per-world settings management"));
     commands.add(new CommandHelp("/f admin version", "View mod version and integration status"));
+    commands.add(new CommandHelp("/f admin sentrytest", "Send a test error to Sentry"));
     ctx.sendMessage(HelpFormatter.buildHelp("Admin Commands", "Server administration", commands, null));
   }
 
@@ -399,6 +402,21 @@ public class AdminSubCommand extends AbstractAsyncCommand {
       ctx.sendMessage(msg("  Java: " + System.getProperty("java.version", "Unknown"), COLOR_WHITE));
       ctx.sendMessage(msg("  Treasury: " + (hyperFactions.isTreasuryEnabled() ? "Active" : "Not Found"),
           hyperFactions.isTreasuryEnabled() ? COLOR_GREEN : COLOR_GRAY));
+    }
+  }
+
+  // === Sentry Test ===
+  private void handleSentryTest(CommandContext ctx) {
+    if (!SentryIntegration.isInitialized()) {
+      ctx.sendMessage(prefix().insert(msg("Sentry is not initialized. Check config/sentry.json", COLOR_RED)));
+      return;
+    }
+
+    boolean sent = SentryIntegration.sendTestEvent();
+    if (sent) {
+      ctx.sendMessage(prefix().insert(msg("Test error sent to Sentry. Check your Sentry dashboard.", COLOR_GREEN)));
+    } else {
+      ctx.sendMessage(prefix().insert(msg("Failed to send test event.", COLOR_RED)));
     }
   }
 

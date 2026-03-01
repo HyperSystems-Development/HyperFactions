@@ -7,7 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-*No changes yet*
+### Added
+
+**Sentry Error Tracking Integration**
+- Sentry SDK (v8.33.0) bundled for automatic error reporting to Sentry dashboard
+- Non-blocking async event delivery — Sentry never impacts server performance
+- All Sentry operations wrapped in try/catch — failures never crash the server
+- New config module `config/sentry.json` with settings: enabled, dsn, environment, debug, tracesSampleRate
+- DSN pre-configured with default — works out of the box
+- Source context upload via Sentry Gradle plugin (stack traces show source code in Sentry)
+- HyperFactions frames highlighted in stack traces via `addInAppInclude`
+- New admin command: `/f admin sentrytest` — sends a test error with stack trace to verify integration
+- Sentry cleanly flushes pending events on server shutdown (2s timeout)
+- Auth token stored in `.sentry-auth-token` file (gitignored) with env var fallback
 
 ## [0.10.2] - 2026-02-28
 

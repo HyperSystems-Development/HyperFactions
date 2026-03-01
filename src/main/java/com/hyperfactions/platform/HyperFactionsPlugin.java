@@ -4,7 +4,9 @@ import com.hyperfactions.HyperFactions;
 import com.hyperfactions.api.HyperFactionsAPI;
 import com.hyperfactions.chat.PublicChatListener;
 import com.hyperfactions.command.FactionCommand;
+import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.integration.PermissionRegistrar;
+import com.hyperfactions.integration.SentryIntegration;
 import com.hyperfactions.integration.protection.OrbisGuardIntegration;
 import com.hyperfactions.integration.protection.ProtectionMixinBridge;
 import com.hyperfactions.listener.PlayerListener;
@@ -102,6 +104,9 @@ public class HyperFactionsPlugin extends JavaPlugin {
     // Set API instance
     HyperFactionsAPI.setInstance(hyperFactions);
 
+    // Initialize Sentry error tracking (non-blocking, fail-safe)
+    SentryIntegration.init(ConfigManager.get().sentry());
+
     Logger.info("[Startup] HyperFactions setup complete");
   }
 
@@ -192,6 +197,9 @@ public class HyperFactionsPlugin extends JavaPlugin {
     if (hyperFactions != null) {
       hyperFactions.disable();
     }
+
+    // Flush pending Sentry events and close
+    SentryIntegration.close();
 
     // Clear tracked players
     trackedPlayers.clear();

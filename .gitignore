@@ -43,5 +43,8 @@ libs/
 # Local config overrides
 config.local.json
 
+# Sentry auth token (secret — never commit)
+.sentry-auth-token
+
 # Serena
 .serena/
