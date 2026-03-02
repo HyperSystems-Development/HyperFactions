@@ -4,6 +4,7 @@ import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
 import com.hyperfactions.command.admin.handler.AdminBackupHandler;
 import com.hyperfactions.command.admin.handler.AdminDebugHandler;
+import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.integration.SentryIntegration;
 import com.hyperfactions.command.admin.handler.AdminEconomyHandler;
 import com.hyperfactions.command.admin.handler.AdminImportHandler;
@@ -285,6 +286,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
       case "economy", "econ", "treasury" -> economyHandler.handleAdminEconomy(ctx, player, senderUuid, subArgs);
       case "world", "worlds" -> worldHandler.handleAdminWorld(ctx, player, subArgs);
       case "version" -> handleVersion(ctx, store, ref, player, isPlayer);
+      case "sentry" -> handleSentry(ctx, subArgs);
       case "sentrytest" -> handleSentryTest(ctx);
       case "log", "logs", "activitylog" -> {
         if (!requirePlayer(ctx, isPlayer)) {
@@ -377,6 +379,9 @@ public class AdminSubCommand extends AbstractAsyncCommand {
     commands.add(new CommandHelp("/f admin log", "View global activity log"));
     commands.add(new CommandHelp("/f admin world", "Per-world settings management"));
     commands.add(new CommandHelp("/f admin version", "View mod version and integration status"));
+    commands.add(new CommandHelp("/f admin sentry", "View Sentry status"));
+    commands.add(new CommandHelp("/f admin sentry disable", "Opt out of Sentry error reporting"));
+    commands.add(new CommandHelp("/f admin sentry enable", "Opt in to Sentry error reporting"));
     commands.add(new CommandHelp("/f admin sentrytest", "Send a test error to Sentry"));
     ctx.sendMessage(HelpFormatter.buildHelp("Admin Commands", "Server administration", commands, null));
   }
@@ -405,10 +410,56 @@ public class AdminSubCommand extends AbstractAsyncCommand {
     }
   }
 
+  // === Sentry ===
+  private void handleSentry(CommandContext ctx, String[] args) {
+    var debugConfig = ConfigManager.get().debug();
+
+    if (args.length == 0) {
+      // Show status
+      boolean configEnabled = debugConfig.isSentryEnabled();
+      boolean running = SentryIntegration.isInitialized();
+      ctx.sendMessage(prefix().insert(msg("Sentry Error Reporting", COLOR_CYAN)));
+      ctx.sendMessage(msg("  Config: " + (configEnabled ? "enabled" : "disabled"),
+          configEnabled ? COLOR_GREEN : COLOR_GRAY));
+      ctx.sendMessage(msg("  Status: " + (running ? "active" : "inactive"),
+          running ? COLOR_GREEN : COLOR_GRAY));
+      ctx.sendMessage(msg("  DSN: " + debugConfig.getSentryDsn(), COLOR_GRAY));
+      ctx.sendMessage(msg("  Environment: " + debugConfig.getSentryEnvironment(), COLOR_GRAY));
+      return;
+    }
+
+    switch (args[0].toLowerCase()) {
+      case "disable", "optout", "off" -> {
+        if (!debugConfig.isSentryEnabled()) {
+          ctx.sendMessage(prefix().insert(msg("Sentry is already disabled.", COLOR_YELLOW)));
+          return;
+        }
+        debugConfig.setSentryEnabled(false);
+        debugConfig.save();
+        SentryIntegration.close();
+        ctx.sendMessage(prefix().insert(msg("Sentry disabled and config saved. Error reporting is now off.", COLOR_GREEN)));
+      }
+      case "enable", "optin", "on" -> {
+        if (debugConfig.isSentryEnabled()) {
+          ctx.sendMessage(prefix().insert(msg("Sentry is already enabled.", COLOR_YELLOW)));
+          return;
+        }
+        debugConfig.setSentryEnabled(true);
+        debugConfig.save();
+        // Try to initialize now if not already running
+        if (!SentryIntegration.isInitialized()) {
+          SentryIntegration.init(debugConfig);
+        }
+        ctx.sendMessage(prefix().insert(msg("Sentry enabled and config saved. Error reporting is now on.", COLOR_GREEN)));
+      }
+      default -> ctx.sendMessage(prefix().insert(msg("Usage: /f admin sentry [disable|enable]", COLOR_RED)));
+    }
+  }
+
   // === Sentry Test ===
   private void handleSentryTest(CommandContext ctx) {
     if (!SentryIntegration.isInitialized()) {
-      ctx.sendMessage(prefix().insert(msg("Sentry is not initialized. Check config/sentry.json", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg("Sentry is not initialized. Check config/debug.json", COLOR_RED)));
       return;
     }
 

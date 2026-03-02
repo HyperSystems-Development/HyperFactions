@@ -49,8 +49,6 @@ public class ConfigManager {
 
   private WorldsConfig worldsConfig;
 
-  private SentryConfig sentryConfig;
-
   private final WorldSettingsResolver worldSettingsResolver = new WorldSettingsResolver();
 
   private ConfigManager() {}
@@ -135,9 +133,6 @@ public class ConfigManager {
     worldsConfig = new WorldsConfig(configDir.resolve("worlds.json"));
     worldsConfig.load();
 
-    sentryConfig = new SentryConfig(configDir.resolve("sentry.json"));
-    sentryConfig.load();
-
     // Build the world settings resolver from loaded config
     worldSettingsResolver.rebuild(worldsConfig);
 
@@ -213,11 +208,6 @@ public class ConfigManager {
       combined.merge(worldsConfig.getLastValidationResult());
     }
 
-    sentryConfig.validateAndLog();
-    if (sentryConfig.getLastValidationResult() != null) {
-      combined.merge(sentryConfig.getLastValidationResult());
-    }
-
     // Log summary
     if (combined.hasIssues()) {
       int warnings = combined.getWarnings().size();
@@ -263,7 +253,6 @@ public class ConfigManager {
     announcementConfig.reload();
     gravestoneConfig.reload();
     worldsConfig.reload();
-    sentryConfig.reload();
 
     // Rebuild world settings resolver
     worldSettingsResolver.rebuild(worldsConfig);
@@ -289,7 +278,6 @@ public class ConfigManager {
     announcementConfig.save();
     gravestoneConfig.save();
     worldsConfig.save();
-    sentryConfig.save();
   }
 
   // === Config Accessors ===
@@ -414,16 +402,6 @@ public class ConfigManager {
   @NotNull
   public WorldsConfig worlds() {
     return worldsConfig;
-  }
-
-  /**
-   * Gets the sentry module configuration.
-   *
-   * @return sentry config
-   */
-  @NotNull
-  public SentryConfig sentry() {
-    return sentryConfig;
   }
 
   /**

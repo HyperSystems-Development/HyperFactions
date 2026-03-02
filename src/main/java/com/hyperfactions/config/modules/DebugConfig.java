@@ -1,8 +1,10 @@
 package com.hyperfactions.config.modules;
 
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.hyperfactions.config.ModuleConfig;
 import com.hyperfactions.util.Logger;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import org.jetbrains.annotations.NotNull;
 
@@ -41,6 +43,20 @@ public class DebugConfig extends ModuleConfig {
   private boolean integration = false;
 
   private boolean economy = false;
+
+  // Sentry error tracking settings
+  private static final String DEFAULT_SENTRY_DSN =
+      "https://cc41f97749e8b8b1562defea6ba3de9c@o4510966614589440.ingest.us.sentry.io/4510966616162304";
+
+  private boolean sentryEnabled = true;
+
+  private String sentryDsn = DEFAULT_SENTRY_DSN;
+
+  private String sentryEnvironment = "production";
+
+  private boolean sentryDebug = false;
+
+  private double sentryTracesSampleRate = 0.0;
 
   /**
    * Creates a new debug config.
@@ -82,6 +98,11 @@ public class DebugConfig extends ModuleConfig {
     spawning = false;
     integration = false;
     economy = false;
+    sentryEnabled = true;
+    sentryDsn = DEFAULT_SENTRY_DSN;
+    sentryEnvironment = "production";
+    sentryDebug = false;
+    sentryTracesSampleRate = 0.0;
   }
 
   /** Loads module settings. */
@@ -105,6 +126,19 @@ public class DebugConfig extends ModuleConfig {
       spawning = getBool(categories, "spawning", false);
       integration = getBool(categories, "integration", false);
       economy = getBool(categories, "economy", false);
+    }
+
+    // Load sentry settings (nested object)
+    if (hasSection(root, "sentry")) {
+      JsonObject sentry = root.getAsJsonObject("sentry");
+      sentryEnabled = getBool(sentry, "enabled", sentryEnabled);
+      sentryDsn = getString(sentry, "dsn", sentryDsn);
+      sentryEnvironment = getString(sentry, "environment", sentryEnvironment);
+      sentryDebug = getBool(sentry, "debug", sentryDebug);
+      sentryTracesSampleRate = getDouble(sentry, "tracesSampleRate", sentryTracesSampleRate);
+    } else {
+      // Auto-migrate from old config/sentry.json if it exists
+      migrateLegacySentryConfig();
     }
 
     // Apply settings to Logger
@@ -131,6 +165,14 @@ public class DebugConfig extends ModuleConfig {
     categories.addProperty("integration", integration);
     categories.addProperty("economy", economy);
     root.add("categories", categories);
+
+    JsonObject sentry = new JsonObject();
+    sentry.addProperty("enabled", sentryEnabled);
+    sentry.addProperty("dsn", sentryDsn);
+    sentry.addProperty("environment", sentryEnvironment);
+    sentry.addProperty("debug", sentryDebug);
+    sentry.addProperty("tracesSampleRate", sentryTracesSampleRate);
+    root.add("sentry", sentry);
   }
 
   /**
@@ -280,6 +322,65 @@ public class DebugConfig extends ModuleConfig {
    */
   public boolean isEconomy() {
     return economy;
+  }
+
+  // === Sentry Getters ===
+
+  /**
+   * Checks if Sentry error tracking is enabled.
+   *
+   * @return true if Sentry is enabled
+   */
+  public boolean isSentryEnabled() {
+    return sentryEnabled;
+  }
+
+  /**
+   * Gets the Sentry DSN (Data Source Name) URL.
+   *
+   * @return DSN string
+   */
+  @NotNull
+  public String getSentryDsn() {
+    return sentryDsn;
+  }
+
+  /**
+   * Gets the environment name sent to Sentry (e.g., "production", "development").
+   *
+   * @return environment name
+   */
+  @NotNull
+  public String getSentryEnvironment() {
+    return sentryEnvironment;
+  }
+
+  /**
+   * Checks if Sentry debug logging is enabled.
+   *
+   * @return true if Sentry debug mode is on
+   */
+  public boolean isSentryDebug() {
+    return sentryDebug;
+  }
+
+  /**
+   * Gets the traces sample rate for Sentry performance monitoring.
+   * 0.0 = no performance traces, 1.0 = capture all.
+   *
+   * @return sample rate between 0.0 and 1.0
+   */
+  public double getSentryTracesSampleRate() {
+    return sentryTracesSampleRate;
+  }
+
+  /**
+   * Sets whether Sentry error tracking is enabled.
+   *
+   * @param enabled true to enable
+   */
+  public void setSentryEnabled(boolean enabled) {
+    this.sentryEnabled = enabled;
   }
 
   // === Setters (for runtime toggle) ===
@@ -442,5 +543,48 @@ public class DebugConfig extends ModuleConfig {
     integration = false;
     economy = false;
     applyToLogger();
+  }
+
+  /**
+   * Migrates sentry settings from the old config/sentry.json file into this config.
+   * Called when debug.json has no "sentry" section and we need to check for legacy data.
+   * Deletes the old file after successful migration.
+   */
+  private void migrateLegacySentryConfig() {
+    Path sentryFile = filePath.getParent().resolve("sentry.json");
+    if (!Files.exists(sentryFile)) {
+      return;
+    }
+
+    try {
+      String json = Files.readString(sentryFile);
+      JsonObject root = JsonParser.parseString(json).getAsJsonObject();
+
+      // Read sentry values from the old file
+      if (root.has("enabled")) {
+        sentryEnabled = root.get("enabled").getAsBoolean();
+      }
+      if (root.has("dsn")) {
+        sentryDsn = root.get("dsn").getAsString();
+      }
+      if (root.has("environment")) {
+        sentryEnvironment = root.get("environment").getAsString();
+      }
+      if (root.has("debug")) {
+        sentryDebug = root.get("debug").getAsBoolean();
+      }
+      if (root.has("tracesSampleRate")) {
+        sentryTracesSampleRate = root.get("tracesSampleRate").getAsDouble();
+      }
+
+      needsSave = true;
+      Logger.info("[Config] Migrated sentry config from sentry.json into debug.json");
+
+      // Delete the old file
+      Files.delete(sentryFile);
+      Logger.info("[Config] Deleted old config/sentry.json");
+    } catch (Exception e) {
+      Logger.warn("[Config] Failed to migrate sentry.json: %s", e.getMessage());
+    }
   }
 }

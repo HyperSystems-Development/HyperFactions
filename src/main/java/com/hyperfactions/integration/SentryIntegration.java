@@ -1,7 +1,7 @@
 package com.hyperfactions.integration;
 
 import com.hyperfactions.BuildInfo;
-import com.hyperfactions.config.modules.SentryConfig;
+import com.hyperfactions.config.modules.DebugConfig;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.common.util.java.ManifestUtil;
 import com.hypixel.hytale.server.core.HytaleServer;
@@ -35,23 +35,23 @@ public final class SentryIntegration {
   private SentryIntegration() {}
 
   /**
-   * Initializes Sentry from the given config.
+   * Initializes Sentry from the debug config's sentry section.
    * Does nothing if Sentry is disabled or the DSN is empty.
    * Safe to call multiple times — subsequent calls are ignored.
    *
-   * @param config the sentry configuration
+   * @param config the debug configuration containing sentry settings
    */
-  public static void init(@NotNull SentryConfig config) {
+  public static void init(@NotNull DebugConfig config) {
     if (initialized) {
       return;
     }
 
-    if (!config.isEnabled()) {
+    if (!config.isSentryEnabled()) {
       Logger.info("[Sentry] Sentry is disabled in config");
       return;
     }
 
-    String dsn = config.getDsn();
+    String dsn = config.getSentryDsn();
     if (dsn == null || dsn.isBlank()) {
       Logger.info("[Sentry] No DSN configured — Sentry will not send events");
       return;
@@ -61,10 +61,10 @@ public final class SentryIntegration {
       Sentry.init(options -> {
         options.setDsn(dsn);
         options.setRelease("hyperfactions@" + BuildInfo.VERSION);
-        options.setDebug(config.isDebug());
+        options.setDebug(config.isSentryDebug());
 
         // Auto-detect environment from server patchline, fall back to config value
-        String environment = config.getEnvironment();
+        String environment = config.getSentryEnvironment();
         try {
           String patchline = ManifestUtil.getPatchline();
           if (patchline != null && !patchline.isEmpty()) {
@@ -81,7 +81,7 @@ public final class SentryIntegration {
         options.setEnvironment(environment);
 
         // Performance monitoring (0.0 = off by default)
-        double traceRate = config.getTracesSampleRate();
+        double traceRate = config.getSentryTracesSampleRate();
         if (traceRate > 0.0) {
           options.setTracesSampleRate(traceRate);
         }
@@ -157,7 +157,7 @@ public final class SentryIntegration {
       });
 
       initialized = true;
-      Logger.info("[Sentry] Initialized (env=%s, debug=%s)", config.getEnvironment(), config.isDebug());
+      Logger.info("[Sentry] Initialized (env=%s, debug=%s)", config.getSentryEnvironment(), config.isSentryDebug());
 
       // Collect installed mods (may be incomplete during init — refreshed on boot)
       refreshInstalledMods();
