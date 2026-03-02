@@ -1,5 +1,6 @@
 package com.hyperfactions.gui.faction;
 
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.common.util.ArrayUtil;
 import com.hypixel.hytale.math.util.ChunkUtil;
@@ -149,7 +150,7 @@ public class ChunkMapAsset extends CommonAsset {
         ImageIO.write(image, "PNG", baos);
         return new ChunkMapAsset(baos.toByteArray());
       } catch (IOException e) {
-        Logger.severe("Failed to encode terrain map PNG", e);
+        ErrorHandler.report("Failed to encode terrain map PNG", e);
         return null;
       }
     });

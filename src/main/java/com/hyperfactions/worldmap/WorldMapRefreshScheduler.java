@@ -4,6 +4,7 @@ import com.hyperfactions.config.modules.WorldMapConfig.RefreshMode;
 import com.hyperfactions.config.modules.WorldMapConfig;
 import com.hyperfactions.data.ChunkKey;
 import com.hyperfactions.util.ChunkUtil;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.math.vector.Vector3d;
 import com.hypixel.hytale.server.core.entity.entities.Player;
@@ -105,7 +106,7 @@ public class WorldMapRefreshScheduler {
       long intervalMs = (intervalTicks * 1000L) / 30;
 
       batchTask = scheduler.scheduleAtFixedRate(
-          this::processBatch,
+          ErrorHandler.wrapTask("World map batch processing", this::processBatch),
           intervalMs,
           intervalMs,
           TimeUnit.MILLISECONDS
@@ -433,7 +434,7 @@ public class WorldMapRefreshScheduler {
 
     int delaySeconds = config.getDebouncedDelaySeconds();
 
-    debounceTask = scheduler.schedule(() -> {
+    debounceTask = scheduler.schedule(ErrorHandler.wrapTask("World map debounce refresh", () -> {
       // Check if enough time has passed since last change
       long elapsed = System.currentTimeMillis() - lastChangeTime;
       if (elapsed >= delaySeconds * 1000L) {
@@ -443,7 +444,7 @@ public class WorldMapRefreshScheduler {
         // Reschedule
         scheduleDebounceRefresh();
       }
-    }, delaySeconds, TimeUnit.SECONDS);
+    }), delaySeconds, TimeUnit.SECONDS);
   }
 
   /**

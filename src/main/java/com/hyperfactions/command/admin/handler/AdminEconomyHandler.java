@@ -8,6 +8,7 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.EconomyManager;
 import com.hyperfactions.util.CommandHelp;
 import com.hyperfactions.util.HelpFormatter;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -156,7 +157,7 @@ public class AdminEconomyHandler {
         ctx.sendMessage(prefix().insert(msg("Failed: " + result.name(), COLOR_RED)));
       }
     }).exceptionally(ex -> {
-      Logger.severe("Admin economy set balance failed for %s", ex, faction.name());
+      ErrorHandler.report(String.format("Admin economy set balance failed for %s", faction.name()), ex);
       ctx.sendMessage(prefix().insert(msg("An error occurred.", COLOR_RED)));
       return null;
     });
@@ -198,7 +199,7 @@ public class AdminEconomyHandler {
         ctx.sendMessage(prefix().insert(msg("Failed: " + result.name(), COLOR_RED)));
       }
     }).exceptionally(ex -> {
-      Logger.severe("Admin economy add failed for %s", ex, faction.name());
+      ErrorHandler.report(String.format("Admin economy add failed for %s", faction.name()), ex);
       ctx.sendMessage(prefix().insert(msg("An error occurred.", COLOR_RED)));
       return null;
     });
@@ -240,7 +241,7 @@ public class AdminEconomyHandler {
         ctx.sendMessage(prefix().insert(msg("Failed: " + result.name(), COLOR_RED)));
       }
     }).exceptionally(ex -> {
-      Logger.severe("Admin economy take failed for %s", ex, faction.name());
+      ErrorHandler.report(String.format("Admin economy take failed for %s", faction.name()), ex);
       ctx.sendMessage(prefix().insert(msg("An error occurred.", COLOR_RED)));
       return null;
     });
@@ -287,7 +288,7 @@ public class AdminEconomyHandler {
         ctx.sendMessage(prefix().insert(msg("Failed: " + result.name(), COLOR_RED)));
       }
     }).exceptionally(ex -> {
-      Logger.severe("Admin economy reset failed for %s", ex, faction.name());
+      ErrorHandler.report(String.format("Admin economy reset failed for %s", faction.name()), ex);
       ctx.sendMessage(prefix().insert(msg("An error occurred.", COLOR_RED)));
       return null;
     });

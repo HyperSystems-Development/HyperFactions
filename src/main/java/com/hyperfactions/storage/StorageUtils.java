@@ -1,5 +1,6 @@
 package com.hyperfactions.storage;
 
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -134,7 +135,7 @@ public final class StorageUtils {
       } catch (IOException ignored) {}
 
       String error = "I/O error during atomic write: " + e.getMessage();
-      Logger.severe("[Storage] %s for %s", error, targetFile);
+      ErrorHandler.report(String.format("[Storage] %s for %s", error, targetFile), e);
       return new WriteResult.Failure(targetFile, error, e);
 
     } catch (Exception e) {
@@ -144,7 +145,7 @@ public final class StorageUtils {
       } catch (IOException ignored) {}
 
       String error = "Unexpected error during atomic write: " + e.getMessage();
-      Logger.severe("[Storage] %s for %s", error, targetFile);
+      ErrorHandler.report(String.format("[Storage] %s for %s", error, targetFile), e);
       return new WriteResult.Failure(targetFile, error, e);
     }
   }
@@ -248,7 +249,7 @@ public final class StorageUtils {
       return true;
 
     } catch (IOException e) {
-      Logger.severe("[Storage] Failed to recover %s from backup: %s", targetFile, e.getMessage());
+      ErrorHandler.report(String.format("[Storage] Failed to recover %s from backup", targetFile), e);
       return false;
     }
   }

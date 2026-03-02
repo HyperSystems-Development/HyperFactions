@@ -15,6 +15,7 @@ import com.hyperfactions.gui.shared.page.*;
 import com.hyperfactions.gui.test.ButtonTestPage;
 import com.hyperfactions.manager.*;
 import com.hyperfactions.storage.PlayerStorage;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -58,8 +59,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] MainMenuPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open MainMenuPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open MainMenuPage", e);
     }
   }
 
@@ -97,8 +97,7 @@ class FactionPageOpener {
         pageManager.openCustomPage(ref, store, page);
         Logger.debug("[GUI] FactionDashboardPage opened successfully");
       } catch (Exception e) {
-        Logger.severe("[GUI] Failed to open FactionDashboardPage: %s", e.getMessage());
-        e.printStackTrace();
+        ErrorHandler.report("[GUI] Failed to open FactionDashboardPage", e);
       }
     } else {
       // Player has no faction - redirect to new player browse page
@@ -133,8 +132,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] FactionMembersPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open FactionMembersPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open FactionMembersPage", e);
     }
   }
 
@@ -162,8 +160,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] ChunkMapPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open ChunkMapPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open ChunkMapPage", e);
     }
   }
 
@@ -209,8 +206,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] FactionRelationsPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open FactionRelationsPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open FactionRelationsPage", e);
     }
   }
 
@@ -250,8 +246,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] FactionBrowserPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open FactionBrowserPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open FactionBrowserPage", e);
     }
   }
 
@@ -280,8 +275,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] FactionLeaderboardPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open FactionLeaderboardPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open FactionLeaderboardPage", e);
     }
   }
 
@@ -314,8 +308,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] FactionInvitesPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open FactionInvitesPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open FactionInvitesPage", e);
     }
   }
 
@@ -346,8 +339,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] FactionSettingsPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open FactionSettingsPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open FactionSettingsPage", e);
     }
   }
 
@@ -396,8 +388,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, modalPage);
       Logger.debug("[GUI] SetRelationModalPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open SetRelationModalPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open SetRelationModalPage", e);
     }
   }
 
@@ -426,8 +417,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] TagModalPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open TagModalPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open TagModalPage", e);
     }
   }
 
@@ -455,8 +445,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] DescriptionModalPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open DescriptionModalPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open DescriptionModalPage", e);
     }
   }
 
@@ -485,8 +474,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] RenameModalPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open RenameModalPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open RenameModalPage", e);
     }
   }
 
@@ -514,8 +502,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] DisbandConfirmPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open DisbandConfirmPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open DisbandConfirmPage", e);
     }
   }
 
@@ -548,8 +535,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] TransferConfirmPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open TransferConfirmPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open TransferConfirmPage", e);
     }
   }
 
@@ -582,8 +568,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] FactionDashboardPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open FactionDashboardPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open FactionDashboardPage", e);
     }
   }
 
@@ -611,8 +596,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] LeaveConfirmPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open LeaveConfirmPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open LeaveConfirmPage", e);
     }
   }
 
@@ -641,8 +625,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] LeaderLeaveConfirmPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open LeaderLeaveConfirmPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open LeaderLeaveConfirmPage", e);
     }
   }
 
@@ -676,8 +659,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] FactionChatPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open FactionChatPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open FactionChatPage", e);
     }
   }
 
@@ -706,8 +688,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] FactionModulesPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open FactionModulesPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open FactionModulesPage", e);
     }
   }
 
@@ -742,8 +723,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] TreasuryPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open TreasuryPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open TreasuryPage", e);
     }
   }
 
@@ -771,8 +751,7 @@ class FactionPageOpener {
           guiManager, guiManager.getPlugin().get(), faction, mode);
       player.getPageManager().openCustomPage(ref, store, page);
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open TreasuryDepositModal: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open TreasuryDepositModal", e);
     }
   }
 
@@ -793,8 +772,7 @@ class FactionPageOpener {
           guiManager, guiManager.getPlugin().get(), faction);
       player.getPageManager().openCustomPage(ref, store, page);
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open TreasuryTransferSearch: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open TreasuryTransferSearch", e);
     }
   }
 
@@ -816,8 +794,7 @@ class FactionPageOpener {
           guiManager, guiManager.getPlugin().get(), faction, targetId, targetName, targetType);
       player.getPageManager().openCustomPage(ref, store, page);
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open TreasuryTransferConfirm: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open TreasuryTransferConfirm", e);
     }
   }
 
@@ -837,8 +814,7 @@ class FactionPageOpener {
       var page = new TreasurySettingsPage(playerRef, guiManager.getFactionManager().get(), econ, guiManager, faction);
       player.getPageManager().openCustomPage(ref, store, page);
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open TreasurySettings: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open TreasurySettings", e);
     }
   }
 
@@ -866,8 +842,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] LogsViewerPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open LogsViewerPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open LogsViewerPage", e);
     }
   }
 
@@ -917,8 +892,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] FactionInfoPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open FactionInfoPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open FactionInfoPage", e);
     }
   }
 
@@ -960,8 +934,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] FactionInfoPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open FactionInfoPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open FactionInfoPage", e);
     }
   }
 
@@ -1012,8 +985,7 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] PlayerInfoPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open PlayerInfoPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open PlayerInfoPage", e);
     }
   }
 
@@ -1029,8 +1001,7 @@ class FactionPageOpener {
       ButtonTestPage page = new ButtonTestPage(playerRef);
       pageManager.openCustomPage(ref, store, page);
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open ButtonTestPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open ButtonTestPage", e);
     }
   }
 

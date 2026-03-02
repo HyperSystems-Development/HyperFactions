@@ -9,6 +9,7 @@ import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.PlayerPower;
 import com.hyperfactions.storage.PlayerStorage;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -79,7 +80,7 @@ public class PowerManager {
 
       Logger.info("[Startup] Loaded %d player power records", powerCache.size());
     }).exceptionally(ex -> {
-      Logger.severe("CRITICAL: Exception during player power loading - keeping existing data", (Throwable) ex);
+      ErrorHandler.report("CRITICAL: Exception during player power loading - keeping existing data", ex);
       return null;
     });
   }
@@ -600,7 +601,7 @@ public class PowerManager {
         }
         Logger.info("[Startup] Loaded hardcore power for %d factions", hardcoreFactionPower.size());
       } catch (Exception e) {
-        Logger.severe("Failed to load hardcore power data: %s", e.getMessage());
+        ErrorHandler.report("Failed to load hardcore power data", e);
       }
     });
   }
@@ -619,7 +620,7 @@ public class PowerManager {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         Files.writeString(file, gson.toJson(obj));
       } catch (IOException e) {
-        Logger.severe("Failed to save hardcore power data: %s", e.getMessage());
+        ErrorHandler.report("Failed to save hardcore power data", e);
       }
     });
   }

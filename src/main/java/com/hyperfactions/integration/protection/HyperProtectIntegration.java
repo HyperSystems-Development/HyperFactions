@@ -2,6 +2,7 @@ package com.hyperfactions.integration.protection;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.protection.ProtectionChecker;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
@@ -183,7 +184,7 @@ public final class HyperProtectIntegration {
           MethodType.methodType(Message.class, String.class));
       bridge.set(SLOT_FORMAT_HANDLE, fmtHandle);
     } catch (Exception e) {
-      Logger.severe("Failed to register format handle at slot 15: %s", e.getMessage());
+      ErrorHandler.report("Failed to register format handle at slot 15", e);
     }
 
     Logger.debug("Registered 20 HyperProtect hook(s) + format handle at bridge slots (unconditional)");
@@ -267,7 +268,7 @@ public final class HyperProtectIntegration {
           MethodType.methodType(Message.class, String.class));
       bridge.set(SLOT_FORMAT_HANDLE, fmtHandle);
     } catch (Exception e) {
-      Logger.severe("Failed to register format handle at slot 15: %s", e.getMessage());
+      ErrorHandler.report("Failed to register format handle at slot 15", e);
     }
 
     Logger.debug("Registered HP unique hooks (slots 0,9-12,15-22) for BOTH mode");
@@ -336,7 +337,7 @@ public final class HyperProtectIntegration {
         }
         return verdict;
       } catch (Exception e) {
-        Logger.severe("Block break mixin hook error (fail-closed)", e);
+        ErrorHandler.report("Block break mixin hook error (fail-closed)", e);
         cachedReason.set("Protection error — action blocked for safety.");
         return DENY_WITH_MESSAGE;
       }
@@ -369,7 +370,7 @@ public final class HyperProtectIntegration {
         Logger.debugInteraction("[Mixin:Explosion] world=%s, pos=(%d,%d,%d), blocked=%b", worldName, x, y, z, blocked);
         return blocked ? DENY_SILENT : ALLOW;
       } catch (Exception e) {
-        Logger.severe("Explosion mixin hook error (fail-closed)", e);
+        ErrorHandler.report("Explosion mixin hook error (fail-closed)", e);
         return DENY_SILENT;
       }
     }
@@ -412,7 +413,7 @@ public final class HyperProtectIntegration {
         }
         return verdict;
       } catch (Exception e) {
-        Logger.severe("Builder tools mixin hook error (fail-closed)", e);
+        ErrorHandler.report("Builder tools mixin hook error (fail-closed)", e);
         cachedReason.set("Protection error — action blocked for safety.");
         return DENY_WITH_MESSAGE;
       }
@@ -494,7 +495,7 @@ public final class HyperProtectIntegration {
         }
         return verdict;
       } catch (Exception e) {
-        Logger.severe("Container access mixin hook error (fail-closed)", e);
+        ErrorHandler.report("Container access mixin hook error (fail-closed)", e);
         cachedReason.set("Protection error — action blocked for safety.");
         return DENY_WITH_MESSAGE;
       }
@@ -545,7 +546,7 @@ public final class HyperProtectIntegration {
         }
         return verdict;
       } catch (Exception e) {
-        Logger.severe("Teleporter mixin hook error (fail-closed)", e);
+        ErrorHandler.report("Teleporter mixin hook error (fail-closed)", e);
         cachedReason.set("Protection error — action blocked for safety.");
         return DENY_WITH_MESSAGE;
       }
@@ -580,7 +581,7 @@ public final class HyperProtectIntegration {
         }
         return verdict;
       } catch (Exception e) {
-        Logger.severe("Portal mixin hook error (fail-closed)", e);
+        ErrorHandler.report("Portal mixin hook error (fail-closed)", e);
         cachedReason.set("Protection error — action blocked for safety.");
         return DENY_WITH_MESSAGE;
       }
@@ -660,7 +661,7 @@ public final class HyperProtectIntegration {
         }
         return verdict;
       } catch (Exception e) {
-        Logger.severe("Entity damage mixin hook error (fail-closed)", e);
+        ErrorHandler.report("Entity damage mixin hook error (fail-closed)", e);
         cachedReason.set("Protection error — action blocked for safety.");
         return DENY_WITH_MESSAGE;
       }
@@ -696,7 +697,7 @@ public final class HyperProtectIntegration {
         }
         return verdict;
       } catch (Exception e) {
-        Logger.severe("Container open mixin hook error (fail-closed)", e);
+        ErrorHandler.report("Container open mixin hook error (fail-closed)", e);
         cachedReason.set("Protection error — action blocked for safety.");
         return DENY_WITH_MESSAGE;
       }
@@ -730,7 +731,7 @@ public final class HyperProtectIntegration {
         }
         return verdict;
       } catch (Exception e) {
-        Logger.severe("Block place mixin hook error (fail-closed)", e);
+        ErrorHandler.report("Block place mixin hook error (fail-closed)", e);
         cachedReason.set("Protection error — action blocked for safety.");
         return DENY_WITH_MESSAGE;
       }
@@ -765,7 +766,7 @@ public final class HyperProtectIntegration {
         }
         return verdict;
       } catch (Exception e) {
-        Logger.severe("Hammer mixin hook error (fail-closed)", e);
+        ErrorHandler.report("Hammer mixin hook error (fail-closed)", e);
         cachedReason.set("Protection error — action blocked for safety.");
         return DENY_WITH_MESSAGE;
       }
@@ -813,7 +814,7 @@ public final class HyperProtectIntegration {
         }
         return verdict;
       } catch (Exception e) {
-        Logger.severe("Use mixin hook error (fail-closed)", e);
+        ErrorHandler.report("Use mixin hook error (fail-closed)", e);
         cachedReason.set("Protection error — action blocked for safety.");
         return DENY_WITH_MESSAGE;
       }
@@ -848,7 +849,7 @@ public final class HyperProtectIntegration {
         }
         return verdict;
       } catch (Exception e) {
-        Logger.severe("Seat mixin hook error (fail-closed)", e);
+        ErrorHandler.report("Seat mixin hook error (fail-closed)", e);
         cachedReason.set("Protection error — action blocked for safety.");
         return DENY_WITH_MESSAGE;
       }

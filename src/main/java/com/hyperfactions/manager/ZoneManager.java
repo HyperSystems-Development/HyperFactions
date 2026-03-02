@@ -5,6 +5,7 @@ import com.hyperfactions.data.Zone;
 import com.hyperfactions.data.ZoneFlags;
 import com.hyperfactions.data.ZoneType;
 import com.hyperfactions.storage.ZoneStorage;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -179,7 +180,7 @@ public class ZoneManager {
 
       Logger.info("[Startup] Loaded %d zones with %d total chunks", zonesById.size(), zoneIndex.size());
     }).exceptionally(ex -> {
-      Logger.severe("CRITICAL: Exception during zone loading - keeping existing data", (Throwable) ex);
+      ErrorHandler.report("CRITICAL: Exception during zone loading - keeping existing data", ex);
       return null;
     });
   }

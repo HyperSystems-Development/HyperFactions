@@ -3,6 +3,7 @@ package com.hyperfactions.protection.ecs;
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.protection.ProtectionListener;
 import com.hyperfactions.protection.damage.DamageProtectionHandler;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.Archetype;
 import com.hypixel.hytale.component.ArchetypeChunk;
@@ -93,7 +94,7 @@ public class DamageProtectionSystem extends EntityEventSystem<EntityStore, Damag
     } catch (Exception e) {
       // Fail-closed: cancel on any exception to prevent unauthorized damage
       event.setCancelled(true);
-      Logger.severe("Damage protection cancelled due to error (fail-closed)", e);
+      ErrorHandler.report("Damage protection cancelled due to error (fail-closed)", e);
     }
   }
 

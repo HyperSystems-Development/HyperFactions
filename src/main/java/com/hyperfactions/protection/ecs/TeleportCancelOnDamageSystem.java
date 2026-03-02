@@ -1,6 +1,7 @@
 package com.hyperfactions.protection.ecs;
 
 import com.hyperfactions.HyperFactions;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.Archetype;
 import com.hypixel.hytale.component.ArchetypeChunk;
@@ -56,7 +57,7 @@ public class TeleportCancelOnDamageSystem extends EntityEventSystem<EntityStore,
         player::sendMessage
       );
     } catch (Exception e) {
-      Logger.severe("Error processing damage event for teleport cancellation", e);
+      ErrorHandler.report("Error processing damage event for teleport cancellation", e);
     }
   }
 }

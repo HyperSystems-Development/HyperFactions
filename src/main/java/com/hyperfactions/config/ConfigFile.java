@@ -6,6 +6,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -93,7 +94,7 @@ public abstract class ConfigFile {
         save();
       }
     } catch (Exception e) {
-      Logger.severe("[Config] Failed to load %s: %s", filePath.getFileName(), e.getMessage());
+      ErrorHandler.report(String.format("[Config] Failed to load %s", filePath.getFileName()), e);
       createDefaults();
     }
   }
@@ -109,7 +110,7 @@ public abstract class ConfigFile {
       needsSave = false;
       Logger.debug("[Config] Saved: %s", filePath.getFileName());
     } catch (IOException e) {
-      Logger.severe("[Config] Failed to save %s: %s", filePath.getFileName(), e.getMessage());
+      ErrorHandler.report(String.format("[Config] Failed to save %s", filePath.getFileName()), e);
     }
   }
 

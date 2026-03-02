@@ -10,6 +10,7 @@ import com.hyperfactions.data.MembershipRecord;
 import com.hyperfactions.data.PlayerData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.storage.PlayerStorage;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
@@ -72,7 +73,7 @@ public class MembershipHistoryHandler {
       }
       playerStorage.savePlayerData(data);
     }).exceptionally(e -> {
-      Logger.severe("Failed to record membership history for %s", e, playerUuid);
+      ErrorHandler.report(String.format("Failed to record membership history for %s", playerUuid), e);
       return null;
     });
   }
@@ -91,7 +92,7 @@ public class MembershipHistoryHandler {
         playerStorage.savePlayerData(data);
         Logger.debug("Membership history: %s's faction %s disbanded", memberUuid, faction.name());
       }).exceptionally(e -> {
-        Logger.severe("Failed to record disband history for %s", e, memberUuid);
+        ErrorHandler.report(String.format("Failed to record disband history for %s", memberUuid), e);
         return null;
       });
     }
@@ -140,7 +141,7 @@ public class MembershipHistoryHandler {
           playerStorage.savePlayerData(data).join();
           migrated++;
         } catch (Exception e) {
-          Logger.severe("Failed to migrate membership history for %s", e, member.username());
+          ErrorHandler.report(String.format("Failed to migrate membership history for %s", member.username()), e);
         }
       }
     }

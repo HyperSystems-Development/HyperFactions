@@ -8,6 +8,7 @@ import com.hyperfactions.migration.Migration;
 import com.hyperfactions.migration.MigrationOptions;
 import com.hyperfactions.migration.MigrationResult;
 import com.hyperfactions.migration.MigrationType;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -202,7 +203,7 @@ public class ConfigV2ToV3Migration implements Migration {
 
     } catch (Exception e) {
       Duration duration = Duration.between(startTime, Instant.now());
-      Logger.severe("[Migration] Config migration failed: %s", e.getMessage());
+      ErrorHandler.report("[Migration] Config migration failed", e);
       return MigrationResult.failure(
         id(),
         fromVersion(),

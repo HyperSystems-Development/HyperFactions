@@ -8,6 +8,7 @@ import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.*;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.storage.FactionStorage;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -146,7 +147,7 @@ public class FactionManager {
       Logger.info("[Startup] Loaded %d factions with %d members indexed",
         factions.size(), playerToFaction.size());
     }).exceptionally(ex -> {
-      Logger.severe("CRITICAL: Exception during faction loading - keeping existing data", (Throwable) ex);
+      ErrorHandler.report("CRITICAL: Exception during faction loading - keeping existing data", ex);
       return null;
     });
   }

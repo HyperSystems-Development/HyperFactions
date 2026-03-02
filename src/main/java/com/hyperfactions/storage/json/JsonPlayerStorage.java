@@ -12,6 +12,7 @@ import com.hyperfactions.data.PlayerPower;
 import com.hyperfactions.storage.PlayerStorage;
 import com.hyperfactions.storage.StorageHealth;
 import com.hyperfactions.storage.StorageUtils;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.UuidUtil;
 import java.io.IOException;
@@ -63,7 +64,7 @@ public class JsonPlayerStorage implements PlayerStorage {
         StorageUtils.cleanupOrphanedFiles(playersDir);
         Logger.info("[Storage] Player storage initialized at %s", playersDir);
       } catch (IOException e) {
-        Logger.severe("Failed to create players directory", e);
+        ErrorHandler.report("Failed to create players directory", e);
       }
     });
   }
@@ -98,7 +99,7 @@ public class JsonPlayerStorage implements PlayerStorage {
       } catch (Exception e) {
         Path file = playersDir.resolve(power.uuid() + ".json");
         StorageHealth.get().recordFailure(file.toString(), e.getMessage());
-        Logger.severe("Failed to save player power %s", e, power.uuid());
+        ErrorHandler.report(String.format("Failed to save player power %s", power.uuid()), e);
       } finally {
         lock.unlock();
       }
@@ -137,11 +138,11 @@ public class JsonPlayerStorage implements PlayerStorage {
             powers.add(deserializePlayerData(obj).toPower());
           } catch (Exception e) {
             failedFiles.add(file.getFileName().toString());
-            Logger.severe("Failed to load player file %s: %s", file.getFileName(), e.getMessage());
+            ErrorHandler.report(String.format("Failed to load player file %s", file.getFileName()), e);
           }
         }
       } catch (IOException e) {
-        Logger.severe("CRITICAL: Failed to read players directory - data may be lost!", e);
+        ErrorHandler.report("CRITICAL: Failed to read players directory - data may be lost!", e);
         throw new RuntimeException("Failed to read players directory", e);
       }
 
@@ -176,7 +177,7 @@ public class JsonPlayerStorage implements PlayerStorage {
           // Skip non-UUID filenames
         }
       } catch (IOException e) {
-        Logger.severe("Failed to list player files: %s", e.getMessage());
+        ErrorHandler.report("Failed to list player files", e);
       }
       return uuids;
     });
@@ -242,11 +243,11 @@ public class JsonPlayerStorage implements PlayerStorage {
         StorageHealth.get().recordSuccess(filePath);
       } else if (result instanceof StorageUtils.WriteResult.Failure failure) {
         StorageHealth.get().recordFailure(filePath, failure.error());
-        Logger.severe("Failed to save player data %s: %s", data.getUuid(), failure.error());
+        ErrorHandler.report(String.format("Failed to save player data %s: %s", data.getUuid(), failure.error()), failure.cause());
       }
     } catch (Exception e) {
       StorageHealth.get().recordFailure(filePath, e.getMessage());
-      Logger.severe("Failed to save player data %s", e, data.getUuid());
+      ErrorHandler.report(String.format("Failed to save player data %s", data.getUuid()), e);
     }
   }
 
@@ -272,7 +273,7 @@ public class JsonPlayerStorage implements PlayerStorage {
       JsonObject obj = JsonParser.parseString(json).getAsJsonObject();
       return deserializePlayerData(obj);
     } catch (Exception e) {
-      Logger.severe("Failed to load player data %s, attempting backup recovery", e, uuid);
+      ErrorHandler.report(String.format("Failed to load player data %s, attempting backup recovery", uuid), e);
       if (StorageUtils.recoverFromBackup(file)) {
         try {
           String json = Files.readString(file);
@@ -280,7 +281,7 @@ public class JsonPlayerStorage implements PlayerStorage {
           Logger.info("[Storage] Successfully loaded player data %s from recovered backup", uuid);
           return deserializePlayerData(obj);
         } catch (Exception e2) {
-          Logger.severe("Backup recovery failed for player data %s", e2, uuid);
+          ErrorHandler.report(String.format("Backup recovery failed for player data %s", uuid), e2);
         }
       }
       return null;

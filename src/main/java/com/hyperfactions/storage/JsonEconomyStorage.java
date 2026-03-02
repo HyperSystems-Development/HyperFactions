@@ -4,6 +4,7 @@ import com.google.gson.*;
 import com.hyperfactions.api.EconomyAPI;
 import com.hyperfactions.data.FactionEconomy.TreasuryLimits;
 import com.hyperfactions.data.FactionEconomy;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -44,7 +45,7 @@ public class JsonEconomyStorage {
         StorageUtils.cleanupOrphanedFiles(economyDir);
         Logger.info("[Storage] Economy storage initialized at %s", economyDir);
       } catch (IOException e) {
-        Logger.severe("Failed to create economy directory", e);
+        ErrorHandler.report("Failed to create economy directory", e);
       }
     });
   }
@@ -71,12 +72,11 @@ public class JsonEconomyStorage {
             JsonObject obj = JsonParser.parseString(json).getAsJsonObject();
             economies.put(factionId, deserialize(obj));
           } catch (Exception e) {
-            Logger.severe("Failed to load economy file %s: %s",
-                file.getFileName(), e.getMessage());
+            ErrorHandler.report(String.format("Failed to load economy file %s", file.getFileName()), e);
           }
         }
       } catch (IOException e) {
-        Logger.severe("Failed to read economy directory", e);
+        ErrorHandler.report("Failed to read economy directory", e);
       }
 
       Logger.info("[Storage] Loaded economy data for %d factions", economies.size());
@@ -97,7 +97,7 @@ public class JsonEconomyStorage {
       String content = gson.toJson(obj);
       StorageUtils.WriteResult result = StorageUtils.writeAtomic(file, content);
       if (result instanceof StorageUtils.WriteResult.Failure failure) {
-        Logger.severe("Failed to save economy for faction %s: %s", factionId, failure.error());
+        ErrorHandler.report(String.format("Failed to save economy for faction %s: %s", factionId, failure.error()), failure.cause());
       }
     });
   }
@@ -115,8 +115,7 @@ public class JsonEconomyStorage {
         String content = gson.toJson(obj);
         StorageUtils.WriteResult result = StorageUtils.writeAtomic(file, content);
         if (result instanceof StorageUtils.WriteResult.Failure failure) {
-          Logger.severe("Failed to save economy for faction %s: %s",
-              entry.getKey(), failure.error());
+          ErrorHandler.report(String.format("Failed to save economy for faction %s: %s", entry.getKey(), failure.error()), failure.cause());
         }
       }
       Logger.debug("Saved economy data for %d factions", economies.size());

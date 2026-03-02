@@ -11,6 +11,7 @@ import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.PendingInvite;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.storage.StorageUtils;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -459,7 +460,7 @@ public class InviteManager {
 
       Logger.info("[Storage] Loaded %d invites (%d expired and skipped)", loaded, expired);
     } catch (Exception e) {
-      Logger.severe("Failed to load invites", e);
+      ErrorHandler.report("Failed to load invites", e);
     }
   }
 
@@ -470,7 +471,7 @@ public class InviteManager {
     try {
       Files.createDirectories(dataFile.getParent());
     } catch (IOException e) {
-      Logger.severe("Failed to create invites directory", e);
+      ErrorHandler.report("Failed to create invites directory", e);
       return;
     }
 
@@ -485,7 +486,7 @@ public class InviteManager {
 
     StorageUtils.WriteResult result = StorageUtils.writeAtomic(dataFile, gson.toJson(array));
     if (result instanceof StorageUtils.WriteResult.Failure failure) {
-      Logger.severe("Failed to save invites: %s", failure.error());
+      ErrorHandler.report(String.format("Failed to save invites: %s", failure.error()), failure.cause());
     }
   }
 

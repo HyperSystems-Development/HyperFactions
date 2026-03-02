@@ -5,6 +5,7 @@ import com.hyperfactions.protection.ProtectionChecker;
 import com.hyperfactions.protection.ProtectionListener;
 import com.hyperfactions.protection.ProtectionMessageDebounce;
 import com.hyperfactions.protection.zone.ZoneInteractionProtection;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Archetype;
@@ -173,7 +174,7 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
     } catch (Exception e) {
       // Fail-closed: cancel on any exception to prevent unauthorized block interaction
       event.setCancelled(true);
-      Logger.severe("Block use cancelled due to protection error (fail-closed)", e);
+      ErrorHandler.report("Block use cancelled due to protection error (fail-closed)", e);
     }
   }
 

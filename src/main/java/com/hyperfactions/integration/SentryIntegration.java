@@ -9,6 +9,8 @@ import com.hypixel.hytale.server.core.HytaleServerConfig;
 import com.hypixel.hytale.server.core.plugin.PluginBase;
 import io.sentry.Sentry;
 import io.sentry.SentryLevel;
+import java.util.ArrayList;
+import java.util.List;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -17,10 +19,18 @@ import org.jetbrains.annotations.NotNull;
  * <p>All operations are wrapped in try/catch to guarantee that Sentry issues
  * never crash the server. The Sentry SDK sends events asynchronously by default
  * (via {@code AsyncHttpTransport}), so event submission is non-blocking.
+ *
+ * <p>Errors that occur before Sentry is initialized (e.g., during config loading)
+ * are buffered and flushed once {@link #init} completes successfully.
  */
 public final class SentryIntegration {
 
   private static boolean initialized = false;
+
+  /** Buffered errors from before Sentry was initialized. */
+  private static final List<BufferedError> preInitErrors = new ArrayList<>();
+
+  private record BufferedError(String message, Throwable throwable) {}
 
   private SentryIntegration() {}
 
@@ -151,6 +161,10 @@ public final class SentryIntegration {
 
       // Collect installed mods (may be incomplete during init — refreshed on boot)
       refreshInstalledMods();
+
+      // Flush any errors that occurred before Sentry was ready (e.g., during config loading)
+      // Done after refreshInstalledMods() so the mods context is attached to flushed events
+      flushPreInitErrors();
     } catch (Exception e) {
       Logger.severe("Failed to initialize Sentry: %s", e.getMessage());
     }
@@ -164,10 +178,14 @@ public final class SentryIntegration {
    * @param throwable the exception to capture
    */
   public static void captureException(@NotNull String message, @NotNull Throwable throwable) {
-    // Always log to console first
-    Logger.severe("%s: %s", message, throwable.getMessage());
+    // Always log to console first (with full stack trace via withCause)
+    Logger.severe(message, throwable);
 
     if (!initialized) {
+      // Buffer for later — will be flushed after init() completes
+      synchronized (preInitErrors) {
+        preInitErrors.add(new BufferedError(message, throwable));
+      }
       return;
     }
 
@@ -284,6 +302,33 @@ public final class SentryIntegration {
     } catch (Exception e) {
       Logger.debug("Sentry close failed: %s", e.getMessage());
       initialized = false;
+    }
+  }
+
+  /**
+   * Flushes errors that were buffered before Sentry was initialized.
+   * Called once from {@link #init} after Sentry is ready.
+   */
+  private static void flushPreInitErrors() {
+    List<BufferedError> errors;
+    synchronized (preInitErrors) {
+      if (preInitErrors.isEmpty()) {
+        return;
+      }
+      errors = new ArrayList<>(preInitErrors);
+      preInitErrors.clear();
+    }
+
+    Logger.info("[Sentry] Flushing %d pre-init error(s) to Sentry", errors.size());
+    for (BufferedError error : errors) {
+      try {
+        Sentry.captureException(error.throwable(), scope -> {
+          scope.setExtra("context", error.message());
+          scope.setTag("pre_init", "true");
+        });
+      } catch (Exception e) {
+        Logger.debug("Sentry flush failed for pre-init error: %s", e.getMessage());
+      }
     }
   }
 

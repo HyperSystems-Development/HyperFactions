@@ -13,6 +13,7 @@ import com.hyperfactions.data.ZoneType;
 import com.hyperfactions.storage.StorageHealth;
 import com.hyperfactions.storage.StorageUtils;
 import com.hyperfactions.storage.ZoneStorage;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -55,7 +56,7 @@ public class JsonZoneStorage implements ZoneStorage {
         StorageUtils.cleanupOrphanedFiles(dataDir);
         Logger.info("[Storage] Zone storage initialized");
       } catch (IOException e) {
-        Logger.severe("Failed to create data directory", e);
+        ErrorHandler.report("Failed to create data directory", e);
       }
     });
   }
@@ -106,7 +107,7 @@ public class JsonZoneStorage implements ZoneStorage {
               }
             } catch (Exception ignored) {}
             failedZones.add(zoneName);
-            Logger.severe("Failed to parse zone '%s': %s", zoneName, e.getMessage());
+            ErrorHandler.report(String.format("Failed to parse zone '%s'", zoneName), e);
           }
         }
 
@@ -126,7 +127,7 @@ public class JsonZoneStorage implements ZoneStorage {
         }
 
       } catch (Exception e) {
-        Logger.severe("CRITICAL: Failed to load zones file, attempting backup recovery", e);
+        ErrorHandler.report("CRITICAL: Failed to load zones file, attempting backup recovery", e);
         // Attempt backup recovery on parse failure
         if (StorageUtils.recoverFromBackup(zonesFile)) {
           try {
@@ -140,7 +141,7 @@ public class JsonZoneStorage implements ZoneStorage {
             Logger.info("[Storage] Successfully loaded %d zones from recovered backup", zones.size());
             return zones;
           } catch (Exception e2) {
-            Logger.severe("Backup recovery failed for zones file", e2);
+            ErrorHandler.report("Backup recovery failed for zones file", e2);
           }
         }
         throw new RuntimeException("Failed to load zones file", e);
@@ -176,7 +177,7 @@ public class JsonZoneStorage implements ZoneStorage {
           }
         } catch (Exception e) {
           String error = "Pre-write validation failed: generated JSON is not valid: " + e.getMessage();
-          Logger.severe("[ZoneStorage] %s", error);
+          ErrorHandler.report(String.format("[ZoneStorage] %s", error), e);
           StorageHealth.get().recordFailure(filePath, error);
           return;
         }
@@ -189,11 +190,11 @@ public class JsonZoneStorage implements ZoneStorage {
           Logger.debug("Saved %d zones (checksum: %s)", zones.size(), success.checksum().substring(0, 8));
         } else if (result instanceof StorageUtils.WriteResult.Failure failure) {
           StorageHealth.get().recordFailure(filePath, failure.error());
-          Logger.severe("Failed to save zones: %s", failure.error());
+          ErrorHandler.report(String.format("Failed to save zones: %s", failure.error()), failure.cause());
         }
       } catch (Exception e) {
         StorageHealth.get().recordFailure(filePath, e.getMessage());
-        Logger.severe("Failed to save zones", e);
+        ErrorHandler.report("Failed to save zones", e);
       }
     });
   }

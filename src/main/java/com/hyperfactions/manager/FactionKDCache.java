@@ -3,6 +3,7 @@ package com.hyperfactions.manager;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.PlayerData;
 import com.hyperfactions.storage.PlayerStorage;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.util.Map;
 import java.util.Optional;
@@ -111,7 +112,7 @@ public class FactionKDCache {
 
       Logger.debug("[KDCache] Refreshed K/D stats for %d factions", newCache.size());
     } catch (Exception e) {
-      Logger.severe("[KDCache] Failed to refresh: %s", e.getMessage());
+      ErrorHandler.report("[KDCache] Failed to refresh", e);
     }
   }
 }

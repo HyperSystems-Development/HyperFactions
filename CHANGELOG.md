@@ -21,6 +21,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Sentry cleanly flushes pending events on server shutdown (2s timeout)
 - Auth token stored in `.sentry-auth-token` file (gitignored) with env var fallback
 
+**Global Error Handling via ErrorHandler**
+- New `ErrorHandler` utility class — centralized error handling that logs to console AND reports to Sentry
+- 6 static methods covering all error patterns: `report()`, `report(@Nullable)`, `wrapTask()`, `guard()`, `runSafely()` (2 overloads)
+- ~190 `Logger.severe()` calls in catch blocks across ~50 files now route through ErrorHandler to Sentry
+- Scheduled/timer tasks wrapped with `wrapTask()` — exceptions no longer silently kill scheduler threads
+- CompletableFuture chains guarded with `guard()` — async errors no longer swallowed
+- Shutdown sequence steps isolated with `runSafely()` — one failure doesn't skip remaining cleanup
+- `WriteResult.Failure` storage errors (with `@Nullable Exception cause`) now report to Sentry
+- Pre-init error buffering: errors during config/data loading (before Sentry initializes) are buffered and flushed once Sentry is ready, tagged with `pre_init: true`
+
 ## [0.10.2] - 2026-02-28
 
 **Server Version:** `2026.02.19-1a311a592`
