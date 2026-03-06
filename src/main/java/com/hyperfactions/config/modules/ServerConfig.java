@@ -63,7 +63,7 @@ public class ServerConfig extends ModuleConfig {
 
   private static final String OLD_ZENITH_URL = "https://api.github.com/repos/ZenithDevHQ/HyperFactions/releases/latest";
 
-  private String updateCheckUrl = "https://api.github.com/repos/HyperSystemsDev/HyperFactions/releases/latest";
+  private String updateCheckUrl = "https://api.github.com/repos/HyperSystems-Development/HyperFactions/releases/latest";
 
   private String releaseChannel = "stable";
 
@@ -72,7 +72,7 @@ public class ServerConfig extends ModuleConfig {
 
   private boolean hyperProtectAutoUpdate = true;
 
-  private String hyperProtectUpdateUrl = "https://api.github.com/repos/HyperSystemsDev/HyperProtect-Mixin/releases/latest";
+  private String hyperProtectUpdateUrl = "https://api.github.com/repos/HyperSystems-Development/HyperProtect-Mixin/releases/latest";
 
   /** Creates a new ServerConfig. */
   public ServerConfig(@NotNull Path filePath) {
@@ -162,7 +162,7 @@ public class ServerConfig extends ModuleConfig {
       updateCheckEnabled = getBool(updates, "enabled", updateCheckEnabled);
       updateCheckUrl = getString(updates, "url", updateCheckUrl);
       if (OLD_ZENITH_URL.equals(updateCheckUrl)) {
-        updateCheckUrl = "https://api.github.com/repos/HyperSystemsDev/HyperFactions/releases/latest";
+        updateCheckUrl = "https://api.github.com/repos/HyperSystems-Development/HyperFactions/releases/latest";
         needsSave = true;
       }
       releaseChannel = getString(updates, "releaseChannel", releaseChannel);

@@ -48,7 +48,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.10.0] - 2026-02-27
 
-**Closes:** [#26](https://github.com/HyperSystemsDev/HyperFactions/issues/26), [#59](https://github.com/HyperSystemsDev/HyperFactions/issues/59), [#61](https://github.com/HyperSystemsDev/HyperFactions/issues/61), [#62](https://github.com/HyperSystemsDev/HyperFactions/issues/62), [#64](https://github.com/HyperSystemsDev/HyperFactions/issues/64), [#65](https://github.com/HyperSystemsDev/HyperFactions/issues/65), [#66](https://github.com/HyperSystemsDev/HyperFactions/issues/66), [#67](https://github.com/HyperSystemsDev/HyperFactions/issues/67), [#68](https://github.com/HyperSystemsDev/HyperFactions/issues/68), [#69](https://github.com/HyperSystemsDev/HyperFactions/issues/69), [#70](https://github.com/HyperSystemsDev/HyperFactions/issues/70), [#71](https://github.com/HyperSystemsDev/HyperFactions/issues/71), [#72](https://github.com/HyperSystemsDev/HyperFactions/issues/72)
+**Closes:** [#26](https://github.com/HyperSystems-Development/HyperFactions/issues/26), [#59](https://github.com/HyperSystems-Development/HyperFactions/issues/59), [#61](https://github.com/HyperSystems-Development/HyperFactions/issues/61), [#62](https://github.com/HyperSystems-Development/HyperFactions/issues/62), [#64](https://github.com/HyperSystems-Development/HyperFactions/issues/64), [#65](https://github.com/HyperSystems-Development/HyperFactions/issues/65), [#66](https://github.com/HyperSystems-Development/HyperFactions/issues/66), [#67](https://github.com/HyperSystems-Development/HyperFactions/issues/67), [#68](https://github.com/HyperSystems-Development/HyperFactions/issues/68), [#69](https://github.com/HyperSystems-Development/HyperFactions/issues/69), [#70](https://github.com/HyperSystems-Development/HyperFactions/issues/70), [#71](https://github.com/HyperSystems-Development/HyperFactions/issues/71), [#72](https://github.com/HyperSystems-Development/HyperFactions/issues/72)
 
 **Server Version:** `2026.02.19-1a311a592`
 
@@ -56,7 +56,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Gameplay
 
-**Per-World Settings** ([#59](https://github.com/HyperSystemsDev/HyperFactions/issues/59))
+**Per-World Settings** ([#59](https://github.com/HyperSystems-Development/HyperFactions/issues/59))
 - New `config/worlds.json` module config for per-world behavior overrides
 - Four settings per world: `claiming`, `powerLoss`, `friendlyFireFaction`, `friendlyFireAlly`
 - Wildcard pattern support using `%` (e.g., `arena_%` matches `arena_1`, `arena_pvp`)
@@ -65,20 +65,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Legacy `worldWhitelist`/`worldBlacklist` in CoreConfig still works as fallback when worlds module is disabled
 - Admin commands: `/f admin world list|info|set|reset`
 
-**Faction Leaderboard** ([#67](https://github.com/HyperSystemsDev/HyperFactions/issues/67))
+**Faction Leaderboard** ([#67](https://github.com/HyperSystems-Development/HyperFactions/issues/67))
 - New `/f leaderboard` command (alias `/f top`) with sortable rankings
 - Sort modes: POWER, TERRITORY, BALANCE, MEMBERS, K/D (default)
 - 10 entries per page with pagination, numbered rankings
 - Integrated into faction nav bar between map and relations
 - Aggregated faction K/D ratio from member stats with configurable background cache refresh (`gui.leaderboardKdRefreshSeconds`, default 300s)
 
-**Faction Power Hardcore Mode** ([#69](https://github.com/HyperSystemsDev/HyperFactions/issues/69))
+**Faction Power Hardcore Mode** ([#69](https://github.com/HyperSystems-Development/HyperFactions/issues/69))
 - New `power.hardcoreMode` config option (default: false)
 - Shared faction power pool — deaths/kills affect the faction total directly
 - No per-death cap or floor — faction power can reach 0
 - Power regen applies to the faction pool when enabled
 
-**Persistent Admin Bypass** ([#71](https://github.com/HyperSystemsDev/HyperFactions/issues/71))
+**Persistent Admin Bypass** ([#71](https://github.com/HyperSystems-Development/HyperFactions/issues/71))
 - Admin bypass state now persists across server restarts
 - Stored in `PlayerData`, restored on connect if player has `hyperfactions.admin.use`
 - Automatically cleared if player no longer has the permission
@@ -115,7 +115,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### GUI & Admin
 
-**Activity Log** ([#68](https://github.com/HyperSystemsDev/HyperFactions/issues/68))
+**Activity Log** ([#68](https://github.com/HyperSystems-Development/HyperFactions/issues/68))
 - Wired existing `LogsViewerPage` into faction nav bar
 - `/f logs` command for viewing faction activity
 - New `AdminActivityLogPage` aggregating logs from all factions
@@ -161,7 +161,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Legacy fallback: plugin loads from old `config.json` if migration fails or hasn't run
 - Treasury permission flags (`treasuryDeposit`, `treasuryWithdraw`, `treasuryTransfer`) added to `faction-permissions.json` for server-level defaults and locks
 - `territoryNotifications.enabled` moved to `config/announcements.json`
-- Allow Explosions in Claims ([#65](https://github.com/HyperSystemsDev/HyperFactions/issues/65)) — original `territory.allowExplosionsInClaims` toggle, superseded by the 3 granular explosion flags above
+- Allow Explosions in Claims ([#65](https://github.com/HyperSystems-Development/HyperFactions/issues/65)) — original `territory.allowExplosionsInClaims` toggle, superseded by the 3 granular explosion flags above
 
 **Data Directory Restructure**
 - All data files now live under `data/` subdirectory (factions, players, chat, economy, zones, invites, join requests)
@@ -176,18 +176,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 #### Placeholders
 
-**Expanded Placeholders** ([#72](https://github.com/HyperSystemsDev/HyperFactions/issues/72))
+**Expanded Placeholders** ([#72](https://github.com/HyperSystems-Development/HyperFactions/issues/72))
 - Colored variants: `name_colored`, `tag_colored`, `name_colored_legacy`, `tag_colored_legacy`
 - Legacy color code: `color_legacy` (nearest `&X` code from hex color)
 - Relational placeholders (PAPI only): `rel_factions_relation`, `rel_factions_relation_color`
 
-**Treasury Placeholders** ([#66](https://github.com/HyperSystemsDev/HyperFactions/issues/66))
+**Treasury Placeholders** ([#66](https://github.com/HyperSystems-Development/HyperFactions/issues/66))
 - `treasury_balance` — formatted via `EconomyManager.formatCurrency()`
 - `treasury_balance_raw` — raw BigDecimal with scale 2
 - `treasury_autopay` — true/false
 - `treasury_limit` — max treasury limit
 
-**Relational Placeholders** ([#26](https://github.com/HyperSystemsDev/HyperFactions/issues/26))
+**Relational Placeholders** ([#26](https://github.com/HyperSystems-Development/HyperFactions/issues/26))
 - `relation_color` — now returns hex color (`#RRGGBB`) via `LegacyColorParser.codeToHex()` (was returning `&X` legacy format)
 - `relation_color_legacy` — new, returns `&X` legacy color code for the relation
 - `relation_colored` — new, returns `§XName` (color code + display name) for direct chat use
@@ -238,23 +238,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **HyperProtect version display**: `HyperProtectIntegration` hardcoded the version as "1.0.0" when lazily creating the bridge (Hyxin never calls early plugin `setup()`); now detects the actual version from the JAR filename in `earlyplugins/`
 - **HyperProtect-Mixin update checker showing v0.0.0**: `initHyperProtectMixinLifecycle()` read the system property before `HyperProtectIntegration.registerAllHooks()` set it; now detects version from JAR filename on disk before branching, and sets the system property early for AdminVersionPage
-- **Old GitHub URL not migrated**: Default update checker URL in `ServerConfig` and `CoreConfig` still referenced the old `ZenithDevHQ` organization; updated defaults to `HyperSystemsDev` and added migration that auto-corrects the old URL on load (custom URLs preserved)
+- **Old GitHub URL not migrated**: Default update checker URL in `ServerConfig` and `CoreConfig` still referenced the old `ZenithDevHQ` organization; updated defaults to `HyperSystems-Development` and added migration that auto-corrects the old URL on load (custom URLs preserved)
 - **Config files not saving new keys**: Modules like `FactionPermissionsConfig` that bypass base `getInt`/`getBool` helpers didn't trigger `needsSave` when new flags were added in code updates; `ConfigFile.load()` now recursively compares serialized keys against the on-disk JSON and auto-saves when new keys are detected
 - **Admin player info color inconsistencies**: Officer role color was `#87CEEB` (light blue) instead of `#00AAFF` (standard blue); offline player status was `#FF5555` (red) instead of `#888888` (gray). Both now use centralized `GuiColors` constants
 - **Kill/death tracking race conditions**: Concurrent deaths could lose increments due to unsynchronized load-modify-save cycles; power regen could overwrite kill/death data. Added per-UUID locking to `JsonPlayerStorage` and atomic `updatePlayerData` method
 - **Logs viewer page crash**: `#Title.Text` selector targeted a Group instead of a Label
 - **Dashboard "View All" button**: Now navigates to activity logs page (was disabled)
 - **Atomic write failures on Windows**: `ATOMIC_MOVE` can fail when antivirus or file indexer holds a handle on the target file; `StorageUtils.writeAtomic()` now retries with backoff (3 attempts, 50/100/150ms) then falls back to non-atomic move (safe — `.bak` backup already exists)
-- **Backup orphaned files** ([#61](https://github.com/HyperSystemsDev/HyperFactions/issues/61)): `BackupManager` now skips `.tmp`/`.bak` orphans and cleans up before backup. Incomplete backup ZIPs are deleted on failure
-- **Warzone power loss** ([#62](https://github.com/HyperSystemsDev/HyperFactions/issues/62)): Zone check failure now defaults to **no power loss** (fail-safe) instead of silently falling through. Logged at WARN instead of DEBUG
-- **Chunk map buttons ignore permissions** ([#64](https://github.com/HyperSystemsDev/HyperFactions/issues/64)): Claim/unclaim/overclaim buttons on chunk map now require the corresponding `hyperfactions.territory.*` permission in addition to officer role; previously only checked `isOfficer`
-- **Warzone friendly fire default blocks ally PvP** ([#70](https://github.com/HyperSystemsDev/HyperFactions/issues/70)): Changed `FRIENDLY_FIRE` warzone default from `false` to `true` so PvP-enabled warzones allow full combat by default (including between faction members and allies)
+- **Backup orphaned files** ([#61](https://github.com/HyperSystems-Development/HyperFactions/issues/61)): `BackupManager` now skips `.tmp`/`.bak` orphans and cleans up before backup. Incomplete backup ZIPs are deleted on failure
+- **Warzone power loss** ([#62](https://github.com/HyperSystems-Development/HyperFactions/issues/62)): Zone check failure now defaults to **no power loss** (fail-safe) instead of silently falling through. Logged at WARN instead of DEBUG
+- **Chunk map buttons ignore permissions** ([#64](https://github.com/HyperSystems-Development/HyperFactions/issues/64)): Claim/unclaim/overclaim buttons on chunk map now require the corresponding `hyperfactions.territory.*` permission in addition to officer role; previously only checked `isOfficer`
+- **Warzone friendly fire default blocks ally PvP** ([#70](https://github.com/HyperSystems-Development/HyperFactions/issues/70)): Changed `FRIENDLY_FIRE` warzone default from `false` to `true` so PvP-enabled warzones allow full combat by default (including between faction members and allies)
 
 ## [0.9.0] - 2026-02-22
 
 **Server Version:** `2026.02.19-1a311a592`
 
-**Closes:** [#10](https://github.com/HyperSystemsDev/HyperFactions/issues/10), [#13](https://github.com/HyperSystemsDev/HyperFactions/issues/13), [#14](https://github.com/HyperSystemsDev/HyperFactions/issues/14), [#46](https://github.com/HyperSystemsDev/HyperFactions/issues/46), [#50](https://github.com/HyperSystemsDev/HyperFactions/issues/50), [#51](https://github.com/HyperSystemsDev/HyperFactions/issues/51), [#52](https://github.com/HyperSystemsDev/HyperFactions/issues/52), [#53](https://github.com/HyperSystemsDev/HyperFactions/issues/53), [#55](https://github.com/HyperSystemsDev/HyperFactions/issues/55), [#56](https://github.com/HyperSystemsDev/HyperFactions/issues/56), [#57](https://github.com/HyperSystemsDev/HyperFactions/issues/57)
+**Closes:** [#10](https://github.com/HyperSystems-Development/HyperFactions/issues/10), [#13](https://github.com/HyperSystems-Development/HyperFactions/issues/13), [#14](https://github.com/HyperSystems-Development/HyperFactions/issues/14), [#46](https://github.com/HyperSystems-Development/HyperFactions/issues/46), [#50](https://github.com/HyperSystems-Development/HyperFactions/issues/50), [#51](https://github.com/HyperSystems-Development/HyperFactions/issues/51), [#52](https://github.com/HyperSystems-Development/HyperFactions/issues/52), [#53](https://github.com/HyperSystems-Development/HyperFactions/issues/53), [#55](https://github.com/HyperSystems-Development/HyperFactions/issues/55), [#56](https://github.com/HyperSystems-Development/HyperFactions/issues/56), [#57](https://github.com/HyperSystems-Development/HyperFactions/issues/57)
 
 ### Added
 
@@ -282,7 +282,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Admin zone settings GUI**: Updated for 31 total flags (was 24), new flag categories, mixin provider indicator
 - **Configurable power loss by death cause**: New `powerLossOnMobDeath` and `powerLossOnEnvironmentalDeath` config options in the `power` section (both default `true` for backward compatibility). Set either to `false` to skip the death power penalty for that cause type while still incrementing kill/death counters and announcing gravestone locations. PvP deaths always incur power loss. Zone flag `power_loss=false` takes priority over these settings
 - **Death cause tracking**: `DamageProtectionHandler` now records the type of each damage event (PVP, MOB, ENVIRONMENTAL) that passes through protection checks into `CombatTagManager`, which `PlayerDeathSystem` reads at death time to apply the correct power loss policy
-- **JitPack publishing**: Added `maven-publish` plugin and `jitpack.yml` — other developers can now depend on HyperFactions via `com.github.HyperSystemsDev:HyperFactions:<version>` from JitPack
+- **JitPack publishing**: Added `maven-publish` plugin and `jitpack.yml` — other developers can now depend on HyperFactions via `com.github.HyperSystems-Development:HyperFactions:<version>` from JitPack
 - **Standalone build support**: Build resolves Hytale server version independently when built outside the monorepo (JitPack, CI)
 - **Contributor docs**: Updated CONTRIBUTING.md and README.md with soft dependency download instructions and CurseForge links
 - **Developer docs**: Updated README and API reference with JitPack dependency instructions, marked WiFlow/Gravestone libs as optional
@@ -376,7 +376,7 @@ We recommend **not** using OrbisGuard alongside HyperFactions, as both mods impl
 
 ## [0.8.0] - 2026-02-16
 
-**Closes:** [#30](https://github.com/HyperSystemsDev/HyperFactions/issues/30), [#31](https://github.com/HyperSystemsDev/HyperFactions/issues/31), [#32](https://github.com/HyperSystemsDev/HyperFactions/issues/32), [#34](https://github.com/HyperSystemsDev/HyperFactions/issues/34), [#36](https://github.com/HyperSystemsDev/HyperFactions/issues/36)
+**Closes:** [#30](https://github.com/HyperSystems-Development/HyperFactions/issues/30), [#31](https://github.com/HyperSystems-Development/HyperFactions/issues/31), [#32](https://github.com/HyperSystems-Development/HyperFactions/issues/32), [#34](https://github.com/HyperSystems-Development/HyperFactions/issues/34), [#36](https://github.com/HyperSystems-Development/HyperFactions/issues/36)
 
 ### Added
 
@@ -392,7 +392,7 @@ We recommend **not** using OrbisGuard alongside HyperFactions, as both mods impl
 - **All 43 commands verified**: Quick Reference section verified against actual command implementations with correct syntax and permission requirements
 - Deleted 8 obsolete UI templates, added 5 new templates (topic card, line text, line tip, line heading, spacer)
 
-**Faction Treasury & Economy System** ([#36](https://github.com/HyperSystemsDev/HyperFactions/issues/36))
+**Faction Treasury & Economy System** ([#36](https://github.com/HyperSystems-Development/HyperFactions/issues/36))
 - **Treasury page** (`/f treasury`): Full GUI with balance display, deposit/withdraw buttons, transfer system, transaction log, and treasury settings — accessible from the faction nav bar
 - **Deposit/Withdraw modals**: Amount input with live preview, fee calculation display, and balance validation via VaultUnlocked player wallets
 - **Transfer system**: Search factions by name, confirm transfer with fee preview, complete inter-faction treasury transfers
@@ -413,7 +413,7 @@ We recommend **not** using OrbisGuard alongside HyperFactions, as both mods impl
 - `ECONOMY` debug category with `Logger.debugEconomy()` — togglable via `/f admin debug toggle economy` and `debug.json` config
 - `UiUtil` shared utility class for CustomUI text sanitization and amount parsing
 
-**Player Info & Membership History** ([#32](https://github.com/HyperSystemsDev/HyperFactions/issues/32))
+**Player Info & Membership History** ([#32](https://github.com/HyperSystems-Development/HyperFactions/issues/32))
 - **Player info page** (`/f who [player]`): Full GUI page with faction membership, power stats, combat stats (kills/deaths/KDR), and membership history
 - **Membership history tracking**: Records all faction joins, leaves, kicks, and disbands with timestamps, highest role achieved, and leave reason
 - **Player data expansion**: New `PlayerData` model with `firstJoined`, `lastOnline`, kills, deaths, username caching, and membership history — backwards-compatible with existing player JSON files
@@ -423,14 +423,14 @@ We recommend **not** using OrbisGuard alongside HyperFactions, as both mods impl
 - First joined / last online tracking displayed on the player info page header
 - `maxMembershipHistory` config option (default: 10) to cap history records per player
 
-**Admin Power Management** ([#34](https://github.com/HyperSystemsDev/HyperFactions/issues/34))
+**Admin Power Management** ([#34](https://github.com/HyperSystems-Development/HyperFactions/issues/34))
 - **Admin power command** (`/f admin power`): Full admin control over player power — set, adjust, reset, per-player max override, power loss bypass, claim decay exemption
 - **Admin Player Info page**: GUI page accessible from admin member list with power controls, bypass toggles, and kick/promote/demote actions
 - **Faction bulk power operations**: Reset All / +/-1/5 All buttons on AdminFactionInfoPage
 - `ADMIN_POWER` log type for faction activity logs
 - `hyperfactions.admin.power` permission node
 
-**Terrain Map Mode** ([#30](https://github.com/HyperSystemsDev/HyperFactions/issues/30))
+**Terrain Map Mode** ([#30](https://github.com/HyperSystems-Development/HyperFactions/issues/30))
 - **Terrain map mode for territory GUI**: Territory map now renders actual terrain imagery behind claim overlays using `ChunkWorldMap`, making it much easier to orient yourself and identify terrain features when claiming (rivers, biomes, elevation)
 - Dynamic terrain image asset delivery via `ChunkMapAsset` — generates a composite PNG from chunk world map data and sends it to the player's client at runtime
 - Static placeholder `Map.png` sent immediately on page open, with terrain loading asynchronously in the background
@@ -450,7 +450,7 @@ We recommend **not** using OrbisGuard alongside HyperFactions, as both mods impl
 **Relations Redesign**
 - **Relations page redesign**: Merged three tabs (Allies/Enemies/Pending) into two tabs (Relations/Pending) with collapsible row entries showing faction name, leader, relation badge, member count, power stats, and inline quick actions (View, Set Neutral, Set Enemy, Request Ally, Accept, Decline, Cancel)
 
-**Faction-Aware Map & Compass Visibility** ([#31](https://github.com/HyperSystemsDev/HyperFactions/issues/31))
+**Faction-Aware Map & Compass Visibility** ([#31](https://github.com/HyperSystems-Development/HyperFactions/issues/31))
 - **Player visibility filtering on world map and compass**: Only faction members and allies are visible by default — enemies, neutrals, and factionless players are hidden from the map and compass
 - Configurable per-relation visibility: `showOwnFaction`, `showAllies`, `showNeutrals`, `showEnemies`, `showFactionlessPlayers`, `showFactionlessToFactionless` in `worldmap.json` under `playerVisibility`
 - Master toggle (`playerVisibility.enabled`) to disable filtering entirely (vanilla behavior: all players visible)
@@ -639,11 +639,11 @@ We recommend **not** using OrbisGuard alongside HyperFactions, as both mods impl
 ## [0.7.0] - 2026-02-07
 
 **Closes issues:**
-- [#7](https://github.com/HyperSystemsDev/HyperFactions/issues/7) — Announcement system for major faction events
-- [#16](https://github.com/HyperSystemsDev/HyperFactions/issues/16) — Add data import from ElbaphFactions
-- [#18](https://github.com/HyperSystemsDev/HyperFactions/issues/18) — Integrate with Better Scoreboard for faction placeholders
-- [#22](https://github.com/HyperSystemsDev/HyperFactions/issues/22) — Hide GUI buttons when player lacks permission
-- [#23](https://github.com/HyperSystemsDev/HyperFactions/issues/23) — Add Placeholders for scoreboards, holograms, and menus
+- [#7](https://github.com/HyperSystems-Development/HyperFactions/issues/7) — Announcement system for major faction events
+- [#16](https://github.com/HyperSystems-Development/HyperFactions/issues/16) — Add data import from ElbaphFactions
+- [#18](https://github.com/HyperSystems-Development/HyperFactions/issues/18) — Integrate with Better Scoreboard for faction placeholders
+- [#22](https://github.com/HyperSystems-Development/HyperFactions/issues/22) — Hide GUI buttons when player lacks permission
+- [#23](https://github.com/HyperSystems-Development/HyperFactions/issues/23) — Add Placeholders for scoreboards, holograms, and menus
 
 ### Added
 

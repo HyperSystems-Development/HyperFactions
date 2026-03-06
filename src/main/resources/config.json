@@ -43,7 +43,7 @@
     "hyperProtect": {
       "autoDownload": false,
       "autoUpdate": true,
-      "url": "https://api.github.com/repos/HyperSystemsDev/HyperProtect-Mixin/releases/latest"
+      "url": "https://api.github.com/repos/HyperSystems-Development/HyperProtect-Mixin/releases/latest"
     }
   },
   "messages": {

@@ -253,7 +253,7 @@ When both systems are installed simultaneously:
 **Class**: [`HyperProtectIntegration.java`](../src/main/java/com/hyperfactions/integration/protection/HyperProtectIntegration.java)
 **Purpose**: Protection via [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) bridge-slot architecture — the **recommended** mixin provider
 
-> **Install**: Download from [CurseForge](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) or [GitHub](https://github.com/HyperSystemsDev/HyperProtect-Mixin) and place in `earlyplugins/`
+> **Install**: Download from [CurseForge](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) or [GitHub](https://github.com/HyperSystems-Development/HyperProtect-Mixin) and place in `earlyplugins/`
 
 HyperProtect-Mixin is the preferred mixin for HyperFactions. It provides 20 hook slots covering all protection scenarios including features not available in OrbisGuard-Mixins (teleporter/portal blocking, entity damage, container access, respawn override). It uses an `AtomicReferenceArray` at `System.getProperties().get("hyperprotect.bridge")` for cross-classloader communication.
 

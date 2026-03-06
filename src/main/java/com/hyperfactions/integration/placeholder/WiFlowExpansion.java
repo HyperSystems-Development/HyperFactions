@@ -103,7 +103,7 @@ public class WiFlowExpansion extends PlaceholderExpansion {
   /** Returns the author. */
   @Override
   public String getAuthor() {
-    return "HyperSystemsDev";
+    return "HyperSystems-Development";
   }
 
   /** Returns the version. */

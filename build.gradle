@@ -65,7 +65,7 @@ dependencies {
     if (isMonorepo) {
         compileOnly project(':HyperPerms')
     } else {
-        compileOnly 'com.github.HyperSystemsDev:HyperPerms:v2.8.5'
+        compileOnly 'com.github.HyperSystems-Development:HyperPerms:v2.8.5'
     }
 
     // JSON handling

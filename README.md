@@ -1,7 +1,7 @@
 # HyperFactions
 
 [![Discord](https://img.shields.io/badge/Discord-Join%20Us-7289DA?logo=discord&logoColor=white)](https://discord.com/invite/aZaa5vcFYh)
-[![GitHub](https://img.shields.io/github/stars/HyperSystemsDev/HyperFactions?style=social)](https://github.com/HyperSystemsDev/HyperFactions)
+[![GitHub](https://img.shields.io/github/stars/HyperSystems-Development/HyperFactions?style=social)](https://github.com/HyperSystems-Development/HyperFactions)
 [![License: GPLv3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 
 A comprehensive faction management mod for Hytale servers featuring territory claims, alliances, strategic PvP, economy, and extensive customization. Part of the **[HyperSystems](#hypersystems-suite)** plugin suite.
@@ -85,7 +85,7 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 | Deposits, withdrawals, inter-faction transfers | Implemented |
 | Transaction log | Implemented |
 | VaultUnlocked integration | Implemented |
-| Ecotale integration | [Planned #20](https://github.com/HyperSystemsDev/HyperFactions/issues/20) |
+| Ecotale integration | [Planned #20](https://github.com/HyperSystems-Development/HyperFactions/issues/20) |
 
 ### Protection
 
@@ -120,9 +120,9 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 | Data import (ElbaphFactions, HyFactions) | Implemented |
 | Config migration (v1-v6) | Implemented |
 | Update checker | Implemented |
-| Admin GUI: Config editor | [Planned #40](https://github.com/HyperSystemsDev/HyperFactions/issues/40) |
-| Admin GUI: Backup manager | [Planned #41](https://github.com/HyperSystemsDev/HyperFactions/issues/41) |
-| Admin GUI: Updates page | [Planned #42](https://github.com/HyperSystemsDev/HyperFactions/issues/42) |
+| Admin GUI: Config editor | [Planned #40](https://github.com/HyperSystems-Development/HyperFactions/issues/40) |
+| Admin GUI: Backup manager | [Planned #41](https://github.com/HyperSystems-Development/HyperFactions/issues/41) |
+| Admin GUI: Updates page | [Planned #42](https://github.com/HyperSystems-Development/HyperFactions/issues/42) |
 
 ### Integrations
 
@@ -141,31 +141,31 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 
 | Feature | Status |
 |---------|--------|
-| Database storage backend | [Planned #45](https://github.com/HyperSystemsDev/HyperFactions/issues/45) |
-| Performance caching | [Planned #44](https://github.com/HyperSystemsDev/HyperFactions/issues/44) |
-| Command aliases | [Planned #43](https://github.com/HyperSystemsDev/HyperFactions/issues/43) |
-| Faction levels & progression | [Planned #39](https://github.com/HyperSystemsDev/HyperFactions/issues/39) |
-| Raid system | [Planned #38](https://github.com/HyperSystemsDev/HyperFactions/issues/38) |
-| War declarations | [Planned #37](https://github.com/HyperSystemsDev/HyperFactions/issues/37) |
-| Faction vaults | [Planned #35](https://github.com/HyperSystemsDev/HyperFactions/issues/35) |
-| Server-managed factions | [Planned #33](https://github.com/HyperSystemsDev/HyperFactions/issues/33) |
-| ~~Relational placeholders~~ | [Done in 0.10.0](https://github.com/HyperSystemsDev/HyperFactions/issues/72) |
-| NPC integrations | [Considering #21](https://github.com/HyperSystemsDev/HyperFactions/issues/21) |
-| Localization | [Planned #19](https://github.com/HyperSystemsDev/HyperFactions/issues/19) |
-| CurseForge updates | [Planned #17](https://github.com/HyperSystemsDev/HyperFactions/issues/17) |
+| Database storage backend | [Planned #45](https://github.com/HyperSystems-Development/HyperFactions/issues/45) |
+| Performance caching | [Planned #44](https://github.com/HyperSystems-Development/HyperFactions/issues/44) |
+| Command aliases | [Planned #43](https://github.com/HyperSystems-Development/HyperFactions/issues/43) |
+| Faction levels & progression | [Planned #39](https://github.com/HyperSystems-Development/HyperFactions/issues/39) |
+| Raid system | [Planned #38](https://github.com/HyperSystems-Development/HyperFactions/issues/38) |
+| War declarations | [Planned #37](https://github.com/HyperSystems-Development/HyperFactions/issues/37) |
+| Faction vaults | [Planned #35](https://github.com/HyperSystems-Development/HyperFactions/issues/35) |
+| Server-managed factions | [Planned #33](https://github.com/HyperSystems-Development/HyperFactions/issues/33) |
+| ~~Relational placeholders~~ | [Done in 0.10.0](https://github.com/HyperSystems-Development/HyperFactions/issues/72) |
+| NPC integrations | [Considering #21](https://github.com/HyperSystems-Development/HyperFactions/issues/21) |
+| Localization | [Planned #19](https://github.com/HyperSystems-Development/HyperFactions/issues/19) |
+| CurseForge updates | [Planned #17](https://github.com/HyperSystems-Development/HyperFactions/issues/17) |
 
 ---
 
 ## Quick Start
 
-1. **Download** the latest release from [GitHub Releases](https://github.com/HyperSystemsDev/HyperFactions/releases) or [CurseForge](https://www.curseforge.com/hytale/mods/hyperfactions)
+1. **Download** the latest release from [GitHub Releases](https://github.com/HyperSystems-Development/HyperFactions/releases) or [CurseForge](https://www.curseforge.com/hytale/mods/hyperfactions)
 2. **Install** by placing `HyperFactions-<version>.jar` in your server's `mods/` directory
 3. **Configure** by editing files in `mods/com.hyperfactions_HyperFactions/config/` after first startup — `factions.json` for faction gameplay settings, `server.json` for server behavior settings
 4. **Create a faction** with `/f create MyFaction` and claim territory with `/f claim`
 
 **Recommended:** Install [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) in `earlyplugins/` for full protection coverage (22 hook types including teleporter/portal blocking, entity damage, capture crate/NPC tame protection, and respawn override).
 
-**Optional:** Install [HyperPerms](https://github.com/HyperSystemsDev/HyperPerms) for enhanced permission control with groups, tracks, and contextual permissions.
+**Optional:** Install [HyperPerms](https://github.com/HyperSystems-Development/HyperPerms) for enhanced permission control with groups, tracks, and contextual permissions.
 
 ---
 
@@ -220,7 +220,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'com.github.HyperSystemsDev:HyperFactions:v0.10.0'
+    compileOnly 'com.github.HyperSystems-Development:HyperFactions:v0.10.0'
 }
 ```
 
@@ -258,7 +258,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for full development setup and contributi
 ## Support
 
 - **Discord:** [Join our server](https://discord.com/invite/aZaa5vcFYh)
-- **GitHub Issues:** [Report bugs or request features](https://github.com/HyperSystemsDev/HyperFactions/issues)
+- **GitHub Issues:** [Report bugs or request features](https://github.com/HyperSystems-Development/HyperFactions/issues)
 
 ---
 
@@ -268,14 +268,14 @@ HyperFactions is part of the HyperSystems plugin ecosystem. All plugins integrat
 
 | Mod | Description | Status | Link |
 |-----|-------------|--------|------|
-| **HyperPerms** | Permissions management with groups, tracks, and web editor | Production | [GitHub](https://github.com/HyperSystemsDev/HyperPerms) |
-| **HyperHomes** | Personal home teleportation with sharing | Production | [GitHub](https://github.com/HyperSystemsDev/HyperHomes) |
-| **HyperFactions** | Faction management with territory, diplomacy, and economy | Production | [GitHub](https://github.com/HyperSystemsDev/HyperFactions) |
-| **HyperWarp** | Warps, spawns, TPA requests, and /back | Production | [GitHub](https://github.com/HyperSystemsDev/HyperWarp) |
-| **HyperSpawns** | Mob spawn zone control with advanced filtering | Production | [GitHub](https://github.com/HyperSystemsDev/HyperSpawns) |
-| **HyperGuard** | Server-side anti-cheat | In Development | [GitHub](https://github.com/HyperSystemsDev/HyperGuard) |
-| **HyperVerse** | World management (Multiverse-like) | In Development | [GitHub](https://github.com/HyperSystemsDev/HyperVerse) |
-| **HyperLogger** | Activity logging and rollback | In Development | [GitHub](https://github.com/HyperSystemsDev/HyperLogger) |
+| **HyperPerms** | Permissions management with groups, tracks, and web editor | Production | [GitHub](https://github.com/HyperSystems-Development/HyperPerms) |
+| **HyperHomes** | Personal home teleportation with sharing | Production | [GitHub](https://github.com/HyperSystems-Development/HyperHomes) |
+| **HyperFactions** | Faction management with territory, diplomacy, and economy | Production | [GitHub](https://github.com/HyperSystems-Development/HyperFactions) |
+| **HyperWarp** | Warps, spawns, TPA requests, and /back | Production | [GitHub](https://github.com/HyperSystems-Development/HyperWarp) |
+| **HyperSpawns** | Mob spawn zone control with advanced filtering | Production | [GitHub](https://github.com/HyperSystems-Development/HyperSpawns) |
+| **HyperGuard** | Server-side anti-cheat | In Development | [GitHub](https://github.com/HyperSystems-Development/HyperGuard) |
+| **HyperVerse** | World management (Multiverse-like) | In Development | [GitHub](https://github.com/HyperSystems-Development/HyperVerse) |
+| **HyperLogger** | Activity logging and rollback | In Development | [GitHub](https://github.com/HyperSystems-Development/HyperLogger) |
 
 ---
 
@@ -285,4 +285,4 @@ HyperFactions is licensed under the [GNU General Public License v3.0](LICENSE).
 
 ---
 
-*Developed by [HyperSystemsDev](https://github.com/HyperSystemsDev) — Forge Your Empire*
+*Developed by [HyperSystems-Development](https://github.com/HyperSystems-Development) — Forge Your Empire*
