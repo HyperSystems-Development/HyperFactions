@@ -45,3 +45,5 @@ config.local.json
 
 # Serena
 .serena/
+
+.sentry-auth-token
