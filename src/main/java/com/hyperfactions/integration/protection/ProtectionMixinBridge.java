@@ -2,6 +2,7 @@ package com.hyperfactions.integration.protection;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.util.Logger;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import org.jetbrains.annotations.NotNull;
@@ -46,10 +47,7 @@ public final class ProtectionMixinBridge {
       return;
     }
 
-    boolean hpDetected = "true".equalsIgnoreCase(System.getProperty("hyperprotect.bridge.active"))
-        || "true".equalsIgnoreCase(System.getProperty("hyperprotect.intercept.block_break"))
-        || "true".equalsIgnoreCase(System.getProperty("hyperprotect.intercept.block_place"))
-        || isJarInstalled("HyperProtect-Mixin");
+    boolean hpDetected = detectHyperProtect();
 
     OrbisMixinsIntegration.init();
     boolean ogDetected = OrbisMixinsIntegration.isMixinsAvailable()
@@ -70,6 +68,65 @@ public final class ProtectionMixinBridge {
     }
 
     initialized = true;
+  }
+
+  /**
+   * Multi-signal detection for HyperProtect-Mixin.
+   *
+   * <p>Detection priority:
+   * <ol>
+   *   <li>PresenceMarker method (most reliable — method exists = HP mixins applied)</li>
+   *   <li>System property (set in onLoad, available early)</li>
+   *   <li>Bridge array existence</li>
+   *   <li>JAR scan (existing fallback)</li>
+   * </ol>
+   */
+  private static boolean detectHyperProtect() {
+    // Signal 1: Mixin-injected PresenceMarker method (most reliable)
+    try {
+      Class<?> pluginManager = Class.forName("com.hypixel.hytale.server.core.plugin.PluginManager");
+      Method m = pluginManager.getDeclaredMethod("isHyperProtectLoaded");
+      Object result = m.invoke(null);
+      if (Boolean.TRUE.equals(result)) {
+        Logger.debugMixin("HP detected via PresenceMarker method");
+        return true;
+      }
+    } catch (ClassNotFoundException | NoSuchMethodException e) {
+      // Old HP or not installed — fall through
+    } catch (Exception e) {
+      Logger.debugMixin("HP PresenceMarker check failed: %s", e.getMessage());
+    }
+
+    // Signal 2: System properties (set in onLoad)
+    if ("true".equalsIgnoreCase(System.getProperty("hyperprotect.mixins.active"))) {
+      Logger.debugMixin("HP detected via hyperprotect.mixins.active property");
+      return true;
+    }
+    if ("true".equalsIgnoreCase(System.getProperty("hyperprotect.bridge.active"))) {
+      Logger.debugMixin("HP detected via hyperprotect.bridge.active property");
+      return true;
+    }
+
+    // Signal 3: Intercept properties (set when mixin target classes load)
+    if ("true".equalsIgnoreCase(System.getProperty("hyperprotect.intercept.block_break"))
+        || "true".equalsIgnoreCase(System.getProperty("hyperprotect.intercept.block_place"))) {
+      Logger.debugMixin("HP detected via intercept properties");
+      return true;
+    }
+
+    // Signal 4: Bridge array exists
+    if (System.getProperties().get("hyperprotect.bridge") != null) {
+      Logger.debugMixin("HP detected via bridge array");
+      return true;
+    }
+
+    // Signal 5: JAR scan fallback
+    if (isJarInstalled("HyperProtect-Mixin")) {
+      Logger.debugMixin("HP detected via JAR scan");
+      return true;
+    }
+
+    return false;
   }
 
   /**
@@ -139,11 +196,14 @@ public final class ProtectionMixinBridge {
     boolean compatMode = "compatible".equals(System.getProperty("hyperprotect.mode"));
 
     if (compatMode) {
-      // Only features from HP's 5 unique mixins
+      // Only features from HP's unique mixins (not covered by OG)
       return switch (featureName) {
         case "container_open", "block_place", "entity_damage",
           "teleporter", "portal", "hammer", "use", "seat",
-          "respawn", "interaction_log" -> true;
+          "respawn", "interaction_log",
+          // v1.2.0 unique features (OG has no equivalents)
+          "crafting_resource", "map_marker_filter", "fluid_spread",
+          "prefab_spawn", "projectile_launch", "mount", "barter_trade" -> true;
         default -> false;
       };
     }
@@ -154,7 +214,10 @@ public final class ProtectionMixinBridge {
         "item_pickup", "death_drop", "durability", "container_access",
         "mob_spawn", "teleporter", "portal", "command", "interaction_log",
         "entity_damage", "container_open", "block_place",
-        "hammer", "use", "seat", "respawn" -> true;
+        "hammer", "use", "seat", "respawn",
+        // v1.2.0 features
+        "crafting_resource", "map_marker_filter", "fluid_spread",
+        "prefab_spawn", "projectile_launch", "mount", "barter_trade" -> true;
       default -> false;
     };
   }
@@ -192,9 +255,9 @@ public final class ProtectionMixinBridge {
     }
 
     return switch (activeProvider) {
-      case HYPERPROTECT -> "HYPERPROTECT (20 hooks active)";
+      case HYPERPROTECT -> "HYPERPROTECT (27 hooks active)";
       case ORBISGUARD -> "ORBISGUARD (" + OrbisMixinsIntegration.getStatusSummary() + ")";
-      case BOTH -> "BOTH (OG: 11 hooks + HP: 5 unique mixins)";
+      case BOTH -> "BOTH (OG: 11 hooks + HP: 12 unique mixins)";
       case NONE -> "NONE";
     };
   }
@@ -220,7 +283,7 @@ public final class ProtectionMixinBridge {
     switch (activeProvider) {
       case HYPERPROTECT -> {
         HyperProtectIntegration.registerAllHooks(hf);
-        Logger.debug("Registered 20 protection hooks via HyperProtect bridge (standalone)");
+        Logger.debug("Registered 27 protection hooks via HyperProtect bridge (standalone)");
       }
       case ORBISGUARD -> {
         registerAllOrbisGuardHooks(hf);

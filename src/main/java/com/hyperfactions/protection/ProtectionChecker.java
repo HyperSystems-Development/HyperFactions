@@ -900,6 +900,38 @@ public class ProtectionChecker {
   }
 
   /**
+   * Checks if a player can mount rideable entities (mixin hook version).
+   *
+   * @return null if allowed, denial message if denied
+   */
+  @Nullable
+  public String checkMount(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+    return checkMixinProtection(playerUuid, worldName, x, y, z, ZoneFlags.MOUNT_USE, InteractionType.MOUNT);
+  }
+
+  /**
+   * Checks if a player can launch projectiles (mixin hook version).
+   * Uses PROJECTILE_DAMAGE zone flag for the check.
+   *
+   * @return null if allowed, denial message if denied
+   */
+  @Nullable
+  public String checkProjectileLaunch(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+    return checkMixinProtection(playerUuid, worldName, x, y, z, ZoneFlags.PROJECTILE_DAMAGE, InteractionType.DAMAGE);
+  }
+
+  /**
+   * Checks if a player can trade at NPC barter shops (mixin hook version).
+   * Uses NPC_INTERACT zone flag for the check.
+   *
+   * @return null if allowed, denial message if denied
+   */
+  @Nullable
+  public String checkTrade(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+    return checkMixinProtection(playerUuid, worldName, x, y, z, ZoneFlags.NPC_INTERACT, InteractionType.NPC_INTERACT);
+  }
+
+  /**
    * Checks if a player can use teleporter blocks (mixin hook version).
    *
    * @return null if allowed, denial message if denied
@@ -1115,6 +1147,21 @@ public class ProtectionChecker {
     }
 
     return false; // Wilderness — allow
+  }
+
+  /**
+   * Checks if fluid spread (water/lava) should be blocked at a location.
+   * Uses the same logic as fire spread — blocks in claimed/zoned territory.
+   *
+   * @param worldName the world name
+   * @param x         the block X coordinate
+   * @param y         the block Y coordinate
+   * @param z         the block Z coordinate
+   * @return true if fluid spread should be BLOCKED
+   */
+  public boolean shouldBlockFluidSpread(@NotNull String worldName, int x, int y, int z) {
+    // Reuse fire spread logic — same environmental protection rules apply
+    return shouldBlockFireSpread(worldName, x, y, z);
   }
 
   // === Player-Level Mixin Checks (boolean return) ===
@@ -1505,5 +1552,75 @@ public class ProtectionChecker {
 
     // Wilderness - allow spawn
     return false;
+  }
+
+  /**
+   * Enhanced spawn check with mob type information.
+   * Called by HP 1.2.0+ enhanced spawn hooks.
+   *
+   * <p>Currently delegates to the position-only check — mob type filtering
+   * can be added later via SpawnSuppressionManager integration.
+   *
+   * @param worldName the world name
+   * @param npcType   the NPC type name (e.g. "ZombieSoldier")
+   * @param x         the spawn X coordinate
+   * @param y         the spawn Y coordinate
+   * @param z         the spawn Z coordinate
+   * @return true if spawn should be BLOCKED
+   */
+  public boolean shouldBlockSpawn(@NotNull String worldName, @Nullable String npcType,
+                  int x, int y, int z) {
+    // Delegate to position-only check. Mob type filtering can be added later
+    // by checking npcType against per-faction allowed/denied mob lists.
+    return shouldBlockSpawn(worldName, x, y, z);
+  }
+
+  // === Map Marker Visibility ===
+
+  /**
+   * Determines if a player's world map marker should be hidden from another player.
+   * Based on faction relationships — hides enemies in their own claimed territory.
+   *
+   * @param viewer    the UUID of the player viewing the map
+   * @param target    the UUID of the player being shown on the map
+   * @param worldName the world name
+   * @param x         the target's X coordinate
+   * @param z         the target's Z coordinate
+   * @return true if the marker should be HIDDEN
+   */
+  public boolean shouldHideMapMarker(@NotNull UUID viewer, @NotNull UUID target,
+                    @NotNull String worldName, int x, int z) {
+    try {
+      // Same faction — always show
+      UUID viewerFactionId = factionManager.getPlayerFactionId(viewer);
+      UUID targetFactionId = factionManager.getPlayerFactionId(target);
+
+      if (viewerFactionId == null || targetFactionId == null) {
+        return false; // Factionless — show
+      }
+      if (viewerFactionId.equals(targetFactionId)) {
+        return false; // Same faction — show
+      }
+
+      // Check relationship
+      RelationType relation = relationManager.getRelation(viewerFactionId, targetFactionId);
+      if (relation == RelationType.ALLY) {
+        return false; // Allies — show
+      }
+
+      // Enemy or neutral — hide if target is in their own faction's claimed territory
+      int chunkX = ChunkUtil.toChunkCoord(x);
+      int chunkZ = ChunkUtil.toChunkCoord(z);
+      UUID claimOwner = claimManager.getClaimOwner(worldName, chunkX, chunkZ);
+
+      if (claimOwner != null && claimOwner.equals(targetFactionId)) {
+        return true; // Target is in their own territory — hide from enemies/neutrals
+      }
+
+      return false; // Unclaimed territory — show
+    } catch (Exception e) {
+      Logger.severe("Map marker visibility check error (fail-open)", e);
+      return false;
+    }
   }
 }
