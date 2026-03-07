@@ -18,8 +18,13 @@ import it.unimi.dsi.fastutil.longs.LongArraySet;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.concurrent.CompletableFuture;
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
+import javax.imageio.stream.MemoryCacheImageOutputStream;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -103,6 +108,8 @@ public class ChunkMapAsset extends CommonAsset {
     }
 
     return ChunkWorldMap.INSTANCE.generate(world, partSize, partSize, chunks).thenApply(map -> {
+      long t0 = System.nanoTime();
+
       int gridWidth = maxX - minX + 1;
       int gridHeight = maxZ - minZ + 1;
       var image = new BufferedImage(
@@ -110,6 +117,9 @@ public class ChunkMapAsset extends CommonAsset {
           partSize * gridHeight,
           BufferedImage.TYPE_INT_ARGB
       );
+
+      // Pre-allocate a row buffer for bulk setRGB — eliminates ~83K individual setRGB calls
+      int[] rowBuffer = new int[partSize];
 
       for (int x = minX; x <= maxX; x++) {
         for (int z = minZ; z <= maxZ; z++) {
@@ -120,33 +130,53 @@ public class ChunkMapAsset extends CommonAsset {
             var width = chunkImage.width;
             var height = chunkImage.height;
 
-            if (pixels == null) {
-              continue;
-            }
-            if (width != partSize || height != partSize) {
+            if (pixels == null || width != partSize || height != partSize) {
               continue;
             }
 
             int imageX = (x - minX) * partSize;
             int imageZ = (z - minZ) * partSize;
 
-            for (var i = 0; i < pixels.length; i++) {
-              // MapImage uses RGBA format (alpha in low byte)
-              // BufferedImage TYPE_INT_ARGB uses ARGB format (alpha in high byte)
-              var pixel = pixels[i];
-              var argb = pixel << 24 | (pixel >> 8 & 0x00FFFFFF);
-
-              var pixelX = i % width;
-              var pixelY = i / width;
-              image.setRGB(imageX + pixelX, imageZ + pixelY, argb);
+            // Convert RGBA→ARGB and write one row at a time using bulk setRGB
+            for (int row = 0; row < height; row++) {
+              int rowOffset = row * width;
+              for (int col = 0; col < width; col++) {
+                int pixel = pixels[rowOffset + col];
+                rowBuffer[col] = pixel << 24 | (pixel >> 8 & 0x00FFFFFF);
+              }
+              image.setRGB(imageX, imageZ + row, width, 1, rowBuffer, 0, width);
             }
           }
         }
       }
 
+      long t1 = System.nanoTime();
+
       try {
         var baos = new ByteArrayOutputStream();
-        ImageIO.write(image, "PNG", baos);
+
+        // Use explicit PNG writer with faster compression (default is max compression)
+        Iterator<ImageWriter> writers = ImageIO.getImageWritersByFormatName("PNG");
+        if (writers.hasNext()) {
+          ImageWriter writer = writers.next();
+          ImageWriteParam param = writer.getDefaultWriteParam();
+          if (param.canWriteCompressed()) {
+            param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+            param.setCompressionQuality(0.5f); // Faster compression, slightly larger file
+          }
+          writer.setOutput(new MemoryCacheImageOutputStream(baos));
+          writer.write(null, new IIOImage(image, null, null), param);
+          writer.dispose();
+        } else {
+          ImageIO.write(image, "PNG", baos);
+        }
+
+        long t2 = System.nanoTime();
+        Logger.debug("[ChunkMap] Generated %dx%d terrain: compose=%dms, encode=%dms, size=%dKB",
+          gridWidth, gridHeight,
+          (t1 - t0) / 1_000_000, (t2 - t1) / 1_000_000,
+          baos.size() / 1024);
+
         return new ChunkMapAsset(baos.toByteArray());
       } catch (IOException e) {
         Logger.severe("Failed to encode terrain map PNG", e);
