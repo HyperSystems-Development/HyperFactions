@@ -11,6 +11,7 @@ import com.hyperfactions.integration.permissions.HyperPermsIntegration;
 import com.hyperfactions.integration.placeholder.PlaceholderAPIIntegration;
 import com.hyperfactions.integration.placeholder.WiFlowPlaceholderIntegration;
 import com.hyperfactions.integration.protection.GravestoneIntegration;
+import com.hyperfactions.integration.protection.KyuubiSoftIntegration;
 import com.hyperfactions.integration.protection.OrbisGuardIntegration;
 import com.hyperfactions.integration.protection.ProtectionMixinBridge;
 import com.hypixel.hytale.common.util.java.ManifestUtil;
@@ -137,6 +138,10 @@ public class AdminVersionPage extends InteractiveCustomUIPage<AdminVersionData> 
     String gsStatus = !gsAvailable ? "Not Found" : (gsEnabled ? "Active" : "Disabled");
     String gsColor = gsAvailable && gsEnabled ? COLOR_GREEN : (gsAvailable ? COLOR_YELLOW : COLOR_GRAY);
     setStatusColor(cmd, "#GravestonesStatus", gsStatus, gsColor);
+
+    KyuubiSoftIntegration ks = plugin.getKyuubiSoftIntegration();
+    boolean ksAvailable = ks != null && ks.isAvailable();
+    setStatus(cmd, "#KyuubiSoftStatus", ksAvailable, "Active", "Not Found");
 
     // --- Placeholders ---
     setStatus(cmd, "#PlaceholderAPIStatus", PlaceholderAPIIntegration.isAvailable(), "Active", "Not Found");

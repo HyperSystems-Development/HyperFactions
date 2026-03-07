@@ -74,6 +74,7 @@ public class ProtectionChecker {
     ALLOWED,
     ALLOWED_BYPASS,
     ALLOWED_WILDERNESS,
+    ALLOWED_SAFEZONE,
     ALLOWED_OWN_CLAIM,
     ALLOWED_ALLY_CLAIM,
     ALLOWED_WARZONE,
@@ -117,6 +118,8 @@ public class ProtectionChecker {
     CRATE_PICKUP,  // Capture crate entity pickup
     CRATE_PLACE,   // Capture crate entity release
     NPC_TAME,      // F-key NPC taming
+    NPC_INTERACT,  // NPC shops/dialogue interaction
+    MOUNT,         // Mount/ride entities
     PVE_DAMAGE     // Damage non-player entities (mobs)
   }
 
@@ -172,8 +175,8 @@ public class ProtectionChecker {
         // 3. Non-admin: Check standard bypass permissions
         String bypassPerm = switch (type) {
           case BUILD -> "hyperfactions.bypass.build";
-          case INTERACT, DOOR, BENCH, PROCESSING, SEAT, TELEPORTER, PORTAL,
-            CRATE_PICKUP, CRATE_PLACE, NPC_TAME -> "hyperfactions.bypass.interact";
+          case INTERACT, DOOR, BENCH, PROCESSING, SEAT, MOUNT, TELEPORTER, PORTAL,
+            CRATE_PICKUP, CRATE_PLACE, NPC_TAME, NPC_INTERACT -> "hyperfactions.bypass.interact";
           case CONTAINER -> "hyperfactions.bypass.container";
           case DAMAGE, PVE_DAMAGE -> "hyperfactions.bypass.damage";
           case USE -> "hyperfactions.bypass.use";
@@ -204,6 +207,8 @@ public class ProtectionChecker {
           case CRATE_PICKUP -> ZoneFlags.CRATE_PICKUP;
           case CRATE_PLACE -> ZoneFlags.CRATE_PLACE;
           case NPC_TAME -> ZoneFlags.NPC_TAME;
+          case NPC_INTERACT -> ZoneFlags.NPC_INTERACT;
+          case MOUNT -> ZoneFlags.MOUNT_USE;
         };
 
         boolean allowed = zone.getEffectiveFlag(flagName);
@@ -228,12 +233,15 @@ public class ProtectionChecker {
         }
       }
 
+      // Track whether we came from a zone for the wilderness result
+      boolean inSafeZone = zone != null && zone.isSafeZone();
+
       // 3. Check claim owner
       UUID claimOwner = claimManager.getClaimOwner(world, chunkX, chunkZ);
 
       if (claimOwner == null) {
-        // Wilderness - anyone can interact
-        return ProtectionResult.ALLOWED_WILDERNESS;
+        // No faction claim — return zone-aware result
+        return inSafeZone ? ProtectionResult.ALLOWED_SAFEZONE : ProtectionResult.ALLOWED_WILDERNESS;
       }
 
       // 4. Get player's faction
@@ -334,6 +342,8 @@ public class ProtectionChecker {
       case TELEPORTER, PORTAL -> perms.get(level + "TransportUse");
       case CRATE_PICKUP, CRATE_PLACE -> perms.get(level + "CrateUse");
       case NPC_TAME -> perms.get(level + "NpcTame");
+      case NPC_INTERACT -> perms.get(level + "NpcInteract");
+      case MOUNT -> perms.get(level + "SeatUse"); // Mount shares seat permission
       case PVE_DAMAGE -> perms.get(level + "PveDamage");
       case DAMAGE -> !"outsider".equals(level); // outsiders can't damage (PvP handled separately)
     };
@@ -644,7 +654,7 @@ public class ProtectionChecker {
    */
   public boolean isAllowed(@NotNull ProtectionResult result) {
     return switch (result) {
-      case ALLOWED, ALLOWED_BYPASS, ALLOWED_WILDERNESS,
+      case ALLOWED, ALLOWED_BYPASS, ALLOWED_WILDERNESS, ALLOWED_SAFEZONE,
         ALLOWED_OWN_CLAIM, ALLOWED_ALLY_CLAIM, ALLOWED_WARZONE -> true;
       default -> false;
     };
@@ -741,8 +751,8 @@ public class ProtectionChecker {
       if (!isAdmin) {
         String bypassPerm = switch (factionType) {
           case BUILD -> "hyperfactions.bypass.build";
-          case INTERACT, DOOR, BENCH, PROCESSING, SEAT, TELEPORTER, PORTAL,
-            CRATE_PICKUP, CRATE_PLACE, NPC_TAME -> "hyperfactions.bypass.interact";
+          case INTERACT, DOOR, BENCH, PROCESSING, SEAT, MOUNT, TELEPORTER, PORTAL,
+            CRATE_PICKUP, CRATE_PLACE, NPC_TAME, NPC_INTERACT -> "hyperfactions.bypass.interact";
           case CONTAINER -> "hyperfactions.bypass.container";
           case DAMAGE, PVE_DAMAGE -> "hyperfactions.bypass.damage";
           case USE -> "hyperfactions.bypass.use";

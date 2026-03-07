@@ -54,6 +54,81 @@ public final class HyperProtectIntegration {
     return "unknown";
   }
 
+  /**
+   * Reads and CONSUMES the block ID set by the mixin for block interactions.
+   * Returns null if not set (non-block interaction or old mixin version).
+   */
+  private static String consumeBlockId() {
+    try {
+      Object val = System.getProperties().remove("hyperprotect.context.block_id");
+      if (val instanceof String s && !s.isEmpty()) {
+        return s;
+      }
+    } catch (Exception ignored) {}
+    return null;
+  }
+
+  /**
+   * Reads and CONSUMES the block state set by the mixin for block interactions.
+   * The state indicates the block's interaction type (e.g. "Door", "container",
+   * "processingBench"). Returns null if not set or block has no state.
+   */
+  private static String consumeBlockState() {
+    try {
+      Object val = System.getProperties().remove("hyperprotect.context.block_state");
+      if (val instanceof String s && !s.isEmpty()) {
+        return s;
+      }
+    } catch (Exception ignored) {}
+    return null;
+  }
+
+  /**
+   * Reads and CONSUMES the NPC role name set by the mixin.
+   * Clears the system property after reading to prevent stale context
+   * leaking to subsequent non-NPC interactions handled by other gates.
+   */
+  private static String consumeNpcRole() {
+    try {
+      Object val = System.getProperties().remove("hyperprotect.context.npc_role");
+      if (val instanceof String s && !s.isEmpty()) {
+        return s;
+      }
+    } catch (Exception ignored) {}
+    return null;
+  }
+
+  /**
+   * Determines if an NPC role represents a tameable creature (animals, pets).
+   * Tameable roles use NPC_TAME (restricted). Everything else — service NPCs,
+   * 3rd-party mod NPCs (KyuubiSoft Citizens, etc.), and unknown roles — defaults
+   * to NPC_INTERACT (permissive, fail-open) to avoid blocking legitimate interactions.
+   *
+   * <p>Hytale's tameable creatures use their species name as the role (e.g. "Chicken",
+   * "Wolf", "Cow"), while service/dialogue NPCs use descriptive roles like "Merchant",
+   * "Guard", or mod-prefixed roles like "KS_NPC_Interactable_Role".
+   */
+  private static boolean isTameableCreatureRole(String roleName) {
+    String lower = roleName.toLowerCase();
+    // Known Hytale tameable creature species
+    return lower.equals("chicken")
+        || lower.equals("wolf")
+        || lower.equals("cow")
+        || lower.equals("pig")
+        || lower.equals("sheep")
+        || lower.equals("cat")
+        || lower.equals("horse")
+        || lower.equals("donkey")
+        || lower.equals("rabbit")
+        || lower.equals("parrot")
+        || lower.equals("fox")
+        || lower.equals("goat")
+        || lower.equals("camel")
+        || lower.contains("_tame")
+        || lower.contains("tameable")
+        || lower.contains("pet_");
+  }
+
   // Bridge slot indices (must match ProtectionBridge constants in HyperProtect-Mixin)
   private static final int SLOT_BLOCK_BREAK      = 0;
 
@@ -869,22 +944,38 @@ public final class HyperProtectIntegration {
       try {
         String interaction = getInteractionName();
 
+        // Consume block context (clears system properties to prevent stale context)
+        String blockId = consumeBlockId();
+        String blockState = consumeBlockState();
+
         // Determine specific interaction type from mixin context
         ProtectionChecker.InteractionType interactionType;
+        String npcRole = null;
         if (interaction.contains("entity-capture")) {
           interactionType = ProtectionChecker.InteractionType.CRATE_PICKUP;
         } else if (interaction.equals("UseCaptureCrateInteraction")) {
           interactionType = ProtectionChecker.InteractionType.CRATE_PLACE;
         } else if (interaction.equals("UseNPCInteraction") || interaction.equals("ContextualUseNPCInteraction")) {
-          interactionType = ProtectionChecker.InteractionType.NPC_TAME;
+          // Consume NPC role (clears system property to prevent stale context)
+          npcRole = consumeNpcRole();
+          if (npcRole != null && isTameableCreatureRole(npcRole)) {
+            // Known tameable creatures (animals, pets) → NPC_TAME (restricted)
+            interactionType = ProtectionChecker.InteractionType.NPC_TAME;
+          } else {
+            // Service NPCs, 3rd-party mod NPCs, and unknown roles → NPC_INTERACT (permissive)
+            interactionType = ProtectionChecker.InteractionType.NPC_INTERACT;
+          }
         } else {
           interactionType = ProtectionChecker.InteractionType.INTERACT;
         }
 
         String reason = checker.checkUse(playerUuid, worldName, x, y, z, interactionType);
         int verdict = reason == null ? ALLOW : DENY_WITH_MESSAGE;
-        Logger.debugInteraction("[Mixin:Use] player=%s, world=%s, pos=(%d,%d,%d), interaction=%s, type=%s, verdict=%s",
-          playerUuid, worldName, x, y, z, interaction, interactionType, verdict == ALLOW ? "ALLOW" : "DENY");
+        Logger.debugInteraction("[Mixin:Use] player=%s, world=%s, pos=(%d,%d,%d), interaction=%s, type=%s, blockId=%s, blockState=%s, npcRole=%s, verdict=%s",
+          playerUuid, worldName, x, y, z, interaction, interactionType,
+          blockId != null ? blockId : "n/a",
+          blockState != null ? blockState : "n/a",
+          npcRole != null ? npcRole : "n/a", verdict == ALLOW ? "ALLOW" : "DENY");
         if (reason != null) {
           cachedReason.set(reason);
         }
