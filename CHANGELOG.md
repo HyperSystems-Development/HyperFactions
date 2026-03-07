@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Gravestone enemy loot in own territory**: `enemiesCanLootInOwnTerritory` config option was declared but never checked — enemies could always loot gravestones in the territory owner's claim regardless of the setting. Now properly checks faction relation between the accessor and gravestone owner when in own territory
 - **Backup file walk race condition**: `addDirectoryToZip()` crashed with `NoSuchFileException` when a `.bak` file vanished (deleted by concurrent `writeAtomic()`) between directory listing and attribute read during `Files.walkFileTree()` ([HYPERFACTIONS-3](https://hypersystems.sentry.io/issues/HYPERFACTIONS-3))
 - **Backup cleanup race condition**: Pre-backup `cleanupOrphanedFiles()` could delete in-flight temp files from concurrent `writeAtomic()` calls, causing `NoSuchFileException` during player data saves ([HYPERFACTIONS-4](https://hypersystems.sentry.io/issues/HYPERFACTIONS-4))
 - **Orphan cleanup safety**: `cleanupOrphanedFiles()` now skips `.tmp` files younger than 5 seconds to prevent racing with active writes
