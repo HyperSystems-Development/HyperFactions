@@ -1589,7 +1589,13 @@ public class ProtectionChecker {
 
   /**
    * Determines if a player's world map marker should be hidden from another player.
-   * Based on faction relationships — hides enemies in their own claimed territory.
+   * Based on faction relationships and config settings.
+   *
+   * <p>Hiding is controlled by two layers:
+   * <ul>
+   *   <li>Global config: {@code worldMap.hideEnemyPlayers} / {@code hideNeutralPlayers}</li>
+   *   <li>Zone override: {@code show_all_on_map} zone flag (when true, disables hiding in that zone)</li>
+   * </ul>
    *
    * @param viewer    the UUID of the player viewing the map
    * @param target    the UUID of the player being shown on the map
@@ -1615,21 +1621,104 @@ public class ProtectionChecker {
       // Check relationship
       RelationType relation = relationManager.getRelation(viewerFactionId, targetFactionId);
       if (relation == RelationType.ALLY) {
-        return false; // Allies — show
+        return false; // Allies — always show
       }
 
-      // Enemy or neutral — hide if target is in their own faction's claimed territory
+      // Check global config for this relation type
+      var serverConfig = ConfigManager.get().server();
+      boolean shouldHide;
+      if (relation == RelationType.ENEMY) {
+        shouldHide = serverConfig.isHideEnemyPlayersOnMap();
+      } else {
+        // NEUTRAL or TRUCE — use neutral setting
+        shouldHide = serverConfig.isHideNeutralPlayersOnMap();
+      }
+
+      if (!shouldHide) {
+        return false; // Config says don't hide this relation type
+      }
+
+      // Check zone override at target's position — show_all_on_map disables hiding
       int chunkX = ChunkUtil.toChunkCoord(x);
       int chunkZ = ChunkUtil.toChunkCoord(z);
-      UUID claimOwner = claimManager.getClaimOwner(worldName, chunkX, chunkZ);
-
-      if (claimOwner != null && claimOwner.equals(targetFactionId)) {
-        return true; // Target is in their own territory — hide from enemies/neutrals
+      Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
+      if (zone != null && zone.getEffectiveFlag(ZoneFlags.SHOW_ALL_ON_MAP)) {
+        return false; // Zone override — show all players
       }
 
-      return false; // Unclaimed territory — show
+      return true; // Hide based on config + relation
     } catch (Exception e) {
       Logger.severe("Map marker visibility check error (fail-open)", e);
+      return false;
+    }
+  }
+
+  /**
+   * Determines if a shared map marker should be hidden from a player.
+   * Based on faction relationships between the viewer and the marker creator.
+   *
+   * <p>Hiding is controlled by two layers:
+   * <ul>
+   *   <li>Global config: {@code worldMap.hideEnemyMarkers} / {@code hideNeutralMarkers}</li>
+   *   <li>Zone override: {@code show_all_on_map} zone flag (when true, shows all markers)</li>
+   * </ul>
+   *
+   * @param viewer    the UUID of the player viewing the map
+   * @param creatorId the UUID of the player who placed the marker (may be null)
+   * @param worldName the world name
+   * @param markerX   the marker's X coordinate
+   * @param markerZ   the marker's Z coordinate
+   * @return true if the marker should be HIDDEN
+   */
+  public boolean shouldHideSharedMarker(@NotNull UUID viewer, @Nullable UUID creatorId,
+                      @NotNull String worldName, float markerX, float markerZ) {
+    try {
+      if (creatorId == null) {
+        return false; // Unknown creator — show (fail-open)
+      }
+      if (viewer.equals(creatorId)) {
+        return false; // Own marker — always show
+      }
+
+      UUID viewerFactionId = factionManager.getPlayerFactionId(viewer);
+      UUID creatorFactionId = factionManager.getPlayerFactionId(creatorId);
+
+      if (viewerFactionId == null || creatorFactionId == null) {
+        return false; // Factionless — show
+      }
+      if (viewerFactionId.equals(creatorFactionId)) {
+        return false; // Same faction — show
+      }
+
+      RelationType relation = relationManager.getRelation(viewerFactionId, creatorFactionId);
+      if (relation == RelationType.ALLY) {
+        return false; // Allies — always show
+      }
+
+      // Check global config for this relation type
+      var serverConfig = ConfigManager.get().server();
+      boolean shouldHide;
+      if (relation == RelationType.ENEMY) {
+        shouldHide = serverConfig.isHideEnemyMarkersOnMap();
+      } else {
+        shouldHide = serverConfig.isHideNeutralMarkersOnMap();
+      }
+
+      if (!shouldHide) {
+        return false;
+      }
+
+      // Check zone override at marker's position
+      int chunkX = ChunkUtil.toChunkCoord((int) markerX);
+      int chunkZ = ChunkUtil.toChunkCoord((int) markerZ);
+      Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
+      if (zone != null && zone.getEffectiveFlag(ZoneFlags.SHOW_ALL_ON_MAP)) {
+        return false; // Zone override — show all markers
+      }
+
+      return true;
+    } catch (Exception e) {
+      Logger.severe("Shared marker visibility check error (fail-open)", e);
       return false;
     }
   }

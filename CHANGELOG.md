@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 *No changes yet*
 
+**World Map Player & Marker Hiding**
+- Configurable world map visibility: hide enemy/neutral players and shared markers independently via `worldMap` config section
+- New `show_all_on_map` zone flag — when enabled, overrides global hiding settings per-zone (useful for warzones and safezones)
+- New `shouldHideSharedMarker()` method for future shared marker filtering via HyperProtect-Mixin
+
 **NPC_USE Parent Flag & NPC Role Classification**
 - New `NPC_USE` parent flag with `NPC_TAME` and `NPC_INTERACT` children — enables granular NPC interaction control in zone settings
 - NPC role classification via `isTameableCreatureRole()` blocklist (fail-open) classifies NPC roles as tameable vs interactive based on role name patterns

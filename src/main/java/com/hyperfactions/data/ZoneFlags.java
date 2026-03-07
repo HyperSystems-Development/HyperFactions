@@ -317,6 +317,9 @@ public final class ZoneFlags {
   /** Whether non-owners can access (collect/break) other players' gravestones in this zone. Owners can always access their own. */
   public static final String GRAVESTONE_ACCESS = "gravestone_access";
 
+  /** Whether all players are visible on the world map regardless of faction relations. Overrides global hiding settings. */
+  public static final String SHOW_ALL_ON_MAP = "show_all_on_map";
+
   /** Whether players can set/teleport to homes (HyperEssentials integration). */
   public static final String ESSENTIALS_HOMES = "essentials_homes";
 
@@ -379,8 +382,9 @@ public final class ZoneFlags {
     PASSIVE_MOB_SPAWNING,
     NEUTRAL_MOB_SPAWNING,
     NPC_SPAWNING,
-    // Integration (4)
+    // Integration (5)
     GRAVESTONE_ACCESS,
+    SHOW_ALL_ON_MAP,
     ESSENTIALS_HOMES,
     ESSENTIALS_WARPS,
     ESSENTIALS_KITS
@@ -406,7 +410,7 @@ public final class ZoneFlags {
 
   public static final String[] SPAWNING_FLAGS = { MOB_SPAWNING, HOSTILE_MOB_SPAWNING, PASSIVE_MOB_SPAWNING, NEUTRAL_MOB_SPAWNING, NPC_SPAWNING };
 
-  public static final String[] INTEGRATION_FLAGS = { GRAVESTONE_ACCESS, ESSENTIALS_HOMES, ESSENTIALS_WARPS, ESSENTIALS_KITS };
+  public static final String[] INTEGRATION_FLAGS = { GRAVESTONE_ACCESS, SHOW_ALL_ON_MAP, ESSENTIALS_HOMES, ESSENTIALS_WARPS, ESSENTIALS_KITS };
 
   /**
    * Flags that require OrbisGuard-Mixins to function.
@@ -522,6 +526,7 @@ public final class ZoneFlags {
       case NPC_SPAWNING -> false;           // Mixin spawn hook blocked
       // Integration: Protected in safe zones
       case GRAVESTONE_ACCESS -> false;
+      case SHOW_ALL_ON_MAP -> false;      // Map hiding stays active in safe zones by default
       // Integration: HyperEssentials — all features available in safe zones (hubs/spawns)
       case ESSENTIALS_HOMES -> true;
       case ESSENTIALS_WARPS -> true;
@@ -599,6 +604,7 @@ public final class ZoneFlags {
       case NPC_SPAWNING -> true;            // Mixin spawn hook allowed
       // Integration: Free for all in war zones
       case GRAVESTONE_ACCESS -> true;
+      case SHOW_ALL_ON_MAP -> false;      // Map hiding stays active in war zones by default
       // Integration: HyperEssentials — homes blocked in combat zones, warps/kits allowed
       case ESSENTIALS_HOMES -> false;
       case ESSENTIALS_WARPS -> true;
@@ -685,6 +691,7 @@ public final class ZoneFlags {
       case NEUTRAL_MOB_SPAWNING -> "Neutral Mobs";
       case NPC_SPAWNING -> "NPC Spawning";
       case GRAVESTONE_ACCESS -> "Others Loot Graves";
+      case SHOW_ALL_ON_MAP -> "Show All on Map";
       case ESSENTIALS_HOMES -> "Home Use";
       case ESSENTIALS_WARPS -> "Warp Use";
       case ESSENTIALS_KITS -> "Kit Claiming";
@@ -743,6 +750,7 @@ public final class ZoneFlags {
       case NEUTRAL_MOB_SPAWNING -> "Conditionally aggressive mobs can spawn";
       case NPC_SPAWNING -> "NPC spawning via mixin (requires mixin)";
       case GRAVESTONE_ACCESS -> "Non-owners can loot/break other players' gravestones (owners always can)";
+      case SHOW_ALL_ON_MAP -> "All players visible on world map regardless of faction relations";
       case ESSENTIALS_HOMES -> "Players can set and teleport to homes (HyperEssentials)";
       case ESSENTIALS_WARPS -> "Players can teleport to warps (HyperEssentials)";
       case ESSENTIALS_KITS -> "Players can claim kits (HyperEssentials)";
