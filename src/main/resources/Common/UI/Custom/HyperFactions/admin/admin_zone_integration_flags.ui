@@ -10,7 +10,7 @@ $C.@PageOverlay {
   $Nav.@HyperFactionsAdminNavBar #HyperFactionsAdminNavBar {}
 
   $C.@DecoratedContainer {
-    Anchor: (Width: 500, Height: 360);
+    Anchor: (Width: 500, Height: 520);
 
     #Title {
       Group {
@@ -100,14 +100,151 @@ $C.@PageOverlay {
           }
         }
 
-        // Future integration flag boxes will go here (same pattern)
+        // --- World Map Box ---
+        Group #WorldMapBox {
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+          LayoutMode: Top;
+          Anchor: (Bottom: 8);
 
-        // Info text for empty space
-        Group #InfoSection {
-          Anchor: (Height: 40, Top: 8);
-          Label #InfoText {
-            Text: "More integration flags will appear here as integrations are added.";
-            Style: (FontSize: 10, TextColor: #555555);
+          Group {
+            Anchor: (Height: 18, Bottom: 4);
+            Label {
+              Text: "World Map";
+              Style: (FontSize: 11, TextColor: #00AAAA, RenderBold: true);
+            }
+          }
+
+          // Flag 1: show_on_map (toggle)
+          Group {
+            Anchor: (Height: 24);
+            LayoutMode: Left;
+            Label #Flag1Name {
+              Text: "Show on Map";
+              Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+              Anchor: (Width: 160);
+            }
+            Label { FlexWeight: 1; }
+            Label #Flag1Default {
+              Text: "(default)";
+              Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
+              Anchor: (Width: 55);
+            }
+            $C.@CheckBoxWithLabel #Flag1Toggle {
+              @Text = ""; @Checked = false;
+              Anchor: (Height: 20, Width: 44);
+            }
+          }
+
+          // Map Visibility selection (shown when show_on_map is enabled)
+          Group #MapVisibilityRow {
+            Anchor: (Height: 26, Top: 4);
+            LayoutMode: Left;
+            Label #MapVisibilityLabel {
+              Text: "Visibility Level:";
+              Style: (FontSize: 11, TextColor: #AAAAAA, VerticalAlignment: Center);
+              Anchor: (Width: 120);
+            }
+            Label { FlexWeight: 1; }
+            Label #MapVisibilityDefault {
+              Text: "(default)";
+              Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
+              Anchor: (Width: 55);
+            }
+            TextButton #MapVisibilityBtn {
+              Text: "Faction Only";
+              Anchor: (Height: 22, Width: 130);
+              Style: $S.@ButtonStyle;
+            }
+          }
+
+          // Description
+          Group {
+            Anchor: (Height: 24);
+            Padding: (Left: 4, Right: 0, Top: 2, Bottom: 0);
+            Label {
+              Text: "Override map hiding for players in this zone. When enabled, select who can see players in this zone.";
+              Style: (FontSize: 9, TextColor: #666666);
+            }
+          }
+        }
+
+        // --- HyperEssentials Box ---
+        Group #EssentialsBox {
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+          LayoutMode: Top;
+          Anchor: (Bottom: 8);
+
+          Group {
+            Anchor: (Height: 18, Bottom: 4);
+            Label {
+              Text: "HyperEssentials";
+              Style: (FontSize: 11, TextColor: #00AAAA, RenderBold: true);
+            }
+          }
+
+          // Flag 2: essentials_homes
+          Group {
+            Anchor: (Height: 24);
+            LayoutMode: Left;
+            Label #Flag2Name {
+              Text: "Home Use";
+              Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+              Anchor: (Width: 160);
+            }
+            Label { FlexWeight: 1; }
+            Label #Flag2Default {
+              Text: "(default)";
+              Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
+              Anchor: (Width: 55);
+            }
+            $C.@CheckBoxWithLabel #Flag2Toggle {
+              @Text = ""; @Checked = false;
+              Anchor: (Height: 20, Width: 44);
+            }
+          }
+
+          // Flag 3: essentials_warps
+          Group {
+            Anchor: (Height: 24);
+            LayoutMode: Left;
+            Label #Flag3Name {
+              Text: "Warp Use";
+              Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+              Anchor: (Width: 160);
+            }
+            Label { FlexWeight: 1; }
+            Label #Flag3Default {
+              Text: "(default)";
+              Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
+              Anchor: (Width: 55);
+            }
+            $C.@CheckBoxWithLabel #Flag3Toggle {
+              @Text = ""; @Checked = false;
+              Anchor: (Height: 20, Width: 44);
+            }
+          }
+
+          // Flag 4: essentials_kits
+          Group {
+            Anchor: (Height: 24);
+            LayoutMode: Left;
+            Label #Flag4Name {
+              Text: "Kit Claiming";
+              Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+              Anchor: (Width: 160);
+            }
+            Label { FlexWeight: 1; }
+            Label #Flag4Default {
+              Text: "(default)";
+              Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
+              Anchor: (Width: 55);
+            }
+            $C.@CheckBoxWithLabel #Flag4Toggle {
+              @Text = ""; @Checked = false;
+              Anchor: (Height: 20, Width: 44);
+            }
           }
         }
       }

@@ -317,8 +317,8 @@ public final class ZoneFlags {
   /** Whether non-owners can access (collect/break) other players' gravestones in this zone. Owners can always access their own. */
   public static final String GRAVESTONE_ACCESS = "gravestone_access";
 
-  /** Whether all players are visible on the world map regardless of faction relations. Overrides global hiding settings. */
-  public static final String SHOW_ALL_ON_MAP = "show_all_on_map";
+  /** Whether world map visibility override is enabled for this zone. When enabled, MAP_VISIBILITY setting controls the level. */
+  public static final String SHOW_ON_MAP = "show_on_map";
 
   /** Whether players can set/teleport to homes (HyperEssentials integration). */
   public static final String ESSENTIALS_HOMES = "essentials_homes";
@@ -384,7 +384,7 @@ public final class ZoneFlags {
     NPC_SPAWNING,
     // Integration (5)
     GRAVESTONE_ACCESS,
-    SHOW_ALL_ON_MAP,
+    SHOW_ON_MAP,
     ESSENTIALS_HOMES,
     ESSENTIALS_WARPS,
     ESSENTIALS_KITS
@@ -410,7 +410,7 @@ public final class ZoneFlags {
 
   public static final String[] SPAWNING_FLAGS = { MOB_SPAWNING, HOSTILE_MOB_SPAWNING, PASSIVE_MOB_SPAWNING, NEUTRAL_MOB_SPAWNING, NPC_SPAWNING };
 
-  public static final String[] INTEGRATION_FLAGS = { GRAVESTONE_ACCESS, SHOW_ALL_ON_MAP, ESSENTIALS_HOMES, ESSENTIALS_WARPS, ESSENTIALS_KITS };
+  public static final String[] INTEGRATION_FLAGS = { GRAVESTONE_ACCESS, SHOW_ON_MAP, ESSENTIALS_HOMES, ESSENTIALS_WARPS, ESSENTIALS_KITS };
 
   /**
    * Flags that require OrbisGuard-Mixins to function.
@@ -526,7 +526,7 @@ public final class ZoneFlags {
       case NPC_SPAWNING -> false;           // Mixin spawn hook blocked
       // Integration: Protected in safe zones
       case GRAVESTONE_ACCESS -> false;
-      case SHOW_ALL_ON_MAP -> false;      // Map hiding stays active in safe zones by default
+      case SHOW_ON_MAP -> false;      // Map hiding stays active in safe zones by default
       // Integration: HyperEssentials — all features available in safe zones (hubs/spawns)
       case ESSENTIALS_HOMES -> true;
       case ESSENTIALS_WARPS -> true;
@@ -604,7 +604,7 @@ public final class ZoneFlags {
       case NPC_SPAWNING -> true;            // Mixin spawn hook allowed
       // Integration: Free for all in war zones
       case GRAVESTONE_ACCESS -> true;
-      case SHOW_ALL_ON_MAP -> false;      // Map hiding stays active in war zones by default
+      case SHOW_ON_MAP -> false;      // Map hiding stays active in war zones by default
       // Integration: HyperEssentials — homes blocked in combat zones, warps/kits allowed
       case ESSENTIALS_HOMES -> false;
       case ESSENTIALS_WARPS -> true;
@@ -691,7 +691,7 @@ public final class ZoneFlags {
       case NEUTRAL_MOB_SPAWNING -> "Neutral Mobs";
       case NPC_SPAWNING -> "NPC Spawning";
       case GRAVESTONE_ACCESS -> "Others Loot Graves";
-      case SHOW_ALL_ON_MAP -> "Show All on Map";
+      case SHOW_ON_MAP -> "Show on Map";
       case ESSENTIALS_HOMES -> "Home Use";
       case ESSENTIALS_WARPS -> "Warp Use";
       case ESSENTIALS_KITS -> "Kit Claiming";
@@ -750,7 +750,7 @@ public final class ZoneFlags {
       case NEUTRAL_MOB_SPAWNING -> "Conditionally aggressive mobs can spawn";
       case NPC_SPAWNING -> "NPC spawning via mixin (requires mixin)";
       case GRAVESTONE_ACCESS -> "Non-owners can loot/break other players' gravestones (owners always can)";
-      case SHOW_ALL_ON_MAP -> "All players visible on world map regardless of faction relations";
+      case SHOW_ON_MAP -> "Override map visibility for players in this zone";
       case ESSENTIALS_HOMES -> "Players can set and teleport to homes (HyperEssentials)";
       case ESSENTIALS_WARPS -> "Players can teleport to warps (HyperEssentials)";
       case ESSENTIALS_KITS -> "Players can claim kits (HyperEssentials)";
@@ -973,6 +973,122 @@ public final class ZoneFlags {
       "Items",
       "Spawning",
       "Integration"
+    };
+  }
+
+  // ==========================================================================
+  // STRING-VALUED SETTINGS (enum/selection flags)
+  // ==========================================================================
+
+  /** Map visibility level — controls which players are visible on the map when SHOW_ON_MAP is enabled. */
+  public static final String MAP_VISIBILITY = "map_visibility";
+
+  /** Map visibility options. */
+  public static final String MAP_VISIBILITY_FACTION = "faction";
+  public static final String MAP_VISIBILITY_ALLY = "ally";
+  public static final String MAP_VISIBILITY_ALL = "all";
+
+  /** All valid values for MAP_VISIBILITY. */
+  public static final String[] MAP_VISIBILITY_OPTIONS = {
+    MAP_VISIBILITY_FACTION, MAP_VISIBILITY_ALLY, MAP_VISIBILITY_ALL
+  };
+
+  /** All available zone settings. */
+  public static final String[] ALL_SETTINGS = { MAP_VISIBILITY };
+
+  /**
+   * Gets the default value for a string setting based on zone type.
+   *
+   * @param settingName the setting name
+   * @param type        the zone type
+   * @return the default value
+   */
+  @NotNull
+  public static String getSettingDefault(@NotNull String settingName, @NotNull ZoneType type) {
+    return switch (settingName) {
+      case MAP_VISIBILITY -> MAP_VISIBILITY_FACTION; // Default: show only own faction
+      default -> "";
+    };
+  }
+
+  /**
+   * Checks if a setting value is valid for the given setting.
+   *
+   * @param settingName the setting name
+   * @param value       the value to check
+   * @return true if valid
+   */
+  public static boolean isValidSettingValue(@NotNull String settingName, @NotNull String value) {
+    return switch (settingName) {
+      case MAP_VISIBILITY -> {
+        for (String opt : MAP_VISIBILITY_OPTIONS) {
+          if (opt.equals(value)) yield true;
+        }
+        yield false;
+      }
+      default -> false;
+    };
+  }
+
+  /**
+   * Gets a display name for a setting value.
+   *
+   * @param settingName the setting name
+   * @param value       the value
+   * @return display text
+   */
+  @NotNull
+  public static String getSettingValueDisplay(@NotNull String settingName, @NotNull String value) {
+    if (MAP_VISIBILITY.equals(settingName)) {
+      return switch (value) {
+        case MAP_VISIBILITY_FACTION -> "Faction Only";
+        case MAP_VISIBILITY_ALLY -> "Faction + Allies";
+        case MAP_VISIBILITY_ALL -> "All Players";
+        default -> value;
+      };
+    }
+    return value;
+  }
+
+  /**
+   * Gets the available options for a setting.
+   *
+   * @param settingName the setting name
+   * @return array of valid values
+   */
+  @NotNull
+  public static String[] getSettingOptions(@NotNull String settingName) {
+    return switch (settingName) {
+      case MAP_VISIBILITY -> MAP_VISIBILITY_OPTIONS;
+      default -> new String[0];
+    };
+  }
+
+  /**
+   * Gets the display name for a setting.
+   *
+   * @param settingName the setting name
+   * @return the display name
+   */
+  @NotNull
+  public static String getSettingDisplayName(@NotNull String settingName) {
+    return switch (settingName) {
+      case MAP_VISIBILITY -> "Map Visibility";
+      default -> settingName;
+    };
+  }
+
+  /**
+   * Gets the description for a setting.
+   *
+   * @param settingName the setting name
+   * @return the description
+   */
+  @NotNull
+  public static String getSettingDescription(@NotNull String settingName) {
+    return switch (settingName) {
+      case MAP_VISIBILITY -> "Which players are visible on the world map in this zone";
+      default -> "Unknown setting";
     };
   }
 }

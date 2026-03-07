@@ -1594,7 +1594,7 @@ public class ProtectionChecker {
    * <p>Hiding is controlled by two layers:
    * <ul>
    *   <li>Global config: {@code worldMap.hideEnemyPlayers} / {@code hideNeutralPlayers}</li>
-   *   <li>Zone override: {@code show_all_on_map} zone flag (when true, disables hiding in that zone)</li>
+   *   <li>Zone override: {@code show_on_map} + {@code map_visibility} zone flag (when true, disables hiding in that zone)</li>
    * </ul>
    *
    * @param viewer    the UUID of the player viewing the map
@@ -1638,12 +1638,20 @@ public class ProtectionChecker {
         return false; // Config says don't hide this relation type
       }
 
-      // Check zone override at target's position — show_all_on_map disables hiding
+      // Check zone override at target's position
       int chunkX = ChunkUtil.toChunkCoord(x);
       int chunkZ = ChunkUtil.toChunkCoord(z);
       Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
-      if (zone != null && zone.getEffectiveFlag(ZoneFlags.SHOW_ALL_ON_MAP)) {
-        return false; // Zone override — show all players
+      if (zone != null && zone.getEffectiveFlag(ZoneFlags.SHOW_ON_MAP)) {
+        // Zone has map visibility override — check the visibility level
+        String visibility = zone.getEffectiveSetting(ZoneFlags.MAP_VISIBILITY);
+        if (ZoneFlags.MAP_VISIBILITY_ALL.equals(visibility)) {
+          return false; // Show everyone
+        }
+        if (ZoneFlags.MAP_VISIBILITY_ALLY.equals(visibility) && relation == RelationType.ALLY) {
+          return false; // Show allies (enemies/neutrals still hidden)
+        }
+        // "faction" = only own faction visible (already handled above — same faction returns false early)
       }
 
       return true; // Hide based on config + relation
@@ -1660,7 +1668,7 @@ public class ProtectionChecker {
    * <p>Hiding is controlled by two layers:
    * <ul>
    *   <li>Global config: {@code worldMap.hideEnemyMarkers} / {@code hideNeutralMarkers}</li>
-   *   <li>Zone override: {@code show_all_on_map} zone flag (when true, shows all markers)</li>
+   *   <li>Zone override: {@code show_on_map} + {@code map_visibility} zone flag (when true, shows all markers)</li>
    * </ul>
    *
    * @param viewer    the UUID of the player viewing the map
@@ -1712,8 +1720,14 @@ public class ProtectionChecker {
       int chunkX = ChunkUtil.toChunkCoord((int) markerX);
       int chunkZ = ChunkUtil.toChunkCoord((int) markerZ);
       Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
-      if (zone != null && zone.getEffectiveFlag(ZoneFlags.SHOW_ALL_ON_MAP)) {
-        return false; // Zone override — show all markers
+      if (zone != null && zone.getEffectiveFlag(ZoneFlags.SHOW_ON_MAP)) {
+        String visibility = zone.getEffectiveSetting(ZoneFlags.MAP_VISIBILITY);
+        if (ZoneFlags.MAP_VISIBILITY_ALL.equals(visibility)) {
+          return false; // Show all markers
+        }
+        if (ZoneFlags.MAP_VISIBILITY_ALLY.equals(visibility) && relation == RelationType.ALLY) {
+          return false; // Show ally markers
+        }
       }
 
       return true;

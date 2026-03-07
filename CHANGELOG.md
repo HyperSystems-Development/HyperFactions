@@ -11,8 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 **World Map Player & Marker Hiding**
 - Configurable world map visibility: hide enemy/neutral players and shared markers independently via `worldMap` config section
-- New `show_all_on_map` zone flag — when enabled, overrides global hiding settings per-zone (useful for warzones and safezones)
-- New `shouldHideSharedMarker()` method for future shared marker filtering via HyperProtect-Mixin
+- New `show_on_map` zone flag + `map_visibility` setting — first selection-type zone setting with three levels: "Faction Only", "Faction + Allies", "All Players"
+- Zone settings system: `Map<String, String> settings` on Zone record for enum/selection values alongside existing boolean flags
+- SharedMarkerFilter integration via HyperProtect-Mixin — filters user-placed shared markers by creator faction
+- Admin GUI: Integration Flags page now shows World Map and HyperEssentials sections with map visibility cycling button
 
 **NPC_USE Parent Flag & NPC Role Classification**
 - New `NPC_USE` parent flag with `NPC_TAME` and `NPC_INTERACT` children — enables granular NPC interaction control in zone settings
