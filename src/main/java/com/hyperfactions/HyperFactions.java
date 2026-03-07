@@ -37,6 +37,7 @@ import com.hyperfactions.territory.TerritoryNotifier;
 import com.hyperfactions.update.UpdateChecker;
 import com.hyperfactions.update.UpdateNotificationListener;
 import com.hyperfactions.update.UpdateNotificationPreferences;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.worldmap.MapPlayerFilterService;
 import com.hyperfactions.worldmap.WorldMapService;
@@ -247,7 +248,7 @@ public class HyperFactions {
         Files.writeString(versionFile, "1");
       }
     } catch (IOException e) {
-      Logger.severe("[Storage] Failed to initialize data directory: %s", e.getMessage());
+      ErrorHandler.report("[Storage] Failed to initialize data directory", e);
     }
 
     // Initialize HyperPerms integration (legacy, for backward compatibility)
@@ -607,7 +608,7 @@ public class HyperFactions {
 
       Logger.debug("Gson classes preloaded successfully");
     } catch (Exception e) {
-      Logger.warn("Failed to preload Gson classes: %s", e.getMessage());
+      ErrorHandler.report("Failed to preload Gson classes", e);
     }
   }
 

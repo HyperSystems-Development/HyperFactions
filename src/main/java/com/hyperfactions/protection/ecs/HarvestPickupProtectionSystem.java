@@ -5,6 +5,7 @@ import com.hyperfactions.protection.ProtectionChecker;
 import com.hyperfactions.protection.ProtectionListener;
 import com.hyperfactions.protection.ProtectionMessageDebounce;
 import com.hyperfactions.protection.zone.ZoneInteractionProtection;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.Archetype;
 import com.hypixel.hytale.component.ArchetypeChunk;
@@ -148,7 +149,7 @@ public class HarvestPickupProtectionSystem extends EntityEventSystem<EntityStore
     } catch (Exception e) {
       // Fail-closed: cancel on any exception to prevent unauthorized harvest pickup
       event.setCancelled(true);
-      Logger.severe("Harvest pickup cancelled due to protection error (fail-closed)", e);
+      ErrorHandler.report("Harvest pickup cancelled due to protection error (fail-closed)", e);
     }
   }
 

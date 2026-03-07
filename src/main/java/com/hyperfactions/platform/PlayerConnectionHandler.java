@@ -3,6 +3,7 @@ package com.hyperfactions.platform;
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
 import com.hyperfactions.integration.PermissionManager;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerConnectEvent;
@@ -44,37 +45,39 @@ public class PlayerConnectionHandler {
         trackedPlayers.size(), uuid, trackedPlayers.containsKey(uuid));
 
     // Cache username, track first join and last online
-    hyperFactions.getPlayerStorage().loadPlayerData(uuid).thenAccept(opt -> {
-      com.hyperfactions.data.PlayerData data = opt.orElseGet(() -> new com.hyperfactions.data.PlayerData(uuid));
-      data.setUsername(username);
-      long now = System.currentTimeMillis();
-      if (data.getFirstJoined() == 0) {
-        data.setFirstJoined(now);
-      }
-      data.setLastOnline(now);
-      hyperFactions.getPlayerStorage().savePlayerData(data);
-    });
+    ErrorHandler.guard("Player connect: load/save player data for " + username,
+      hyperFactions.getPlayerStorage().loadPlayerData(uuid).thenAccept(opt -> {
+        com.hyperfactions.data.PlayerData data = opt.orElseGet(() -> new com.hyperfactions.data.PlayerData(uuid));
+        data.setUsername(username);
+        long now = System.currentTimeMillis();
+        if (data.getFirstJoined() == 0) {
+          data.setFirstJoined(now);
+        }
+        data.setLastOnline(now);
+        hyperFactions.getPlayerStorage().savePlayerData(data);
+      }));
 
     // Load player power
     hyperFactions.getPowerManager().playerOnline(uuid);
 
     // Restore persistent admin bypass if saved and player still has permission
-    hyperFactions.getPlayerStorage().loadPlayerData(uuid).thenAccept(opt -> {
-      if (opt.isPresent()) {
-        com.hyperfactions.data.PlayerData data = opt.get();
-        if (data.isAdminBypassEnabled()) {
-          if (PermissionManager.get().hasPermission(uuid, Permissions.ADMIN)) {
-            hyperFactions.setAdminBypass(uuid, true);
-            Logger.debug("Restored admin bypass for %s", username);
-          } else {
-            // Player lost admin permission — clear the persisted flag
-            data.setAdminBypassEnabled(false);
-            hyperFactions.getPlayerStorage().savePlayerData(data);
-            Logger.debug("Cleared stale admin bypass for %s (no permission)", username);
+    ErrorHandler.guard("Player connect: restore admin bypass for " + username,
+      hyperFactions.getPlayerStorage().loadPlayerData(uuid).thenAccept(opt -> {
+        if (opt.isPresent()) {
+          com.hyperfactions.data.PlayerData data = opt.get();
+          if (data.isAdminBypassEnabled()) {
+            if (PermissionManager.get().hasPermission(uuid, Permissions.ADMIN)) {
+              hyperFactions.setAdminBypass(uuid, true);
+              Logger.debug("Restored admin bypass for %s", username);
+            } else {
+              // Player lost admin permission — clear the persisted flag
+              data.setAdminBypassEnabled(false);
+              hyperFactions.getPlayerStorage().savePlayerData(data);
+              Logger.debug("Cleared stale admin bypass for %s (no permission)", username);
+            }
           }
         }
-      }
-    });
+      }));
 
     // Update faction member last online
     hyperFactions.getFactionManager().updateLastOnline(uuid);
@@ -131,13 +134,14 @@ public class PlayerConnectionHandler {
     hyperFactions.getPowerManager().playerOffline(uuid);
 
     // Update last online timestamp
-    hyperFactions.getPlayerStorage().loadPlayerData(uuid).thenAccept(opt -> {
-      if (opt.isPresent()) {
-        com.hyperfactions.data.PlayerData data = opt.get();
-        data.setLastOnline(System.currentTimeMillis());
-        hyperFactions.getPlayerStorage().savePlayerData(data);
-      }
-    });
+    ErrorHandler.guard("Player disconnect: update last online for " + username,
+      hyperFactions.getPlayerStorage().loadPlayerData(uuid).thenAccept(opt -> {
+        if (opt.isPresent()) {
+          com.hyperfactions.data.PlayerData data = opt.get();
+          data.setLastOnline(System.currentTimeMillis());
+          hyperFactions.getPlayerStorage().savePlayerData(data);
+        }
+      }));
 
     // Update faction member last online
     hyperFactions.getFactionManager().updateLastOnline(uuid);
@@ -174,18 +178,22 @@ public class PlayerConnectionHandler {
   public CompletableFuture<PlayerChatEvent> onPlayerChatAsync(
       CompletableFuture<PlayerChatEvent> futureEvent) {
     return futureEvent.thenApply(event -> {
-      if (event.isCancelled()) {
-        return event;
-      }
+      try {
+        if (event.isCancelled()) {
+          return event;
+        }
 
-      PlayerRef sender = event.getSender();
-      String message = event.getContent();
+        PlayerRef sender = event.getSender();
+        String message = event.getContent();
 
-      // Check if player is in faction/ally chat mode
-      boolean handled = hyperFactions.getChatManager().processChatMessage(sender, message);
-      if (handled) {
-        // Cancel the normal chat broadcast
-        event.setCancelled(true);
+        // Check if player is in faction/ally chat mode
+        boolean handled = hyperFactions.getChatManager().processChatMessage(sender, message);
+        if (handled) {
+          // Cancel the normal chat broadcast
+          event.setCancelled(true);
+        }
+      } catch (Exception e) {
+        ErrorHandler.report("Player chat: faction/ally chat processing", e);
       }
       return event;
     });

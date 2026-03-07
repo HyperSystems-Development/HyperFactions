@@ -3,6 +3,7 @@ package com.hyperfactions.platform;
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.integration.protection.OrbisGuardIntegration;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.worldmap.HyperFactionsWorldMapProvider;
 import com.hypixel.hytale.server.core.universe.Universe;
@@ -200,7 +201,7 @@ public class WorldSetup {
     } catch (Exception e) {
       plugin.getLogger().at(Level.WARNING).log("Error in AddWorldEvent handler for %s: %s",
           world.getName(), e.getMessage());
-      Logger.severe("AddWorldEvent error for %s", e, world.getName());
+      ErrorHandler.report(String.format("AddWorldEvent error for %s", world.getName()), e);
     }
   }
 

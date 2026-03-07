@@ -15,6 +15,7 @@ import com.hyperfactions.gui.shared.page.*;
 import com.hyperfactions.gui.test.ButtonTestPage;
 import com.hyperfactions.manager.*;
 import com.hyperfactions.storage.PlayerStorage;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -96,8 +97,7 @@ class NewPlayerPageOpener {
       pageManager.openCustomPage(ref, store, browsePage);
       Logger.debug("[GUI] NewPlayerBrowsePage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open NewPlayerBrowsePage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open NewPlayerBrowsePage", e);
     }
   }
 
@@ -122,8 +122,7 @@ class NewPlayerPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] CreateFactionPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open CreateFactionPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open CreateFactionPage", e);
     }
   }
 
@@ -151,8 +150,7 @@ class NewPlayerPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] InvitesPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open InvitesPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open InvitesPage", e);
     }
   }
 
@@ -180,8 +178,7 @@ class NewPlayerPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] NewPlayerMapPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open NewPlayerMapPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open NewPlayerMapPage", e);
     }
   }
 
@@ -218,8 +215,7 @@ class NewPlayerPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] HelpMainPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open HelpMainPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open HelpMainPage", e);
     }
   }
 

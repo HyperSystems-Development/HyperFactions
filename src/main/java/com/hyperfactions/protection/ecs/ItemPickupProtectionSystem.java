@@ -5,6 +5,7 @@ import com.hyperfactions.protection.ProtectionChecker;
 import com.hyperfactions.protection.ProtectionListener;
 import com.hyperfactions.protection.ProtectionMessageDebounce;
 import com.hyperfactions.protection.zone.ZoneInteractionProtection;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.ArchetypeChunk;
 import com.hypixel.hytale.component.CommandBuffer;
@@ -106,7 +107,7 @@ public class ItemPickupProtectionSystem extends EntityEventSystem<EntityStore, I
     } catch (Exception e) {
       // Fail-closed: cancel on any exception to prevent unauthorized item pickup
       event.setCancelled(true);
-      Logger.severe("Item pickup cancelled due to protection error (fail-closed)", e);
+      ErrorHandler.report("Item pickup cancelled due to protection error (fail-closed)", e);
     }
   }
 }

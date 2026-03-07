@@ -11,6 +11,7 @@ import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.JoinRequest;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.storage.StorageUtils;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -488,7 +489,7 @@ public class JoinRequestManager {
 
       Logger.info("[Storage] Loaded %d join requests (%d expired and skipped)", loaded, expired);
     } catch (Exception e) {
-      Logger.severe("Failed to load join requests", e);
+      ErrorHandler.report("Failed to load join requests", e);
     }
   }
 
@@ -499,7 +500,7 @@ public class JoinRequestManager {
     try {
       Files.createDirectories(dataFile.getParent());
     } catch (IOException e) {
-      Logger.severe("Failed to create join requests directory", e);
+      ErrorHandler.report("Failed to create join requests directory", e);
       return;
     }
 
@@ -514,7 +515,7 @@ public class JoinRequestManager {
 
     StorageUtils.WriteResult result = StorageUtils.writeAtomic(dataFile, gson.toJson(array));
     if (result instanceof StorageUtils.WriteResult.Failure failure) {
-      Logger.severe("Failed to save join requests: %s", failure.error());
+      ErrorHandler.report(String.format("Failed to save join requests: %s", failure.error()), failure.cause());
     }
   }
 

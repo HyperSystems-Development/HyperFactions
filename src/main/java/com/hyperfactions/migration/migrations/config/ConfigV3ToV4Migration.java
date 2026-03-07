@@ -10,6 +10,7 @@ import com.hyperfactions.migration.Migration;
 import com.hyperfactions.migration.MigrationOptions;
 import com.hyperfactions.migration.MigrationResult;
 import com.hyperfactions.migration.MigrationType;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -161,7 +162,7 @@ public class ConfigV3ToV4Migration implements Migration {
 
     } catch (Exception e) {
       Duration duration = Duration.between(startTime, Instant.now());
-      Logger.severe("[Migration] Config migration v3->v4 failed: %s", e.getMessage());
+      ErrorHandler.report("[Migration] Config migration v3->v4 failed", e);
       return MigrationResult.failure(
         id(),
         fromVersion(),

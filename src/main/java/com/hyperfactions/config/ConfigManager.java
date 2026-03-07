@@ -7,6 +7,7 @@ import com.hyperfactions.data.FactionRole;
 import com.hyperfactions.migration.MigrationResult;
 import com.hyperfactions.migration.MigrationRunner;
 import com.hyperfactions.migration.MigrationType;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.nio.file.Path;
 import java.util.List;
@@ -227,8 +228,8 @@ public class ConfigManager {
         Logger.info("[Config] Migration '%s' completed: v%d -> v%d",
             result.migrationId(), result.fromVersion(), result.toVersion());
       } else {
-        Logger.severe("[Config] Migration '%s' failed: %s",
-            result.migrationId(), result.errorMessage());
+        ErrorHandler.report(String.format("[Config] Migration '%s' failed: %s",
+            result.migrationId(), result.errorMessage()), (Exception) null);
         if (result.rolledBack()) {
           Logger.info("[Config] Rolled back to previous config version");
         }

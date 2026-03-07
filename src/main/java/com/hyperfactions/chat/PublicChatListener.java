@@ -2,6 +2,7 @@ package com.hyperfactions.chat;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.config.ConfigManager;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.event.EventPriority;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
@@ -65,7 +66,7 @@ public class PublicChatListener {
       try {
         return handleChatEvent(event);
       } catch (Exception e) {
-        Logger.severe("Error handling chat event", e);
+        ErrorHandler.report("Error handling chat event", e);
         return event;
       }
     });

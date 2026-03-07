@@ -11,6 +11,7 @@ import com.hyperfactions.data.FactionChatHistory;
 import com.hyperfactions.storage.ChatHistoryStorage;
 import com.hyperfactions.storage.StorageHealth;
 import com.hyperfactions.storage.StorageUtils;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.UuidUtil;
 import java.io.IOException;
@@ -51,7 +52,7 @@ public class JsonChatHistoryStorage implements ChatHistoryStorage {
         StorageUtils.cleanupOrphanedFiles(chatDir);
         Logger.info("[Storage] Chat history storage initialized at %s", chatDir);
       } catch (IOException e) {
-        Logger.severe("Failed to create chat history directory", e);
+        ErrorHandler.report("Failed to create chat history directory", e);
       }
     });
   }
@@ -83,14 +84,14 @@ public class JsonChatHistoryStorage implements ChatHistoryStorage {
         JsonObject obj = JsonParser.parseString(json).getAsJsonObject();
         return deserializeHistory(factionId, obj);
       } catch (Exception e) {
-        Logger.severe("Failed to load chat history for %s, attempting backup recovery", e, factionId);
+        ErrorHandler.report(String.format("Failed to load chat history for %s, attempting backup recovery", factionId), e);
         if (StorageUtils.recoverFromBackup(file)) {
           try {
             String json = Files.readString(file);
             JsonObject obj = JsonParser.parseString(json).getAsJsonObject();
             return deserializeHistory(factionId, obj);
           } catch (Exception e2) {
-            Logger.severe("Backup recovery failed for chat history %s", e2, factionId);
+            ErrorHandler.report(String.format("Backup recovery failed for chat history %s", factionId), e2);
           }
         }
         return FactionChatHistory.empty(factionId);
@@ -116,11 +117,11 @@ public class JsonChatHistoryStorage implements ChatHistoryStorage {
           Logger.debug("Saved chat history for %s (%d messages)", history.factionId(), history.size());
         } else if (result instanceof StorageUtils.WriteResult.Failure failure) {
           StorageHealth.get().recordFailure(filePath, failure.error());
-          Logger.severe("Failed to save chat history for %s: %s", history.factionId(), failure.error());
+          ErrorHandler.report(String.format("Failed to save chat history for %s: %s", history.factionId(), failure.error()), failure.cause());
         }
       } catch (Exception e) {
         StorageHealth.get().recordFailure(filePath, e.getMessage());
-        Logger.severe("Failed to save chat history for %s", e, history.factionId());
+        ErrorHandler.report(String.format("Failed to save chat history for %s", history.factionId()), e);
       }
     });
   }
@@ -156,7 +157,7 @@ public class JsonChatHistoryStorage implements ChatHistoryStorage {
           }
         }
       } catch (IOException e) {
-        Logger.severe("Failed to list chat history files", e);
+        ErrorHandler.report("Failed to list chat history files", e);
       }
 
       return ids;

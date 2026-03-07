@@ -6,6 +6,7 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionChatHistory;
 import com.hyperfactions.data.FactionRelation;
 import com.hyperfactions.storage.ChatHistoryStorage;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -189,22 +190,24 @@ public class ChatHistoryManager {
     }
 
     // Prune on-disk histories not in cache
-    storage.listAllFactionIds().thenAccept(ids -> {
-      for (UUID id : ids) {
-        if (!cache.containsKey(id)) {
-          storage.loadHistory(id).thenAccept(history -> {
-            FactionChatHistory pruned = history.pruneOlderThan(cutoff);
-            if (pruned != history) {
-              if (pruned.isEmpty()) {
-                storage.deleteHistory(id);
-              } else {
-                storage.saveHistory(pruned);
-              }
-            }
-          });
+    ErrorHandler.guard("Chat history: prune expired on-disk histories",
+      storage.listAllFactionIds().thenAccept(ids -> {
+        for (UUID id : ids) {
+          if (!cache.containsKey(id)) {
+            ErrorHandler.guard("Chat history: prune faction " + id,
+              storage.loadHistory(id).thenAccept(history -> {
+                FactionChatHistory pruned = history.pruneOlderThan(cutoff);
+                if (pruned != history) {
+                  if (pruned.isEmpty()) {
+                    storage.deleteHistory(id);
+                  } else {
+                    storage.saveHistory(pruned);
+                  }
+                }
+              }));
+          }
         }
-      }
-    });
+      }));
 
     Logger.debug("Chat history retention cleanup completed (cutoff: %d days)", retentionDays);
   }
@@ -250,13 +253,13 @@ public class ChatHistoryManager {
   private void scheduleDebouncedSave(@NotNull UUID factionId) {
     cancelPendingSave(factionId);
 
-    ScheduledFuture<?> future = scheduler.schedule(() -> {
+    ScheduledFuture<?> future = scheduler.schedule(ErrorHandler.wrapTask("Chat history debounced save", () -> {
       pendingSaves.remove(factionId);
       FactionChatHistory history = cache.get(factionId);
       if (history != null) {
-        storage.saveHistory(history);
+        ErrorHandler.guard("Chat history save for faction " + factionId, storage.saveHistory(history));
       }
-    }, DEBOUNCE_DELAY_MS, TimeUnit.MILLISECONDS);
+    }), DEBOUNCE_DELAY_MS, TimeUnit.MILLISECONDS);
 
     pendingSaves.put(factionId, future);
   }
@@ -278,7 +281,7 @@ public class ChatHistoryManager {
       try {
         storage.saveHistory(history).join();
       } catch (Exception e) {
-        Logger.severe("Failed to flush chat history for %s: %s", factionId, e.getMessage());
+        ErrorHandler.report(String.format("Failed to flush chat history for %s", factionId), e);
       }
     }
   }

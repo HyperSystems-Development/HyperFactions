@@ -4,7 +4,9 @@ import com.hyperfactions.HyperFactions;
 import com.hyperfactions.api.HyperFactionsAPI;
 import com.hyperfactions.chat.PublicChatListener;
 import com.hyperfactions.command.FactionCommand;
+import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.integration.PermissionRegistrar;
+import com.hyperfactions.integration.SentryIntegration;
 import com.hyperfactions.integration.protection.OrbisGuardIntegration;
 import com.hyperfactions.integration.protection.ProtectionMixinBridge;
 import com.hyperfactions.listener.PlayerListener;
@@ -12,6 +14,7 @@ import com.hyperfactions.protection.ProtectionListener;
 import com.hyperfactions.protection.interactions.HyperFactionsHarvestCropInteraction;
 import com.hyperfactions.protection.interactions.HyperFactionsPlaceFluidInteraction;
 import com.hyperfactions.protection.interactions.HyperFactionsRefillContainerInteraction;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.server.core.event.events.BootEvent;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.config.Interaction;
@@ -111,8 +114,11 @@ public class HyperFactionsPlugin extends JavaPlugin {
     // Configure platform callbacks
     configurePlatformCallbacks();
 
-    // Enable core
+    // Enable core (loads config, storage, managers)
     hyperFactions.enable();
+
+    // Initialize Sentry error tracking (after config is loaded, non-blocking, fail-safe)
+    SentryIntegration.init(ConfigManager.get().debug());
 
     // Initialize GravestonePlugin integration (v2 direct API — needs EventRegistry)
     hyperFactions.initGravestoneIntegration(getEventRegistry());
@@ -163,7 +169,11 @@ public class HyperFactionsPlugin extends JavaPlugin {
     worldSetup.logProtectionCoverage();
 
     // Register permission nodes with LuckPerms on BootEvent (after all plugins loaded)
-    getEventRegistry().registerGlobal(BootEvent.class, e -> PermissionRegistrar.registerWithLuckPerms());
+    // Also refresh Sentry mod list now that all plugins are loaded
+    getEventRegistry().registerGlobal(BootEvent.class, e -> {
+      PermissionRegistrar.registerWithLuckPerms();
+      SentryIntegration.refreshInstalledMods();
+    });
 
     Logger.info("[Startup] HyperFactions v%s enabled", getManifest().getVersion());
   }
@@ -172,15 +182,17 @@ public class HyperFactionsPlugin extends JavaPlugin {
   @Override
   protected void shutdown() {
     // Stop periodic tasks
-    stopPeriodicTasks();
+    ErrorHandler.runSafely("Shutdown: stopPeriodicTasks", this::stopPeriodicTasks);
 
     // Handle combat logout for all tagged players
-    for (UUID playerUuid : trackedPlayers.keySet()) {
-      hyperFactions.getCombatTagManager().handleDisconnect(playerUuid);
-    }
+    ErrorHandler.runSafely("Shutdown: combat logout processing", () -> {
+      for (UUID playerUuid : trackedPlayers.keySet()) {
+        hyperFactions.getCombatTagManager().handleDisconnect(playerUuid);
+      }
+    });
 
     // Unregister all mixin hooks (HP or OG)
-    ProtectionMixinBridge.unregisterAllHooks();
+    ErrorHandler.runSafely("Shutdown: unregister mixin hooks", ProtectionMixinBridge::unregisterAllHooks);
 
     // Shutdown KyuubiSoft Core integration
     try {
@@ -192,18 +204,25 @@ public class HyperFactionsPlugin extends JavaPlugin {
     }
 
     // Clean up territory ticking system
-    if (eventRegistration != null) {
-      eventRegistration.shutdownTerritory();
-    }
+    ErrorHandler.runSafely("Shutdown: territory system cleanup", () -> {
+      if (eventRegistration != null) {
+        eventRegistration.shutdownTerritory();
+      }
+    });
 
     // Clear instances
     instance = null;
     HyperFactionsAPI.setInstance(null);
 
     // Disable core
-    if (hyperFactions != null) {
-      hyperFactions.disable();
-    }
+    ErrorHandler.runSafely("Shutdown: HyperFactions core disable", () -> {
+      if (hyperFactions != null) {
+        hyperFactions.disable();
+      }
+    });
+
+    // Flush pending Sentry events and close
+    SentryIntegration.close();
 
     // Clear tracked players
     trackedPlayers.clear();
@@ -217,7 +236,7 @@ public class HyperFactionsPlugin extends JavaPlugin {
   private void configurePlatformCallbacks() {
     // Async executor
     hyperFactions.setAsyncExecutor(task -> {
-      java.util.concurrent.CompletableFuture.runAsync(task);
+      java.util.concurrent.CompletableFuture.runAsync(ErrorHandler.wrapTask("Async executor task", task));
     });
 
     // Task scheduler (for one-shot delayed tasks)
@@ -225,12 +244,13 @@ public class HyperFactionsPlugin extends JavaPlugin {
       int id = taskIdCounter.incrementAndGet();
       java.util.Timer timer = new java.util.Timer();
       long delayMs = delayTicks * 50L;
+      Runnable wrapped = ErrorHandler.wrapTask("Scheduled task (delay=" + delayTicks + ")", task);
       timer.schedule(new java.util.TimerTask() {
         /** Runs the task. */
         @Override
         public void run() {
           scheduledTasks.remove(id);
-          task.run();
+          wrapped.run();
         }
       }, delayMs);
       scheduledTasks.put(id, timer);
@@ -243,11 +263,12 @@ public class HyperFactionsPlugin extends JavaPlugin {
       java.util.Timer timer = new java.util.Timer();
       long delayMs = delayTicks * 50L;
       long periodMs = periodTicks * 50L;
+      Runnable wrapped = ErrorHandler.wrapTask("Repeating task (period=" + periodTicks + ")", task);
       timer.scheduleAtFixedRate(new java.util.TimerTask() {
         /** Runs the task. */
         @Override
         public void run() {
-          task.run();
+          wrapped.run();
         }
       }, delayMs, periodMs);
       scheduledTasks.put(id, timer);
@@ -354,7 +375,7 @@ public class HyperFactionsPlugin extends JavaPlugin {
         try {
           hyperFactions.getPowerManager().tickPowerRegen();
         } catch (Exception e) {
-          Logger.severe("Error in power regen tick", e);
+          ErrorHandler.report("Error in power regen tick", e);
         }
       },
       60, 60, TimeUnit.SECONDS
@@ -366,7 +387,7 @@ public class HyperFactionsPlugin extends JavaPlugin {
         try {
           hyperFactions.getCombatTagManager().tickDecay();
         } catch (Exception e) {
-          Logger.severe("Error in combat tag tick", e);
+          ErrorHandler.report("Error in combat tag tick", e);
         }
       },
       1, 1, TimeUnit.SECONDS
@@ -379,7 +400,7 @@ public class HyperFactionsPlugin extends JavaPlugin {
         try {
           hyperFactions.getClaimManager().tickClaimDecay();
         } catch (Exception e) {
-          Logger.severe("Error in claim decay tick", e);
+          ErrorHandler.report("Error in claim decay tick", e);
         }
       },
       1, 1, TimeUnit.HOURS  // Initial delay of 1 hour, then every hour
@@ -394,7 +415,7 @@ public class HyperFactionsPlugin extends JavaPlugin {
         try {
           com.hyperfactions.protection.ProtectionMessageDebounce.cleanup();
         } catch (Exception e) {
-          Logger.severe("Error in debounce cleanup tick", e);
+          ErrorHandler.report("Error in debounce cleanup tick", e);
         }
       },
       30, 30, TimeUnit.SECONDS

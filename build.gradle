@@ -3,6 +3,7 @@ plugins {
     id 'checkstyle'
     id 'maven-publish'
     id 'com.gradleup.shadow' version '9.3.1'
+    id 'io.sentry.jvm.gradle' version '6.1.0'
 }
 
 group = 'com.hyperfactions'
@@ -70,6 +71,9 @@ dependencies {
 
     // JSON handling
     implementation 'com.google.code.gson:gson:2.11.0'
+
+    // Sentry error tracking (bundled in shadow JAR)
+    implementation 'io.sentry:sentry:8.33.0'
 
     // PlaceholderAPI Hytale (soft dependency - compileOnly)
     compileOnly 'at.helpch:placeholderapi-hytale:1.0.4'
@@ -144,6 +148,7 @@ shadowJar {
 
     // Relocate dependencies to avoid conflicts
     relocate 'com.google.gson', 'com.hyperfactions.lib.gson'
+    relocate 'io.sentry', 'com.hyperfactions.lib.sentry'
 
     // Don't minimize - it removes Gson's inner classes needed at runtime
 }
@@ -168,6 +173,7 @@ tasks.withType(Checkstyle).configureEach {
 
 build {
     dependsOn shadowJar
+    finalizedBy tasks.matching { it.name == 'sentryUploadSourceBundleJava' }
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -194,6 +200,11 @@ tasks.named('compileJava') {
     }
 }
 
+// Sentry tasks use the same generated sources dir as generateBuildInfo — declare dependencies
+tasks.matching { it.name.startsWith('sentry') || it.name.startsWith('generateSentry') }.configureEach {
+    dependsOn 'generateBuildInfo'
+}
+
 // Dev build task - clean build with version set to 'dev'
 tasks.register('buildDev') {
     group = 'build'
@@ -203,6 +214,18 @@ tasks.register('buildDev') {
 
 tasks.named('build') {
     mustRunAfter 'clean'
+}
+
+// Sentry source context upload (reads token from .sentry-auth-token file or SENTRY_AUTH_TOKEN env var)
+sentry {
+    includeSourceContext = true
+    org = "hypersystems"
+    projectName = "hyperfactions"
+    authToken = {
+        def tokenFile = file('.sentry-auth-token')
+        if (tokenFile.exists()) return tokenFile.text.trim()
+        return System.getenv("SENTRY_AUTH_TOKEN")
+    }()
 }
 
 // Maven publication for JitPack (publishes API classes, not the shadow JAR)

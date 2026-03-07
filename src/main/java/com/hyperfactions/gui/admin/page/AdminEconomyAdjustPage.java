@@ -9,6 +9,7 @@ import com.hyperfactions.gui.admin.AdminNavBarHelper;
 import com.hyperfactions.gui.admin.data.AdminEconomyAdjustData;
 import com.hyperfactions.manager.EconomyManager;
 import com.hyperfactions.manager.FactionManager;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -149,7 +150,7 @@ public class AdminEconomyAdjustPage extends InteractiveCustomUIPage<AdminEconomy
         economyManager.adminAdjust(factionId, amount, playerRef.getUuid(), desc)
             .thenAccept(result -> handleResult(result, player, ref, store, playerRef))
             .exceptionally(ex -> {
-              Logger.severe("Admin economy adjust failed for faction %s", ex, factionId);
+              ErrorHandler.report(String.format("Admin economy adjust failed for faction %s", factionId), ex);
               showError("An error occurred.");
               return null;
             });
@@ -172,7 +173,7 @@ public class AdminEconomyAdjustPage extends InteractiveCustomUIPage<AdminEconomy
         economyManager.setBalance(factionId, newBalance, playerRef.getUuid())
             .thenAccept(result -> handleResult(result, player, ref, store, playerRef))
             .exceptionally(ex -> {
-              Logger.severe("Admin economy set balance failed for faction %s", ex, factionId);
+              ErrorHandler.report(String.format("Admin economy set balance failed for faction %s", factionId), ex);
               showError("An error occurred.");
               return null;
             });

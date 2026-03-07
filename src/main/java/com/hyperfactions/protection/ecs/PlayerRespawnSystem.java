@@ -3,6 +3,7 @@ package com.hyperfactions.protection.ecs;
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.util.ChunkUtil;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.ComponentType;
@@ -120,7 +121,7 @@ public class PlayerRespawnSystem extends RefChangeSystem<EntityStore, DeathCompo
           playerRef.getUuid());
       }
     } catch (Exception e) {
-      Logger.severe("Error handling player respawn in ECS system", e);
+      ErrorHandler.report("Error handling player respawn in ECS system", e);
     }
   }
 }

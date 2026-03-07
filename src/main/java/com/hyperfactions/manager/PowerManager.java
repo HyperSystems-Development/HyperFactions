@@ -9,6 +9,7 @@ import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.PlayerPower;
 import com.hyperfactions.storage.PlayerStorage;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -61,9 +62,8 @@ public class PowerManager {
       // SAFETY CHECK: If we had data before but loading returned nothing,
       // this is likely a load failure - DO NOT clear existing data
       if (previousCount > 0 && loaded.isEmpty()) {
-        Logger.severe("CRITICAL: Load returned 0 player power records but %d were previously loaded!",
-          previousCount);
-        Logger.severe("Keeping existing in-memory data to prevent data loss.");
+        String msg = String.format("CRITICAL: Load returned 0 player power records but %d were previously loaded! Keeping existing in-memory data.", previousCount);
+        ErrorHandler.report(msg, (Exception) null);
         return;
       }
 
@@ -87,7 +87,7 @@ public class PowerManager {
       Logger.info("[Startup] Loaded %d player power records (%d merged, %d kept in-memory defaults)",
         loaded.size(), merged, loaded.size() - merged);
     }).exceptionally(ex -> {
-      Logger.severe("CRITICAL: Exception during player power loading - keeping existing data", (Throwable) ex);
+      ErrorHandler.report("CRITICAL: Exception during player power loading - keeping existing data", ex);
       return null;
     });
   }
@@ -608,12 +608,12 @@ public class PowerManager {
             double power = entry.getValue().getAsDouble();
             hardcoreFactionPower.put(factionId, power);
           } catch (Exception e) {
-            Logger.warn("Invalid hardcore power entry: %s", entry.getKey());
+            ErrorHandler.report(String.format("Invalid hardcore power entry: %s", entry.getKey()), e);
           }
         }
         Logger.info("[Startup] Loaded hardcore power for %d factions", hardcoreFactionPower.size());
       } catch (Exception e) {
-        Logger.severe("Failed to load hardcore power data: %s", e.getMessage());
+        ErrorHandler.report("Failed to load hardcore power data", e);
       }
     });
   }
@@ -632,7 +632,7 @@ public class PowerManager {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         Files.writeString(file, gson.toJson(obj));
       } catch (IOException e) {
-        Logger.severe("Failed to save hardcore power data: %s", e.getMessage());
+        ErrorHandler.report("Failed to save hardcore power data", e);
       }
     });
   }

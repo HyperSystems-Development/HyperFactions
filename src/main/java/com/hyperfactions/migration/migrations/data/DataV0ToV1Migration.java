@@ -4,6 +4,7 @@ import com.hyperfactions.migration.Migration;
 import com.hyperfactions.migration.MigrationOptions;
 import com.hyperfactions.migration.MigrationResult;
 import com.hyperfactions.migration.MigrationType;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.io.IOException;
 import java.nio.file.*;
@@ -164,7 +165,7 @@ public class DataV0ToV1Migration implements Migration {
 
     } catch (Exception e) {
       Duration duration = Duration.between(startTime, Instant.now());
-      Logger.severe("[Migration] Data migration v0→v1 failed: %s", e.getMessage());
+      ErrorHandler.report("[Migration] Data migration v0→v1 failed", e);
       return MigrationResult.failure(
         id(), fromVersion(), toVersion(), options.backupPath(),
         e.getMessage(), false, duration

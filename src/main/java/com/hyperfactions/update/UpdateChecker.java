@@ -3,6 +3,7 @@ package com.hyperfactions.update;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -211,7 +212,7 @@ public final class UpdateChecker {
         }
 
       } catch (Exception e) {
-        Logger.warn("[Update:%s] Failed to check for updates: %s", artifactName, e.getMessage());
+        ErrorHandler.report(String.format("[Update:%s] Failed to check for updates", artifactName), e);
         return null;
       }
     });
@@ -287,8 +288,7 @@ public final class UpdateChecker {
         return updateFile;
 
       } catch (Exception e) {
-        Logger.warn("[Update:%s] Failed to download update: %s", artifactName, e.getMessage());
-        e.printStackTrace();
+        ErrorHandler.report(String.format("[Update:%s] Failed to download update", artifactName), e);
         return null;
       }
     });
@@ -622,7 +622,7 @@ public final class UpdateChecker {
       return new RollbackResult(true, backupVersion, info != null ? info.toVersion() : null, null);
 
     } catch (IOException e) {
-      Logger.severe("[Update:%s] Rollback failed: %s", artifactName, e.getMessage());
+      ErrorHandler.report(String.format("[Update:%s] Rollback failed", artifactName), e);
       return new RollbackResult(false, backupVersion, null, "Failed to rollback: " + e.getMessage());
     }
   }

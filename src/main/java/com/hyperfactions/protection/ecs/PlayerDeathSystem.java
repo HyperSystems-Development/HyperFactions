@@ -12,6 +12,7 @@ import com.hyperfactions.data.ZoneFlags;
 import com.hyperfactions.manager.CombatTagManager;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.util.ChunkUtil;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.ComponentType;
@@ -190,7 +191,7 @@ public class PlayerDeathSystem extends RefChangeSystem<EntityStore, DeathCompone
       // Death location announcement for gravestone integration
       announceDeathLocation(victimUuid, playerRef, store, commandBuffer, ref);
     } catch (Exception e) {
-      Logger.severe("Error handling player death in ECS system", e);
+      ErrorHandler.report("Error handling player death in ECS system", e);
     }
   }
 

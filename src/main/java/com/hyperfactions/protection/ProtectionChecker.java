@@ -14,6 +14,7 @@ import com.hyperfactions.integration.protection.GravestoneIntegration;
 import com.hyperfactions.integration.protection.OrbisMixinsIntegration;
 import com.hyperfactions.manager.*;
 import com.hyperfactions.util.ChunkUtil;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.util.UUID;
 import java.util.function.Supplier;
@@ -319,8 +320,8 @@ public class ProtectionChecker {
       return ProtectionResult.DENIED_NEUTRAL_CLAIM;
     } catch (Exception e) {
       // Fail-closed: deny on any exception to prevent unauthorized actions
-      Logger.severe("Protection check error (fail-closed) for player %s at %s/%d/%d type=%s",
-        e, playerUuid, world, chunkX, chunkZ, type);
+      ErrorHandler.report(String.format("Protection check error (fail-closed) for player %s at %s/%d/%d type=%s",
+        playerUuid, world, chunkX, chunkZ, type), e);
       return ProtectionResult.DENIED_NO_PERMISSION;
     }
   }
@@ -882,8 +883,8 @@ public class ProtectionChecker {
       return getActionPhrase(factionType) + " in claimed territory.";
     } catch (Exception e) {
       // Fail-closed: deny on any exception to prevent unauthorized actions
-      Logger.severe("Protection check error (fail-closed) for player %s at %s/%d/%d/%d type=%s",
-        e, playerUuid, worldName, x, y, z, factionType);
+      ErrorHandler.report(String.format("Protection check error (fail-closed) for player %s at %s/%d/%d/%d type=%s",
+        playerUuid, worldName, x, y, z, factionType), e);
       return "Protection error — action blocked for safety.";
     }
   }
@@ -1714,7 +1715,7 @@ public class ProtectionChecker {
 
       return true; // Hide based on config + relation
     } catch (Exception e) {
-      Logger.severe("Map marker visibility check error (fail-open)", e);
+      ErrorHandler.report("Map marker visibility check error (fail-open)", e);
       return false;
     }
   }
@@ -1790,7 +1791,7 @@ public class ProtectionChecker {
 
       return true;
     } catch (Exception e) {
-      Logger.severe("Shared marker visibility check error (fail-open)", e);
+      ErrorHandler.report("Shared marker visibility check error (fail-open)", e);
       return false;
     }
   }

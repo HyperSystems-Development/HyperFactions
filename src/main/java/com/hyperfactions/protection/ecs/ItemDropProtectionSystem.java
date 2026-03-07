@@ -7,6 +7,7 @@ import com.hyperfactions.protection.ProtectionListener;
 import com.hyperfactions.protection.ProtectionMessageDebounce;
 import com.hyperfactions.protection.zone.ZoneInteractionProtection;
 import com.hyperfactions.util.ChunkUtil;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.Archetype;
 import com.hypixel.hytale.component.ArchetypeChunk;
@@ -112,7 +113,7 @@ public class ItemDropProtectionSystem extends EntityEventSystem<EntityStore, Dro
     } catch (Exception e) {
       // Fail-closed: cancel on any exception to prevent unauthorized item drop
       event.setCancelled(true);
-      Logger.severe("Item drop cancelled due to protection error (fail-closed)", e);
+      ErrorHandler.report("Item drop cancelled due to protection error (fail-closed)", e);
     }
   }
 

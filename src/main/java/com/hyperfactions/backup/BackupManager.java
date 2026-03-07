@@ -2,6 +2,8 @@ package com.hyperfactions.backup;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.config.ConfigManager;
+import com.hyperfactions.storage.StorageUtils;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -87,7 +89,7 @@ public class BackupManager {
       initialized = true;
       Logger.info("[Backup] Initialized, backup directory: %s", backupsDir);
     } catch (IOException e) {
-      Logger.severe("[Backup] Failed to create backups directory: %s", e.getMessage());
+      ErrorHandler.report("[Backup] Failed to create backups directory", e);
     }
   }
 
@@ -192,7 +194,8 @@ public class BackupManager {
               type.getDisplayName(), success.metadata().name(), success.metadata().getFormattedSize());
             performRotation();
           } else if (result instanceof BackupResult.Failure failure) {
-            Logger.severe("[Backup] %s backup failed: %s", type.getDisplayName(), failure.error());
+            String msg = String.format("[Backup] %s backup failed: %s", type.getDisplayName(), failure.error());
+            ErrorHandler.report(msg, (Exception) null);
           }
         } finally {
           synchronized (backupLock) {
@@ -201,7 +204,7 @@ public class BackupManager {
           }
         }
       }).exceptionally(ex -> {
-        Logger.severe("[Backup] Backup task failed with exception: %s", ex.getMessage());
+        ErrorHandler.report("[Backup] Backup task failed with exception", ex);
         synchronized (backupLock) {
           backupInProgress = false;
           backupLock.notifyAll();
@@ -213,7 +216,7 @@ public class BackupManager {
         backupInProgress = false;
         backupLock.notifyAll();
       }
-      Logger.severe("[Backup] Failed to start backup: %s", e.getMessage());
+      ErrorHandler.report("[Backup] Failed to start backup", e);
     }
   }
 
@@ -339,7 +342,7 @@ public class BackupManager {
         try {
           Files.deleteIfExists(backupFile);
         } catch (IOException ignored) {}
-        Logger.severe("[Backup] Failed to create backup: %s", e.getMessage());
+        ErrorHandler.report("[Backup] Failed to create backup", e);
         return new BackupResult.Failure("Failed to create backup: " + e.getMessage());
       }
     });
@@ -383,7 +386,7 @@ public class BackupManager {
         return new RestoreResult.Success(backupName, filesRestored);
 
       } catch (Exception e) {
-        Logger.severe("[Backup] Failed to restore backup: %s", e.getMessage());
+        ErrorHandler.report("[Backup] Failed to restore backup", e);
         return new RestoreResult.Failure("Failed to restore backup: " + e.getMessage());
       }
     });
@@ -407,7 +410,7 @@ public class BackupManager {
         Logger.info("[Backup] Deleted backup: %s", backupName);
         return true;
       } catch (Exception e) {
-        Logger.severe("[Backup] Failed to delete backup '%s': %s", backupName, e.getMessage());
+        ErrorHandler.report(String.format("[Backup] Failed to delete backup '%s'", backupName), e);
         return false;
       }
     });
@@ -446,7 +449,7 @@ public class BackupManager {
         }
       }
     } catch (IOException e) {
-      Logger.severe("[Backup] Failed to list backups: %s", e.getMessage());
+      ErrorHandler.report("[Backup] Failed to list backups", e);
     }
 
     // Sort by timestamp, newest first

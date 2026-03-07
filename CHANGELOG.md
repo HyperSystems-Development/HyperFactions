@@ -7,22 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Improved
+### Added
 
-- **Specific protection denial messages**: All protection denial messages now describe the exact action being blocked (e.g., "You can't open containers in enemy territory." instead of generic "You don't have permission to do that.") with territory context (Ally/Enemy/Claimed territory, SafeZone/WarZone). Applied across all protection systems: block break/place/use, harvest/pickup, fluid place/refill, NPC interact, crop harvest, item drop, item pickup, mount
-- **Item drop/pickup denial messages**: Item drop and item pickup protection now send debounced, territory-aware denial messages instead of hardcoded text or silent denial
-- **Centralized denial message delivery**: New `ProtectionMessageDebounce.sendDenial()` consolidates the repeated `Message.raw(...).color("#FF5555")` + debounce pattern into a single call across all 12 protection systems
-- **Eliminated double protection checks**: `HarvestPickupProtectionSystem` and `BlockUseProtectionSystem` (crop path) no longer call `canInteract()` twice per event — once for the boolean and again for the message. Now uses single-call `checkItemPickup()` pattern
-- **Consistent denial message phrasing**: All zone denial messages standardized to "You can't ..." (matching territory denial phrasing) instead of mixed "You cannot ..."/"You can't ..."
+**Sentry Error Tracking Integration**
+- Sentry SDK (v8.33.0) bundled for automatic error reporting to Sentry dashboard
+- Non-blocking async event delivery — Sentry never impacts server performance
+- All Sentry operations wrapped in try/catch — failures never crash the server
+- Sentry config nested under `config/debug.json` → `"sentry"` section (no separate file)
+- Auto-migration: existing `config/sentry.json` values are read into `debug.json` on first load, old file deleted
+- DSN pre-configured with default — works out of the box
+- Source context upload via Sentry Gradle plugin (stack traces show source code in Sentry)
+- HyperFactions frames highlighted in stack traces via `addInAppInclude`
+- New admin command: `/f admin sentry` — view status, enable/disable error reporting at runtime
+- New admin command: `/f admin sentrytest` — sends a test error with stack trace to verify integration
+- Sentry cleanly flushes pending events on server shutdown (2s timeout)
+- Auth token stored in `.sentry-auth-token` file (gitignored) with env var fallback
 
-### Fixed
-
-- **Chunk map GUI performance**: Reduced terrain map generation time by using bulk pixel writes (row-at-a-time instead of per-pixel `setRGB`) and faster PNG compression. Added timing debug logs for future diagnostics
-- **Zero power on faction creation**: New players who joined during server startup could get 0 power due to a race condition where `loadAll()` wiped in-flight defaults. Now merges loaded data instead of clearing the cache, and persists defaults immediately on player join
-- **Gravestone enemy loot in own territory**: `enemiesCanLootInOwnTerritory` config option was declared but never checked — enemies could always loot gravestones in the territory owner's claim regardless of the setting. Now properly checks faction relation between the accessor and gravestone owner when in own territory
-- **Backup file walk race condition**: `addDirectoryToZip()` crashed with `NoSuchFileException` when a `.bak` file vanished (deleted by concurrent `writeAtomic()`) between directory listing and attribute read during `Files.walkFileTree()` ([HYPERFACTIONS-3](https://hypersystems.sentry.io/issues/HYPERFACTIONS-3))
-- **Backup cleanup race condition**: Pre-backup `cleanupOrphanedFiles()` could delete in-flight temp files from concurrent `writeAtomic()` calls, causing `NoSuchFileException` during player data saves ([HYPERFACTIONS-4](https://hypersystems.sentry.io/issues/HYPERFACTIONS-4))
-- **Orphan cleanup safety**: `cleanupOrphanedFiles()` now skips `.tmp` files younger than 5 seconds to prevent racing with active writes
+**Global Error Handling via ErrorHandler**
+- New `ErrorHandler` utility class — centralized error handling that logs to console AND reports to Sentry
+- 6 static methods covering all error patterns: `report()`, `report(@Nullable)`, `wrapTask()`, `guard()`, `runSafely()` (2 overloads)
+- ~190 `Logger.severe()` calls in catch blocks across ~50 files now route through ErrorHandler to Sentry
+- Scheduled/timer tasks wrapped with `wrapTask()` — exceptions no longer silently kill scheduler threads
+- CompletableFuture chains guarded with `guard()` — async errors no longer swallowed
+- Shutdown sequence steps isolated with `runSafely()` — one failure doesn't skip remaining cleanup
+- `WriteResult.Failure` storage errors (with `@Nullable Exception cause`) now report to Sentry
+- Pre-init error buffering: errors during config/data loading (before Sentry initializes) are buffered and flushed once Sentry is ready, tagged with `pre_init: true`
 
 **World Map Player & Marker Hiding**
 - Configurable world map visibility: hide enemy/neutral players and shared markers independently via `worldMap` config section
@@ -44,6 +53,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - 7 new HP-Mixin 1.2.0 hook wrappers: MountHook, BarterTradeHook, FluidSpreadHook, PrefabSpawnHook, ProjectileLaunchHook, CraftingResourceHook, MapMarkerFilterHook
 - Block type context for protection decisions — reads `hyperprotect.context.block_id` and `hyperprotect.context.block_state` from HP-Mixin bridge
 - NPC role context — reads `hyperprotect.context.npc_role` from HP-Mixin bridge for targeted NPC protection
+
+### Improved
+
+- **Specific protection denial messages**: All protection denial messages now describe the exact action being blocked (e.g., "You can't open containers in enemy territory." instead of generic "You don't have permission to do that.") with territory context (Ally/Enemy/Claimed territory, SafeZone/WarZone). Applied across all protection systems: block break/place/use, harvest/pickup, fluid place/refill, NPC interact, crop harvest, item drop, item pickup, mount
+- **Item drop/pickup denial messages**: Item drop and item pickup protection now send debounced, territory-aware denial messages instead of hardcoded text or silent denial
+- **Centralized denial message delivery**: New `ProtectionMessageDebounce.sendDenial()` consolidates the repeated `Message.raw(...).color("#FF5555")` + debounce pattern into a single call across all 12 protection systems
+- **Eliminated double protection checks**: `HarvestPickupProtectionSystem` and `BlockUseProtectionSystem` (crop path) no longer call `canInteract()` twice per event — once for the boolean and again for the message. Now uses single-call `checkItemPickup()` pattern
+- **Consistent denial message phrasing**: All zone denial messages standardized to "You can't ..." (matching territory denial phrasing) instead of mixed "You cannot ..."/"You can't ..."
+
+### Fixed
+
+- **Chunk map GUI performance**: Reduced terrain map generation time by using bulk pixel writes (row-at-a-time instead of per-pixel `setRGB`) and faster PNG compression. Added timing debug logs for future diagnostics
+- **Zero power on faction creation**: New players who joined during server startup could get 0 power due to a race condition where `loadAll()` wiped in-flight defaults. Now merges loaded data instead of clearing the cache, and persists defaults immediately on player join
+- **Gravestone enemy loot in own territory**: `enemiesCanLootInOwnTerritory` config option was declared but never checked — enemies could always loot gravestones in the territory owner's claim regardless of the setting. Now properly checks faction relation between the accessor and gravestone owner when in own territory
+- **Backup file walk race condition**: `addDirectoryToZip()` crashed with `NoSuchFileException` when a `.bak` file vanished (deleted by concurrent `writeAtomic()`) between directory listing and attribute read during `Files.walkFileTree()` ([HYPERFACTIONS-3](https://hypersystems.sentry.io/issues/HYPERFACTIONS-3))
+- **Backup cleanup race condition**: Pre-backup `cleanupOrphanedFiles()` could delete in-flight temp files from concurrent `writeAtomic()` calls, causing `NoSuchFileException` during player data saves ([HYPERFACTIONS-4](https://hypersystems.sentry.io/issues/HYPERFACTIONS-4))
+- **Orphan cleanup safety**: `cleanupOrphanedFiles()` now skips `.tmp` files younger than 5 seconds to prevent racing with active writes
 
 ### Changed
 

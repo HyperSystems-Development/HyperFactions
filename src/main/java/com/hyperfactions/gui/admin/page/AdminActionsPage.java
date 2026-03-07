@@ -5,6 +5,7 @@ import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.admin.AdminNavBarHelper;
 import com.hyperfactions.gui.admin.data.AdminActionsData;
 import com.hyperfactions.storage.PlayerStorage;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
@@ -120,7 +121,7 @@ public class AdminActionsPage extends InteractiveCustomUIPage<AdminActionsData> 
                 playerRef.getUsername(), allUuids.size());
           } catch (Exception e) {
             player.sendMessage(MessageUtil.adminError("Failed to reset K/D: " + e.getMessage()));
-            Logger.severe("[Admin] Global K/D reset failed: %s", e.getMessage());
+            ErrorHandler.report("[Admin] Global K/D reset failed", e);
           }
 
           // Reopen page to reset state

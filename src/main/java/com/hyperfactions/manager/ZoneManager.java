@@ -5,6 +5,7 @@ import com.hyperfactions.data.Zone;
 import com.hyperfactions.data.ZoneFlags;
 import com.hyperfactions.data.ZoneType;
 import com.hyperfactions.storage.ZoneStorage;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -125,7 +126,7 @@ public class ZoneManager {
       try {
         onZoneChangeCallback.accept(affectedChunks);
       } catch (Exception e) {
-        Logger.warn("Error in zone change callback: %s", e.getMessage());
+        ErrorHandler.report("Error in zone change callback", e);
       }
     }
   }
@@ -147,9 +148,8 @@ public class ZoneManager {
       // SAFETY CHECK: If we had data before but loading returned nothing,
       // this is likely a load failure - DO NOT clear existing data
       if (previousZoneCount > 0 && loaded.isEmpty()) {
-        Logger.severe("CRITICAL: Load returned 0 zones but %d were previously loaded!",
-          previousZoneCount);
-        Logger.severe("Keeping existing in-memory data to prevent data loss.");
+        String msg = String.format("CRITICAL: Load returned 0 zones but %d were previously loaded! Keeping existing in-memory data.", previousZoneCount);
+        ErrorHandler.report(msg, (Exception) null);
         return;
       }
 
@@ -179,7 +179,7 @@ public class ZoneManager {
 
       Logger.info("[Startup] Loaded %d zones with %d total chunks", zonesById.size(), zoneIndex.size());
     }).exceptionally(ex -> {
-      Logger.severe("CRITICAL: Exception during zone loading - keeping existing data", (Throwable) ex);
+      ErrorHandler.report("CRITICAL: Exception during zone loading - keeping existing data", ex);
       return null;
     });
   }

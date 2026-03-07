@@ -15,6 +15,7 @@ import com.hyperfactions.gui.shared.page.*;
 import com.hyperfactions.gui.test.ButtonTestPage;
 import com.hyperfactions.manager.*;
 import com.hyperfactions.storage.PlayerStorage;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -56,8 +57,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] Admin TagModalPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open admin TagModalPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open admin TagModalPage", e);
     }
   }
 
@@ -80,8 +80,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] Admin DescriptionModalPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open admin DescriptionModalPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open admin DescriptionModalPage", e);
     }
   }
 
@@ -105,8 +104,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] Admin RenameModalPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open admin RenameModalPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open admin RenameModalPage", e);
     }
   }
 
@@ -149,8 +147,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminDashboardPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminDashboardPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminDashboardPage", e);
     }
   }
 
@@ -175,8 +172,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminActionsPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminActionsPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminActionsPage", e);
     }
   }
 
@@ -203,8 +199,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminFactionsPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminFactionsPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminFactionsPage", e);
     }
   }
 
@@ -232,8 +227,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminPlayersPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminPlayersPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminPlayersPage", e);
     }
   }
 
@@ -264,8 +258,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminDisbandConfirmPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminDisbandConfirmPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminDisbandConfirmPage", e);
     }
   }
 
@@ -297,8 +290,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminFactionInfoPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminFactionInfoPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminFactionInfoPage", e);
     }
   }
 
@@ -330,8 +322,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminEconomyPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminEconomyPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminEconomyPage", e);
     }
   }
 
@@ -365,8 +356,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminEconomyAdjustPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminEconomyAdjustPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminEconomyAdjustPage", e);
     }
   }
 
@@ -396,8 +386,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminFactionMembersPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminFactionMembersPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminFactionMembersPage", e);
     }
   }
 
@@ -434,8 +423,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminPlayerInfoPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminPlayerInfoPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminPlayerInfoPage", e);
     }
   }
 
@@ -465,8 +453,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminFactionRelationsPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminFactionRelationsPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminFactionRelationsPage", e);
     }
   }
 
@@ -495,8 +482,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminFactionSettingsPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminFactionSettingsPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminFactionSettingsPage", e);
     }
   }
 
@@ -530,8 +516,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminUnclaimAllConfirmPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminUnclaimAllConfirmPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminUnclaimAllConfirmPage", e);
     }
   }
 
@@ -566,8 +551,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, zonePage);
       Logger.debug("[GUI] AdminZonePage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminZonePage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminZonePage", e);
     }
   }
 
@@ -589,8 +573,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminConfigPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminConfigPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminConfigPage", e);
     }
   }
 
@@ -612,8 +595,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminBackupsPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminBackupsPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminBackupsPage", e);
     }
   }
 
@@ -639,8 +621,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminActivityLogPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminActivityLogPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminActivityLogPage", e);
     }
   }
 
@@ -662,8 +643,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminUpdatesPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminUpdatesPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminUpdatesPage", e);
     }
   }
 
@@ -685,8 +665,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminHelpPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminHelpPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminHelpPage", e);
     }
   }
 
@@ -707,8 +686,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminVersionPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminVersionPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminVersionPage", e);
     }
   }
 
@@ -798,8 +776,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] CreateZoneWizardPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open CreateZoneWizardPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open CreateZoneWizardPage", e);
     }
   }
 
@@ -846,8 +823,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminZoneMapPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminZoneMapPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminZoneMapPage", e);
     }
   }
 
@@ -879,8 +855,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminZonePropertiesPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminZonePropertiesPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminZonePropertiesPage", e);
     }
   }
 
@@ -909,8 +884,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminZoneSettingsPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminZoneSettingsPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminZoneSettingsPage", e);
     }
   }
 
@@ -947,8 +921,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminZoneSettingsPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminZoneSettingsPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminZoneSettingsPage", e);
     }
   }
 
@@ -978,8 +951,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminZoneIntegrationFlagsPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open AdminZoneIntegrationFlagsPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open AdminZoneIntegrationFlagsPage", e);
     }
   }
 
@@ -1011,8 +983,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] ZoneRenameModalPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open ZoneRenameModalPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open ZoneRenameModalPage", e);
     }
   }
 
@@ -1065,8 +1036,7 @@ class AdminPageOpener {
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] ZoneChangeTypeModalPage opened successfully");
     } catch (Exception e) {
-      Logger.severe("[GUI] Failed to open ZoneChangeTypeModalPage: %s", e.getMessage());
-      e.printStackTrace();
+      ErrorHandler.report("[GUI] Failed to open ZoneChangeTypeModalPage", e);
     }
   }
 

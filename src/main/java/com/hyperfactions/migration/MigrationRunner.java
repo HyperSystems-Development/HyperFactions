@@ -2,6 +2,7 @@ package com.hyperfactions.migration;
 
 import com.hyperfactions.backup.BackupMetadata;
 import com.hyperfactions.backup.BackupType;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -77,7 +78,7 @@ public class MigrationRunner {
       results.add(result);
 
       if (!result.success()) {
-        Logger.severe("[Migration] Migration '%s' failed: %s", migration.id(), result.errorMessage());
+        ErrorHandler.report(String.format("[Migration] Migration '%s' failed: %s", migration.id(), result.errorMessage()), (Exception) null);
         if (result.rolledBack()) {
           Logger.info("[Migration] Successfully rolled back to backup");
         }
@@ -113,7 +114,7 @@ public class MigrationRunner {
       Logger.info("[Migration] Created backup at: %s", backupPath);
     } catch (IOException e) {
       Duration duration = Duration.between(startTime, Instant.now());
-      Logger.severe("[Migration] Failed to create backup: %s", e.getMessage());
+      ErrorHandler.report("[Migration] Failed to create backup", e);
       return MigrationResult.failure(
         migration.id(),
         migration.fromVersion(),
@@ -148,7 +149,7 @@ public class MigrationRunner {
             duration
           );
         } catch (IOException rollbackError) {
-          Logger.severe("[Migration] Rollback failed: %s", rollbackError.getMessage());
+          ErrorHandler.report("[Migration] Rollback failed", rollbackError);
           Duration duration = Duration.between(startTime, Instant.now());
           return MigrationResult.failure(
             migration.id(),
@@ -165,7 +166,7 @@ public class MigrationRunner {
       return result;
 
     } catch (Exception e) {
-      Logger.severe("[Migration] Migration threw exception: %s", e.getMessage());
+      ErrorHandler.report("[Migration] Migration threw exception", e);
 
       // Attempt rollback
       boolean rolledBack = false;
@@ -174,7 +175,7 @@ public class MigrationRunner {
           rollback(migration, backupPath);
           rolledBack = true;
         } catch (IOException rollbackError) {
-          Logger.severe("[Migration] Rollback failed: %s", rollbackError.getMessage());
+          ErrorHandler.report("[Migration] Rollback failed", rollbackError);
         }
       }
 
