@@ -128,6 +128,19 @@ public class ProtectionListener {
   }
 
   /**
+   * Gets a denial message with specific action context.
+   *
+   * @param result the protection result
+   * @param type   the interaction type for specific messaging
+   * @return the denial message
+   */
+  @NotNull
+  public String getDenialMessage(@NotNull ProtectionChecker.ProtectionResult result,
+                  @NotNull ProtectionChecker.InteractionType type) {
+    return hyperFactions.getProtectionChecker().getDenialMessage(result, type);
+  }
+
+  /**
    * Gets the denial message for a PvP result.
    *
    * @param result the PvP result

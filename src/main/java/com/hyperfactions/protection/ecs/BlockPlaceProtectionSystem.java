@@ -85,7 +85,8 @@ public class BlockPlaceProtectionSystem extends EntityEventSystem<EntityStore, P
 
       if (blocked) {
         event.setCancelled(true);
-        ProtectionMessageDebounce.sendIfNotOnCooldown(player, "block_place", Message.raw(protectionListener.getDenialMessage(result)).color("#FF5555"));
+        ProtectionMessageDebounce.sendIfNotOnCooldown(player, "block_place",
+          Message.raw(protectionListener.getDenialMessage(result, ProtectionChecker.InteractionType.BUILD)).color("#FF5555"));
 
         // Anti-pillar: teleport player to their current position with velocity reset.
         // This prevents exploiting client-side block prediction to gain height on ghost blocks.

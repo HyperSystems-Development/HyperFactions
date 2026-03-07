@@ -95,7 +95,7 @@ public class NpcInteractionProtectionHandler {
 
       if (blocked) {
         event.setCancelled(true);
-        String denyMsg = hyperFactions.getProtectionChecker().getDenialMessage(result);
+        String denyMsg = hyperFactions.getProtectionChecker().getDenialMessage(result, ProtectionChecker.InteractionType.NPC_TAME);
         ProtectionMessageDebounce.sendIfNotOnCooldown(player, "npc_interact", Message.raw(denyMsg).color("#FF5555"));
       }
     } catch (Exception e) {

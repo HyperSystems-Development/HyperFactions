@@ -96,7 +96,8 @@ public class BlockBreakProtectionSystem extends EntityEventSystem<EntityStore, B
 
       if (blocked) {
         event.setCancelled(true);
-        ProtectionMessageDebounce.sendIfNotOnCooldown(player, "block_break", Message.raw(protectionListener.getDenialMessage(result)).color("#FF5555"));
+        ProtectionMessageDebounce.sendIfNotOnCooldown(player, "block_break",
+          Message.raw(protectionListener.getDenialMessage(result, ProtectionChecker.InteractionType.BUILD)).color("#FF5555"));
       }
     } catch (Exception e) {
       // Fail-closed: cancel on any exception to prevent unauthorized block breaks

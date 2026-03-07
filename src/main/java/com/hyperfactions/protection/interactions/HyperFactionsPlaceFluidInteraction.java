@@ -60,7 +60,7 @@ public class HyperFactionsPlaceFluidInteraction extends PlaceFluidInteraction {
               playerRef.getUsername(), targetBlock.getX(), targetBlock.getY(),
               targetBlock.getZ(), world.getName(), result);
           ProtectionMessageDebounce.sendIfNotOnCooldown(playerRef, "place_fluid",
-              Message.raw(checker.getDenialMessage(result)).color("#FF5555"));
+              Message.raw(checker.getDenialMessage(result, ProtectionChecker.InteractionType.BUILD)).color("#FF5555"));
           return;
         }
 

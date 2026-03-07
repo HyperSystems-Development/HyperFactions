@@ -81,7 +81,7 @@ public class HyperFactionsHarvestCropInteraction extends HarvestCropInteraction 
               playerRef.getUsername(), targetBlock.getX(), targetBlock.getY(),
               targetBlock.getZ(), world.getName(), result);
           ProtectionMessageDebounce.sendIfNotOnCooldown(playerRef, "crop_harvest",
-              Message.raw(checker.getDenialMessage(result)).color("#FF5555"));
+              Message.raw(checker.getDenialMessage(result, ProtectionChecker.InteractionType.INTERACT)).color("#FF5555"));
           return;
         }
       }

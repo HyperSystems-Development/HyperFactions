@@ -146,7 +146,8 @@ public class HarvestPickupProtectionSystem extends EntityEventSystem<EntityStore
           playerRef.getUuid(), worldName, x, z,
           ProtectionChecker.InteractionType.INTERACT
         );
-        ProtectionMessageDebounce.sendIfNotOnCooldown(player, "harvest_pickup", Message.raw(protectionListener.getDenialMessage(result)).color("#FF5555"));
+        ProtectionMessageDebounce.sendIfNotOnCooldown(player, "harvest_pickup",
+          Message.raw(protectionListener.getDenialMessage(result, ProtectionChecker.InteractionType.INTERACT)).color("#FF5555"));
         Logger.debugInteraction("[ECS:HarvestPickup] BLOCKED by faction: %s for player %s", result, playerRef.getUuid());
       }
     } catch (Exception e) {

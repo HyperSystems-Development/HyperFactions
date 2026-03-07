@@ -115,12 +115,12 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
         );
         if (blocked) {
           event.setCancelled(true);
-          ProtectionMessageDebounce.sendIfNotOnCooldown(player, "block_interact", Message.raw(protectionListener.getDenialMessage(
-            hyperFactions.getProtectionChecker().canInteract(
-              player.getUuid(), worldName, pos.getX(), pos.getZ(),
-              ProtectionChecker.InteractionType.INTERACT
-            )
-          )).color("#FF5555"));
+          ProtectionChecker.ProtectionResult cropResult = hyperFactions.getProtectionChecker().canInteract(
+            player.getUuid(), worldName, pos.getX(), pos.getZ(),
+            ProtectionChecker.InteractionType.INTERACT
+          );
+          ProtectionMessageDebounce.sendIfNotOnCooldown(player, "block_interact",
+            Message.raw(protectionListener.getDenialMessage(cropResult, ProtectionChecker.InteractionType.INTERACT)).color("#FF5555"));
         }
         return;
       }
@@ -168,7 +168,8 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
 
       if (blocked) {
         event.setCancelled(true);
-        ProtectionMessageDebounce.sendIfNotOnCooldown(player, "block_use", Message.raw(protectionListener.getDenialMessage(factionResult)).color("#FF5555"));
+        ProtectionMessageDebounce.sendIfNotOnCooldown(player, "block_use",
+          Message.raw(protectionListener.getDenialMessage(factionResult, interactionType)).color("#FF5555"));
       }
     } catch (Exception e) {
       // Fail-closed: cancel on any exception to prevent unauthorized block interaction

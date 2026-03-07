@@ -146,7 +146,7 @@ public class HyperFactionsRefillContainerInteraction extends RefillContainerInte
           Logger.debugProtection("Fluid pickup blocked for %s at (%d,%d,%d) in %s: %s",
               playerRef.getUsername(), pos[0], pos[1], pos[2], world.getName(), result);
           ProtectionMessageDebounce.sendIfNotOnCooldown(playerRef, "refill_container",
-              Message.raw(checker.getDenialMessage(result)).color("#FF5555"));
+              Message.raw(checker.getDenialMessage(result, ProtectionChecker.InteractionType.BUILD)).color("#FF5555"));
           context.getState().state = InteractionState.Failed;
           return;
         }
