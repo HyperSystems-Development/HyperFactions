@@ -2,7 +2,6 @@ package com.hyperfactions.backup;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.config.ConfigManager;
-import com.hyperfactions.storage.StorageUtils;
 import com.hyperfactions.util.Logger;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -254,26 +253,13 @@ public class BackupManager {
       @Nullable UUID createdBy) {
 
     return CompletableFuture.supplyAsync(() -> {
-      // Clean up orphaned .tmp/.bak files before backup
-      Path dataPath = dataDir.resolve("data");
-      Path factionsClean = dataPath.resolve("factions");
-      Path playersClean = dataPath.resolve("players");
-      Path economyClean = dataPath.resolve("economy");
-      Path chatClean = dataPath.resolve("chat");
-      if (Files.exists(factionsClean)) {
-        StorageUtils.cleanupOrphanedFiles(factionsClean);
-      }
-      if (Files.exists(playersClean)) {
-        StorageUtils.cleanupOrphanedFiles(playersClean);
-      }
-      if (Files.exists(economyClean)) {
-        StorageUtils.cleanupOrphanedFiles(economyClean);
-      }
-      if (Files.exists(chatClean)) {
-        StorageUtils.cleanupOrphanedFiles(chatClean);
-      }
+      // Note: pre-backup cleanup of .tmp/.bak files removed — it raced with
+      // concurrent writeAtomic() calls, deleting in-flight temp files and
+      // causing NoSuchFileException (HYPERFACTIONS-4). The ZIP only includes
+      // .json files anyway, and startup init() handles orphan cleanup safely.
 
       // Generate backup name
+      Path dataPath = dataDir.resolve("data");
       Instant timestamp = Instant.now();
       String name;
       if (type == BackupType.MANUAL && customName != null && !customName.isEmpty()) {
