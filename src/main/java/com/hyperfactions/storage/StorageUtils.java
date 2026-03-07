@@ -95,7 +95,7 @@ public final class StorageUtils {
         // Verification failed - temp file is corrupt
         Files.deleteIfExists(tempFile);
         String error = "Checksum verification failed: expected " + expectedChecksum + ", got " + actualChecksum;
-        Logger.severe("[Storage] %s for %s", error, targetFile);
+        ErrorHandler.report(String.format("[Storage] %s for %s", error, targetFile), (Exception) null);
         return new WriteResult.Failure(targetFile, error, null);
       }
 

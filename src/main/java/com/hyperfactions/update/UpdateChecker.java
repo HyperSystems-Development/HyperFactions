@@ -212,7 +212,7 @@ public final class UpdateChecker {
         }
 
       } catch (Exception e) {
-        Logger.warn("[Update:%s] Failed to check for updates: %s", artifactName, e.getMessage());
+        ErrorHandler.report(String.format("[Update:%s] Failed to check for updates", artifactName), e);
         return null;
       }
     });
@@ -288,8 +288,7 @@ public final class UpdateChecker {
         return updateFile;
 
       } catch (Exception e) {
-        Logger.warn("[Update:%s] Failed to download update: %s", artifactName, e.getMessage());
-        e.printStackTrace();
+        ErrorHandler.report(String.format("[Update:%s] Failed to download update", artifactName), e);
         return null;
       }
     });

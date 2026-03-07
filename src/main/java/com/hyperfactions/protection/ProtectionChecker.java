@@ -1715,7 +1715,7 @@ public class ProtectionChecker {
 
       return true; // Hide based on config + relation
     } catch (Exception e) {
-      Logger.severe("Map marker visibility check error (fail-open)", e);
+      ErrorHandler.report("Map marker visibility check error (fail-open)", e);
       return false;
     }
   }
@@ -1791,7 +1791,7 @@ public class ProtectionChecker {
 
       return true;
     } catch (Exception e) {
-      Logger.severe("Shared marker visibility check error (fail-open)", e);
+      ErrorHandler.report("Shared marker visibility check error (fail-open)", e);
       return false;
     }
   }

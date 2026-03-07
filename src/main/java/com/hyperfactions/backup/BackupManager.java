@@ -194,7 +194,8 @@ public class BackupManager {
               type.getDisplayName(), success.metadata().name(), success.metadata().getFormattedSize());
             performRotation();
           } else if (result instanceof BackupResult.Failure failure) {
-            Logger.severe("[Backup] %s backup failed: %s", type.getDisplayName(), failure.error());
+            String msg = String.format("[Backup] %s backup failed: %s", type.getDisplayName(), failure.error());
+            ErrorHandler.report(msg, (Exception) null);
           }
         } finally {
           synchronized (backupLock) {

@@ -113,9 +113,8 @@ public class FactionManager {
       // SAFETY CHECK: If we had data before but loading returned nothing,
       // this is likely a load failure - DO NOT clear existing data
       if (previousFactionCount > 0 && loaded.isEmpty()) {
-        Logger.severe("CRITICAL: Load returned 0 factions but %d were previously loaded!",
-          previousFactionCount);
-        Logger.severe("Keeping existing in-memory data to prevent data loss.");
+        String msg = String.format("CRITICAL: Load returned 0 factions but %d were previously loaded! Keeping existing in-memory data.", previousFactionCount);
+        ErrorHandler.report(msg, (Exception) null);
         Logger.severe("Check logs above for deserialization errors. Use '/f admin reload' to retry.");
         return;
       }
@@ -443,14 +442,14 @@ public class FactionManager {
       try {
         onFactionCreated.accept(name, leaderName);
       } catch (Exception e) {
-        Logger.warn("Error in faction created callback: %s", e.getMessage());
+        ErrorHandler.report("Error in faction created callback", e);
       }
     }
     if (onFactionCreatedForEconomy != null) {
       try {
         onFactionCreatedForEconomy.accept(faction);
       } catch (Exception e) {
-        Logger.warn("Error in economy creation callback: %s", e.getMessage());
+        ErrorHandler.report("Error in economy creation callback", e);
       }
     }
 
@@ -549,7 +548,7 @@ public class FactionManager {
       try {
         onFactionDisbanded.accept(faction.name());
       } catch (Exception e) {
-        Logger.warn("Error in faction disbanded callback: %s", e.getMessage());
+        ErrorHandler.report("Error in faction disbanded callback", e);
       }
     }
 
@@ -651,7 +650,7 @@ public class FactionManager {
         try {
           onLeadershipTransferred.accept(faction.name(), target.username(), promoted.username());
         } catch (Exception e) {
-          Logger.warn("Error in leadership transferred callback: %s", e.getMessage());
+          ErrorHandler.report("Error in leadership transferred callback", e);
         }
       }
 
@@ -882,7 +881,7 @@ public class FactionManager {
       try {
         onLeadershipTransferred.accept(faction.name(), actor.username(), target.username());
       } catch (Exception e) {
-        Logger.warn("Error in leadership transferred callback: %s", e.getMessage());
+        ErrorHandler.report("Error in leadership transferred callback", e);
       }
     }
 

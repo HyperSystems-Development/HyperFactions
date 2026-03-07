@@ -62,9 +62,8 @@ public class PowerManager {
       // SAFETY CHECK: If we had data before but loading returned nothing,
       // this is likely a load failure - DO NOT clear existing data
       if (previousCount > 0 && loaded.isEmpty()) {
-        Logger.severe("CRITICAL: Load returned 0 player power records but %d were previously loaded!",
-          previousCount);
-        Logger.severe("Keeping existing in-memory data to prevent data loss.");
+        String msg = String.format("CRITICAL: Load returned 0 player power records but %d were previously loaded! Keeping existing in-memory data.", previousCount);
+        ErrorHandler.report(msg, (Exception) null);
         return;
       }
 
@@ -609,7 +608,7 @@ public class PowerManager {
             double power = entry.getValue().getAsDouble();
             hardcoreFactionPower.put(factionId, power);
           } catch (Exception e) {
-            Logger.warn("Invalid hardcore power entry: %s", entry.getKey());
+            ErrorHandler.report(String.format("Invalid hardcore power entry: %s", entry.getKey()), e);
           }
         }
         Logger.info("[Startup] Loaded hardcore power for %d factions", hardcoreFactionPower.size());

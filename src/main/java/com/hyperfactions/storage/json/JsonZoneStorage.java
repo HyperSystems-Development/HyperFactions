@@ -113,12 +113,12 @@ public class JsonZoneStorage implements ZoneStorage {
 
         // Report loading results
         if (!failedZones.isEmpty()) {
-          Logger.severe("WARNING: %d of %d zones failed to load: %s",
-            failedZones.size(), totalZones, String.join(", ", failedZones));
+          ErrorHandler.report(String.format("WARNING: %d of %d zones failed to load: %s",
+            failedZones.size(), totalZones, String.join(", ", failedZones)), (Exception) null);
         }
 
         if (totalZones > 0 && zones.isEmpty()) {
-          Logger.severe("CRITICAL: Found %d zones in file but loaded 0 - possible data corruption!", totalZones);
+          ErrorHandler.report(String.format("CRITICAL: Found %d zones in file but loaded 0 - possible data corruption!", totalZones), (Exception) null);
           // Attempt backup recovery
           if (StorageUtils.recoverFromBackup(zonesFile)) {
             Logger.info("[Storage] Attempting to load zones from recovered backup");
@@ -171,7 +171,7 @@ public class JsonZoneStorage implements ZoneStorage {
           if (validation.size() != zones.size()) {
             String error = String.format("Pre-write validation failed: expected %d zones, got %d in JSON",
               zones.size(), validation.size());
-            Logger.severe("[ZoneStorage] %s", error);
+            ErrorHandler.report(String.format("[ZoneStorage] %s", error), (Exception) null);
             StorageHealth.get().recordFailure(filePath, error);
             return;
           }

@@ -126,7 +126,7 @@ public class ZoneManager {
       try {
         onZoneChangeCallback.accept(affectedChunks);
       } catch (Exception e) {
-        Logger.warn("Error in zone change callback: %s", e.getMessage());
+        ErrorHandler.report("Error in zone change callback", e);
       }
     }
   }
@@ -148,9 +148,8 @@ public class ZoneManager {
       // SAFETY CHECK: If we had data before but loading returned nothing,
       // this is likely a load failure - DO NOT clear existing data
       if (previousZoneCount > 0 && loaded.isEmpty()) {
-        Logger.severe("CRITICAL: Load returned 0 zones but %d were previously loaded!",
-          previousZoneCount);
-        Logger.severe("Keeping existing in-memory data to prevent data loss.");
+        String msg = String.format("CRITICAL: Load returned 0 zones but %d were previously loaded! Keeping existing in-memory data.", previousZoneCount);
+        ErrorHandler.report(msg, (Exception) null);
         return;
       }
 

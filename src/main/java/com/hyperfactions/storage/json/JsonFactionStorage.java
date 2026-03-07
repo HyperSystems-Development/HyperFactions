@@ -176,13 +176,13 @@ public class JsonFactionStorage implements FactionStorage {
 
       // Report loading results
       if (!failedFiles.isEmpty()) {
-        Logger.severe("WARNING: %d of %d faction files failed to load: %s",
+        String msg = String.format("WARNING: %d of %d faction files failed to load: %s — these factions will NOT be available until the files are fixed!",
           failedFiles.size(), totalFiles, String.join(", ", failedFiles));
-        Logger.severe("These factions will NOT be available until the files are fixed!");
+        ErrorHandler.report(msg, (Exception) null);
       }
 
       if (totalFiles > 0 && factions.isEmpty()) {
-        Logger.severe("CRITICAL: Found %d faction files but loaded 0 factions - possible data corruption!", totalFiles);
+        ErrorHandler.report(String.format("CRITICAL: Found %d faction files but loaded 0 factions - possible data corruption!", totalFiles), (Exception) null);
       }
 
       Logger.info("[Storage] Loaded %d/%d factions successfully", factions.size(), totalFiles);

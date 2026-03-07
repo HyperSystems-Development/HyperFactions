@@ -78,7 +78,7 @@ public class MigrationRunner {
       results.add(result);
 
       if (!result.success()) {
-        Logger.severe("[Migration] Migration '%s' failed: %s", migration.id(), result.errorMessage());
+        ErrorHandler.report(String.format("[Migration] Migration '%s' failed: %s", migration.id(), result.errorMessage()), (Exception) null);
         if (result.rolledBack()) {
           Logger.info("[Migration] Successfully rolled back to backup");
         }

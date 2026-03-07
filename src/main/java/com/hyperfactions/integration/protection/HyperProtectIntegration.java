@@ -1074,7 +1074,7 @@ public final class HyperProtectIntegration {
           playerUuid, worldName, benchX, benchY, benchZ, allowed);
         return allowed;
       } catch (Exception e) {
-        Logger.severe("Crafting resource mixin hook error (fail-open)", e);
+        ErrorHandler.report("Crafting resource mixin hook error (fail-open)", e);
         return true; // Fail-open: allow crafting
       }
     }
@@ -1111,7 +1111,7 @@ public final class HyperProtectIntegration {
           viewer, target, worldName, x, y, z, hidden);
         return hidden ? 1 : 0;
       } catch (Exception e) {
-        Logger.severe("Map marker filter mixin hook error (fail-open)", e);
+        ErrorHandler.report("Map marker filter mixin hook error (fail-open)", e);
         return 0; // Fail-open: show marker
       }
     }
@@ -1130,7 +1130,7 @@ public final class HyperProtectIntegration {
           viewer, creator, worldName, x, z, hidden);
         return hidden ? 1 : 0;
       } catch (Exception e) {
-        Logger.severe("Shared marker filter mixin hook error (fail-open)", e);
+        ErrorHandler.report("Shared marker filter mixin hook error (fail-open)", e);
         return 0; // Fail-open: show marker
       }
     }
@@ -1190,7 +1190,7 @@ public final class HyperProtectIntegration {
         }
         return verdict;
       } catch (Exception e) {
-        Logger.severe("Projectile launch mixin hook error (fail-open)", e);
+        ErrorHandler.report("Projectile launch mixin hook error (fail-open)", e);
         return ALLOW;
       }
     }
@@ -1223,7 +1223,7 @@ public final class HyperProtectIntegration {
         }
         return verdict;
       } catch (Exception e) {
-        Logger.severe("Mount mixin hook error (fail-closed)", e);
+        ErrorHandler.report("Mount mixin hook error (fail-closed)", e);
         cachedReason.set("Protection error — action blocked for safety.");
         return DENY_WITH_MESSAGE;
       }
@@ -1257,7 +1257,7 @@ public final class HyperProtectIntegration {
         }
         return verdict;
       } catch (Exception e) {
-        Logger.severe("Barter trade mixin hook error (fail-open)", e);
+        ErrorHandler.report("Barter trade mixin hook error (fail-open)", e);
         return ALLOW;
       }
     }

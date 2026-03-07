@@ -148,8 +148,8 @@ public class JsonPlayerStorage implements PlayerStorage {
 
       // Report loading results
       if (!failedFiles.isEmpty()) {
-        Logger.severe("WARNING: %d of %d player files failed to load: %s",
-          failedFiles.size(), totalFiles, String.join(", ", failedFiles));
+        ErrorHandler.report(String.format("WARNING: %d of %d player files failed to load: %s",
+          failedFiles.size(), totalFiles, String.join(", ", failedFiles)), (Exception) null);
       }
 
       Logger.info("[Storage] Loaded %d/%d player power records successfully", powers.size(), totalFiles);
@@ -403,7 +403,7 @@ public class JsonPlayerStorage implements PlayerStorage {
             MembershipRecord.LeaveReason.valueOf(recObj.get("reason").getAsString())
           ));
         } catch (Exception e) {
-          Logger.warn("Failed to deserialize membership record: %s", e.getMessage());
+          ErrorHandler.report("Failed to deserialize membership record", e);
         }
       }
       data.setMembershipHistory(history);

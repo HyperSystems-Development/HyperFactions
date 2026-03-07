@@ -608,7 +608,7 @@ public class HyperFactions {
 
       Logger.debug("Gson classes preloaded successfully");
     } catch (Exception e) {
-      Logger.warn("Failed to preload Gson classes: %s", e.getMessage());
+      ErrorHandler.report("Failed to preload Gson classes", e);
     }
   }
 
