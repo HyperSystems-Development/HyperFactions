@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-*No changes yet*
+### Fixed
+
+- **Backup file walk race condition**: `addDirectoryToZip()` crashed with `NoSuchFileException` when a `.bak` file vanished (deleted by concurrent `writeAtomic()`) between directory listing and attribute read during `Files.walkFileTree()` ([HYPERFACTIONS-3](https://hypersystems.sentry.io/issues/HYPERFACTIONS-3))
 
 ## [0.10.2] - 2026-02-28
 
