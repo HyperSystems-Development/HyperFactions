@@ -16,6 +16,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Backup cleanup race condition**: Pre-backup `cleanupOrphanedFiles()` could delete in-flight temp files from concurrent `writeAtomic()` calls, causing `NoSuchFileException` during player data saves ([HYPERFACTIONS-4](https://hypersystems.sentry.io/issues/HYPERFACTIONS-4))
 - **Orphan cleanup safety**: `cleanupOrphanedFiles()` now skips `.tmp` files younger than 5 seconds to prevent racing with active writes
 
+**World Map Player & Marker Hiding**
+- Configurable world map visibility: hide enemy/neutral players and shared markers independently via `worldMap` config section
+- New `show_on_map` zone flag + `map_visibility` setting — first selection-type zone setting with three levels: "Faction Only", "Faction + Allies", "All Players"
+- Zone settings system: `Map<String, String> settings` on Zone record for enum/selection values alongside existing boolean flags
+- SharedMarkerFilter integration via HyperProtect-Mixin — filters user-placed shared markers by creator faction
+- Admin GUI: Integration Flags page now shows World Map and HyperEssentials sections with map visibility cycling button
+
+**NPC_USE Parent Flag & NPC Role Classification**
+- New `NPC_USE` parent flag with `NPC_TAME` and `NPC_INTERACT` children — enables granular NPC interaction control in zone settings
+- NPC role classification via `isTameableCreatureRole()` blocklist (fail-open) classifies NPC roles as tameable vs interactive based on role name patterns
+- `ALLOWED_SAFEZONE` result type — `ProtectionChecker` now distinguishes "allowed because SafeZone defaults" from "allowed because wilderness"
+
+**KyuubiSoft Core Integration**
+- Reflection-based `CitizenDialogInterceptor` registration for citizen zone protection, with fail-open design and auto-detection
+- Admin commands: `/f admin integration kyuubisoft` (aliases: `kyuubi`, `ks`, `citizens`)
+
+**HyperProtect-Mixin v1.2.0 Hook Wrappers**
+- 7 new HP-Mixin 1.2.0 hook wrappers: MountHook, BarterTradeHook, FluidSpreadHook, PrefabSpawnHook, ProjectileLaunchHook, CraftingResourceHook, MapMarkerFilterHook
+- Block type context for protection decisions — reads `hyperprotect.context.block_id` and `hyperprotect.context.block_state` from HP-Mixin bridge
+- NPC role context — reads `hyperprotect.context.npc_role` from HP-Mixin bridge for targeted NPC protection
+
+### Changed
+
+- Zone flag category consolidation — Entity Interaction category merged into Interaction category (12 flags total: block_interact + 5 children, NPC_USE + 2 children, crate_pickup, crate_place)
+- Zone flags reindexed in admin UI — all 41 core flags (0-40) with updated category grouping
+- Fixed "Combat (6)" comment to "Combat (7)" in `ZoneFlags.ALL_FLAGS`
+- Fixed missing `BOTH` case in `AdminIntegrationHandler.handleIntegrations()` MixinProvider switch
+
 ## [0.10.2] - 2026-02-28
 
 **Server Version:** `2026.02.19-1a311a592`

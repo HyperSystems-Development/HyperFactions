@@ -227,6 +227,15 @@ public class JsonZoneStorage implements ZoneStorage {
       obj.add("flags", flagsObj);
     }
 
+    // Serialize settings (string-valued) if present
+    if (zone.settings() != null && !zone.settings().isEmpty()) {
+      JsonObject settingsObj = new JsonObject();
+      for (Map.Entry<String, String> entry : zone.settings().entrySet()) {
+        settingsObj.addProperty(entry.getKey(), entry.getValue());
+      }
+      obj.add("settings", settingsObj);
+    }
+
     // Serialize notification settings if present
     if (zone.notifyOnEntry() != null) {
       obj.addProperty("notifyOnEntry", zone.notifyOnEntry());
@@ -301,12 +310,25 @@ public class JsonZoneStorage implements ZoneStorage {
       }
     }
 
+    // Deserialize settings (string-valued) if present
+    Map<String, String> settings = null;
+    if (obj.has("settings") && obj.get("settings").isJsonObject()) {
+      settings = new HashMap<>();
+      JsonObject settingsObj = obj.getAsJsonObject("settings");
+      for (String key : settingsObj.keySet()) {
+        settings.put(key, settingsObj.get(key).getAsString());
+      }
+      if (settings.isEmpty()) {
+        settings = null;
+      }
+    }
+
     // Deserialize notification settings if present
     Boolean notifyOnEntry = obj.has("notifyOnEntry") ? obj.get("notifyOnEntry").getAsBoolean() : null;
     String notifyTitleUpper = obj.has("notifyTitleUpper") ? obj.get("notifyTitleUpper").getAsString() : null;
     String notifyTitleLower = obj.has("notifyTitleLower") ? obj.get("notifyTitleLower").getAsString() : null;
 
     return new Zone(id, name, type, world, chunks, createdAt, createdBy, flags,
-           notifyOnEntry, notifyTitleUpper, notifyTitleLower);
+           settings, notifyOnEntry, notifyTitleUpper, notifyTitleLower);
   }
 }

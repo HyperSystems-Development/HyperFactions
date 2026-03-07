@@ -9,7 +9,7 @@ For admin/config documentation, see [protection-claims.md](protection-claims.md)
 ```
 Hytale ECS Events                  ProtectionMixinBridge (auto-detect)
      │                                    │
-     ▼                                    ├─► HyperProtectIntegration (20 hooks + format handle, recommended)
+     ▼                                    ├─► HyperProtectIntegration (27 hooks + format handle, recommended)
 ECS Protection Systems                    │   ├── BlockBreak, BlockPlace, Explosion
 ├── BlockPlaceProtectionSystem            │   ├── FireSpread, BuilderTools
 ├── BlockBreakProtectionSystem            │   ├── ItemPickup, DeathDrop, Durability
@@ -17,7 +17,9 @@ ECS Protection Systems                    │   ├── BlockBreak, BlockPlace
 ├── ItemDropProtectionSystem              │   ├── MobSpawn, Command
 ├── ItemPickupProtectionSystem            │   ├── Teleporter, Portal (unique to HP)
 ├── HarvestPickupProtectionSystem         │   ├── EntityDamage, Respawn (unique to HP)
-├── PlayerDeathSystem                     │   └── Hammer, Use, Seat
+├── PlayerDeathSystem                     │   ├── Hammer, Use, Seat
+│                                         │   └── Mount, BarterTrade, FluidSpread, PrefabSpawn,
+│                                         │       ProjectileLaunch, CraftingResource, MapMarkerFilter
 ├── PlayerRespawnSystem                   │
 └── DamageProtectionSystem                └─► OrbisMixinsIntegration (11 hooks)
      │                                         ├── Pickup, Hammer, Harvest
@@ -167,7 +169,7 @@ Source: [`ProtectionMixinBridge.java`](../src/main/java/com/hyperfactions/integr
 
 | Mode | Condition | Behavior |
 |------|-----------|----------|
-| HYPERPROTECT | HP detected, no OG | All 22 HP hooks active |
+| HYPERPROTECT | HP detected, no OG | All 27 HP hooks active |
 | ORBISGUARD | OG detected, no HP | All 11 OG hooks active |
 | BOTH | HP + OG detected | OG handles 11 features, HP handles unique features |
 | NONE | Neither detected | No mixin protection (graceful degradation) |
@@ -180,7 +182,7 @@ When BOTH systems are detected:
 
 ---
 
-## HyperProtect-Mixin Integration (22 Slots)
+## HyperProtect-Mixin Integration (30 Slots, 27 Used)
 
 Source: [`HyperProtectIntegration.java`](../src/main/java/com/hyperfactions/integration/protection/HyperProtectIntegration.java)
 
@@ -206,9 +208,16 @@ Verdict protocol: 0=ALLOW, 1=DENY_WITH_MESSAGE, 2=DENY_SILENT, 3=DENY_MOD_HANDLE
 | 17 | ContainerOpen | `checkContainer()` | Yes |
 | 18 | BlockPlace | `checkPlace()` | Yes |
 | 19 | Hammer | `checkHammer()` | Yes |
-| 20 | Use | `checkUse(type)` | Yes (routes CRATE_PICKUP, CRATE_PLACE, NPC_TAME, INTERACT) |
+| 20 | Use | `checkUse(type)` | Yes (routes CRATE_PICKUP, CRATE_PLACE, NPC_USE, NPC_TAME, NPC_INTERACT, INTERACT) |
 | 21 | Seat | `checkSeat()` | Yes |
 | 22 | Respawn | `getRespawnOverride()` | Yes |
+| 23 | Mount | `checkMount()` | Yes |
+| 24 | BarterTrade | `checkBarterTrade()` | Yes |
+| 25 | FluidSpread | `shouldBlockFluidSpread()` | Yes |
+| 26 | PrefabSpawn | `shouldBlockPrefabSpawn()` | Yes |
+| 27 | ProjectileLaunch | `shouldBlockProjectileLaunch()` | Yes |
+| 28 | CraftingResource | `checkCraftingResource()` | Yes |
+| 29 | MapMarkerFilter | `filterMapMarker()` | N/A — visibility filter |
 
 ---
 

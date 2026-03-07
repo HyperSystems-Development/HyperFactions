@@ -67,6 +67,15 @@ public class ServerConfig extends ModuleConfig {
 
   private String releaseChannel = "stable";
 
+  // World map visibility (requires HyperProtect-Mixin)
+  private boolean hideEnemyPlayersOnMap = true;
+
+  private boolean hideNeutralPlayersOnMap = false;
+
+  private boolean hideEnemyMarkersOnMap = true;
+
+  private boolean hideNeutralMarkersOnMap = false;
+
   // HyperProtect-Mixin management
   private boolean hyperProtectAutoDownload = false;
 
@@ -156,6 +165,15 @@ public class ServerConfig extends ModuleConfig {
       allowWithoutPermissionMod = getBool(permissions, "allowWithoutPermissionMod", allowWithoutPermissionMod);
     }
 
+    // World map settings
+    if (hasSection(root, "worldMap")) {
+      JsonObject worldMap = root.getAsJsonObject("worldMap");
+      hideEnemyPlayersOnMap = getBool(worldMap, "hideEnemyPlayers", hideEnemyPlayersOnMap);
+      hideNeutralPlayersOnMap = getBool(worldMap, "hideNeutralPlayers", hideNeutralPlayersOnMap);
+      hideEnemyMarkersOnMap = getBool(worldMap, "hideEnemyMarkers", hideEnemyMarkersOnMap);
+      hideNeutralMarkersOnMap = getBool(worldMap, "hideNeutralMarkers", hideNeutralMarkersOnMap);
+    }
+
     // Update settings
     if (hasSection(root, "updates")) {
       JsonObject updates = root.getAsJsonObject("updates");
@@ -219,6 +237,14 @@ public class ServerConfig extends ModuleConfig {
     permissions.addProperty("adminRequiresOp", adminRequiresOp);
     permissions.addProperty("allowWithoutPermissionMod", allowWithoutPermissionMod);
     root.add("permissions", permissions);
+
+    // World map settings
+    JsonObject worldMap = new JsonObject();
+    worldMap.addProperty("hideEnemyPlayers", hideEnemyPlayersOnMap);
+    worldMap.addProperty("hideNeutralPlayers", hideNeutralPlayersOnMap);
+    worldMap.addProperty("hideEnemyMarkers", hideEnemyMarkersOnMap);
+    worldMap.addProperty("hideNeutralMarkers", hideNeutralMarkersOnMap);
+    root.add("worldMap", worldMap);
 
     // Update settings
     JsonObject updates = new JsonObject();
@@ -334,6 +360,27 @@ public class ServerConfig extends ModuleConfig {
   /** Checks if pre release channel. */
   public boolean isPreReleaseChannel() {
     return "prerelease".equals(releaseChannel);
+  }
+
+  // World map
+  /** Whether to hide enemy faction players on the world map. */
+  public boolean isHideEnemyPlayersOnMap() {
+    return hideEnemyPlayersOnMap;
+  }
+
+  /** Whether to hide neutral faction players on the world map. */
+  public boolean isHideNeutralPlayersOnMap() {
+    return hideNeutralPlayersOnMap;
+  }
+
+  /** Whether to hide shared markers placed by enemy faction members. */
+  public boolean isHideEnemyMarkersOnMap() {
+    return hideEnemyMarkersOnMap;
+  }
+
+  /** Whether to hide shared markers placed by neutral faction members. */
+  public boolean isHideNeutralMarkersOnMap() {
+    return hideNeutralMarkersOnMap;
   }
 
   // HyperProtect-Mixin

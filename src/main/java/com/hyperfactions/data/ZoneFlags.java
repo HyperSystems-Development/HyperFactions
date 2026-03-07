@@ -153,8 +153,14 @@ public final class ZoneFlags {
   /** Whether players can sit on seats/chairs/mounts. Uses MountInteraction. */
   public static final String SEAT_USE = "seat_use";
 
+  /**
+   * Whether players can mount rideable entities.
+   * REQUIRES: Mixin support (seating interceptor — shared with SEAT_USE)
+   */
+  public static final String MOUNT_USE = "mount_use";
+
   // ==========================================================================
-  // ENTITY INTERACTION FLAGS (3) - Mixin-dependent entity interactions
+  // ENTITY INTERACTION FLAGS (5) - NPC and capture crate interactions
   // ==========================================================================
 
   /**
@@ -174,6 +180,15 @@ public final class ZoneFlags {
    * REQUIRES: Mixin support (use hook via SimpleInstantInteractionGate)
    */
   public static final String NPC_TAME = "npc_tame";
+
+  /**
+   * Whether players can interact with NPCs (shops, dialogue).
+   * Uses PlayerInteractEvent (event-listener based, no mixin required).
+   */
+  public static final String NPC_INTERACT = "npc_interact";
+
+  /** Parent flag for all NPC interactions (taming, dialogue, trading). */
+  public static final String NPC_USE = "npc_use";
 
   // ==========================================================================
   // ITEM FLAGS (4)
@@ -198,6 +213,13 @@ public final class ZoneFlags {
    * Uses OrbisGuard-Mixins durability hook.
    */
   public static final String INVINCIBLE_ITEMS = "invincible_items";
+
+  /**
+   * Whether mounted players can enter this zone.
+   * When false, players are dismounted upon entering the zone.
+   * Enforced by territory tracking on chunk transitions.
+   */
+  public static final String MOUNT_ENTRY = "mount_entry";
 
   // ==========================================================================
   // TRANSPORT FLAGS (2)
@@ -295,11 +317,23 @@ public final class ZoneFlags {
   /** Whether non-owners can access (collect/break) other players' gravestones in this zone. Owners can always access their own. */
   public static final String GRAVESTONE_ACCESS = "gravestone_access";
 
+  /** Whether world map visibility override is enabled for this zone. When enabled, MAP_VISIBILITY setting controls the level. */
+  public static final String SHOW_ON_MAP = "show_on_map";
+
+  /** Whether players can set/teleport to homes (HyperEssentials integration). */
+  public static final String ESSENTIALS_HOMES = "essentials_homes";
+
+  /** Whether players can teleport to warps (HyperEssentials integration). */
+  public static final String ESSENTIALS_WARPS = "essentials_warps";
+
+  /** Whether players can claim kits (HyperEssentials integration). */
+  public static final String ESSENTIALS_KITS = "essentials_kits";
+
   /**
    * All available flag names for validation.
    */
   public static final String[] ALL_FLAGS = {
-    // Combat (6)
+    // Combat (7)
     PVP_ENABLED,
     FRIENDLY_FIRE,
     FRIENDLY_FIRE_FACTION,
@@ -320,20 +354,23 @@ public final class ZoneFlags {
     BLOCK_PLACE,
     HAMMER_USE,
     BUILDER_TOOLS_USE,
-    // Interaction (6)
+    // Interaction (12)
     BLOCK_INTERACT,
     DOOR_USE,
     CONTAINER_USE,
     BENCH_USE,
     PROCESSING_USE,
     SEAT_USE,
-    // Entity Interaction (3)
+    MOUNT_USE,
+    NPC_USE,
+    NPC_TAME,
+    NPC_INTERACT,
     CRATE_PICKUP,
     CRATE_PLACE,
-    NPC_TAME,
-    // Transport (2)
+    // Transport (3)
     TELEPORTER_USE,
     PORTAL_USE,
+    MOUNT_ENTRY,
     // Items (4)
     ITEM_DROP,
     ITEM_PICKUP,
@@ -345,8 +382,12 @@ public final class ZoneFlags {
     PASSIVE_MOB_SPAWNING,
     NEUTRAL_MOB_SPAWNING,
     NPC_SPAWNING,
-    // Integration (1)
-    GRAVESTONE_ACCESS
+    // Integration (5)
+    GRAVESTONE_ACCESS,
+    SHOW_ON_MAP,
+    ESSENTIALS_HOMES,
+    ESSENTIALS_WARPS,
+    ESSENTIALS_KITS
   };
 
   /**
@@ -361,17 +402,15 @@ public final class ZoneFlags {
 
   public static final String[] BUILDING_FLAGS = { BUILD_ALLOWED, BLOCK_PLACE, HAMMER_USE, BUILDER_TOOLS_USE };
 
-  public static final String[] INTERACTION_FLAGS = { BLOCK_INTERACT, DOOR_USE, CONTAINER_USE, BENCH_USE, PROCESSING_USE, SEAT_USE };
+  public static final String[] INTERACTION_FLAGS = { BLOCK_INTERACT, DOOR_USE, CONTAINER_USE, BENCH_USE, PROCESSING_USE, SEAT_USE, MOUNT_USE, NPC_USE, NPC_TAME, NPC_INTERACT, CRATE_PICKUP, CRATE_PLACE };
 
-  public static final String[] ENTITY_INTERACTION_FLAGS = { CRATE_PICKUP, CRATE_PLACE, NPC_TAME };
-
-  public static final String[] TRANSPORT_FLAGS = { TELEPORTER_USE, PORTAL_USE };
+  public static final String[] TRANSPORT_FLAGS = { TELEPORTER_USE, PORTAL_USE, MOUNT_ENTRY };
 
   public static final String[] ITEM_FLAGS = { ITEM_DROP, ITEM_PICKUP, ITEM_PICKUP_MANUAL, INVINCIBLE_ITEMS };
 
   public static final String[] SPAWNING_FLAGS = { MOB_SPAWNING, HOSTILE_MOB_SPAWNING, PASSIVE_MOB_SPAWNING, NEUTRAL_MOB_SPAWNING, NPC_SPAWNING };
 
-  public static final String[] INTEGRATION_FLAGS = { GRAVESTONE_ACCESS };
+  public static final String[] INTEGRATION_FLAGS = { GRAVESTONE_ACCESS, SHOW_ON_MAP, ESSENTIALS_HOMES, ESSENTIALS_WARPS, ESSENTIALS_KITS };
 
   /**
    * Flags that require OrbisGuard-Mixins to function.
@@ -391,7 +430,8 @@ public final class ZoneFlags {
     BLOCK_PLACE,         // Requires block_place mixin
     CRATE_PICKUP,        // Requires use mixin (CaptureCrateGate)
     CRATE_PLACE,         // Requires use mixin (CaptureCrateGate)
-    NPC_TAME             // Requires use mixin (SimpleInstantInteractionGate)
+    NPC_TAME,            // Requires use mixin (SimpleInstantInteractionGate)
+    MOUNT_USE            // Requires seating mixin (shared with SEAT_USE)
   };
 
   /**
@@ -462,13 +502,17 @@ public final class ZoneFlags {
       case BENCH_USE -> false;
       case PROCESSING_USE -> false;
       case SEAT_USE -> true;
-      // Entity Interaction: All blocked in safe zones
+      case MOUNT_USE -> false;              // No mounting in safe zones
+      // Entity Interaction: NPC parent off, taming/crates blocked, but NPC shops allowed
+      case NPC_USE -> false;                // NPC interactions disabled in safe zones
       case CRATE_PICKUP -> false;           // No crate pickup (mixin)
       case CRATE_PLACE -> false;            // No crate placement (mixin)
       case NPC_TAME -> false;               // No NPC taming (mixin)
-      // Transport: Disabled in safe zones
-      case TELEPORTER_USE -> false;         // No teleporter use (mixin)
-      case PORTAL_USE -> false;             // No portal use (mixin)
+      case NPC_INTERACT -> true;            // NPC shops/dialogue allowed
+      // Transport: Allowed in safe zones (safe havens, not prisons — transit should work)
+      case TELEPORTER_USE -> true;          // Teleporters allowed (mixin)
+      case PORTAL_USE -> true;              // Portals allowed (mixin)
+      case MOUNT_ENTRY -> false;            // Dismount on entry to safe zones
       // Items: Auto pickup allowed, manual F-key blocked, items are invincible
       case ITEM_DROP -> false;
       case ITEM_PICKUP -> true;             // Auto pickup allowed
@@ -482,6 +526,11 @@ public final class ZoneFlags {
       case NPC_SPAWNING -> false;           // Mixin spawn hook blocked
       // Integration: Protected in safe zones
       case GRAVESTONE_ACCESS -> false;
+      case SHOW_ON_MAP -> false;      // Map hiding stays active in safe zones by default
+      // Integration: HyperEssentials — all features available in safe zones (hubs/spawns)
+      case ESSENTIALS_HOMES -> true;
+      case ESSENTIALS_WARPS -> true;
+      case ESSENTIALS_KITS -> true;
       default -> false;
     };
   }
@@ -531,13 +580,17 @@ public final class ZoneFlags {
       case BENCH_USE -> false;
       case PROCESSING_USE -> false;
       case SEAT_USE -> true;
+      case MOUNT_USE -> false;              // No mounting in war zones
       // Entity Interaction: All allowed in war zones
+      case NPC_USE -> true;                 // NPC interactions allowed in war zones
       case CRATE_PICKUP -> true;            // Crate pickup allowed
       case CRATE_PLACE -> true;             // Crate placement allowed
       case NPC_TAME -> true;                // NPC taming allowed
+      case NPC_INTERACT -> true;            // NPC shops/dialogue allowed
       // Transport: Allowed in war zones
       case TELEPORTER_USE -> true;
       case PORTAL_USE -> true;
+      case MOUNT_ENTRY -> false;            // Dismount on entry to war zones
       // Items: All allowed - looting and item interactions permitted
       case ITEM_DROP -> true;
       case ITEM_PICKUP -> true;             // Auto pickup allowed
@@ -551,6 +604,11 @@ public final class ZoneFlags {
       case NPC_SPAWNING -> true;            // Mixin spawn hook allowed
       // Integration: Free for all in war zones
       case GRAVESTONE_ACCESS -> true;
+      case SHOW_ON_MAP -> false;      // Map hiding stays active in war zones by default
+      // Integration: HyperEssentials — homes blocked in combat zones, warps/kits allowed
+      case ESSENTIALS_HOMES -> false;
+      case ESSENTIALS_WARPS -> true;
+      case ESSENTIALS_KITS -> true;
       default -> false;
     };
   }
@@ -614,11 +672,15 @@ public final class ZoneFlags {
       case BENCH_USE -> "Bench Use";
       case PROCESSING_USE -> "Processing Use";
       case SEAT_USE -> "Seat Use";
+      case MOUNT_USE -> "Mount Use";
+      case NPC_USE -> "NPC Interaction";
       case CRATE_PICKUP -> "Crate Pickup";
       case CRATE_PLACE -> "Crate Place";
       case NPC_TAME -> "NPC Tame";
+      case NPC_INTERACT -> "NPC Interact";
       case TELEPORTER_USE -> "Teleporter Use";
       case PORTAL_USE -> "Portal Use";
+      case MOUNT_ENTRY -> "Mount Entry";
       case ITEM_DROP -> "Item Drop";
       case ITEM_PICKUP -> "Auto Pickup";
       case ITEM_PICKUP_MANUAL -> "F-Key Pickup";
@@ -629,6 +691,10 @@ public final class ZoneFlags {
       case NEUTRAL_MOB_SPAWNING -> "Neutral Mobs";
       case NPC_SPAWNING -> "NPC Spawning";
       case GRAVESTONE_ACCESS -> "Others Loot Graves";
+      case SHOW_ON_MAP -> "Show on Map";
+      case ESSENTIALS_HOMES -> "Home Use";
+      case ESSENTIALS_WARPS -> "Warp Use";
+      case ESSENTIALS_KITS -> "Kit Claiming";
       default -> flagName;
     };
   }
@@ -664,12 +730,16 @@ public final class ZoneFlags {
       case CONTAINER_USE -> "Players can use chests and storage";
       case BENCH_USE -> "Players can use crafting tables";
       case PROCESSING_USE -> "Players can use furnaces and smelters";
-      case SEAT_USE -> "Players can sit on seats and mounts";
+      case SEAT_USE -> "Players can sit on seats and chairs";
+      case MOUNT_USE -> "Players can mount rideable entities (requires mixin)";
+      case NPC_USE -> "Players can interact with NPCs (parent)";
       case CRATE_PICKUP -> "Pick up animals with capture crate (requires mixin)";
       case CRATE_PLACE -> "Release animals from capture crate (requires mixin)";
       case NPC_TAME -> "Tame NPCs with F-key (requires mixin)";
+      case NPC_INTERACT -> "Players can interact with NPCs (shops, dialogue)";
       case TELEPORTER_USE -> "Players can use teleporter blocks (requires mixin)";
       case PORTAL_USE -> "Players can use portal blocks (requires mixin)";
+      case MOUNT_ENTRY -> "Mounted players can enter (dismounts if false)";
       case ITEM_DROP -> "Players can drop items";
       case ITEM_PICKUP -> "Auto-collect items when walking over them";
       case ITEM_PICKUP_MANUAL -> "Pick up items with F-key (requires mixin)";
@@ -680,6 +750,10 @@ public final class ZoneFlags {
       case NEUTRAL_MOB_SPAWNING -> "Conditionally aggressive mobs can spawn";
       case NPC_SPAWNING -> "NPC spawning via mixin (requires mixin)";
       case GRAVESTONE_ACCESS -> "Non-owners can loot/break other players' gravestones (owners always can)";
+      case SHOW_ON_MAP -> "Override map visibility for players in this zone";
+      case ESSENTIALS_HOMES -> "Players can set and teleport to homes (HyperEssentials)";
+      case ESSENTIALS_WARPS -> "Players can teleport to warps (HyperEssentials)";
+      case ESSENTIALS_KITS -> "Players can claim kits (HyperEssentials)";
       default -> "Unknown flag";
     };
   }
@@ -700,7 +774,9 @@ public final class ZoneFlags {
       // Building children have BUILD_ALLOWED as parent
       case BLOCK_PLACE, HAMMER_USE, BUILDER_TOOLS_USE -> BUILD_ALLOWED;
       // Interaction flags have BLOCK_INTERACT as parent
-      case DOOR_USE, CONTAINER_USE, BENCH_USE, PROCESSING_USE, SEAT_USE -> BLOCK_INTERACT;
+      case DOOR_USE, CONTAINER_USE, BENCH_USE, PROCESSING_USE, SEAT_USE, MOUNT_USE -> BLOCK_INTERACT;
+      // NPC flags have NPC_USE as parent
+      case NPC_TAME, NPC_INTERACT -> NPC_USE;
       // Mob group flags have MOB_SPAWNING as parent
       case HOSTILE_MOB_SPAWNING, PASSIVE_MOB_SPAWNING, NEUTRAL_MOB_SPAWNING, NPC_SPAWNING -> MOB_SPAWNING;
       default -> null;
@@ -715,7 +791,8 @@ public final class ZoneFlags {
    */
   public static boolean isParentFlag(String flagName) {
     return PVP_ENABLED.equals(flagName) || FRIENDLY_FIRE.equals(flagName)
-       || BUILD_ALLOWED.equals(flagName) || BLOCK_INTERACT.equals(flagName) || MOB_SPAWNING.equals(flagName);
+       || BUILD_ALLOWED.equals(flagName) || BLOCK_INTERACT.equals(flagName)
+       || NPC_USE.equals(flagName) || MOB_SPAWNING.equals(flagName);
   }
 
   /**
@@ -730,7 +807,8 @@ public final class ZoneFlags {
       case PVP_ENABLED -> new String[] { FRIENDLY_FIRE };
       case FRIENDLY_FIRE -> new String[] { FRIENDLY_FIRE_FACTION, FRIENDLY_FIRE_ALLY };
       case BUILD_ALLOWED -> new String[] { BLOCK_PLACE, HAMMER_USE, BUILDER_TOOLS_USE };
-      case BLOCK_INTERACT -> new String[] { DOOR_USE, CONTAINER_USE, BENCH_USE, PROCESSING_USE, SEAT_USE };
+      case BLOCK_INTERACT -> new String[] { DOOR_USE, CONTAINER_USE, BENCH_USE, PROCESSING_USE, SEAT_USE, MOUNT_USE };
+      case NPC_USE -> new String[] { NPC_TAME, NPC_INTERACT };
       case MOB_SPAWNING -> new String[] { HOSTILE_MOB_SPAWNING, PASSIVE_MOB_SPAWNING, NEUTRAL_MOB_SPAWNING, NPC_SPAWNING };
       default -> new String[0];
     };
@@ -771,6 +849,7 @@ public final class ZoneFlags {
       case HAMMER_USE -> MIXIN_HAMMER;
       case BLOCK_PLACE -> MIXIN_PLACE;
       case CRATE_PICKUP, CRATE_PLACE, NPC_TAME -> MIXIN_USE;
+      case MOUNT_USE -> MIXIN_SEATING;
       default -> null;
     };
   }
@@ -839,11 +918,6 @@ public final class ZoneFlags {
         return "Interaction";
       }
     }
-    for (String f : ENTITY_INTERACTION_FLAGS) {
-      if (f.equals(flagName)) {
-        return "Entity Interaction";
-      }
-    }
     for (String f : TRANSPORT_FLAGS) {
       if (f.equals(flagName)) {
         return "Transport";
@@ -873,7 +947,6 @@ public final class ZoneFlags {
     categories.put("Combat", COMBAT_FLAGS);
     categories.put("Building", BUILDING_FLAGS);
     categories.put("Interaction", INTERACTION_FLAGS);
-    categories.put("Entity Interaction", ENTITY_INTERACTION_FLAGS);
     categories.put("Items", ITEM_FLAGS);
     categories.put("Damage", DAMAGE_FLAGS);
     categories.put("Death", DEATH_FLAGS);
@@ -896,11 +969,126 @@ public final class ZoneFlags {
       "Death",
       "Building",
       "Interaction",
-      "Entity Interaction",
       "Transport",
       "Items",
       "Spawning",
       "Integration"
+    };
+  }
+
+  // ==========================================================================
+  // STRING-VALUED SETTINGS (enum/selection flags)
+  // ==========================================================================
+
+  /** Map visibility level — controls which players are visible on the map when SHOW_ON_MAP is enabled. */
+  public static final String MAP_VISIBILITY = "map_visibility";
+
+  /** Map visibility options. */
+  public static final String MAP_VISIBILITY_FACTION = "faction";
+  public static final String MAP_VISIBILITY_ALLY = "ally";
+  public static final String MAP_VISIBILITY_ALL = "all";
+
+  /** All valid values for MAP_VISIBILITY. */
+  public static final String[] MAP_VISIBILITY_OPTIONS = {
+    MAP_VISIBILITY_FACTION, MAP_VISIBILITY_ALLY, MAP_VISIBILITY_ALL
+  };
+
+  /** All available zone settings. */
+  public static final String[] ALL_SETTINGS = { MAP_VISIBILITY };
+
+  /**
+   * Gets the default value for a string setting based on zone type.
+   *
+   * @param settingName the setting name
+   * @param type        the zone type
+   * @return the default value
+   */
+  @NotNull
+  public static String getSettingDefault(@NotNull String settingName, @NotNull ZoneType type) {
+    return switch (settingName) {
+      case MAP_VISIBILITY -> MAP_VISIBILITY_FACTION; // Default: show only own faction
+      default -> "";
+    };
+  }
+
+  /**
+   * Checks if a setting value is valid for the given setting.
+   *
+   * @param settingName the setting name
+   * @param value       the value to check
+   * @return true if valid
+   */
+  public static boolean isValidSettingValue(@NotNull String settingName, @NotNull String value) {
+    return switch (settingName) {
+      case MAP_VISIBILITY -> {
+        for (String opt : MAP_VISIBILITY_OPTIONS) {
+          if (opt.equals(value)) yield true;
+        }
+        yield false;
+      }
+      default -> false;
+    };
+  }
+
+  /**
+   * Gets a display name for a setting value.
+   *
+   * @param settingName the setting name
+   * @param value       the value
+   * @return display text
+   */
+  @NotNull
+  public static String getSettingValueDisplay(@NotNull String settingName, @NotNull String value) {
+    if (MAP_VISIBILITY.equals(settingName)) {
+      return switch (value) {
+        case MAP_VISIBILITY_FACTION -> "Faction Only";
+        case MAP_VISIBILITY_ALLY -> "Faction + Allies";
+        case MAP_VISIBILITY_ALL -> "All Players";
+        default -> value;
+      };
+    }
+    return value;
+  }
+
+  /**
+   * Gets the available options for a setting.
+   *
+   * @param settingName the setting name
+   * @return array of valid values
+   */
+  @NotNull
+  public static String[] getSettingOptions(@NotNull String settingName) {
+    return switch (settingName) {
+      case MAP_VISIBILITY -> MAP_VISIBILITY_OPTIONS;
+      default -> new String[0];
+    };
+  }
+
+  /**
+   * Gets the display name for a setting.
+   *
+   * @param settingName the setting name
+   * @return the display name
+   */
+  @NotNull
+  public static String getSettingDisplayName(@NotNull String settingName) {
+    return switch (settingName) {
+      case MAP_VISIBILITY -> "Map Visibility";
+      default -> settingName;
+    };
+  }
+
+  /**
+   * Gets the description for a setting.
+   *
+   * @param settingName the setting name
+   * @return the description
+   */
+  @NotNull
+  public static String getSettingDescription(@NotNull String settingName) {
+    return switch (settingName) {
+      case MAP_VISIBILITY -> "Which players are visible on the world map in this zone";
+      default -> "Unknown setting";
     };
   }
 }

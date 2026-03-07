@@ -74,6 +74,7 @@ public class ProtectionChecker {
     ALLOWED,
     ALLOWED_BYPASS,
     ALLOWED_WILDERNESS,
+    ALLOWED_SAFEZONE,
     ALLOWED_OWN_CLAIM,
     ALLOWED_ALLY_CLAIM,
     ALLOWED_WARZONE,
@@ -117,6 +118,8 @@ public class ProtectionChecker {
     CRATE_PICKUP,  // Capture crate entity pickup
     CRATE_PLACE,   // Capture crate entity release
     NPC_TAME,      // F-key NPC taming
+    NPC_INTERACT,  // NPC shops/dialogue interaction
+    MOUNT,         // Mount/ride entities
     PVE_DAMAGE     // Damage non-player entities (mobs)
   }
 
@@ -172,8 +175,8 @@ public class ProtectionChecker {
         // 3. Non-admin: Check standard bypass permissions
         String bypassPerm = switch (type) {
           case BUILD -> "hyperfactions.bypass.build";
-          case INTERACT, DOOR, BENCH, PROCESSING, SEAT, TELEPORTER, PORTAL,
-            CRATE_PICKUP, CRATE_PLACE, NPC_TAME -> "hyperfactions.bypass.interact";
+          case INTERACT, DOOR, BENCH, PROCESSING, SEAT, MOUNT, TELEPORTER, PORTAL,
+            CRATE_PICKUP, CRATE_PLACE, NPC_TAME, NPC_INTERACT -> "hyperfactions.bypass.interact";
           case CONTAINER -> "hyperfactions.bypass.container";
           case DAMAGE, PVE_DAMAGE -> "hyperfactions.bypass.damage";
           case USE -> "hyperfactions.bypass.use";
@@ -204,6 +207,8 @@ public class ProtectionChecker {
           case CRATE_PICKUP -> ZoneFlags.CRATE_PICKUP;
           case CRATE_PLACE -> ZoneFlags.CRATE_PLACE;
           case NPC_TAME -> ZoneFlags.NPC_TAME;
+          case NPC_INTERACT -> ZoneFlags.NPC_INTERACT;
+          case MOUNT -> ZoneFlags.MOUNT_USE;
         };
 
         boolean allowed = zone.getEffectiveFlag(flagName);
@@ -228,12 +233,15 @@ public class ProtectionChecker {
         }
       }
 
+      // Track whether we came from a zone for the wilderness result
+      boolean inSafeZone = zone != null && zone.isSafeZone();
+
       // 3. Check claim owner
       UUID claimOwner = claimManager.getClaimOwner(world, chunkX, chunkZ);
 
       if (claimOwner == null) {
-        // Wilderness - anyone can interact
-        return ProtectionResult.ALLOWED_WILDERNESS;
+        // No faction claim — return zone-aware result
+        return inSafeZone ? ProtectionResult.ALLOWED_SAFEZONE : ProtectionResult.ALLOWED_WILDERNESS;
       }
 
       // 4. Get player's faction
@@ -334,6 +342,8 @@ public class ProtectionChecker {
       case TELEPORTER, PORTAL -> perms.get(level + "TransportUse");
       case CRATE_PICKUP, CRATE_PLACE -> perms.get(level + "CrateUse");
       case NPC_TAME -> perms.get(level + "NpcTame");
+      case NPC_INTERACT -> perms.get(level + "NpcInteract");
+      case MOUNT -> perms.get(level + "SeatUse"); // Mount shares seat permission
       case PVE_DAMAGE -> perms.get(level + "PveDamage");
       case DAMAGE -> !"outsider".equals(level); // outsiders can't damage (PvP handled separately)
     };
@@ -644,7 +654,7 @@ public class ProtectionChecker {
    */
   public boolean isAllowed(@NotNull ProtectionResult result) {
     return switch (result) {
-      case ALLOWED, ALLOWED_BYPASS, ALLOWED_WILDERNESS,
+      case ALLOWED, ALLOWED_BYPASS, ALLOWED_WILDERNESS, ALLOWED_SAFEZONE,
         ALLOWED_OWN_CLAIM, ALLOWED_ALLY_CLAIM, ALLOWED_WARZONE -> true;
       default -> false;
     };
@@ -741,8 +751,8 @@ public class ProtectionChecker {
       if (!isAdmin) {
         String bypassPerm = switch (factionType) {
           case BUILD -> "hyperfactions.bypass.build";
-          case INTERACT, DOOR, BENCH, PROCESSING, SEAT, TELEPORTER, PORTAL,
-            CRATE_PICKUP, CRATE_PLACE, NPC_TAME -> "hyperfactions.bypass.interact";
+          case INTERACT, DOOR, BENCH, PROCESSING, SEAT, MOUNT, TELEPORTER, PORTAL,
+            CRATE_PICKUP, CRATE_PLACE, NPC_TAME, NPC_INTERACT -> "hyperfactions.bypass.interact";
           case CONTAINER -> "hyperfactions.bypass.container";
           case DAMAGE, PVE_DAMAGE -> "hyperfactions.bypass.damage";
           case USE -> "hyperfactions.bypass.use";
@@ -897,6 +907,38 @@ public class ProtectionChecker {
   @Nullable
   public String checkSeat(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
     return checkMixinProtection(playerUuid, worldName, x, y, z, ZoneFlags.SEAT_USE, InteractionType.SEAT);
+  }
+
+  /**
+   * Checks if a player can mount rideable entities (mixin hook version).
+   *
+   * @return null if allowed, denial message if denied
+   */
+  @Nullable
+  public String checkMount(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+    return checkMixinProtection(playerUuid, worldName, x, y, z, ZoneFlags.MOUNT_USE, InteractionType.MOUNT);
+  }
+
+  /**
+   * Checks if a player can launch projectiles (mixin hook version).
+   * Uses PROJECTILE_DAMAGE zone flag for the check.
+   *
+   * @return null if allowed, denial message if denied
+   */
+  @Nullable
+  public String checkProjectileLaunch(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+    return checkMixinProtection(playerUuid, worldName, x, y, z, ZoneFlags.PROJECTILE_DAMAGE, InteractionType.DAMAGE);
+  }
+
+  /**
+   * Checks if a player can trade at NPC barter shops (mixin hook version).
+   * Uses NPC_INTERACT zone flag for the check.
+   *
+   * @return null if allowed, denial message if denied
+   */
+  @Nullable
+  public String checkTrade(@NotNull UUID playerUuid, @NotNull String worldName, int x, int y, int z) {
+    return checkMixinProtection(playerUuid, worldName, x, y, z, ZoneFlags.NPC_INTERACT, InteractionType.NPC_INTERACT);
   }
 
   /**
@@ -1115,6 +1157,21 @@ public class ProtectionChecker {
     }
 
     return false; // Wilderness — allow
+  }
+
+  /**
+   * Checks if fluid spread (water/lava) should be blocked at a location.
+   * Uses the same logic as fire spread — blocks in claimed/zoned territory.
+   *
+   * @param worldName the world name
+   * @param x         the block X coordinate
+   * @param y         the block Y coordinate
+   * @param z         the block Z coordinate
+   * @return true if fluid spread should be BLOCKED
+   */
+  public boolean shouldBlockFluidSpread(@NotNull String worldName, int x, int y, int z) {
+    // Reuse fire spread logic — same environmental protection rules apply
+    return shouldBlockFireSpread(worldName, x, y, z);
   }
 
   // === Player-Level Mixin Checks (boolean return) ===
@@ -1505,5 +1562,178 @@ public class ProtectionChecker {
 
     // Wilderness - allow spawn
     return false;
+  }
+
+  /**
+   * Enhanced spawn check with mob type information.
+   * Called by HP 1.2.0+ enhanced spawn hooks.
+   *
+   * <p>Currently delegates to the position-only check — mob type filtering
+   * can be added later via SpawnSuppressionManager integration.
+   *
+   * @param worldName the world name
+   * @param npcType   the NPC type name (e.g. "ZombieSoldier")
+   * @param x         the spawn X coordinate
+   * @param y         the spawn Y coordinate
+   * @param z         the spawn Z coordinate
+   * @return true if spawn should be BLOCKED
+   */
+  public boolean shouldBlockSpawn(@NotNull String worldName, @Nullable String npcType,
+                  int x, int y, int z) {
+    // Delegate to position-only check. Mob type filtering can be added later
+    // by checking npcType against per-faction allowed/denied mob lists.
+    return shouldBlockSpawn(worldName, x, y, z);
+  }
+
+  // === Map Marker Visibility ===
+
+  /**
+   * Determines if a player's world map marker should be hidden from another player.
+   * Based on faction relationships and config settings.
+   *
+   * <p>Hiding is controlled by two layers:
+   * <ul>
+   *   <li>Global config: {@code worldMap.hideEnemyPlayers} / {@code hideNeutralPlayers}</li>
+   *   <li>Zone override: {@code show_on_map} + {@code map_visibility} zone flag (when true, disables hiding in that zone)</li>
+   * </ul>
+   *
+   * @param viewer    the UUID of the player viewing the map
+   * @param target    the UUID of the player being shown on the map
+   * @param worldName the world name
+   * @param x         the target's X coordinate
+   * @param z         the target's Z coordinate
+   * @return true if the marker should be HIDDEN
+   */
+  public boolean shouldHideMapMarker(@NotNull UUID viewer, @NotNull UUID target,
+                    @NotNull String worldName, int x, int z) {
+    try {
+      // Same faction — always show
+      UUID viewerFactionId = factionManager.getPlayerFactionId(viewer);
+      UUID targetFactionId = factionManager.getPlayerFactionId(target);
+
+      if (viewerFactionId == null || targetFactionId == null) {
+        return false; // Factionless — show
+      }
+      if (viewerFactionId.equals(targetFactionId)) {
+        return false; // Same faction — show
+      }
+
+      // Check relationship
+      RelationType relation = relationManager.getRelation(viewerFactionId, targetFactionId);
+      if (relation == RelationType.ALLY) {
+        return false; // Allies — always show
+      }
+
+      // Check global config for this relation type
+      var serverConfig = ConfigManager.get().server();
+      boolean shouldHide;
+      if (relation == RelationType.ENEMY) {
+        shouldHide = serverConfig.isHideEnemyPlayersOnMap();
+      } else {
+        // NEUTRAL or TRUCE — use neutral setting
+        shouldHide = serverConfig.isHideNeutralPlayersOnMap();
+      }
+
+      if (!shouldHide) {
+        return false; // Config says don't hide this relation type
+      }
+
+      // Check zone override at target's position
+      int chunkX = ChunkUtil.toChunkCoord(x);
+      int chunkZ = ChunkUtil.toChunkCoord(z);
+      Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
+      if (zone != null && zone.getEffectiveFlag(ZoneFlags.SHOW_ON_MAP)) {
+        // Zone has map visibility override — check the visibility level
+        String visibility = zone.getEffectiveSetting(ZoneFlags.MAP_VISIBILITY);
+        if (ZoneFlags.MAP_VISIBILITY_ALL.equals(visibility)) {
+          return false; // Show everyone
+        }
+        if (ZoneFlags.MAP_VISIBILITY_ALLY.equals(visibility) && relation == RelationType.ALLY) {
+          return false; // Show allies (enemies/neutrals still hidden)
+        }
+        // "faction" = only own faction visible (already handled above — same faction returns false early)
+      }
+
+      return true; // Hide based on config + relation
+    } catch (Exception e) {
+      Logger.severe("Map marker visibility check error (fail-open)", e);
+      return false;
+    }
+  }
+
+  /**
+   * Determines if a shared map marker should be hidden from a player.
+   * Based on faction relationships between the viewer and the marker creator.
+   *
+   * <p>Hiding is controlled by two layers:
+   * <ul>
+   *   <li>Global config: {@code worldMap.hideEnemyMarkers} / {@code hideNeutralMarkers}</li>
+   *   <li>Zone override: {@code show_on_map} + {@code map_visibility} zone flag (when true, shows all markers)</li>
+   * </ul>
+   *
+   * @param viewer    the UUID of the player viewing the map
+   * @param creatorId the UUID of the player who placed the marker (may be null)
+   * @param worldName the world name
+   * @param markerX   the marker's X coordinate
+   * @param markerZ   the marker's Z coordinate
+   * @return true if the marker should be HIDDEN
+   */
+  public boolean shouldHideSharedMarker(@NotNull UUID viewer, @Nullable UUID creatorId,
+                      @NotNull String worldName, float markerX, float markerZ) {
+    try {
+      if (creatorId == null) {
+        return false; // Unknown creator — show (fail-open)
+      }
+      if (viewer.equals(creatorId)) {
+        return false; // Own marker — always show
+      }
+
+      UUID viewerFactionId = factionManager.getPlayerFactionId(viewer);
+      UUID creatorFactionId = factionManager.getPlayerFactionId(creatorId);
+
+      if (viewerFactionId == null || creatorFactionId == null) {
+        return false; // Factionless — show
+      }
+      if (viewerFactionId.equals(creatorFactionId)) {
+        return false; // Same faction — show
+      }
+
+      RelationType relation = relationManager.getRelation(viewerFactionId, creatorFactionId);
+      if (relation == RelationType.ALLY) {
+        return false; // Allies — always show
+      }
+
+      // Check global config for this relation type
+      var serverConfig = ConfigManager.get().server();
+      boolean shouldHide;
+      if (relation == RelationType.ENEMY) {
+        shouldHide = serverConfig.isHideEnemyMarkersOnMap();
+      } else {
+        shouldHide = serverConfig.isHideNeutralMarkersOnMap();
+      }
+
+      if (!shouldHide) {
+        return false;
+      }
+
+      // Check zone override at marker's position
+      int chunkX = ChunkUtil.toChunkCoord((int) markerX);
+      int chunkZ = ChunkUtil.toChunkCoord((int) markerZ);
+      Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
+      if (zone != null && zone.getEffectiveFlag(ZoneFlags.SHOW_ON_MAP)) {
+        String visibility = zone.getEffectiveSetting(ZoneFlags.MAP_VISIBILITY);
+        if (ZoneFlags.MAP_VISIBILITY_ALL.equals(visibility)) {
+          return false; // Show all markers
+        }
+        if (ZoneFlags.MAP_VISIBILITY_ALLY.equals(visibility) && relation == RelationType.ALLY) {
+          return false; // Show ally markers
+        }
+      }
+
+      return true;
+    } catch (Exception e) {
+      Logger.severe("Shared marker visibility check error (fail-open)", e);
+      return false;
+    }
   }
 }
