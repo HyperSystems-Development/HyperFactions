@@ -18,6 +18,7 @@ HyperFactions integrates with external plugins through soft dependencies. All in
 - [OrbisGuard-Mixins](#orbisguard-mixins)
 - [World Map](#world-map)
 - [GravestonePlugin](#gravestoneplugin)
+- [KyuubiSoft Core](#kyuubisoft-core)
 - [HyperPerms Context](#hyperperms-context)
 
 ---
@@ -33,6 +34,7 @@ graph TD
     HF --> PMB[ProtectionMixinBridge]
     HF --> WM[World Map]
     HF --> GS[Gravestones]
+    HF --> KS[KyuubiSoft Core]
     HF --> HPC[HyperPerms Context]
 
     PM --> VU[VaultUnlocked]
@@ -41,7 +43,7 @@ graph TD
 
     PMB -->|auto-detect| HPM[HyperProtect-Mixin]
     PMB -->|auto-detect| OGM[OrbisGuard-Mixins]
-    HPM -->|bridge slots| HPHooks[20 Hook Wrappers]
+    HPM -->|bridge slots| HPHooks[27 Hook Wrappers]
     OGM -->|System.getProperties| OGHooks[11 Hook Callbacks]
 
     style HF fill:#2563eb,color:#fff
@@ -54,6 +56,7 @@ graph TD
     style OGM fill:#d97706,color:#fff
     style WM fill:#0891b2,color:#fff
     style GS fill:#dc2626,color:#fff
+    style KS fill:#059669,color:#fff
     style HPC fill:#7c3aed,color:#fff
 ```
 
@@ -209,7 +212,7 @@ HyperFactions supports two mixin providers for extended protection coverage: **[
 
 | Mode | Condition | Behavior |
 |------|-----------|----------|
-| `HYPERPROTECT` | Only HyperProtect-Mixin installed | All 20 HP hooks registered (standalone) |
+| `HYPERPROTECT` | Only HyperProtect-Mixin installed | All 27 HP hooks registered (standalone) |
 | `ORBISGUARD` | Only OrbisGuard-Mixins installed | All 11 OG hooks registered |
 | `BOTH` | Both installed | OG handles its 11 features + HP handles 5 unique features |
 | `NONE` | Neither installed | Graceful degradation — ECS-based protection only |
@@ -255,7 +258,9 @@ When both systems are installed simultaneously:
 
 > **Install**: Download from [CurseForge](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) or [GitHub](https://github.com/HyperSystems-Development/HyperProtect-Mixin) and place in `earlyplugins/`
 
-HyperProtect-Mixin is the preferred mixin for HyperFactions. It provides 20 hook slots covering all protection scenarios including features not available in OrbisGuard-Mixins (teleporter/portal blocking, entity damage, container access, respawn override). It uses an `AtomicReferenceArray` at `System.getProperties().get("hyperprotect.bridge")` for cross-classloader communication.
+HyperProtect-Mixin is the preferred mixin for HyperFactions. It provides 30 hook slots (27 used by HyperFactions) covering all protection scenarios including features not available in OrbisGuard-Mixins (teleporter/portal blocking, entity damage, container access, respawn override, mount/barter/fluid/prefab/projectile/crafting/map-marker control). It uses an `AtomicReferenceArray` at `System.getProperties().get("hyperprotect.bridge")` for cross-classloader communication.
+
+**v1.2.0 additions**: 7 new hook wrappers (MountHook, BarterTradeHook, FluidSpreadHook, PrefabSpawnHook, ProjectileLaunchHook, CraftingResourceHook, MapMarkerFilterHook), NPC role context (`hyperprotect.context.npc_role`), and block type context (`hyperprotect.context.block_id`, `hyperprotect.context.block_state`) for targeted protection decisions.
 
 ### Verdict Protocol
 
@@ -266,7 +271,7 @@ HyperProtect-Mixin is the preferred mixin for HyperFactions. It provides 20 hook
 | 2 | `DENY_SILENT` | Denied — no message sent |
 | 3 | `DENY_MOD_HANDLES` | Denied — consumer mod (HyperFactions) sends the message |
 
-### Hook Slots (20)
+### Hook Slots (30 total, 27 used)
 
 | Slot | Feature | Purpose |
 |------|---------|---------|
@@ -291,6 +296,13 @@ HyperProtect-Mixin is the preferred mixin for HyperFactions. It provides 20 hook
 | 20 | `use` | Block interaction (campfire, lantern) |
 | 21 | `seat` | Seat/mount seating |
 | 22 | `respawn` | Custom respawn location override |
+| 23 | `mount` | Mount/dismount protection |
+| 24 | `barter_trade` | Barter trade protection |
+| 25 | `fluid_spread` | Fluid spread blocking |
+| 26 | `prefab_spawn` | Prefab spawn control |
+| 27 | `projectile_launch` | Projectile launch blocking |
+| 28 | `crafting_resource` | Crafting resource access |
+| 29 | `map_marker_filter` | Map marker visibility filtering |
 
 ### Return Conventions
 
@@ -536,7 +548,7 @@ Gravestone lifecycle events are logged when `debug integration` is enabled:
 
 - `/f admin integrations` — Summary status of all integrations (permissions, protection, placeholders)
 - `/f admin integration <name>` — Detailed status for a specific integration
-  - Names: `hyperperms`/`perms`, `orbisguard`/`orbis`, `hyperprotect`/`hp`, `mixins`, `gravestones`/`gs`, `papi`, `wiflow`
+  - Names: `hyperperms`/`perms`, `orbisguard`/`orbis`, `hyperprotect`/`hp`, `mixins`, `gravestones`/`gs`, `kyuubisoft`/`kyuubi`/`ks`/`citizens`, `papi`, `wiflow`
 - `/f admin debug toggle integration` — Enable/disable integration debug logging
 
 ### Graceful Degradation
@@ -547,6 +559,27 @@ GravestonePlugin is fully optional:
 2. **Runtime init**: `GravestoneIntegration.init()` wraps all API calls in `NoClassDefFoundError` catch — if gravestone classes aren't on classpath, `available = false`
 3. **ECS systems**: Check `isAvailable()` before bypassing protection — if inactive, normal protection applies
 4. **Config**: Settings load/save regardless of plugin availability
+
+---
+
+## KyuubiSoft Core
+
+HyperFactions integrates with [KyuubiSoft Core](https://kyuubisoft.com) for citizen/NPC zone protection.
+
+**Detection:** Reflection-based auto-detection at startup. If `com.kyuubisoft.core.KyuubiSoftCore` class is found, HyperFactions registers a `CitizenDialogInterceptor` via dynamic proxy.
+
+**Behavior:**
+- When a player attempts to interact with a KyuubiSoft citizen NPC in claimed territory, the interceptor checks faction permissions
+- Fail-open design: if any reflection error occurs, the interaction is allowed
+- The interceptor is registered via `Proxy.newProxyInstance()` to avoid compile-time dependency
+
+**Admin Commands:**
+- `/f admin integration kyuubisoft` — shows KyuubiSoft integration status and details
+- Also accessible via aliases: `kyuubi`, `ks`, `citizens`
+
+**Lifecycle:**
+- Initialized after plugin `enable()` completes
+- Shut down cleanly via `KyuubiSoftIntegration.shutdown()` during plugin disable
 
 ---
 

@@ -92,12 +92,12 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 | Feature | Status |
 |---------|--------|
 | Block, item, PvP protection | Implemented |
-| [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) (22 hooks, recommended) | Implemented |
+| [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) (27 hooks, recommended) | Implemented |
 | OrbisGuard-Mixins (11 hooks, alternative) | Implemented |
 | Dual-provider auto-detection | Implemented |
 | Mob spawn suppression | Implemented |
 | Gravestones integration | Implemented |
-| Zone flags (40) | Implemented |
+| Zone flags (41) | Implemented |
 | Command blocking in zones | Implemented |
 
 ### GUI
@@ -136,6 +136,7 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 | [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) (recommended) | Implemented |
 | OrbisGuard / OrbisGuard-Mixins | Implemented |
 | Gravestones | Implemented |
+| KyuubiSoft Core (citizen NPC protection) | Implemented |
 
 ### Planned Features
 
@@ -163,7 +164,7 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 3. **Configure** by editing files in `mods/com.hyperfactions_HyperFactions/config/` after first startup — `factions.json` for faction gameplay settings, `server.json` for server behavior settings
 4. **Create a faction** with `/f create MyFaction` and claim territory with `/f claim`
 
-**Recommended:** Install [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) in `earlyplugins/` for full protection coverage (22 hook types including teleporter/portal blocking, entity damage, capture crate/NPC tame protection, and respawn override).
+**Recommended:** Install [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) in `earlyplugins/` for full protection coverage (27 hook types including teleporter/portal blocking, entity damage, capture crate/NPC protection, mount/barter/fluid/projectile control, and respawn override).
 
 **Optional:** Install [HyperPerms](https://github.com/HyperSystems-Development/HyperPerms) for enhanced permission control with groups, tracks, and contextual permissions.
 
@@ -196,7 +197,7 @@ Comprehensive developer and admin documentation is available in the [`docs/`](do
 | Document | Description |
 |----------|-------------|
 | [api.md](docs/api.md) | HyperFactionsAPI, EconomyAPI, EventBus for third-party mods |
-| [integrations.md](docs/integrations.md) | HyperPerms, LuckPerms, PAPI, WiFlow, HyperProtect-Mixin, OrbisGuard, Gravestones |
+| [integrations.md](docs/integrations.md) | HyperPerms, LuckPerms, PAPI, WiFlow, HyperProtect-Mixin, OrbisGuard, Gravestones, KyuubiSoft |
 | [placeholders.md](docs/placeholders.md) | All 49 PAPI & WiFlow placeholders with examples |
 
 ### Feature Documentation

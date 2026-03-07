@@ -1,12 +1,12 @@
 # Zone Protection
 
-> **Version**: 0.10.0 | **Source**: [`data/ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.java), [`protection/ProtectionChecker.java`](../src/main/java/com/hyperfactions/protection/ProtectionChecker.java)
+> **Version**: 0.10.3 | **Source**: [`data/ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.java), [`protection/ProtectionChecker.java`](../src/main/java/com/hyperfactions/protection/ProtectionChecker.java)
 
 How admin-created SafeZones and WarZones protect areas. For faction claim protection, see [protection-claims.md](protection-claims.md). For cross-cutting concerns (wilderness, explosions, fire), see [protection-global.md](protection-global.md).
 
 ## Overview
 
-Zones are admin-controlled protected areas with 40 configurable flags. They **always override** faction claim permissions when both apply.
+Zones are admin-controlled protected areas with 41 configurable flags. They **always override** faction claim permissions when both apply.
 
 - **SafeZone**: PvP disabled, building disabled by default. Used for spawns, shops, arenas.
 - **WarZone**: PvP enabled, building controlled by flags. Used for contested areas.
@@ -20,7 +20,7 @@ Source: `ProtectionChecker.canInteractChunk()` lines 173–209
 
 ---
 
-## Zone Flags (40 Flags)
+## Zone Flags (41 Flags)
 
 Source: [`ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.java) — `ALL_FLAGS` array (line 274), `getSafeZoneDefault()` (line 388), `getWarZoneDefault()` (line 452)
 
@@ -77,15 +77,17 @@ Source: [`ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.jav
 
 > **Parent-child**: `block_interact` is the parent of all 5 interaction sub-flags. Disabling the parent disables all children.
 
-### Entity Interaction Flags (3)
+### NPC & Crate Flags (5)
 
 | Flag | Description | SafeZone Default | WarZone Default | Mixin Required |
 |------|-------------|------------------|-----------------|----------------|
+| `npc_use` | NPC interaction (parent) | false | true | Yes (use hook) |
+| ↳ `npc_tame` | Tame NPCs with F-key | false | true | Yes (use hook) |
+| ↳ `npc_interact` | NPC dialogue, shops, quests | true | true | Yes (use hook) |
 | `crate_pickup` | Pick up animals with capture crate | false | true | Yes (use hook) |
 | `crate_place` | Release animals from capture crate | false | true | Yes (use hook) |
-| `npc_tame` | Tame NPCs with F-key | false | true | Yes (use hook) |
 
-> These flags are independent (no parent). They require HyperProtect-Mixin's use hook (slot 20) for enforcement via CaptureCrateGate and SimpleInstantInteractionGate.
+> **Parent-child**: `npc_use` is the parent of `npc_tame` and `npc_interact`. Disabling the parent visually disables children in the admin UI. NPC role classification uses a fail-open blocklist — only known tameable creature roles trigger `npc_tame`; all other NPC interactions use `npc_interact`.
 
 ### Transport Flags (2)
 
@@ -144,7 +146,9 @@ Source: `ZoneFlags.MIXIN_DEPENDENT_FLAGS` (line 338)
 | `npc_spawning` | **Not enforced** | Enforced | Enforced |
 | `crate_pickup` | **Not enforced** | **Not enforced** | Enforced |
 | `crate_place` | **Not enforced** | **Not enforced** | Enforced |
+| `npc_use` | **Not enforced** | **Not enforced** | Enforced |
 | `npc_tame` | **Not enforced** | **Not enforced** | Enforced |
+| `npc_interact` | **Not enforced** | **Not enforced** | Enforced |
 
 `build_allowed` (the parent) and `block_interact` are enforced by ECS systems and do not require mixins.
 
