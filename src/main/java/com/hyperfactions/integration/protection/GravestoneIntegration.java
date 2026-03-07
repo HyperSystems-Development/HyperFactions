@@ -237,7 +237,20 @@ public class GravestoneIntegration {
         return allowed ? ALLOW : DENY;
       }
 
-      // Outsider's gravestone in our territory
+      // Outsider's gravestone in our territory — check relation to gravestone owner
+      if (ownerFactionId != null) {
+        RelationType ownerRelation = relationManager.getRelation(accessorFactionId, ownerFactionId);
+        if (ownerRelation == RelationType.ENEMY) {
+          boolean allowed = config.isEnemiesCanLootInOwnTerritory();
+          Logger.debugIntegration("[Gravestone] Enemy's gravestone in own territory: accessor=%s, owner=%s, allowed=%s",
+              accessorUuid, ownerUuid, allowed);
+          return allowed ? ALLOW : DENY;
+        }
+      }
+
+      // Non-enemy outsider's gravestone in own territory — allow
+      Logger.debugIntegration("[Gravestone] Outsider's gravestone in own territory: accessor=%s, owner=%s, allowed=true",
+          accessorUuid, ownerUuid);
       return ALLOW;
     }
 

@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-*No changes yet*
+### Fixed
+
+- **Gravestone enemy loot in own territory**: `enemiesCanLootInOwnTerritory` config option was declared but never checked — enemies could always loot gravestones in the territory owner's claim regardless of the setting. Now properly checks faction relation between the accessor and gravestone owner when in own territory
 
 ## [0.10.2] - 2026-02-28
 
