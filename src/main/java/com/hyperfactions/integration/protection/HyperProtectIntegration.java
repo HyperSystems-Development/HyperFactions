@@ -1079,7 +1079,17 @@ public final class HyperProtectIntegration {
     }
   }
 
-  /** Slot 24: map_marker_filter — filterPlayerMarker(UUID, UUID, String, int, int, int). */
+  /**
+   * Slot 24: map_marker_filter — player icon and shared marker filtering.
+   *
+   * <p>Two methods on the same hook object:
+   * <ul>
+   *   <li>{@code filterPlayerMarker(UUID, UUID, String, int, int, int)} — called by MapMarkerFilter mixin
+   *       for other-player icons on the world map</li>
+   *   <li>{@code filterSharedMarker(UUID, UUID, String, float, float)} — called by SharedMarkerFilter mixin
+   *       for user-placed shared markers on the world map</li>
+   * </ul>
+   */
   public static final class MapMarkerFilterHook {
     private final HyperFactions hf;
 
@@ -1101,6 +1111,25 @@ public final class HyperProtectIntegration {
         return hidden ? 1 : 0;
       } catch (Exception e) {
         Logger.severe("Map marker filter mixin hook error (fail-open)", e);
+        return 0; // Fail-open: show marker
+      }
+    }
+
+    /**
+     * Filters shared (user-placed) markers on the world map based on faction relationships.
+     * Called by SharedMarkerFilter mixin for each UserMapMarker.
+     * Returns 0 = SHOW, >0 = HIDE.
+     */
+    public int filterSharedMarker(UUID viewer, UUID creator, String worldName,
+        float x, float z) {
+      try {
+        ProtectionChecker checker = hf.getProtectionChecker();
+        boolean hidden = checker.shouldHideSharedMarker(viewer, creator, worldName, x, z);
+        Logger.debugInteraction("[Mixin:SharedMarker] viewer=%s, creator=%s, world=%s, pos=(%.0f,%.0f), hidden=%b",
+          viewer, creator, worldName, x, z, hidden);
+        return hidden ? 1 : 0;
+      } catch (Exception e) {
+        Logger.severe("Shared marker filter mixin hook error (fail-open)", e);
         return 0; // Fail-open: show marker
       }
     }
