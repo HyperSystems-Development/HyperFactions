@@ -620,6 +620,13 @@ public class BackupManager {
         }
         return FileVisitResult.CONTINUE;
       }
+
+      /** Skip files that vanish between directory listing and attribute read (concurrent writeAtomic). */
+      @Override
+      public FileVisitResult visitFileFailed(Path file, IOException exc) {
+        Logger.debug("[Backup] Skipping vanished file during backup: %s", file.getFileName());
+        return FileVisitResult.CONTINUE;
+      }
     });
   }
 
