@@ -9,7 +9,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improved
 
-- **Specific protection denial messages**: All protection denial messages now describe the exact action being blocked (e.g., "You can't open containers in enemy territory." instead of generic "You don't have permission to do that.") with territory context (Ally/Enemy/Claimed territory, SafeZone/WarZone). Applied across all 9 protection systems: block break/place/use, harvest/pickup, fluid place/refill, NPC interact, crop harvest
+- **Specific protection denial messages**: All protection denial messages now describe the exact action being blocked (e.g., "You can't open containers in enemy territory." instead of generic "You don't have permission to do that.") with territory context (Ally/Enemy/Claimed territory, SafeZone/WarZone). Applied across all protection systems: block break/place/use, harvest/pickup, fluid place/refill, NPC interact, crop harvest, item drop, item pickup, mount
+- **Item drop/pickup denial messages**: Item drop and item pickup protection now send debounced, territory-aware denial messages instead of hardcoded text or silent denial
+- **Centralized denial message delivery**: New `ProtectionMessageDebounce.sendDenial()` consolidates the repeated `Message.raw(...).color("#FF5555")` + debounce pattern into a single call across all 12 protection systems
+- **Eliminated double protection checks**: `HarvestPickupProtectionSystem` and `BlockUseProtectionSystem` (crop path) no longer call `canInteract()` twice per event — once for the boolean and again for the message. Now uses single-call `checkItemPickup()` pattern
+- **Consistent denial message phrasing**: All zone denial messages standardized to "You can't ..." (matching territory denial phrasing) instead of mixed "You cannot ..."/"You can't ..."
+
+### Fixed
+
+- **Chunk map GUI performance**: Reduced terrain map generation time by using bulk pixel writes (row-at-a-time instead of per-pixel `setRGB`) and faster PNG compression. Added timing debug logs for future diagnostics
+- **Zero power on faction creation**: New players who joined during server startup could get 0 power due to a race condition where `loadAll()` wiped in-flight defaults. Now merges loaded data instead of clearing the cache, and persists defaults immediately on player join
+- **Gravestone enemy loot in own territory**: `enemiesCanLootInOwnTerritory` config option was declared but never checked — enemies could always loot gravestones in the territory owner's claim regardless of the setting. Now properly checks faction relation between the accessor and gravestone owner when in own territory
+- **Backup file walk race condition**: `addDirectoryToZip()` crashed with `NoSuchFileException` when a `.bak` file vanished (deleted by concurrent `writeAtomic()`) between directory listing and attribute read during `Files.walkFileTree()` ([HYPERFACTIONS-3](https://hypersystems.sentry.io/issues/HYPERFACTIONS-3))
+- **Backup cleanup race condition**: Pre-backup `cleanupOrphanedFiles()` could delete in-flight temp files from concurrent `writeAtomic()` calls, causing `NoSuchFileException` during player data saves ([HYPERFACTIONS-4](https://hypersystems.sentry.io/issues/HYPERFACTIONS-4))
+- **Orphan cleanup safety**: `cleanupOrphanedFiles()` now skips `.tmp` files younger than 5 seconds to prevent racing with active writes
+
+**World Map Player & Marker Hiding**
+- Configurable world map visibility: hide enemy/neutral players and shared markers independently via `worldMap` config section
+- New `show_on_map` zone flag + `map_visibility` setting — first selection-type zone setting with three levels: "Faction Only", "Faction + Allies", "All Players"
+- Zone settings system: `Map<String, String> settings` on Zone record for enum/selection values alongside existing boolean flags
+- SharedMarkerFilter integration via HyperProtect-Mixin — filters user-placed shared markers by creator faction
+- Admin GUI: Integration Flags page now shows World Map and HyperEssentials sections with map visibility cycling button
+
+**NPC_USE Parent Flag & NPC Role Classification**
+- New `NPC_USE` parent flag with `NPC_TAME` and `NPC_INTERACT` children — enables granular NPC interaction control in zone settings
+- NPC role classification via `isTameableCreatureRole()` blocklist (fail-open) classifies NPC roles as tameable vs interactive based on role name patterns
+- `ALLOWED_SAFEZONE` result type — `ProtectionChecker` now distinguishes "allowed because SafeZone defaults" from "allowed because wilderness"
+
+**KyuubiSoft Core Integration**
+- Reflection-based `CitizenDialogInterceptor` registration for citizen zone protection, with fail-open design and auto-detection
+- Admin commands: `/f admin integration kyuubisoft` (aliases: `kyuubi`, `ks`, `citizens`)
+
+**HyperProtect-Mixin v1.2.0 Hook Wrappers**
+- 7 new HP-Mixin 1.2.0 hook wrappers: MountHook, BarterTradeHook, FluidSpreadHook, PrefabSpawnHook, ProjectileLaunchHook, CraftingResourceHook, MapMarkerFilterHook
+- Block type context for protection decisions — reads `hyperprotect.context.block_id` and `hyperprotect.context.block_state` from HP-Mixin bridge
+- NPC role context — reads `hyperprotect.context.npc_role` from HP-Mixin bridge for targeted NPC protection
+
+### Changed
+
+- Zone flag category consolidation — Entity Interaction category merged into Interaction category (12 flags total: block_interact + 5 children, NPC_USE + 2 children, crate_pickup, crate_place)
+- Zone flags reindexed in admin UI — all 41 core flags (0-40) with updated category grouping
+- Fixed "Combat (6)" comment to "Combat (7)" in `ZoneFlags.ALL_FLAGS`
+- Fixed missing `BOTH` case in `AdminIntegrationHandler.handleIntegrations()` MixinProvider switch
 
 ## [0.10.2] - 2026-02-28
 

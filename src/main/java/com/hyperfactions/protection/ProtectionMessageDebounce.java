@@ -24,6 +24,32 @@ public final class ProtectionMessageDebounce {
   private ProtectionMessageDebounce() {}
 
   /**
+   * Sends a protection denial message (red text) if the player is not on cooldown for this action.
+   * Convenience overload that wraps a plain denial string in red (#FF5555) Message formatting.
+   *
+   * @param player    the player to send the message to
+   * @param actionKey a short key identifying the action type (e.g., "block_break", "pve_damage")
+   * @param denial    the denial text (e.g., from getDenialMessage)
+   */
+  public static void sendDenial(@NotNull PlayerRef player, @NotNull String actionKey,
+                  @NotNull String denial) {
+    sendIfNotOnCooldown(player, actionKey, Message.raw(denial).color("#FF5555"));
+  }
+
+  /**
+   * Sends a protection denial message (red text) if the player is not on cooldown for this action.
+   * Convenience overload for Player entity.
+   *
+   * @param player    the player entity
+   * @param actionKey a short key identifying the action type
+   * @param denial    the denial text (e.g., from getDenialMessage)
+   */
+  public static void sendDenial(@NotNull Player player, @NotNull String actionKey,
+                  @NotNull String denial) {
+    sendIfNotOnCooldown(player, actionKey, Message.raw(denial).color("#FF5555"));
+  }
+
+  /**
    * Sends a protection denial message if the player is not on cooldown for this action.
    *
    * @param player    the player to send the message to

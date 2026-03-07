@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
  * @param createdAt        when the zone was created (epoch millis)
  * @param createdBy        UUID of the admin who created it
  * @param flags            custom flags for this zone (null = use defaults)
+ * @param settings         string-valued zone settings for enum/selection options (null = use defaults)
  * @param notifyOnEntry    whether to show entry notification (null/true = show, false = suppress)
  * @param notifyTitleUpper custom upper title text (null = default status text)
  * @param notifyTitleLower custom lower title text (null = default zone name)
@@ -28,6 +29,7 @@ public record Zone(
   long createdAt,
   @NotNull UUID createdBy,
   @Nullable Map<String, Boolean> flags,
+  @Nullable Map<String, String> settings,
   @Nullable Boolean notifyOnEntry,
   @Nullable String notifyTitleUpper,
   @Nullable String notifyTitleLower
@@ -51,7 +53,7 @@ public record Zone(
   public static Zone create(@NotNull String name, @NotNull ZoneType type,
                @NotNull String world, @NotNull UUID createdBy) {
     return new Zone(UUID.randomUUID(), name, type, world, Set.of(),
-           System.currentTimeMillis(), createdBy, null, null, null, null);
+           System.currentTimeMillis(), createdBy, null, null, null, null, null);
   }
 
   /**
@@ -71,7 +73,7 @@ public record Zone(
                @NotNull UUID createdBy) {
     ChunkKey chunk = new ChunkKey(world, chunkX, chunkZ);
     return new Zone(UUID.randomUUID(), name, type, world, Set.of(chunk),
-           System.currentTimeMillis(), createdBy, null, null, null, null);
+           System.currentTimeMillis(), createdBy, null, null, null, null, null);
   }
 
   /**
@@ -123,7 +125,7 @@ public record Zone(
     Set<ChunkKey> newChunks = new HashSet<>(chunks);
     newChunks.add(chunk);
     return new Zone(id, name, type, world, newChunks, createdAt, createdBy, flags,
-           notifyOnEntry, notifyTitleUpper, notifyTitleLower);
+           settings, notifyOnEntry, notifyTitleUpper, notifyTitleLower);
   }
 
   /**
@@ -150,7 +152,7 @@ public record Zone(
     Set<ChunkKey> newChunks = new HashSet<>(chunks);
     newChunks.remove(chunk);
     return new Zone(id, name, type, world, newChunks, createdAt, createdBy, flags,
-           notifyOnEntry, notifyTitleUpper, notifyTitleLower);
+           settings, notifyOnEntry, notifyTitleUpper, notifyTitleLower);
   }
 
   /**
@@ -208,7 +210,7 @@ public record Zone(
    */
   public Zone withName(@NotNull String newName) {
     return new Zone(id, newName, type, world, chunks, createdAt, createdBy, flags,
-           notifyOnEntry, notifyTitleUpper, notifyTitleLower);
+           settings, notifyOnEntry, notifyTitleUpper, notifyTitleLower);
   }
 
   /**
@@ -222,7 +224,7 @@ public record Zone(
     Map<String, Boolean> newFlags = flags != null ? new HashMap<>(flags) : new HashMap<>();
     newFlags.put(flagName, value);
     return new Zone(id, name, type, world, chunks, createdAt, createdBy, newFlags,
-           notifyOnEntry, notifyTitleUpper, notifyTitleLower);
+           settings, notifyOnEntry, notifyTitleUpper, notifyTitleLower);
   }
 
   /**
@@ -238,7 +240,7 @@ public record Zone(
     Map<String, Boolean> newFlags = new HashMap<>(flags);
     newFlags.remove(flagName);
     return new Zone(id, name, type, world, chunks, createdAt, createdBy,
-           newFlags.isEmpty() ? null : newFlags,
+           newFlags.isEmpty() ? null : newFlags, settings,
            notifyOnEntry, notifyTitleUpper, notifyTitleLower);
   }
 
@@ -250,7 +252,7 @@ public record Zone(
    */
   public Zone withFlags(@Nullable Map<String, Boolean> newFlags) {
     return new Zone(id, name, type, world, chunks, createdAt, createdBy, newFlags,
-           notifyOnEntry, notifyTitleUpper, notifyTitleLower);
+           settings, notifyOnEntry, notifyTitleUpper, notifyTitleLower);
   }
 
   /**
@@ -261,7 +263,7 @@ public record Zone(
    */
   public Zone withNotifyOnEntry(@Nullable Boolean notifyOnEntry) {
     return new Zone(id, name, type, world, chunks, createdAt, createdBy, flags,
-           notifyOnEntry, notifyTitleUpper, notifyTitleLower);
+           settings, notifyOnEntry, notifyTitleUpper, notifyTitleLower);
   }
 
   /**
@@ -272,7 +274,7 @@ public record Zone(
    */
   public Zone withNotifyTitleUpper(@Nullable String title) {
     return new Zone(id, name, type, world, chunks, createdAt, createdBy, flags,
-           notifyOnEntry, title, notifyTitleLower);
+           settings, notifyOnEntry, title, notifyTitleLower);
   }
 
   /**
@@ -283,7 +285,7 @@ public record Zone(
    */
   public Zone withNotifyTitleLower(@Nullable String title) {
     return new Zone(id, name, type, world, chunks, createdAt, createdBy, flags,
-           notifyOnEntry, notifyTitleUpper, title);
+           settings, notifyOnEntry, notifyTitleUpper, title);
   }
 
   /**
@@ -331,5 +333,83 @@ public record Zone(
 
     // Return default based on zone type
     return isSafeZone() ? ZoneFlags.getSafeZoneDefault(flagName) : ZoneFlags.getWarZoneDefault(flagName);
+  }
+
+  // === String-valued settings (enum/selection flags) ===
+
+  /**
+   * Gets the value of a string setting, or null if not set.
+   *
+   * @param settingName the setting name
+   * @return the setting value, or null if not set
+   */
+  @Nullable
+  public String getSetting(@NotNull String settingName) {
+    return settings != null ? settings.get(settingName) : null;
+  }
+
+  /**
+   * Gets the effective value for a string setting, considering zone type defaults.
+   *
+   * @param settingName the setting name
+   * @return the effective setting value
+   */
+  @NotNull
+  public String getEffectiveSetting(@NotNull String settingName) {
+    if (settings != null && settings.containsKey(settingName)) {
+      return settings.get(settingName);
+    }
+    return ZoneFlags.getSettingDefault(settingName, type);
+  }
+
+  /**
+   * Checks if a setting has been explicitly set.
+   *
+   * @param settingName the setting name
+   * @return true if setting has been explicitly set
+   */
+  public boolean hasSettingSet(@NotNull String settingName) {
+    return settings != null && settings.containsKey(settingName);
+  }
+
+  /**
+   * Creates a copy with a setting set.
+   *
+   * @param settingName the setting name
+   * @param value       the setting value
+   * @return a new Zone with updated setting
+   */
+  public Zone withSetting(@NotNull String settingName, @NotNull String value) {
+    Map<String, String> newSettings = settings != null ? new HashMap<>(settings) : new HashMap<>();
+    newSettings.put(settingName, value);
+    return new Zone(id, name, type, world, chunks, createdAt, createdBy, flags,
+           newSettings, notifyOnEntry, notifyTitleUpper, notifyTitleLower);
+  }
+
+  /**
+   * Creates a copy with a setting removed (reverts to default).
+   *
+   * @param settingName the setting name to remove
+   * @return a new Zone with setting removed
+   */
+  public Zone withoutSetting(@NotNull String settingName) {
+    if (settings == null || !settings.containsKey(settingName)) {
+      return this;
+    }
+    Map<String, String> newSettings = new HashMap<>(settings);
+    newSettings.remove(settingName);
+    return new Zone(id, name, type, world, chunks, createdAt, createdBy, flags,
+           newSettings.isEmpty() ? null : newSettings,
+           notifyOnEntry, notifyTitleUpper, notifyTitleLower);
+  }
+
+  /**
+   * Gets all explicitly set settings (immutable copy).
+   *
+   * @return map of setting name to value, never null
+   */
+  @NotNull
+  public Map<String, String> getSettings() {
+    return settings != null ? Collections.unmodifiableMap(settings) : Collections.emptyMap();
   }
 }

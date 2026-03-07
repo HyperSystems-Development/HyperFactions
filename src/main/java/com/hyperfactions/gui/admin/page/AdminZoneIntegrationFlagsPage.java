@@ -83,6 +83,9 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
     // Build integration flag toggles
     buildFlagCategory(cmd, events, zone, ZoneFlags.INTEGRATION_FLAGS, 0);
 
+    // Map visibility selection (only visible when SHOW_ON_MAP is enabled)
+    buildMapVisibilityControl(cmd, events, zone);
+
     // Reset to Defaults button — only enable if zone has any integration flags set
     boolean hasIntegrationFlags = hasCustomIntegrationFlags(zone);
     if (hasIntegrationFlags) {
@@ -160,6 +163,39 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
     );
   }
 
+  private void buildMapVisibilityControl(UICommandBuilder cmd, UIEventBuilder events, Zone zone) {
+    boolean showOnMapEnabled = zone.getEffectiveFlag(ZoneFlags.SHOW_ON_MAP);
+    String visibility = zone.getEffectiveSetting(ZoneFlags.MAP_VISIBILITY);
+    boolean isDefault = !zone.hasSettingSet(ZoneFlags.MAP_VISIBILITY);
+
+    // Hide/show the visibility row based on toggle state
+    cmd.set("#MapVisibilityRow.Visible", showOnMapEnabled);
+
+    if (showOnMapEnabled) {
+      // Set button text to current selection
+      String displayText = ZoneFlags.getSettingValueDisplay(ZoneFlags.MAP_VISIBILITY, visibility);
+      cmd.set("#MapVisibilityBtn.Text", displayText);
+
+      // Default indicator
+      if (isDefault) {
+        cmd.set("#MapVisibilityDefault.Text", "(default)");
+        cmd.set("#MapVisibilityDefault.Style.TextColor", "#555555");
+      } else {
+        cmd.set("#MapVisibilityDefault.Text", "(custom)");
+        cmd.set("#MapVisibilityDefault.Style.TextColor", "#FFAA00");
+      }
+
+      // Cycle button event
+      events.addEventBinding(
+          CustomUIEventBindingType.Activating,
+          "#MapVisibilityBtn",
+          EventData.of("Button", "CycleMapVisibility")
+              .append("ZoneId", zoneId.toString()),
+          false
+      );
+    }
+  }
+
   /**
    * Checks if the integration required for a given flag is available.
    */
@@ -178,6 +214,11 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
   private boolean hasCustomIntegrationFlags(Zone zone) {
     for (String flag : ZoneFlags.INTEGRATION_FLAGS) {
       if (zone.hasFlagSet(flag)) {
+        return true;
+      }
+    }
+    for (String setting : ZoneFlags.ALL_SETTINGS) {
+      if (zone.hasSettingSet(setting)) {
         return true;
       }
     }
@@ -208,6 +249,7 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
 
     switch (data.button) {
       case "ToggleFlag" -> handleToggleFlag(player, data);
+      case "CycleMapVisibility" -> handleCycleMapVisibility(player);
       case "ResetDefaults" -> handleResetDefaults(player);
       case "Back" -> guiManager.openAdminZoneSettings(player, ref, store, playerRef, zoneId);
       default -> throw new IllegalStateException("Unexpected value");
@@ -245,8 +287,39 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
     rebuildPage();
   }
 
+  private void handleCycleMapVisibility(Player player) {
+    Zone zone = zoneManager.getZoneById(zoneId);
+    if (zone == null) {
+      player.sendMessage(MessageUtil.adminError("Zone not found."));
+      sendUpdate();
+      return;
+    }
+
+    String current = zone.getEffectiveSetting(ZoneFlags.MAP_VISIBILITY);
+    String[] options = ZoneFlags.MAP_VISIBILITY_OPTIONS;
+
+    // Find current index and advance to next
+    int currentIdx = 0;
+    for (int i = 0; i < options.length; i++) {
+      if (options[i].equals(current)) {
+        currentIdx = i;
+        break;
+      }
+    }
+    String next = options[(currentIdx + 1) % options.length];
+
+    String defaultVal = ZoneFlags.getSettingDefault(ZoneFlags.MAP_VISIBILITY, zone.type());
+    if (next.equals(defaultVal)) {
+      zoneManager.clearZoneSetting(zoneId, ZoneFlags.MAP_VISIBILITY);
+    } else {
+      zoneManager.setZoneSetting(zoneId, ZoneFlags.MAP_VISIBILITY, next);
+    }
+
+    rebuildPage();
+  }
+
   private void handleResetDefaults(Player player) {
-    // Clear only integration flags, not all zone flags
+    // Clear only integration flags and settings, not all zone flags
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
       player.sendMessage(MessageUtil.adminError("Zone not found."));
@@ -257,6 +330,11 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
     for (String flag : ZoneFlags.INTEGRATION_FLAGS) {
       if (zone.hasFlagSet(flag)) {
         zoneManager.clearZoneFlag(zoneId, flag);
+      }
+    }
+    for (String setting : ZoneFlags.ALL_SETTINGS) {
+      if (zone.hasSettingSet(setting)) {
+        zoneManager.clearZoneSetting(zoneId, setting);
       }
     }
 
@@ -276,6 +354,9 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
 
     // Rebuild integration flag toggles
     buildFlagCategory(cmd, events, zone, ZoneFlags.INTEGRATION_FLAGS, 0);
+
+    // Rebuild map visibility control
+    buildMapVisibilityControl(cmd, events, zone);
 
     // Update reset button state
     boolean hasIntegrationFlags = hasCustomIntegrationFlags(zone);

@@ -6,7 +6,6 @@ import com.hyperfactions.protection.ProtectionListener;
 import com.hyperfactions.protection.ProtectionMessageDebounce;
 import com.hyperfactions.protection.zone.ZoneInteractionProtection;
 import com.hyperfactions.util.Logger;
-import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Archetype;
 import com.hypixel.hytale.component.ArchetypeChunk;
 import com.hypixel.hytale.component.CommandBuffer;
@@ -14,7 +13,6 @@ import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.EntityEventSystem;
 import com.hypixel.hytale.math.vector.Vector3i;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.event.events.ecs.UseBlockEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -103,24 +101,21 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
         boolean cropHarvestAllowed = zoneProtection.isManualPickupAllowed(worldName, pos.getX(), pos.getZ());
         if (!cropHarvestAllowed) {
           event.setCancelled(true);
-          ProtectionMessageDebounce.sendIfNotOnCooldown(player, "zone_harvest", MessageUtil.errorText("You cannot harvest plants in this zone."));
+          ProtectionMessageDebounce.sendDenial(player, "zone_harvest", "You can't harvest plants in this zone.");
           Logger.debugProtection("Plant harvest blocked by zone (ITEM_PICKUP_MANUAL=false) at %s/%d/%d for player %s",
             worldName, pos.getX(), pos.getZ(), player.getUuid());
           return;
         }
 
         // If crop harvest allowed by zone, still check faction permissions
-        boolean blocked = protectionListener.onBlockInteract(
-          player.getUuid(), worldName, pos.getX(), pos.getY(), pos.getZ()
+        ProtectionChecker.ProtectionResult cropResult = hyperFactions.getProtectionChecker().canInteract(
+          player.getUuid(), worldName, pos.getX(), pos.getZ(),
+          ProtectionChecker.InteractionType.INTERACT
         );
-        if (blocked) {
+        if (!hyperFactions.getProtectionChecker().isAllowed(cropResult)) {
           event.setCancelled(true);
-          ProtectionChecker.ProtectionResult cropResult = hyperFactions.getProtectionChecker().canInteract(
-            player.getUuid(), worldName, pos.getX(), pos.getZ(),
-            ProtectionChecker.InteractionType.INTERACT
-          );
-          ProtectionMessageDebounce.sendIfNotOnCooldown(player, "block_interact",
-            Message.raw(protectionListener.getDenialMessage(cropResult, ProtectionChecker.InteractionType.INTERACT)).color("#FF5555"));
+          ProtectionMessageDebounce.sendDenial(player, "block_interact",
+            protectionListener.getDenialMessage(cropResult, ProtectionChecker.InteractionType.INTERACT));
         }
         return;
       }
@@ -140,7 +135,7 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
           case SEAT -> "seat use";
           case OTHER -> "block interaction";
         };
-        ProtectionMessageDebounce.sendIfNotOnCooldown(player, "zone_use", MessageUtil.errorText("You cannot use " + flagName + " in this zone."));
+        ProtectionMessageDebounce.sendDenial(player, "zone_use", "You can't use " + flagName + " in this zone.");
         return;
       }
 
@@ -168,8 +163,8 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
 
       if (blocked) {
         event.setCancelled(true);
-        ProtectionMessageDebounce.sendIfNotOnCooldown(player, "block_use",
-          Message.raw(protectionListener.getDenialMessage(factionResult, interactionType)).color("#FF5555"));
+        ProtectionMessageDebounce.sendDenial(player, "block_use",
+          protectionListener.getDenialMessage(factionResult, interactionType));
       }
     } catch (Exception e) {
       // Fail-closed: cancel on any exception to prevent unauthorized block interaction

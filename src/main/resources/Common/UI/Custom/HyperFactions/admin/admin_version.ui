@@ -225,6 +225,14 @@ $C.@PageOverlay {
             Label { Text: "Gravestones"; Style: (FontSize: 11, TextColor: #888888); Anchor: (Width: 105); }
             Label #GravestonesStatus { Text: "..."; Style: (FontSize: 11, TextColor: #888888); FlexWeight: 1; }
           }
+
+          // KyuubiSoft Core row
+          Group {
+            Anchor: (Height: 20, Bottom: 2);
+            LayoutMode: Left;
+            Label { Text: "KyuubiSoft"; Style: (FontSize: 11, TextColor: #888888); Anchor: (Width: 105); }
+            Label #KyuubiSoftStatus { Text: "..."; Style: (FontSize: 11, TextColor: #888888); FlexWeight: 1; }
+          }
         }
       }
     }
