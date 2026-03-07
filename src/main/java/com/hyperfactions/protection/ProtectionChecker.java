@@ -120,7 +120,9 @@ public class ProtectionChecker {
     NPC_TAME,      // F-key NPC taming
     NPC_INTERACT,  // NPC shops/dialogue interaction
     MOUNT,         // Mount/ride entities
-    PVE_DAMAGE     // Damage non-player entities (mobs)
+    PVE_DAMAGE,    // Damage non-player entities (mobs)
+    ITEM_DROP,     // Drop items
+    ITEM_PICKUP    // Pick up items
   }
 
   // === Interaction Protection ===
@@ -176,7 +178,8 @@ public class ProtectionChecker {
         String bypassPerm = switch (type) {
           case BUILD -> "hyperfactions.bypass.build";
           case INTERACT, DOOR, BENCH, PROCESSING, SEAT, MOUNT, TELEPORTER, PORTAL,
-            CRATE_PICKUP, CRATE_PLACE, NPC_TAME, NPC_INTERACT -> "hyperfactions.bypass.interact";
+            CRATE_PICKUP, CRATE_PLACE, NPC_TAME, NPC_INTERACT,
+            ITEM_DROP, ITEM_PICKUP -> "hyperfactions.bypass.interact";
           case CONTAINER -> "hyperfactions.bypass.container";
           case DAMAGE, PVE_DAMAGE -> "hyperfactions.bypass.damage";
           case USE -> "hyperfactions.bypass.use";
@@ -209,6 +212,7 @@ public class ProtectionChecker {
           case NPC_TAME -> ZoneFlags.NPC_TAME;
           case NPC_INTERACT -> ZoneFlags.NPC_INTERACT;
           case MOUNT -> ZoneFlags.MOUNT_USE;
+          case ITEM_DROP, ITEM_PICKUP -> ZoneFlags.BLOCK_INTERACT; // zone checks handled by ECS systems
         };
 
         boolean allowed = zone.getEffectiveFlag(flagName);
@@ -346,6 +350,7 @@ public class ProtectionChecker {
       case MOUNT -> perms.get(level + "SeatUse"); // Mount shares seat permission
       case PVE_DAMAGE -> perms.get(level + "PveDamage");
       case DAMAGE -> !"outsider".equals(level); // outsiders can't damage (PvP handled separately)
+      case ITEM_DROP, ITEM_PICKUP -> perms.get(level + "Interact"); // item drop/pickup uses interact permission
     };
   }
 
@@ -674,20 +679,64 @@ public class ProtectionChecker {
   }
 
   /**
-   * Gets a user-friendly denial message.
+   * Gets a user-friendly denial message with generic action wording.
    *
    * @param result the protection result
    * @return the denial message
    */
   @NotNull
   public String getDenialMessage(@NotNull ProtectionResult result) {
+    return getDenialMessage(result, null);
+  }
+
+  /**
+   * Gets a user-friendly denial message with specific action context.
+   *
+   * @param result the protection result
+   * @param type   the interaction type (null for generic messages)
+   * @return the denial message
+   */
+  @NotNull
+  public String getDenialMessage(@NotNull ProtectionResult result, @Nullable InteractionType type) {
+    String action = getActionPhrase(type);
     return switch (result) {
-      case DENIED_SAFEZONE -> "You cannot do that in a SafeZone.";
-      case DENIED_WARZONE -> "You cannot do that in a WarZone.";
-      case DENIED_ENEMY_CLAIM -> "You cannot do that in enemy territory.";
-      case DENIED_NEUTRAL_CLAIM -> "You cannot do that in claimed territory.";
-      case DENIED_NO_PERMISSION -> "You don't have permission to do that.";
-      default -> "You cannot do that here.";
+      case DENIED_SAFEZONE -> action + " in a SafeZone.";
+      case DENIED_WARZONE -> action + " in a WarZone.";
+      case DENIED_ENEMY_CLAIM -> action + " in enemy territory.";
+      case DENIED_NEUTRAL_CLAIM -> action + " in claimed territory.";
+      case DENIED_NO_PERMISSION -> action + " here.";
+      default -> action + " here.";
+    };
+  }
+
+  /**
+   * Gets a player-friendly action phrase for the given interaction type.
+   *
+   * @param type the interaction type, or null for generic
+   * @return phrase like "You can't build or break blocks"
+   */
+  @NotNull
+  private String getActionPhrase(@Nullable InteractionType type) {
+    if (type == null) {
+      return "You can't do that";
+    }
+    return switch (type) {
+      case BUILD -> "You can't build or break blocks";
+      case INTERACT, USE -> "You can't interact with that";
+      case DOOR -> "You can't use doors";
+      case CONTAINER -> "You can't open containers";
+      case BENCH -> "You can't use crafting stations";
+      case PROCESSING -> "You can't use processing stations";
+      case SEAT -> "You can't use seats";
+      case TELEPORTER, PORTAL -> "You can't use teleporters";
+      case CRATE_PICKUP, CRATE_PLACE -> "You can't use crates";
+      case NPC_TAME -> "You can't tame creatures";
+      case NPC_INTERACT -> "You can't interact with NPCs";
+      case MOUNT -> "You can't mount creatures";
+      case PVE_DAMAGE -> "You can't damage creatures";
+      case DAMAGE -> "You can't do that";
+      case ITEM_DROP -> "You can't drop items";
+      case ITEM_PICKUP -> "You can't pick up items";
     };
   }
 
@@ -752,7 +801,8 @@ public class ProtectionChecker {
         String bypassPerm = switch (factionType) {
           case BUILD -> "hyperfactions.bypass.build";
           case INTERACT, DOOR, BENCH, PROCESSING, SEAT, MOUNT, TELEPORTER, PORTAL,
-            CRATE_PICKUP, CRATE_PLACE, NPC_TAME, NPC_INTERACT -> "hyperfactions.bypass.interact";
+            CRATE_PICKUP, CRATE_PLACE, NPC_TAME, NPC_INTERACT,
+            ITEM_DROP, ITEM_PICKUP -> "hyperfactions.bypass.interact";
           case CONTAINER -> "hyperfactions.bypass.container";
           case DAMAGE, PVE_DAMAGE -> "hyperfactions.bypass.damage";
           case USE -> "hyperfactions.bypass.use";
@@ -767,13 +817,14 @@ public class ProtectionChecker {
       Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
       if (zone != null) {
         if (!zone.getEffectiveFlag(zoneFlag)) {
+          String action = getActionPhrase(factionType);
           if (zone.isSafeZone()) {
-            return "You cannot do that in a SafeZone.";
+            return action + " in a SafeZone.";
           }
           if (zone.isWarZone()) {
-            return "You cannot do that in a WarZone.";
+            return action + " in a WarZone.";
           }
-          return "You cannot do that in this zone.";
+          return action + " in this zone.";
         }
         if (zone.isWarZone()) {
           return null;
@@ -800,7 +851,7 @@ public class ProtectionChecker {
           && member.role().getLevel() >= FactionRole.OFFICER.getLevel();
         String level = isOfficerOrLeader ? "officer" : "member";
         if (perms != null && !checkPermission(perms, level, factionType)) {
-          return "You don't have permission to do that here.";
+          return getActionPhrase(factionType) + " here. (Faction permission: " + level + ")";
         }
         return null;
       }
@@ -812,7 +863,7 @@ public class ProtectionChecker {
           if (perms != null && checkPermission(perms, "ally", factionType)) {
             return null;
           }
-          return "You don't have permission to do that here.";
+          return getActionPhrase(factionType) + " here. (Ally territory)";
         }
       }
 
@@ -821,7 +872,14 @@ public class ProtectionChecker {
         return null;
       }
 
-      return "You cannot do that in claimed territory.";
+      // Determine territory context for the message
+      if (playerFactionId != null) {
+        RelationType relation = relationManager.getRelation(playerFactionId, claimOwner);
+        if (relation == RelationType.ENEMY) {
+          return getActionPhrase(factionType) + " in enemy territory.";
+        }
+      }
+      return getActionPhrase(factionType) + " in claimed territory.";
     } catch (Exception e) {
       // Fail-closed: deny on any exception to prevent unauthorized actions
       Logger.severe("Protection check error (fail-closed) for player %s at %s/%d/%d/%d type=%s",

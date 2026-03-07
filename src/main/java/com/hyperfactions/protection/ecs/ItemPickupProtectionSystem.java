@@ -1,7 +1,9 @@
 package com.hyperfactions.protection.ecs;
 
 import com.hyperfactions.HyperFactions;
+import com.hyperfactions.protection.ProtectionChecker;
 import com.hyperfactions.protection.ProtectionListener;
+import com.hyperfactions.protection.ProtectionMessageDebounce;
 import com.hyperfactions.protection.zone.ZoneInteractionProtection;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.ArchetypeChunk;
@@ -79,21 +81,27 @@ public class ItemPickupProtectionSystem extends EntityEventSystem<EntityStore, I
         event.setCancelled(true);
         Logger.debugInteraction("[ECS:ItemPickup] BLOCKED by zone (ITEM_PICKUP_MANUAL=false) at %s/%d/%d for player %s",
           worldName, x, z, playerRef.getUuid());
+        ProtectionMessageDebounce.sendDenial(playerRef, "item_pickup",
+          "You can't pick up items in this zone.");
         return;
       }
 
-      // 2. If zone allows (or not in zone), check faction permissions (no message to avoid spam)
-      boolean blocked = protectionListener.onItemPickup(
+      // 2. If zone allows (or not in zone), check faction permissions
+      ProtectionChecker.ProtectionResult result = protectionListener.checkItemPickup(
         playerRef.getUuid(),
         worldName,
         x, y, z
       );
+      ProtectionChecker checker = hyperFactions.getProtectionChecker();
+      boolean blocked = !checker.isAllowed(result);
 
       Logger.debugInteraction("[ECS:ItemPickup] player=%s, blocked=%b, pos=(%d,%d,%d), world=%s",
         playerRef.getUuid(), blocked, x, y, z, worldName);
 
       if (blocked) {
         event.setCancelled(true);
+        ProtectionMessageDebounce.sendDenial(playerRef, "item_pickup",
+          protectionListener.getDenialMessage(result, ProtectionChecker.InteractionType.ITEM_PICKUP));
       }
     } catch (Exception e) {
       // Fail-closed: cancel on any exception to prevent unauthorized item pickup

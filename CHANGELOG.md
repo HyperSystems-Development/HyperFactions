@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Improved
+
+- **Specific protection denial messages**: All protection denial messages now describe the exact action being blocked (e.g., "You can't open containers in enemy territory." instead of generic "You don't have permission to do that.") with territory context (Ally/Enemy/Claimed territory, SafeZone/WarZone). Applied across all protection systems: block break/place/use, harvest/pickup, fluid place/refill, NPC interact, crop harvest, item drop, item pickup, mount
+- **Item drop/pickup denial messages**: Item drop and item pickup protection now send debounced, territory-aware denial messages instead of hardcoded text or silent denial
+- **Centralized denial message delivery**: New `ProtectionMessageDebounce.sendDenial()` consolidates the repeated `Message.raw(...).color("#FF5555")` + debounce pattern into a single call across all 12 protection systems
+- **Eliminated double protection checks**: `HarvestPickupProtectionSystem` and `BlockUseProtectionSystem` (crop path) no longer call `canInteract()` twice per event — once for the boolean and again for the message. Now uses single-call `checkItemPickup()` pattern
+- **Consistent denial message phrasing**: All zone denial messages standardized to "You can't ..." (matching territory denial phrasing) instead of mixed "You cannot ..."/"You can't ..."
+
 ### Fixed
 
 - **Chunk map GUI performance**: Reduced terrain map generation time by using bulk pixel writes (row-at-a-time instead of per-pixel `setRGB`) and faster PNG compression. Added timing debug logs for future diagnostics

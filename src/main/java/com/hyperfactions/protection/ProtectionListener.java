@@ -110,10 +110,29 @@ public class ProtectionListener {
                 int x, int y, int z) {
     ProtectionChecker checker = hyperFactions.getProtectionChecker();
     ProtectionChecker.ProtectionResult result = checker.canInteract(
-      playerUuid, world, x, z, ProtectionChecker.InteractionType.INTERACT
+      playerUuid, world, x, z, ProtectionChecker.InteractionType.ITEM_PICKUP
     );
 
     return !checker.isAllowed(result);
+  }
+
+  /**
+   * Called when a player attempts to pick up an item (with result for messaging).
+   *
+   * @param playerUuid the player's UUID
+   * @param world      the world name
+   * @param x          the player's X position
+   * @param y          the player's Y position
+   * @param z          the player's Z position
+   * @return the protection result
+   */
+  @NotNull
+  public ProtectionChecker.ProtectionResult checkItemPickup(@NotNull UUID playerUuid, @NotNull String world,
+                              int x, int y, int z) {
+    ProtectionChecker checker = hyperFactions.getProtectionChecker();
+    return checker.canInteract(
+      playerUuid, world, x, z, ProtectionChecker.InteractionType.ITEM_PICKUP
+    );
   }
 
   /**
@@ -125,6 +144,19 @@ public class ProtectionListener {
   @NotNull
   public String getDenialMessage(@NotNull ProtectionChecker.ProtectionResult result) {
     return hyperFactions.getProtectionChecker().getDenialMessage(result);
+  }
+
+  /**
+   * Gets a denial message with specific action context.
+   *
+   * @param result the protection result
+   * @param type   the interaction type for specific messaging
+   * @return the denial message
+   */
+  @NotNull
+  public String getDenialMessage(@NotNull ProtectionChecker.ProtectionResult result,
+                  @NotNull ProtectionChecker.InteractionType type) {
+    return hyperFactions.getProtectionChecker().getDenialMessage(result, type);
   }
 
   /**

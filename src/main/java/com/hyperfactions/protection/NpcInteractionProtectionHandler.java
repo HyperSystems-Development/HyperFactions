@@ -7,7 +7,6 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.math.vector.Vector3d;
 import com.hypixel.hytale.protocol.InteractionType;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.event.events.player.PlayerInteractEvent;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
@@ -95,8 +94,8 @@ public class NpcInteractionProtectionHandler {
 
       if (blocked) {
         event.setCancelled(true);
-        String denyMsg = hyperFactions.getProtectionChecker().getDenialMessage(result);
-        ProtectionMessageDebounce.sendIfNotOnCooldown(player, "npc_interact", Message.raw(denyMsg).color("#FF5555"));
+        ProtectionMessageDebounce.sendDenial(player, "npc_interact",
+          hyperFactions.getProtectionChecker().getDenialMessage(result, ProtectionChecker.InteractionType.NPC_TAME));
       }
     } catch (Exception e) {
       // Fail-open for NPC interactions to avoid breaking vanilla gameplay

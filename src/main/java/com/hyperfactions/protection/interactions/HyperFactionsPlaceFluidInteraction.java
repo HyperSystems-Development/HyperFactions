@@ -9,7 +9,6 @@ import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.math.vector.Vector3i;
 import com.hypixel.hytale.protocol.InteractionType;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.InteractionContext;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
 import com.hypixel.hytale.server.core.modules.interaction.interaction.CooldownHandler;
@@ -59,8 +58,8 @@ public class HyperFactionsPlaceFluidInteraction extends PlaceFluidInteraction {
           Logger.debugProtection("Fluid placement blocked for %s at (%d,%d,%d) in %s: %s",
               playerRef.getUsername(), targetBlock.getX(), targetBlock.getY(),
               targetBlock.getZ(), world.getName(), result);
-          ProtectionMessageDebounce.sendIfNotOnCooldown(playerRef, "place_fluid",
-              Message.raw(checker.getDenialMessage(result)).color("#FF5555"));
+          ProtectionMessageDebounce.sendDenial(playerRef, "place_fluid",
+              checker.getDenialMessage(result, ProtectionChecker.InteractionType.BUILD));
           return;
         }
 

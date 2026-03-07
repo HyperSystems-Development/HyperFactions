@@ -2,10 +2,12 @@ package com.hyperfactions.protection.ecs;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.config.ConfigManager;
+import com.hyperfactions.protection.ProtectionChecker;
+import com.hyperfactions.protection.ProtectionListener;
+import com.hyperfactions.protection.ProtectionMessageDebounce;
 import com.hyperfactions.protection.zone.ZoneInteractionProtection;
 import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.Logger;
-import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Archetype;
 import com.hypixel.hytale.component.ArchetypeChunk;
 import com.hypixel.hytale.component.CommandBuffer;
@@ -13,7 +15,6 @@ import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.EntityEventSystem;
 import com.hypixel.hytale.math.vector.Vector3d;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.event.events.ecs.DropItemEvent;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -29,10 +30,14 @@ public class ItemDropProtectionSystem extends EntityEventSystem<EntityStore, Dro
 
   private final HyperFactions hyperFactions;
 
+  private final ProtectionListener protectionListener;
+
   /** Creates a new ItemDropProtectionSystem. */
-  public ItemDropProtectionSystem(@NotNull HyperFactions hyperFactions) {
+  public ItemDropProtectionSystem(@NotNull HyperFactions hyperFactions,
+                  @NotNull ProtectionListener protectionListener) {
     super(DropItemEvent.PlayerRequest.class);
     this.hyperFactions = hyperFactions;
+    this.protectionListener = protectionListener;
   }
 
   /** Returns the query. */
@@ -86,28 +91,22 @@ public class ItemDropProtectionSystem extends EntityEventSystem<EntityStore, Dro
         event.setCancelled(true);
         Logger.debugInteraction("[ECS:ItemDrop] BLOCKED by zone at %s/%.1f/%.1f for player %s",
           worldName, x, z, player.getUuid());
-        player.sendMessage(MessageUtil.errorText("You cannot drop items in this zone."));
+        ProtectionMessageDebounce.sendDenial(player, "item_drop",
+          "You can't drop items in this zone.");
         return;
       }
 
       // Check claim-based outsider drop restriction
       if (!ConfigManager.get().isOutsiderDropAllowed()) {
-        int chunkX = ChunkUtil.toChunkCoord(x);
-        int chunkZ = ChunkUtil.toChunkCoord(z);
-        UUID claimOwner = hyperFactions.getClaimManager().getClaimOwner(worldName, chunkX, chunkZ);
-        if (claimOwner != null) {
-          UUID playerFactionId = hyperFactions.getFactionManager().getPlayerFactionId(player.getUuid());
-          if (playerFactionId == null || !playerFactionId.equals(claimOwner)) {
-            // Check ally relation
-            boolean isAlly = playerFactionId != null
-                && hyperFactions.getRelationManager().getRelation(playerFactionId, claimOwner)
-                    == com.hyperfactions.data.RelationType.ALLY;
-            if (!isAlly) {
-              event.setCancelled(true);
-              player.sendMessage(MessageUtil.errorText("You cannot drop items in this territory."));
-              return;
-            }
-          }
+        ProtectionChecker checker = hyperFactions.getProtectionChecker();
+        ProtectionChecker.ProtectionResult result = checker.canInteract(
+          player.getUuid(), worldName, x, z, ProtectionChecker.InteractionType.ITEM_DROP
+        );
+        if (!checker.isAllowed(result)) {
+          event.setCancelled(true);
+          ProtectionMessageDebounce.sendDenial(player, "item_drop",
+            protectionListener.getDenialMessage(result, ProtectionChecker.InteractionType.ITEM_DROP));
+          return;
         }
       }
     } catch (Exception e) {
