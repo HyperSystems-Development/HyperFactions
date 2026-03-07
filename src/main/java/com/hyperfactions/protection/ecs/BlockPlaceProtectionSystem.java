@@ -16,7 +16,6 @@ import com.hypixel.hytale.component.system.EntityEventSystem;
 import com.hypixel.hytale.math.vector.Vector3d;
 import com.hypixel.hytale.math.vector.Vector3f;
 import com.hypixel.hytale.math.vector.Vector3i;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.event.events.ecs.PlaceBlockEvent;
 import com.hypixel.hytale.server.core.modules.entity.component.HeadRotation;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
@@ -86,7 +85,8 @@ public class BlockPlaceProtectionSystem extends EntityEventSystem<EntityStore, P
 
       if (blocked) {
         event.setCancelled(true);
-        ProtectionMessageDebounce.sendIfNotOnCooldown(player, "block_place", Message.raw(protectionListener.getDenialMessage(result)).color("#FF5555"));
+        ProtectionMessageDebounce.sendDenial(player, "block_place",
+          protectionListener.getDenialMessage(result, ProtectionChecker.InteractionType.BUILD));
 
         // Anti-pillar: teleport player to their current position with velocity reset.
         // This prevents exploiting client-side block prediction to gain height on ghost blocks.

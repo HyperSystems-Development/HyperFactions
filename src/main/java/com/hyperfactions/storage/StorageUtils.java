@@ -327,8 +327,14 @@ public final class StorageUtils {
         String fileName = file.getFileName().toString();
 
         // Clean up orphaned .tmp files (any file ending in .tmp)
+        // Skip recent files to avoid racing with concurrent writeAtomic() calls
         if (fileName.endsWith(TMP_SUFFIX)) {
           try {
+            long ageMs = System.currentTimeMillis() - Files.getLastModifiedTime(file).toMillis();
+            if (ageMs < 5000) {
+              Logger.debug("[Storage] Skipping recent temp file: %s (age: %dms)", fileName, ageMs);
+              continue;
+            }
             Files.delete(file);
             cleaned++;
             Logger.debug("[Storage] Cleaned orphaned temp file: %s", fileName);

@@ -34,7 +34,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'com.github.HyperSystemsDev:HyperFactions:v0.8.1'
+    compileOnly 'com.github.HyperSystems-Development:HyperFactions:v0.8.1'
 }
 ```
 

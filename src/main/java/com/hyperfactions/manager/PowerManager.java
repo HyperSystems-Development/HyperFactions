@@ -68,17 +68,25 @@ public class PowerManager {
         return;
       }
 
-      // Build new cache before clearing old one
-      Map<UUID, PlayerPower> newCache = new HashMap<>();
-      for (PlayerPower power : loaded) {
-        newCache.put(power.uuid(), power);
+      // Merge loaded data into cache instead of clear+putAll to avoid
+      // wiping in-flight defaults created by playerOnline() during loading.
+      // Players who joined before loadAll() completed already have valid
+      // defaults in the cache — only overwrite with loaded data that has
+      // meaningful values (power > 0 or has death history).
+      int merged = 0;
+      for (PlayerPower loaded1 : loaded) {
+        PlayerPower existing = powerCache.get(loaded1.uuid());
+        if (existing != null && loaded1.power() == 0 && loaded1.lastDeath() == 0) {
+          // Loaded record looks like uninitialized data — keep the in-memory default
+          Logger.debugPower("Keeping in-memory default for %s (loaded power=0, no death history)", loaded1.uuid());
+          continue;
+        }
+        powerCache.put(loaded1.uuid(), loaded1);
+        merged++;
       }
 
-      // Atomic swap
-      powerCache.clear();
-      powerCache.putAll(newCache);
-
-      Logger.info("[Startup] Loaded %d player power records", powerCache.size());
+      Logger.info("[Startup] Loaded %d player power records (%d merged, %d kept in-memory defaults)",
+        loaded.size(), merged, loaded.size() - merged);
     }).exceptionally(ex -> {
       ErrorHandler.report("CRITICAL: Exception during player power loading - keeping existing data", ex);
       return null;
@@ -144,7 +152,12 @@ public class PowerManager {
    */
   public void playerOnline(@NotNull UUID playerUuid) {
     onlinePlayers.add(playerUuid);
-    loadPlayer(playerUuid); // Ensure loaded
+    loadPlayer(playerUuid).thenAccept(power -> {
+      // Persist immediately so the default survives any future cache operations
+      storage.savePlayerPower(power);
+      Logger.debugPower("Player online: uuid=%s, power=%.2f, max=%.2f",
+        playerUuid, power.power(), power.maxPower());
+    });
   }
 
   /**

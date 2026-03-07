@@ -12,6 +12,7 @@ import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.integration.economy.VaultEconomyProvider;
 import com.hyperfactions.integration.permissions.HyperPermsIntegration;
 import com.hyperfactions.integration.protection.GravestoneIntegration;
+import com.hyperfactions.integration.protection.KyuubiSoftIntegration;
 import com.hyperfactions.integration.protection.ProtectionMixinBridge;
 import com.hyperfactions.lifecycle.CallbackWiring;
 import com.hyperfactions.lifecycle.MembershipHistoryHandler;
@@ -117,6 +118,7 @@ public class HyperFactions {
 
   // Integrations
   private GravestoneIntegration gravestoneIntegration;
+  private KyuubiSoftIntegration kyuubiSoftIntegration;
 
   // Protection
   private ProtectionChecker protectionChecker;
@@ -772,6 +774,34 @@ public class HyperFactions {
   public void initGravestoneIntegration(@NotNull com.hypixel.hytale.event.EventRegistry eventRegistry) {
     if (gravestoneIntegration != null) {
       gravestoneIntegration.init(() -> this, protectionChecker, eventRegistry);
+    }
+  }
+
+  /**
+   * Initializes the KyuubiSoft Core integration (citizen zone protection).
+   * Must be called by the plugin after enable() once other mods are loaded.
+   */
+  public void initKyuubiSoftIntegration() {
+    kyuubiSoftIntegration = new KyuubiSoftIntegration();
+    kyuubiSoftIntegration.init(() -> this);
+  }
+
+  /**
+   * Gets the KyuubiSoft Core integration instance.
+   *
+   * @return the integration, or null if not initialized
+   */
+  @Nullable
+  public KyuubiSoftIntegration getKyuubiSoftIntegration() {
+    return kyuubiSoftIntegration;
+  }
+
+  /**
+   * Shuts down the KyuubiSoft Core integration (removes interceptor).
+   */
+  public void shutdownKyuubiSoftIntegration() {
+    if (kyuubiSoftIntegration != null) {
+      kyuubiSoftIntegration.shutdown();
     }
   }
 

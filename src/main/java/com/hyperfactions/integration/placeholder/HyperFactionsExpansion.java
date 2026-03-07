@@ -110,7 +110,7 @@ public class HyperFactionsExpansion extends PlaceholderExpansion implements Rela
 
   @Override
   public @NotNull String getAuthor() {
-    return "HyperSystemsDev";
+    return "HyperSystems-Development";
   }
 
   @Override

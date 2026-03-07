@@ -123,6 +123,9 @@ public class HyperFactionsPlugin extends JavaPlugin {
     // Initialize GravestonePlugin integration (v2 direct API — needs EventRegistry)
     hyperFactions.initGravestoneIntegration(getEventRegistry());
 
+    // Initialize KyuubiSoft Core integration (citizen zone protection)
+    hyperFactions.initKyuubiSoftIntegration();
+
     // Create helper classes
     worldSetup = new WorldSetup(this, hyperFactions);
     eventRegistration = new EventRegistration(this, hyperFactions);
@@ -190,6 +193,15 @@ public class HyperFactionsPlugin extends JavaPlugin {
 
     // Unregister all mixin hooks (HP or OG)
     ErrorHandler.runSafely("Shutdown: unregister mixin hooks", ProtectionMixinBridge::unregisterAllHooks);
+
+    // Shutdown KyuubiSoft Core integration
+    try {
+      if (hyperFactions != null) {
+        hyperFactions.shutdownKyuubiSoftIntegration();
+      }
+    } catch (Exception e) {
+      getLogger().at(java.util.logging.Level.WARNING).withCause(e).log("Failed to shutdown KyuubiSoft integration");
+    }
 
     // Clean up territory ticking system
     ErrorHandler.runSafely("Shutdown: territory system cleanup", () -> {

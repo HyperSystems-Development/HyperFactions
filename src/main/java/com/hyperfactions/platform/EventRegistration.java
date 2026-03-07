@@ -158,7 +158,7 @@ public class EventRegistration {
       plugin.getEntityStoreRegistry().registerSystem(new ItemPickupProtectionSystem(hyperFactions, protectionListener));
 
       // Item drop protection
-      plugin.getEntityStoreRegistry().registerSystem(new ItemDropProtectionSystem(hyperFactions));
+      plugin.getEntityStoreRegistry().registerSystem(new ItemDropProtectionSystem(hyperFactions, protectionListener));
 
       // PvP protection
       plugin.getEntityStoreRegistry().registerSystem(new PvPProtectionSystem(hyperFactions, protectionListener));

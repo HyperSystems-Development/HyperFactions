@@ -478,7 +478,7 @@ public class ZoneManager {
         System.currentTimeMillis(),
         createdBy,
         flags,
-        null, null, null
+        null, null, null, null
     );
 
     // Update all indexes atomically
@@ -692,7 +692,7 @@ public class ZoneManager {
 
       Zone updated = new Zone(zone.id(), zone.name(), zone.type(), zone.world(),
                  newChunks, zone.createdAt(), zone.createdBy(), zone.flags(),
-                 zone.notifyOnEntry(), zone.notifyTitleUpper(), zone.notifyTitleLower());
+                 zone.settings(), zone.notifyOnEntry(), zone.notifyTitleUpper(), zone.notifyTitleLower());
       updateZone(updated);
       Logger.info("[Zone] Claimed %d chunks in radius for zone '%s'", claimed, zone.name());
       notifyZoneChange(claimedChunks);
@@ -775,6 +775,7 @@ public class ZoneManager {
         zone.createdAt(),
         zone.createdBy(),
         flags,
+        resetFlags ? null : zone.settings(),
         zone.notifyOnEntry(),
         zone.notifyTitleUpper(),
         zone.notifyTitleLower()
@@ -884,6 +885,52 @@ public class ZoneManager {
     updateZone(updated);
 
     Logger.info("[Zone] Cleared all custom flags from zone '%s' (using type defaults)", zone.name());
+    return ZoneResult.SUCCESS;
+  }
+
+  /**
+   * Sets a string-valued setting on a zone.
+   *
+   * @param zoneId      the zone ID
+   * @param settingName the setting name
+   * @param value       the setting value
+   * @return the result
+   */
+  public ZoneResult setZoneSetting(@NotNull UUID zoneId, @NotNull String settingName,
+                   @NotNull String value) {
+    if (!ZoneFlags.isValidSettingValue(settingName, value)) {
+      return ZoneResult.NOT_FOUND; // Invalid setting/value
+    }
+
+    Zone zone = zonesById.get(zoneId);
+    if (zone == null) {
+      return ZoneResult.NOT_FOUND;
+    }
+
+    Zone updated = zone.withSetting(settingName, value);
+    updateZone(updated);
+
+    Logger.info("[Zone] Set setting '%s' to '%s' on zone '%s'", settingName, value, zone.name());
+    return ZoneResult.SUCCESS;
+  }
+
+  /**
+   * Clears a setting from a zone (reverts to default).
+   *
+   * @param zoneId      the zone ID
+   * @param settingName the setting name
+   * @return the result
+   */
+  public ZoneResult clearZoneSetting(@NotNull UUID zoneId, @NotNull String settingName) {
+    Zone zone = zonesById.get(zoneId);
+    if (zone == null) {
+      return ZoneResult.NOT_FOUND;
+    }
+
+    Zone updated = zone.withoutSetting(settingName);
+    updateZone(updated);
+
+    Logger.info("[Zone] Cleared setting '%s' from zone '%s' (using default)", settingName, zone.name());
     return ZoneResult.SUCCESS;
   }
 

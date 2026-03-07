@@ -4,7 +4,6 @@ import com.hyperfactions.manager.CombatTagManager;
 import com.hyperfactions.protection.ProtectionChecker;
 import com.hyperfactions.protection.ProtectionMessageDebounce;
 import com.hypixel.hytale.component.CommandBuffer;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.modules.entity.damage.Damage;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
@@ -94,7 +93,7 @@ public class PvPDamageProtection {
     if (!protectionChecker.isAllowed(result)) {
       event.setCancelled(true);
       String message = denialMessageProvider.apply(result);
-      ProtectionMessageDebounce.sendIfNotOnCooldown(attacker, "pvp_damage", Message.raw(message).color("#FF5555"));
+      ProtectionMessageDebounce.sendDenial(attacker, "pvp_damage", message);
       return true;
     }
 

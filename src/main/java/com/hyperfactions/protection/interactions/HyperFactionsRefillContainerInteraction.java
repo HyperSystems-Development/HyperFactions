@@ -13,7 +13,6 @@ import com.hypixel.hytale.math.util.ChunkUtil;
 import com.hypixel.hytale.math.vector.Vector3d;
 import com.hypixel.hytale.protocol.InteractionState;
 import com.hypixel.hytale.protocol.InteractionType;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.asset.type.fluid.FluidTicker;
 import com.hypixel.hytale.server.core.entity.InteractionContext;
@@ -145,8 +144,8 @@ public class HyperFactionsRefillContainerInteraction extends RefillContainerInte
         if (!checker.isAllowed(result)) {
           Logger.debugProtection("Fluid pickup blocked for %s at (%d,%d,%d) in %s: %s",
               playerRef.getUsername(), pos[0], pos[1], pos[2], world.getName(), result);
-          ProtectionMessageDebounce.sendIfNotOnCooldown(playerRef, "refill_container",
-              Message.raw(checker.getDenialMessage(result)).color("#FF5555"));
+          ProtectionMessageDebounce.sendDenial(playerRef, "refill_container",
+              checker.getDenialMessage(result, ProtectionChecker.InteractionType.BUILD));
           context.getState().state = InteractionState.Failed;
           return;
         }

@@ -55,6 +55,81 @@ public final class HyperProtectIntegration {
     return "unknown";
   }
 
+  /**
+   * Reads and CONSUMES the block ID set by the mixin for block interactions.
+   * Returns null if not set (non-block interaction or old mixin version).
+   */
+  private static String consumeBlockId() {
+    try {
+      Object val = System.getProperties().remove("hyperprotect.context.block_id");
+      if (val instanceof String s && !s.isEmpty()) {
+        return s;
+      }
+    } catch (Exception ignored) {}
+    return null;
+  }
+
+  /**
+   * Reads and CONSUMES the block state set by the mixin for block interactions.
+   * The state indicates the block's interaction type (e.g. "Door", "container",
+   * "processingBench"). Returns null if not set or block has no state.
+   */
+  private static String consumeBlockState() {
+    try {
+      Object val = System.getProperties().remove("hyperprotect.context.block_state");
+      if (val instanceof String s && !s.isEmpty()) {
+        return s;
+      }
+    } catch (Exception ignored) {}
+    return null;
+  }
+
+  /**
+   * Reads and CONSUMES the NPC role name set by the mixin.
+   * Clears the system property after reading to prevent stale context
+   * leaking to subsequent non-NPC interactions handled by other gates.
+   */
+  private static String consumeNpcRole() {
+    try {
+      Object val = System.getProperties().remove("hyperprotect.context.npc_role");
+      if (val instanceof String s && !s.isEmpty()) {
+        return s;
+      }
+    } catch (Exception ignored) {}
+    return null;
+  }
+
+  /**
+   * Determines if an NPC role represents a tameable creature (animals, pets).
+   * Tameable roles use NPC_TAME (restricted). Everything else — service NPCs,
+   * 3rd-party mod NPCs (KyuubiSoft Citizens, etc.), and unknown roles — defaults
+   * to NPC_INTERACT (permissive, fail-open) to avoid blocking legitimate interactions.
+   *
+   * <p>Hytale's tameable creatures use their species name as the role (e.g. "Chicken",
+   * "Wolf", "Cow"), while service/dialogue NPCs use descriptive roles like "Merchant",
+   * "Guard", or mod-prefixed roles like "KS_NPC_Interactable_Role".
+   */
+  private static boolean isTameableCreatureRole(String roleName) {
+    String lower = roleName.toLowerCase();
+    // Known Hytale tameable creature species
+    return lower.equals("chicken")
+        || lower.equals("wolf")
+        || lower.equals("cow")
+        || lower.equals("pig")
+        || lower.equals("sheep")
+        || lower.equals("cat")
+        || lower.equals("horse")
+        || lower.equals("donkey")
+        || lower.equals("rabbit")
+        || lower.equals("parrot")
+        || lower.equals("fox")
+        || lower.equals("goat")
+        || lower.equals("camel")
+        || lower.contains("_tame")
+        || lower.contains("tameable")
+        || lower.contains("pet_");
+  }
+
   // Bridge slot indices (must match ProtectionBridge constants in HyperProtect-Mixin)
   private static final int SLOT_BLOCK_BREAK      = 0;
 
@@ -98,6 +173,21 @@ public final class HyperProtectIntegration {
 
   private static final int SLOT_RESPAWN          = 22;
 
+  // v1.2.0 slots
+  private static final int SLOT_CRAFTING_RESOURCE = 23;
+
+  private static final int SLOT_MAP_MARKER_FILTER = 24;
+
+  private static final int SLOT_FLUID_SPREAD      = 25;
+
+  private static final int SLOT_PREFAB_SPAWN      = 26;
+
+  private static final int SLOT_PROJECTILE_LAUNCH = 27;
+
+  private static final int SLOT_MOUNT             = 28;
+
+  private static final int SLOT_BARTER_TRADE      = 29;
+
   private HyperProtectIntegration() {}
 
   /**
@@ -127,6 +217,26 @@ public final class HyperProtectIntegration {
   }
 
   /**
+   * Safely sets a bridge slot, handling old HP versions with fewer slots.
+   * Silently skips if the bridge is too small for the requested slot.
+   */
+  private static void safeSetSlot(AtomicReferenceArray<Object> bridge, int slot, Object hook) {
+    if (bridge.length() > slot) {
+      bridge.set(slot, hook);
+    }
+    // Silently skip if bridge too small (old HP version)
+  }
+
+  /**
+   * Safely clears a bridge slot, handling old HP versions with fewer slots.
+   */
+  private static void safeClearSlot(AtomicReferenceArray<Object> bridge, int slot) {
+    if (bridge.length() > slot) {
+      bridge.set(slot, null);
+    }
+  }
+
+  /**
    * Registers all applicable hooks with the HyperProtect bridge.
    */
   @SuppressWarnings("unchecked")
@@ -135,7 +245,7 @@ public final class HyperProtectIntegration {
     if (bridgeObj == null) {
       // Bridge not initialized (Hyxin doesn't instantiate early plugin Main class).
       // Create it lazily — interceptors read from it via System.getProperties().
-      bridgeObj = new AtomicReferenceArray<Object>(24);
+      bridgeObj = new AtomicReferenceArray<Object>(30);
       Object existing = System.getProperties().putIfAbsent("hyperprotect.bridge", bridgeObj);
       if (existing != null) {
         bridgeObj = existing;
@@ -176,6 +286,15 @@ public final class HyperProtectIntegration {
     bridge.set(SLOT_SEAT, new SeatHook(checker));
     bridge.set(SLOT_RESPAWN, new RespawnHook(hf));
 
+    // v1.2.0 hooks (use safeSetSlot for backwards compat with old HP bridges)
+    safeSetSlot(bridge, SLOT_CRAFTING_RESOURCE, new CraftingResourceHook(checker));
+    safeSetSlot(bridge, SLOT_MAP_MARKER_FILTER, new MapMarkerFilterHook(hf));
+    safeSetSlot(bridge, SLOT_FLUID_SPREAD, new FluidSpreadHook(checker));
+    safeSetSlot(bridge, SLOT_PREFAB_SPAWN, new PrefabSpawnHook(checker));
+    safeSetSlot(bridge, SLOT_PROJECTILE_LAUNCH, new ProjectileLaunchHook(checker));
+    safeSetSlot(bridge, SLOT_MOUNT, new MountHook(checker));
+    safeSetSlot(bridge, SLOT_BARTER_TRADE, new BarterTradeHook(checker));
+
     // Register message formatter at slot 15 — converts raw String → Message for deny messages.
     // All mixin interceptors call getBridge(15) to format deny reason strings before sending.
     try {
@@ -187,7 +306,7 @@ public final class HyperProtectIntegration {
       ErrorHandler.report("Failed to register format handle at slot 15", e);
     }
 
-    Logger.debug("Registered 20 HyperProtect hook(s) + format handle at bridge slots (unconditional)");
+    Logger.debug("Registered 27 HyperProtect hook(s) + format handle at bridge slots (unconditional)");
   }
 
   /**
@@ -211,6 +330,14 @@ public final class HyperProtectIntegration {
     for (int slot : slots) {
       bridge.set(slot, null);
     }
+    // v1.2.0 slots (safe clear for old HP bridges)
+    int[] newSlots = {
+      SLOT_CRAFTING_RESOURCE, SLOT_MAP_MARKER_FILTER, SLOT_FLUID_SPREAD,
+      SLOT_PREFAB_SPAWN, SLOT_PROJECTILE_LAUNCH, SLOT_MOUNT, SLOT_BARTER_TRADE
+    };
+    for (int slot : newSlots) {
+      safeClearSlot(bridge, slot);
+    }
     Logger.debugMixin("Unregistered all HyperProtect hooks");
   }
 
@@ -230,7 +357,7 @@ public final class HyperProtectIntegration {
   public static void registerUniqueHooks(@NotNull HyperFactions hf) {
     Object bridgeObj = System.getProperties().get("hyperprotect.bridge");
     if (bridgeObj == null) {
-      bridgeObj = new AtomicReferenceArray<Object>(24);
+      bridgeObj = new AtomicReferenceArray<Object>(30);
       Object existing = System.getProperties().putIfAbsent("hyperprotect.bridge", bridgeObj);
       if (existing != null) {
         bridgeObj = existing;
@@ -261,6 +388,15 @@ public final class HyperProtectIntegration {
     bridge.set(SLOT_SEAT, new SeatHook(checker));
     bridge.set(SLOT_RESPAWN, new RespawnHook(hf));
 
+    // v1.2.0 unique hooks — OG has no equivalents, always register in BOTH mode
+    safeSetSlot(bridge, SLOT_CRAFTING_RESOURCE, new CraftingResourceHook(checker));
+    safeSetSlot(bridge, SLOT_MAP_MARKER_FILTER, new MapMarkerFilterHook(hf));
+    safeSetSlot(bridge, SLOT_FLUID_SPREAD, new FluidSpreadHook(checker));
+    safeSetSlot(bridge, SLOT_PREFAB_SPAWN, new PrefabSpawnHook(checker));
+    safeSetSlot(bridge, SLOT_PROJECTILE_LAUNCH, new ProjectileLaunchHook(checker));
+    safeSetSlot(bridge, SLOT_MOUNT, new MountHook(checker));
+    safeSetSlot(bridge, SLOT_BARTER_TRADE, new BarterTradeHook(checker));
+
     // Format handle needed for deny messages from the unique mixins
     try {
       MethodHandle fmtHandle = MethodHandles.publicLookup().findStatic(
@@ -271,7 +407,7 @@ public final class HyperProtectIntegration {
       ErrorHandler.report("Failed to register format handle at slot 15", e);
     }
 
-    Logger.debug("Registered HP unique hooks (slots 0,9-12,15-22) for BOTH mode");
+    Logger.debug("Registered HP unique hooks (slots 0,9-12,15-29) for BOTH mode");
   }
 
   /**
@@ -292,6 +428,14 @@ public final class HyperProtectIntegration {
     };
     for (int slot : uniqueSlots) {
       bridge.set(slot, null);
+    }
+    // v1.2.0 slots
+    int[] newSlots = {
+      SLOT_CRAFTING_RESOURCE, SLOT_MAP_MARKER_FILTER, SLOT_FLUID_SPREAD,
+      SLOT_PREFAB_SPAWN, SLOT_PROJECTILE_LAUNCH, SLOT_MOUNT, SLOT_BARTER_TRADE
+    };
+    for (int slot : newSlots) {
+      safeClearSlot(bridge, slot);
     }
     Logger.debugMixin("Unregistered HP unique hooks (BOTH mode)");
   }
@@ -517,10 +661,18 @@ public final class HyperProtectIntegration {
       this.checker = checker;
     }
 
-    /** Evaluate Creature Spawn. */
+    /** Evaluate Creature Spawn (position-only, called by HP 1.1.x). */
     public int evaluateCreatureSpawn(String worldName, int x, int y, int z) {
       boolean blocked = checker.shouldBlockSpawn(worldName, x, y, z);
       Logger.debugSpawning("[Mixin:MobSpawn] world=%s, pos=(%d,%d,%d), blocked=%b", worldName, x, y, z, blocked);
+      return blocked ? DENY_SILENT : ALLOW;
+    }
+
+    /** Enhanced: evaluate with mob type (called by HP 1.2.0+). */
+    public int evaluateCreatureSpawnTyped(String worldName, String npcType, int x, int y, int z) {
+      boolean blocked = checker.shouldBlockSpawn(worldName, npcType, x, y, z);
+      Logger.debugSpawning("[Mixin:MobSpawn] world=%s, type=%s, pos=(%d,%d,%d), blocked=%b",
+        worldName, npcType, x, y, z, blocked);
       return blocked ? DENY_SILENT : ALLOW;
     }
   }
@@ -793,22 +945,38 @@ public final class HyperProtectIntegration {
       try {
         String interaction = getInteractionName();
 
+        // Consume block context (clears system properties to prevent stale context)
+        String blockId = consumeBlockId();
+        String blockState = consumeBlockState();
+
         // Determine specific interaction type from mixin context
         ProtectionChecker.InteractionType interactionType;
+        String npcRole = null;
         if (interaction.contains("entity-capture")) {
           interactionType = ProtectionChecker.InteractionType.CRATE_PICKUP;
         } else if (interaction.equals("UseCaptureCrateInteraction")) {
           interactionType = ProtectionChecker.InteractionType.CRATE_PLACE;
         } else if (interaction.equals("UseNPCInteraction") || interaction.equals("ContextualUseNPCInteraction")) {
-          interactionType = ProtectionChecker.InteractionType.NPC_TAME;
+          // Consume NPC role (clears system property to prevent stale context)
+          npcRole = consumeNpcRole();
+          if (npcRole != null && isTameableCreatureRole(npcRole)) {
+            // Known tameable creatures (animals, pets) → NPC_TAME (restricted)
+            interactionType = ProtectionChecker.InteractionType.NPC_TAME;
+          } else {
+            // Service NPCs, 3rd-party mod NPCs, and unknown roles → NPC_INTERACT (permissive)
+            interactionType = ProtectionChecker.InteractionType.NPC_INTERACT;
+          }
         } else {
           interactionType = ProtectionChecker.InteractionType.INTERACT;
         }
 
         String reason = checker.checkUse(playerUuid, worldName, x, y, z, interactionType);
         int verdict = reason == null ? ALLOW : DENY_WITH_MESSAGE;
-        Logger.debugInteraction("[Mixin:Use] player=%s, world=%s, pos=(%d,%d,%d), interaction=%s, type=%s, verdict=%s",
-          playerUuid, worldName, x, y, z, interaction, interactionType, verdict == ALLOW ? "ALLOW" : "DENY");
+        Logger.debugInteraction("[Mixin:Use] player=%s, world=%s, pos=(%d,%d,%d), interaction=%s, type=%s, blockId=%s, blockState=%s, npcRole=%s, verdict=%s",
+          playerUuid, worldName, x, y, z, interaction, interactionType,
+          blockId != null ? blockId : "n/a",
+          blockState != null ? blockState : "n/a",
+          npcRole != null ? npcRole : "n/a", verdict == ALLOW ? "ALLOW" : "DENY");
         if (reason != null) {
           cachedReason.set(reason);
         }
@@ -876,6 +1044,229 @@ public final class HyperProtectIntegration {
       Logger.debugInteraction("[Mixin:Respawn] player=%s, world=%s, pos=(%d,%d,%d), hasOverride=%b",
         playerUuid, worldName, x, y, z, override != null);
       return override;
+    }
+  }
+
+  // ========================================================================
+  // v1.2.0 Hook Wrapper Classes (slots 23-29)
+  // ========================================================================
+
+  /** Slot 23: crafting_resource — evaluateChestAccess(UUID, String, int,int,int, int,int,int). */
+  public static final class CraftingResourceHook {
+    private final ProtectionChecker checker;
+
+    CraftingResourceHook(ProtectionChecker checker) {
+      this.checker = checker;
+    }
+
+    /**
+     * Checks if a player can access crafting bench resources at this position.
+     * Returns true = allow, false = deny.
+     */
+    public boolean evaluateChestAccess(UUID playerUuid, String worldName,
+        int chestX, int chestY, int chestZ,
+        int benchX, int benchY, int benchZ) {
+      try {
+        // Check if the player can access the bench area
+        String reason = checker.checkBench(playerUuid, worldName, benchX, benchY, benchZ);
+        boolean allowed = reason == null;
+        Logger.debugInteraction("[Mixin:CraftingResource] player=%s, world=%s, bench=(%d,%d,%d), allowed=%b",
+          playerUuid, worldName, benchX, benchY, benchZ, allowed);
+        return allowed;
+      } catch (Exception e) {
+        Logger.severe("Crafting resource mixin hook error (fail-open)", e);
+        return true; // Fail-open: allow crafting
+      }
+    }
+  }
+
+  /**
+   * Slot 24: map_marker_filter — player icon and shared marker filtering.
+   *
+   * <p>Two methods on the same hook object:
+   * <ul>
+   *   <li>{@code filterPlayerMarker(UUID, UUID, String, int, int, int)} — called by MapMarkerFilter mixin
+   *       for other-player icons on the world map</li>
+   *   <li>{@code filterSharedMarker(UUID, UUID, String, float, float)} — called by SharedMarkerFilter mixin
+   *       for user-placed shared markers on the world map</li>
+   * </ul>
+   */
+  public static final class MapMarkerFilterHook {
+    private final HyperFactions hf;
+
+    MapMarkerFilterHook(HyperFactions hf) {
+      this.hf = hf;
+    }
+
+    /**
+     * Filters player markers on the world map based on faction relationships.
+     * Returns 0 = SHOW, >0 = HIDE.
+     */
+    public int filterPlayerMarker(UUID viewer, UUID target, String worldName,
+        int x, int y, int z) {
+      try {
+        ProtectionChecker checker = hf.getProtectionChecker();
+        boolean hidden = checker.shouldHideMapMarker(viewer, target, worldName, x, z);
+        Logger.debugInteraction("[Mixin:MapMarker] viewer=%s, target=%s, world=%s, pos=(%d,%d,%d), hidden=%b",
+          viewer, target, worldName, x, y, z, hidden);
+        return hidden ? 1 : 0;
+      } catch (Exception e) {
+        Logger.severe("Map marker filter mixin hook error (fail-open)", e);
+        return 0; // Fail-open: show marker
+      }
+    }
+
+    /**
+     * Filters shared (user-placed) markers on the world map based on faction relationships.
+     * Called by SharedMarkerFilter mixin for each UserMapMarker.
+     * Returns 0 = SHOW, >0 = HIDE.
+     */
+    public int filterSharedMarker(UUID viewer, UUID creator, String worldName,
+        float x, float z) {
+      try {
+        ProtectionChecker checker = hf.getProtectionChecker();
+        boolean hidden = checker.shouldHideSharedMarker(viewer, creator, worldName, x, z);
+        Logger.debugInteraction("[Mixin:SharedMarker] viewer=%s, creator=%s, world=%s, pos=(%.0f,%.0f), hidden=%b",
+          viewer, creator, worldName, x, z, hidden);
+        return hidden ? 1 : 0;
+      } catch (Exception e) {
+        Logger.severe("Shared marker filter mixin hook error (fail-open)", e);
+        return 0; // Fail-open: show marker
+      }
+    }
+  }
+
+  /** Slot 25: fluid_spread — evaluateFluidSpread(String, int, int, int). */
+  public static final class FluidSpreadHook {
+    private final ProtectionChecker checker;
+
+    FluidSpreadHook(ProtectionChecker checker) {
+      this.checker = checker;
+    }
+
+    /** Evaluate Fluid Spread (water/lava). */
+    public int evaluateFluidSpread(String worldName, int x, int y, int z) {
+      boolean blocked = checker.shouldBlockFluidSpread(worldName, x, y, z);
+      Logger.debugInteraction("[Mixin:FluidSpread] world=%s, pos=(%d,%d,%d), blocked=%b",
+        worldName, x, y, z, blocked);
+      return blocked ? DENY_SILENT : ALLOW;
+    }
+  }
+
+  /** Slot 26: prefab_spawn — evaluatePrefabSpawn(String, int, int, int). */
+  public static final class PrefabSpawnHook {
+    private final ProtectionChecker checker;
+
+    PrefabSpawnHook(ProtectionChecker checker) {
+      this.checker = checker;
+    }
+
+    /** Evaluate Prefab/NPC Entity Loading. */
+    public int evaluatePrefabSpawn(String worldName, int x, int y, int z) {
+      boolean blocked = checker.shouldBlockSpawn(worldName, x, y, z);
+      Logger.debugSpawning("[Mixin:PrefabSpawn] world=%s, pos=(%d,%d,%d), blocked=%b",
+        worldName, x, y, z, blocked);
+      return blocked ? DENY_SILENT : ALLOW;
+    }
+  }
+
+  /** Slot 27: projectile_launch — evaluateProjectileLaunch(UUID, String, int, int, int). */
+  public static final class ProjectileLaunchHook {
+    private final ProtectionChecker checker;
+
+    ProjectileLaunchHook(ProtectionChecker checker) {
+      this.checker = checker;
+    }
+
+    /** Evaluate Projectile Launch. */
+    public int evaluateProjectileLaunch(UUID playerUuid, String worldName, int x, int y, int z) {
+      try {
+        String reason = checker.checkProjectileLaunch(playerUuid, worldName, x, y, z);
+        int verdict = reason == null ? ALLOW : DENY_WITH_MESSAGE;
+        Logger.debugInteraction("[Mixin:ProjectileLaunch] player=%s, world=%s, pos=(%d,%d,%d), verdict=%s",
+          playerUuid, worldName, x, y, z, verdict == ALLOW ? "ALLOW" : "DENY");
+        if (reason != null) {
+          cachedReason.set(reason);
+        }
+        return verdict;
+      } catch (Exception e) {
+        Logger.severe("Projectile launch mixin hook error (fail-open)", e);
+        return ALLOW;
+      }
+    }
+
+    /** Fetch Projectile Launch Deny Reason. */
+    public String fetchProjectileLaunchDenyReason(UUID playerUuid, String worldName, int x, int y, int z) {
+      String reason = cachedReason.get();
+      cachedReason.remove();
+      return reason;
+    }
+  }
+
+  /** Slot 28: mount — evaluateMount(UUID, String, int, int, int). */
+  public static final class MountHook {
+    private final ProtectionChecker checker;
+
+    MountHook(ProtectionChecker checker) {
+      this.checker = checker;
+    }
+
+    /** Evaluate Mount. */
+    public int evaluateMount(UUID playerUuid, String worldName, int x, int y, int z) {
+      try {
+        String reason = checker.checkMount(playerUuid, worldName, x, y, z);
+        int verdict = reason == null ? ALLOW : DENY_WITH_MESSAGE;
+        Logger.debugInteraction("[Mixin:Mount] player=%s, world=%s, pos=(%d,%d,%d), verdict=%s",
+          playerUuid, worldName, x, y, z, verdict == ALLOW ? "ALLOW" : "DENY");
+        if (reason != null) {
+          cachedReason.set(reason);
+        }
+        return verdict;
+      } catch (Exception e) {
+        Logger.severe("Mount mixin hook error (fail-closed)", e);
+        cachedReason.set("Protection error — action blocked for safety.");
+        return DENY_WITH_MESSAGE;
+      }
+    }
+
+    /** Fetch Mount Deny Reason. */
+    public String fetchMountDenyReason(UUID playerUuid, String worldName, int x, int y, int z) {
+      String reason = cachedReason.get();
+      cachedReason.remove();
+      return reason;
+    }
+  }
+
+  /** Slot 29: barter_trade — evaluateTrade(UUID, String, int, int, int). */
+  public static final class BarterTradeHook {
+    private final ProtectionChecker checker;
+
+    BarterTradeHook(ProtectionChecker checker) {
+      this.checker = checker;
+    }
+
+    /** Evaluate Trade. */
+    public int evaluateTrade(UUID playerUuid, String worldName, int x, int y, int z) {
+      try {
+        String reason = checker.checkTrade(playerUuid, worldName, x, y, z);
+        int verdict = reason == null ? ALLOW : DENY_WITH_MESSAGE;
+        Logger.debugInteraction("[Mixin:BarterTrade] player=%s, world=%s, pos=(%d,%d,%d), verdict=%s",
+          playerUuid, worldName, x, y, z, verdict == ALLOW ? "ALLOW" : "DENY");
+        if (reason != null) {
+          cachedReason.set(reason);
+        }
+        return verdict;
+      } catch (Exception e) {
+        Logger.severe("Barter trade mixin hook error (fail-open)", e);
+        return ALLOW;
+      }
+    }
+
+    /** Fetch Trade Deny Reason. */
+    public String fetchTradeDenyReason(UUID playerUuid, String worldName, int x, int y, int z) {
+      String reason = cachedReason.get();
+      cachedReason.remove();
+      return reason;
     }
   }
 }

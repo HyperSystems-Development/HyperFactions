@@ -9,6 +9,7 @@ import com.hyperfactions.integration.permissions.HyperPermsIntegration;
 import com.hyperfactions.integration.placeholder.PlaceholderAPIIntegration;
 import com.hyperfactions.integration.placeholder.WiFlowPlaceholderIntegration;
 import com.hyperfactions.integration.protection.GravestoneIntegration;
+import com.hyperfactions.integration.protection.KyuubiSoftIntegration;
 import com.hyperfactions.integration.protection.OrbisGuardIntegration;
 import com.hyperfactions.integration.protection.ProtectionMixinBridge;
 import com.hyperfactions.update.UpdateChecker;
@@ -103,6 +104,14 @@ public class AdminIntegrationHandler {
           ctx.sendMessage(msg("    OrbisGuard API: Active (claim conflicts)", COLOR_GREEN));
         }
       }
+      case BOTH -> {
+        String hpVersion = System.getProperty("hyperprotect.bridge.version", "unknown");
+        ctx.sendMessage(msg("    HyperProtect-Mixin: Active (v" + hpVersion + ")", COLOR_GREEN));
+        ctx.sendMessage(msg("    OrbisGuard-Mixins: Active (compatible mode)", COLOR_GREEN));
+        if (ogApiAvailable) {
+          ctx.sendMessage(msg("    OrbisGuard API: Active (claim conflicts)", COLOR_GREEN));
+        }
+      }
       case NONE -> {
         ctx.sendMessage(msg("    HyperProtect-Mixin: Not Detected", COLOR_GRAY));
         ctx.sendMessage(msg("    OrbisGuard-Mixins: Not Detected", COLOR_GRAY));
@@ -110,7 +119,6 @@ public class AdminIntegrationHandler {
           ctx.sendMessage(msg("    OrbisGuard API: Active (claim conflicts only)", COLOR_YELLOW));
         }
       }
-      default -> throw new IllegalStateException("Unexpected value");
     }
 
     String mixinStatus = ProtectionMixinBridge.getStatusSummary();
@@ -123,6 +131,11 @@ public class AdminIntegrationHandler {
     String gsStatus = !gsAvailable ? "Not Found" : (gsEnabled ? "Active" : "Disabled");
     String gsColor = gsAvailable && gsEnabled ? COLOR_GREEN : (gsAvailable ? COLOR_YELLOW : COLOR_GRAY);
     ctx.sendMessage(msg("    Gravestones: " + gsStatus, gsColor));
+
+    KyuubiSoftIntegration ks = hyperFactions.getKyuubiSoftIntegration();
+    boolean ksAvailable = ks != null && ks.isAvailable();
+    ctx.sendMessage(msg("    KyuubiSoft Core: " + (ksAvailable ? "Active" : "Not Found"),
+        ksAvailable ? COLOR_GREEN : COLOR_GRAY));
 
     // --- Placeholders ---
     ctx.sendMessage(msg("  Placeholders:", COLOR_YELLOW));
@@ -147,7 +160,7 @@ public class AdminIntegrationHandler {
   public void handleIntegrationDetail(CommandContext ctx, String[] args) {
     if (args.length == 0) {
       ctx.sendMessage(prefix().insert(msg("Usage: /f admin integration <name>", COLOR_RED)));
-      ctx.sendMessage(msg("  Available: hyperperms, luckperms, vaultunlocked, native, hyperprotect, orbisguard, mixins, gravestones, papi, wiflow", COLOR_GRAY));
+      ctx.sendMessage(msg("  Available: hyperperms, luckperms, vaultunlocked, native, hyperprotect, orbisguard, mixins, gravestones, kyuubisoft, papi, wiflow", COLOR_GRAY));
       return;
     }
 
@@ -160,10 +173,11 @@ public class AdminIntegrationHandler {
       case "hytale", "native", "hytaleNative" -> handleIntegrationHytaleNative(ctx);
       case "orbisguard", "orbis", "og" -> handleIntegrationOrbisGuard(ctx);
       case "mixins", "orbismixins", "om", "hyperprotect", "hpmixin" -> handleIntegrationMixins(ctx);
+      case "kyuubisoft", "kyuubi", "ks", "citizens" -> handleIntegrationKyuubiSoft(ctx);
       case "placeholderapi", "papi" -> handleIntegrationPAPI(ctx);
       case "wiflow", "wflow" -> handleIntegrationWiFlow(ctx);
       default -> ctx.sendMessage(prefix().insert(msg("Unknown integration: " + name
-          + ". Available: hyperperms, luckperms, vaultunlocked, native, orbisguard, mixins, gravestones, papi, wiflow", COLOR_RED)));
+          + ". Available: hyperperms, luckperms, vaultunlocked, native, orbisguard, mixins, gravestones, kyuubisoft, papi, wiflow", COLOR_RED)));
     }
   }
 
@@ -200,6 +214,30 @@ public class AdminIntegrationHandler {
     ctx.sendMessage(msg("  Raid/War (placeholder):", COLOR_CYAN));
     ctx.sendMessage(msg("    allowLootDuringRaid: " + config.isAllowLootDuringRaid(), COLOR_GRAY));
     ctx.sendMessage(msg("    allowLootDuringWar: " + config.isAllowLootDuringWar(), COLOR_GRAY));
+  }
+
+  /** Handles integration kyuubisoft. */
+  public void handleIntegrationKyuubiSoft(CommandContext ctx) {
+    KyuubiSoftIntegration ks = hyperFactions.getKyuubiSoftIntegration();
+    boolean available = ks != null && ks.isAvailable();
+
+    ctx.sendMessage(prefix().insert(msg("KyuubiSoft Core Integration", COLOR_CYAN)));
+    ctx.sendMessage(msg("  Status: " + (available ? "Active" : "Not Found"),
+        available ? COLOR_GREEN : COLOR_GRAY));
+
+    if (available) {
+      ctx.sendMessage(msg("  Features:", COLOR_CYAN));
+      ctx.sendMessage(msg("    Citizen Dialog Interceptor: Registered", COLOR_GREEN));
+      ctx.sendMessage(msg("    NPC zone flag enforcement for KyuubiSoft Citizens", COLOR_GRAY));
+      ctx.sendMessage(msg("  Zone Flags:", COLOR_CYAN));
+      ctx.sendMessage(msg("    NPC_INTERACT: Controls citizen dialog/shop access", COLOR_GRAY));
+      ctx.sendMessage(msg("    NPC_TAME: Controls citizen taming (if applicable)", COLOR_GRAY));
+    } else {
+      ctx.sendMessage(msg("  KyuubiSoft Core is not installed", COLOR_GRAY));
+      ctx.sendMessage(msg("  NPC zone flags only apply to native Hytale NPCs", COLOR_GRAY));
+    }
+
+    ctx.sendMessage(msg("  Integration: Reflection-based (no compile dependency)", COLOR_GRAY));
   }
 
   /** Handles integration permissions. */

@@ -90,7 +90,7 @@ public record ProtectionTrace(
    */
   public boolean isAllowed() {
     return switch (result) {
-      case ALLOWED, ALLOWED_BYPASS, ALLOWED_WILDERNESS,
+      case ALLOWED, ALLOWED_BYPASS, ALLOWED_WILDERNESS, ALLOWED_SAFEZONE,
         ALLOWED_OWN_CLAIM, ALLOWED_ALLY_CLAIM, ALLOWED_WARZONE -> true;
       default -> false;
     };
