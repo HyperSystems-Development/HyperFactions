@@ -943,6 +943,30 @@ public class ConfigManager {
     return announcementConfig.isTerritoryNotificationsEnabled();
   }
 
+  public boolean isWildernessOnLeaveZoneEnabled() {
+    return announcementConfig.isWildernessOnLeaveZoneEnabled();
+  }
+
+  public String getWildernessOnLeaveZoneUpper() {
+    return announcementConfig.getWildernessOnLeaveZoneUpper();
+  }
+
+  public String getWildernessOnLeaveZoneLower() {
+    return announcementConfig.getWildernessOnLeaveZoneLower();
+  }
+
+  public boolean isWildernessOnLeaveClaimEnabled() {
+    return announcementConfig.isWildernessOnLeaveClaimEnabled();
+  }
+
+  public String getWildernessOnLeaveClaimUpper() {
+    return announcementConfig.getWildernessOnLeaveClaimUpper();
+  }
+
+  public String getWildernessOnLeaveClaimLower() {
+    return announcementConfig.getWildernessOnLeaveClaimLower();
+  }
+
   // World Map (from worldmap.json module config)
   public boolean isWorldMapMarkersEnabled() {
     return worldMapConfig.isEnabled();

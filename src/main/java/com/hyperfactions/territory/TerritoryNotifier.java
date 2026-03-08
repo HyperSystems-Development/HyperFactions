@@ -87,11 +87,43 @@ public class TerritoryNotifier {
 
     // Check if territory changed
     if (currentTerritory.isDifferentFrom(previousTerritory)) {
+      // For wilderness entries, apply context-specific config based on what the player left
+      TerritoryInfo notifyTerritory = currentTerritory;
+      if (currentTerritory.type() == TerritoryType.WILDERNESS && previousTerritory != null) {
+        notifyTerritory = buildWildernessFromConfig(previousTerritory);
+      }
+
       // Update stored territory
       previousTerritories.put(playerUuid, currentTerritory);
 
       // Send notification
-      sendTerritoryNotification(playerRef, currentTerritory);
+      sendTerritoryNotification(playerRef, notifyTerritory);
+    }
+  }
+
+  /**
+   * Builds a wilderness TerritoryInfo with config-driven text/enabled based on
+   * what territory the player is leaving (zone vs faction claim).
+   */
+  @NotNull
+  private TerritoryInfo buildWildernessFromConfig(@NotNull TerritoryInfo previousTerritory) {
+    ConfigManager config = ConfigManager.get();
+    boolean leftZone = previousTerritory.type() == TerritoryType.SAFEZONE
+        || previousTerritory.type() == TerritoryType.WARZONE;
+
+    if (leftZone) {
+      return TerritoryInfo.wilderness(
+          config.isWildernessOnLeaveZoneEnabled(),
+          config.getWildernessOnLeaveZoneUpper(),
+          config.getWildernessOnLeaveZoneLower()
+      );
+    } else {
+      // Left a faction claim (or wilderness→wilderness, which won't reach here)
+      return TerritoryInfo.wilderness(
+          config.isWildernessOnLeaveClaimEnabled(),
+          config.getWildernessOnLeaveClaimUpper(),
+          config.getWildernessOnLeaveClaimLower()
+      );
     }
   }
 

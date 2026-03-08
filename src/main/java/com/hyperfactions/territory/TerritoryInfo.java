@@ -83,6 +83,20 @@ public record TerritoryInfo(
   }
 
   /**
+   * Creates TerritoryInfo for wilderness with custom notification settings.
+   * Used when the wilderness message depends on what the player left (zone vs claim).
+   *
+   * @param enabled whether to show the wilderness notification
+   * @param upper   custom upper/secondary text (empty string = no secondary)
+   * @param lower   custom lower/primary text (the main wilderness label)
+   * @return customized wilderness territory info
+   */
+  public static TerritoryInfo wilderness(boolean enabled, @NotNull String upper, @NotNull String lower) {
+    return new TerritoryInfo(TerritoryType.WILDERNESS, null, null, null, null,
+        enabled, upper.isEmpty() ? null : upper, lower);
+  }
+
+  /**
    * Creates TerritoryInfo for a SafeZone with default notification settings.
    *
    * @param zoneName the zone name

@@ -51,6 +51,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - SafeZone default: false (protected), WarZone default: true (allowed)
 - Admin GUI: new flag slot (#Flag24) in Interaction category, all subsequent flags renumbered
 
+**Configurable Wilderness Notifications**
+- Wilderness notification text and visibility now configurable per exit context (leaving a zone vs leaving a faction claim)
+- Separate `upper` (subtitle) and `lower` (main banner) text for each context
+- Each context independently toggleable with `enabled` flag — disable wilderness notifications for zones, claims, or both
+- Config in `config/announcements.json` → `territoryNotifications.wilderness.onLeaveZone` and `onLeaveClaim`
+- Defaults match previous behavior: lower="Wilderness", upper="" (no subtitle), enabled=true
+
 **Mount Entry Zone Enforcement**
 - New runtime enforcement for `MOUNT_ENTRY` flag — mounted players are blocked from entering zones with mount entry disabled
 - Safe teleport system: pushes player 2 blocks back from zone boundary with safe ground detection (heightmap scan)

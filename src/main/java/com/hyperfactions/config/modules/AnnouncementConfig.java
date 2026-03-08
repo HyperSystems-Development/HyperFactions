@@ -29,6 +29,14 @@ public class AnnouncementConfig extends ModuleConfig {
   // Territory notification settings (moved from CoreConfig in V5→V6)
   private boolean territoryNotificationsEnabled = true;
 
+  // Wilderness notification settings — customizable per exit context
+  private boolean wildernessOnLeaveZoneEnabled = true;
+  private String wildernessOnLeaveZoneUpper = "";
+  private String wildernessOnLeaveZoneLower = "Wilderness";
+  private boolean wildernessOnLeaveClaimEnabled = true;
+  private String wildernessOnLeaveClaimUpper = "";
+  private String wildernessOnLeaveClaimLower = "Wilderness";
+
   /**
    * Creates a new announcement config.
    *
@@ -63,6 +71,12 @@ public class AnnouncementConfig extends ModuleConfig {
     allianceFormed = true;
     allianceBroken = true;
     territoryNotificationsEnabled = true;
+    wildernessOnLeaveZoneEnabled = true;
+    wildernessOnLeaveZoneUpper = "";
+    wildernessOnLeaveZoneLower = "Wilderness";
+    wildernessOnLeaveClaimEnabled = true;
+    wildernessOnLeaveClaimUpper = "";
+    wildernessOnLeaveClaimLower = "Wilderness";
   }
 
   /** Loads module settings. */
@@ -83,6 +97,25 @@ public class AnnouncementConfig extends ModuleConfig {
     if (hasSection(root, "territoryNotifications")) {
       JsonObject notifications = root.getAsJsonObject("territoryNotifications");
       territoryNotificationsEnabled = getBool(notifications, "enabled", territoryNotificationsEnabled);
+
+      // Wilderness notification customization
+      if (hasSection(notifications, "wilderness")) {
+        JsonObject wilderness = notifications.getAsJsonObject("wilderness");
+
+        if (hasSection(wilderness, "onLeaveZone")) {
+          JsonObject leaveZone = wilderness.getAsJsonObject("onLeaveZone");
+          wildernessOnLeaveZoneEnabled = getBool(leaveZone, "enabled", wildernessOnLeaveZoneEnabled);
+          wildernessOnLeaveZoneUpper = getString(leaveZone, "upper", wildernessOnLeaveZoneUpper);
+          wildernessOnLeaveZoneLower = getString(leaveZone, "lower", wildernessOnLeaveZoneLower);
+        }
+
+        if (hasSection(wilderness, "onLeaveClaim")) {
+          JsonObject leaveClaim = wilderness.getAsJsonObject("onLeaveClaim");
+          wildernessOnLeaveClaimEnabled = getBool(leaveClaim, "enabled", wildernessOnLeaveClaimEnabled);
+          wildernessOnLeaveClaimUpper = getString(leaveClaim, "upper", wildernessOnLeaveClaimUpper);
+          wildernessOnLeaveClaimLower = getString(leaveClaim, "lower", wildernessOnLeaveClaimLower);
+        }
+      }
     }
   }
 
@@ -102,6 +135,23 @@ public class AnnouncementConfig extends ModuleConfig {
     // Territory notifications
     JsonObject notifications = new JsonObject();
     notifications.addProperty("enabled", territoryNotificationsEnabled);
+
+    // Wilderness notification customization
+    JsonObject wilderness = new JsonObject();
+
+    JsonObject leaveZone = new JsonObject();
+    leaveZone.addProperty("enabled", wildernessOnLeaveZoneEnabled);
+    leaveZone.addProperty("upper", wildernessOnLeaveZoneUpper);
+    leaveZone.addProperty("lower", wildernessOnLeaveZoneLower);
+    wilderness.add("onLeaveZone", leaveZone);
+
+    JsonObject leaveClaim = new JsonObject();
+    leaveClaim.addProperty("enabled", wildernessOnLeaveClaimEnabled);
+    leaveClaim.addProperty("upper", wildernessOnLeaveClaimUpper);
+    leaveClaim.addProperty("lower", wildernessOnLeaveClaimLower);
+    wilderness.add("onLeaveClaim", leaveClaim);
+
+    notifications.add("wilderness", wilderness);
     root.add("territoryNotifications", notifications);
   }
 
@@ -144,5 +194,35 @@ public class AnnouncementConfig extends ModuleConfig {
   /** Checks if territory notifications enabled. */
   public boolean isTerritoryNotificationsEnabled() {
     return territoryNotificationsEnabled;
+  }
+
+  // === Wilderness notification getters ===
+
+  public boolean isWildernessOnLeaveZoneEnabled() {
+    return wildernessOnLeaveZoneEnabled;
+  }
+
+  @NotNull
+  public String getWildernessOnLeaveZoneUpper() {
+    return wildernessOnLeaveZoneUpper;
+  }
+
+  @NotNull
+  public String getWildernessOnLeaveZoneLower() {
+    return wildernessOnLeaveZoneLower;
+  }
+
+  public boolean isWildernessOnLeaveClaimEnabled() {
+    return wildernessOnLeaveClaimEnabled;
+  }
+
+  @NotNull
+  public String getWildernessOnLeaveClaimUpper() {
+    return wildernessOnLeaveClaimUpper;
+  }
+
+  @NotNull
+  public String getWildernessOnLeaveClaimLower() {
+    return wildernessOnLeaveClaimLower;
   }
 }
