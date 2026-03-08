@@ -162,6 +162,9 @@ public class HyperFactionsPlugin extends JavaPlugin {
     // Initialize spawn suppression manager (must be after TagSetPlugin is ready)
     worldSetup.initializeSpawnSuppression();
 
+    // Initialize mob clearing manager (must be after TagSetPlugin is ready)
+    worldSetup.initializeMobClearing();
+
     // Initialize protection mixin system and register all hooks
     initializeProtectionMixins();
 

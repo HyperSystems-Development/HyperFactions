@@ -1588,13 +1588,15 @@ public class ProtectionChecker {
     int chunkZ = ChunkUtil.toChunkCoord(z);
 
     // Check zone flags
+    // Note: MOB_SPAWNING is NOT checked here — natural mob spawning is handled
+    // by SpawnSuppressionController at the chunk level. This mixin hook only
+    // checks NPC_SPAWNING to control admin-placed/command-spawned NPCs.
     Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
     if (zone != null) {
-      boolean mobSpawningAllowed = zone.getEffectiveFlag(ZoneFlags.MOB_SPAWNING);
       boolean npcSpawningAllowed = zone.getEffectiveFlag(ZoneFlags.NPC_SPAWNING);
 
-      if (!mobSpawningAllowed || !npcSpawningAllowed) {
-        Logger.debugSpawning("[Protection] Spawn BLOCKED in zone '%s' at chunk (%d,%d)",
+      if (!npcSpawningAllowed) {
+        Logger.debugSpawning("[Protection] Spawn BLOCKED in zone '%s' at chunk (%d,%d) (npcSpawning=false)",
           zone.name(), chunkX, chunkZ);
         return true;
       }

@@ -314,6 +314,38 @@ public final class ZoneFlags {
   public static final String NPC_SPAWNING = "npc_spawning";
 
   // ==========================================================================
+  // MOB CLEARING FLAGS (4) - Active periodic mob removal
+  // ==========================================================================
+
+  /**
+   * Master toggle for mob clearing. When true, enables periodic removal of mobs.
+   * When false, no mob clearing occurs regardless of child flags.
+   * Parent of HOSTILE_MOB_CLEAR, PASSIVE_MOB_CLEAR, NEUTRAL_MOB_CLEAR.
+   */
+  public static final String MOB_CLEAR = "mob_clear";
+
+  /**
+   * Whether hostile mobs are periodically removed. Only applies when MOB_CLEAR is true.
+   * Uses NPCGroup "hostile" to determine which mobs are hostile.
+   * Conflicts with HOSTILE_MOB_SPAWNING — if spawning is true, clearing is forced false.
+   */
+  public static final String HOSTILE_MOB_CLEAR = "hostile_mob_clear";
+
+  /**
+   * Whether passive mobs are periodically removed. Only applies when MOB_CLEAR is true.
+   * Uses NPCGroup "passive" to determine which mobs are passive.
+   * Conflicts with PASSIVE_MOB_SPAWNING — if spawning is true, clearing is forced false.
+   */
+  public static final String PASSIVE_MOB_CLEAR = "passive_mob_clear";
+
+  /**
+   * Whether neutral mobs are periodically removed. Only applies when MOB_CLEAR is true.
+   * Uses NPCGroup "neutral" to determine which mobs are neutral.
+   * Conflicts with NEUTRAL_MOB_SPAWNING — if spawning is true, clearing is forced false.
+   */
+  public static final String NEUTRAL_MOB_CLEAR = "neutral_mob_clear";
+
+  // ==========================================================================
   // INTEGRATION FLAGS (1)
   // ==========================================================================
 
@@ -386,6 +418,11 @@ public final class ZoneFlags {
     PASSIVE_MOB_SPAWNING,
     NEUTRAL_MOB_SPAWNING,
     NPC_SPAWNING,
+    // Mob Clearing (4)
+    MOB_CLEAR,
+    HOSTILE_MOB_CLEAR,
+    PASSIVE_MOB_CLEAR,
+    NEUTRAL_MOB_CLEAR,
     // Integration (5)
     GRAVESTONE_ACCESS,
     SHOW_ON_MAP,
@@ -413,6 +450,8 @@ public final class ZoneFlags {
   public static final String[] ITEM_FLAGS = { ITEM_DROP, ITEM_PICKUP, ITEM_PICKUP_MANUAL, INVINCIBLE_ITEMS };
 
   public static final String[] SPAWNING_FLAGS = { MOB_SPAWNING, HOSTILE_MOB_SPAWNING, PASSIVE_MOB_SPAWNING, NEUTRAL_MOB_SPAWNING, NPC_SPAWNING };
+
+  public static final String[] MOB_CLEAR_FLAGS = { MOB_CLEAR, HOSTILE_MOB_CLEAR, PASSIVE_MOB_CLEAR, NEUTRAL_MOB_CLEAR };
 
   public static final String[] INTEGRATION_FLAGS = { GRAVESTONE_ACCESS, SHOW_ON_MAP, ESSENTIALS_HOMES, ESSENTIALS_WARPS, ESSENTIALS_KITS };
 
@@ -529,6 +568,11 @@ public final class ZoneFlags {
       case PASSIVE_MOB_SPAWNING -> false;
       case NEUTRAL_MOB_SPAWNING -> false;
       case NPC_SPAWNING -> false;           // Mixin spawn hook blocked
+      // Mob Clearing: Only clear hostile mobs by default in safe zones
+      case MOB_CLEAR -> true;
+      case HOSTILE_MOB_CLEAR -> true;
+      case PASSIVE_MOB_CLEAR -> false;
+      case NEUTRAL_MOB_CLEAR -> false;
       // Integration: Protected in safe zones
       case GRAVESTONE_ACCESS -> false;
       case SHOW_ON_MAP -> false;      // Map hiding stays active in safe zones by default
@@ -608,6 +652,11 @@ public final class ZoneFlags {
       case PASSIVE_MOB_SPAWNING -> true;
       case NEUTRAL_MOB_SPAWNING -> true;
       case NPC_SPAWNING -> true;            // Mixin spawn hook allowed
+      // Mob Clearing: No clearing in war zones (mobs add danger)
+      case MOB_CLEAR -> false;
+      case HOSTILE_MOB_CLEAR -> false;
+      case PASSIVE_MOB_CLEAR -> false;
+      case NEUTRAL_MOB_CLEAR -> false;
       // Integration: Free for all in war zones
       case GRAVESTONE_ACCESS -> true;
       case SHOW_ON_MAP -> false;      // Map hiding stays active in war zones by default
@@ -697,6 +746,10 @@ public final class ZoneFlags {
       case PASSIVE_MOB_SPAWNING -> "Passive Mobs";
       case NEUTRAL_MOB_SPAWNING -> "Neutral Mobs";
       case NPC_SPAWNING -> "NPC Spawning";
+      case MOB_CLEAR -> "Mob Clearing";
+      case HOSTILE_MOB_CLEAR -> "Clear Hostile Mobs";
+      case PASSIVE_MOB_CLEAR -> "Clear Passive Mobs";
+      case NEUTRAL_MOB_CLEAR -> "Clear Neutral Mobs";
       case GRAVESTONE_ACCESS -> "Others Loot Graves";
       case SHOW_ON_MAP -> "Show on Map";
       case ESSENTIALS_HOMES -> "Home Use";
@@ -757,6 +810,10 @@ public final class ZoneFlags {
       case PASSIVE_MOB_SPAWNING -> "Non-aggressive mobs can spawn";
       case NEUTRAL_MOB_SPAWNING -> "Conditionally aggressive mobs can spawn";
       case NPC_SPAWNING -> "NPC spawning via mixin (requires mixin)";
+      case MOB_CLEAR -> "Actively remove mobs from this zone (parent)";
+      case HOSTILE_MOB_CLEAR -> "Periodically remove hostile mobs";
+      case PASSIVE_MOB_CLEAR -> "Periodically remove passive mobs";
+      case NEUTRAL_MOB_CLEAR -> "Periodically remove neutral mobs";
       case GRAVESTONE_ACCESS -> "Non-owners can loot/break other players' gravestones (owners always can)";
       case SHOW_ON_MAP -> "Override map visibility for players in this zone";
       case ESSENTIALS_HOMES -> "Players can set and teleport to homes (HyperEssentials)";
@@ -787,6 +844,8 @@ public final class ZoneFlags {
       case NPC_TAME, NPC_INTERACT -> NPC_USE;
       // Mob group flags have MOB_SPAWNING as parent
       case HOSTILE_MOB_SPAWNING, PASSIVE_MOB_SPAWNING, NEUTRAL_MOB_SPAWNING, NPC_SPAWNING -> MOB_SPAWNING;
+      // Mob clearing children have MOB_CLEAR as parent
+      case HOSTILE_MOB_CLEAR, PASSIVE_MOB_CLEAR, NEUTRAL_MOB_CLEAR -> MOB_CLEAR;
       default -> null;
     };
   }
@@ -800,7 +859,8 @@ public final class ZoneFlags {
   public static boolean isParentFlag(String flagName) {
     return PVP_ENABLED.equals(flagName) || FRIENDLY_FIRE.equals(flagName)
        || BUILD_ALLOWED.equals(flagName) || BLOCK_INTERACT.equals(flagName)
-       || NPC_USE.equals(flagName) || MOB_SPAWNING.equals(flagName);
+       || NPC_USE.equals(flagName) || MOB_SPAWNING.equals(flagName)
+       || MOB_CLEAR.equals(flagName);
   }
 
   /**
@@ -818,7 +878,28 @@ public final class ZoneFlags {
       case BLOCK_INTERACT -> new String[] { DOOR_USE, CONTAINER_USE, BENCH_USE, PROCESSING_USE, SEAT_USE, MOUNT_USE, LIGHT_USE };
       case NPC_USE -> new String[] { NPC_TAME, NPC_INTERACT };
       case MOB_SPAWNING -> new String[] { HOSTILE_MOB_SPAWNING, PASSIVE_MOB_SPAWNING, NEUTRAL_MOB_SPAWNING, NPC_SPAWNING };
+      case MOB_CLEAR -> new String[] { HOSTILE_MOB_CLEAR, PASSIVE_MOB_CLEAR, NEUTRAL_MOB_CLEAR };
       default -> new String[0];
+    };
+  }
+
+  /**
+   * Gets the conflicting spawn flag for a mob clear flag.
+   * When a spawning sub-flag is true, the corresponding clear sub-flag
+   * must resolve to false (it's contradictory to spawn AND clear the same type).
+   *
+   * <p>Only child-level conflicts. Parent MOB_CLEAR does NOT conflict with MOB_SPAWNING.
+   *
+   * @param clearFlagName the clear flag name
+   * @return the conflicting spawn flag name, or null if no conflict
+   */
+  @Nullable
+  public static String getConflictingSpawnFlag(String clearFlagName) {
+    return switch (clearFlagName) {
+      case HOSTILE_MOB_CLEAR -> HOSTILE_MOB_SPAWNING;
+      case PASSIVE_MOB_CLEAR -> PASSIVE_MOB_SPAWNING;
+      case NEUTRAL_MOB_CLEAR -> NEUTRAL_MOB_SPAWNING;
+      default -> null;
     };
   }
 
@@ -921,6 +1002,11 @@ public final class ZoneFlags {
         return "Spawning";
       }
     }
+    for (String f : MOB_CLEAR_FLAGS) {
+      if (f.equals(flagName)) {
+        return "Mob Clearing";
+      }
+    }
     for (String f : INTERACTION_FLAGS) {
       if (f.equals(flagName)) {
         return "Interaction";
@@ -960,6 +1046,7 @@ public final class ZoneFlags {
     categories.put("Death", DEATH_FLAGS);
     categories.put("Transport", TRANSPORT_FLAGS);
     categories.put("Spawning", SPAWNING_FLAGS);
+    categories.put("Mob Clearing", MOB_CLEAR_FLAGS);
     categories.put("Integration", INTEGRATION_FLAGS);
     return categories;
   }
@@ -980,6 +1067,7 @@ public final class ZoneFlags {
       "Transport",
       "Items",
       "Spawning",
+      "Mob Clearing",
       "Integration"
     };
   }

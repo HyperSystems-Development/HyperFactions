@@ -333,6 +333,13 @@ public record Zone(
       return false;
     }
 
+    // Cross-flag conflict: spawning=true forces corresponding clear=false
+    // (it's contradictory to spawn AND clear the same mob type)
+    String conflictingSpawn = ZoneFlags.getConflictingSpawnFlag(flagName);
+    if (conflictingSpawn != null && getEffectiveFlag(conflictingSpawn)) {
+      return false;
+    }
+
     // Check if explicitly set
     if (flags != null && flags.containsKey(flagName)) {
       return flags.get(flagName);

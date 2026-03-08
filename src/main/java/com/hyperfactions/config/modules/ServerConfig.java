@@ -80,6 +80,11 @@ public class ServerConfig extends ModuleConfig {
 
   private boolean hideNeutralMarkersOnMap = false;
 
+  // Mob clearing settings
+  private boolean mobClearEnabled = true;
+
+  private int mobClearIntervalSeconds = 10;
+
   // HyperProtect-Mixin management
   private boolean hyperProtectAutoDownload = false;
 
@@ -178,6 +183,13 @@ public class ServerConfig extends ModuleConfig {
       hideNeutralMarkersOnMap = getBool(worldMap, "hideNeutralMarkers", hideNeutralMarkersOnMap);
     }
 
+    // Mob clearing settings
+    if (hasSection(root, "mobClearing")) {
+      JsonObject mobClearing = root.getAsJsonObject("mobClearing");
+      mobClearEnabled = getBool(mobClearing, "enabled", mobClearEnabled);
+      mobClearIntervalSeconds = getInt(mobClearing, "intervalSeconds", mobClearIntervalSeconds);
+    }
+
     // Update settings
     if (hasSection(root, "updates")) {
       JsonObject updates = root.getAsJsonObject("updates");
@@ -257,6 +269,12 @@ public class ServerConfig extends ModuleConfig {
     worldMap.addProperty("hideEnemyMarkers", hideEnemyMarkersOnMap);
     worldMap.addProperty("hideNeutralMarkers", hideNeutralMarkersOnMap);
     root.add("worldMap", worldMap);
+
+    // Mob clearing settings
+    JsonObject mobClearing = new JsonObject();
+    mobClearing.addProperty("enabled", mobClearEnabled);
+    mobClearing.addProperty("intervalSeconds", mobClearIntervalSeconds);
+    root.add("mobClearing", mobClearing);
 
     // Update settings
     JsonObject updates = new JsonObject();
@@ -395,6 +413,17 @@ public class ServerConfig extends ModuleConfig {
     return hideNeutralMarkersOnMap;
   }
 
+  // Mob clearing
+  /** Whether periodic mob clearing is enabled. */
+  public boolean isMobClearEnabled() {
+    return mobClearEnabled;
+  }
+
+  /** Returns the mob clear sweep interval in seconds. */
+  public int getMobClearIntervalSeconds() {
+    return mobClearIntervalSeconds;
+  }
+
   // HyperProtect-Mixin
   /** Checks if hyper protect auto download. */
   public boolean isHyperProtectAutoDownload() {
@@ -428,6 +457,7 @@ public class ServerConfig extends ModuleConfig {
     cooldownSeconds = validateMin(result, "teleport.cooldownSeconds", cooldownSeconds, 0, 300);
     autoSaveIntervalMinutes = validateMin(result, "autoSave.intervalMinutes", autoSaveIntervalMinutes, 1, 5);
     leaderboardKdRefreshSeconds = validateMin(result, "gui.leaderboardKdRefreshSeconds", leaderboardKdRefreshSeconds, 30, 300);
+    mobClearIntervalSeconds = validateMin(result, "mobClearing.intervalSeconds", mobClearIntervalSeconds, 5, 10);
     releaseChannel = validateEnum(result, "updates.releaseChannel", releaseChannel,
         new String[]{"stable", "prerelease"}, "stable");
     validateHexColor(result, "messages.primaryColor", primaryColor);

@@ -1,6 +1,6 @@
 // Admin Zone Settings Page
 // Configure zone flags visually
-// Shows all 41 core flags with toggle buttons in 3-column layout with boxes
+// Shows all 46 core flags with toggle buttons in 3-column layout with boxes
 // Integration flags are on a separate sub-page (admin_zone_integration_flags.ui)
 // Mixin-dependent flags show "(mixin)" when unavailable
 
@@ -12,7 +12,7 @@ $C.@PageOverlay {
   $Nav.@HyperFactionsAdminNavBar #HyperFactionsAdminNavBar {}
 
   $C.@DecoratedContainer {
-    Anchor: (Width: 880, Height: 680);
+    Anchor: (Width: 880, Height: 800);
 
     #Title {
       Group {
@@ -1012,7 +1012,7 @@ $C.@PageOverlay {
             Background: (Color: #1a2a3a);
             Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
             LayoutMode: Top;
-            Anchor: (Bottom: 0);
+            Anchor: (Bottom: 8);
 
             Group {
               Anchor: (Height: 18, Bottom: 0);
@@ -1134,6 +1134,116 @@ $C.@PageOverlay {
               }
               $C.@CheckBoxWithLabel #Flag41Toggle {
                 @Text = ""; @Checked = true;
+                Anchor: (Height: 20, Width: 44);
+              }
+            }
+          }
+
+          // --- Mob Clearing Box ---
+          Group #MobClearBox {
+            Background: (Color: #1a2a3a);
+            Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+            LayoutMode: Top;
+            Anchor: (Bottom: 0);
+
+            Group {
+              Anchor: (Height: 18, Bottom: 0);
+              Label {
+                Text: "Mob Clearing";
+                Style: (FontSize: 11, TextColor: #00AAAA, RenderBold: true);
+              }
+            }
+            Group {
+              Anchor: (Height: 12, Bottom: 4);
+              Label {
+                Text: "(children only apply when parent ON)";
+                Style: (FontSize: 8, TextColor: #666666);
+              }
+            }
+
+            // Flag 42: mob_clear (parent)
+            Group {
+              Anchor: (Height: 24);
+              LayoutMode: Left;
+              Label #Flag42Name {
+                Text: "Mob Clearing";
+                Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+                Anchor: (Width: 110);
+              }
+              Label { FlexWeight: 1; }
+              Label #Flag42Default {
+                Text: "(default)";
+                Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
+                Anchor: (Width: 55);
+              }
+              $C.@CheckBoxWithLabel #Flag42Toggle {
+                @Text = ""; @Checked = false;
+                Anchor: (Height: 20, Width: 44);
+              }
+            }
+
+            // Flag 43: hostile_mob_clear (child)
+            Group {
+              Anchor: (Height: 24);
+              LayoutMode: Left;
+              Padding: (Left: 12, Right: 0, Top: 0, Bottom: 0);
+              Label #Flag43Name {
+                Text: "Clear Hostile";
+                Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+                Anchor: (Width: 98);
+              }
+              Label { FlexWeight: 1; }
+              Label #Flag43Default {
+                Text: "(default)";
+                Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
+                Anchor: (Width: 55);
+              }
+              $C.@CheckBoxWithLabel #Flag43Toggle {
+                @Text = ""; @Checked = false;
+                Anchor: (Height: 20, Width: 44);
+              }
+            }
+
+            // Flag 44: passive_mob_clear (child)
+            Group {
+              Anchor: (Height: 24);
+              LayoutMode: Left;
+              Padding: (Left: 12, Right: 0, Top: 0, Bottom: 0);
+              Label #Flag44Name {
+                Text: "Clear Passive";
+                Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+                Anchor: (Width: 98);
+              }
+              Label { FlexWeight: 1; }
+              Label #Flag44Default {
+                Text: "(default)";
+                Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
+                Anchor: (Width: 55);
+              }
+              $C.@CheckBoxWithLabel #Flag44Toggle {
+                @Text = ""; @Checked = false;
+                Anchor: (Height: 20, Width: 44);
+              }
+            }
+
+            // Flag 45: neutral_mob_clear (child)
+            Group {
+              Anchor: (Height: 24);
+              LayoutMode: Left;
+              Padding: (Left: 12, Right: 0, Top: 0, Bottom: 0);
+              Label #Flag45Name {
+                Text: "Clear Neutral";
+                Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+                Anchor: (Width: 98);
+              }
+              Label { FlexWeight: 1; }
+              Label #Flag45Default {
+                Text: "(default)";
+                Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
+                Anchor: (Width: 55);
+              }
+              $C.@CheckBoxWithLabel #Flag45Toggle {
+                @Text = ""; @Checked = false;
                 Anchor: (Height: 20, Width: 44);
               }
             }

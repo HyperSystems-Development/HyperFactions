@@ -2,6 +2,7 @@ package com.hyperfactions.lifecycle;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.config.ConfigManager;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 
 /**
@@ -21,6 +22,8 @@ public class PeriodicTaskManager {
 
   private int upkeepTaskId = -1;
 
+  private int mobClearTaskId = -1;
+
   /** Creates a new PeriodicTaskManager. */
   public PeriodicTaskManager(HyperFactions hyperFactions) {
     this.hyperFactions = hyperFactions;
@@ -34,6 +37,7 @@ public class PeriodicTaskManager {
     startInviteCleanupTask();
     startChatHistoryCleanupTask();
     startUpkeepTask();
+    startMobClearTask();
   }
 
   /**
@@ -55,6 +59,10 @@ public class PeriodicTaskManager {
     if (upkeepTaskId > 0) {
       hyperFactions.cancelTask(upkeepTaskId);
       upkeepTaskId = -1;
+    }
+    if (mobClearTaskId > 0) {
+      hyperFactions.cancelTask(mobClearTaskId);
+      mobClearTaskId = -1;
     }
   }
 
@@ -178,6 +186,31 @@ public class PeriodicTaskManager {
 
     if (upkeepTaskId > 0) {
       Logger.debug("Upkeep collection scheduled every %d hours", intervalHours);
+    }
+  }
+
+  /**
+   * Starts the periodic mob clearing task if enabled.
+   */
+  private void startMobClearTask() {
+    ConfigManager config = ConfigManager.get();
+    if (!config.isMobClearEnabled()) {
+      Logger.debug("Mob clearing is disabled in config");
+      return;
+    }
+
+    int intervalSeconds = config.getMobClearIntervalSeconds();
+    if (intervalSeconds <= 0) {
+      Logger.warn("Invalid mob clear interval: %d seconds, using default 10 seconds", intervalSeconds);
+      intervalSeconds = 10;
+    }
+
+    int periodTicks = intervalSeconds * 20; // Convert seconds to ticks
+    mobClearTaskId = hyperFactions.scheduleRepeatingTask(periodTicks, periodTicks,
+      ErrorHandler.wrapTask("Mob clear sweep", () -> hyperFactions.getZoneMobClearManager().sweep()));
+
+    if (mobClearTaskId > 0) {
+      Logger.debug("Mob clear sweep scheduled every %d seconds", intervalSeconds);
     }
   }
 }

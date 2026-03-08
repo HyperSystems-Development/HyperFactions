@@ -7,11 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+**Mob Clearing Zone Flags (#79)**
+- 4 new zone flags: `mob_clear` (parent toggle), `hostile_mob_clear`, `passive_mob_clear`, `neutral_mob_clear`
+- Periodic sweep removes existing mobs from zones based on flag configuration — complements spawn suppression which only blocks new spawns
+- Cross-flag conflict enforcement: if a spawning sub-flag is true (e.g., `hostile_mob_spawning=true`), the corresponding clear sub-flag resolves to false via `getEffectiveFlag()`
+- SafeZone defaults: all mob clearing enabled. WarZone defaults: all mob clearing disabled
+- New `ZoneMobClearManager` — periodic sweep manager using Hytale's TagSetPlugin NPCGroup system for mob categorization
+- Configurable sweep interval in `config/server.json` → `mobClearIntervalSeconds` (default 10s, min 5s)
+- Admin GUI: new "Mob Clearing" category in zone settings with flag toggles and conflict indicators
+- Debug logging with NPC group names (aggressive/passive/neutral) for both cleared and skipped mobs
+
 ### Fixed
 
 - Auto-migrate updater URLs from old `HyperSystemsDev` GitHub org to `HyperSystems-Development` — affects both HyperFactions and HyperProtect-Mixin update check URLs
 - Runtime auto-migration in ServerConfig and CoreConfig catches old URLs on every config load (exact-match only, custom URLs left untouched)
 - Formal `ConfigV6ToV7Migration` runs once via migration framework, bumps configVersion from 6 to 7
+- **SpawnSuppressionManager** — fix hostile group name from "hostile" to "aggressive" to match Hytale's NPCGroup naming convention. Hostile mob spawn suppression was silently failing
+- **ProtectionChecker** — remove redundant `MOB_SPAWNING` flag check from mixin hook's `shouldBlockSpawn()`. Natural mob spawning is handled natively by `SpawnSuppressionController`; the mixin hook should only check `NPC_SPAWNING`
+- **AdminZoneSettingsPage** — fix missing Mob Clearing category rebuild when spawning flags are toggled. Conflict indicators now update correctly when toggling spawning sub-flags
 
 ### Added
 

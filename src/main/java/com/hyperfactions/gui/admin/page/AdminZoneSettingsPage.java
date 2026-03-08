@@ -25,13 +25,13 @@ import java.util.UUID;
 
 /**
  * Admin Zone Settings page - configure zone flags visually.
- * Shows 41 core zone flags with toggle buttons and default indicators in 3-column layout.
+ * Shows 46 core zone flags with toggle buttons and default indicators in 3-column layout.
  * Integration flags are on a separate sub-page (AdminZoneIntegrationFlagsPage).
  *
- * <p>Layout (indices — 42 total):
+ * <p>Layout (indices — 46 total):
  * - Left column: Combat (0-6), Damage (7-10), Death (11-12)
  * - Middle column: Building (13-16), Interaction (17-29)
- * - Right column: Transport (30-32), Items (33-36), Spawning (37-41)
+ * - Right column: Transport (30-32), Items (33-36), Spawning (37-41), Mob Clearing (42-45)
  *
  * <p>Mixin-dependent flags are disabled when no mixin system (HyperProtect or OrbisGuard) is detected.
  * Uses ProtectionMixinBridge for provider-agnostic mixin feature detection.
@@ -126,6 +126,7 @@ public class AdminZoneSettingsPage extends InteractiveCustomUIPage<AdminZoneSett
     buildFlagCategory(cmd, events, zone, "Transport", ZoneFlags.TRANSPORT_FLAGS, 30);
     buildFlagCategory(cmd, events, zone, "Items", ZoneFlags.ITEM_FLAGS, 33);
     buildFlagCategory(cmd, events, zone, "Spawning", ZoneFlags.SPAWNING_FLAGS, 37);
+    buildFlagCategory(cmd, events, zone, "Mob Clearing", ZoneFlags.MOB_CLEAR_FLAGS, 42);
 
     // Reset to Defaults button
     if (!zone.getFlags().isEmpty()) {
@@ -197,19 +198,29 @@ public class AdminZoneSettingsPage extends InteractiveCustomUIPage<AdminZoneSett
       mixinUnavailable = !isMixinAvailable(mixinType);
     }
 
+    // Check if this flag is a mob clear child conflicting with its spawn counterpart
+    boolean spawnConflict = false;
+    String conflictingSpawn = ZoneFlags.getConflictingSpawnFlag(flagName);
+    if (conflictingSpawn != null && zone.getEffectiveFlag(conflictingSpawn)) {
+      spawnConflict = true;
+    }
+
     // Flag name (display name from ZoneFlags)
     String displayName = ZoneFlags.getDisplayName(flagName);
     cmd.set(idx + "Name.Text", displayName);
 
     // Set checkbox value via child selector
     // When parent is off, show children as unchecked for clearer visual state
-    boolean shouldDisable = parentDisabled || mixinUnavailable;
-    boolean displayValue = parentDisabled ? false : currentValue;
+    boolean shouldDisable = parentDisabled || mixinUnavailable || spawnConflict;
+    boolean displayValue = (parentDisabled || spawnConflict) ? false : currentValue;
     cmd.set(idx + "Toggle #CheckBox.Value", displayValue);
     cmd.set(idx + "Toggle #CheckBox.Disabled", shouldDisable);
 
-    // Default indicator (shows "(default)" or "(custom)" or "(mixin)")
-    if (mixinUnavailable) {
+    // Default indicator (shows "(default)" or "(custom)" or "(mixin)" or "(conflict)")
+    if (spawnConflict) {
+      cmd.set(idx + "Default.Text", "(conflict)");
+      cmd.set(idx + "Default.Style.TextColor", "#FF5555");
+    } else if (mixinUnavailable) {
       cmd.set(idx + "Default.Text", "(mixin)");
       cmd.set(idx + "Default.Style.TextColor", "#FF5555");
     } else if (isDefault) {
@@ -365,6 +376,7 @@ public class AdminZoneSettingsPage extends InteractiveCustomUIPage<AdminZoneSett
     buildFlagCategory(cmd, events, zone, "Transport", ZoneFlags.TRANSPORT_FLAGS, 30);
     buildFlagCategory(cmd, events, zone, "Items", ZoneFlags.ITEM_FLAGS, 33);
     buildFlagCategory(cmd, events, zone, "Spawning", ZoneFlags.SPAWNING_FLAGS, 37);
+    buildFlagCategory(cmd, events, zone, "Mob Clearing", ZoneFlags.MOB_CLEAR_FLAGS, 42);
 
     // Update reset button state
     if (!zone.getFlags().isEmpty()) {

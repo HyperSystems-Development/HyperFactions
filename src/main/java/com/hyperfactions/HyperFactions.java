@@ -105,6 +105,8 @@ public class HyperFactions {
 
   private SpawnSuppressionManager spawnSuppressionManager;
 
+  private ZoneMobClearManager zoneMobClearManager;
+
   private AnnouncementManager announcementManager;
 
   // Economy
@@ -280,6 +282,7 @@ public class HyperFactions {
     zoneManager = new ZoneManager(zoneStorage, claimManager);
     claimManager.setZoneManager(zoneManager); // Wire zone manager for zone protection checks
     spawnSuppressionManager = new SpawnSuppressionManager(zoneManager, claimManager, factionManager);
+    zoneMobClearManager = new ZoneMobClearManager(zoneManager, this);
     teleportManager = new TeleportManager(factionManager);
     inviteManager = new InviteManager(dataPath);
     joinRequestManager = new JoinRequestManager(dataPath);
@@ -1190,6 +1193,16 @@ public class HyperFactions {
   @NotNull
   public SpawnSuppressionManager getSpawnSuppressionManager() {
     return spawnSuppressionManager;
+  }
+
+  /**
+   * Gets the zone mob clear manager.
+   *
+   * @return the zone mob clear manager
+   */
+  @NotNull
+  public ZoneMobClearManager getZoneMobClearManager() {
+    return zoneMobClearManager;
   }
 
   /**

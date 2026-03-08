@@ -162,6 +162,19 @@ public class WorldSetup {
   }
 
   /**
+   * Initializes the zone mob clear manager.
+   * Call this after initializeSpawnSuppression().
+   */
+  public void initializeMobClearing() {
+    try {
+      hyperFactions.getZoneMobClearManager().initialize();
+      Logger.info("[Startup] Mob clearing initialized");
+    } catch (Exception e) {
+      plugin.getLogger().at(Level.WARNING).withCause(e).log("Failed to initialize mob clearing");
+    }
+  }
+
+  /**
    * Handles world add event - registers world map provider.
    */
   public void onWorldAdd(AddWorldEvent event) {

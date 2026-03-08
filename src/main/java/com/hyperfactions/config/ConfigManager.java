@@ -799,6 +799,17 @@ public class ConfigManager {
     return serverConfig.getAutoSaveIntervalMinutes();
   }
 
+  // Mob clearing
+  /** Whether periodic mob clearing is enabled. */
+  public boolean isMobClearEnabled() {
+    return serverConfig.isMobClearEnabled();
+  }
+
+  /** Returns the mob clear sweep interval in seconds. */
+  public int getMobClearIntervalSeconds() {
+    return serverConfig.getMobClearIntervalSeconds();
+  }
+
   // Backup (from module)
   /** Checks if backup enabled. */
   public boolean isBackupEnabled() {

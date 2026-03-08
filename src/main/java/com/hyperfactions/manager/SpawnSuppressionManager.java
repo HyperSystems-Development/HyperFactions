@@ -62,7 +62,7 @@ public class SpawnSuppressionManager {
    * NPCGroup names for mob categorization.
    * These must match Hytale's built-in group definitions.
    */
-  private static final String GROUP_HOSTILE = "hostile";
+  private static final String GROUP_HOSTILE = "aggressive";
 
   private static final String GROUP_PASSIVE = "passive";
 
