@@ -112,6 +112,7 @@ public class ProtectionChecker {
     BENCH,       // Crafting tables
     PROCESSING,  // Furnaces/smelters
     SEAT,        // Seats/mounts
+    LIGHT,       // Lights/lanterns/campfires
     DAMAGE,        // Damage entities (not players)
     USE,           // Use items (fallback)
     TELEPORTER,    // Use teleporter blocks
@@ -178,7 +179,7 @@ public class ProtectionChecker {
         // 3. Non-admin: Check standard bypass permissions
         String bypassPerm = switch (type) {
           case BUILD -> "hyperfactions.bypass.build";
-          case INTERACT, DOOR, BENCH, PROCESSING, SEAT, MOUNT, TELEPORTER, PORTAL,
+          case INTERACT, DOOR, BENCH, PROCESSING, SEAT, LIGHT, MOUNT, TELEPORTER, PORTAL,
             CRATE_PICKUP, CRATE_PLACE, NPC_TAME, NPC_INTERACT,
             ITEM_DROP, ITEM_PICKUP -> "hyperfactions.bypass.interact";
           case CONTAINER -> "hyperfactions.bypass.container";
@@ -204,6 +205,7 @@ public class ProtectionChecker {
           case BENCH -> ZoneFlags.BENCH_USE;
           case PROCESSING -> ZoneFlags.PROCESSING_USE;
           case SEAT -> ZoneFlags.SEAT_USE;
+          case LIGHT -> ZoneFlags.LIGHT_USE;
           case TELEPORTER -> ZoneFlags.TELEPORTER_USE;
           case PORTAL -> ZoneFlags.PORTAL_USE;
           case DAMAGE -> ZoneFlags.PVP_ENABLED;
@@ -344,6 +346,7 @@ public class ProtectionChecker {
       case BENCH -> perms.get(level + "BenchUse");
       case PROCESSING -> perms.get(level + "ProcessingUse");
       case SEAT -> perms.get(level + "SeatUse");
+      case LIGHT -> perms.get(level + "Interact"); // Light use shares general interact permission
       case TELEPORTER, PORTAL -> perms.get(level + "TransportUse");
       case CRATE_PICKUP, CRATE_PLACE -> perms.get(level + "CrateUse");
       case NPC_TAME -> perms.get(level + "NpcTame");
@@ -729,6 +732,7 @@ public class ProtectionChecker {
       case BENCH -> "You can't use crafting stations";
       case PROCESSING -> "You can't use processing stations";
       case SEAT -> "You can't use seats";
+      case LIGHT -> "You can't toggle lights";
       case TELEPORTER, PORTAL -> "You can't use teleporters";
       case CRATE_PICKUP, CRATE_PLACE -> "You can't use crates";
       case NPC_TAME -> "You can't tame creatures";
@@ -801,7 +805,7 @@ public class ProtectionChecker {
       if (!isAdmin) {
         String bypassPerm = switch (factionType) {
           case BUILD -> "hyperfactions.bypass.build";
-          case INTERACT, DOOR, BENCH, PROCESSING, SEAT, MOUNT, TELEPORTER, PORTAL,
+          case INTERACT, DOOR, BENCH, PROCESSING, SEAT, LIGHT, MOUNT, TELEPORTER, PORTAL,
             CRATE_PICKUP, CRATE_PLACE, NPC_TAME, NPC_INTERACT,
             ITEM_DROP, ITEM_PICKUP -> "hyperfactions.bypass.interact";
           case CONTAINER -> "hyperfactions.bypass.container";
@@ -953,6 +957,8 @@ public class ProtectionChecker {
       case CRATE_PICKUP -> ZoneFlags.CRATE_PICKUP;
       case CRATE_PLACE -> ZoneFlags.CRATE_PLACE;
       case NPC_TAME -> ZoneFlags.NPC_TAME;
+      case MOUNT -> ZoneFlags.MOUNT_USE;
+      case LIGHT -> ZoneFlags.LIGHT_USE;
       default -> ZoneFlags.BLOCK_INTERACT;
     };
     return checkMixinProtection(playerUuid, worldName, x, y, z, zoneFlag, type);

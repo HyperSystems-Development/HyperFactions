@@ -2,7 +2,10 @@ package com.hyperfactions.territory;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.config.ConfigManager;
+import com.hyperfactions.data.Zone;
+import com.hyperfactions.data.ZoneFlags;
 import com.hyperfactions.manager.TeleportManager;
+import com.hyperfactions.protection.ProtectionMessageDebounce;
 import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.ArchetypeChunk;
@@ -18,7 +21,10 @@ import com.hypixel.hytale.server.core.modules.entity.teleport.Teleport;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
+import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import com.hypixel.hytale.protocol.BlockMaterial;
+import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -42,6 +48,9 @@ public class TerritoryTickingSystem extends EntityTickingSystem<EntityStore> {
 
   /** Tracks expected teleport destinations for post-teleport position verification. */
   private final Map<UUID, double[]> pendingVerification = new ConcurrentHashMap<>();
+
+  /** Tracks last known position per player for mount entry rubber-banding. */
+  private final Map<UUID, double[]> lastPositions = new ConcurrentHashMap<>();
 
   /**
    * Creates a new territory ticking system.
@@ -118,11 +127,64 @@ public class TerritoryTickingSystem extends EntityTickingSystem<EntityStore> {
           );
 
           if (ready != null) {
-            // Execute the teleport via world.execute() (runs after tick completes)
-            executeTeleport(ref, player.getWorld(), ready, playerRef);
+            // Block teleport if mounted into a no-mount-entry zone (unless admin bypass)
+            boolean mountBlocked = false;
+            if (player.getMountEntityId() != 0 && !hyperFactions.isAdminBypassEnabled(playerUuid)) {
+              TeleportManager.TeleportDestination dest = ready.destination();
+              if (!isMountEntryAllowed(dest.world(), dest.x(), dest.z())) {
+                playerRef.sendMessage(com.hyperfactions.util.MessageUtil.error(
+                    "You can't teleport into that zone while mounted."));
+                Logger.debugTerritory("Teleport blocked for mounted player %s to zone at (%.1f, %.1f)",
+                    playerUuid, dest.x(), dest.z());
+                mountBlocked = true;
+              }
+            }
+            if (!mountBlocked) {
+              // Execute the teleport via world.execute() (runs after tick completes)
+              executeTeleport(ref, player.getWorld(), ready, playerRef);
+            }
           }
         }
       }
+
+      // Mount entry zone enforcement — only check when mounted and entering a new chunk
+      // Uses TerritoryNotifier's existing chunk tracking to avoid duplicate work
+      if (player.getMountEntityId() != 0 && !hyperFactions.isAdminBypassEnabled(playerUuid)) {
+        TerritoryNotifier notifier = hyperFactions.getTerritoryNotifier();
+        var lastChunk = notifier.getLastChunk(playerUuid);
+        int chunkX = ChunkUtil.toChunkCoord(posX);
+        int chunkZ = ChunkUtil.toChunkCoord(posZ);
+
+        if (lastChunk != null && (lastChunk.chunkX() != chunkX || lastChunk.chunkZ() != chunkZ)) {
+          Zone zone = hyperFactions.getZoneManager().getZone(worldName, chunkX, chunkZ);
+          if (zone != null && !zone.getEffectiveFlag(ZoneFlags.MOUNT_ENTRY)) {
+            double[] prev = lastPositions.get(playerUuid);
+            if (prev != null) {
+              double[] safePos = findMountEntrySafePosition(worldName, posX, posZ, prev);
+              if (safePos != null) {
+                double safeY = findSafeY(player.getWorld(), safePos[0], safePos[1], prev[1]);
+                Vector3d backPos = new Vector3d(safePos[0], safeY, safePos[1]);
+                Vector3f backRot = new Vector3f(0, 0, 0);
+                player.getWorld().execute(() -> {
+                  if (ref.isValid()) {
+                    Teleport tp = Teleport.createForPlayer(backPos, backRot);
+                    ref.getStore().addComponent(ref, Teleport.getComponentType(), tp);
+                  }
+                });
+                ProtectionMessageDebounce.sendDenial(playerRef, "mount_entry",
+                    "You can't enter this zone while mounted.");
+                Logger.debugTerritory("Mount entry blocked for %s at zone '%s' (%s), safe=(%.1f, %.1f, %.1f)",
+                    playerUuid, zone.name(), zone.type().name(), safePos[0], safeY, safePos[1]);
+              }
+              // Don't update lastPositions — keep at safe location
+              return;
+            }
+          }
+        }
+      }
+
+      // Track position for mount entry rubber-banding
+      lastPositions.put(playerUuid, new double[]{posX, posY, posZ});
 
       // Pass position to TerritoryNotifier if notifications enabled
       if (ConfigManager.get().isTerritoryNotificationsEnabled()) {
@@ -199,11 +261,103 @@ public class TerritoryTickingSystem extends EntityTickingSystem<EntityStore> {
   }
 
   /**
-   * Clears all tracking data.
-   * Called on plugin shutdown.
+   * Finds a safe XZ position for mount entry rubber-banding.
+   * First tries pushing 2 blocks back toward previous position. If that lands in a
+   * zone with MOUNT_ENTRY=false, tries each cardinal direction (N, E, S, W) at 3 blocks.
+   *
+   * @return double[2] {safeX, safeZ} or null if no safe position found
    */
+  @Nullable
+  private double[] findMountEntrySafePosition(String worldName, double currentX, double currentZ, double[] prev) {
+    // Cardinal direction offsets: N(-Z), E(+X), S(+Z), W(-X)
+    double[][] cardinals = {{0, -3}, {3, 0}, {0, 3}, {-3, 0}};
+
+    // First try: push 2 blocks back toward previous position
+    double dx = prev[0] - currentX;
+    double dz = prev[2] - currentZ;
+    double dist = Math.sqrt(dx * dx + dz * dz);
+    double candidateX;
+    double candidateZ;
+    if (dist > 0.01) {
+      candidateX = prev[0] + (dx / dist) * 2.0;
+      candidateZ = prev[2] + (dz / dist) * 2.0;
+    } else {
+      candidateX = prev[0];
+      candidateZ = prev[2];
+    }
+
+    if (isMountEntryAllowed(worldName, candidateX, candidateZ)) {
+      return new double[]{candidateX, candidateZ};
+    }
+
+    // Fallback: try cardinal directions from previous position
+    for (double[] offset : cardinals) {
+      candidateX = prev[0] + offset[0];
+      candidateZ = prev[2] + offset[1];
+      if (isMountEntryAllowed(worldName, candidateX, candidateZ)) {
+        return new double[]{candidateX, candidateZ};
+      }
+    }
+
+    // Last resort: previous position itself (should always be safe since they were there)
+    return new double[]{prev[0], prev[2]};
+  }
+
+  /**
+   * Checks if mount entry is allowed at a position (no zone, or zone allows mount entry).
+   */
+  private boolean isMountEntryAllowed(String worldName, double x, double z) {
+    int cx = ChunkUtil.toChunkCoord(x);
+    int cz = ChunkUtil.toChunkCoord(z);
+    Zone zone = hyperFactions.getZoneManager().getZone(worldName, cx, cz);
+    return zone == null || zone.getEffectiveFlag(ZoneFlags.MOUNT_ENTRY);
+  }
+
+  /**
+   * Finds a safe Y coordinate at the given X/Z position.
+   * Scans down from the heightmap looking for solid ground with 2 empty blocks above.
+   * Same algorithm as StuckSubCommand.findSafeY.
+   */
+  private double findSafeY(World world, double x, double z, double fallbackY) {
+    int blockX = com.hypixel.hytale.math.util.MathUtil.floor(x);
+    int blockZ = com.hypixel.hytale.math.util.MathUtil.floor(z);
+
+    long chunkIndex = com.hypixel.hytale.math.util.ChunkUtil.indexChunkFromBlock(x, z);
+    WorldChunk chunk = world.getNonTickingChunk(chunkIndex);
+    if (chunk == null) {
+      return fallbackY;
+    }
+
+    int topY = chunk.getHeight(blockX, blockZ);
+    for (int y = topY; y > 0; y--) {
+      BlockType blockBelow = world.getBlockType(blockX, y, blockZ);
+      BlockType blockAt = world.getBlockType(blockX, y + 1, blockZ);
+      BlockType blockAbove = world.getBlockType(blockX, y + 2, blockZ);
+
+      boolean groundSolid = blockBelow != null && blockBelow.getMaterial() == BlockMaterial.Solid;
+      boolean feetClear = blockAt == null || blockAt.getMaterial() == BlockMaterial.Empty;
+      boolean headClear = blockAbove == null || blockAbove.getMaterial() == BlockMaterial.Empty;
+
+      if (groundSolid && feetClear && headClear) {
+        return y + 1;
+      }
+    }
+    return topY + 1;
+  }
+
+  /**
+   * Cleans up tracking data for a disconnected player.
+   *
+   * @param playerUuid the player's UUID
+   */
+  public void onPlayerDisconnect(@NotNull UUID playerUuid) {
+    lastPositions.remove(playerUuid);
+    pendingVerification.remove(playerUuid);
+  }
+
   public void shutdown() {
-    // No local state to clear - TerritoryNotifier handles player tracking
+    lastPositions.clear();
+    pendingVerification.clear();
   }
 
   /** Returns the query. */

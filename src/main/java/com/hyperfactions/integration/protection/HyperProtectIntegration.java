@@ -126,8 +126,36 @@ public final class HyperProtectIntegration {
         || lower.equals("goat")
         || lower.equals("camel")
         || lower.contains("_tame")
+        || lower.contains("tamed_")
         || lower.contains("tameable")
         || lower.contains("pet_");
+  }
+
+  /**
+   * Determines if an NPC role represents a rideable/mountable creature.
+   * These use the MOUNT interaction type instead of NPC_TAME or NPC_INTERACT.
+   */
+  private static boolean isMountableCreatureRole(String roleName) {
+    String lower = roleName.toLowerCase();
+    return lower.startsWith("tamed_horse")
+        || lower.startsWith("tamed_donkey")
+        || lower.startsWith("tamed_camel")
+        || lower.contains("mount")
+        || lower.contains("rideable");
+  }
+
+  /**
+   * Checks if a block ID indicates a light/lantern/campfire/torch block.
+   * These blocks use the LIGHT_USE zone flag instead of generic BLOCK_INTERACT.
+   */
+  private static boolean isLightBlock(String blockId) {
+    if (blockId == null) {
+      return false;
+    }
+    String lower = blockId.toLowerCase();
+    return lower.contains("lantern") || lower.contains("campfire")
+        || lower.contains("torch") || lower.contains("candle")
+        || lower.contains("lamp");
   }
 
   // Bridge slot indices (must match ProtectionBridge constants in HyperProtect-Mixin)
@@ -959,13 +987,18 @@ public final class HyperProtectIntegration {
         } else if (interaction.equals("UseNPCInteraction") || interaction.equals("ContextualUseNPCInteraction")) {
           // Consume NPC role (clears system property to prevent stale context)
           npcRole = consumeNpcRole();
-          if (npcRole != null && isTameableCreatureRole(npcRole)) {
+          if (npcRole != null && isMountableCreatureRole(npcRole)) {
+            // Tamed rideable creatures (horses, donkeys, camels) → MOUNT (uses mount_use flag)
+            interactionType = ProtectionChecker.InteractionType.MOUNT;
+          } else if (npcRole != null && isTameableCreatureRole(npcRole)) {
             // Known tameable creatures (animals, pets) → NPC_TAME (restricted)
             interactionType = ProtectionChecker.InteractionType.NPC_TAME;
           } else {
             // Service NPCs, 3rd-party mod NPCs, and unknown roles → NPC_INTERACT (permissive)
             interactionType = ProtectionChecker.InteractionType.NPC_INTERACT;
           }
+        } else if (isLightBlock(blockId)) {
+          interactionType = ProtectionChecker.InteractionType.LIGHT;
         } else {
           interactionType = ProtectionChecker.InteractionType.INTERACT;
         }

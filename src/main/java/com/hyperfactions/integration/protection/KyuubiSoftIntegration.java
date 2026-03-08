@@ -171,7 +171,7 @@ public class KyuubiSoftIntegration {
           playerUuid, worldName, pos.getX(), pos.getY(), pos.getZ(), blocked);
 
       if (blocked) {
-        String denyMsg = checker.getDenialMessage(result);
+        String denyMsg = checker.getDenialMessage(result, ProtectionChecker.InteractionType.NPC_INTERACT);
         ProtectionMessageDebounce.sendIfNotOnCooldown(player, "citizen_interact",
             Message.raw(denyMsg).color("#FF5555"));
         return true; // Block the interaction

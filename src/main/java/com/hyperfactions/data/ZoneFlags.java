@@ -159,6 +159,9 @@ public final class ZoneFlags {
    */
   public static final String MOUNT_USE = "mount_use";
 
+  /** Whether players can toggle lights/lanterns/campfires. Uses UseBlockEvent with light state. */
+  public static final String LIGHT_USE = "light_use";
+
   // ==========================================================================
   // ENTITY INTERACTION FLAGS (5) - NPC and capture crate interactions
   // ==========================================================================
@@ -354,7 +357,7 @@ public final class ZoneFlags {
     BLOCK_PLACE,
     HAMMER_USE,
     BUILDER_TOOLS_USE,
-    // Interaction (12)
+    // Interaction (13)
     BLOCK_INTERACT,
     DOOR_USE,
     CONTAINER_USE,
@@ -362,6 +365,7 @@ public final class ZoneFlags {
     PROCESSING_USE,
     SEAT_USE,
     MOUNT_USE,
+    LIGHT_USE,
     NPC_USE,
     NPC_TAME,
     NPC_INTERACT,
@@ -402,7 +406,7 @@ public final class ZoneFlags {
 
   public static final String[] BUILDING_FLAGS = { BUILD_ALLOWED, BLOCK_PLACE, HAMMER_USE, BUILDER_TOOLS_USE };
 
-  public static final String[] INTERACTION_FLAGS = { BLOCK_INTERACT, DOOR_USE, CONTAINER_USE, BENCH_USE, PROCESSING_USE, SEAT_USE, MOUNT_USE, NPC_USE, NPC_TAME, NPC_INTERACT, CRATE_PICKUP, CRATE_PLACE };
+  public static final String[] INTERACTION_FLAGS = { BLOCK_INTERACT, DOOR_USE, CONTAINER_USE, BENCH_USE, PROCESSING_USE, SEAT_USE, MOUNT_USE, LIGHT_USE, NPC_USE, NPC_TAME, NPC_INTERACT, CRATE_PICKUP, CRATE_PLACE };
 
   public static final String[] TRANSPORT_FLAGS = { TELEPORTER_USE, PORTAL_USE, MOUNT_ENTRY };
 
@@ -503,8 +507,9 @@ public final class ZoneFlags {
       case PROCESSING_USE -> false;
       case SEAT_USE -> true;
       case MOUNT_USE -> false;              // No mounting in safe zones
+      case LIGHT_USE -> false;              // No light toggling in safe zones
       // Entity Interaction: NPC parent off, taming/crates blocked, but NPC shops allowed
-      case NPC_USE -> false;                // NPC interactions disabled in safe zones
+      case NPC_USE -> true;                 // NPC parent enabled (children control specifics)
       case CRATE_PICKUP -> false;           // No crate pickup (mixin)
       case CRATE_PLACE -> false;            // No crate placement (mixin)
       case NPC_TAME -> false;               // No NPC taming (mixin)
@@ -581,6 +586,7 @@ public final class ZoneFlags {
       case PROCESSING_USE -> false;
       case SEAT_USE -> true;
       case MOUNT_USE -> false;              // No mounting in war zones
+      case LIGHT_USE -> true;               // Light toggling allowed in war zones
       // Entity Interaction: All allowed in war zones
       case NPC_USE -> true;                 // NPC interactions allowed in war zones
       case CRATE_PICKUP -> true;            // Crate pickup allowed
@@ -673,6 +679,7 @@ public final class ZoneFlags {
       case PROCESSING_USE -> "Processing Use";
       case SEAT_USE -> "Seat Use";
       case MOUNT_USE -> "Mount Use";
+      case LIGHT_USE -> "Light Use";
       case NPC_USE -> "NPC Interaction";
       case CRATE_PICKUP -> "Crate Pickup";
       case CRATE_PLACE -> "Crate Place";
@@ -732,6 +739,7 @@ public final class ZoneFlags {
       case PROCESSING_USE -> "Players can use furnaces and smelters";
       case SEAT_USE -> "Players can sit on seats and chairs";
       case MOUNT_USE -> "Players can mount rideable entities (requires mixin)";
+      case LIGHT_USE -> "Players can toggle lights, lanterns, and campfires";
       case NPC_USE -> "Players can interact with NPCs (parent)";
       case CRATE_PICKUP -> "Pick up animals with capture crate (requires mixin)";
       case CRATE_PLACE -> "Release animals from capture crate (requires mixin)";
@@ -774,7 +782,7 @@ public final class ZoneFlags {
       // Building children have BUILD_ALLOWED as parent
       case BLOCK_PLACE, HAMMER_USE, BUILDER_TOOLS_USE -> BUILD_ALLOWED;
       // Interaction flags have BLOCK_INTERACT as parent
-      case DOOR_USE, CONTAINER_USE, BENCH_USE, PROCESSING_USE, SEAT_USE, MOUNT_USE -> BLOCK_INTERACT;
+      case DOOR_USE, CONTAINER_USE, BENCH_USE, PROCESSING_USE, SEAT_USE, MOUNT_USE, LIGHT_USE -> BLOCK_INTERACT;
       // NPC flags have NPC_USE as parent
       case NPC_TAME, NPC_INTERACT -> NPC_USE;
       // Mob group flags have MOB_SPAWNING as parent
@@ -807,7 +815,7 @@ public final class ZoneFlags {
       case PVP_ENABLED -> new String[] { FRIENDLY_FIRE };
       case FRIENDLY_FIRE -> new String[] { FRIENDLY_FIRE_FACTION, FRIENDLY_FIRE_ALLY };
       case BUILD_ALLOWED -> new String[] { BLOCK_PLACE, HAMMER_USE, BUILDER_TOOLS_USE };
-      case BLOCK_INTERACT -> new String[] { DOOR_USE, CONTAINER_USE, BENCH_USE, PROCESSING_USE, SEAT_USE, MOUNT_USE };
+      case BLOCK_INTERACT -> new String[] { DOOR_USE, CONTAINER_USE, BENCH_USE, PROCESSING_USE, SEAT_USE, MOUNT_USE, LIGHT_USE };
       case NPC_USE -> new String[] { NPC_TAME, NPC_INTERACT };
       case MOB_SPAWNING -> new String[] { HOSTILE_MOB_SPAWNING, PASSIVE_MOB_SPAWNING, NEUTRAL_MOB_SPAWNING, NPC_SPAWNING };
       default -> new String[0];

@@ -122,18 +122,24 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
       }
 
       // 2. For non-crop blocks, check zone flags based on block state
-      boolean zoneAllows = zoneProtection.isBlockInteractionAllowed(stateId, worldName, pos.getX(), pos.getZ());
+      //    Some blocks (lanterns, campfires) have null stateId — fall back to blockId detection
+      String effectiveStateId = stateId;
+      if (effectiveStateId == null && isLightBlock(blockId)) {
+        effectiveStateId = "light";  // Synthetic state to trigger LIGHT detection
+      }
+      boolean zoneAllows = zoneProtection.isBlockInteractionAllowed(effectiveStateId, worldName, pos.getX(), pos.getZ());
 
       if (!zoneAllows) {
         event.setCancelled(true);
         ZoneInteractionProtection.InteractionBlockType detectedType =
-          zoneProtection.detectBlockTypeFromState(stateId != null ? stateId : "");
+          zoneProtection.detectBlockTypeFromState(effectiveStateId != null ? effectiveStateId : "");
         String flagName = switch (detectedType) {
           case DOOR -> "door use";
           case CONTAINER -> "container use";
           case BENCH -> "bench use";
           case PROCESSING -> "processing use";
           case SEAT -> "seat use";
+          case LIGHT -> "light use";
           case OTHER -> "block interaction";
         };
         ProtectionMessageDebounce.sendDenial(player, "zone_use", "You can't use " + flagName + " in this zone.");
@@ -143,13 +149,14 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
       // 2. If zone allows (or not in zone), check faction permissions
       // Map block type to specific InteractionType for fine-grained faction permission checks
       ZoneInteractionProtection.InteractionBlockType detectedBlockType =
-        zoneProtection.detectBlockTypeFromState(stateId != null ? stateId : "");
+        zoneProtection.detectBlockTypeFromState(effectiveStateId != null ? effectiveStateId : "");
       ProtectionChecker.InteractionType interactionType = switch (detectedBlockType) {
         case DOOR -> ProtectionChecker.InteractionType.DOOR;
         case CONTAINER -> ProtectionChecker.InteractionType.CONTAINER;
         case BENCH -> ProtectionChecker.InteractionType.BENCH;
         case PROCESSING -> ProtectionChecker.InteractionType.PROCESSING;
         case SEAT -> ProtectionChecker.InteractionType.SEAT;
+        case LIGHT -> ProtectionChecker.InteractionType.LIGHT;
         case OTHER -> ProtectionChecker.InteractionType.INTERACT;
       };
 
@@ -178,6 +185,20 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
    * Checks if a block ID indicates a gravestone block from GravestonePlugin.
    * Matches both standard and vanilla gravestone block IDs.
    */
+  /**
+   * Checks if a block ID indicates a light/lantern/campfire/torch block.
+   * Used as fallback when stateId is null (these blocks lack a state type).
+   */
+  private boolean isLightBlock(String blockId) {
+    if (blockId == null) {
+      return false;
+    }
+    String lower = blockId.toLowerCase();
+    return lower.contains("lantern") || lower.contains("campfire")
+      || lower.contains("torch") || lower.contains("candle")
+      || lower.contains("lamp");
+  }
+
   private boolean isGravestoneBlock(String blockId) {
     if (blockId == null) {
       return false;

@@ -87,6 +87,13 @@ public class ZoneInteractionProtection {
   }
 
   /**
+   * Checks if light/lantern/campfire use is allowed at a location.
+   */
+  public boolean isLightUseAllowed(@NotNull String worldName, double x, double z) {
+    return isInteractionAllowed(worldName, x, z, ZoneFlags.LIGHT_USE);
+  }
+
+  /**
    * Checks if general block interaction is allowed at a location.
    * Used as a fallback for unrecognized block types.
    */
@@ -140,6 +147,7 @@ public class ZoneInteractionProtection {
       case BENCH -> isBenchUseAllowed(worldName, x, z);
       case PROCESSING -> isProcessingUseAllowed(worldName, x, z);
       case SEAT -> isSeatUseAllowed(worldName, x, z);
+      case LIGHT -> isLightUseAllowed(worldName, x, z);
       case OTHER -> isBlockInteractAllowed(worldName, x, z);
     };
   }
@@ -184,6 +192,12 @@ public class ZoneInteractionProtection {
       return InteractionBlockType.SEAT;
     }
 
+    // Light state (lanterns, campfires, torches, candles)
+    if (lower.contains("light") || lower.contains("lantern") || lower.contains("campfire")
+        || lower.contains("torch") || lower.contains("candle") || lower.contains("lamp")) {
+      return InteractionBlockType.LIGHT;
+    }
+
     return InteractionBlockType.OTHER;
   }
 
@@ -206,6 +220,7 @@ public class ZoneInteractionProtection {
     BENCH,
     PROCESSING,
     SEAT,
+    LIGHT,
     OTHER
   }
 }

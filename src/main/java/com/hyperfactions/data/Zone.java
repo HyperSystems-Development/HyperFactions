@@ -326,6 +326,13 @@ public record Zone(
    * @return the effective flag value
    */
   public boolean getEffectiveFlag(@NotNull String flagName) {
+    // Parent-child enforcement: if this flag has a parent, the parent must be ON
+    // for this child to be considered. If parent is OFF, child is OFF regardless.
+    String parent = ZoneFlags.getParentFlag(flagName);
+    if (parent != null && !getEffectiveFlag(parent)) {
+      return false;
+    }
+
     // Check if explicitly set
     if (flags != null && flags.containsKey(flagName)) {
       return flags.get(flagName);

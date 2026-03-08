@@ -45,6 +45,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - NPC role classification via `isTameableCreatureRole()` blocklist (fail-open) classifies NPC roles as tameable vs interactive based on role name patterns
 - `ALLOWED_SAFEZONE` result type — `ProtectionChecker` now distinguishes "allowed because SafeZone defaults" from "allowed because wilderness"
 
+**Light Use Zone Flag**
+- New `LIGHT_USE` zone flag under `BLOCK_INTERACT` parent — controls toggling lanterns, campfires, torches, candles, and lamps
+- Detection via both block state ID and block ID fallback (lanterns/campfires have null stateId)
+- SafeZone default: false (protected), WarZone default: true (allowed)
+- Admin GUI: new flag slot (#Flag24) in Interaction category, all subsequent flags renumbered
+
+**Mount Entry Zone Enforcement**
+- New runtime enforcement for `MOUNT_ENTRY` flag — mounted players are blocked from entering zones with mount entry disabled
+- Safe teleport system: pushes player 2 blocks back from zone boundary with safe ground detection (heightmap scan)
+- Zone-aware safe position: if push-back lands in another protected zone, tries cardinal directions (N/E/S/W) before falling back to previous position
+- Mounted teleport blocking: faction teleports (/f home, /f stuck, etc.) are denied if destination zone blocks mount entry
+- Admin bypass: players with admin bypass enabled skip all mount entry checks
+- Player disconnect cleanup for tracking data
+
 **KyuubiSoft Core Integration**
 - Reflection-based `CitizenDialogInterceptor` registration for citizen zone protection, with fail-open design and auto-detection
 - Admin commands: `/f admin integration kyuubisoft` (aliases: `kyuubi`, `ks`, `citizens`)
@@ -64,6 +78,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Mount use flag not blocking in SafeZones**: `UseNPCInteraction` with tamed horses/donkeys/camels was classified as `NPC_INTERACT` instead of `MOUNT` — players could mount in SafeZones. Added `isMountableCreatureRole()` check that runs before tameable check, routing rideable creatures to `MOUNT` interaction type
+- **Light use flag not blocking**: Lanterns, campfires, and torches have null `stateId` — the zone flag system only checked stateId, falling through to generic `BLOCK_INTERACT`. Both mixin and ECS paths now fall back to `blockId` pattern matching (contains "lantern", "campfire", "torch", etc.) when stateId is null
+- **Admin bypass not working for mount flags**: Mount entry enforcement and mount use protection did not check `isAdminBypassEnabled()` — admins were blocked like regular players
 - **Chunk map GUI performance**: Reduced terrain map generation time by using bulk pixel writes (row-at-a-time instead of per-pixel `setRGB`) and faster PNG compression. Added timing debug logs for future diagnostics
 - **Zero power on faction creation**: New players who joined during server startup could get 0 power due to a race condition where `loadAll()` wiped in-flight defaults. Now merges loaded data instead of clearing the cache, and persists defaults immediately on player join
 - **Gravestone enemy loot in own territory**: `enemiesCanLootInOwnTerritory` config option was declared but never checked — enemies could always loot gravestones in the territory owner's claim regardless of the setting. Now properly checks faction relation between the accessor and gravestone owner when in own territory
@@ -73,8 +90,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Zone flag category consolidation — Entity Interaction category merged into Interaction category (12 flags total: block_interact + 5 children, NPC_USE + 2 children, crate_pickup, crate_place)
-- Zone flags reindexed in admin UI — all 41 core flags (0-40) with updated category grouping
+- Zone flag category consolidation — Entity Interaction category merged into Interaction category (13 flags total: block_interact + 6 children, NPC_USE + 2 children, mount_use, crate_pickup, crate_place)
+- Zone flags reindexed in admin UI — all 42 core flags (0-41) with updated category grouping
 - Fixed "Combat (6)" comment to "Combat (7)" in `ZoneFlags.ALL_FLAGS`
 - Fixed missing `BOTH` case in `AdminIntegrationHandler.handleIntegrations()` MixinProvider switch
 

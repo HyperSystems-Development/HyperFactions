@@ -691,14 +691,15 @@ $C.@PageOverlay {
               }
             }
 
-            // Flag 24: npc_use (parent)
+            // Flag 24: light_use (child)
             Group {
               Anchor: (Height: 24);
               LayoutMode: Left;
+              Padding: (Left: 12, Right: 0, Top: 0, Bottom: 0);
               Label #Flag24Name {
-                Text: "NPC Interaction";
+                Text: "Light Use";
                 Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
-                Anchor: (Width: 110);
+                Anchor: (Width: 98);
               }
               Label { FlexWeight: 1; }
               Label #Flag24Default {
@@ -707,20 +708,19 @@ $C.@PageOverlay {
                 Anchor: (Width: 55);
               }
               $C.@CheckBoxWithLabel #Flag24Toggle {
-                @Text = ""; @Checked = false;
+                @Text = ""; @Checked = true;
                 Anchor: (Height: 20, Width: 44);
               }
             }
 
-            // Flag 25: npc_tame (child of npc_use, mixin: use)
+            // Flag 25: npc_use (parent)
             Group {
               Anchor: (Height: 24);
               LayoutMode: Left;
-              Padding: (Left: 12, Right: 0, Top: 0, Bottom: 0);
               Label #Flag25Name {
-                Text: "NPC Tame";
+                Text: "NPC Interaction";
                 Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
-                Anchor: (Width: 98);
+                Anchor: (Width: 110);
               }
               Label { FlexWeight: 1; }
               Label #Flag25Default {
@@ -734,13 +734,13 @@ $C.@PageOverlay {
               }
             }
 
-            // Flag 26: npc_interact (child of npc_use)
+            // Flag 26: npc_tame (child of npc_use, mixin: use)
             Group {
               Anchor: (Height: 24);
               LayoutMode: Left;
               Padding: (Left: 12, Right: 0, Top: 0, Bottom: 0);
               Label #Flag26Name {
-                Text: "NPC Interact";
+                Text: "NPC Tame";
                 Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
                 Anchor: (Width: 98);
               }
@@ -756,14 +756,15 @@ $C.@PageOverlay {
               }
             }
 
-            // Flag 27: crate_pickup (mixin: use)
+            // Flag 27: npc_interact (child of npc_use)
             Group {
               Anchor: (Height: 24);
               LayoutMode: Left;
+              Padding: (Left: 12, Right: 0, Top: 0, Bottom: 0);
               Label #Flag27Name {
-                Text: "Crate Pickup";
+                Text: "NPC Interact";
                 Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
-                Anchor: (Width: 110);
+                Anchor: (Width: 98);
               }
               Label { FlexWeight: 1; }
               Label #Flag27Default {
@@ -777,12 +778,12 @@ $C.@PageOverlay {
               }
             }
 
-            // Flag 28: crate_place (mixin: use)
+            // Flag 28: crate_pickup (mixin: use)
             Group {
               Anchor: (Height: 24);
               LayoutMode: Left;
               Label #Flag28Name {
-                Text: "Crate Place";
+                Text: "Crate Pickup";
                 Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
                 Anchor: (Width: 110);
               }
@@ -793,6 +794,27 @@ $C.@PageOverlay {
                 Anchor: (Width: 55);
               }
               $C.@CheckBoxWithLabel #Flag28Toggle {
+                @Text = ""; @Checked = false;
+                Anchor: (Height: 20, Width: 44);
+              }
+            }
+
+            // Flag 29: crate_place (mixin: use)
+            Group {
+              Anchor: (Height: 24);
+              LayoutMode: Left;
+              Label #Flag29Name {
+                Text: "Crate Place";
+                Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+                Anchor: (Width: 110);
+              }
+              Label { FlexWeight: 1; }
+              Label #Flag29Default {
+                Text: "(default)";
+                Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
+                Anchor: (Width: 55);
+              }
+              $C.@CheckBoxWithLabel #Flag29Toggle {
                 @Text = ""; @Checked = false;
                 Anchor: (Height: 20, Width: 44);
               }
@@ -821,33 +843,12 @@ $C.@PageOverlay {
               }
             }
 
-            // Flag 29: teleporter_use (mixin: teleporter)
-            Group {
-              Anchor: (Height: 24);
-              LayoutMode: Left;
-              Label #Flag29Name {
-                Text: "Teleporter Use";
-                Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
-                Anchor: (Width: 110);
-              }
-              Label { FlexWeight: 1; }
-              Label #Flag29Default {
-                Text: "(default)";
-                Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
-                Anchor: (Width: 55);
-              }
-              $C.@CheckBoxWithLabel #Flag29Toggle {
-                @Text = ""; @Checked = false;
-                Anchor: (Height: 20, Width: 44);
-              }
-            }
-
-            // Flag 30: portal_use (mixin: portal)
+            // Flag 30: teleporter_use (mixin: teleporter)
             Group {
               Anchor: (Height: 24);
               LayoutMode: Left;
               Label #Flag30Name {
-                Text: "Portal Use";
+                Text: "Teleporter Use";
                 Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
                 Anchor: (Width: 110);
               }
@@ -863,12 +864,12 @@ $C.@PageOverlay {
               }
             }
 
-            // Flag 31: mount_entry
+            // Flag 31: portal_use (mixin: portal)
             Group {
               Anchor: (Height: 24);
               LayoutMode: Left;
               Label #Flag31Name {
-                Text: "Mount Entry";
+                Text: "Portal Use";
                 Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
                 Anchor: (Width: 110);
               }
@@ -879,6 +880,27 @@ $C.@PageOverlay {
                 Anchor: (Width: 55);
               }
               $C.@CheckBoxWithLabel #Flag31Toggle {
+                @Text = ""; @Checked = false;
+                Anchor: (Height: 20, Width: 44);
+              }
+            }
+
+            // Flag 32: mount_entry
+            Group {
+              Anchor: (Height: 24);
+              LayoutMode: Left;
+              Label #Flag32Name {
+                Text: "Mount Entry";
+                Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+                Anchor: (Width: 110);
+              }
+              Label { FlexWeight: 1; }
+              Label #Flag32Default {
+                Text: "(default)";
+                Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
+                Anchor: (Width: 55);
+              }
+              $C.@CheckBoxWithLabel #Flag32Toggle {
                 @Text = ""; @Checked = false;
                 Anchor: (Height: 20, Width: 44);
               }
@@ -900,33 +922,12 @@ $C.@PageOverlay {
               }
             }
 
-            // Flag 32: item_drop
-            Group {
-              Anchor: (Height: 24);
-              LayoutMode: Left;
-              Label #Flag32Name {
-                Text: "Item Drop";
-                Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
-                Anchor: (Width: 110);
-              }
-              Label { FlexWeight: 1; }
-              Label #Flag32Default {
-                Text: "(default)";
-                Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
-                Anchor: (Width: 55);
-              }
-              $C.@CheckBoxWithLabel #Flag32Toggle {
-                @Text = ""; @Checked = true;
-                Anchor: (Height: 20, Width: 44);
-              }
-            }
-
-            // Flag 33: item_pickup (auto)
+            // Flag 33: item_drop
             Group {
               Anchor: (Height: 24);
               LayoutMode: Left;
               Label #Flag33Name {
-                Text: "Auto Pickup";
+                Text: "Item Drop";
                 Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
                 Anchor: (Width: 110);
               }
@@ -942,12 +943,12 @@ $C.@PageOverlay {
               }
             }
 
-            // Flag 34: item_pickup_manual (F-key, mixin: pickup)
+            // Flag 34: item_pickup (auto)
             Group {
               Anchor: (Height: 24);
               LayoutMode: Left;
               Label #Flag34Name {
-                Text: "F-Key Pickup";
+                Text: "Auto Pickup";
                 Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
                 Anchor: (Width: 110);
               }
@@ -963,12 +964,12 @@ $C.@PageOverlay {
               }
             }
 
-            // Flag 35: invincible_items (mixin: durability)
+            // Flag 35: item_pickup_manual (F-key, mixin: pickup)
             Group {
               Anchor: (Height: 24);
               LayoutMode: Left;
               Label #Flag35Name {
-                Text: "Invincible Items";
+                Text: "F-Key Pickup";
                 Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
                 Anchor: (Width: 110);
               }
@@ -979,6 +980,27 @@ $C.@PageOverlay {
                 Anchor: (Width: 55);
               }
               $C.@CheckBoxWithLabel #Flag35Toggle {
+                @Text = ""; @Checked = true;
+                Anchor: (Height: 20, Width: 44);
+              }
+            }
+
+            // Flag 36: invincible_items (mixin: durability)
+            Group {
+              Anchor: (Height: 24);
+              LayoutMode: Left;
+              Label #Flag36Name {
+                Text: "Invincible Items";
+                Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+                Anchor: (Width: 110);
+              }
+              Label { FlexWeight: 1; }
+              Label #Flag36Default {
+                Text: "(default)";
+                Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
+                Anchor: (Width: 55);
+              }
+              $C.@CheckBoxWithLabel #Flag36Toggle {
                 @Text = ""; @Checked = false;
                 Anchor: (Height: 20, Width: 44);
               }
@@ -1007,36 +1029,14 @@ $C.@PageOverlay {
               }
             }
 
-            // Flag 36: mob_spawning (parent, mixin: spawn)
+            // Flag 37: mob_spawning (parent, mixin: spawn)
             Group {
               Anchor: (Height: 24);
               LayoutMode: Left;
-              Label #Flag36Name {
+              Label #Flag37Name {
                 Text: "Mob Spawning";
                 Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
                 Anchor: (Width: 110);
-              }
-              Label { FlexWeight: 1; }
-              Label #Flag36Default {
-                Text: "(default)";
-                Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
-                Anchor: (Width: 55);
-              }
-              $C.@CheckBoxWithLabel #Flag36Toggle {
-                @Text = ""; @Checked = true;
-                Anchor: (Height: 20, Width: 44);
-              }
-            }
-
-            // Flag 37: hostile_mob_spawning (child)
-            Group {
-              Anchor: (Height: 24);
-              LayoutMode: Left;
-              Padding: (Left: 12, Right: 0, Top: 0, Bottom: 0);
-              Label #Flag37Name {
-                Text: "Hostile Mobs";
-                Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
-                Anchor: (Width: 98);
               }
               Label { FlexWeight: 1; }
               Label #Flag37Default {
@@ -1050,13 +1050,13 @@ $C.@PageOverlay {
               }
             }
 
-            // Flag 38: passive_mob_spawning (child)
+            // Flag 38: hostile_mob_spawning (child)
             Group {
               Anchor: (Height: 24);
               LayoutMode: Left;
               Padding: (Left: 12, Right: 0, Top: 0, Bottom: 0);
               Label #Flag38Name {
-                Text: "Passive Mobs";
+                Text: "Hostile Mobs";
                 Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
                 Anchor: (Width: 98);
               }
@@ -1072,13 +1072,13 @@ $C.@PageOverlay {
               }
             }
 
-            // Flag 39: neutral_mob_spawning (child)
+            // Flag 39: passive_mob_spawning (child)
             Group {
               Anchor: (Height: 24);
               LayoutMode: Left;
               Padding: (Left: 12, Right: 0, Top: 0, Bottom: 0);
               Label #Flag39Name {
-                Text: "Neutral Mobs";
+                Text: "Passive Mobs";
                 Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
                 Anchor: (Width: 98);
               }
@@ -1094,13 +1094,13 @@ $C.@PageOverlay {
               }
             }
 
-            // Flag 40: npc_spawning (child, mixin: spawn)
+            // Flag 40: neutral_mob_spawning (child)
             Group {
               Anchor: (Height: 24);
               LayoutMode: Left;
               Padding: (Left: 12, Right: 0, Top: 0, Bottom: 0);
               Label #Flag40Name {
-                Text: "NPC Spawning";
+                Text: "Neutral Mobs";
                 Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
                 Anchor: (Width: 98);
               }
@@ -1111,6 +1111,28 @@ $C.@PageOverlay {
                 Anchor: (Width: 55);
               }
               $C.@CheckBoxWithLabel #Flag40Toggle {
+                @Text = ""; @Checked = true;
+                Anchor: (Height: 20, Width: 44);
+              }
+            }
+
+            // Flag 41: npc_spawning (child, mixin: spawn)
+            Group {
+              Anchor: (Height: 24);
+              LayoutMode: Left;
+              Padding: (Left: 12, Right: 0, Top: 0, Bottom: 0);
+              Label #Flag41Name {
+                Text: "NPC Spawning";
+                Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+                Anchor: (Width: 98);
+              }
+              Label { FlexWeight: 1; }
+              Label #Flag41Default {
+                Text: "(default)";
+                Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
+                Anchor: (Width: 55);
+              }
+              $C.@CheckBoxWithLabel #Flag41Toggle {
                 @Text = ""; @Checked = true;
                 Anchor: (Height: 20, Width: 44);
               }
