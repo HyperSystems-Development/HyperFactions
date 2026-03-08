@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Auto-migrate updater URLs from old `HyperSystemsDev` GitHub org to `HyperSystems-Development` — affects both HyperFactions and HyperProtect-Mixin update check URLs
+- Runtime auto-migration in ServerConfig and CoreConfig catches old URLs on every config load (exact-match only, custom URLs left untouched)
+- Formal `ConfigV6ToV7Migration` runs once via migration framework, bumps configVersion from 6 to 7
+
 ### Added
 
 **Sentry Error Tracking Integration**

@@ -137,6 +137,10 @@ public class CoreConfig extends ConfigFile {
 
   private static final String OLD_ZENITH_URL = "https://api.github.com/repos/ZenithDevHQ/HyperFactions/releases/latest";
 
+  private static final String OLD_HYPERSYSTEMSDEV_URL = "https://api.github.com/repos/HyperSystemsDev/HyperFactions/releases/latest";
+
+  private static final String OLD_HYPERSYSTEMSDEV_HP_URL = "https://api.github.com/repos/HyperSystemsDev/HyperProtect-Mixin/releases/latest";
+
   private String updateCheckUrl = "https://api.github.com/repos/HyperSystems-Development/HyperFactions/releases/latest";
 
   private String releaseChannel = "stable";
@@ -297,6 +301,10 @@ public class CoreConfig extends ConfigFile {
         updateCheckUrl = "https://api.github.com/repos/HyperSystems-Development/HyperFactions/releases/latest";
         needsSave = true;
       }
+      if (OLD_HYPERSYSTEMSDEV_URL.equals(updateCheckUrl)) {
+        updateCheckUrl = "https://api.github.com/repos/HyperSystems-Development/HyperFactions/releases/latest";
+        needsSave = true;
+      }
       releaseChannel = getString(updates, "releaseChannel", releaseChannel);
       // Validate release channel
       if (!releaseChannel.equals("stable") && !releaseChannel.equals("prerelease")) {
@@ -309,6 +317,10 @@ public class CoreConfig extends ConfigFile {
         hyperProtectAutoDownload = getBool(hp, "autoDownload", hyperProtectAutoDownload);
         hyperProtectAutoUpdate = getBool(hp, "autoUpdate", hyperProtectAutoUpdate);
         hyperProtectUpdateUrl = getString(hp, "url", hyperProtectUpdateUrl);
+        if (OLD_HYPERSYSTEMSDEV_HP_URL.equals(hyperProtectUpdateUrl)) {
+          hyperProtectUpdateUrl = "https://api.github.com/repos/HyperSystems-Development/HyperProtect-Mixin/releases/latest";
+          needsSave = true;
+        }
       }
     }
 

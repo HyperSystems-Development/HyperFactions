@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 public class ServerConfig extends ModuleConfig {
 
   // Config version (for migration tracking — lives here after V5→V6)
-  private int configVersion = 6;
+  private int configVersion = 7;
 
   // Teleport settings
   private int warmupSeconds = 5;
@@ -63,6 +63,10 @@ public class ServerConfig extends ModuleConfig {
 
   private static final String OLD_ZENITH_URL = "https://api.github.com/repos/ZenithDevHQ/HyperFactions/releases/latest";
 
+  private static final String OLD_HYPERSYSTEMSDEV_URL = "https://api.github.com/repos/HyperSystemsDev/HyperFactions/releases/latest";
+
+  private static final String OLD_HYPERSYSTEMSDEV_HP_URL = "https://api.github.com/repos/HyperSystemsDev/HyperProtect-Mixin/releases/latest";
+
   private String updateCheckUrl = "https://api.github.com/repos/HyperSystems-Development/HyperFactions/releases/latest";
 
   private String releaseChannel = "stable";
@@ -99,7 +103,7 @@ public class ServerConfig extends ModuleConfig {
   @Override
   protected void createDefaults() {
     enabled = true;
-    configVersion = 6;
+    configVersion = 7;
   }
 
   /** Loads module settings. */
@@ -183,6 +187,10 @@ public class ServerConfig extends ModuleConfig {
         updateCheckUrl = "https://api.github.com/repos/HyperSystems-Development/HyperFactions/releases/latest";
         needsSave = true;
       }
+      if (OLD_HYPERSYSTEMSDEV_URL.equals(updateCheckUrl)) {
+        updateCheckUrl = "https://api.github.com/repos/HyperSystems-Development/HyperFactions/releases/latest";
+        needsSave = true;
+      }
       releaseChannel = getString(updates, "releaseChannel", releaseChannel);
       if (!releaseChannel.equals("stable") && !releaseChannel.equals("prerelease")) {
         releaseChannel = "stable";
@@ -192,6 +200,10 @@ public class ServerConfig extends ModuleConfig {
         hyperProtectAutoDownload = getBool(hp, "autoDownload", hyperProtectAutoDownload);
         hyperProtectAutoUpdate = getBool(hp, "autoUpdate", hyperProtectAutoUpdate);
         hyperProtectUpdateUrl = getString(hp, "url", hyperProtectUpdateUrl);
+        if (OLD_HYPERSYSTEMSDEV_HP_URL.equals(hyperProtectUpdateUrl)) {
+          hyperProtectUpdateUrl = "https://api.github.com/repos/HyperSystems-Development/HyperProtect-Mixin/releases/latest";
+          needsSave = true;
+        }
       }
     }
   }
