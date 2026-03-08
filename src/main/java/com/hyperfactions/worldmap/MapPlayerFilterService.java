@@ -16,7 +16,7 @@ import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.WorldMapTracker;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -54,14 +54,16 @@ public class MapPlayerFilterService {
 
   private final RelationManager relationManager;
 
-  /** Counter for debug logging — only log predicate evaluations periodically to avoid spam. */
-  private final AtomicInteger predicateEvalCount = new AtomicInteger(0);
+  /** Per-player admin bypass check — returns true if the player has admin bypass toggled on. */
+  private final Predicate<UUID> adminBypassCheck;
 
   /** Creates a new MapPlayerFilterService. */
   public MapPlayerFilterService(@NotNull FactionManager factionManager,
-                 @NotNull RelationManager relationManager) {
+                 @NotNull RelationManager relationManager,
+                 @NotNull Predicate<UUID> adminBypassCheck) {
     this.factionManager = factionManager;
     this.relationManager = relationManager;
+    this.adminBypassCheck = adminBypassCheck;
   }
 
   /**
@@ -78,14 +80,11 @@ public class MapPlayerFilterService {
     try {
       PlayerRef viewerRef = player.getPlayerRef();
       if (viewerRef == null) {
-        Logger.debugWorldMap("[MapFilter] applyFilter: viewerRef is null, skipping");
         return;
       }
 
       WorldMapTracker tracker = player.getWorldMapTracker();
       if (tracker == null) {
-        Logger.debugWorldMap("[MapFilter] applyFilter: tracker is null for %s, skipping",
-            viewerRef.getUsername());
         return;
       }
 
@@ -93,19 +92,16 @@ public class MapPlayerFilterService {
 
       // Feature disabled → clear filter (vanilla: show all)
       if (!config.isPlayerVisibilityEnabled()) {
-        Logger.debugWorldMap("[MapFilter] applyFilter: feature disabled, clearing filter for %s",
-            viewerRef.getUsername());
         tracker.setPlayerMapFilter(null);
         return;
       }
 
       UUID viewerUuid = viewerRef.getUuid();
-      String viewerName = viewerRef.getUsername();
 
-      // Admin bypass: viewer sees all players
-      if (PermissionManager.get().hasPermission(viewerUuid, Permissions.BYPASS_MAP_FILTER)) {
-        Logger.debugWorldMap("[MapFilter] applyFilter: %s has BYPASS_MAP_FILTER, clearing filter",
-            viewerName);
+      // Admin bypass: viewer sees all players (requires permission AND toggle on)
+      boolean hasPermBypass = PermissionManager.get().hasPermission(viewerUuid, Permissions.BYPASS_MAP_FILTER);
+      boolean toggleOn = adminBypassCheck.test(viewerUuid);
+      if (hasPermBypass && toggleOn) {
         tracker.setPlayerMapFilter(null);
         return;
       }
@@ -119,15 +115,9 @@ public class MapPlayerFilterService {
       boolean cfgShowFactionless = config.isShowFactionlessPlayers();
       boolean cfgShowFactionlessToFactionless = config.isShowFactionlessToFactionless();
 
-      Logger.debugWorldMap("[MapFilter] applyFilter: setting filter for %s (faction=%s) "
-          + "config=[own=%s allies=%s neutrals=%s enemies=%s factionless=%s fl2fl=%s]",
-          viewerName, viewerFactionId,
-          cfgShowOwn, cfgShowAllies, cfgShowNeutrals, cfgShowEnemies,
-          cfgShowFactionless, cfgShowFactionlessToFactionless);
-
       // Set the filter predicate.
       // IMPORTANT: true = HIDE (skip marker), false = SHOW (send marker).
-      // This matches the decompiled PlayerIconMarkerProvider logic:
+      // This matches the decompiled OtherPlayersMarkerProvider logic:
       //   if (playerMapFilter.test(otherPlayer)) continue; // continue = skip = hide
       tracker.setPlayerMapFilter(targetRef -> {
         if (targetRef == null) { // null → hide
@@ -139,54 +129,36 @@ public class MapPlayerFilterService {
           return false;
         }
 
-        // Admin bypass: target is always visible to everyone
-        if (PermissionManager.get().hasPermission(targetUuid, Permissions.BYPASS_MAP_VISIBILITY)) {
+        // Admin bypass: target is always visible when they have permission AND toggle on
+        if (PermissionManager.get().hasPermission(targetUuid, Permissions.BYPASS_MAP_VISIBILITY)
+            && adminBypassCheck.test(targetUuid)) {
           return false; // show
         }
 
         UUID targetFactionId = factionManager.getPlayerFactionId(targetUuid);
 
-        boolean shouldHide;
-        String reason;
-
         // Both factionless
         if (viewerFactionId == null && targetFactionId == null) {
-          shouldHide = !cfgShowFactionlessToFactionless;
-          reason = "both-factionless";
+          return !cfgShowFactionlessToFactionless;
         // Viewer is factionless, target is in a faction → hide
         } else if (viewerFactionId == null) {
-          shouldHide = true;
-          reason = "viewer-factionless-target-in-faction";
+          return true;
         // Target is factionless
         } else if (targetFactionId == null) {
-          shouldHide = !cfgShowFactionless;
-          reason = "target-factionless";
+          return !cfgShowFactionless;
         // Same faction
         } else if (viewerFactionId.equals(targetFactionId)) {
-          shouldHide = !cfgShowOwn;
-          reason = "same-faction";
+          return !cfgShowOwn;
         // Check relation
         } else {
           RelationType relation = relationManager.getEffectiveRelation(viewerFactionId, targetFactionId);
-          shouldHide = switch (relation) {
+          return switch (relation) {
             case ALLY, OWN -> !cfgShowAllies;
             case ENEMY -> !cfgShowEnemies;
             case NEUTRAL -> !cfgShowNeutrals;
           };
-          reason = "relation-" + relation.name();
         }
-
-        // Log periodically to avoid flooding (every 300 evaluations ≈ every 10 seconds)
-        int count = predicateEvalCount.incrementAndGet();
-        if (count % 300 == 1) {
-          Logger.debugWorldMap("[MapFilter] predicate: viewer=%s target=%s reason=%s shouldHide=%s",
-              viewerName, targetRef.getUsername(), reason, shouldHide);
-        }
-
-        return shouldHide;
       });
-
-      Logger.debugWorldMap("[MapFilter] applyFilter: filter SET for %s", viewerName);
     } catch (Exception e) {
       Logger.warn("Failed to apply map player filter: %s", e.getMessage());
     }

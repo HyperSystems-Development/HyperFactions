@@ -398,7 +398,8 @@ public class HyperFactions {
     worldMapService.initializeScheduler(ConfigManager.get().worldMap());
 
     // Initialize map player filter service (faction-aware player visibility on map/compass)
-    mapPlayerFilterService = new MapPlayerFilterService(factionManager, relationManager);
+    mapPlayerFilterService = new MapPlayerFilterService(factionManager, relationManager,
+        this::isAdminBypassEnabled);
 
     // Initialize announcement manager (uses deferred onlinePlayersSupplier)
     announcementManager = new AnnouncementManager(

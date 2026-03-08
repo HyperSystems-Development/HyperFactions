@@ -96,7 +96,7 @@ public class WorldMapConfig extends ModuleConfig {
   private boolean showFactionTags = true;
 
   // Player visibility filtering (disabled = vanilla behavior, all players visible)
-  private boolean playerVisibilityEnabled = false;
+  private boolean playerVisibilityEnabled = true;
 
   private boolean showOwnFaction = true;
 
@@ -159,8 +159,8 @@ public class WorldMapConfig extends ModuleConfig {
     // Display settings
     showFactionTags = true;
 
-    // Player visibility filtering (disabled = vanilla behavior)
-    playerVisibilityEnabled = false;
+    // Player visibility filtering (enabled by default)
+    playerVisibilityEnabled = true;
     showOwnFaction = true;
     showAllies = true;
     showNeutrals = false;

@@ -22,8 +22,13 @@ import org.jetbrains.annotations.NotNull;
  * Migrates configuration from v6 to v7.
  *
  * <p>
- * This migration updates updater URLs from the old {@code HyperSystemsDev} GitHub
- * organization to the new {@code HyperSystems-Development} organization.
+ * This migration:
+ * <ul>
+ *   <li>Updates updater URLs from the old {@code HyperSystemsDev} GitHub
+ *       organization to the new {@code HyperSystems-Development} organization.</li>
+ *   <li>Removes the {@code worldMap} section from server.json — these settings
+ *       have been consolidated into worldmap.json's {@code playerVisibility} section.</li>
+ * </ul>
  *
  * <p>
  * Only exact matches are replaced — custom URLs are left untouched.
@@ -75,7 +80,7 @@ public class ConfigV6ToV7Migration implements Migration {
   @Override
   @NotNull
   public String description() {
-    return "Migrate updater URLs from HyperSystemsDev to HyperSystems-Development";
+    return "Migrate updater URLs and remove worldMap section (moved to worldmap.json)";
   }
 
   /** Checks if applicable. */
@@ -116,8 +121,18 @@ public class ConfigV6ToV7Migration implements Migration {
       JsonObject root = JsonParser.parseString(json).getAsJsonObject();
       boolean changed = false;
 
-      // === Step 2: Migrate URLs ===
-      options.reportProgress("Migrating updater URLs", 2, 3);
+      // === Step 2: Remove worldMap section (moved to worldmap.json playerVisibility) ===
+      options.reportProgress("Removing worldMap section", 2, 4);
+
+      if (root.has("worldMap")) {
+        root.remove("worldMap");
+        changed = true;
+        Logger.info("[Migration] Removed worldMap section from server.json"
+            + " (settings consolidated into worldmap.json playerVisibility)");
+      }
+
+      // === Step 3: Migrate URLs ===
+      options.reportProgress("Migrating updater URLs", 3, 4);
 
       if (root.has("updates") && root.get("updates").isJsonObject()) {
         JsonObject updates = root.getAsJsonObject("updates");
@@ -140,8 +155,8 @@ public class ConfigV6ToV7Migration implements Migration {
         }
       }
 
-      // === Step 3: Bump configVersion ===
-      options.reportProgress("Bumping configVersion to 7", 3, 3);
+      // === Step 4: Bump configVersion ===
+      options.reportProgress("Bumping configVersion to 7", 4, 4);
 
       root.addProperty("configVersion", 7);
       changed = true;

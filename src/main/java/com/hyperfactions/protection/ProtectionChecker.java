@@ -1660,7 +1660,7 @@ public class ProtectionChecker {
    *
    * <p>Hiding is controlled by two layers:
    * <ul>
-   *   <li>Global config: {@code worldMap.hideEnemyPlayers} / {@code hideNeutralPlayers}</li>
+   *   <li>Global config: {@code worldmap.json playerVisibility} settings</li>
    *   <li>Zone override: {@code show_on_map} + {@code map_visibility} zone flag (when true, disables hiding in that zone)</li>
    * </ul>
    *
@@ -1674,35 +1674,42 @@ public class ProtectionChecker {
   public boolean shouldHideMapMarker(@NotNull UUID viewer, @NotNull UUID target,
                     @NotNull String worldName, int x, int z) {
     try {
-      // Same faction — always show
+      // Use worldmap.json playerVisibility config (same as native player filtering)
+      var wmConfig = ConfigManager.get().worldMap();
+      if (!wmConfig.isPlayerVisibilityEnabled()) {
+        return false; // Feature disabled — show all (vanilla)
+      }
+
       UUID viewerFactionId = factionManager.getPlayerFactionId(viewer);
       UUID targetFactionId = factionManager.getPlayerFactionId(target);
 
-      if (viewerFactionId == null || targetFactionId == null) {
-        return false; // Factionless — show
+      // Both factionless
+      if (viewerFactionId == null && targetFactionId == null) {
+        return !wmConfig.isShowFactionlessToFactionless();
       }
+      // Viewer factionless, target in faction
+      if (viewerFactionId == null) {
+        return true; // Hide
+      }
+      // Target factionless
+      if (targetFactionId == null) {
+        return !wmConfig.isShowFactionlessPlayers();
+      }
+      // Same faction
       if (viewerFactionId.equals(targetFactionId)) {
-        return false; // Same faction — show
+        return !wmConfig.isShowOwnFaction();
       }
 
-      // Check relationship
+      // Check relation
       RelationType relation = relationManager.getRelation(viewerFactionId, targetFactionId);
-      if (relation == RelationType.ALLY) {
-        return false; // Allies — always show
-      }
-
-      // Check global config for this relation type
-      var serverConfig = ConfigManager.get().server();
-      boolean shouldHide;
-      if (relation == RelationType.ENEMY) {
-        shouldHide = serverConfig.isHideEnemyPlayersOnMap();
-      } else {
-        // NEUTRAL or TRUCE — use neutral setting
-        shouldHide = serverConfig.isHideNeutralPlayersOnMap();
-      }
+      boolean shouldHide = switch (relation) {
+        case ALLY, OWN -> !wmConfig.isShowAllies();
+        case ENEMY -> !wmConfig.isShowEnemies();
+        case NEUTRAL -> !wmConfig.isShowNeutrals();
+      };
 
       if (!shouldHide) {
-        return false; // Config says don't hide this relation type
+        return false;
       }
 
       // Check zone override at target's position
@@ -1710,15 +1717,13 @@ public class ProtectionChecker {
       int chunkZ = ChunkUtil.toChunkCoord(z);
       Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
       if (zone != null && zone.getEffectiveFlag(ZoneFlags.SHOW_ON_MAP)) {
-        // Zone has map visibility override — check the visibility level
         String visibility = zone.getEffectiveSetting(ZoneFlags.MAP_VISIBILITY);
         if (ZoneFlags.MAP_VISIBILITY_ALL.equals(visibility)) {
           return false; // Show everyone
         }
         if (ZoneFlags.MAP_VISIBILITY_ALLY.equals(visibility) && relation == RelationType.ALLY) {
-          return false; // Show allies (enemies/neutrals still hidden)
+          return false; // Show ally markers
         }
-        // "faction" = only own faction visible (already handled above — same faction returns false early)
       }
 
       return true; // Hide based on config + relation
@@ -1734,7 +1739,7 @@ public class ProtectionChecker {
    *
    * <p>Hiding is controlled by two layers:
    * <ul>
-   *   <li>Global config: {@code worldMap.hideEnemyMarkers} / {@code hideNeutralMarkers}</li>
+   *   <li>Global config: {@code worldmap.json playerVisibility} settings</li>
    *   <li>Zone override: {@code show_on_map} + {@code map_visibility} zone flag (when true, shows all markers)</li>
    * </ul>
    *
@@ -1755,29 +1760,39 @@ public class ProtectionChecker {
         return false; // Own marker — always show
       }
 
+      // Use worldmap.json playerVisibility config (same as player icon filtering)
+      var wmConfig = ConfigManager.get().worldMap();
+      if (!wmConfig.isPlayerVisibilityEnabled()) {
+        return false; // Feature disabled — show all (vanilla)
+      }
+
       UUID viewerFactionId = factionManager.getPlayerFactionId(viewer);
       UUID creatorFactionId = factionManager.getPlayerFactionId(creatorId);
 
-      if (viewerFactionId == null || creatorFactionId == null) {
-        return false; // Factionless — show
+      // Both factionless
+      if (viewerFactionId == null && creatorFactionId == null) {
+        return !wmConfig.isShowFactionlessToFactionless();
       }
+      // Viewer factionless, creator in faction
+      if (viewerFactionId == null) {
+        return true; // Hide
+      }
+      // Creator factionless
+      if (creatorFactionId == null) {
+        return !wmConfig.isShowFactionlessPlayers();
+      }
+      // Same faction
       if (viewerFactionId.equals(creatorFactionId)) {
-        return false; // Same faction — show
+        return !wmConfig.isShowOwnFaction();
       }
 
+      // Check relation
       RelationType relation = relationManager.getRelation(viewerFactionId, creatorFactionId);
-      if (relation == RelationType.ALLY) {
-        return false; // Allies — always show
-      }
-
-      // Check global config for this relation type
-      var serverConfig = ConfigManager.get().server();
-      boolean shouldHide;
-      if (relation == RelationType.ENEMY) {
-        shouldHide = serverConfig.isHideEnemyMarkersOnMap();
-      } else {
-        shouldHide = serverConfig.isHideNeutralMarkersOnMap();
-      }
+      boolean shouldHide = switch (relation) {
+        case ALLY, OWN -> !wmConfig.isShowAllies();
+        case ENEMY -> !wmConfig.isShowEnemies();
+        case NEUTRAL -> !wmConfig.isShowNeutrals();
+      };
 
       if (!shouldHide) {
         return false;

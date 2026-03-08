@@ -19,8 +19,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Admin GUI: new "Mob Clearing" category in zone settings with flag toggles and conflict indicators
 - Debug logging with NPC group names (aggressive/passive/neutral) for both cleared and skipped mobs
 
+### Changed
+
+- **World map config consolidation** — removed `worldMap` section from `server.json` (hideEnemyPlayers, hideNeutralPlayers, hideEnemyMarkers, hideNeutralMarkers). All world map player/marker visibility settings now live in `worldmap.json` → `playerVisibility` section
+- `ConfigV6ToV7Migration` updated to auto-remove the `worldMap` section from `server.json` during migration
+
 ### Fixed
 
+- **World map player visibility** — `MapPlayerFilterService` admin bypass now requires both the bypass permission AND the per-player admin bypass toggle to be on. Previously, having `*` wildcard permissions would bypass map filtering even with admin bypass toggled off
+- **World map shared marker visibility** — `ProtectionChecker.shouldHideSharedMarker()` and `shouldHideMapMarker()` now read from `worldmap.json` `playerVisibility` config instead of the removed `server.json` `worldMap` config. Both player icons and shared markers use the same unified config with full relation-based logic (own faction, allies, enemies, neutrals, factionless)
 - Auto-migrate updater URLs from old `HyperSystemsDev` GitHub org to `HyperSystems-Development` — affects both HyperFactions and HyperProtect-Mixin update check URLs
 - Runtime auto-migration in ServerConfig and CoreConfig catches old URLs on every config load (exact-match only, custom URLs left untouched)
 - Formal `ConfigV6ToV7Migration` runs once via migration framework, bumps configVersion from 6 to 7

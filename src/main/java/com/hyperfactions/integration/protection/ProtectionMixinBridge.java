@@ -257,7 +257,7 @@ public final class ProtectionMixinBridge {
     return switch (activeProvider) {
       case HYPERPROTECT -> "HYPERPROTECT (27 hooks active)";
       case ORBISGUARD -> "ORBISGUARD (" + OrbisMixinsIntegration.getStatusSummary() + ")";
-      case BOTH -> "BOTH (OG: 11 hooks + HP: 12 unique mixins)";
+      case BOTH -> "BOTH (OG: 11 hooks + HP: 13 unique mixins)";
       case NONE -> "NONE";
     };
   }
