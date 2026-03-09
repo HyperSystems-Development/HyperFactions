@@ -99,13 +99,9 @@ public class TreasurySettingsPage extends InteractiveCustomUIPage<TreasurySettin
           false);
     }
 
-    // Back button
+    // Back button (also saves limits)
     events.addEventBinding(CustomUIEventBindingType.Activating, "#BackBtn",
-        EventData.of("Button", "Back"), false);
-
-    // Save button
-    events.addEventBinding(CustomUIEventBindingType.Activating, "#SaveBtn",
-        EventData.of("Button", "Save")
+        EventData.of("Button", "Back")
             .append("@MaxWithdrawAmount", "#MaxWithdrawAmountInput.Value")
             .append("@MaxWithdrawPeriod", "#MaxWithdrawPeriodInput.Value")
             .append("@MaxTransferAmount", "#MaxTransferAmountInput.Value")
@@ -132,6 +128,7 @@ public class TreasurySettingsPage extends InteractiveCustomUIPage<TreasurySettin
 
     switch (data.button) {
       case "Back" -> {
+        saveLimits(player, uuid, data);
         Faction fresh = factionManager.getFaction(faction.id());
         if (fresh != null) {
           guiManager.openFactionTreasury(player, ref, store, playerRef, fresh);
@@ -139,7 +136,6 @@ public class TreasurySettingsPage extends InteractiveCustomUIPage<TreasurySettin
       }
       case "TogglePerm" -> handleTogglePerm(player, ref, store, playerRef, uuid, data);
       case "ToggleAutoPay" -> handleToggleAutoPay(player, ref, store, playerRef, uuid);
-      case "Save" -> handleSave(player, ref, store, playerRef, uuid, data);
       default -> sendUpdate();
     }
   }
@@ -189,12 +185,9 @@ public class TreasurySettingsPage extends InteractiveCustomUIPage<TreasurySettin
         factionManager.getFaction(faction.id()));
   }
 
-  private void handleSave(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
-              PlayerRef playerRef, UUID uuid, TreasurySettingsData data) {
+  private void saveLimits(Player player, UUID uuid, TreasurySettingsData data) {
     FactionMember member = faction.getMember(uuid);
     if (member == null || member.role() != FactionRole.LEADER) {
-      player.sendMessage(MessageUtil.errorText("Only the leader can configure limits."));
-      sendUpdate();
       return;
     }
 
@@ -212,13 +205,8 @@ public class TreasurySettingsPage extends InteractiveCustomUIPage<TreasurySettin
       );
 
       economyManager.updateLimits(faction.id(), newLimits);
-      player.sendMessage(MessageUtil.successText("Treasury limits updated."));
-
-      guiManager.openTreasurySettings(player, ref, store, playerRef,
-          factionManager.getFaction(faction.id()));
     } catch (NumberFormatException e) {
       player.sendMessage(MessageUtil.errorText("Invalid number in limit fields. Use 0 for unlimited."));
-      sendUpdate();
     }
   }
 

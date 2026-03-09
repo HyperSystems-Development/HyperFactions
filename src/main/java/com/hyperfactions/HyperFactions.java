@@ -1,6 +1,7 @@
 package com.hyperfactions;
 
 import com.hyperfactions.api.events.FactionDisbandEvent;
+import com.hyperfactions.data.Faction;
 import com.hyperfactions.backup.BackupManager;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.config.modules.ServerConfig;
@@ -164,6 +165,8 @@ public class HyperFactions {
   private MembershipHistoryHandler membershipHistoryHandler;
 
   private PeriodicTaskManager periodicTaskManager;
+
+  private com.hyperfactions.economy.UpkeepProcessor upkeepProcessor;
 
   // Task management
   private final AtomicInteger taskIdCounter = new AtomicInteger(0);
@@ -477,6 +480,31 @@ public class HyperFactions {
     if (periodicTaskManager == null) {
       periodicTaskManager = new PeriodicTaskManager(this);
     }
+
+    // Wire upkeep processor if treasury is enabled
+    if (isTreasuryEnabled() && economyManager != null) {
+      upkeepProcessor =
+          new com.hyperfactions.economy.UpkeepProcessor(economyManager, factionManager, claimManager);
+      // Wire notification callback using the same pattern as overclaim notifications
+      upkeepProcessor.setNotificationCallback((factionId, message, hexColor) -> {
+        Faction faction = factionManager.getFaction(factionId);
+        if (faction == null) return;
+        ConfigManager cfg = ConfigManager.get();
+        com.hypixel.hytale.server.core.Message formatted =
+            com.hypixel.hytale.server.core.Message.raw("[").color(cfg.getPrefixBracketColor())
+                .insert(com.hypixel.hytale.server.core.Message.raw(cfg.getPrefixText()).color(cfg.getPrefixColor()))
+                .insert(com.hypixel.hytale.server.core.Message.raw("] ").color(cfg.getPrefixBracketColor()))
+                .insert(com.hypixel.hytale.server.core.Message.raw(message).color(hexColor));
+        for (UUID memberUuid : faction.members().keySet()) {
+          com.hypixel.hytale.server.core.universe.PlayerRef member = lookupPlayer(memberUuid);
+          if (member != null) {
+            member.sendMessage(formatted);
+          }
+        }
+      });
+      periodicTaskManager.setUpkeepProcessor(upkeepProcessor);
+    }
+
     periodicTaskManager.startAll();
     // Start scheduled backups now that the task scheduler is available
     if (backupManager != null) {
@@ -1226,6 +1254,12 @@ public class HyperFactions {
   @Nullable
   public EconomyManager getEconomyManager() {
     return economyManager;
+  }
+
+  /** Returns the upkeep processor, or null if upkeep is not enabled. */
+  @Nullable
+  public com.hyperfactions.economy.UpkeepProcessor getUpkeepProcessor() {
+    return upkeepProcessor;
   }
 
   /**

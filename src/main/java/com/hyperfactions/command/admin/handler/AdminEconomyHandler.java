@@ -10,6 +10,7 @@ import com.hyperfactions.util.CommandHelp;
 import com.hyperfactions.util.HelpFormatter;
 import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -87,6 +88,7 @@ public class AdminEconomyHandler {
       case "take", "remove" -> handleTake(ctx, econ, senderUuid, args);
       case "total" -> handleTotal(ctx, econ);
       case "reset" -> handleReset(ctx, econ, senderUuid, args);
+      case "upkeep" -> handleUpkeep(ctx, senderUuid);
       default -> ctx.sendMessage(prefix().insert(msg("Unknown economy command. Use /f admin economy help", COLOR_RED)));
     }
   }
@@ -99,6 +101,7 @@ public class AdminEconomyHandler {
     commands.add(new CommandHelp("/f admin economy take <faction> <amount>", "Deduct from balance"));
     commands.add(new CommandHelp("/f admin economy total", "Show server total balance"));
     commands.add(new CommandHelp("/f admin economy reset <faction>", "Reset balance to 0"));
+    commands.add(new CommandHelp("/f admin economy upkeep", "Manually trigger upkeep collection"));
     ctx.sendMessage(HelpFormatter.buildHelp("Admin Economy", "Manage faction treasuries", commands, null));
   }
 
@@ -292,6 +295,26 @@ public class AdminEconomyHandler {
       ctx.sendMessage(prefix().insert(msg("An error occurred.", COLOR_RED)));
       return null;
     });
+  }
+
+  // /f admin economy upkeep
+  private void handleUpkeep(CommandContext ctx, UUID senderUuid) {
+    com.hyperfactions.economy.UpkeepProcessor processor = hyperFactions.getUpkeepProcessor();
+    if (processor == null) {
+      ctx.sendMessage(prefix().insert(msg("Upkeep system is not enabled.", COLOR_RED)));
+      return;
+    }
+
+    ctx.sendMessage(prefix().insert(msg("Manually triggering upkeep collection...", COLOR_CYAN)));
+    Logger.info("[Admin] %s manually triggered upkeep collection", senderUuid);
+
+    try {
+      processor.processUpkeep();
+      ctx.sendMessage(prefix().insert(msg("Upkeep collection completed. Check server log for details.", COLOR_GREEN)));
+    } catch (Exception e) {
+      ctx.sendMessage(prefix().insert(msg("Upkeep collection failed: " + e.getMessage(), COLOR_RED)));
+      ErrorHandler.report("[Admin] Manual upkeep collection failed", e);
+    }
   }
 
   @Nullable

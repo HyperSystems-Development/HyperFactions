@@ -374,6 +374,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
     commands.add(new CommandHelp("/f admin clearhistory <player>", "Clear player membership history"));
     commands.add(new CommandHelp("/f admin power", "Admin power management"));
     commands.add(new CommandHelp("/f admin economy", "Economy/treasury management"));
+    commands.add(new CommandHelp("/f admin economy upkeep", "Manually trigger upkeep collection"));
     commands.add(new CommandHelp("/f admin info [faction]", "View admin faction info GUI"));
     commands.add(new CommandHelp("/f admin who [player]", "View admin player info GUI"));
     commands.add(new CommandHelp("/f admin log", "View global activity log"));

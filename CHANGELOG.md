@@ -9,6 +9,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+**Faction Upkeep System**
+- Core upkeep processing via `UpkeepProcessor` — automated territory maintenance costs with flat or progressive tiered pricing
+- Progressive scaling tiers: configurable per-tier chunk counts and costs (e.g., first 10 chunks at $2, next 15 at $3, remaining at $5)
+- Free chunk exemption: configurable number of chunks exempt from upkeep (default: 3)
+- Max cost cap: optional ceiling on per-cycle upkeep cost
+- Grace period system: configurable grace window before claim forfeiture (default: 48h)
+- Progressive claim decay on grace expiration: removes edge claims first, most recent claims prioritized, home chunk protected
+- Upkeep warnings: configurable warning notifications before collection (default: 6h)
+- Auto-pay toggle per faction (leader setting)
+- New faction economy fields: `upkeepGraceStartTimestamp`, `consecutiveMissedPayments` with backward-compatible storage
+- Config migration (V6→V7): new upkeep fields with sensible defaults
+- Treasury page upkeep section: maintenance cost display, progress bar with color coding (green/yellow/red), chunk breakdown, cost projections (7d/14d/30d), runway calculation, auto-pay status
+- Grace period warning banner with "Pay Now" button — allows immediate upkeep payment to clear grace after depositing funds
+- Admin command: `/f admin economy upkeep` — manually trigger upkeep collection
+- Admin actions GUI: "Trigger Upkeep" button with two-step confirmation
+- Admin actions GUI: "Bulk Add/Remove" button opening bulk treasury adjustment modal for all factions
+- Admin bulk economy modal: apply add/remove to all faction treasuries with success/failure reporting
+- Admin economy page: upkeep stats row (factions in grace, total collected 24h, next collection timer)
+- Admin economy page: per-faction upkeep status indicators (green/yellow/red dots)
+- Upkeep events logged to faction activity log (payments, grace starts, missed payments, claim forfeiture)
+- Unit tests for `UpkeepProcessor` (cost calculation, progressive tiers, grace periods, free chunks)
+
+### Changed
+
+- Treasury quick action buttons wrapped in dark boxes with subtitle labels (matching dashboard pattern)
+- Treasury settings button moved into quick actions row as 4th box (leader-only)
+- Treasury settings page: removed Save button, limits auto-save on Back
+- `ClaimManager.progressiveDecay()` replaces `unclaimAll()` for inactivity decay — gradual edge-in removal instead of removing all claims at once
+- `PeriodicTaskManager` upkeep task now calls `UpkeepProcessor.processUpkeep()` instead of skeleton logging
+- Dashboard "Faction Actions" label changed to "Quick Actions"
+
+### Removed
+
+- Treasury page: removed Net (24h) P&L row
+- Treasury settings page: removed explicit Save button (auto-saves on exit)
+
 **Mob Clearing Zone Flags (#79)**
 - 4 new zone flags: `mob_clear` (parent toggle), `hostile_mob_clear`, `passive_mob_clear`, `neutral_mob_clear`
 - Periodic sweep removes existing mobs from zones based on flag configuration — complements spawn suppression which only blocks new spawns

@@ -918,6 +918,36 @@ public class ConfigManager {
     return economyConfig.isUpkeepAutoPayDefault();
   }
 
+  /** Returns the number of chunks exempt from upkeep cost. */
+  public int getUpkeepFreeChunks() {
+    return economyConfig.getUpkeepFreeChunks();
+  }
+
+  /** Returns the number of claims lost per failed cycle after grace. */
+  public int getUpkeepClaimLossPerCycle() {
+    return economyConfig.getUpkeepClaimLossPerCycle();
+  }
+
+  /** Returns the hours before upkeep to warn online members. */
+  public int getUpkeepWarningHours() {
+    return economyConfig.getUpkeepWarningHours();
+  }
+
+  /** Returns the max cost cap per cycle (0 = unlimited). */
+  @NotNull public java.math.BigDecimal getUpkeepMaxCostCap() {
+    return economyConfig.getUpkeepMaxCostCap();
+  }
+
+  /** Returns the scaling mode ("flat" or "progressive"). */
+  @NotNull public String getUpkeepScalingMode() {
+    return economyConfig.getUpkeepScalingMode();
+  }
+
+  /** Returns the progressive scaling tiers. */
+  @NotNull public java.util.List<com.hyperfactions.config.modules.EconomyConfig.ScalingTier> getUpkeepScalingTiers() {
+    return economyConfig.getUpkeepScalingTiers();
+  }
+
   // Messages (from server config)
   /** Returns the prefix text. */
   @NotNull public String getPrefixText() {

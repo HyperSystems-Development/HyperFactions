@@ -9,7 +9,7 @@ $C.@PageOverlay {
   $Nav.@HyperFactionsNavBar #HyperFactionsNavBar {}
 
   $C.@DecoratedContainer {
-    Anchor: (Width: 600, Height: 660);
+    Anchor: (Width: 700, Height: 700);
 
     #Title {
       Group {

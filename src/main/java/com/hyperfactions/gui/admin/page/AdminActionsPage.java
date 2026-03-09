@@ -1,5 +1,8 @@
 package com.hyperfactions.gui.admin.page;
 
+import com.hyperfactions.HyperFactions;
+import com.hyperfactions.config.ConfigManager;
+import com.hyperfactions.economy.UpkeepProcessor;
 import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.admin.AdminNavBarHelper;
@@ -34,17 +37,24 @@ public class AdminActionsPage extends InteractiveCustomUIPage<AdminActionsData> 
 
   private final GuiManager guiManager;
 
+  private final HyperFactions plugin;
+
   /** Two-step confirmation state for global K/D reset. */
   private boolean confirmResetKD = false;
+
+  /** Two-step confirmation state for manual upkeep trigger. */
+  private boolean confirmUpkeep = false;
 
   /** Creates a new AdminActionsPage. */
   public AdminActionsPage(PlayerRef playerRef,
               PlayerStorage playerStorage,
-              GuiManager guiManager) {
+              GuiManager guiManager,
+              HyperFactions plugin) {
     super(playerRef, CustomPageLifetime.CanDismiss, AdminActionsData.CODEC);
     this.playerRef = playerRef;
     this.playerStorage = playerStorage;
     this.guiManager = guiManager;
+    this.plugin = plugin;
   }
 
   /** Builds . */
@@ -69,6 +79,27 @@ public class AdminActionsPage extends InteractiveCustomUIPage<AdminActionsData> 
     // Bind the reset button
     events.addEventBinding(CustomUIEventBindingType.Activating, "#ResetAllKDBtn",
         EventData.of("Button", "ResetAllKD"), false);
+
+    // Economy section visibility
+    boolean economyEnabled = plugin.isTreasuryEnabled();
+    cmd.set("#EconomySection.Visible", economyEnabled);
+
+    if (economyEnabled) {
+      events.addEventBinding(CustomUIEventBindingType.Activating, "#BulkAdjustBtn",
+          EventData.of("Button", "BulkAdjust"), false);
+
+      // Upkeep section visibility
+      boolean upkeepEnabled = ConfigManager.get().isUpkeepEnabled();
+      cmd.set("#UpkeepSection.Visible", upkeepEnabled);
+
+      if (upkeepEnabled) {
+        if (confirmUpkeep) {
+          cmd.set("#TriggerUpkeepBtn.Text", "Confirm Trigger?");
+        }
+        events.addEventBinding(CustomUIEventBindingType.Activating, "#TriggerUpkeepBtn",
+            EventData.of("Button", "TriggerUpkeep"), false);
+      }
+    }
   }
 
   /** Handles data event. */
@@ -96,7 +127,6 @@ public class AdminActionsPage extends InteractiveCustomUIPage<AdminActionsData> 
     switch (data.button) {
       case "ResetAllKD" -> {
         if (!confirmResetKD) {
-          // First click — enter confirmation state
           confirmResetKD = true;
           UICommandBuilder cmd = new UICommandBuilder();
           UIEventBuilder events = new UIEventBuilder();
@@ -105,7 +135,6 @@ public class AdminActionsPage extends InteractiveCustomUIPage<AdminActionsData> 
               EventData.of("Button", "ResetAllKD"), false);
           sendUpdate(cmd, events, false);
         } else {
-          // Second click — execute the reset
           confirmResetKD = false;
           try {
             Set<UUID> allUuids = playerStorage.getAllPlayerUuids().join();
@@ -123,12 +152,42 @@ public class AdminActionsPage extends InteractiveCustomUIPage<AdminActionsData> 
             player.sendMessage(MessageUtil.adminError("Failed to reset K/D: " + e.getMessage()));
             ErrorHandler.report("[Admin] Global K/D reset failed", e);
           }
-
-          // Reopen page to reset state
           guiManager.openAdminActions(player, ref, store, playerRef);
         }
       }
-      default -> throw new IllegalStateException("Unexpected value");
+
+      case "BulkAdjust" -> guiManager.openAdminBulkEconomy(player, ref, store, playerRef);
+
+      case "TriggerUpkeep" -> {
+        if (!confirmUpkeep) {
+          confirmUpkeep = true;
+          UICommandBuilder cmd = new UICommandBuilder();
+          UIEventBuilder events = new UIEventBuilder();
+          cmd.set("#TriggerUpkeepBtn.Text", "Confirm Trigger?");
+          events.addEventBinding(CustomUIEventBindingType.Activating, "#TriggerUpkeepBtn",
+              EventData.of("Button", "TriggerUpkeep"), false);
+          sendUpdate(cmd, events, false);
+        } else {
+          confirmUpkeep = false;
+          UpkeepProcessor processor = plugin.getUpkeepProcessor();
+          if (processor == null) {
+            player.sendMessage(MessageUtil.adminError("Upkeep processor is not available."));
+          } else {
+            try {
+              processor.processUpkeep();
+              player.sendMessage(MessageUtil.adminSuccess("Upkeep collection triggered."));
+              Logger.info("[Admin] %s manually triggered upkeep collection via GUI",
+                  playerRef.getUsername());
+            } catch (Exception e) {
+              player.sendMessage(MessageUtil.adminError("Upkeep failed: " + e.getMessage()));
+              ErrorHandler.report("[Admin] Manual upkeep trigger failed", e);
+            }
+          }
+          guiManager.openAdminActions(player, ref, store, playerRef);
+        }
+      }
+
+      default -> { }
     }
   }
 }

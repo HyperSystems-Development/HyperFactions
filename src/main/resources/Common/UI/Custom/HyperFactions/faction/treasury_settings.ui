@@ -178,26 +178,17 @@ $C.@PageOverlay {
         }
       }
 
-      // Spacer to push buttons to bottom
+      // Spacer to push button to bottom
       Label { FlexWeight: 1; }
 
-      // === Action Buttons ===
+      // === Back Button ===
       Group {
-        LayoutMode: Left;
         Anchor: (Height: 36);
 
         TextButton #BackBtn {
           Text: "Back";
           Anchor: (Height: 32, Width: 110);
           Style: $S.@ButtonStyle;
-        }
-
-        Label { FlexWeight: 1; }
-
-        TextButton #SaveBtn {
-          Text: "Save Settings";
-          Anchor: (Height: 32, Width: 140);
-          Style: $S.@GreenButtonStyle;
         }
       }
     }

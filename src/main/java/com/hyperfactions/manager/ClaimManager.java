@@ -774,8 +774,105 @@ public class ClaimManager {
   // === Claim Decay ===
 
   /**
+   * Removes up to {@code count} claims from a faction's edges, most recent first.
+   * Used by both inactivity decay and upkeep forfeiture.
+   *
+   * <p>Edge claims are those where at least one adjacent chunk (N/S/E/W)
+   * is NOT owned by this faction. Home chunk is protected unless it's the
+   * last remaining claim.
+   *
+   * @param factionId the faction ID
+   * @param count     max claims to remove
+   * @param reason    human-readable reason for logging (e.g. "inactivity", "unpaid upkeep")
+   * @return number of claims actually removed
+   */
+  public int progressiveDecay(@NotNull UUID factionId, int count, @Nullable String reason) {
+    Faction faction = factionManager.getFaction(factionId);
+    if (faction == null || faction.getClaimCount() == 0) {
+      return 0;
+    }
+
+    Set<ChunkKey> allClaims = factionClaimsIndex.get(factionId);
+    if (allClaims == null || allClaims.isEmpty()) {
+      return 0;
+    }
+
+    // Find the home chunk (protected unless last)
+    ChunkKey homeChunk = null;
+    if (faction.hasHome()) {
+      var home = faction.home();
+      int hcx = ChunkUtil.toChunkCoord(home.x());
+      int hcz = ChunkUtil.toChunkCoord(home.z());
+      homeChunk = new ChunkKey(home.world(), hcx, hcz);
+    }
+
+    // Find edge claims: claims where at least one adjacent chunk is NOT owned by this faction
+    List<ChunkKey> edges = new ArrayList<>();
+    for (ChunkKey key : allClaims) {
+      boolean isEdge = !factionId.equals(claimIndex.get(key.north()))
+          || !factionId.equals(claimIndex.get(key.south()))
+          || !factionId.equals(claimIndex.get(key.east()))
+          || !factionId.equals(claimIndex.get(key.west()));
+      if (isEdge) {
+        edges.add(key);
+      }
+    }
+
+    // Sort by claim timestamp descending (most recent first)
+    // Look up claimedAt from the faction's claims list
+    Map<ChunkKey, Long> claimTimes = new HashMap<>();
+    for (FactionClaim claim : faction.claims()) {
+      claimTimes.put(claim.toChunkKey(), claim.claimedAt());
+    }
+    edges.sort((a, b) -> Long.compare(
+        claimTimes.getOrDefault(b, 0L),
+        claimTimes.getOrDefault(a, 0L)));
+
+    int removed = 0;
+    ChunkKey finalHomeChunk = homeChunk;
+
+    for (ChunkKey edge : edges) {
+      if (removed >= count) break;
+
+      // Protect home chunk unless it's the last claim
+      if (edge.equals(finalHomeChunk) && allClaims.size() - removed > 1) {
+        continue;
+      }
+
+      // Remove this claim
+      claimIndex.remove(edge);
+      allClaims.remove(edge);
+
+      // Update faction record
+      Faction current = factionManager.getFaction(factionId);
+      if (current != null) {
+        Faction updated = current.withoutClaimAt(edge.world(), edge.chunkX(), edge.chunkZ());
+        factionManager.updateFaction(updated);
+      }
+
+      notifyChunkChange(edge.world(), edge.chunkX(), edge.chunkZ());
+      removed++;
+
+      Logger.debugClaim("Progressive decay: removed %s from %s (%s)",
+          edge, faction.name(), reason != null ? reason : "decay");
+    }
+
+    // Clean up empty index entry
+    if (allClaims.isEmpty()) {
+      factionClaimsIndex.remove(factionId);
+    }
+
+    if (removed > 0) {
+      Logger.info("[ClaimDecay] %s lost %d edge claims (%s)", faction.name(), removed,
+          reason != null ? reason : "decay");
+    }
+
+    return removed;
+  }
+
+  /**
    * Runs claim decay for inactive factions.
-   * Removes claims from factions where ALL members have been offline
+   * Removes claims progressively from factions where ALL members have been offline
    * for longer than the configured threshold.
    *
    * <p>This method is called periodically (default: every hour) to clean up
@@ -789,6 +886,7 @@ public class ClaimManager {
 
     int daysThreshold = config.getDecayDaysInactive();
     long thresholdMs = System.currentTimeMillis() - (daysThreshold * 24L * 60 * 60 * 1000);
+    int decayClaimsPerCycle = config.factions().getDecayClaimsPerCycle();
 
     int factionsDecayed = 0;
     int claimsRemoved = 0;
@@ -825,20 +923,24 @@ public class ClaimManager {
       }
 
       if (allInactive && faction.getClaimCount() > 0) {
-        int claims = faction.getClaimCount();
         long daysSinceActive = (System.currentTimeMillis() - mostRecentLogin) / (24L * 60 * 60 * 1000);
 
-        // Log the decay with faction details
-        Faction updated = faction.withLog(FactionLog.create(FactionLog.LogType.UNCLAIM,
-          String.format("All %d claims removed due to inactivity (%d days)", claims, daysSinceActive), null));
-        factionManager.updateFaction(updated);
+        int removed = progressiveDecay(factionId, decayClaimsPerCycle, "inactivity");
+        if (removed > 0) {
+          // Log to faction
+          Faction current = factionManager.getFaction(factionId);
+          if (current != null) {
+            Faction logged = current.withLog(FactionLog.create(FactionLog.LogType.UNCLAIM,
+                String.format("%d claims removed due to inactivity (%d days)", removed, daysSinceActive), null));
+            factionManager.updateFaction(logged);
+          }
 
-        unclaimAll(factionId);
-        factionsDecayed++;
-        claimsRemoved += claims;
+          factionsDecayed++;
+          claimsRemoved += removed;
 
-        Logger.info("[ClaimDecay] Faction '%s' lost %d claims (inactive for %d days, threshold: %d days)",
-          faction.name(), claims, daysSinceActive, daysThreshold);
+          Logger.info("[ClaimDecay] Faction '%s' lost %d claims (inactive for %d days, threshold: %d days)",
+              faction.name(), removed, daysSinceActive, daysThreshold);
+        }
       }
     }
 

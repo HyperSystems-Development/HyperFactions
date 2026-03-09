@@ -80,6 +80,9 @@ public class AdminEconomyPage extends InteractiveCustomUIPage<AdminEconomyData> 
     // === Server Economy Stats ===
     buildServerStats(cmd);
 
+    // === Upkeep Status (when upkeep enabled) ===
+    buildUpkeepStats(cmd);
+
     // === Faction List with search/sort/pagination ===
     buildFactionList(cmd, events);
   }
@@ -94,6 +97,54 @@ public class AdminEconomyPage extends InteractiveCustomUIPage<AdminEconomyData> 
     cmd.set("#TotalBalance.Text", economyManager.formatCurrencyCompact(totalBalance));
     cmd.set("#EconFactionCount.Text", String.valueOf(factionCount));
     cmd.set("#AvgBalance.Text", economyManager.formatCurrencyCompact(avgBalance));
+  }
+
+  private void buildUpkeepStats(UICommandBuilder cmd) {
+    com.hyperfactions.config.ConfigManager config = com.hyperfactions.config.ConfigManager.get();
+    if (!config.isUpkeepEnabled()) {
+      return;
+    }
+
+    cmd.set("#UpkeepStatsRow.Visible", true);
+
+    // Count factions in grace
+    int factionsInGrace = 0;
+    java.math.BigDecimal upkeepCollected = java.math.BigDecimal.ZERO;
+    long cutoff24h = System.currentTimeMillis() - (24 * 3600_000L);
+
+    for (var entry : economyManager.getAllEconomies().entrySet()) {
+      com.hyperfactions.data.FactionEconomy economy = entry.getValue();
+      if (economy.upkeepGraceStartTimestamp() > 0) {
+        factionsInGrace++;
+      }
+      // Sum UPKEEP transactions in last 24h
+      for (com.hyperfactions.api.EconomyAPI.Transaction tx : economy.transactionHistory()) {
+        if (tx.timestamp() < cutoff24h) break;
+        if (tx.type() == com.hyperfactions.api.EconomyAPI.TransactionType.UPKEEP) {
+          upkeepCollected = upkeepCollected.add(tx.amount());
+        }
+      }
+    }
+
+    cmd.set("#InGraceCount.Text", String.valueOf(factionsInGrace));
+    cmd.set("#InGraceCount.Style.TextColor", factionsInGrace > 0 ? "#FF5555" : "#55FF55");
+    cmd.set("#UpkeepCollected.Text", economyManager.formatCurrencyCompact(upkeepCollected));
+
+    // Next collection time
+    long intervalMs = config.getUpkeepIntervalHours() * 3600_000L;
+    long now = System.currentTimeMillis();
+    long soonest = Long.MAX_VALUE;
+    for (var economy : economyManager.getAllEconomies().values()) {
+      if (economy.lastUpkeepTimestamp() > 0) {
+        long next = economy.lastUpkeepTimestamp() + intervalMs;
+        if (next < soonest) soonest = next;
+      }
+    }
+    if (soonest != Long.MAX_VALUE && soonest > now) {
+      cmd.set("#NextCollection.Text", com.hyperfactions.economy.UpkeepProcessor.formatDuration(soonest - now));
+    } else {
+      cmd.set("#NextCollection.Text", "--");
+    }
   }
 
   private void buildFactionList(UICommandBuilder cmd, UIEventBuilder events) {
@@ -145,6 +196,22 @@ public class AdminEconomyPage extends InteractiveCustomUIPage<AdminEconomyData> 
       cmd.set(sel + " #FactionName.Text", entry.faction.name());
       cmd.set(sel + " #Balance.Text", economyManager.formatCurrencyCompact(entry.economy.balance()));
       cmd.set(sel + " #MemberCount.Text", String.valueOf(entry.faction.getMemberCount()));
+
+      // Upkeep status indicator
+      if (com.hyperfactions.config.ConfigManager.get().isUpkeepEnabled()) {
+        cmd.set(sel + " #UpkeepDot.Visible", true);
+        if (entry.economy.upkeepGraceStartTimestamp() > 0) {
+          long gracePeriodMs = com.hyperfactions.config.ConfigManager.get().getUpkeepGracePeriodHours() * 3600_000L;
+          long elapsed = System.currentTimeMillis() - entry.economy.upkeepGraceStartTimestamp();
+          if (elapsed >= gracePeriodMs) {
+            cmd.set(sel + " #UpkeepDot.Background.Color", "#FF5555"); // Red — grace expired
+          } else {
+            cmd.set(sel + " #UpkeepDot.Background.Color", "#FFAA00"); // Yellow — in grace
+          }
+        } else {
+          cmd.set(sel + " #UpkeepDot.Background.Color", "#55FF55"); // Green — paid
+        }
+      }
 
       // Adjust button
       events.addEventBinding(

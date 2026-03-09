@@ -82,6 +82,8 @@ public class FactionsConfig extends ModuleConfig {
 
   private int decayDaysInactive = 30;
 
+  private int decayClaimsPerCycle = 5;
+
   private List<String> worldWhitelist = new ArrayList<>();
 
   private List<String> worldBlacklist = new ArrayList<>();
@@ -217,6 +219,7 @@ public class FactionsConfig extends ModuleConfig {
       preventDisconnect = getBool(claims, "preventDisconnect", preventDisconnect);
       decayEnabled = getBool(claims, "decayEnabled", decayEnabled);
       decayDaysInactive = getInt(claims, "decayDaysInactive", decayDaysInactive);
+      decayClaimsPerCycle = getInt(claims, "decayClaimsPerCycle", decayClaimsPerCycle);
       worldWhitelist = getStringList(claims, "worldWhitelist");
       worldBlacklist = getStringList(claims, "worldBlacklist");
 
@@ -321,6 +324,7 @@ public class FactionsConfig extends ModuleConfig {
     claims.addProperty("preventDisconnect", preventDisconnect);
     claims.addProperty("decayEnabled", decayEnabled);
     claims.addProperty("decayDaysInactive", decayDaysInactive);
+    claims.addProperty("decayClaimsPerCycle", decayClaimsPerCycle);
     claims.add("worldWhitelist", toJsonArray(worldWhitelist));
     claims.add("worldBlacklist", toJsonArray(worldBlacklist));
     // Claim protection overrides
@@ -487,6 +491,11 @@ public class FactionsConfig extends ModuleConfig {
   /** Returns the decay days inactive. */
   public int getDecayDaysInactive() {
     return decayDaysInactive;
+  }
+
+  /** Returns the number of claims removed per decay cycle. */
+  public int getDecayClaimsPerCycle() {
+    return decayClaimsPerCycle;
   }
 
   /** Returns the world whitelist. */
@@ -736,6 +745,7 @@ public class FactionsConfig extends ModuleConfig {
     // Claim settings
     maxClaims = validateMin(result, "claims.maxClaims", maxClaims, 0, 100);
     decayDaysInactive = validateMin(result, "claims.decayDaysInactive", decayDaysInactive, 1, 30);
+    decayClaimsPerCycle = validateMin(result, "claims.decayClaimsPerCycle", decayClaimsPerCycle, 1, 5);
 
     // Combat settings
     tagDurationSeconds = validateMin(result, "combat.tagDurationSeconds", tagDurationSeconds, 0, 15);

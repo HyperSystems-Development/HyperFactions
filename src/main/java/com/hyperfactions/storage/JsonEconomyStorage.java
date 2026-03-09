@@ -170,6 +170,8 @@ public class JsonEconomyStorage {
     // Upkeep state
     obj.addProperty("lastUpkeepTimestamp", economy.lastUpkeepTimestamp());
     obj.addProperty("upkeepAutoPay", economy.upkeepAutoPay());
+    obj.addProperty("upkeepGraceStartTimestamp", economy.upkeepGraceStartTimestamp());
+    obj.addProperty("consecutiveMissedPayments", economy.consecutiveMissedPayments());
 
     return obj;
   }
@@ -220,8 +222,13 @@ public class JsonEconomyStorage {
         ? obj.get("lastUpkeepTimestamp").getAsLong() : 0L;
     boolean upkeepAutoPay = obj.has("upkeepAutoPay")
         ? obj.get("upkeepAutoPay").getAsBoolean() : true;
+    long upkeepGraceStartTimestamp = obj.has("upkeepGraceStartTimestamp")
+        ? obj.get("upkeepGraceStartTimestamp").getAsLong() : 0L;
+    int consecutiveMissedPayments = obj.has("consecutiveMissedPayments")
+        ? obj.get("consecutiveMissedPayments").getAsInt() : 0;
 
-    return new FactionEconomy(balance, transactions, limits, lastUpkeepTimestamp, upkeepAutoPay);
+    return new FactionEconomy(balance, transactions, limits, lastUpkeepTimestamp, upkeepAutoPay,
+        upkeepGraceStartTimestamp, consecutiveMissedPayments);
   }
 
   /**

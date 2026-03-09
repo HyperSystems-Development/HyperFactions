@@ -426,7 +426,7 @@ public class GuiManager {
         "Actions",
         null,
         (player, ref, store, playerRef, guiManager) ->
-            new AdminActionsPage(playerRef, plugin.get().getPlayerStorage(), guiManager),
+            new AdminActionsPage(playerRef, plugin.get().getPlayerStorage(), guiManager, plugin.get()),
         true,
         1
     ));
@@ -812,6 +812,12 @@ public class GuiManager {
                    Store<EntityStore> store, PlayerRef playerRef,
                    UUID factionId) {
     adminPageOpener.openAdminEconomyAdjust(player, ref, store, playerRef, factionId);
+  }
+
+  /** Opens the admin bulk economy adjust page. */
+  public void openAdminBulkEconomy(Player player, Ref<EntityStore> ref,
+                   Store<EntityStore> store, PlayerRef playerRef) {
+    adminPageOpener.openAdminBulkEconomy(player, ref, store, playerRef);
   }
 
   /** Opens the admin faction members page. */

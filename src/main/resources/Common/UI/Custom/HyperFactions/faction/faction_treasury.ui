@@ -104,18 +104,6 @@ $C.@PageOverlay {
         }
       }
 
-      // === B. Net P&L Row ===
-      Group #PnlRow {
-        Anchor: (Height: 24, Bottom: 10);
-        LayoutMode: Left;
-
-        Label { FlexWeight: 1; }
-        Label #PnlValue {
-          Text: "Net (24h): +0.00";
-          Style: (FontSize: 12, TextColor: #44CC44, RenderBold: true);
-        }
-      }
-
       // === C. Upkeep Section (hidden by default) ===
       Group #UpkeepSection {
         Visible: false;
@@ -158,6 +146,13 @@ $C.@PageOverlay {
           }
         }
 
+        // Detail row (free + billable chunks)
+        Label #UpkeepDetail {
+          Text: "";
+          Style: (FontSize: 9, TextColor: #888888);
+          Anchor: (Height: 14, Top: 2);
+        }
+
         // Auto-pay row
         Group {
           LayoutMode: Left;
@@ -168,38 +163,194 @@ $C.@PageOverlay {
             Style: (FontSize: 10, TextColor: #55FF55);
           }
         }
+
+        // Cost projections row
+        Group #ProjectionsRow {
+          Visible: false;
+          Anchor: (Top: 6);
+          Background: (Color: #111a28);
+          Padding: (Left: 10, Right: 10, Top: 6, Bottom: 6);
+          LayoutMode: Top;
+
+          // Runway
+          Group {
+            LayoutMode: Left;
+            Anchor: (Height: 16, Bottom: 4);
+
+            Label {
+              Text: "Runway:";
+              Style: (FontSize: 10, TextColor: #888888);
+              Anchor: (Width: 55);
+            }
+            Label #RunwayValue {
+              Text: "--";
+              Style: (FontSize: 10, TextColor: #55FF55, RenderBold: true);
+            }
+          }
+
+          // Cost projections
+          Group {
+            LayoutMode: Left;
+            Anchor: (Height: 16);
+
+            Label {
+              Text: "7d:";
+              Style: (FontSize: 9, TextColor: #666666);
+              Anchor: (Width: 20);
+            }
+            Label #Cost7d {
+              Text: "--";
+              Style: (FontSize: 9, TextColor: #AAAAAA);
+              Anchor: (Width: 70);
+            }
+            Label {
+              Text: "14d:";
+              Style: (FontSize: 9, TextColor: #666666);
+              Anchor: (Width: 25);
+            }
+            Label #Cost14d {
+              Text: "--";
+              Style: (FontSize: 9, TextColor: #AAAAAA);
+              Anchor: (Width: 70);
+            }
+            Label {
+              Text: "30d:";
+              Style: (FontSize: 9, TextColor: #666666);
+              Anchor: (Width: 25);
+            }
+            Label #Cost30d {
+              Text: "--";
+              Style: (FontSize: 9, TextColor: #AAAAAA);
+            }
+          }
+        }
+
+        // Grace period warning banner
+        Group #GraceWarning {
+          Visible: false;
+          Anchor: (Top: 6);
+          Background: (Color: #3a1a1a);
+          Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+          LayoutMode: Top;
+
+          // Info row: timer left, missed count right
+          Group {
+            LayoutMode: Left;
+            Anchor: (Height: 16);
+
+            Label #GraceTimer {
+              Text: "Grace expires in: --";
+              Style: (FontSize: 10, TextColor: #FF5555, RenderBold: true);
+              FlexWeight: 1;
+            }
+            Label #MissedCount {
+              Text: "Missed payments: 0";
+              Style: (FontSize: 10, TextColor: #FFAA00);
+            }
+          }
+
+          // Pay Now action (hidden by default, shown when can afford)
+          Group #PayNowRow {
+            Visible: false;
+            LayoutMode: Left;
+            Anchor: (Height: 30, Top: 8);
+
+            Label #PayNowCost {
+              Text: "";
+              Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
+              FlexWeight: 1;
+            }
+            TextButton #PayNowBtn {
+              Text: "Pay Now";
+              Anchor: (Width: 120, Height: 28);
+              Style: $S.@FlatRedButtonStyle;
+            }
+          }
+        }
       }
 
       // === D. Quick Actions ===
       Group #QuickActions {
-        Anchor: (Height: 40, Bottom: 10);
+        Anchor: (Height: 64, Bottom: 10);
         LayoutMode: Left;
 
-        Label { FlexWeight: 1; }
+        Group {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 8, Right: 8, Top: 8, Bottom: 8);
+          LayoutMode: Top;
+          Anchor: (Right: 4);
 
-        TextButton #DepositBtn {
-          Text: "Deposit";
-          Anchor: (Height: 32, Width: 130);
-          Style: $S.@GreenButtonStyle;
+          Label {
+            Text: "Add funds";
+            Style: (FontSize: 9, TextColor: #555555);
+            Anchor: (Height: 14, Bottom: 4);
+          }
+          TextButton #DepositBtn {
+            Text: "Deposit";
+            Anchor: (Height: 30);
+            Style: $S.@GreenButtonStyle;
+          }
         }
 
-        Label { Anchor: (Width: 10); }
+        Group {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 8, Right: 8, Top: 8, Bottom: 8);
+          LayoutMode: Top;
+          Anchor: (Left: 4, Right: 4);
 
-        TextButton #WithdrawBtn {
-          Text: "Withdraw";
-          Anchor: (Height: 32, Width: 130);
-          Style: $S.@ButtonStyle;
+          Label {
+            Text: "Take funds";
+            Style: (FontSize: 9, TextColor: #555555);
+            Anchor: (Height: 14, Bottom: 4);
+          }
+          TextButton #WithdrawBtn {
+            Text: "Withdraw";
+            Anchor: (Height: 30);
+            Style: $S.@ButtonStyle;
+          }
         }
 
-        Label { Anchor: (Width: 10); }
+        Group {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 8, Right: 8, Top: 8, Bottom: 8);
+          LayoutMode: Top;
+          Anchor: (Left: 4, Right: 4);
 
-        TextButton #TransferBtn {
-          Text: "Transfer";
-          Anchor: (Height: 32, Width: 130);
-          Style: $S.@CyanButtonStyle;
+          Label {
+            Text: "Send to faction";
+            Style: (FontSize: 9, TextColor: #555555);
+            Anchor: (Height: 14, Bottom: 4);
+          }
+          TextButton #TransferBtn {
+            Text: "Transfer";
+            Anchor: (Height: 30);
+            Style: $S.@CyanButtonStyle;
+          }
         }
 
-        Label { FlexWeight: 1; }
+        // Settings (leader-only, hidden by default)
+        Group #SettingsBox {
+          FlexWeight: 1;
+          Background: (Color: #1a2a3a);
+          Padding: (Left: 8, Right: 8, Top: 8, Bottom: 8);
+          LayoutMode: Top;
+          Anchor: (Left: 4);
+          Visible: false;
+
+          Label {
+            Text: "Treasury config";
+            Style: (FontSize: 9, TextColor: #555555);
+            Anchor: (Height: 14, Bottom: 4);
+          }
+          TextButton #SettingsBtn {
+            Text: "Settings";
+            Anchor: (Height: 30);
+            Style: $S.@ButtonStyle;
+          }
+        }
       }
 
       // === Divider ===
@@ -270,20 +421,6 @@ $C.@PageOverlay {
         }
       }
 
-      // === F. Settings button (leader-only) ===
-      Group #SettingsRow {
-        Visible: false;
-        Anchor: (Height: 36, Top: 6);
-        LayoutMode: Left;
-
-        Label { FlexWeight: 1; }
-
-        TextButton #SettingsBtn {
-          Text: "Treasury Settings";
-          Anchor: (Height: 28, Width: 160);
-          Style: $S.@ButtonStyle;
-        }
-      }
     }
   }
 }

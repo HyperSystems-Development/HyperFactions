@@ -2,6 +2,7 @@ package com.hyperfactions.lifecycle;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.config.ConfigManager;
+import com.hyperfactions.economy.UpkeepProcessor;
 import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 
@@ -22,11 +23,20 @@ public class PeriodicTaskManager {
 
   private int upkeepTaskId = -1;
 
+  private int upkeepWarningTaskId = -1;
+
   private int mobClearTaskId = -1;
+
+  private UpkeepProcessor upkeepProcessor;
 
   /** Creates a new PeriodicTaskManager. */
   public PeriodicTaskManager(HyperFactions hyperFactions) {
     this.hyperFactions = hyperFactions;
+  }
+
+  /** Sets the upkeep processor for upkeep collection tasks. */
+  public void setUpkeepProcessor(UpkeepProcessor processor) {
+    this.upkeepProcessor = processor;
   }
 
   /**
@@ -59,6 +69,10 @@ public class PeriodicTaskManager {
     if (upkeepTaskId > 0) {
       hyperFactions.cancelTask(upkeepTaskId);
       upkeepTaskId = -1;
+    }
+    if (upkeepWarningTaskId > 0) {
+      hyperFactions.cancelTask(upkeepWarningTaskId);
+      upkeepWarningTaskId = -1;
     }
     if (mobClearTaskId > 0) {
       hyperFactions.cancelTask(mobClearTaskId);
@@ -140,7 +154,6 @@ public class PeriodicTaskManager {
 
   /**
    * Starts the upkeep collection task if enabled.
-   * This is a skeleton — logs what it would collect but doesn't actually deduct.
    */
   private void startUpkeepTask() {
     ConfigManager config = ConfigManager.get();
@@ -149,43 +162,31 @@ public class PeriodicTaskManager {
       return;
     }
 
+    if (upkeepProcessor == null) {
+      Logger.debug("Upkeep processor not set — skipping upkeep task");
+      return;
+    }
+
     int intervalHours = config.getUpkeepIntervalHours();
     int periodTicks = intervalHours * 3600 * 20; // Convert hours to ticks
 
-    upkeepTaskId = hyperFactions.scheduleRepeatingTask(periodTicks, periodTicks, () -> {
-      var economyManager = hyperFactions.getEconomyManager();
-      var factionManager = hyperFactions.getFactionManager();
-      if (economyManager == null || factionManager == null) {
-        return;
-      }
-
-      java.math.BigDecimal costPerChunk = config.getUpkeepCostPerChunk();
-      int factionsProcessed = 0;
-
-      for (var faction : factionManager.getAllFactions()) {
-        int claimCount = faction.getClaimCount();
-        if (claimCount <= 0) {
-          continue;
-        }
-
-        java.math.BigDecimal cost = costPerChunk.multiply(java.math.BigDecimal.valueOf(claimCount));
-        var economy = economyManager.getEconomy(faction.id());
-        if (economy == null) {
-          continue;
-        }
-
-        // Skeleton: log what would happen but don't deduct
-        Logger.info("[Upkeep] Faction '%s': %d claims x %s = %s (skeleton — not deducted)",
-            faction.name(), claimCount, costPerChunk.toPlainString(), cost.toPlainString());
-        factionsProcessed++;
-      }
-
-      Logger.info("[Upkeep] Upkeep collection task ran — %d factions processed (skeleton mode)",
-          factionsProcessed);
-    });
+    upkeepTaskId = hyperFactions.scheduleRepeatingTask(periodTicks, periodTicks,
+        ErrorHandler.wrapTask("Upkeep collection", upkeepProcessor::processUpkeep));
 
     if (upkeepTaskId > 0) {
       Logger.debug("Upkeep collection scheduled every %d hours", intervalHours);
+    }
+
+    // Start warning task (runs every 15 minutes)
+    int warningHours = config.getUpkeepWarningHours();
+    if (warningHours > 0) {
+      int warningPeriodTicks = 15 * 60 * 20; // 15 minutes
+      upkeepWarningTaskId = hyperFactions.scheduleRepeatingTask(warningPeriodTicks, warningPeriodTicks,
+          ErrorHandler.wrapTask("Upkeep warnings", upkeepProcessor::processWarnings));
+
+      if (upkeepWarningTaskId > 0) {
+        Logger.debug("Upkeep warning check scheduled every 15 minutes (warning window: %dh)", warningHours);
+      }
     }
   }
 

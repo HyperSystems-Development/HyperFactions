@@ -56,9 +56,9 @@ public class EconomyManager implements EconomyAPI {
       boolean autoPayDefault = ConfigManager.get().isUpkeepAutoPayDefault();
       FactionEconomy economy;
       if (startingBalance.compareTo(BigDecimal.ZERO) > 0) {
-        economy = new FactionEconomy(startingBalance, new ArrayList<>(), defaultLimits, 0L, autoPayDefault);
+        economy = new FactionEconomy(startingBalance, new ArrayList<>(), defaultLimits, 0L, autoPayDefault, 0L, 0);
       } else {
-        economy = new FactionEconomy(BigDecimal.ZERO, new ArrayList<>(), defaultLimits, 0L, autoPayDefault);
+        economy = new FactionEconomy(BigDecimal.ZERO, new ArrayList<>(), defaultLimits, 0L, autoPayDefault, 0L, 0);
       }
       economyCache.put(factionId, economy);
       storage.save(factionId, economy);
