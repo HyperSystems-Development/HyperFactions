@@ -313,6 +313,9 @@ public final class MessageKeys {
     public static final String FACTION = "hyperfactions.cmd.power.faction";
     public static final String DEATH_LOSS = "hyperfactions.cmd.power.death_loss";
     public static final String REGEN = "hyperfactions.cmd.power.regen";
+    public static final String NO_PERMISSION = "hyperfactions.cmd.power.no_permission";
+    public static final String HEADER = "hyperfactions.cmd.power.header";
+    public static final String CURRENT = "hyperfactions.cmd.power.current";
 
     private Power() {}
   }
@@ -328,6 +331,28 @@ public final class MessageKeys {
     public static final String ALREADY_RELATION = "hyperfactions.cmd.relation.already_relation";
     public static final String CANNOT_SELF = "hyperfactions.cmd.relation.cannot_self";
     public static final String MAX_ALLIES = "hyperfactions.cmd.relation.max_allies";
+    // Ally
+    public static final String ALLY_NO_PERMISSION = "hyperfactions.cmd.relation.ally_no_permission";
+    public static final String ALLY_USAGE = "hyperfactions.cmd.relation.ally_usage";
+    public static final String ALREADY_ALLY = "hyperfactions.cmd.relation.already_ally";
+    public static final String ALLY_FAILED = "hyperfactions.cmd.relation.ally_failed";
+    // Enemy
+    public static final String ENEMY_NO_PERMISSION = "hyperfactions.cmd.relation.enemy_no_permission";
+    public static final String ENEMY_USAGE = "hyperfactions.cmd.relation.enemy_usage";
+    public static final String ALREADY_ENEMY = "hyperfactions.cmd.relation.already_enemy";
+    public static final String MAX_ENEMIES = "hyperfactions.cmd.relation.max_enemies";
+    public static final String ENEMY_FAILED = "hyperfactions.cmd.relation.enemy_failed";
+    // Neutral
+    public static final String NEUTRAL_NO_PERMISSION = "hyperfactions.cmd.relation.neutral_no_permission";
+    public static final String NEUTRAL_USAGE = "hyperfactions.cmd.relation.neutral_usage";
+    public static final String ALREADY_NEUTRAL = "hyperfactions.cmd.relation.already_neutral";
+    public static final String NEUTRAL_FAILED = "hyperfactions.cmd.relation.neutral_failed";
+    // Relations list
+    public static final String VIEW_NO_PERMISSION = "hyperfactions.cmd.relation.view_no_permission";
+    public static final String HEADER = "hyperfactions.cmd.relation.header";
+    public static final String ALLIES_COUNT = "hyperfactions.cmd.relation.allies_count";
+    public static final String ENEMIES_COUNT = "hyperfactions.cmd.relation.enemies_count";
+    public static final String LIST_ENTRY = "hyperfactions.cmd.relation.list_entry";
 
     private Relation() {}
   }
@@ -337,8 +362,45 @@ public final class MessageKeys {
     public static final String MODE_FACTION = "hyperfactions.cmd.chat.mode_faction";
     public static final String MODE_ALLY = "hyperfactions.cmd.chat.mode_ally";
     public static final String MODE_PUBLIC = "hyperfactions.cmd.chat.mode_public";
+    public static final String USAGE = "hyperfactions.cmd.chat.usage";
+    public static final String NO_PERMISSION = "hyperfactions.cmd.chat.no_permission";
+    public static final String MODE_SET = "hyperfactions.cmd.chat.mode_set";
 
     private Chat() {}
+  }
+
+  /** /f invites command messages. */
+  public static final class Invites {
+    public static final String NOT_OFFICER = "hyperfactions.cmd.invites.not_officer";
+    public static final String HEADER = "hyperfactions.cmd.invites.header";
+    public static final String NO_PENDING = "hyperfactions.cmd.invites.no_pending";
+    public static final String OUTGOING = "hyperfactions.cmd.invites.outgoing";
+    public static final String OUTGOING_ENTRY = "hyperfactions.cmd.invites.outgoing_entry";
+    public static final String REQUESTS = "hyperfactions.cmd.invites.requests";
+    public static final String REQUEST_ENTRY = "hyperfactions.cmd.invites.request_entry";
+    public static final String YOUR_INVITES_HEADER = "hyperfactions.cmd.invites.your_invites_header";
+    public static final String NO_INVITES = "hyperfactions.cmd.invites.no_invites";
+    public static final String INVITE_ENTRY = "hyperfactions.cmd.invites.invite_entry";
+
+    private Invites() {}
+  }
+
+  /** /f request command messages. */
+  public static final class Request {
+    public static final String NO_PERMISSION = "hyperfactions.cmd.request.no_permission";
+    public static final String ALREADY_IN_NAMED = "hyperfactions.cmd.request.already_in_named";
+    public static final String USE_LEAVE_HINT = "hyperfactions.cmd.request.use_leave_hint";
+    public static final String USAGE = "hyperfactions.cmd.request.usage";
+    public static final String FACTION_OPEN = "hyperfactions.cmd.request.faction_open";
+    public static final String ALREADY_REQUESTED = "hyperfactions.cmd.request.already_requested";
+    public static final String HAS_INVITE = "hyperfactions.cmd.request.has_invite";
+    public static final String SENT = "hyperfactions.cmd.request.sent";
+    public static final String YOUR_MESSAGE = "hyperfactions.cmd.request.your_message";
+    public static final String OFFICER_REVIEW = "hyperfactions.cmd.request.officer_review";
+    public static final String OFFICER_NOTIFY = "hyperfactions.cmd.request.officer_notify";
+    public static final String OFFICER_REVIEW_HINT = "hyperfactions.cmd.request.officer_review_hint";
+
+    private Request() {}
   }
 
   /** /f rename, /f desc, /f color, /f open, /f close, /f settings command messages. */
@@ -361,14 +423,92 @@ public final class MessageKeys {
     public static final String INSUFFICIENT = "hyperfactions.cmd.economy.insufficient";
     public static final String INVALID_AMOUNT = "hyperfactions.cmd.economy.invalid_amount";
     public static final String ECONOMY_DISABLED = "hyperfactions.cmd.economy.economy_disabled";
+    // Balance
+    public static final String BALANCE_NO_PERMISSION = "hyperfactions.cmd.economy.balance_no_permission";
+    public static final String TREASURY_UNAVAILABLE = "hyperfactions.cmd.economy.treasury_unavailable";
+    public static final String BALANCE_DISPLAY = "hyperfactions.cmd.economy.balance_display";
+    // Deposit
+    public static final String DEPOSIT_NO_PERMISSION = "hyperfactions.cmd.economy.deposit_no_permission";
+    public static final String DEPOSIT_FACTION_DENIED = "hyperfactions.cmd.economy.deposit_faction_denied";
+    public static final String DEPOSIT_USAGE = "hyperfactions.cmd.economy.deposit_usage";
+    public static final String AMOUNT_POSITIVE = "hyperfactions.cmd.economy.amount_positive";
+    public static final String WALLET_INSUFFICIENT = "hyperfactions.cmd.economy.wallet_insufficient";
+    public static final String WALLET_WITHDRAW_FAILED = "hyperfactions.cmd.economy.wallet_withdraw_failed";
+    public static final String DEPOSIT_FAILED = "hyperfactions.cmd.economy.deposit_failed";
+    // Withdraw
+    public static final String WITHDRAW_NO_PERMISSION = "hyperfactions.cmd.economy.withdraw_no_permission";
+    public static final String WITHDRAW_FACTION_DENIED = "hyperfactions.cmd.economy.withdraw_faction_denied";
+    public static final String WITHDRAW_USAGE = "hyperfactions.cmd.economy.withdraw_usage";
+    public static final String WITHDRAW_LIMIT_DENIED = "hyperfactions.cmd.economy.withdraw_limit_denied";
+    public static final String WALLET_DEPOSIT_FAILED = "hyperfactions.cmd.economy.wallet_deposit_failed";
+    public static final String WITHDRAW_LIMIT_EXCEEDED = "hyperfactions.cmd.economy.withdraw_limit_exceeded";
+    public static final String WITHDRAW_FAILED = "hyperfactions.cmd.economy.withdraw_failed";
+    // Transfer
+    public static final String TRANSFER_NO_PERMISSION = "hyperfactions.cmd.economy.transfer_no_permission";
+    public static final String TRANSFER_FACTION_DENIED = "hyperfactions.cmd.economy.transfer_faction_denied";
+    public static final String TRANSFER_USAGE = "hyperfactions.cmd.economy.transfer_usage";
+    public static final String TRANSFER_SELF = "hyperfactions.cmd.economy.transfer_self";
+    public static final String TRANSFER_LIMIT_DENIED = "hyperfactions.cmd.economy.transfer_limit_denied";
+    public static final String TRANSFER_LIMIT_EXCEEDED = "hyperfactions.cmd.economy.transfer_limit_exceeded";
+    public static final String TRANSFER_FAILED = "hyperfactions.cmd.economy.transfer_failed";
+    // Log
+    public static final String LOG_NO_PERMISSION = "hyperfactions.cmd.economy.log_no_permission";
+    public static final String LOG_HEADER = "hyperfactions.cmd.economy.log_header";
+    public static final String LOG_EMPTY = "hyperfactions.cmd.economy.log_empty";
+    // Money help
+    public static final String MONEY_HELP_HEADER = "hyperfactions.cmd.economy.money_help_header";
+    public static final String MONEY_HELP_BALANCE = "hyperfactions.cmd.economy.money_help_balance";
+    public static final String MONEY_HELP_DEPOSIT = "hyperfactions.cmd.economy.money_help_deposit";
+    public static final String MONEY_HELP_WITHDRAW = "hyperfactions.cmd.economy.money_help_withdraw";
+    public static final String MONEY_HELP_TRANSFER = "hyperfactions.cmd.economy.money_help_transfer";
+    public static final String MONEY_HELP_LOG = "hyperfactions.cmd.economy.money_help_log";
 
     private Economy() {}
   }
 
-  /** /f info, /f who, /f list, /f members command messages. */
+  /** /f info, /f who, /f list, /f members, /f map, /f help command messages. */
   public static final class Info {
     public static final String FACTION_HEADER = "hyperfactions.cmd.info.faction_header";
     public static final String PLAYER_HEADER = "hyperfactions.cmd.info.player_header";
+    // Info command
+    public static final String NO_PERMISSION = "hyperfactions.cmd.info.no_permission";
+    public static final String FACTION_NOT_FOUND = "hyperfactions.cmd.info.faction_not_found";
+    public static final String NOT_IN_FACTION_HINT = "hyperfactions.cmd.info.not_in_faction_hint";
+    public static final String LEADER = "hyperfactions.cmd.info.leader";
+    public static final String MEMBERS = "hyperfactions.cmd.info.members";
+    public static final String POWER = "hyperfactions.cmd.info.power";
+    public static final String CLAIMS = "hyperfactions.cmd.info.claims";
+    public static final String RAIDABLE = "hyperfactions.cmd.info.raidable";
+    public static final String ALLIES = "hyperfactions.cmd.info.allies";
+    public static final String ENEMIES = "hyperfactions.cmd.info.enemies";
+    public static final String THEY_CONSIDER = "hyperfactions.cmd.info.they_consider";
+    public static final String YOU_CONSIDER = "hyperfactions.cmd.info.you_consider";
+    // Members command
+    public static final String MEMBERS_NO_PERMISSION = "hyperfactions.cmd.info.members_no_permission";
+    public static final String MEMBERS_HEADER = "hyperfactions.cmd.info.members_header";
+    public static final String MEMBER_ONLINE = "hyperfactions.cmd.info.member_online";
+    // List command
+    public static final String LIST_NO_PERMISSION = "hyperfactions.cmd.info.list_no_permission";
+    public static final String LIST_EMPTY = "hyperfactions.cmd.info.list_empty";
+    public static final String LIST_HEADER = "hyperfactions.cmd.info.list_header";
+    public static final String LIST_ENTRY = "hyperfactions.cmd.info.list_entry";
+    public static final String LIST_ENTRY_RAIDABLE = "hyperfactions.cmd.info.list_entry_raidable";
+    // Help command
+    public static final String HELP_NO_PERMISSION = "hyperfactions.cmd.info.help_no_permission";
+    // Who command
+    public static final String WHO_NO_PERMISSION = "hyperfactions.cmd.info.who_no_permission";
+    public static final String WHO_FACTION = "hyperfactions.cmd.info.who_faction";
+    public static final String WHO_ROLE = "hyperfactions.cmd.info.who_role";
+    public static final String WHO_JOINED = "hyperfactions.cmd.info.who_joined";
+    public static final String WHO_FACTION_NONE = "hyperfactions.cmd.info.who_faction_none";
+    public static final String WHO_POWER = "hyperfactions.cmd.info.who_power";
+    public static final String WHO_STATUS = "hyperfactions.cmd.info.who_status";
+    public static final String WHO_LAST_SEEN = "hyperfactions.cmd.info.who_last_seen";
+    // Map command
+    public static final String MAP_NO_PERMISSION = "hyperfactions.cmd.info.map_no_permission";
+    public static final String MAP_HEADER = "hyperfactions.cmd.info.map_header";
+    public static final String MAP_LEGEND = "hyperfactions.cmd.info.map_legend";
+    public static final String MAP_GUI_HINT = "hyperfactions.cmd.info.map_gui_hint";
 
     private Info() {}
   }

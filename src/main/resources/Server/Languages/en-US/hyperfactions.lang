@@ -216,3 +216,148 @@ cmd.delhome.deleted = Faction home deleted!
 cmd.delhome.broadcast = {0} deleted the faction home.
 cmd.delhome.not_officer = You must be an officer to delete the home.
 cmd.delhome.failed = Failed to delete home.
+
+# ========== Commands - Relation (Ally/Enemy/Neutral/Relations) ==========
+cmd.relation.ally_no_permission = You don't have permission to manage alliances.
+cmd.relation.ally_usage = Usage: /f ally <faction>
+cmd.relation.ally_sent = Ally request sent to {0}!
+cmd.relation.ally_formed = You are now allies with {0}!
+cmd.relation.already_ally = You are already allied with that faction.
+cmd.relation.ally_failed = Failed to send ally request.
+cmd.relation.enemy_no_permission = You don't have permission to declare enemies.
+cmd.relation.enemy_usage = Usage: /f enemy <faction>
+cmd.relation.enemy_declared = {0} is now your enemy!
+cmd.relation.already_enemy = You are already enemies with that faction.
+cmd.relation.max_enemies = You have reached the maximum number of enemies.
+cmd.relation.enemy_failed = Failed to set enemy.
+cmd.relation.neutral_no_permission = You don't have permission to set neutral relations.
+cmd.relation.neutral_usage = Usage: /f neutral <faction>
+cmd.relation.neutral_set = Your faction is now neutral with {0}.
+cmd.relation.already_neutral = You are already neutral with that faction.
+cmd.relation.neutral_failed = Failed to set neutral.
+cmd.relation.cannot_self = You cannot ally with yourself.
+cmd.relation.max_allies = You have reached the maximum number of allies.
+cmd.relation.view_no_permission = You don't have permission to view relations.
+cmd.relation.header = === Faction Relations ===
+cmd.relation.allies_count = Allies ({0}):
+cmd.relation.enemies_count = Enemies ({0}):
+cmd.relation.list_entry = - {0}
+
+# ========== Commands - Chat ==========
+cmd.chat.usage = Usage: /f c [f|a|off]
+cmd.chat.no_permission = You don't have permission for that chat mode.
+cmd.chat.mode_set = Chat mode set to {0}
+
+# ========== Commands - Invites ==========
+cmd.invites.not_officer = You must be an officer to manage invites.
+cmd.invites.header = === Faction Invites ===
+cmd.invites.no_pending = No pending invites or requests.
+cmd.invites.outgoing = Outgoing Invites:
+cmd.invites.outgoing_entry = {0} (invited by {1})
+cmd.invites.requests = Join Requests:
+cmd.invites.request_entry = {0}{1}
+cmd.invites.your_invites_header = === Your Invites ===
+cmd.invites.no_invites = You have no pending invites.
+cmd.invites.invite_entry = {0} - Use /f accept {1}
+
+# ========== Commands - Request ==========
+cmd.request.no_permission = You don't have permission to request faction membership.
+cmd.request.already_in_named = You are already in {0}.
+cmd.request.use_leave_hint = Use /f leave first if you want to join another faction.
+cmd.request.usage = Usage: /f request <faction> [message]
+cmd.request.faction_open = That faction is open! Use /f accept {0} to join directly.
+cmd.request.already_requested = You already have a pending request to that faction.
+cmd.request.has_invite = You have been invited to that faction! Use /f accept {0} to join.
+cmd.request.sent = Sent join request to {0}!
+cmd.request.your_message = Your message: "{0}"
+cmd.request.officer_review = An officer will review your request.
+cmd.request.officer_notify = {0} has requested to join your faction!
+cmd.request.officer_review_hint = Use /f gui > Invites to review.
+
+# ========== Commands - Info ==========
+cmd.info.faction_header = === {0} ===
+cmd.info.player_header = === {0} ===
+cmd.info.no_permission = You don't have permission to view faction info.
+cmd.info.faction_not_found = Faction '{0}' not found.
+cmd.info.not_in_faction_hint = You are not in a faction. Use /f info <faction>
+cmd.info.leader = Leader: {0}
+cmd.info.members = Members: {0}/{1}
+cmd.info.power = Power: {0}
+cmd.info.claims = Claims: {0}
+cmd.info.raidable = RAIDABLE!
+cmd.info.allies = Allies: {0}
+cmd.info.enemies = Enemies: {0}
+cmd.info.they_consider = They consider you: {0}
+cmd.info.you_consider = You consider them: {0}
+cmd.info.members_no_permission = You don't have permission to view faction members.
+cmd.info.members_header = === {0} Members ({1}) ===
+cmd.info.member_online = [Online]
+cmd.info.list_no_permission = You don't have permission to view faction list.
+cmd.info.list_empty = There are no factions.
+cmd.info.list_header = === Factions ({0}) ===
+cmd.info.list_entry = {0} - {1} members, {2} power
+cmd.info.list_entry_raidable = {0} - {1} members, {2} power [RAIDABLE]
+cmd.info.help_no_permission = You don't have permission to view help.
+cmd.info.who_no_permission = You don't have permission to view player info.
+cmd.info.who_faction = Faction: {0}
+cmd.info.who_role = Role: {0}
+cmd.info.who_joined = Joined: {0}
+cmd.info.who_faction_none = Faction: None
+cmd.info.who_power = Power: {0}
+cmd.info.who_status = Status: {0}
+cmd.info.who_last_seen = Last seen: {0}
+cmd.info.map_no_permission = You don't have permission to view the map.
+cmd.info.map_header = === Territory Map ===
+cmd.info.map_legend = Legend: +You /Own /Ally /Enemy -Wild
+cmd.info.map_gui_hint = Use /f gui for interactive map
+
+# ========== Commands - Power ==========
+cmd.power.personal = Personal Power: {0}/{1}
+cmd.power.faction = Faction Power: {0}/{1}
+cmd.power.death_loss = Death Loss: {0}
+cmd.power.regen = Regen Rate: {0}/hr
+cmd.power.no_permission = You don't have permission to view power info.
+cmd.power.header = {0}'s Power:
+cmd.power.current = Current: {0}
+
+# ========== Commands - Economy ==========
+cmd.economy.balance = Balance: {0}
+cmd.economy.deposited = Deposited {0} into the faction treasury.
+cmd.economy.withdrawn = Withdrew {0} from the faction treasury.
+cmd.economy.transferred = Transferred {0} to {1}.
+cmd.economy.insufficient = Insufficient funds in faction treasury.
+cmd.economy.invalid_amount = Invalid amount: {0}
+cmd.economy.economy_disabled = Economy is disabled.
+cmd.economy.balance_no_permission = You don't have permission to view balances.
+cmd.economy.treasury_unavailable = Treasury is not available.
+cmd.economy.balance_display = {0}'s treasury: {1}
+cmd.economy.deposit_no_permission = You don't have permission to deposit.
+cmd.economy.deposit_faction_denied = You don't have faction permission to deposit.
+cmd.economy.deposit_usage = Usage: /f deposit <amount>
+cmd.economy.amount_positive = Amount must be positive.
+cmd.economy.wallet_insufficient = You don't have enough money. Wallet: {0}
+cmd.economy.wallet_withdraw_failed = Failed to withdraw from your wallet.
+cmd.economy.deposit_failed = Failed to deposit to faction treasury. Money returned.
+cmd.economy.withdraw_no_permission = You don't have permission to withdraw.
+cmd.economy.withdraw_faction_denied = You don't have faction permission to withdraw.
+cmd.economy.withdraw_usage = Usage: /f withdraw <amount>
+cmd.economy.withdraw_limit_denied = Withdrawal denied: {0}
+cmd.economy.wallet_deposit_failed = Warning: Failed to deposit to your wallet. Contact an admin.
+cmd.economy.withdraw_limit_exceeded = Withdrawal denied: limit exceeded.
+cmd.economy.withdraw_failed = Withdrawal failed: {0}
+cmd.economy.transfer_no_permission = You don't have permission to transfer.
+cmd.economy.transfer_faction_denied = You don't have faction permission to transfer.
+cmd.economy.transfer_usage = Usage: /f money transfer <faction> <amount>
+cmd.economy.transfer_self = Cannot transfer to your own faction.
+cmd.economy.transfer_limit_denied = Transfer denied: {0}
+cmd.economy.transfer_limit_exceeded = Transfer denied: limit exceeded.
+cmd.economy.transfer_failed = Transfer failed: {0}
+cmd.economy.log_no_permission = You don't have permission to view the transaction log.
+cmd.economy.log_header = Transaction Log (page {0}/{1})
+cmd.economy.log_empty = No transactions found.
+cmd.economy.money_help_header = Treasury Commands:
+cmd.economy.money_help_balance = /f money balance [faction] - View balance
+cmd.economy.money_help_deposit = /f money deposit <amount> - Deposit into treasury
+cmd.economy.money_help_withdraw = /f money withdraw <amount> - Withdraw from treasury
+cmd.economy.money_help_transfer = /f money transfer <faction> <amount> - Transfer between factions
+cmd.economy.money_help_log = /f money log [page] [type] - View transaction history

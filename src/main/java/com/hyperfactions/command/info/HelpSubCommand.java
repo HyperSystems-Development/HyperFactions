@@ -10,6 +10,8 @@ import com.hyperfactions.gui.help.HelpRegistry;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.CommandHelp;
 import com.hyperfactions.util.HelpFormatter;
+import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -43,7 +45,7 @@ public class HelpSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.HELP)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to view help.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Info.HELP_NO_PERMISSION));
       return;
     }
 

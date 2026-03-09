@@ -8,6 +8,9 @@ import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -40,7 +43,7 @@ public class ListSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.LIST)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to view faction list.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Info.LIST_NO_PERMISSION));
       return;
     }
 
@@ -59,16 +62,16 @@ public class ListSubCommand extends FactionSubCommand {
     // Text mode: output to chat
     Collection<Faction> factions = hyperFactions.getFactionManager().getAllFactions();
     if (factions.isEmpty()) {
-      ctx.sendMessage(prefix().insert(msg("There are no factions.", COLOR_GRAY)));
+      ctx.sendMessage(MessageUtil.info(player, MessageKeys.Info.LIST_EMPTY, COLOR_GRAY));
       return;
     }
 
-    ctx.sendMessage(msg("=== Factions (" + factions.size() + ") ===", COLOR_CYAN).bold(true));
+    ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Info.LIST_HEADER, factions.size()), COLOR_CYAN).bold(true));
     for (Faction faction : factions) {
       PowerManager.FactionPowerStats stats = hyperFactions.getPowerManager().getFactionPowerStats(faction.id());
-      String raidable = stats.isRaidable() ? " [RAIDABLE]" : "";
-      ctx.sendMessage(msg(faction.name(), COLOR_YELLOW)
-        .insert(msg(" - " + faction.getMemberCount() + " members, " + String.format("%.0f", stats.currentPower()) + " power" + raidable, COLOR_GRAY)));
+      String key = stats.isRaidable() ? MessageKeys.Info.LIST_ENTRY_RAIDABLE : MessageKeys.Info.LIST_ENTRY;
+      ctx.sendMessage(msg(HFMessages.get(player, key,
+        faction.name(), faction.getMemberCount(), String.format("%.0f", stats.currentPower())), COLOR_GRAY));
     }
   }
 }
