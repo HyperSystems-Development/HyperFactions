@@ -9,6 +9,7 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.ClaimManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.ChunkUtil;
+import com.hyperfactions.util.MessageKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -42,7 +43,7 @@ public class ClaimSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.CLAIM)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to claim territory.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Claim.NO_PERMISSION));
       return;
     }
 
@@ -71,7 +72,7 @@ public class ClaimSubCommand extends FactionSubCommand {
     if (playerFactionId != null && playerFactionId.equals(chunkOwner) && !fctx.isTextMode()) {
       Player playerEntity = store.getComponent(ref, Player.getComponentType());
       if (playerEntity != null) {
-        ctx.sendMessage(prefix().insert(msg("Your faction already owns this chunk.", COLOR_GRAY)));
+        ctx.sendMessage(MessageUtil.info(player, MessageKeys.Claim.ALREADY_YOURS, COLOR_GRAY));
         hyperFactions.getGuiManager().openChunkMap(playerEntity, ref, store, player);
         return;
       }
@@ -81,11 +82,9 @@ public class ClaimSubCommand extends FactionSubCommand {
     if (chunkOwner != null && !chunkOwner.equals(playerFactionId) && !fctx.isTextMode()) {
       boolean isAlly = playerFactionId != null && hyperFactions.getRelationManager().areAllies(playerFactionId, chunkOwner);
       if (isAlly) {
-        ctx.sendMessage(prefix().insert(msg("You cannot claim ally territory.", COLOR_RED)));
+        ctx.sendMessage(MessageUtil.error(player, MessageKeys.Claim.CANNOT_CLAIM_ALLY));
       } else {
-        ctx.sendMessage(prefix().insert(msg("This chunk is claimed. Use ", COLOR_RED))
-          .insert(msg("/f overclaim", COLOR_WHITE))
-          .insert(msg(" if they are raidable.", COLOR_RED)));
+        ctx.sendMessage(MessageUtil.error(player, MessageKeys.Claim.ALREADY_CLAIMED_HINT));
       }
       Player playerEntity = store.getComponent(ref, Player.getComponentType());
       if (playerEntity != null) {
@@ -101,7 +100,7 @@ public class ClaimSubCommand extends FactionSubCommand {
 
     switch (result) {
       case SUCCESS -> {
-        ctx.sendMessage(prefix().insert(msg("Claimed chunk at " + chunkX + ", " + chunkZ + "!", COLOR_GREEN)));
+        ctx.sendMessage(MessageUtil.success(player, MessageKeys.Claim.SUCCESS, chunkX, chunkZ));
         // Show map after claiming (if not text mode)
         if (!fctx.isTextMode()) {
           Player playerEntity = store.getComponent(ref, Player.getComponentType());
@@ -110,16 +109,16 @@ public class ClaimSubCommand extends FactionSubCommand {
           }
         }
       }
-      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error("You are not in a faction."));
-      case NOT_OFFICER -> ctx.sendMessage(prefix().insert(msg("You must be an officer to claim land.", COLOR_RED)));
-      case ALREADY_CLAIMED_SELF -> ctx.sendMessage(prefix().insert(msg("Your faction already owns this chunk.", COLOR_RED)));
-      case ALREADY_CLAIMED_OTHER -> ctx.sendMessage(prefix().insert(msg("This chunk is already claimed.", COLOR_RED)));
-      case MAX_CLAIMS_REACHED -> ctx.sendMessage(prefix().insert(msg("Your faction has reached max claims. Get more power!", COLOR_RED)));
-      case NOT_ADJACENT -> ctx.sendMessage(prefix().insert(msg("You must claim adjacent to existing territory.", COLOR_RED)));
-      case WORLD_NOT_ALLOWED -> ctx.sendMessage(prefix().insert(msg("Claiming is not allowed in this world.", COLOR_RED)));
-      case ORBISGUARD_PROTECTED -> ctx.sendMessage(prefix().insert(msg("This area is protected by OrbisGuard.", COLOR_RED)));
-      case ZONE_PROTECTED -> ctx.sendMessage(prefix().insert(msg("This chunk is in a safezone or warzone.", COLOR_RED)));
-      default -> ctx.sendMessage(prefix().insert(msg("Failed to claim chunk.", COLOR_RED)));
+      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.NOT_IN_FACTION));
+      case NOT_OFFICER -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Claim.NOT_OFFICER));
+      case ALREADY_CLAIMED_SELF -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Claim.ALREADY_YOURS));
+      case ALREADY_CLAIMED_OTHER -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Claim.ALREADY_CLAIMED));
+      case MAX_CLAIMS_REACHED -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Claim.MAX_CLAIMS));
+      case NOT_ADJACENT -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Claim.NOT_CONNECTED));
+      case WORLD_NOT_ALLOWED -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Claim.WORLD_NOT_ALLOWED));
+      case ORBISGUARD_PROTECTED -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Claim.ORBISGUARD));
+      case ZONE_PROTECTED -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Claim.ZONE_PROTECTED));
+      default -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Claim.FAILED));
     }
   }
 }

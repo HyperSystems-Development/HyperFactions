@@ -9,6 +9,8 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionLog;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -39,7 +41,7 @@ public class DescSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.DESC)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Desc.NO_PERMISSION));
       return;
     }
 
@@ -50,7 +52,7 @@ public class DescSubCommand extends FactionSubCommand {
 
     FactionMember member = faction.getMember(player.getUuid());
     if (member == null || !member.isOfficerOrHigher()) {
-      ctx.sendMessage(prefix().insert(msg("You must be an officer to set the description.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Desc.NOT_OFFICER));
       return;
     }
 
@@ -76,9 +78,9 @@ public class DescSubCommand extends FactionSubCommand {
     hyperFactions.getFactionManager().updateFaction(updated);
 
     if (description != null) {
-      ctx.sendMessage(prefix().insert(msg("Faction description set!", COLOR_GREEN)));
+      ctx.sendMessage(MessageUtil.success(player, MessageKeys.Desc.SET));
     } else {
-      ctx.sendMessage(prefix().insert(msg("Faction description cleared.", COLOR_GREEN)));
+      ctx.sendMessage(MessageUtil.success(player, MessageKeys.Desc.CLEARED));
     }
 
     // After action, open settings page if not text mode

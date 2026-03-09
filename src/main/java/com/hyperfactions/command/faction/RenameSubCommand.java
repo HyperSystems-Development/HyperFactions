@@ -10,6 +10,8 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionLog;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -39,7 +41,7 @@ public class RenameSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.RENAME)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Rename.NO_PERMISSION));
       return;
     }
 
@@ -50,7 +52,7 @@ public class RenameSubCommand extends FactionSubCommand {
 
     FactionMember member = faction.getMember(player.getUuid());
     if (member == null || !member.isLeader()) {
-      ctx.sendMessage(prefix().insert(msg("Only the leader can rename the faction.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Rename.NOT_LEADER));
       return;
     }
 
@@ -68,7 +70,7 @@ public class RenameSubCommand extends FactionSubCommand {
 
     // Text mode requires args
     if (!fctx.hasArgs()) {
-      ctx.sendMessage(prefix().insert(msg("Usage: /f rename <name>", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Rename.USAGE));
       return;
     }
 
@@ -76,15 +78,15 @@ public class RenameSubCommand extends FactionSubCommand {
     ConfigManager config = ConfigManager.get();
 
     if (newName.length() < config.getMinNameLength()) {
-      ctx.sendMessage(prefix().insert(msg("Name is too short (min " + config.getMinNameLength() + " chars).", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Rename.TOO_SHORT, config.getMinNameLength()));
       return;
     }
     if (newName.length() > config.getMaxNameLength()) {
-      ctx.sendMessage(prefix().insert(msg("Name is too long (max " + config.getMaxNameLength() + " chars).", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Rename.TOO_LONG, config.getMaxNameLength()));
       return;
     }
     if (hyperFactions.getFactionManager().isNameTaken(newName) && !newName.equalsIgnoreCase(faction.name())) {
-      ctx.sendMessage(prefix().insert(msg("That name is already taken.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Rename.NAME_TAKEN));
       return;
     }
 
@@ -100,11 +102,8 @@ public class RenameSubCommand extends FactionSubCommand {
       hyperFactions.getWorldMapService().triggerFactionWideRefresh(faction.id());
     }
 
-    ctx.sendMessage(prefix().insert(msg("Faction renamed to ", COLOR_GREEN))
-      .insert(msg(newName, COLOR_CYAN)).insert(msg("!", COLOR_GREEN)));
-    broadcastToFaction(faction.id(), prefix().insert(msg(player.getUsername(), COLOR_YELLOW))
-      .insert(msg(" renamed the faction to ", COLOR_GREEN))
-      .insert(msg(newName, COLOR_CYAN)));
+    ctx.sendMessage(MessageUtil.success(player, MessageKeys.Rename.SUCCESS, newName));
+    broadcastToFaction(faction.id(), MessageUtil.success(player, MessageKeys.Rename.BROADCAST, player.getUsername(), newName));
 
     // After action, open settings page if not text mode
     if (fctx.shouldOpenGuiAfterAction()) {

@@ -9,6 +9,8 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionLog;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -38,7 +40,7 @@ public class OpenSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.OPEN)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Open.NO_PERMISSION));
       return;
     }
 
@@ -49,12 +51,12 @@ public class OpenSubCommand extends FactionSubCommand {
 
     FactionMember member = faction.getMember(player.getUuid());
     if (member == null || !member.isLeader()) {
-      ctx.sendMessage(prefix().insert(msg("Only the leader can change this setting.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Open.NOT_LEADER));
       return;
     }
 
     if (faction.open()) {
-      ctx.sendMessage(prefix().insert(msg("Your faction is already open.", COLOR_YELLOW)));
+      ctx.sendMessage(MessageUtil.info(player, MessageKeys.Open.ALREADY_OPEN, COLOR_YELLOW));
       return;
     }
 
@@ -64,9 +66,8 @@ public class OpenSubCommand extends FactionSubCommand {
 
     hyperFactions.getFactionManager().updateFaction(updated);
 
-    ctx.sendMessage(prefix().insert(msg("Your faction is now open! Anyone can join with /f join.", COLOR_GREEN)));
-    broadcastToFaction(faction.id(), prefix().insert(msg(player.getUsername(), COLOR_YELLOW))
-      .insert(msg(" opened the faction to public joining.", COLOR_GREEN)));
+    ctx.sendMessage(MessageUtil.success(player, MessageKeys.Open.SUCCESS));
+    broadcastToFaction(faction.id(), MessageUtil.success(player, MessageKeys.Open.BROADCAST, player.getUsername()));
 
     // After action, open settings page if not text mode
     String[] rawArgs = CommandUtil.parseRawArgs(ctx.getInputString(), 2);

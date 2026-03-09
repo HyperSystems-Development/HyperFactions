@@ -60,23 +60,89 @@ public final class MessageKeys {
 
   /** /f create command messages. */
   public static final class Create {
+    public static final String NO_PERMISSION = "hyperfactions.cmd.create.no_permission";
+    public static final String USAGE = "hyperfactions.cmd.create.usage";
     public static final String SUCCESS = "hyperfactions.cmd.create.success";
+    public static final String ALREADY_IN_NAMED = "hyperfactions.cmd.create.already_in_named";
+    public static final String USE_LEAVE_FIRST = "hyperfactions.cmd.create.use_leave_first";
     public static final String NAME_TAKEN = "hyperfactions.cmd.create.name_taken";
-    public static final String NAME_INVALID = "hyperfactions.cmd.create.name_invalid";
     public static final String NAME_TOO_SHORT = "hyperfactions.cmd.create.name_too_short";
     public static final String NAME_TOO_LONG = "hyperfactions.cmd.create.name_too_long";
-    public static final String NAME_PROFANITY = "hyperfactions.cmd.create.name_profanity";
-    public static final String MAX_FACTIONS = "hyperfactions.cmd.create.max_factions";
+    public static final String FAILED = "hyperfactions.cmd.create.failed";
 
     private Create() {}
   }
 
   /** /f disband command messages. */
   public static final class Disband {
-    public static final String SUCCESS = "hyperfactions.cmd.disband.success";
+    public static final String NO_PERMISSION = "hyperfactions.cmd.disband.no_permission";
+    public static final String NOT_LEADER = "hyperfactions.cmd.disband.not_leader";
     public static final String CONFIRM_PROMPT = "hyperfactions.cmd.disband.confirm_prompt";
+    public static final String CONFIRM_INSTRUCTION = "hyperfactions.cmd.disband.confirm_instruction";
+    public static final String SUCCESS = "hyperfactions.cmd.disband.success";
+    public static final String FAILED = "hyperfactions.cmd.disband.failed";
+    public static final String CANCELLED = "hyperfactions.cmd.disband.cancelled";
 
     private Disband() {}
+  }
+
+  /** /f rename command messages. */
+  public static final class Rename {
+    public static final String NO_PERMISSION = "hyperfactions.cmd.rename.no_permission";
+    public static final String NOT_LEADER = "hyperfactions.cmd.rename.not_leader";
+    public static final String USAGE = "hyperfactions.cmd.rename.usage";
+    public static final String TOO_SHORT = "hyperfactions.cmd.rename.too_short";
+    public static final String TOO_LONG = "hyperfactions.cmd.rename.too_long";
+    public static final String NAME_TAKEN = "hyperfactions.cmd.rename.name_taken";
+    public static final String SUCCESS = "hyperfactions.cmd.rename.success";
+    public static final String BROADCAST = "hyperfactions.cmd.rename.broadcast";
+
+    private Rename() {}
+  }
+
+  /** /f desc command messages. */
+  public static final class Desc {
+    public static final String NO_PERMISSION = "hyperfactions.cmd.desc.no_permission";
+    public static final String NOT_OFFICER = "hyperfactions.cmd.desc.not_officer";
+    public static final String SET = "hyperfactions.cmd.desc.set";
+    public static final String CLEARED = "hyperfactions.cmd.desc.cleared";
+
+    private Desc() {}
+  }
+
+  /** /f open command messages. */
+  public static final class Open {
+    public static final String NO_PERMISSION = "hyperfactions.cmd.open.no_permission";
+    public static final String NOT_LEADER = "hyperfactions.cmd.open.not_leader";
+    public static final String ALREADY_OPEN = "hyperfactions.cmd.open.already_open";
+    public static final String SUCCESS = "hyperfactions.cmd.open.success";
+    public static final String BROADCAST = "hyperfactions.cmd.open.broadcast";
+
+    private Open() {}
+  }
+
+  /** /f close command messages. */
+  public static final class Close {
+    public static final String NO_PERMISSION = "hyperfactions.cmd.close.no_permission";
+    public static final String NOT_LEADER = "hyperfactions.cmd.close.not_leader";
+    public static final String ALREADY_CLOSED = "hyperfactions.cmd.close.already_closed";
+    public static final String SUCCESS = "hyperfactions.cmd.close.success";
+    public static final String BROADCAST = "hyperfactions.cmd.close.broadcast";
+
+    private Close() {}
+  }
+
+  /** /f color command messages. */
+  public static final class Color {
+    public static final String NO_PERMISSION = "hyperfactions.cmd.color.no_permission";
+    public static final String NOT_OFFICER = "hyperfactions.cmd.color.not_officer";
+    public static final String COLORS_DISABLED = "hyperfactions.cmd.color.colors_disabled";
+    public static final String USAGE = "hyperfactions.cmd.color.usage";
+    public static final String USAGE_HINT = "hyperfactions.cmd.color.usage_hint";
+    public static final String INVALID = "hyperfactions.cmd.color.invalid";
+    public static final String SUCCESS = "hyperfactions.cmd.color.success";
+
+    private Color() {}
   }
 
   /** /f invite command messages. */
@@ -138,12 +204,20 @@ public final class MessageKeys {
 
   /** /f claim, /f unclaim, /f overclaim command messages. */
   public static final class Claim {
+    public static final String NO_PERMISSION = "hyperfactions.cmd.claim.no_permission";
     public static final String SUCCESS = "hyperfactions.cmd.claim.success";
     public static final String UNCLAIMED = "hyperfactions.cmd.claim.unclaimed";
     public static final String ALREADY_CLAIMED = "hyperfactions.cmd.claim.already_claimed";
     public static final String ALREADY_YOURS = "hyperfactions.cmd.claim.already_yours";
-    public static final String NOT_CONNECTED = "hyperfactions.cmd.claim.not_connected";
-    public static final String NOT_ENOUGH_POWER = "hyperfactions.cmd.claim.not_enough_power";
+    public static final String CANNOT_CLAIM_ALLY = "hyperfactions.cmd.claim.cannot_claim_ally";
+    public static final String ALREADY_CLAIMED_HINT = "hyperfactions.cmd.claim.already_claimed_hint";
+    public static final String NOT_OFFICER = "hyperfactions.cmd.claim.not_officer";
+    public static final String NOT_CONNECTED = "hyperfactions.cmd.claim.not_adjacent";
+    public static final String MAX_CLAIMS = "hyperfactions.cmd.claim.max_claims";
+    public static final String WORLD_NOT_ALLOWED = "hyperfactions.cmd.claim.world_not_allowed";
+    public static final String ORBISGUARD = "hyperfactions.cmd.claim.orbisguard";
+    public static final String ZONE_PROTECTED = "hyperfactions.cmd.claim.zone_protected";
+    public static final String FAILED = "hyperfactions.cmd.claim.failed";
     public static final String OVERCLAIMED = "hyperfactions.cmd.claim.overclaimed";
     public static final String CANNOT_OVERCLAIM = "hyperfactions.cmd.claim.cannot_overclaim";
     public static final String NOT_YOUR_CLAIM = "hyperfactions.cmd.claim.not_your_claim";

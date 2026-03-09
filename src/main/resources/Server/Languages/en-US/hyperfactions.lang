@@ -28,3 +28,75 @@ common.none = None
 common.page = Page {0} of {1}
 common.unknown = Unknown
 common.error_generic = Something went wrong. Please try again.
+
+# ========== Commands - Create ==========
+cmd.create.no_permission = You don't have permission to create factions.
+cmd.create.usage = Usage: /f create <name>
+cmd.create.success = Faction '{0}' created!
+cmd.create.already_in_named = You are already in {0}.
+cmd.create.use_leave_first = Use /f leave first if you want to create a new faction.
+cmd.create.name_taken = That faction name is already taken.
+cmd.create.name_too_short = Faction name is too short.
+cmd.create.name_too_long = Faction name is too long.
+cmd.create.failed = Failed to create faction.
+
+# ========== Commands - Disband ==========
+cmd.disband.no_permission = You don't have permission to disband factions.
+cmd.disband.not_leader = Only the faction leader can disband.
+cmd.disband.confirm_prompt = Are you sure you want to disband your faction?
+cmd.disband.confirm_instruction = Type /f disband --text again within {0} seconds to confirm.
+cmd.disband.success = Your faction has been disbanded.
+cmd.disband.failed = Failed to disband faction.
+cmd.disband.cancelled = Previous confirmation cancelled. Type again to confirm disband.
+
+# ========== Commands - Rename ==========
+cmd.rename.no_permission = You don't have permission.
+cmd.rename.not_leader = Only the leader can rename the faction.
+cmd.rename.usage = Usage: /f rename <name>
+cmd.rename.too_short = Name is too short (min {0} chars).
+cmd.rename.too_long = Name is too long (max {0} chars).
+cmd.rename.name_taken = That name is already taken.
+cmd.rename.success = Faction renamed to {0}!
+cmd.rename.broadcast = {0} renamed the faction to {1}
+
+# ========== Commands - Description ==========
+cmd.desc.no_permission = You don't have permission.
+cmd.desc.not_officer = You must be an officer to set the description.
+cmd.desc.set = Faction description set!
+cmd.desc.cleared = Faction description cleared.
+
+# ========== Commands - Open / Close ==========
+cmd.open.no_permission = You don't have permission.
+cmd.open.not_leader = Only the leader can change this setting.
+cmd.open.already_open = Your faction is already open.
+cmd.open.success = Your faction is now open! Anyone can join with /f join.
+cmd.open.broadcast = {0} opened the faction to public joining.
+cmd.close.no_permission = You don't have permission.
+cmd.close.not_leader = Only the leader can change this setting.
+cmd.close.already_closed = Your faction is already closed.
+cmd.close.success = Your faction is now invite-only.
+cmd.close.broadcast = {0} closed the faction to invite-only.
+
+# ========== Commands - Color ==========
+cmd.color.no_permission = You don't have permission.
+cmd.color.not_officer = You must be an officer to change the color.
+cmd.color.colors_disabled = Faction colors are disabled.
+cmd.color.usage = Usage: /f color <code|#hex>
+cmd.color.usage_hint = Valid codes: 0-9, a-f or #RRGGBB hex
+cmd.color.invalid = Invalid color. Use 0-9, a-f, or #RRGGBB.
+cmd.color.success = Faction color updated!
+
+# ========== Commands - Claim ==========
+cmd.claim.no_permission = You don't have permission to claim territory.
+cmd.claim.already_yours = Your faction already owns this chunk.
+cmd.claim.cannot_claim_ally = You cannot claim ally territory.
+cmd.claim.already_claimed_hint = This chunk is claimed. Use /f overclaim if they are raidable.
+cmd.claim.success = Claimed chunk at {0}, {1}!
+cmd.claim.not_officer = You must be an officer to claim land.
+cmd.claim.already_claimed = This chunk is already claimed.
+cmd.claim.max_claims = Your faction has reached max claims. Get more power!
+cmd.claim.not_adjacent = You must claim adjacent to existing territory.
+cmd.claim.world_not_allowed = Claiming is not allowed in this world.
+cmd.claim.orbisguard = This area is protected by OrbisGuard.
+cmd.claim.zone_protected = This chunk is in a safezone or warzone.
+cmd.claim.failed = Failed to claim chunk.
