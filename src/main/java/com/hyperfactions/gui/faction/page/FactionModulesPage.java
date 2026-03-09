@@ -8,6 +8,8 @@ import com.hyperfactions.gui.faction.FactionPageRegistry;
 import com.hyperfactions.gui.faction.NavBarHelper;
 import com.hyperfactions.gui.faction.data.FactionModulesData;
 import com.hyperfactions.manager.FactionManager;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -31,10 +33,10 @@ public class FactionModulesPage extends InteractiveCustomUIPage<FactionModulesDa
 
   // Module definitions for the 2x2 grid (treasury state is dynamic)
   private static final List<ModuleInfo> MODULES = List.of(
-      new ModuleInfo("treasury", "Treasury", "Faction bank & economy system", "#fbbf24"),
-      new ModuleInfo("raids", "Raids", "Scheduled faction battles", "#ef4444"),
-      new ModuleInfo("levels", "Levels", "Faction progression & XP", "#22c55e"),
-      new ModuleInfo("war", "War", "Formal war declarations", "#a855f7")
+      new ModuleInfo("treasury", MessageKeys.ModulesGui.TREASURY_NAME, MessageKeys.ModulesGui.TREASURY_DESC, "#fbbf24"),
+      new ModuleInfo("raids", MessageKeys.ModulesGui.RAIDS_NAME, MessageKeys.ModulesGui.RAIDS_DESC, "#ef4444"),
+      new ModuleInfo("levels", MessageKeys.ModulesGui.LEVELS_NAME, MessageKeys.ModulesGui.LEVELS_DESC, "#22c55e"),
+      new ModuleInfo("war", MessageKeys.ModulesGui.WAR_NAME, MessageKeys.ModulesGui.WAR_DESC, "#a855f7")
   );
 
   private final PlayerRef playerRef;
@@ -78,8 +80,8 @@ public class FactionModulesPage extends InteractiveCustomUIPage<FactionModulesDa
       String cardSelector = "#ModuleCard" + i;
 
       // Set module info
-      cmd.set(cardSelector + " #ModuleName.Text", module.name);
-      cmd.set(cardSelector + " #ModuleDesc.Text", module.description);
+      cmd.set(cardSelector + " #ModuleName.Text", HFMessages.get(playerRef, module.nameKey));
+      cmd.set(cardSelector + " #ModuleDesc.Text", HFMessages.get(playerRef, module.descKey));
 
       // Set color indicator
       cmd.set(cardSelector + " #ColorBar.Background.Color", module.color);
@@ -89,7 +91,7 @@ public class FactionModulesPage extends InteractiveCustomUIPage<FactionModulesDa
         buildTreasuryCard(cmd, events, cardSelector);
       } else {
         // Other modules: coming soon
-        cmd.set(cardSelector + " #StatusBadge.Text", "Coming Soon");
+        cmd.set(cardSelector + " #StatusBadge.Text", HFMessages.get(playerRef, MessageKeys.ModulesGui.COMING_SOON));
         cmd.set(cardSelector + " #StatusBadge.Style.TextColor", "#888888");
       }
     }
@@ -161,10 +163,10 @@ public class FactionModulesPage extends InteractiveCustomUIPage<FactionModulesDa
   private void buildTreasuryCard(UICommandBuilder cmd, UIEventBuilder events, String cardSelector) {
     if (hyperFactions.isTreasuryEnabled()) {
       // State 1: Active
-      cmd.set(cardSelector + " #StatusBadge.Text", "Active");
+      cmd.set(cardSelector + " #StatusBadge.Text", HFMessages.get(playerRef, MessageKeys.ModulesGui.ACTIVE));
       cmd.set(cardSelector + " #StatusBadge.Style.TextColor", "#22c55e");
       cmd.set(cardSelector + " #ModuleBtn.Visible", true);
-      cmd.set(cardSelector + " #ModuleBtn.Text", "View Treasury");
+      cmd.set(cardSelector + " #ModuleBtn.Text", HFMessages.get(playerRef, MessageKeys.ModulesGui.VIEW_TREASURY));
       events.addEventBinding(
           CustomUIEventBindingType.Activating,
           cardSelector + " #ModuleBtn",
@@ -175,17 +177,17 @@ public class FactionModulesPage extends InteractiveCustomUIPage<FactionModulesDa
       String reason = hyperFactions.getTreasuryDisabledReason();
       if (reason != null && reason.contains("economy plugin")) {
         // State 3: Config enabled but no economy plugin
-        cmd.set(cardSelector + " #StatusBadge.Text", "Unavailable");
+        cmd.set(cardSelector + " #StatusBadge.Text", HFMessages.get(playerRef, MessageKeys.ModulesGui.UNAVAILABLE));
         cmd.set(cardSelector + " #StatusBadge.Style.TextColor", "#fbbf24");
-        cmd.set(cardSelector + " #ModuleDesc.Text", "No economy plugin detected");
+        cmd.set(cardSelector + " #ModuleDesc.Text", HFMessages.get(playerRef, MessageKeys.ModulesGui.NO_ECONOMY));
       } else {
         // State 2: Disabled by server config
-        cmd.set(cardSelector + " #StatusBadge.Text", "Disabled");
+        cmd.set(cardSelector + " #StatusBadge.Text", HFMessages.get(playerRef, MessageKeys.ModulesGui.DISABLED));
         cmd.set(cardSelector + " #StatusBadge.Style.TextColor", "#888888");
-        cmd.set(cardSelector + " #ModuleDesc.Text", "Economy features are not available on this server");
+        cmd.set(cardSelector + " #ModuleDesc.Text", HFMessages.get(playerRef, MessageKeys.ModulesGui.ECONOMY_NOT_AVAILABLE));
       }
     }
   }
 
-  private record ModuleInfo(String id, String name, String description, String color) {}
+  private record ModuleInfo(String id, String nameKey, String descKey, String color) {}
 }

@@ -144,3 +144,64 @@ playerinfo.reason_active = ACTIVE
 playerinfo.reason_left = LEFT
 playerinfo.reason_kicked = KICKED
 playerinfo.reason_disbanded = DISBANDED
+
+# ========== Relations Page ==========
+relations.relation_count = {0} relations
+relations.request_count = {0} requests
+relations.type_ally = Ally
+relations.type_enemy = Enemy
+relations.type_incoming = Incoming
+relations.type_outgoing = Outgoing
+relations.incoming_request = Incoming request
+relations.outgoing_request = Outgoing request
+relations.empty_relations = No relations yet.
+relations.empty_relations_hint = No relations yet. Click + SET RELATION to add allies or enemies.
+relations.empty_pending = No pending ally requests.
+relations.today = Today
+relations.one_day_ago = 1 day ago
+relations.days_ago = {0} days ago
+relations.now_neutral = Now neutral with {0}.
+relations.now_enemies = Now enemies with {0}!
+relations.request_sent = Alliance request sent to {0}.
+relations.now_allied = Now allied with {0}!
+relations.request_declined = Ally request from {0} declined.
+relations.request_cancelled = Ally request to {0} cancelled.
+relations.failed = Failed: {0}
+relations.search_hint = Search for a faction to set relation
+relations.no_results = No factions found matching '{0}'
+relations.power_display = {0} power
+relations.member_count = {0} members
+
+# ========== Settings Page ==========
+settings.officers_only = Only officers and leaders can change faction settings.
+settings.display_none = (None)
+settings.home_not_set = Not set
+settings.no_permission = You don't have permission to change settings.
+settings.only_leader_disband = Only the leader can disband the faction.
+settings.perm_locked = This setting is locked by the server.
+settings.no_perm_edit = You don't have permission to edit territory permissions.
+settings.only_leader_officers = Only the leader can change officer access.
+settings.pvp_enabled = Enabled
+settings.pvp_disabled = Disabled
+settings.not_in_territory = You must be in your faction's territory to set home.
+settings.home_set = Faction home set to your current location!
+settings.recruitment_set = Recruitment set to {0}.
+settings.home_no_set = Your faction does not have a home set.
+settings.home_deleted = Faction home deleted!
+
+# ========== Modules Page ==========
+modules.treasury_name = Treasury
+modules.treasury_desc = Faction bank & economy system
+modules.raids_name = Raids
+modules.raids_desc = Scheduled faction battles
+modules.levels_name = Levels
+modules.levels_desc = Faction progression & XP
+modules.war_name = War
+modules.war_desc = Formal war declarations
+modules.coming_soon = Coming Soon
+modules.active = Active
+modules.view_treasury = View Treasury
+modules.unavailable = Unavailable
+modules.no_economy = No economy plugin detected
+modules.disabled = Disabled
+modules.economy_not_available = Economy features are not available on this server

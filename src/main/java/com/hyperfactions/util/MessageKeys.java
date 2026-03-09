@@ -892,6 +892,79 @@ public final class MessageKeys {
     private ChatDisplay() {}
   }
 
+  /** Relations page labels and messages. */
+  public static final class RelationsGui {
+    public static final String RELATION_COUNT = "hyperfactions_gui.relations.relation_count";
+    public static final String REQUEST_COUNT = "hyperfactions_gui.relations.request_count";
+    public static final String TYPE_ALLY = "hyperfactions_gui.relations.type_ally";
+    public static final String TYPE_ENEMY = "hyperfactions_gui.relations.type_enemy";
+    public static final String TYPE_INCOMING = "hyperfactions_gui.relations.type_incoming";
+    public static final String TYPE_OUTGOING = "hyperfactions_gui.relations.type_outgoing";
+    public static final String INCOMING_REQUEST = "hyperfactions_gui.relations.incoming_request";
+    public static final String OUTGOING_REQUEST = "hyperfactions_gui.relations.outgoing_request";
+    public static final String EMPTY_RELATIONS = "hyperfactions_gui.relations.empty_relations";
+    public static final String EMPTY_RELATIONS_HINT = "hyperfactions_gui.relations.empty_relations_hint";
+    public static final String EMPTY_PENDING = "hyperfactions_gui.relations.empty_pending";
+    public static final String TODAY = "hyperfactions_gui.relations.today";
+    public static final String ONE_DAY_AGO = "hyperfactions_gui.relations.one_day_ago";
+    public static final String DAYS_AGO = "hyperfactions_gui.relations.days_ago";
+    public static final String NOW_NEUTRAL = "hyperfactions_gui.relations.now_neutral";
+    public static final String NOW_ENEMIES = "hyperfactions_gui.relations.now_enemies";
+    public static final String REQUEST_SENT = "hyperfactions_gui.relations.request_sent";
+    public static final String NOW_ALLIED = "hyperfactions_gui.relations.now_allied";
+    public static final String REQUEST_DECLINED = "hyperfactions_gui.relations.request_declined";
+    public static final String REQUEST_CANCELLED = "hyperfactions_gui.relations.request_cancelled";
+    public static final String FAILED = "hyperfactions_gui.relations.failed";
+    public static final String SEARCH_HINT = "hyperfactions_gui.relations.search_hint";
+    public static final String NO_RESULTS = "hyperfactions_gui.relations.no_results";
+    public static final String POWER_DISPLAY = "hyperfactions_gui.relations.power_display";
+    public static final String MEMBER_COUNT_DISPLAY = "hyperfactions_gui.relations.member_count";
+
+    private RelationsGui() {}
+  }
+
+  /** Settings page labels and messages. */
+  public static final class SettingsGui {
+    public static final String OFFICERS_ONLY = "hyperfactions_gui.settings.officers_only";
+    public static final String DISPLAY_NONE = "hyperfactions_gui.settings.display_none";
+    public static final String HOME_NOT_SET = "hyperfactions_gui.settings.home_not_set";
+    public static final String NO_PERMISSION = "hyperfactions_gui.settings.no_permission";
+    public static final String ONLY_LEADER_DISBAND = "hyperfactions_gui.settings.only_leader_disband";
+    public static final String PERM_LOCKED = "hyperfactions_gui.settings.perm_locked";
+    public static final String NO_PERM_EDIT = "hyperfactions_gui.settings.no_perm_edit";
+    public static final String ONLY_LEADER_OFFICERS = "hyperfactions_gui.settings.only_leader_officers";
+    public static final String PVP_ENABLED = "hyperfactions_gui.settings.pvp_enabled";
+    public static final String PVP_DISABLED = "hyperfactions_gui.settings.pvp_disabled";
+    public static final String NOT_IN_TERRITORY = "hyperfactions_gui.settings.not_in_territory";
+    public static final String HOME_SET = "hyperfactions_gui.settings.home_set";
+    public static final String RECRUITMENT_SET = "hyperfactions_gui.settings.recruitment_set";
+    public static final String HOME_NO_SET = "hyperfactions_gui.settings.home_no_set";
+    public static final String HOME_DELETED = "hyperfactions_gui.settings.home_deleted";
+
+    private SettingsGui() {}
+  }
+
+  /** Modules page labels. */
+  public static final class ModulesGui {
+    public static final String TREASURY_NAME = "hyperfactions_gui.modules.treasury_name";
+    public static final String TREASURY_DESC = "hyperfactions_gui.modules.treasury_desc";
+    public static final String RAIDS_NAME = "hyperfactions_gui.modules.raids_name";
+    public static final String RAIDS_DESC = "hyperfactions_gui.modules.raids_desc";
+    public static final String LEVELS_NAME = "hyperfactions_gui.modules.levels_name";
+    public static final String LEVELS_DESC = "hyperfactions_gui.modules.levels_desc";
+    public static final String WAR_NAME = "hyperfactions_gui.modules.war_name";
+    public static final String WAR_DESC = "hyperfactions_gui.modules.war_desc";
+    public static final String COMING_SOON = "hyperfactions_gui.modules.coming_soon";
+    public static final String ACTIVE = "hyperfactions_gui.modules.active";
+    public static final String VIEW_TREASURY = "hyperfactions_gui.modules.view_treasury";
+    public static final String UNAVAILABLE = "hyperfactions_gui.modules.unavailable";
+    public static final String NO_ECONOMY = "hyperfactions_gui.modules.no_economy";
+    public static final String DISABLED = "hyperfactions_gui.modules.disabled";
+    public static final String ECONOMY_NOT_AVAILABLE = "hyperfactions_gui.modules.economy_not_available";
+
+    private ModulesGui() {}
+  }
+
   /** Player settings page labels. */
   public static final class PlayerSettings {
     public static final String TITLE = "hyperfactions_gui.player_settings.title";
