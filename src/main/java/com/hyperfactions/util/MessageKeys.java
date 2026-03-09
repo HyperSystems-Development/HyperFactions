@@ -51,6 +51,7 @@ public final class MessageKeys {
     public static final String UNKNOWN = "hyperfactions.common.unknown";
     public static final String ERROR_GENERIC = "hyperfactions.common.error_generic";
     public static final String GUI_FALLBACK = "hyperfactions.common.gui_fallback";
+    public static final String ADMIN_PREFIX = "hyperfactions.common.admin_prefix";
 
     private Common() {}
   }
@@ -650,8 +651,89 @@ public final class MessageKeys {
     public static final String LOGS = "hyperfactions_gui.nav.logs";
     public static final String HELP = "hyperfactions_gui.nav.help";
     public static final String ADMIN = "hyperfactions_gui.nav.admin";
+    public static final String CREATE = "hyperfactions_gui.nav.create";
 
     private Nav() {}
+  }
+
+  /** Admin navigation bar labels. */
+  public static final class AdminNav {
+    public static final String DASHBOARD = "hyperfactions_admin.nav.dashboard";
+    public static final String ACTIONS = "hyperfactions_admin.nav.actions";
+    public static final String FACTIONS = "hyperfactions_admin.nav.factions";
+    public static final String PLAYERS = "hyperfactions_admin.nav.players";
+    public static final String ECONOMY = "hyperfactions_admin.nav.economy";
+    public static final String ZONES = "hyperfactions_admin.nav.zones";
+    public static final String CONFIG = "hyperfactions_admin.nav.config";
+    public static final String BACKUPS = "hyperfactions_admin.nav.backups";
+    public static final String LOG = "hyperfactions_admin.nav.log";
+    public static final String UPDATES = "hyperfactions_admin.nav.updates";
+    public static final String HELP = "hyperfactions_admin.nav.help";
+    public static final String VERSION = "hyperfactions_admin.nav.version";
+
+    private AdminNav() {}
+  }
+
+  /** Main menu page labels. */
+  public static final class MainMenu {
+    public static final String SECTION_MY_FACTION = "hyperfactions_gui.main_menu.section_my_faction";
+    public static final String SECTION_GET_STARTED = "hyperfactions_gui.main_menu.section_get_started";
+    public static final String SECTION_TERRITORY = "hyperfactions_gui.main_menu.section_territory";
+    public static final String SECTION_BROWSE = "hyperfactions_gui.main_menu.section_browse";
+    public static final String SECTION_ADMIN = "hyperfactions_gui.main_menu.section_admin";
+    public static final String CLAIM_HINT = "hyperfactions_gui.main_menu.claim_hint";
+
+    private MainMenu() {}
+  }
+
+  /** Faction info page labels. */
+  public static final class FactionInfoGui {
+    public static final String NO_DESCRIPTION = "hyperfactions_gui.faction_info.no_description";
+    public static final String STATUS_OPEN = "hyperfactions_gui.faction_info.status_open";
+    public static final String STATUS_INVITE_ONLY = "hyperfactions_gui.faction_info.status_invite_only";
+    public static final String STATUS_RAIDABLE = "hyperfactions_gui.faction_info.status_raidable";
+    public static final String STATUS_PROTECTED = "hyperfactions_gui.faction_info.status_protected";
+    public static final String OFFICERS_MORE = "hyperfactions_gui.faction_info.officers_more";
+
+    private FactionInfoGui() {}
+  }
+
+  /** Rename modal page messages. */
+  public static final class RenameGui {
+    public static final String NO_PERMISSION = "hyperfactions_gui.rename.no_permission";
+    public static final String ENTER_NAME = "hyperfactions_gui.rename.enter_name";
+    public static final String TOO_SHORT = "hyperfactions_gui.rename.too_short";
+    public static final String TOO_LONG = "hyperfactions_gui.rename.too_long";
+    public static final String SAME_NAME = "hyperfactions_gui.rename.same_name";
+    public static final String NAME_TAKEN = "hyperfactions_gui.rename.name_taken";
+    public static final String SUCCESS = "hyperfactions_gui.rename.success";
+
+    private RenameGui() {}
+  }
+
+  /** Description modal page messages. */
+  public static final class DescGui {
+    public static final String NO_PERMISSION = "hyperfactions_gui.desc.no_permission";
+    public static final String DISPLAY_NONE = "hyperfactions_gui.desc.display_none";
+    public static final String CLEARED = "hyperfactions_gui.desc.cleared";
+    public static final String UPDATED = "hyperfactions_gui.desc.updated";
+
+    private DescGui() {}
+  }
+
+  /** Tag modal page messages. */
+  public static final class TagGui {
+    public static final String NO_PERMISSION = "hyperfactions_gui.tag.no_permission";
+    public static final String DISPLAY_NONE = "hyperfactions_gui.tag.display_none";
+    public static final String CLEARED = "hyperfactions_gui.tag.cleared";
+    public static final String TOO_SHORT = "hyperfactions_gui.tag.too_short";
+    public static final String TOO_LONG = "hyperfactions_gui.tag.too_long";
+    public static final String INVALID_FORMAT = "hyperfactions_gui.tag.invalid_format";
+    public static final String SAME_TAG = "hyperfactions_gui.tag.same_tag";
+    public static final String TAG_TAKEN = "hyperfactions_gui.tag.tag_taken";
+    public static final String SUCCESS = "hyperfactions_gui.tag.success";
+
+    private TagGui() {}
   }
 
   /** Dashboard page labels. */

@@ -7,6 +7,8 @@ import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.shared.data.TagModalData;
 import com.hyperfactions.manager.FactionManager;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.worldmap.WorldMapService;
 import com.hypixel.hytale.component.Ref;
@@ -86,7 +88,7 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
     // Show current tag
     String currentTag = faction.tag();
     if (currentTag == null || currentTag.isEmpty()) {
-      cmd.set("#CurrentTag.Text", "(None)");
+      cmd.set("#CurrentTag.Text", HFMessages.get(playerRef, MessageKeys.TagGui.DISPLAY_NONE));
     } else {
       cmd.set("#CurrentTag.Text", "[" + currentTag.toUpperCase() + "]");
     }
@@ -126,7 +128,7 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
 
     // Verify officer permission (skip in admin mode)
     if (!adminMode && (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel())) {
-      player.sendMessage(MessageUtil.errorText("You don't have permission to edit the tag."));
+      player.sendMessage(MessageUtil.error(playerRef, MessageKeys.TagGui.NO_PERMISSION));
       guiManager.openFactionSettings(player, ref, store, playerRef,
           factionManager.getFaction(faction.id()));
       return;
@@ -155,8 +157,11 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
             worldMapService.triggerFactionWideRefresh(faction.id());
           }
 
-          String prefix = adminMode ? "[Admin] " : "";
-          player.sendMessage(Message.raw(prefix + "Faction tag cleared.").color("#AAAAAA"));
+          String clearMsg = HFMessages.get(playerRef, MessageKeys.TagGui.CLEARED);
+          if (adminMode) {
+            clearMsg = HFMessages.get(playerRef, MessageKeys.Common.ADMIN_PREFIX) + " " + clearMsg;
+          }
+          player.sendMessage(Message.raw(clearMsg).color("#AAAAAA"));
           if (adminMode) {
             guiManager.openAdminFactionSettings(player, ref, store, playerRef, faction.id());
           } else {
@@ -170,27 +175,27 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
 
         // Validate length
         if (newTag.length() < MIN_TAG_LENGTH) {
-          player.sendMessage(MessageUtil.errorText("Tag must be at least " + MIN_TAG_LENGTH + " character."));
+          player.sendMessage(MessageUtil.error(playerRef, MessageKeys.TagGui.TOO_SHORT, MIN_TAG_LENGTH));
           sendUpdate();
           return;
         }
 
         if (newTag.length() > MAX_TAG_LENGTH) {
-          player.sendMessage(MessageUtil.errorText("Tag cannot exceed " + MAX_TAG_LENGTH + " characters."));
+          player.sendMessage(MessageUtil.error(playerRef, MessageKeys.TagGui.TOO_LONG, MAX_TAG_LENGTH));
           sendUpdate();
           return;
         }
 
         // Validate format (alphanumeric only)
         if (!TAG_PATTERN.matcher(newTag).matches()) {
-          player.sendMessage(MessageUtil.errorText("Tag can only contain letters and numbers."));
+          player.sendMessage(MessageUtil.error(playerRef, MessageKeys.TagGui.INVALID_FORMAT));
           sendUpdate();
           return;
         }
 
         // Check if same as current
         if (newTag.equalsIgnoreCase(faction.tag())) {
-          player.sendMessage(MessageUtil.text("That's already your faction's tag.", MessageUtil.COLOR_GOLD));
+          player.sendMessage(MessageUtil.info(playerRef, MessageKeys.TagGui.SAME_TAG, "#FFD700"));
           sendUpdate();
           return;
         }
@@ -198,7 +203,7 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
         // Check uniqueness
         Faction existing = factionManager.getFactionByTag(newTag);
         if (existing != null && !existing.id().equals(faction.id())) {
-          player.sendMessage(MessageUtil.errorText("A faction with that tag already exists."));
+          player.sendMessage(MessageUtil.error(playerRef, MessageKeys.TagGui.TAG_TAKEN));
           sendUpdate();
           return;
         }
@@ -212,12 +217,11 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
           worldMapService.triggerFactionWideRefresh(faction.id());
         }
 
-        String prefix = adminMode ? "[Admin] " : "";
-        player.sendMessage(
-            Message.raw(prefix + "Faction tag set to ").color("#AAAAAA")
-                .insert(Message.raw("[" + newTag + "]").color("#FFAA00"))
-                .insert(Message.raw("!").color("#AAAAAA"))
-        );
+        String successMsg = HFMessages.get(playerRef, MessageKeys.TagGui.SUCCESS, newTag);
+        if (adminMode) {
+          successMsg = HFMessages.get(playerRef, MessageKeys.Common.ADMIN_PREFIX) + " " + successMsg;
+        }
+        player.sendMessage(Message.raw(successMsg).color("#55FF55"));
 
         if (adminMode) {
           guiManager.openAdminFactionSettings(player, ref, store, playerRef, faction.id());

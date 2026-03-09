@@ -7,6 +7,8 @@ import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.shared.data.DescriptionModalData;
 import com.hyperfactions.manager.FactionManager;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -73,7 +75,7 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
     // Show current description
     String currentDesc = faction.description();
     if (currentDesc == null || currentDesc.isEmpty()) {
-      cmd.set("#CurrentDesc.Text", "(None)");
+      cmd.set("#CurrentDesc.Text", HFMessages.get(playerRef, MessageKeys.DescGui.DISPLAY_NONE));
     } else {
       // Truncate display if too long
       String display = currentDesc.length() > 100
@@ -125,7 +127,7 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
 
     // Verify officer permission (skip in admin mode)
     if (!adminMode && (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel())) {
-      player.sendMessage(MessageUtil.errorText("You don't have permission to edit the description."));
+      player.sendMessage(MessageUtil.error(playerRef, MessageKeys.DescGui.NO_PERMISSION));
       guiManager.openFactionSettings(player, ref, store, playerRef,
           factionManager.getFaction(faction.id()));
       return;
@@ -146,8 +148,11 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
         Faction updatedFaction = faction.withDescription(null);
         factionManager.updateFaction(updatedFaction);
 
-        String prefix = adminMode ? "[Admin] " : "";
-        player.sendMessage(Message.raw(prefix + "Faction description cleared.").color("#AAAAAA"));
+        String msg = HFMessages.get(playerRef, MessageKeys.DescGui.CLEARED);
+        if (adminMode) {
+          msg = HFMessages.get(playerRef, MessageKeys.Common.ADMIN_PREFIX) + " " + msg;
+        }
+        player.sendMessage(Message.raw(msg).color("#AAAAAA"));
 
         if (adminMode) {
           guiManager.openAdminFactionSettings(player, ref, store, playerRef, faction.id());
@@ -159,13 +164,16 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
 
       case "Save" -> {
         String newDesc = data.description;
-        String prefix = adminMode ? "[Admin] " : "";
 
         // Empty is allowed (clears description)
         if (newDesc == null || newDesc.trim().isEmpty()) {
           Faction updatedFaction = faction.withDescription(null);
           factionManager.updateFaction(updatedFaction);
-          player.sendMessage(Message.raw(prefix + "Faction description cleared.").color("#AAAAAA"));
+          String clearMsg = HFMessages.get(playerRef, MessageKeys.DescGui.CLEARED);
+          if (adminMode) {
+            clearMsg = HFMessages.get(playerRef, MessageKeys.Common.ADMIN_PREFIX) + " " + clearMsg;
+          }
+          player.sendMessage(Message.raw(clearMsg).color("#AAAAAA"));
         } else {
           newDesc = newDesc.trim();
 
@@ -176,7 +184,11 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
           Faction updatedFaction = faction.withDescription(newDesc);
           factionManager.updateFaction(updatedFaction);
 
-          player.sendMessage(Message.raw(prefix + "Faction description updated!").color("#55FF55"));
+          String updateMsg = HFMessages.get(playerRef, MessageKeys.DescGui.UPDATED);
+          if (adminMode) {
+            updateMsg = HFMessages.get(playerRef, MessageKeys.Common.ADMIN_PREFIX) + " " + updateMsg;
+          }
+          player.sendMessage(Message.raw(updateMsg).color("#55FF55"));
         }
 
         if (adminMode) {

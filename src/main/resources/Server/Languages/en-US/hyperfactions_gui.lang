@@ -2,6 +2,22 @@
 # Format: key = value
 # Note: Keys are auto-prefixed with "hyperfactions_gui." by Hytale's I18nModule
 
+# ========== Navigation Bar ==========
+nav.dashboard = Dashboard
+nav.chat = Chat
+nav.members = Members
+nav.invites = Invites
+nav.browser = Browse
+nav.map = Map
+nav.leaderboard = Leaderboard
+nav.relations = Relations
+nav.treasury = Treasury
+nav.settings = Settings
+nav.logs = Logs
+nav.help = Help
+nav.admin = Admin
+nav.create = Create
+
 # ========== Help Category Names ==========
 help.category.welcome = Welcome
 help.category.your_faction = Your Faction
@@ -10,3 +26,45 @@ help.category.diplomacy = Diplomacy
 help.category.combat = Combat & Safety
 help.category.economy = Economy
 help.category.quick_ref = Quick Reference
+
+# ========== Main Menu ==========
+main_menu.section_my_faction = My Faction
+main_menu.section_get_started = Get Started
+main_menu.section_territory = Territory
+main_menu.section_browse = Browse
+main_menu.section_admin = Admin
+main_menu.claim_hint = Use /f claim to claim territory.
+
+# ========== Faction Info Page ==========
+faction_info.no_description = No description set.
+faction_info.status_open = Open
+faction_info.status_invite_only = Invite Only
+faction_info.status_raidable = Raidable
+faction_info.status_protected = Protected
+faction_info.officers_more = +{0} more
+
+# ========== Rename Modal ==========
+rename.no_permission = You don't have permission to rename the faction.
+rename.enter_name = Please enter a faction name.
+rename.too_short = Faction name must be at least {0} characters.
+rename.too_long = Faction name cannot exceed {0} characters.
+rename.same_name = That's already your faction's name.
+rename.name_taken = A faction with that name already exists.
+rename.success = Faction renamed from {0} to {1}!
+
+# ========== Description Modal ==========
+desc.no_permission = You don't have permission to edit the description.
+desc.display_none = (None)
+desc.cleared = Faction description cleared.
+desc.updated = Faction description updated!
+
+# ========== Tag Modal ==========
+tag.no_permission = You don't have permission to edit the tag.
+tag.display_none = (None)
+tag.cleared = Faction tag cleared.
+tag.too_short = Tag must be at least {0} character.
+tag.too_long = Tag cannot exceed {0} characters.
+tag.invalid_format = Tag can only contain letters and numbers.
+tag.same_tag = That's already your faction's tag.
+tag.tag_taken = A faction with that tag already exists.
+tag.success = Faction tag set to [{0}]!

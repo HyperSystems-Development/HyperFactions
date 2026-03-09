@@ -1,10 +1,12 @@
 package com.hyperfactions.gui.shared;
 
 import com.hyperfactions.integration.PermissionManager;
+import com.hyperfactions.util.HFMessages;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import java.util.List;
 import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +22,8 @@ public final class NavBarUtil {
 
   /**
    * Builds navigation buttons inside a cards container.
+   * The entry's {@code displayName()} is treated as an i18n key and resolved
+   * via {@link HFMessages} for the given player.
    *
    * @param entries       The nav entries to render
    * @param cardsId       The cards container selector (e.g., "#NavCards")
@@ -27,6 +31,7 @@ public final class NavBarUtil {
    * @param buttonId      The button element ID within the template (e.g., "#NavActionButton")
    * @param eventType     The event type value (e.g., "Nav" or "AdminNav")
    * @param eventKey      The event data key (e.g., "NavBar" or "AdminNavBar")
+   * @param playerRef     The player viewing the page (for i18n resolution)
    * @param cmd           The UI command builder
    * @param events        The UI event builder
    */
@@ -37,13 +42,15 @@ public final class NavBarUtil {
       @NotNull String buttonId,
       @NotNull String eventType,
       @NotNull String eventKey,
+      @NotNull PlayerRef playerRef,
       @NotNull UICommandBuilder cmd,
       @NotNull UIEventBuilder events
   ) {
     int index = 0;
     for (NavEntry entry : entries) {
       cmd.append(cardsId, templatePath);
-      cmd.set(cardsId + "[" + index + "] " + buttonId + ".Text", entry.displayName());
+      cmd.set(cardsId + "[" + index + "] " + buttonId + ".Text",
+          HFMessages.get(playerRef, entry.displayName()));
       events.addEventBinding(
           CustomUIEventBindingType.Activating,
           cardsId + "[" + index + "] " + buttonId,

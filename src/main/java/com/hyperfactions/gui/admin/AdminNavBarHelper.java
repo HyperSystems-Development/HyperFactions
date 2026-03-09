@@ -54,7 +54,7 @@ public final class AdminNavBarHelper {
     // Create admin nav cards container and build buttons using shared utility
     cmd.appendInline("#HyperFactionsAdminNavBar #AdminNavBarButtons", "Group #AdminNavCards { LayoutMode: Left; }");
     NavBarUtil.buildButtons(entries, "#AdminNavCards", UIPaths.ADMIN_NAV_BUTTON, "#AdminNavActionButton",
-        "AdminNav", "AdminNavBar", cmd, events);
+        "AdminNav", "AdminNavBar", playerRef, cmd, events);
   }
 
   /**

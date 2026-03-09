@@ -1,0 +1,17 @@
+# HyperFactions Admin GUI - English Translations
+# Format: key = value
+# Note: Keys are auto-prefixed with "hyperfactions_admin." by Hytale's I18nModule
+
+# ========== Admin Navigation Bar ==========
+nav.dashboard = Dashboard
+nav.actions = Actions
+nav.factions = Factions
+nav.players = Players
+nav.economy = Economy
+nav.zones = Zones
+nav.config = Config
+nav.backups = Backups
+nav.log = Log
+nav.updates = Updates
+nav.help = Help
+nav.version = Version

@@ -60,7 +60,7 @@ public final class NavBarHelper {
     // Create nav cards container and build buttons using shared utility
     cmd.appendInline("#HyperFactionsNavBar #NavBarButtons", "Group #NavCards { LayoutMode: Left; }");
     NavBarUtil.buildButtons(entries, "#NavCards", UIPaths.NAV_BUTTON, "#NavActionButton",
-        "Nav", "NavBar", cmd, events);
+        "Nav", "NavBar", playerRef, cmd, events);
   }
 
   /**
