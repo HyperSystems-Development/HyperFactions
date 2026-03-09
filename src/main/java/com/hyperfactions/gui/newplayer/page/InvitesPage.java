@@ -14,12 +14,13 @@ import com.hyperfactions.manager.InviteManager;
 import com.hyperfactions.manager.JoinRequestManager;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hyperfactions.util.UuidUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
@@ -103,22 +104,22 @@ public class InvitesPage extends InteractiveCustomUIPage<NewPlayerPageData> impl
 
     // Set header with counts
     int totalCount = invites.size() + requests.size();
-    cmd.set("#InviteCount.Text", totalCount + " pending");
+    cmd.set("#InviteCount.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.PENDING_COUNT, totalCount));
 
     // === RECEIVED INVITES SECTION ===
-    cmd.set("#InvitesHeader.Text", "RECEIVED INVITES (" + invites.size() + ")");
+    cmd.set("#InvitesHeader.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.RECEIVED_HEADER, invites.size()));
     if (invites.isEmpty()) {
       cmd.append("#InviteListContainer", UIPaths.RELATION_EMPTY);
-      cmd.set("#InviteListContainer[0] #EmptyText.Text", "No invites. Browse factions to find one!");
+      cmd.set("#InviteListContainer[0] #EmptyText.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.NO_INVITES));
     } else {
       buildInviteCards(cmd, events, invites);
     }
 
     // === YOUR REQUESTS SECTION ===
-    cmd.set("#RequestsHeader.Text", "YOUR REQUESTS (" + requests.size() + ")");
+    cmd.set("#RequestsHeader.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.REQUESTS_HEADER, requests.size()));
     if (requests.isEmpty()) {
       cmd.append("#RequestListContainer", UIPaths.RELATION_EMPTY);
-      cmd.set("#RequestListContainer[0] #EmptyText.Text", "No pending requests.");
+      cmd.set("#RequestListContainer[0] #EmptyText.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.NO_REQUESTS));
     } else {
       buildRequestCards(cmd, events, requests);
     }
@@ -145,13 +146,13 @@ public class InvitesPage extends InteractiveCustomUIPage<NewPlayerPageData> impl
 
       // Invited by
       String inviterName = getPlayerName(invite.invitedBy());
-      cmd.set(prefix + "#InvitedBy.Text", "Invited by: " + inviterName);
+      cmd.set(prefix + "#InvitedBy.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.INVITED_BY, inviterName));
 
       // Stats
       PowerManager.FactionPowerStats stats = powerManager.getFactionPowerStats(faction.id());
-      cmd.set(prefix + "#MemberCount.Text", faction.members().size() + " members");
-      cmd.set(prefix + "#PowerCount.Text", String.format("%.0f power", stats.currentPower()));
-      cmd.set(prefix + "#ClaimCount.Text", faction.claims().size() + " claims");
+      cmd.set(prefix + "#MemberCount.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.MEMBER_COUNT, faction.members().size()));
+      cmd.set(prefix + "#PowerCount.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.POWER_COUNT, String.format("%.0f", stats.currentPower())));
+      cmd.set(prefix + "#ClaimCount.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.CLAIM_COUNT, faction.claims().size()));
 
       // Time ago
       cmd.set(prefix + "#TimeAgo.Text", formatTimeAgo(invite.createdAt()));
@@ -197,16 +198,16 @@ public class InvitesPage extends InteractiveCustomUIPage<NewPlayerPageData> impl
       cmd.set(prefix + "#FactionName.Text", faction.name());
 
       // Status
-      cmd.set(prefix + "#StatusText.Text", "Awaiting review");
+      cmd.set(prefix + "#StatusText.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.AWAITING_REVIEW));
 
       // Stats
       PowerManager.FactionPowerStats stats = powerManager.getFactionPowerStats(faction.id());
-      cmd.set(prefix + "#MemberCount.Text", faction.members().size() + " members");
-      cmd.set(prefix + "#PowerCount.Text", String.format("%.0f power", stats.currentPower()));
+      cmd.set(prefix + "#MemberCount.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.MEMBER_COUNT, faction.members().size()));
+      cmd.set(prefix + "#PowerCount.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.POWER_COUNT, String.format("%.0f", stats.currentPower())));
 
       // Time remaining
       int hoursRemaining = request.getRemainingHours();
-      cmd.set(prefix + "#TimeRemaining.Text", "Expires in " + hoursRemaining + "h");
+      cmd.set(prefix + "#TimeRemaining.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.EXPIRES_IN, hoursRemaining));
 
       // Cancel button
       events.addEventBinding(
@@ -234,16 +235,16 @@ public class InvitesPage extends InteractiveCustomUIPage<NewPlayerPageData> impl
     long diff = now - timestamp;
 
     if (diff < TimeUnit.MINUTES.toMillis(1)) {
-      return "just now";
+      return HFMessages.get(playerRef, MessageKeys.NewPlayerGui.TIME_JUST_NOW);
     } else if (diff < TimeUnit.HOURS.toMillis(1)) {
       long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
-      return minutes + " min ago";
+      return HFMessages.get(playerRef, MessageKeys.NewPlayerGui.TIME_MINUTES, minutes);
     } else if (diff < TimeUnit.DAYS.toMillis(1)) {
       long hours = TimeUnit.MILLISECONDS.toHours(diff);
-      return hours + "h ago";
+      return HFMessages.get(playerRef, MessageKeys.NewPlayerGui.TIME_HOURS, hours);
     } else {
       long days = TimeUnit.MILLISECONDS.toDays(diff);
-      return days + "d ago";
+      return HFMessages.get(playerRef, MessageKeys.NewPlayerGui.TIME_DAYS, days);
     }
   }
 
@@ -309,7 +310,7 @@ public class InvitesPage extends InteractiveCustomUIPage<NewPlayerPageData> impl
 
     UUID factionId = UuidUtil.parseOrNull(data.factionId);
     if (factionId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.NewPlayerGui.INVALID_FACTION));
       sendUpdate();
       return;
     }
@@ -317,14 +318,14 @@ public class InvitesPage extends InteractiveCustomUIPage<NewPlayerPageData> impl
     UUID playerUuid = playerRef.getUuid();
 
     if (!inviteManager.hasInvite(factionId, playerUuid)) {
-      player.sendMessage(MessageUtil.errorText("This invite has expired or was revoked."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.NewPlayerGui.INVITE_EXPIRED));
       sendUpdate();
       return;
     }
 
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {
-      player.sendMessage(MessageUtil.errorText("Faction no longer exists."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.NewPlayerGui.FACTION_GONE));
       inviteManager.removeInvite(factionId, playerUuid);
       sendUpdate();
       return;
@@ -338,11 +339,7 @@ public class InvitesPage extends InteractiveCustomUIPage<NewPlayerPageData> impl
 
     switch (result) {
       case SUCCESS -> {
-        player.sendMessage(
-            Message.raw("You joined ").color("#55FF55")
-                .insert(Message.raw(faction.name()).color("#00FFFF"))
-                .insert(Message.raw("!").color("#55FF55"))
-        );
+        player.sendMessage(MessageUtil.successText(playerRef, MessageKeys.NewPlayerGui.JOINED, faction.name()));
         // Clear all invites and requests
         inviteManager.clearPlayerInvites(playerUuid);
         joinRequestManager.clearPlayerRequests(playerUuid);
@@ -353,15 +350,15 @@ public class InvitesPage extends InteractiveCustomUIPage<NewPlayerPageData> impl
         }
       }
       case ALREADY_IN_FACTION -> {
-        player.sendMessage(MessageUtil.errorText("You are already in a faction."));
+        player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.Common.ALREADY_IN_FACTION));
         sendUpdate();
       }
       case FACTION_FULL -> {
-        player.sendMessage(MessageUtil.errorText("This faction is full."));
+        player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.NewPlayerGui.FACTION_FULL));
         sendUpdate();
       }
       default -> {
-        player.sendMessage(MessageUtil.errorText("Could not join faction."));
+        player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.NewPlayerGui.JOIN_FAILED));
         sendUpdate();
       }
     }
@@ -382,7 +379,7 @@ public class InvitesPage extends InteractiveCustomUIPage<NewPlayerPageData> impl
 
     inviteManager.removeInvite(factionId, playerRef.getUuid());
 
-    player.sendMessage(MessageUtil.text("Invite declined.", MessageUtil.COLOR_GRAY));
+    player.sendMessage(MessageUtil.text(playerRef, MessageKeys.NewPlayerGui.INVITE_DECLINED, MessageUtil.COLOR_GRAY));
 
     // Refresh the page
     guiManager.openInvitesPage(player, ref, store, playerRef);
@@ -406,7 +403,7 @@ public class InvitesPage extends InteractiveCustomUIPage<NewPlayerPageData> impl
 
     joinRequestManager.removeRequest(factionId, playerRef.getUuid());
 
-    player.sendMessage(MessageUtil.text("Cancelled request to join " + factionName + ".", MessageUtil.COLOR_GRAY));
+    player.sendMessage(MessageUtil.text(playerRef, MessageKeys.NewPlayerGui.REQUEST_CANCELLED, MessageUtil.COLOR_GRAY, factionName));
 
     // Refresh the page
     guiManager.openInvitesPage(player, ref, store, playerRef);

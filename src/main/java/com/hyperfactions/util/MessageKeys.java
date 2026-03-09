@@ -1162,6 +1162,75 @@ public final class MessageKeys {
     private MapGui() {}
   }
 
+
+  /** Create faction page labels and messages. */
+  public static final class CreateGui {
+    public static final String PREVIEW_NAME = "hyperfactions_gui.create.preview_name";
+    public static final String LEADER_PREFIX = "hyperfactions_gui.create.leader_prefix";
+    public static final String ENTER_NAME = "hyperfactions_gui.create.enter_name";
+    public static final String NAME_TOO_SHORT = "hyperfactions_gui.create.name_too_short";
+    public static final String NAME_TOO_LONG = "hyperfactions_gui.create.name_too_long";
+    public static final String NAME_TAKEN = "hyperfactions_gui.create.name_taken";
+    public static final String TAG_LENGTH = "hyperfactions_gui.create.tag_length";
+    public static final String TAG_FORMAT = "hyperfactions_gui.create.tag_format";
+    public static final String DESC_TOO_LONG = "hyperfactions_gui.create.desc_too_long";
+    public static final String CREATED = "hyperfactions_gui.create.created";
+    public static final String CREATED_NO_DASHBOARD = "hyperfactions_gui.create.created_no_dashboard";
+    public static final String INVALID_NAME = "hyperfactions_gui.create.invalid_name";
+    public static final String CREATE_FAILED = "hyperfactions_gui.create.create_failed";
+
+    private CreateGui() {}
+  }
+
+  /** New player page labels and messages (invites, browse, map). */
+  public static final class NewPlayerGui {
+    // Invites page
+    public static final String PENDING_COUNT = "hyperfactions_gui.newplayer.pending_count";
+    public static final String RECEIVED_HEADER = "hyperfactions_gui.newplayer.received_header";
+    public static final String REQUESTS_HEADER = "hyperfactions_gui.newplayer.requests_header";
+    public static final String NO_INVITES = "hyperfactions_gui.newplayer.no_invites";
+    public static final String NO_REQUESTS = "hyperfactions_gui.newplayer.no_requests";
+    public static final String INVITED_BY = "hyperfactions_gui.newplayer.invited_by";
+    public static final String MEMBER_COUNT = "hyperfactions_gui.newplayer.member_count";
+    public static final String POWER_COUNT = "hyperfactions_gui.newplayer.power_count";
+    public static final String CLAIM_COUNT = "hyperfactions_gui.newplayer.claim_count";
+    public static final String AWAITING_REVIEW = "hyperfactions_gui.newplayer.awaiting_review";
+    public static final String EXPIRES_IN = "hyperfactions_gui.newplayer.expires_in";
+    public static final String TIME_JUST_NOW = "hyperfactions_gui.newplayer.time_just_now";
+    public static final String TIME_MINUTES = "hyperfactions_gui.newplayer.time_minutes";
+    public static final String TIME_HOURS = "hyperfactions_gui.newplayer.time_hours";
+    public static final String TIME_DAYS = "hyperfactions_gui.newplayer.time_days";
+    // Shared join result messages
+    public static final String INVALID_FACTION = "hyperfactions_gui.newplayer.invalid_faction";
+    public static final String INVITE_EXPIRED = "hyperfactions_gui.newplayer.invite_expired";
+    public static final String FACTION_GONE = "hyperfactions_gui.newplayer.faction_gone";
+    public static final String JOINED = "hyperfactions_gui.newplayer.joined";
+    public static final String FACTION_FULL = "hyperfactions_gui.newplayer.faction_full";
+    public static final String JOIN_FAILED = "hyperfactions_gui.newplayer.join_failed";
+    public static final String INVITE_DECLINED = "hyperfactions_gui.newplayer.invite_declined";
+    public static final String REQUEST_CANCELLED = "hyperfactions_gui.newplayer.request_cancelled";
+    // Browse page
+    public static final String FACTION_COUNT = "hyperfactions_gui.newplayer.faction_count";
+    public static final String BROWSE_SUBTITLE = "hyperfactions_gui.newplayer.browse_subtitle";
+    public static final String SORT_POWER = "hyperfactions_gui.newplayer.sort_power";
+    public static final String SORT_NAME = "hyperfactions_gui.newplayer.sort_name";
+    public static final String SORT_MEMBERS = "hyperfactions_gui.newplayer.sort_members";
+    public static final String BTN_ACCEPT = "hyperfactions_gui.newplayer.btn_accept";
+    public static final String BTN_PENDING = "hyperfactions_gui.newplayer.btn_pending";
+    public static final String BTN_JOIN = "hyperfactions_gui.newplayer.btn_join";
+    public static final String BTN_REQUEST = "hyperfactions_gui.newplayer.btn_request";
+    public static final String INVITE_ONLY_MSG = "hyperfactions_gui.newplayer.invite_only_msg";
+    public static final String WELCOME_HINT = "hyperfactions_gui.newplayer.welcome_hint";
+    public static final String FACTION_OPEN_HINT = "hyperfactions_gui.newplayer.faction_open_hint";
+    public static final String ALREADY_REQUESTED = "hyperfactions_gui.newplayer.already_requested";
+    public static final String HAS_INVITE_HINT = "hyperfactions_gui.newplayer.has_invite_hint";
+    public static final String REQUEST_SENT = "hyperfactions_gui.newplayer.request_sent";
+    public static final String OFFICER_REVIEW = "hyperfactions_gui.newplayer.officer_review";
+    // Map page
+    public static final String MAP_HINT = "hyperfactions_gui.newplayer.map_hint";
+
+    private NewPlayerGui() {}
+  }
   /** Player settings page labels. */
   public static final class PlayerSettings {
     public static final String TITLE = "hyperfactions_gui.player_settings.title";

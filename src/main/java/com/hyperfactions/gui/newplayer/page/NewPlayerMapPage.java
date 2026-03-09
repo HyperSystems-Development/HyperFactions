@@ -15,6 +15,8 @@ import com.hyperfactions.gui.newplayer.data.NewPlayerPageData;
 import com.hyperfactions.integration.protection.OrbisGuardIntegration;
 import com.hyperfactions.manager.*;
 import com.hyperfactions.util.ChunkUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -135,10 +137,10 @@ public class NewPlayerMapPage extends InteractiveCustomUIPage<NewPlayerPageData>
     NewPlayerNavBarHelper.setupBar(playerRef, PAGE_ID, cmd, events);
 
     // Update position info
-    cmd.set("#PositionInfo.Text", "Your Position: Chunk (" + playerChunkX + ", " + playerChunkZ + ")");
+    cmd.set("#PositionInfo.Text", HFMessages.get(playerRef, MessageKeys.MapGui.POSITION, playerChunkX, playerChunkZ));
 
     // Update hint text for read-only mode
-    cmd.set("#ActionHint.Text", "View Only - Join a faction to claim territory!");
+    cmd.set("#ActionHint.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.MAP_HINT));
 
     // Hide claim/power stats (not relevant for new players)
     cmd.set("#ClaimStats.Text", "");
@@ -155,12 +157,12 @@ public class NewPlayerMapPage extends InteractiveCustomUIPage<NewPlayerPageData>
         cmd.appendInline("#LegendContainer[1]",
             "Group { LayoutMode: Left; Anchor: (Width: 110); "
             + "Group { Anchor: (Width: 10, Height: 10); Background: (Color: " + COLOR_OG_PROTECTED + "); } "
-            + "Label { Text: \" Protected\"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); } }");
+            + "Label { Text: \" " + HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_PROTECTED) + "\"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); } }");
       } else {
         cmd.appendInline("#LegendContainer[2]",
             "Group { LayoutMode: Left; Anchor: (Height: 16); "
             + "Group { Anchor: (Width: 12, Height: 12); Background: (Color: " + COLOR_OG_PROTECTED + "); } "
-            + "Label { Text: \" Protected\"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); } }");
+            + "Label { Text: \" " + HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_PROTECTED) + "\"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); } }");
       }
     }
 

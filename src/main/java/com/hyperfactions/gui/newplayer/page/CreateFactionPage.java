@@ -9,6 +9,8 @@ import com.hyperfactions.gui.newplayer.NewPlayerNavBarHelper;
 import com.hyperfactions.gui.newplayer.data.NewPlayerPageData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -82,13 +84,13 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
     cmd.set("#FactionColorPicker.Value", DEFAULT_COLOR);
 
     // Set preview defaults
-    cmd.set("#PreviewName.TextSpans", Message.raw("Your Faction Name").color(DEFAULT_COLOR));
-    cmd.set("#PreviewLeader.Text", "Leader: " + playerRef.getUsername());
+    cmd.set("#PreviewName.TextSpans", Message.raw(HFMessages.get(playerRef, MessageKeys.CreateGui.PREVIEW_NAME)).color(DEFAULT_COLOR));
+    cmd.set("#PreviewLeader.Text", HFMessages.get(playerRef, MessageKeys.CreateGui.LEADER_PREFIX, playerRef.getUsername()));
 
     // Recruitment dropdown
     cmd.set("#RecruitmentDropdown.Entries", List.of(
-        new DropdownEntryInfo(LocalizableString.fromString("Invite Only"), "INVITE_ONLY"),
-        new DropdownEntryInfo(LocalizableString.fromString("Open"), "OPEN")
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_INVITE_ONLY)), "INVITE_ONLY"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_OPEN)), "OPEN")
     ));
     cmd.set("#RecruitmentDropdown.Value", openRecruitment ? "OPEN" : "INVITE_ONLY");
 
@@ -166,7 +168,7 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
 
     // PvP toggle
     buildPermissionToggle(cmd, events, "PvPToggle", "pvpEnabled", perms.pvpEnabled(), config, false);
-    cmd.set("#PvPStatus.Text", perms.pvpEnabled() ? "Enabled" : "Disabled");
+    cmd.set("#PvPStatus.Text", perms.pvpEnabled() ? HFMessages.get(playerRef, MessageKeys.SettingsGui.PVP_ENABLED) : HFMessages.get(playerRef, MessageKeys.SettingsGui.PVP_DISABLED));
     cmd.set("#PvPStatus.Style.TextColor", perms.pvpEnabled() ? "#55FF55" : "#FF5555");
   }
 
@@ -233,7 +235,7 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
     String hex = extractHex(data.inputColor);
     String name = data.inputName != null ? data.inputName : "";
     String tag = data.inputTag != null ? data.inputTag : "";
-    String previewText = !name.isEmpty() ? name : "Your Faction Name";
+    String previewText = !name.isEmpty() ? name : HFMessages.get(playerRef, MessageKeys.CreateGui.PREVIEW_NAME);
     if (!tag.isEmpty()) {
       previewText += " [" + tag + "]";
     }
@@ -287,26 +289,26 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
 
     // Validate faction name
     if (name.isEmpty()) {
-      player.sendMessage(MessageUtil.errorText("Please enter a faction name."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.CreateGui.ENTER_NAME));
       sendUpdate();
       return;
     }
 
     if (name.length() < MIN_NAME_LENGTH) {
-      player.sendMessage(MessageUtil.errorText("Faction name must be at least " + MIN_NAME_LENGTH + " characters."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.CreateGui.NAME_TOO_SHORT, MIN_NAME_LENGTH));
       sendUpdate();
       return;
     }
 
     if (name.length() > MAX_NAME_LENGTH) {
-      player.sendMessage(MessageUtil.errorText("Faction name cannot exceed " + MAX_NAME_LENGTH + " characters."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.CreateGui.NAME_TOO_LONG, MAX_NAME_LENGTH));
       sendUpdate();
       return;
     }
 
     // Check if name is already taken
     if (factionManager.getFactionByName(name) != null) {
-      player.sendMessage(MessageUtil.errorText("A faction with this name already exists."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.CreateGui.NAME_TAKEN));
       sendUpdate();
       return;
     }
@@ -314,13 +316,13 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
     // Validate tag format if provided
     if (!tag.isEmpty()) {
       if (tag.length() < MIN_TAG_LENGTH || tag.length() > MAX_TAG_LENGTH) {
-        player.sendMessage(MessageUtil.errorText("Faction tag must be " + MIN_TAG_LENGTH + "-" + MAX_TAG_LENGTH + " characters."));
+        player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.CreateGui.TAG_LENGTH, MIN_TAG_LENGTH, MAX_TAG_LENGTH));
         sendUpdate();
         return;
       }
 
       if (!tag.matches("^[a-zA-Z0-9]+$")) {
-        player.sendMessage(MessageUtil.errorText("Faction tag can only contain letters and numbers."));
+        player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.CreateGui.TAG_FORMAT));
         sendUpdate();
         return;
       }
@@ -333,14 +335,14 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
 
     // Validate description length
     if (description.length() > MAX_DESCRIPTION_LENGTH) {
-      player.sendMessage(MessageUtil.errorText("Description cannot exceed " + MAX_DESCRIPTION_LENGTH + " characters."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.CreateGui.DESC_TOO_LONG, MAX_DESCRIPTION_LENGTH));
       sendUpdate();
       return;
     }
 
     // Check if player is already in a faction
     if (factionManager.isInFaction(playerRef.getUuid())) {
-      player.sendMessage(MessageUtil.errorText("You are already in a faction."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.Common.ALREADY_IN_FACTION));
       sendUpdate();
       return;
     }
@@ -376,11 +378,7 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
 
           factionManager.updateFaction(updated);
 
-          player.sendMessage(
-              Message.raw("Faction ").color("#55FF55")
-                  .insert(Message.raw(name).color("#00FFFF"))
-                  .insert(Message.raw(" created successfully!").color("#55FF55"))
-          );
+          player.sendMessage(MessageUtil.successText(playerRef, MessageKeys.CreateGui.CREATED, name));
 
           // Open faction dashboard
           Faction freshFaction = factionManager.getFaction(updated.id());
@@ -390,28 +388,28 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
             guiManager.openFactionMain(player, ref, store, playerRef);
           }
         } else {
-          player.sendMessage(MessageUtil.text("Faction created but could not open dashboard.", MessageUtil.COLOR_GOLD));
+          player.sendMessage(MessageUtil.text(playerRef, MessageKeys.CreateGui.CREATED_NO_DASHBOARD, MessageUtil.COLOR_GOLD));
           guiManager.openFactionMain(player, ref, store, playerRef);
         }
       }
 
       case ALREADY_IN_FACTION -> {
-        player.sendMessage(MessageUtil.errorText("You are already in a faction."));
+        player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.Common.ALREADY_IN_FACTION));
         sendUpdate();
       }
 
       case NAME_TAKEN -> {
-        player.sendMessage(MessageUtil.errorText("A faction with this name already exists."));
+        player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.CreateGui.NAME_TAKEN));
         sendUpdate();
       }
 
       case NAME_TOO_SHORT, NAME_TOO_LONG -> {
-        player.sendMessage(MessageUtil.errorText("Invalid faction name."));
+        player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.CreateGui.INVALID_NAME));
         sendUpdate();
       }
 
       default -> {
-        player.sendMessage(MessageUtil.errorText("Could not create faction."));
+        player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.CreateGui.CREATE_FAILED));
         sendUpdate();
       }
     }

@@ -139,6 +139,14 @@ public final class MessageUtil {
     return adminPrefix().insert(Message.raw(HFMessages.get(player, key, args)).color(COLOR_GRAY));
   }
 
+  /**
+   * Creates a colored message with no prefix using i18n key resolution.
+   */
+  @NotNull
+  public static Message text(@NotNull PlayerRef player, @NotNull String key, @NotNull String color, Object... args) {
+    return Message.raw(HFMessages.get(player, key, args)).color(color);
+  }
+
   // ==================== Unprefixed (GUI pages) ====================
 
   /**

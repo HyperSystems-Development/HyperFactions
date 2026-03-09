@@ -9,12 +9,13 @@ import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.InviteManager;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hyperfactions.util.UuidUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.ui.DropdownEntryInfo;
@@ -132,14 +133,14 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
     // Get all factions sorted and filtered
     List<FactionEntry> entries = buildFactionEntryList();
 
-    cmd.set("#FactionCount.Text", entries.size() + " factions");
-    cmd.set("#Subtitle.Text", "Find your new home!");
+    cmd.set("#FactionCount.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.FACTION_COUNT, entries.size()));
+    cmd.set("#Subtitle.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.BROWSE_SUBTITLE));
 
     // Sort dropdown
     cmd.set("#SortDropdown.Entries", List.of(
-        new DropdownEntryInfo(LocalizableString.fromString("Power"), "POWER"),
-        new DropdownEntryInfo(LocalizableString.fromString("Name"), "NAME"),
-        new DropdownEntryInfo(LocalizableString.fromString("Members"), "MEMBERS")
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.NewPlayerGui.SORT_POWER)), "POWER"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.NewPlayerGui.SORT_NAME)), "NAME"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.NewPlayerGui.SORT_MEMBERS)), "MEMBERS")
     ));
     cmd.set("#SortDropdown.Value", sortMode.name());
     events.addEventBinding(
@@ -179,7 +180,7 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
     }
 
     // Pagination
-    cmd.set("#PageInfo.Text", (currentPage + 1) + "/" + totalPages);
+    cmd.set("#PageInfo.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.PAGE_FORMAT, currentPage + 1, totalPages));
 
     if (currentPage > 0) {
       events.addEventBinding(
@@ -264,10 +265,10 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
 
     // Recruitment badge
     if (entry.isOpen) {
-      cmd.set(idx + " #RecruitmentBadge.Text", "Open");
+      cmd.set(idx + " #RecruitmentBadge.Text", HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_OPEN));
       cmd.set(idx + " #RecruitmentBadge.Style.TextColor", "#44CC44");
     } else {
-      cmd.set(idx + " #RecruitmentBadge.Text", "Invite Only");
+      cmd.set(idx + " #RecruitmentBadge.Text", HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_INVITE_ONLY));
       cmd.set(idx + " #RecruitmentBadge.Style.TextColor", "#FFAA00");
     }
 
@@ -307,7 +308,7 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
       // Note: TextButtons can't have Style.TextColor changed dynamically - use button text to convey state
       if (hasInvite) {
         // Player has pending invite - show ACCEPT button
-        cmd.set(idx + " #ActionBtn.Text", "Accept");
+        cmd.set(idx + " #ActionBtn.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.BTN_ACCEPT));
         events.addEventBinding(
             CustomUIEventBindingType.Activating,
             idx + " #ActionBtn",
@@ -318,7 +319,7 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
         );
       } else if (hasRequest) {
         // Player already requested - show PENDING button (goes to invites page)
-        cmd.set(idx + " #ActionBtn.Text", "Pending");
+        cmd.set(idx + " #ActionBtn.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.BTN_PENDING));
         events.addEventBinding(
             CustomUIEventBindingType.Activating,
             idx + " #ActionBtn",
@@ -327,7 +328,7 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
         );
       } else if (entry.isOpen) {
         // Open faction - JOIN button
-        cmd.set(idx + " #ActionBtn.Text", "Join");
+        cmd.set(idx + " #ActionBtn.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.BTN_JOIN));
         events.addEventBinding(
             CustomUIEventBindingType.Activating,
             idx + " #ActionBtn",
@@ -338,7 +339,7 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
         );
       } else {
         // Invite-only faction - REQUEST button
-        cmd.set(idx + " #ActionBtn.Text", "Request");
+        cmd.set(idx + " #ActionBtn.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.BTN_REQUEST));
         events.addEventBinding(
             CustomUIEventBindingType.Activating,
             idx + " #ActionBtn",
@@ -461,7 +462,7 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
 
     UUID factionId = UuidUtil.parseOrNull(data.factionId);
     if (factionId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.NewPlayerGui.INVALID_FACTION));
       return;
     }
 
@@ -480,7 +481,7 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
 
     UUID factionId = UuidUtil.parseOrNull(data.factionId);
     if (factionId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.NewPlayerGui.INVALID_FACTION));
       sendUpdate();
       return;
     }
@@ -488,13 +489,13 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
     Faction faction = factionManager.getFaction(factionId);
 
     if (faction == null) {
-      player.sendMessage(MessageUtil.errorText("Faction not found."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.Common.FACTION_NOT_FOUND));
       sendUpdate();
       return;
     }
 
     if (!faction.open()) {
-      player.sendMessage(MessageUtil.errorText("This faction is invite-only."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.NewPlayerGui.INVITE_ONLY_MSG));
       sendUpdate();
       return;
     }
@@ -508,11 +509,7 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
 
     switch (result) {
       case SUCCESS -> {
-        player.sendMessage(
-            Message.raw("You joined ").color("#55FF55")
-                .insert(Message.raw(faction.name()).color("#00FFFF"))
-                .insert(Message.raw("!").color("#55FF55"))
-        );
+        player.sendMessage(MessageUtil.successText(playerRef, MessageKeys.NewPlayerGui.JOINED, faction.name()));
         // Clear any pending invites
         inviteManager.clearPlayerInvites(playerRef.getUuid());
         // Open faction dashboard - use fresh faction data
@@ -526,25 +523,25 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
             guiManager.openFactionDashboard(player, ref, store, playerRef, updatedFaction);
           } else {
             // Last resort: close page and let them reopen
-            player.sendMessage(MessageUtil.text("Welcome! Use /f to open faction menu.", MessageUtil.COLOR_GRAY));
+            player.sendMessage(MessageUtil.text(playerRef, MessageKeys.NewPlayerGui.WELCOME_HINT, MessageUtil.COLOR_GRAY));
             guiManager.closePage(player, ref, store);
           }
         }
       }
       case ALREADY_IN_FACTION -> {
-        player.sendMessage(MessageUtil.errorText("You are already in a faction."));
+        player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.Common.ALREADY_IN_FACTION));
         sendUpdate();
       }
       case FACTION_NOT_FOUND -> {
-        player.sendMessage(MessageUtil.errorText("Faction not found."));
+        player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.Common.FACTION_NOT_FOUND));
         sendUpdate();
       }
       case FACTION_FULL -> {
-        player.sendMessage(MessageUtil.errorText("This faction is full."));
+        player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.NewPlayerGui.FACTION_FULL));
         sendUpdate();
       }
       default -> {
-        player.sendMessage(MessageUtil.errorText("Could not join faction."));
+        player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.NewPlayerGui.JOIN_FAILED));
         sendUpdate();
       }
     }
@@ -559,7 +556,7 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
 
     UUID factionId = UuidUtil.parseOrNull(data.factionId);
     if (factionId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.NewPlayerGui.INVALID_FACTION));
       sendUpdate();
       return;
     }
@@ -568,14 +565,14 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
 
     // Check if invite exists
     if (!inviteManager.hasInvite(factionId, playerUuid)) {
-      player.sendMessage(MessageUtil.errorText("This invite has expired or was revoked."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.NewPlayerGui.INVITE_EXPIRED));
       sendUpdate();
       return;
     }
 
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {
-      player.sendMessage(MessageUtil.errorText("Faction no longer exists."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.NewPlayerGui.FACTION_GONE));
       inviteManager.removeInvite(factionId, playerUuid);
       sendUpdate();
       return;
@@ -590,11 +587,7 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
 
     switch (result) {
       case SUCCESS -> {
-        player.sendMessage(
-            Message.raw("You joined ").color("#55FF55")
-                .insert(Message.raw(faction.name()).color("#00FFFF"))
-                .insert(Message.raw("!").color("#55FF55"))
-        );
+        player.sendMessage(MessageUtil.successText(playerRef, MessageKeys.NewPlayerGui.JOINED, faction.name()));
         // Clear invite and other pending invites
         inviteManager.clearPlayerInvites(playerUuid);
         // Open faction dashboard
@@ -604,15 +597,15 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
         }
       }
       case ALREADY_IN_FACTION -> {
-        player.sendMessage(MessageUtil.errorText("You are already in a faction."));
+        player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.Common.ALREADY_IN_FACTION));
         sendUpdate();
       }
       case FACTION_FULL -> {
-        player.sendMessage(MessageUtil.errorText("This faction is full."));
+        player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.NewPlayerGui.FACTION_FULL));
         sendUpdate();
       }
       default -> {
-        player.sendMessage(MessageUtil.errorText("Could not join faction."));
+        player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.NewPlayerGui.JOIN_FAILED));
         sendUpdate();
       }
     }
@@ -627,7 +620,7 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
 
     UUID factionId = UuidUtil.parseOrNull(data.factionId);
     if (factionId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.NewPlayerGui.INVALID_FACTION));
       sendUpdate();
       return;
     }
@@ -636,14 +629,14 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
 
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {
-      player.sendMessage(MessageUtil.errorText("Faction not found."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.Common.FACTION_NOT_FOUND));
       sendUpdate();
       return;
     }
 
     // Check if faction is open (shouldn't happen, but just in case)
     if (faction.open()) {
-      player.sendMessage(MessageUtil.text("This faction is open! Click JOIN instead.", MessageUtil.COLOR_GOLD));
+      player.sendMessage(MessageUtil.text(playerRef, MessageKeys.NewPlayerGui.FACTION_OPEN_HINT, MessageUtil.COLOR_GOLD));
       sendUpdate();
       return;
     }
@@ -651,14 +644,14 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
     // Check if player already has a pending request
     var joinRequestManager = guiManager.getJoinRequestManager();
     if (joinRequestManager.hasRequest(factionId, playerUuid)) {
-      player.sendMessage(MessageUtil.text("You already have a pending request to this faction.", MessageUtil.COLOR_GOLD));
+      player.sendMessage(MessageUtil.text(playerRef, MessageKeys.NewPlayerGui.ALREADY_REQUESTED, MessageUtil.COLOR_GOLD));
       sendUpdate();
       return;
     }
 
     // Check if player already has an invite (they should accept it)
     if (inviteManager.hasInvite(factionId, playerUuid)) {
-      player.sendMessage(MessageUtil.text("You have an invite from this faction! Click ACCEPT instead.", MessageUtil.COLOR_GOLD));
+      player.sendMessage(MessageUtil.text(playerRef, MessageKeys.NewPlayerGui.HAS_INVITE_HINT, MessageUtil.COLOR_GOLD));
       sendUpdate();
       return;
     }
@@ -666,12 +659,8 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
     // Create the join request
     joinRequestManager.createRequest(factionId, playerUuid, playerRef.getUsername(), null);
 
-    player.sendMessage(
-        Message.raw("Join request sent to ").color("#55FF55")
-            .insert(Message.raw(faction.name()).color("#00FFFF"))
-            .insert(Message.raw("!").color("#55FF55"))
-    );
-    player.sendMessage(MessageUtil.text("An officer will review your request.", MessageUtil.COLOR_GRAY));
+    player.sendMessage(MessageUtil.successText(playerRef, MessageKeys.NewPlayerGui.REQUEST_SENT, faction.name()));
+    player.sendMessage(MessageUtil.text(playerRef, MessageKeys.NewPlayerGui.OFFICER_REVIEW, MessageUtil.COLOR_GRAY));
 
     // Rebuild list to show updated state (PENDING button)
     rebuildList();
