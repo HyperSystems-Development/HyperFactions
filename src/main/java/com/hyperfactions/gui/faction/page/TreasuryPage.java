@@ -16,6 +16,8 @@ import com.hyperfactions.gui.faction.NavBarHelper;
 import com.hyperfactions.gui.faction.data.TreasuryData;
 import com.hyperfactions.manager.EconomyManager;
 import com.hyperfactions.manager.FactionManager;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hyperfactions.util.UiUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -114,7 +116,8 @@ public class TreasuryPage extends InteractiveCustomUIPage<TreasuryData> {
 
     // Wallet balance
     BigDecimal walletBalance = economyManager.getVaultProvider().getBalanceBigDecimal(uuid);
-    cmd.set("#WalletBalance.Text", "Your wallet: " + economyManager.formatCurrencyCompact(walletBalance));
+    cmd.set("#WalletBalance.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.WALLET_LABEL,
+        economyManager.formatCurrencyCompact(walletBalance)));
 
     // 24h P&L
     PnlResult pnl = calculatePnl(economy);
@@ -160,11 +163,10 @@ public class TreasuryPage extends InteractiveCustomUIPage<TreasuryData> {
     }
 
     // Show chunk breakdown
-    String chunkDetail = freeChunks > 0
-        ? String.format("%d free + %d billable chunks", Math.min(freeChunks, claimCount), billableChunks)
-        : billableChunks + " billable chunks";
-    cmd.set("#UpkeepCost.Text", "Cost: " + economyManager.formatCurrency(costPerCycle)
-        + " every " + intervalHours + "h");
+    String chunkDetail = HFMessages.get(playerRef, MessageKeys.TreasuryGui.CHUNKS_DETAIL,
+        Math.min(freeChunks, claimCount), billableChunks);
+    String costString = economyManager.formatCurrency(costPerCycle) + " every " + intervalHours + "h";
+    cmd.set("#UpkeepCost.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.COST_LABEL, costString));
     cmd.set("#UpkeepDetail.Text", chunkDetail);
 
     // Color-code the progress bar based on status
@@ -180,10 +182,14 @@ public class TreasuryPage extends InteractiveCustomUIPage<TreasuryData> {
     }
     cmd.set("#UpkeepBar.Value", progress);
     cmd.set("#UpkeepBar.Bar.Color", barColor);
-    cmd.set("#UpkeepTimer.Text", remaining < 0 ? "Pending" : formatDuration(remaining) + " left");
+    cmd.set("#UpkeepTimer.Text", remaining < 0
+        ? HFMessages.get(playerRef, MessageKeys.TreasuryGui.PENDING)
+        : formatDuration(remaining) + " left");
 
     boolean autoPay = economy != null && economy.upkeepAutoPay();
-    cmd.set("#AutoPayStatus.Text", "Auto-pay: " + (autoPay ? "ON" : "OFF"));
+    cmd.set("#AutoPayStatus.Text", autoPay
+        ? HFMessages.get(playerRef, MessageKeys.TreasuryGui.AUTO_PAY_ON)
+        : HFMessages.get(playerRef, MessageKeys.TreasuryGui.AUTO_PAY_OFF));
     cmd.set("#AutoPayStatus.Style.TextColor", autoPay ? "#55FF55" : "#FF5555");
 
     // Cost projections row
@@ -206,19 +212,23 @@ public class TreasuryPage extends InteractiveCustomUIPage<TreasuryData> {
         String runwayText;
         String runwayColor;
         if (runwayDays > 90) {
-          runwayText = "90+ days";
+          runwayText = HFMessages.get(playerRef, MessageKeys.TreasuryGui.RUNWAY_90_PLUS);
           runwayColor = "#55FF55";
         } else if (runwayDays > 0) {
-          runwayText = runwayDays + " day" + (runwayDays != 1 ? "s" : "");
+          runwayText = runwayDays != 1
+              ? HFMessages.get(playerRef, MessageKeys.TreasuryGui.RUNWAY_DAYS, runwayDays)
+              : HFMessages.get(playerRef, MessageKeys.TreasuryGui.RUNWAY_DAY, runwayDays);
           runwayColor = runwayDays <= 3 ? "#FF5555" : runwayDays <= 7 ? "#FFAA00" : "#55FF55";
         } else {
-          runwayText = "< 1 day";
+          runwayText = HFMessages.get(playerRef, MessageKeys.TreasuryGui.RUNWAY_LESS_THAN_DAY);
           runwayColor = "#FF5555";
         }
         cmd.set("#RunwayValue.Text", runwayText);
         cmd.set("#RunwayValue.Style.TextColor", runwayColor);
       } else {
-        cmd.set("#RunwayValue.Text", balance.compareTo(BigDecimal.ZERO) == 0 ? "No funds" : "N/A");
+        cmd.set("#RunwayValue.Text", balance.compareTo(BigDecimal.ZERO) == 0
+            ? HFMessages.get(playerRef, MessageKeys.TreasuryGui.RUNWAY_NO_FUNDS)
+            : HFMessages.get(playerRef, MessageKeys.Common.NA));
         cmd.set("#RunwayValue.Style.TextColor", "#FF5555");
       }
     }
@@ -229,13 +239,16 @@ public class TreasuryPage extends InteractiveCustomUIPage<TreasuryData> {
       long graceMs = config.getUpkeepGracePeriodHours() * 3600_000L;
       long graceElapsed = System.currentTimeMillis() - economy.upkeepGraceStartTimestamp();
       long graceRemaining = Math.max(0, graceMs - graceElapsed);
-      cmd.set("#GraceTimer.Text", "Grace expires in: " + formatDuration(graceRemaining));
-      cmd.set("#MissedCount.Text", "Missed payments: " + economy.consecutiveMissedPayments());
+      cmd.set("#GraceTimer.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.GRACE_EXPIRES,
+          formatDuration(graceRemaining)));
+      cmd.set("#MissedCount.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.MISSED_PAYMENTS,
+          economy.consecutiveMissedPayments()));
 
       // Show Pay Now button if faction can afford the upkeep cost
       if (canAfford && billableChunks > 0) {
         cmd.set("#PayNowRow.Visible", true);
-        cmd.set("#PayNowCost.Text", "Pay " + economyManager.formatCurrency(costPerCycle) + " to clear grace");
+        cmd.set("#PayNowCost.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.PAY_TO_CLEAR,
+            economyManager.formatCurrency(costPerCycle)));
         events.addEventBinding(CustomUIEventBindingType.Activating, "#PayNowBtn",
             EventData.of("Button", "PayNow"), false);
       }
@@ -477,19 +490,19 @@ public class TreasuryPage extends InteractiveCustomUIPage<TreasuryData> {
     return minutes + "m";
   }
 
-  private static String getHumanTypeName(EconomyAPI.TransactionType type) {
+  private String getHumanTypeName(EconomyAPI.TransactionType type) {
     return switch (type) {
-      case DEPOSIT -> "Deposit";
-      case WITHDRAW -> "Withdrawal";
-      case TRANSFER_IN -> "Transfer In";
-      case TRANSFER_OUT -> "Transfer Out";
-      case PLAYER_TRANSFER_OUT -> "Player Transfer";
-      case UPKEEP -> "Upkeep";
-      case TAX_COLLECTION -> "Tax Collection";
-      case WAR_COST -> "War Cost";
-      case RAID_COST -> "Raid Cost";
-      case SPOILS -> "Spoils";
-      case ADMIN_ADJUSTMENT -> "Admin Adjustment";
+      case DEPOSIT -> HFMessages.get(playerRef, MessageKeys.TreasuryGui.TYPE_DEPOSIT);
+      case WITHDRAW -> HFMessages.get(playerRef, MessageKeys.TreasuryGui.TYPE_WITHDRAWAL);
+      case TRANSFER_IN -> HFMessages.get(playerRef, MessageKeys.TreasuryGui.TYPE_TRANSFER_IN);
+      case TRANSFER_OUT -> HFMessages.get(playerRef, MessageKeys.TreasuryGui.TYPE_TRANSFER_OUT);
+      case PLAYER_TRANSFER_OUT -> HFMessages.get(playerRef, MessageKeys.TreasuryGui.TYPE_PLAYER_TRANSFER);
+      case UPKEEP -> HFMessages.get(playerRef, MessageKeys.TreasuryGui.TYPE_UPKEEP);
+      case TAX_COLLECTION -> HFMessages.get(playerRef, MessageKeys.TreasuryGui.TYPE_TAX);
+      case WAR_COST -> HFMessages.get(playerRef, MessageKeys.TreasuryGui.TYPE_WAR_COST);
+      case RAID_COST -> HFMessages.get(playerRef, MessageKeys.TreasuryGui.TYPE_RAID_COST);
+      case SPOILS -> HFMessages.get(playerRef, MessageKeys.TreasuryGui.TYPE_SPOILS);
+      case ADMIN_ADJUSTMENT -> HFMessages.get(playerRef, MessageKeys.TreasuryGui.TYPE_ADMIN);
     };
   }
 
@@ -511,7 +524,7 @@ public class TreasuryPage extends InteractiveCustomUIPage<TreasuryData> {
 
   private String resolveActorName(UUID actorId) {
     if (actorId == null) {
-      return "System";
+      return HFMessages.get(playerRef, MessageKeys.TreasuryGui.SYSTEM);
     }
     FactionMember member = faction.getMember(actorId);
     if (member != null) {

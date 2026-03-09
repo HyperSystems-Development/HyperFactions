@@ -16,6 +16,8 @@ import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.integration.economy.VaultEconomyProvider;
 import com.hyperfactions.manager.EconomyManager;
 import com.hyperfactions.manager.FactionManager;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.UiUtil;
 import com.hypixel.hytale.component.Ref;
@@ -81,23 +83,29 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
     UUID uuid = playerRef.getUuid();
 
     // Set mode subtitle
-    cmd.set("#ModeLabel.Text", isDeposit ? "Deposit to Treasury" : "Withdraw from Treasury");
+    cmd.set("#ModeLabel.Text", isDeposit
+        ? HFMessages.get(playerRef, MessageKeys.TreasuryGui.DEPOSIT_TITLE)
+        : HFMessages.get(playerRef, MessageKeys.TreasuryGui.WITHDRAW_TITLE));
 
     // Set balances
     VaultEconomyProvider vault = economyManager.getVaultProvider();
-    cmd.set("#WalletLabel.Text", "Your wallet: " + economyManager.formatCurrency(vault.getBalanceBigDecimal(uuid)));
+    cmd.set("#WalletLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.WALLET_LABEL,
+        economyManager.formatCurrency(vault.getBalanceBigDecimal(uuid))));
 
     FactionEconomy economy = economyManager.getEconomy(faction.id());
     BigDecimal treasuryBalance = economy != null ? economy.balance() : BigDecimal.ZERO;
-    cmd.set("#TreasuryLabel.Text", "Treasury balance: " + economyManager.formatCurrency(treasuryBalance));
+    cmd.set("#TreasuryLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.TREASURY_LABEL,
+        economyManager.formatCurrency(treasuryBalance)));
 
     // Fee label
     EconomyAPI.TransactionType txType = isDeposit ? EconomyAPI.TransactionType.DEPOSIT : EconomyAPI.TransactionType.WITHDRAW;
     BigDecimal feePercent = isDeposit ? ConfigManager.get().getDepositFeePercent() : ConfigManager.get().getWithdrawFeePercent();
-    cmd.set("#FeeLabel.Text", "Fee (" + feePercent.toPlainString() + "%):");
+    cmd.set("#FeeLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.FEE_LABEL, feePercent.toPlainString()));
 
     // Confirm button text
-    cmd.set("#ConfirmBtn.Text", isDeposit ? "Confirm Deposit" : "Confirm Withdrawal");
+    cmd.set("#ConfirmBtn.Text", isDeposit
+        ? HFMessages.get(playerRef, MessageKeys.TreasuryGui.CONFIRM_DEPOSIT)
+        : HFMessages.get(playerRef, MessageKeys.TreasuryGui.CONFIRM_WITHDRAWAL));
 
     // Check withdraw permission
     if (!isDeposit) {
@@ -177,10 +185,12 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
       cmd.set("#FeeAmount.Text", economyManager.formatCurrency(amount));
       cmd.set("#FeeValue.Text", fee.compareTo(BigDecimal.ZERO) > 0 ? "-" + economyManager.formatCurrency(fee) : economyManager.formatCurrency(BigDecimal.ZERO));
       if (isDeposit) {
-        cmd.set("#FeeTotal.Text", economyManager.formatCurrency(total) + " from wallet");
+        cmd.set("#FeeTotal.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.FROM_WALLET,
+            economyManager.formatCurrency(total)));
       } else {
         BigDecimal net = amount.subtract(fee);
-        cmd.set("#FeeTotal.Text", economyManager.formatCurrency(net) + " to wallet");
+        cmd.set("#FeeTotal.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.TO_WALLET,
+            economyManager.formatCurrency(net)));
       }
     }
 
@@ -200,7 +210,7 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
     UUID uuid = playerRef.getUuid();
     BigDecimal amount = UiUtil.parseAmount(data.amount);
     if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
-      player.sendMessage(MessageUtil.errorText("Enter a valid positive amount."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.TreasuryGui.ENTER_VALID_AMOUNT));
       sendUpdate();
       return;
     }
@@ -222,15 +232,15 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
     VaultEconomyProvider vault = economyManager.getVaultProvider();
 
     if (!vault.has(uuid, totalFromWallet)) {
-      player.sendMessage(MessageUtil.errorText(
-          "Insufficient wallet funds. Need " + economyManager.formatCurrency(totalFromWallet)
-          + ", have " + economyManager.formatCurrency(vault.getBalanceBigDecimal(uuid))));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.TreasuryGui.INSUFFICIENT_WALLET,
+          economyManager.formatCurrency(totalFromWallet),
+          economyManager.formatCurrency(vault.getBalanceBigDecimal(uuid))));
       sendUpdate();
       return;
     }
 
     if (!vault.withdraw(uuid, totalFromWallet)) {
-      player.sendMessage(MessageUtil.errorText("Failed to withdraw from your wallet."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.TreasuryGui.WALLET_WITHDRAW_FAILED));
       sendUpdate();
       return;
     }
@@ -240,16 +250,18 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
 
     if (result != EconomyAPI.TransactionResult.SUCCESS) {
       vault.deposit(uuid, totalFromWallet); // Rollback
-      player.sendMessage(MessageUtil.errorText("Failed to deposit. Money returned."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.TreasuryGui.DEPOSIT_FAILED_RETURNED));
       sendUpdate();
       return;
     }
 
-    String msg = "Deposited " + economyManager.formatCurrency(amount) + " into the treasury.";
     if (fee.compareTo(BigDecimal.ZERO) > 0) {
-      msg += " (fee: " + economyManager.formatCurrency(fee) + ")";
+      player.sendMessage(MessageUtil.successText(playerRef, MessageKeys.TreasuryGui.DEPOSITED_FEE,
+          economyManager.formatCurrency(amount), economyManager.formatCurrency(fee)));
+    } else {
+      player.sendMessage(MessageUtil.successText(playerRef, MessageKeys.TreasuryGui.DEPOSITED,
+          economyManager.formatCurrency(amount)));
     }
-    player.sendMessage(MessageUtil.successText(msg));
 
     Faction fresh = factionManager.getFaction(faction.id());
     if (fresh != null) {
@@ -261,7 +273,7 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
                     PlayerRef playerRef, UUID uuid, BigDecimal amount, BigDecimal fee) {
     // Permission check
     if (!PermissionManager.get().hasPermission(uuid, Permissions.ECONOMY_WITHDRAW)) {
-      player.sendMessage(MessageUtil.errorText("You don't have permission to withdraw."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.TreasuryGui.NO_WITHDRAW_PERMISSION));
       sendUpdate();
       return;
     }
@@ -269,7 +281,7 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
     // Limit check
     String limitReason = economyManager.checkWithdrawLimits(faction.id(), amount);
     if (limitReason != null) {
-      player.sendMessage(MessageUtil.errorText("Withdrawal denied: " + limitReason));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.TreasuryGui.WITHDRAW_DENIED, limitReason));
       sendUpdate();
       return;
     }
@@ -280,11 +292,11 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
     if (result != EconomyAPI.TransactionResult.SUCCESS) {
       switch (result) {
         case INSUFFICIENT_FUNDS ->
-          player.sendMessage(MessageUtil.errorText("Insufficient funds in treasury."));
+          player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.TreasuryGui.INSUFFICIENT_TREASURY));
         case LIMIT_EXCEEDED ->
-          player.sendMessage(MessageUtil.errorText("Withdrawal limit exceeded."));
+          player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.TreasuryGui.WITHDRAW_LIMIT));
         default ->
-          player.sendMessage(MessageUtil.errorText("Withdrawal failed: " + result));
+          player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.TreasuryGui.WITHDRAW_FAILED, result));
       }
       sendUpdate();
       return;
@@ -293,18 +305,19 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
     BigDecimal netToWallet = amount.subtract(fee);
     VaultEconomyProvider vault = economyManager.getVaultProvider();
     if (!vault.deposit(uuid, netToWallet)) {
-      player.sendMessage(MessageUtil.errorText(
-          "Warning: Failed to deposit to your wallet. Contact an admin."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.TreasuryGui.WALLET_DEPOSIT_WARN));
       sendUpdate();
       return;
     }
 
-    String msg = "Withdrew " + economyManager.formatCurrency(amount) + " from the treasury.";
     if (fee.compareTo(BigDecimal.ZERO) > 0) {
-      msg += " (fee: " + economyManager.formatCurrency(fee) + ", received: "
-          + economyManager.formatCurrency(netToWallet) + ")";
+      player.sendMessage(MessageUtil.successText(playerRef, MessageKeys.TreasuryGui.WITHDREW_FEE,
+          economyManager.formatCurrency(amount), economyManager.formatCurrency(fee),
+          economyManager.formatCurrency(netToWallet)));
+    } else {
+      player.sendMessage(MessageUtil.successText(playerRef, MessageKeys.TreasuryGui.WITHDREW,
+          economyManager.formatCurrency(amount)));
     }
-    player.sendMessage(MessageUtil.successText(msg));
 
     Faction fresh = factionManager.getFaction(faction.id());
     if (fresh != null) {

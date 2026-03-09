@@ -12,6 +12,9 @@ import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.faction.data.TreasurySettingsData;
 import com.hyperfactions.manager.EconomyManager;
 import com.hyperfactions.manager.FactionManager;
+import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -150,7 +153,7 @@ public class TreasurySettingsPage extends InteractiveCustomUIPage<TreasurySettin
 
     FactionMember member = faction.getMember(uuid);
     if (member == null || member.role() != FactionRole.LEADER) {
-      player.sendMessage(MessageUtil.errorText("Only the leader can change treasury permissions."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.TreasuryGui.LEADER_ONLY_PERMS));
       sendUpdate();
       return;
     }
@@ -169,7 +172,7 @@ public class TreasurySettingsPage extends InteractiveCustomUIPage<TreasurySettin
                    PlayerRef playerRef, UUID uuid) {
     FactionMember member = faction.getMember(uuid);
     if (member == null || member.role() != FactionRole.LEADER) {
-      player.sendMessage(MessageUtil.errorText("Only the leader can change upkeep settings."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.TreasuryGui.LEADER_ONLY_UPKEEP));
       sendUpdate();
       return;
     }
@@ -206,7 +209,7 @@ public class TreasurySettingsPage extends InteractiveCustomUIPage<TreasurySettin
 
       economyManager.updateLimits(faction.id(), newLimits);
     } catch (NumberFormatException e) {
-      player.sendMessage(MessageUtil.errorText("Invalid number in limit fields. Use 0 for unlimited."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.TreasuryGui.INVALID_LIMIT));
     }
   }
 

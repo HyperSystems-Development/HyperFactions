@@ -965,6 +965,85 @@ public final class MessageKeys {
     private ModulesGui() {}
   }
 
+  /** Treasury page labels and messages. */
+  public static final class TreasuryGui {
+    // Dashboard labels
+    public static final String WALLET_LABEL = "hyperfactions_gui.treasury.wallet_label";
+    public static final String TREASURY_LABEL = "hyperfactions_gui.treasury.treasury_label";
+    public static final String CHUNKS_DETAIL = "hyperfactions_gui.treasury.chunks_detail";
+    public static final String COST_LABEL = "hyperfactions_gui.treasury.cost_label";
+    public static final String PENDING = "hyperfactions_gui.treasury.pending";
+    public static final String AUTO_PAY_ON = "hyperfactions_gui.treasury.auto_pay_on";
+    public static final String AUTO_PAY_OFF = "hyperfactions_gui.treasury.auto_pay_off";
+    public static final String RUNWAY_90_PLUS = "hyperfactions_gui.treasury.runway_90_plus";
+    public static final String RUNWAY_DAYS = "hyperfactions_gui.treasury.runway_days";
+    public static final String RUNWAY_DAY = "hyperfactions_gui.treasury.runway_day";
+    public static final String RUNWAY_LESS_THAN_DAY = "hyperfactions_gui.treasury.runway_less_day";
+    public static final String RUNWAY_NO_FUNDS = "hyperfactions_gui.treasury.runway_no_funds";
+    public static final String GRACE_EXPIRES = "hyperfactions_gui.treasury.grace_expires";
+    public static final String MISSED_PAYMENTS = "hyperfactions_gui.treasury.missed_payments";
+    public static final String PAY_TO_CLEAR = "hyperfactions_gui.treasury.pay_to_clear";
+    public static final String SYSTEM = "hyperfactions_gui.treasury.system";
+    // Transaction types
+    public static final String TYPE_DEPOSIT = "hyperfactions_gui.treasury.type_deposit";
+    public static final String TYPE_WITHDRAWAL = "hyperfactions_gui.treasury.type_withdrawal";
+    public static final String TYPE_TRANSFER_IN = "hyperfactions_gui.treasury.type_transfer_in";
+    public static final String TYPE_TRANSFER_OUT = "hyperfactions_gui.treasury.type_transfer_out";
+    public static final String TYPE_PLAYER_TRANSFER = "hyperfactions_gui.treasury.type_player_transfer";
+    public static final String TYPE_UPKEEP = "hyperfactions_gui.treasury.type_upkeep";
+    public static final String TYPE_TAX = "hyperfactions_gui.treasury.type_tax";
+    public static final String TYPE_WAR_COST = "hyperfactions_gui.treasury.type_war_cost";
+    public static final String TYPE_RAID_COST = "hyperfactions_gui.treasury.type_raid_cost";
+    public static final String TYPE_SPOILS = "hyperfactions_gui.treasury.type_spoils";
+    public static final String TYPE_ADMIN = "hyperfactions_gui.treasury.type_admin";
+    // Deposit/Withdraw modal
+    public static final String DEPOSIT_TITLE = "hyperfactions_gui.treasury.deposit_title";
+    public static final String WITHDRAW_TITLE = "hyperfactions_gui.treasury.withdraw_title";
+    public static final String FEE_LABEL = "hyperfactions_gui.treasury.fee_label";
+    public static final String CONFIRM_DEPOSIT = "hyperfactions_gui.treasury.confirm_deposit";
+    public static final String CONFIRM_WITHDRAWAL = "hyperfactions_gui.treasury.confirm_withdrawal";
+    public static final String FROM_WALLET = "hyperfactions_gui.treasury.from_wallet";
+    public static final String TO_WALLET = "hyperfactions_gui.treasury.to_wallet";
+    public static final String ENTER_VALID_AMOUNT = "hyperfactions_gui.treasury.enter_valid_amount";
+    public static final String INSUFFICIENT_WALLET = "hyperfactions_gui.treasury.insufficient_wallet";
+    public static final String WALLET_WITHDRAW_FAILED = "hyperfactions_gui.treasury.wallet_withdraw_failed";
+    public static final String DEPOSIT_FAILED_RETURNED = "hyperfactions_gui.treasury.deposit_failed_returned";
+    public static final String DEPOSITED = "hyperfactions_gui.treasury.deposited";
+    public static final String DEPOSITED_FEE = "hyperfactions_gui.treasury.deposited_fee";
+    public static final String NO_WITHDRAW_PERMISSION = "hyperfactions_gui.treasury.no_withdraw_permission";
+    public static final String WITHDRAW_DENIED = "hyperfactions_gui.treasury.withdraw_denied";
+    public static final String INSUFFICIENT_TREASURY = "hyperfactions_gui.treasury.insufficient_treasury";
+    public static final String WITHDRAW_LIMIT = "hyperfactions_gui.treasury.withdraw_limit";
+    public static final String WITHDRAW_FAILED = "hyperfactions_gui.treasury.withdraw_failed";
+    public static final String WALLET_DEPOSIT_WARN = "hyperfactions_gui.treasury.wallet_deposit_warn";
+    public static final String WITHDREW = "hyperfactions_gui.treasury.withdrew";
+    public static final String WITHDREW_FEE = "hyperfactions_gui.treasury.withdrew_fee";
+    // Transfer search
+    public static final String SEARCH_HINT = "hyperfactions_gui.treasury.search_hint";
+    public static final String NO_RESULTS = "hyperfactions_gui.treasury.no_results";
+    public static final String TAG_PLAYER = "hyperfactions_gui.treasury.tag_player";
+    public static final String TAG_FACTION = "hyperfactions_gui.treasury.tag_faction";
+    public static final String SOURCE_ONLINE = "hyperfactions_gui.treasury.source_online";
+    public static final String SOURCE_OFFLINE = "hyperfactions_gui.treasury.source_offline";
+    public static final String SOURCE_PLAYER_DB = "hyperfactions_gui.treasury.source_player_db";
+    // Transfer confirm
+    public static final String NO_TRANSFER_PERMISSION = "hyperfactions_gui.treasury.no_transfer_permission";
+    public static final String TRANSFER_DENIED = "hyperfactions_gui.treasury.transfer_denied";
+    public static final String INVALID_TARGET_FACTION = "hyperfactions_gui.treasury.invalid_target_faction";
+    public static final String TARGET_FACTION_GONE = "hyperfactions_gui.treasury.target_faction_gone";
+    public static final String TRANSFER_FAILED = "hyperfactions_gui.treasury.transfer_failed";
+    public static final String TRANSFER_FAILED_RETURNED = "hyperfactions_gui.treasury.transfer_failed_returned";
+    public static final String TRANSFERRED = "hyperfactions_gui.treasury.transferred";
+    public static final String INVALID_TARGET_PLAYER = "hyperfactions_gui.treasury.invalid_target_player";
+    public static final String PLAYER_TRANSFER_FAILED = "hyperfactions_gui.treasury.player_transfer_failed";
+    // Treasury settings
+    public static final String LEADER_ONLY_PERMS = "hyperfactions_gui.treasury.leader_only_perms";
+    public static final String LEADER_ONLY_UPKEEP = "hyperfactions_gui.treasury.leader_only_upkeep";
+    public static final String INVALID_LIMIT = "hyperfactions_gui.treasury.invalid_limit";
+
+    private TreasuryGui() {}
+  }
+
   /** Player settings page labels. */
   public static final class PlayerSettings {
     public static final String TITLE = "hyperfactions_gui.player_settings.title";
