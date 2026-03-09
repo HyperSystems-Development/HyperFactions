@@ -100,3 +100,69 @@ cmd.claim.world_not_allowed = Claiming is not allowed in this world.
 cmd.claim.orbisguard = This area is protected by OrbisGuard.
 cmd.claim.zone_protected = This chunk is in a safezone or warzone.
 cmd.claim.failed = Failed to claim chunk.
+
+# ========== Commands - Invite ==========
+cmd.invite.no_permission = You don't have permission to invite players.
+cmd.invite.not_officer = You must be an officer to invite players.
+cmd.invite.usage = Usage: /f invite <player>
+cmd.invite.player_not_found = Player '{0}' not found or offline.
+cmd.invite.target_in_faction = That player is already in a faction.
+cmd.invite.sent = Invited {0} to your faction.
+cmd.invite.received = You have been invited to join {0}!
+cmd.invite.accept_hint = Type /f accept {0} to join.
+
+# ========== Commands - Accept / Join ==========
+cmd.join.no_permission = You don't have permission to join factions.
+cmd.join.already_in_named = You are already in {0}.
+cmd.join.use_leave_hint = Use /f leave first if you want to join another faction.
+cmd.join.no_invites = You have no pending invites.
+cmd.join.faction_not_found = Faction '{0}' not found.
+cmd.join.not_invited = You have no invite from that faction.
+cmd.join.faction_gone = That faction no longer exists.
+cmd.join.success = You have joined {0}!
+cmd.join.broadcast = {0} has joined the faction!
+cmd.join.faction_full = That faction is full.
+cmd.join.failed = Failed to join faction.
+
+# ========== Commands - Kick ==========
+cmd.kick.no_permission = You don't have permission to kick members.
+cmd.kick.usage = Usage: /f kick <player>
+cmd.kick.not_in_your_faction = Player '{0}' is not in your faction.
+cmd.kick.success = Kicked {0} from the faction.
+cmd.kick.broadcast = {0} was kicked from the faction.
+cmd.kick.kicked = You have been kicked from the faction.
+cmd.kick.cannot_kick_higher = You don't have permission to kick that player.
+cmd.kick.cannot_kick_leader = You cannot kick the faction leader.
+cmd.kick.failed = Failed to kick player.
+
+# ========== Commands - Leave ==========
+cmd.leave.no_permission = You don't have permission to leave factions.
+cmd.leave.confirm_prompt = Are you sure you want to leave your faction?
+cmd.leave.confirm_instruction = Type /f leave --text again within {0} seconds to confirm.
+cmd.leave.success = You have left your faction.
+cmd.leave.broadcast = {0} has left the faction.
+cmd.leave.failed = Failed to leave faction.
+cmd.leave.cancelled = Previous confirmation cancelled. Type again to confirm leave.
+
+# ========== Commands - Promote / Demote / Transfer ==========
+cmd.rank.promote_no_permission = You don't have permission to promote members.
+cmd.rank.promote_usage = Usage: /f promote <player>
+cmd.rank.promoted = Promoted {0} to {1}!
+cmd.rank.promote_broadcast = {0} was promoted to {1}!
+cmd.rank.already_highest = Cannot promote further. Use /f transfer to change leader.
+cmd.rank.promote_failed = Failed to promote player.
+cmd.rank.demote_no_permission = You don't have permission to demote members.
+cmd.rank.demote_usage = Usage: /f demote <player>
+cmd.rank.demoted = Demoted {0} to {1}.
+cmd.rank.demote_broadcast = {0} was demoted to {1}.
+cmd.rank.already_lowest = That player is already a Member.
+cmd.rank.demote_failed = Failed to demote player.
+cmd.rank.transfer_no_permission = You don't have permission to transfer leadership.
+cmd.rank.transfer_usage = Usage: /f transfer <player>
+cmd.rank.player_not_in_faction = Player not found in your faction.
+cmd.rank.transfer_confirm = Are you sure you want to transfer leadership to {0}?
+cmd.rank.transfer_confirm_instruction = Type /f transfer {0} --text again within {1} seconds to confirm.
+cmd.rank.transferred = Transferred leadership to {0}!
+cmd.rank.transfer_broadcast = {0} is now the faction leader!
+cmd.rank.transfer_failed = Failed to transfer leadership.
+cmd.rank.transfer_cancelled = Previous confirmation cancelled. Type again to confirm transfer.

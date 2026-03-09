@@ -9,6 +9,8 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.PendingInvite;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -41,19 +43,17 @@ public class AcceptSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.JOIN)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to join factions.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Join.NO_PERMISSION));
       return;
     }
 
     if (hyperFactions.getFactionManager().isInFaction(player.getUuid())) {
       Faction existingFaction = hyperFactions.getFactionManager().getPlayerFaction(player.getUuid());
       if (existingFaction != null) {
-        ctx.sendMessage(prefix().insert(msg("You are already in ", COLOR_RED))
-          .insert(msg(existingFaction.name(), COLOR_CYAN))
-          .insert(msg(".", COLOR_RED)));
-        ctx.sendMessage(prefix().insert(msg("Use /f leave first if you want to join another faction.", COLOR_YELLOW)));
+        ctx.sendMessage(MessageUtil.error(player, MessageKeys.Join.ALREADY_IN_NAMED, existingFaction.name()));
+        ctx.sendMessage(MessageUtil.info(player, MessageKeys.Join.USE_LEAVE_HINT, COLOR_YELLOW));
       } else {
-        ctx.sendMessage(prefix().insert(msg("You are already in a faction.", COLOR_RED)));
+        ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.ALREADY_IN_FACTION));
       }
       return;
     }
@@ -73,7 +73,7 @@ public class AcceptSubCommand extends FactionSubCommand {
     }
 
     if (invites.isEmpty()) {
-      ctx.sendMessage(prefix().insert(msg("You have no pending invites.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Join.NO_INVITES));
       return;
     }
 
@@ -82,12 +82,12 @@ public class AcceptSubCommand extends FactionSubCommand {
       String factionName = fctx.joinArgs();
       Faction targetFaction = hyperFactions.getFactionManager().getFactionByName(factionName);
       if (targetFaction == null) {
-        ctx.sendMessage(prefix().insert(msg("Faction '" + factionName + "' not found.", COLOR_RED)));
+        ctx.sendMessage(MessageUtil.error(player, MessageKeys.Join.FACTION_NOT_FOUND, factionName));
         return;
       }
       invite = hyperFactions.getInviteManager().getInvite(targetFaction.id(), player.getUuid());
       if (invite == null) {
-        ctx.sendMessage(prefix().insert(msg("You have no invite from that faction.", COLOR_RED)));
+        ctx.sendMessage(MessageUtil.error(player, MessageKeys.Join.NOT_INVITED));
         return;
       }
     } else {
@@ -96,7 +96,7 @@ public class AcceptSubCommand extends FactionSubCommand {
 
     Faction faction = hyperFactions.getFactionManager().getFaction(invite.factionId());
     if (faction == null) {
-      ctx.sendMessage(prefix().insert(msg("That faction no longer exists.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Join.FACTION_GONE));
       hyperFactions.getInviteManager().removeInvite(invite.factionId(), player.getUuid());
       return;
     }
@@ -108,14 +108,12 @@ public class AcceptSubCommand extends FactionSubCommand {
     if (result == FactionManager.FactionResult.SUCCESS) {
       hyperFactions.getInviteManager().clearPlayerInvites(player.getUuid());
       hyperFactions.getJoinRequestManager().clearPlayerRequests(player.getUuid());
-      ctx.sendMessage(prefix().insert(msg("You have joined ", COLOR_GREEN))
-        .insert(msg(faction.name(), COLOR_CYAN)).insert(msg("!", COLOR_GREEN)));
-      broadcastToFaction(faction.id(), prefix().insert(msg(player.getUsername(), COLOR_YELLOW))
-        .insert(msg(" has joined the faction!", COLOR_GREEN)));
+      ctx.sendMessage(MessageUtil.success(player, MessageKeys.Join.SUCCESS, faction.name()));
+      broadcastToFaction(faction.id(), MessageUtil.success(player, MessageKeys.Join.BROADCAST, player.getUsername()));
     } else if (result == FactionManager.FactionResult.FACTION_FULL) {
-      ctx.sendMessage(prefix().insert(msg("That faction is full.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Join.FACTION_FULL));
     } else {
-      ctx.sendMessage(prefix().insert(msg("Failed to join faction.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Join.FAILED));
     }
   }
 }

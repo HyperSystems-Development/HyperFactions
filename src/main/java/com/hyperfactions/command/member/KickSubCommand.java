@@ -9,6 +9,8 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -38,7 +40,7 @@ public class KickSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.KICK)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to kick members.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Kick.NO_PERMISSION));
       return;
     }
 
@@ -51,7 +53,7 @@ public class KickSubCommand extends FactionSubCommand {
     FactionCommandContext fctx = parseContext(rawArgs);
 
     if (!fctx.hasArgs()) {
-      ctx.sendMessage(prefix().insert(msg("Usage: /f kick <player>", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Kick.USAGE));
       return;
     }
 
@@ -61,7 +63,7 @@ public class KickSubCommand extends FactionSubCommand {
       .findFirst().orElse(null);
 
     if (target == null) {
-      ctx.sendMessage(prefix().insert(msg("Player '" + targetName + "' is not in your faction.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Kick.NOT_IN_YOUR_FACTION, targetName));
       return;
     }
 
@@ -71,13 +73,11 @@ public class KickSubCommand extends FactionSubCommand {
 
     switch (result) {
       case SUCCESS -> {
-        ctx.sendMessage(prefix().insert(msg("Kicked ", COLOR_GREEN))
-          .insert(msg(target.username(), COLOR_YELLOW)).insert(msg(" from the faction.", COLOR_GREEN)));
-        broadcastToFaction(faction.id(), prefix().insert(msg(target.username(), COLOR_YELLOW))
-          .insert(msg(" was kicked from the faction.", COLOR_RED)));
+        ctx.sendMessage(MessageUtil.success(player, MessageKeys.Kick.SUCCESS, target.username()));
+        broadcastToFaction(faction.id(), MessageUtil.error(player, MessageKeys.Kick.BROADCAST, target.username()));
         PlayerRef targetPlayer = plugin.getTrackedPlayer(target.uuid());
         if (targetPlayer != null) {
-          targetPlayer.sendMessage(prefix().insert(msg("You have been kicked from the faction.", COLOR_RED)));
+          targetPlayer.sendMessage(MessageUtil.error(targetPlayer, MessageKeys.Kick.KICKED));
         }
 
         // Show members page after action (if not text mode)
@@ -88,9 +88,9 @@ public class KickSubCommand extends FactionSubCommand {
           }
         }
       }
-      case NOT_OFFICER -> ctx.sendMessage(prefix().insert(msg("You don't have permission to kick that player.", COLOR_RED)));
-      case CANNOT_KICK_LEADER -> ctx.sendMessage(prefix().insert(msg("You cannot kick the faction leader.", COLOR_RED)));
-      default -> ctx.sendMessage(prefix().insert(msg("Failed to kick player.", COLOR_RED)));
+      case NOT_OFFICER -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Kick.CANNOT_KICK_HIGHER));
+      case CANNOT_KICK_LEADER -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Kick.CANNOT_KICK_LEADER));
+      default -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Kick.FAILED));
     }
   }
 }

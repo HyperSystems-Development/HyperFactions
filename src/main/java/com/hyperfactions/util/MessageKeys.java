@@ -147,57 +147,89 @@ public final class MessageKeys {
 
   /** /f invite command messages. */
   public static final class Invite {
+    public static final String NO_PERMISSION = "hyperfactions.cmd.invite.no_permission";
+    public static final String NOT_OFFICER = "hyperfactions.cmd.invite.not_officer";
+    public static final String USAGE = "hyperfactions.cmd.invite.usage";
+    public static final String PLAYER_NOT_FOUND = "hyperfactions.cmd.invite.player_not_found";
+    public static final String TARGET_IN_FACTION = "hyperfactions.cmd.invite.target_in_faction";
     public static final String SENT = "hyperfactions.cmd.invite.sent";
     public static final String RECEIVED = "hyperfactions.cmd.invite.received";
-    public static final String ALREADY_INVITED = "hyperfactions.cmd.invite.already_invited";
-    public static final String TARGET_IN_FACTION = "hyperfactions.cmd.invite.target_in_faction";
-    public static final String REVOKED = "hyperfactions.cmd.invite.revoked";
-    public static final String MAX_INVITES = "hyperfactions.cmd.invite.max_invites";
+    public static final String ACCEPT_HINT = "hyperfactions.cmd.invite.accept_hint";
 
     private Invite() {}
   }
 
   /** /f join, /f accept, /f request command messages. */
   public static final class Join {
+    public static final String NO_PERMISSION = "hyperfactions.cmd.join.no_permission";
+    public static final String ALREADY_IN_NAMED = "hyperfactions.cmd.join.already_in_named";
+    public static final String USE_LEAVE_HINT = "hyperfactions.cmd.join.use_leave_hint";
+    public static final String NO_INVITES = "hyperfactions.cmd.join.no_invites";
+    public static final String FACTION_NOT_FOUND = "hyperfactions.cmd.join.faction_not_found";
+    public static final String NOT_INVITED = "hyperfactions.cmd.join.not_invited";
+    public static final String FACTION_GONE = "hyperfactions.cmd.join.faction_gone";
     public static final String SUCCESS = "hyperfactions.cmd.join.success";
     public static final String BROADCAST = "hyperfactions.cmd.join.broadcast";
     public static final String FACTION_FULL = "hyperfactions.cmd.join.faction_full";
-    public static final String NOT_INVITED = "hyperfactions.cmd.join.not_invited";
-    public static final String FACTION_CLOSED = "hyperfactions.cmd.join.faction_closed";
-    public static final String REQUEST_SENT = "hyperfactions.cmd.join.request_sent";
-    public static final String REQUEST_RECEIVED = "hyperfactions.cmd.join.request_received";
+    public static final String FAILED = "hyperfactions.cmd.join.failed";
 
     private Join() {}
   }
 
   /** /f leave command messages. */
   public static final class Leave {
+    public static final String NO_PERMISSION = "hyperfactions.cmd.leave.no_permission";
+    public static final String CONFIRM_PROMPT = "hyperfactions.cmd.leave.confirm_prompt";
+    public static final String CONFIRM_INSTRUCTION = "hyperfactions.cmd.leave.confirm_instruction";
     public static final String SUCCESS = "hyperfactions.cmd.leave.success";
     public static final String BROADCAST = "hyperfactions.cmd.leave.broadcast";
-    public static final String LEADER_CANNOT = "hyperfactions.cmd.leave.leader_cannot";
+    public static final String FAILED = "hyperfactions.cmd.leave.failed";
+    public static final String CANCELLED = "hyperfactions.cmd.leave.cancelled";
 
     private Leave() {}
   }
 
   /** /f kick command messages. */
   public static final class Kick {
-    public static final String SUCCESS = "hyperfactions.cmd.kick.success";
-    public static final String KICKED = "hyperfactions.cmd.kick.kicked";
-    public static final String BROADCAST = "hyperfactions.cmd.kick.broadcast";
-    public static final String CANNOT_KICK_SELF = "hyperfactions.cmd.kick.cannot_kick_self";
-    public static final String CANNOT_KICK_HIGHER = "hyperfactions.cmd.kick.cannot_kick_higher";
+    public static final String NO_PERMISSION = "hyperfactions.cmd.kick.no_permission";
+    public static final String USAGE = "hyperfactions.cmd.kick.usage";
     public static final String NOT_IN_YOUR_FACTION = "hyperfactions.cmd.kick.not_in_your_faction";
+    public static final String SUCCESS = "hyperfactions.cmd.kick.success";
+    public static final String BROADCAST = "hyperfactions.cmd.kick.broadcast";
+    public static final String KICKED = "hyperfactions.cmd.kick.kicked";
+    public static final String CANNOT_KICK_HIGHER = "hyperfactions.cmd.kick.cannot_kick_higher";
+    public static final String CANNOT_KICK_LEADER = "hyperfactions.cmd.kick.cannot_kick_leader";
+    public static final String FAILED = "hyperfactions.cmd.kick.failed";
 
     private Kick() {}
   }
 
   /** /f promote, /f demote, /f transfer command messages. */
   public static final class Rank {
+    // Promote
+    public static final String PROMOTE_NO_PERMISSION = "hyperfactions.cmd.rank.promote_no_permission";
+    public static final String PROMOTE_USAGE = "hyperfactions.cmd.rank.promote_usage";
     public static final String PROMOTED = "hyperfactions.cmd.rank.promoted";
-    public static final String DEMOTED = "hyperfactions.cmd.rank.demoted";
-    public static final String TRANSFERRED = "hyperfactions.cmd.rank.transferred";
+    public static final String PROMOTE_BROADCAST = "hyperfactions.cmd.rank.promote_broadcast";
     public static final String ALREADY_HIGHEST = "hyperfactions.cmd.rank.already_highest";
+    public static final String PROMOTE_FAILED = "hyperfactions.cmd.rank.promote_failed";
+    // Demote
+    public static final String DEMOTE_NO_PERMISSION = "hyperfactions.cmd.rank.demote_no_permission";
+    public static final String DEMOTE_USAGE = "hyperfactions.cmd.rank.demote_usage";
+    public static final String DEMOTED = "hyperfactions.cmd.rank.demoted";
+    public static final String DEMOTE_BROADCAST = "hyperfactions.cmd.rank.demote_broadcast";
     public static final String ALREADY_LOWEST = "hyperfactions.cmd.rank.already_lowest";
+    public static final String DEMOTE_FAILED = "hyperfactions.cmd.rank.demote_failed";
+    // Transfer
+    public static final String TRANSFER_NO_PERMISSION = "hyperfactions.cmd.rank.transfer_no_permission";
+    public static final String TRANSFER_USAGE = "hyperfactions.cmd.rank.transfer_usage";
+    public static final String PLAYER_NOT_IN_FACTION = "hyperfactions.cmd.rank.player_not_in_faction";
+    public static final String TRANSFER_CONFIRM = "hyperfactions.cmd.rank.transfer_confirm";
+    public static final String TRANSFER_CONFIRM_INSTRUCTION = "hyperfactions.cmd.rank.transfer_confirm_instruction";
+    public static final String TRANSFERRED = "hyperfactions.cmd.rank.transferred";
+    public static final String TRANSFER_BROADCAST = "hyperfactions.cmd.rank.transfer_broadcast";
+    public static final String TRANSFER_FAILED = "hyperfactions.cmd.rank.transfer_failed";
+    public static final String TRANSFER_CANCELLED = "hyperfactions.cmd.rank.transfer_cancelled";
 
     private Rank() {}
   }
