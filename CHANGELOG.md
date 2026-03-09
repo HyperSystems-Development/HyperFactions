@@ -5,7 +5,7 @@ All notable changes to HyperFactions will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.11.0] - 2026-03-08
 
 ### Added
 
@@ -31,21 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Upkeep events logged to faction activity log (payments, grace starts, missed payments, claim forfeiture)
 - Unit tests for `UpkeepProcessor` (cost calculation, progressive tiers, grace periods, free chunks)
 
-### Changed
-
-- Treasury quick action buttons wrapped in dark boxes with subtitle labels (matching dashboard pattern)
-- Treasury settings button moved into quick actions row as 4th box (leader-only)
-- Treasury settings page: removed Save button, limits auto-save on Back
-- `ClaimManager.progressiveDecay()` replaces `unclaimAll()` for inactivity decay — gradual edge-in removal instead of removing all claims at once
-- `PeriodicTaskManager` upkeep task now calls `UpkeepProcessor.processUpkeep()` instead of skeleton logging
-- Dashboard "Faction Actions" label changed to "Quick Actions"
-
-### Removed
-
-- Treasury page: removed Net (24h) P&L row
-- Treasury settings page: removed explicit Save button (auto-saves on exit)
-
-**Mob Clearing Zone Flags (#79)**
+**Mob Clearing Zone Flags ([#79](https://github.com/HyperSystems-Development/HyperFactions/issues/79))**
 - 4 new zone flags: `mob_clear` (parent toggle), `hostile_mob_clear`, `passive_mob_clear`, `neutral_mob_clear`
 - Periodic sweep removes existing mobs from zones based on flag configuration — complements spawn suppression which only blocks new spawns
 - Cross-flag conflict enforcement: if a spawning sub-flag is true (e.g., `hostile_mob_spawning=true`), the corresponding clear sub-flag resolves to false via `getEffectiveFlag()`
@@ -55,25 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Admin GUI: new "Mob Clearing" category in zone settings with flag toggles and conflict indicators
 - Debug logging with NPC group names (aggressive/passive/neutral) for both cleared and skipped mobs
 
-### Changed
-
-- **World map config consolidation** — removed `worldMap` section from `server.json` (hideEnemyPlayers, hideNeutralPlayers, hideEnemyMarkers, hideNeutralMarkers). All world map player/marker visibility settings now live in `worldmap.json` → `playerVisibility` section
-- `ConfigV6ToV7Migration` updated to auto-remove the `worldMap` section from `server.json` during migration
-
-### Fixed
-
-- **World map player visibility** — `MapPlayerFilterService` admin bypass now requires both the bypass permission AND the per-player admin bypass toggle to be on. Previously, having `*` wildcard permissions would bypass map filtering even with admin bypass toggled off
-- **World map shared marker visibility** — `ProtectionChecker.shouldHideSharedMarker()` and `shouldHideMapMarker()` now read from `worldmap.json` `playerVisibility` config instead of the removed `server.json` `worldMap` config. Both player icons and shared markers use the same unified config with full relation-based logic (own faction, allies, enemies, neutrals, factionless)
-- Auto-migrate updater URLs from old `HyperSystemsDev` GitHub org to `HyperSystems-Development` — affects both HyperFactions and HyperProtect-Mixin update check URLs
-- Runtime auto-migration in ServerConfig and CoreConfig catches old URLs on every config load (exact-match only, custom URLs left untouched)
-- Formal `ConfigV6ToV7Migration` runs once via migration framework, bumps configVersion from 6 to 7
-- **SpawnSuppressionManager** — fix hostile group name from "hostile" to "aggressive" to match Hytale's NPCGroup naming convention. Hostile mob spawn suppression was silently failing
-- **ProtectionChecker** — remove redundant `MOB_SPAWNING` flag check from mixin hook's `shouldBlockSpawn()`. Natural mob spawning is handled natively by `SpawnSuppressionController`; the mixin hook should only check `NPC_SPAWNING`
-- **AdminZoneSettingsPage** — fix missing Mob Clearing category rebuild when spawning flags are toggled. Conflict indicators now update correctly when toggling spawning sub-flags
-
-### Added
-
-**Sentry Error Tracking Integration**
+**Sentry Error Tracking Integration ([#76](https://github.com/HyperSystems-Development/HyperFactions/issues/76))**
 - Sentry SDK (v8.33.0) bundled for automatic error reporting to Sentry dashboard
 - Non-blocking async event delivery — Sentry never impacts server performance
 - All Sentry operations wrapped in try/catch — failures never crash the server
@@ -97,19 +65,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `WriteResult.Failure` storage errors (with `@Nullable Exception cause`) now report to Sentry
 - Pre-init error buffering: errors during config/data loading (before Sentry initializes) are buffered and flushed once Sentry is ready, tagged with `pre_init: true`
 
-**World Map Player & Marker Hiding**
+**World Map Player & Marker Hiding ([#49](https://github.com/HyperSystems-Development/HyperFactions/issues/49))**
 - Configurable world map visibility: hide enemy/neutral players and shared markers independently via `worldMap` config section
 - New `show_on_map` zone flag + `map_visibility` setting — first selection-type zone setting with three levels: "Faction Only", "Faction + Allies", "All Players"
 - Zone settings system: `Map<String, String> settings` on Zone record for enum/selection values alongside existing boolean flags
 - SharedMarkerFilter integration via HyperProtect-Mixin — filters user-placed shared markers by creator faction
 - Admin GUI: Integration Flags page now shows World Map and HyperEssentials sections with map visibility cycling button
 
-**NPC_USE Parent Flag & NPC Role Classification**
+**NPC_USE Parent Flag & NPC Role Classification ([#77](https://github.com/HyperSystems-Development/HyperFactions/issues/77))**
 - New `NPC_USE` parent flag with `NPC_TAME` and `NPC_INTERACT` children — enables granular NPC interaction control in zone settings
 - NPC role classification via `isTameableCreatureRole()` blocklist (fail-open) classifies NPC roles as tameable vs interactive based on role name patterns
 - `ALLOWED_SAFEZONE` result type — `ProtectionChecker` now distinguishes "allowed because SafeZone defaults" from "allowed because wilderness"
 
-**Light Use Zone Flag**
+**Light Use Zone Flag ([#77](https://github.com/HyperSystems-Development/HyperFactions/issues/77))**
 - New `LIGHT_USE` zone flag under `BLOCK_INTERACT` parent — controls toggling lanterns, campfires, torches, candles, and lamps
 - Detection via both block state ID and block ID fallback (lanterns/campfires have null stateId)
 - SafeZone default: false (protected), WarZone default: true (allowed)
@@ -141,16 +109,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Improved
 
-- **Specific protection denial messages**: All protection denial messages now describe the exact action being blocked (e.g., "You can't open containers in enemy territory." instead of generic "You don't have permission to do that.") with territory context (Ally/Enemy/Claimed territory, SafeZone/WarZone). Applied across all protection systems: block break/place/use, harvest/pickup, fluid place/refill, NPC interact, crop harvest, item drop, item pickup, mount
+- **Specific protection denial messages ([#78](https://github.com/HyperSystems-Development/HyperFactions/issues/78))**: All protection denial messages now describe the exact action being blocked (e.g., "You can't open containers in enemy territory." instead of generic "You don't have permission to do that.") with territory context (Ally/Enemy/Claimed territory, SafeZone/WarZone). Applied across all protection systems: block break/place/use, harvest/pickup, fluid place/refill, NPC interact, crop harvest, item drop, item pickup, mount
 - **Item drop/pickup denial messages**: Item drop and item pickup protection now send debounced, territory-aware denial messages instead of hardcoded text or silent denial
 - **Centralized denial message delivery**: New `ProtectionMessageDebounce.sendDenial()` consolidates the repeated `Message.raw(...).color("#FF5555")` + debounce pattern into a single call across all 12 protection systems
 - **Eliminated double protection checks**: `HarvestPickupProtectionSystem` and `BlockUseProtectionSystem` (crop path) no longer call `canInteract()` twice per event — once for the boolean and again for the message. Now uses single-call `checkItemPickup()` pattern
 - **Consistent denial message phrasing**: All zone denial messages standardized to "You can't ..." (matching territory denial phrasing) instead of mixed "You cannot ..."/"You can't ..."
 
+### Changed
+
+- Treasury quick action buttons wrapped in dark boxes with subtitle labels (matching dashboard pattern)
+- Treasury settings button moved into quick actions row as 4th box (leader-only)
+- Treasury settings page: removed Save button, limits auto-save on Back
+- `ClaimManager.progressiveDecay()` replaces `unclaimAll()` for inactivity decay — gradual edge-in removal instead of removing all claims at once
+- `PeriodicTaskManager` upkeep task now calls `UpkeepProcessor.processUpkeep()` instead of skeleton logging
+- Dashboard "Faction Actions" label changed to "Quick Actions"
+- **World map config consolidation** — removed `worldMap` section from `server.json` (hideEnemyPlayers, hideNeutralPlayers, hideEnemyMarkers, hideNeutralMarkers). All world map player/marker visibility settings now live in `worldmap.json` → `playerVisibility` section
+- `ConfigV6ToV7Migration` updated to auto-remove the `worldMap` section from `server.json` during migration
+- Zone flag category consolidation — Entity Interaction category merged into Interaction category (13 flags total: block_interact + 6 children, NPC_USE + 2 children, mount_use, crate_pickup, crate_place)
+- Zone flags reindexed in admin UI — all 42 core flags (0-41) with updated category grouping
+- Fixed "Combat (6)" comment to "Combat (7)" in `ZoneFlags.ALL_FLAGS`
+- Fixed missing `BOTH` case in `AdminIntegrationHandler.handleIntegrations()` MixinProvider switch
+
+### Removed
+
+- Treasury page: removed Net (24h) P&L row
+- Treasury settings page: removed explicit Save button (auto-saves on exit)
+
 ### Fixed
 
+- **World map player visibility** — `MapPlayerFilterService` admin bypass now requires both the bypass permission AND the per-player admin bypass toggle to be on. Previously, having `*` wildcard permissions would bypass map filtering even with admin bypass toggled off
+- **World map shared marker visibility** — `ProtectionChecker.shouldHideSharedMarker()` and `shouldHideMapMarker()` now read from `worldmap.json` `playerVisibility` config instead of the removed `server.json` `worldMap` config. Both player icons and shared markers use the same unified config with full relation-based logic (own faction, allies, enemies, neutrals, factionless)
+- Auto-migrate updater URLs from old `HyperSystemsDev` GitHub org to `HyperSystems-Development` — affects both HyperFactions and HyperProtect-Mixin update check URLs
+- Runtime auto-migration in ServerConfig and CoreConfig catches old URLs on every config load (exact-match only, custom URLs left untouched)
+- Formal `ConfigV6ToV7Migration` runs once via migration framework, bumps configVersion from 6 to 7
+- **SpawnSuppressionManager** — fix hostile group name from "hostile" to "aggressive" to match Hytale's NPCGroup naming convention. Hostile mob spawn suppression was silently failing ([#63](https://github.com/HyperSystems-Development/HyperFactions/issues/63))
+- **ProtectionChecker** — remove redundant `MOB_SPAWNING` flag check from mixin hook's `shouldBlockSpawn()`. Natural mob spawning is handled natively by `SpawnSuppressionController`; the mixin hook should only check `NPC_SPAWNING`
+- **AdminZoneSettingsPage** — fix missing Mob Clearing category rebuild when spawning flags are toggled. Conflict indicators now update correctly when toggling spawning sub-flags
+- **Double protection denial messages ([#78](https://github.com/HyperSystems-Development/HyperFactions/issues/78))** — `ProtectionMessageDebounce` prevents duplicate denial messages when both ECS systems and mixin hooks fire for the same action (2-second per-player per-action cooldown)
+- **Door parent check ([#77](https://github.com/HyperSystems-Development/HyperFactions/issues/77))** — `Zone.getEffectiveFlag()` recursively checks parent flags. When `BLOCK_INTERACT` is OFF, all children (DOOR_USE, CONTAINER_USE, etc.) correctly return false
 - **Mount use flag not blocking in SafeZones**: `UseNPCInteraction` with tamed horses/donkeys/camels was classified as `NPC_INTERACT` instead of `MOUNT` — players could mount in SafeZones. Added `isMountableCreatureRole()` check that runs before tameable check, routing rideable creatures to `MOUNT` interaction type
-- **Light use flag not blocking**: Lanterns, campfires, and torches have null `stateId` — the zone flag system only checked stateId, falling through to generic `BLOCK_INTERACT`. Both mixin and ECS paths now fall back to `blockId` pattern matching (contains "lantern", "campfire", "torch", etc.) when stateId is null
+- **Light use flag not blocking ([#77](https://github.com/HyperSystems-Development/HyperFactions/issues/77))**: Lanterns, campfires, and torches have null `stateId` — the zone flag system only checked stateId, falling through to generic `BLOCK_INTERACT`. Both mixin and ECS paths now fall back to `blockId` pattern matching (contains "lantern", "campfire", "torch", etc.) when stateId is null
 - **Admin bypass not working for mount flags**: Mount entry enforcement and mount use protection did not check `isAdminBypassEnabled()` — admins were blocked like regular players
 - **Chunk map GUI performance**: Reduced terrain map generation time by using bulk pixel writes (row-at-a-time instead of per-pixel `setRGB`) and faster PNG compression. Added timing debug logs for future diagnostics
 - **Zero power on faction creation**: New players who joined during server startup could get 0 power due to a race condition where `loadAll()` wiped in-flight defaults. Now merges loaded data instead of clearing the cache, and persists defaults immediately on player join
@@ -158,13 +156,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Backup file walk race condition**: `addDirectoryToZip()` crashed with `NoSuchFileException` when a `.bak` file vanished (deleted by concurrent `writeAtomic()`) between directory listing and attribute read during `Files.walkFileTree()` ([HYPERFACTIONS-3](https://hypersystems.sentry.io/issues/HYPERFACTIONS-3))
 - **Backup cleanup race condition**: Pre-backup `cleanupOrphanedFiles()` could delete in-flight temp files from concurrent `writeAtomic()` calls, causing `NoSuchFileException` during player data saves ([HYPERFACTIONS-4](https://hypersystems.sentry.io/issues/HYPERFACTIONS-4))
 - **Orphan cleanup safety**: `cleanupOrphanedFiles()` now skips `.tmp` files younger than 5 seconds to prevent racing with active writes
-
-### Changed
-
-- Zone flag category consolidation — Entity Interaction category merged into Interaction category (13 flags total: block_interact + 6 children, NPC_USE + 2 children, mount_use, crate_pickup, crate_place)
-- Zone flags reindexed in admin UI — all 42 core flags (0-41) with updated category grouping
-- Fixed "Combat (6)" comment to "Combat (7)" in `ZoneFlags.ALL_FLAGS`
-- Fixed missing `BOTH` case in `AdminIntegrationHandler.handleIntegrations()` MixinProvider switch
+- **Mob spawn after restart ([#63](https://github.com/HyperSystems-Development/HyperFactions/issues/63))** — zone loading now completes before spawn suppression initializes, with 60-tick retry for worlds not yet ready
 
 ## [0.10.2] - 2026-02-28
 
