@@ -5,6 +5,8 @@ import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -40,7 +42,7 @@ public class SettingsSubCommand extends FactionSubCommand {
 
     FactionMember member = faction.getMember(player.getUuid());
     if (member == null || !member.isOfficerOrHigher()) {
-      ctx.sendMessage(prefix().insert(msg("You must be an officer to access settings.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.MUST_BE_OFFICER));
       return;
     }
 

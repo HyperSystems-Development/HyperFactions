@@ -50,6 +50,7 @@ public final class MessageKeys {
     public static final String PAGE = "hyperfactions.common.page";
     public static final String UNKNOWN = "hyperfactions.common.unknown";
     public static final String ERROR_GENERIC = "hyperfactions.common.error_generic";
+    public static final String GUI_FALLBACK = "hyperfactions.common.gui_fallback";
 
     private Common() {}
   }
@@ -530,13 +531,51 @@ public final class MessageKeys {
 
   /** Protection denial messages shown when actions are blocked. */
   public static final class Protection {
-    public static final String BUILD = "hyperfactions.protection.build";
-    public static final String BREAK = "hyperfactions.protection.break_block";
-    public static final String INTERACT = "hyperfactions.protection.interact";
-    public static final String CONTAINER = "hyperfactions.protection.container";
-    public static final String PVP_DISABLED = "hyperfactions.protection.pvp_disabled";
-    public static final String SAFEZONE = "hyperfactions.protection.safezone";
-    public static final String WARZONE = "hyperfactions.protection.warzone";
+    // Action phrases (what the player tried to do)
+    public static final String ACTION_GENERIC = "hyperfactions.protection.action.generic";
+    public static final String ACTION_BUILD = "hyperfactions.protection.action.build";
+    public static final String ACTION_INTERACT = "hyperfactions.protection.action.interact";
+    public static final String ACTION_DOOR = "hyperfactions.protection.action.door";
+    public static final String ACTION_CONTAINER = "hyperfactions.protection.action.container";
+    public static final String ACTION_BENCH = "hyperfactions.protection.action.bench";
+    public static final String ACTION_PROCESSING = "hyperfactions.protection.action.processing";
+    public static final String ACTION_SEAT = "hyperfactions.protection.action.seat";
+    public static final String ACTION_LIGHT = "hyperfactions.protection.action.light";
+    public static final String ACTION_TELEPORTER = "hyperfactions.protection.action.teleporter";
+    public static final String ACTION_CRATE = "hyperfactions.protection.action.crate";
+    public static final String ACTION_TAME = "hyperfactions.protection.action.tame";
+    public static final String ACTION_NPC = "hyperfactions.protection.action.npc";
+    public static final String ACTION_MOUNT = "hyperfactions.protection.action.mount";
+    public static final String ACTION_PVE = "hyperfactions.protection.action.pve";
+    public static final String ACTION_ITEM_DROP = "hyperfactions.protection.action.item_drop";
+    public static final String ACTION_ITEM_PICKUP = "hyperfactions.protection.action.item_pickup";
+
+    // Denial reasons (with {0} placeholder for action phrase)
+    public static final String DENIED_SAFEZONE = "hyperfactions.protection.denied.safezone";
+    public static final String DENIED_WARZONE = "hyperfactions.protection.denied.warzone";
+    public static final String DENIED_ENEMY_CLAIM = "hyperfactions.protection.denied.enemy_claim";
+    public static final String DENIED_CLAIMED = "hyperfactions.protection.denied.claimed";
+    public static final String DENIED_HERE = "hyperfactions.protection.denied.here";
+    public static final String DENIED_ZONE = "hyperfactions.protection.denied.zone";
+    public static final String DENIED_FACTION_PERM = "hyperfactions.protection.denied.faction_perm";
+    public static final String DENIED_ALLY_TERRITORY = "hyperfactions.protection.denied.ally_territory";
+    public static final String DENIED_ERROR = "hyperfactions.protection.denied.error";
+
+    // PvP denial messages
+    public static final String PVP_SAFEZONE = "hyperfactions.protection.pvp.safezone";
+    public static final String PVP_SAME_FACTION = "hyperfactions.protection.pvp.same_faction";
+    public static final String PVP_ALLY = "hyperfactions.protection.pvp.ally";
+    public static final String PVP_SPAWN_PROTECTED = "hyperfactions.protection.pvp.spawn_protected";
+    public static final String PVP_TERRITORY_DISABLED = "hyperfactions.protection.pvp.territory_disabled";
+    public static final String PVP_GENERIC = "hyperfactions.protection.pvp.generic";
+
+    // Entity damage (zone-level)
+    public static final String MOB_DAMAGE_DISABLED = "hyperfactions.protection.mob_damage_disabled";
+    public static final String PVE_DAMAGE_DISABLED = "hyperfactions.protection.pve_damage_disabled";
+    public static final String PVE_TERRITORY_DENIED = "hyperfactions.protection.pve_territory_denied";
+
+    // Combat tag
+    public static final String COMBAT_TAG_COMMAND = "hyperfactions.protection.combat_tag_command";
 
     private Protection() {}
   }

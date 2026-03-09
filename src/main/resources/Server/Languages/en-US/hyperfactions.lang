@@ -28,6 +28,7 @@ common.none = None
 common.page = Page {0} of {1}
 common.unknown = Unknown
 common.error_generic = Something went wrong. Please try again.
+common.gui_fallback = Could not access GUI. Use /f help for commands.
 
 # ========== Commands - Create ==========
 cmd.create.no_permission = You don't have permission to create factions.
@@ -361,3 +362,49 @@ cmd.economy.money_help_deposit = /f money deposit <amount> - Deposit into treasu
 cmd.economy.money_help_withdraw = /f money withdraw <amount> - Withdraw from treasury
 cmd.economy.money_help_transfer = /f money transfer <faction> <amount> - Transfer between factions
 cmd.economy.money_help_log = /f money log [page] [type] - View transaction history
+
+# ========== Protection - Action Phrases ==========
+protection.action.generic = You can't do that
+protection.action.build = You can't build or break blocks
+protection.action.interact = You can't interact with that
+protection.action.door = You can't use doors
+protection.action.container = You can't open containers
+protection.action.bench = You can't use crafting stations
+protection.action.processing = You can't use processing stations
+protection.action.seat = You can't use seats
+protection.action.light = You can't toggle lights
+protection.action.teleporter = You can't use teleporters
+protection.action.crate = You can't use crates
+protection.action.tame = You can't tame creatures
+protection.action.npc = You can't interact with NPCs
+protection.action.mount = You can't mount creatures
+protection.action.pve = You can't damage creatures
+protection.action.item_drop = You can't drop items
+protection.action.item_pickup = You can't pick up items
+
+# ========== Protection - Denial Reasons ==========
+protection.denied.safezone = {0} in a SafeZone.
+protection.denied.warzone = {0} in a WarZone.
+protection.denied.enemy_claim = {0} in enemy territory.
+protection.denied.claimed = {0} in claimed territory.
+protection.denied.here = {0} here.
+protection.denied.zone = {0} in this zone.
+protection.denied.faction_perm = {0} here. (Faction permission: {1})
+protection.denied.ally_territory = {0} here. (Ally territory)
+protection.denied.error = Protection error — action blocked for safety.
+
+# ========== Protection - PvP ==========
+protection.pvp.safezone = PvP is disabled in SafeZones.
+protection.pvp.same_faction = You cannot attack faction members.
+protection.pvp.ally = You cannot attack allies.
+protection.pvp.spawn_protected = That player has spawn protection.
+protection.pvp.territory_disabled = PvP is disabled in this territory.
+protection.pvp.generic = You cannot attack this player.
+
+# ========== Protection - Entity Damage ==========
+protection.mob_damage_disabled = Mob damage is disabled in this zone.
+protection.pve_damage_disabled = PvE damage is disabled in this zone.
+protection.pve_territory_denied = You cannot damage mobs in this territory.
+
+# ========== Protection - Combat Tag ==========
+protection.combat_tag_command = You cannot use that command while combat tagged.
