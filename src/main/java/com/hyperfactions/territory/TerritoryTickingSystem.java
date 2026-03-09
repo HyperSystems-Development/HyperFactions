@@ -1,6 +1,8 @@
 package com.hyperfactions.territory;
 
 import com.hyperfactions.HyperFactions;
+import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.FactionHomeTeleportEvent;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Zone;
 import com.hyperfactions.data.ZoneFlags;
@@ -255,6 +257,16 @@ public class TerritoryTickingSystem extends EntityTickingSystem<EntityStore> {
       pending.successMessage(),
       playerRef::sendMessage
     );
+
+    // Emit event for faction home teleports (factionId is non-null for /f home)
+    if (pending.factionId() != null) {
+      TeleportManager.StartLocation src = pending.startLocation();
+      EventBus.publish(new FactionHomeTeleportEvent(
+        pending.playerUuid(), pending.factionId(),
+        src.world(), src.x(), src.y(), src.z(),
+        dest.world(), dest.x(), dest.y(), dest.z(), dest.yaw(), dest.pitch()
+      ));
+    }
 
     Logger.debugTerritory("Teleport scheduled for %s to %s (%.1f, %.1f, %.1f)",
       pending.playerUuid(), dest.world(), dest.x(), dest.y(), dest.z());
