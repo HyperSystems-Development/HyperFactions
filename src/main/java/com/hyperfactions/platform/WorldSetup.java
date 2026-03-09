@@ -137,7 +137,7 @@ public class WorldSetup {
 
       Logger.info("[Startup] Spawn suppression initialized");
     } catch (Exception e) {
-      plugin.getLogger().at(Level.WARNING).withCause(e).log("Failed to initialize spawn suppression");
+      ErrorHandler.report("Failed to initialize spawn suppression", e);
     }
   }
 

@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'com.hyperfactions'
-version = '0.10.2'
+version = '0.11.0'
 
 // Shared version property avoids accessing project at execution time
 def buildVersion = objects.property(String).convention(version)

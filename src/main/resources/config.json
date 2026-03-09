@@ -39,7 +39,7 @@
   },
   "updates": {
     "enabled": true,
-    "url": "https://api.github.com/repos/ZenithDevHQ/HyperFactions/releases/latest",
+    "url": "https://api.github.com/repos/HyperSystems-Development/HyperFactions/releases/latest",
     "hyperProtect": {
       "autoDownload": false,
       "autoUpdate": true,

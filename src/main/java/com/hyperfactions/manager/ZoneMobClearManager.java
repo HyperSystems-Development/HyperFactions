@@ -94,7 +94,7 @@ public class ZoneMobClearManager {
         Logger.info("[MobClear] Neutral group has %d roles", neutralRoles != null ? neutralRoles.size() : 0);
       }
     } catch (Exception e) {
-      Logger.warn("[MobClear] Failed to log group info: %s", e.getMessage());
+      ErrorHandler.report("[MobClear] Failed to log group info", e);
     }
   }
 
@@ -106,7 +106,7 @@ public class ZoneMobClearManager {
       neutralGroupIndex = assetMap.getIndex(GROUP_NEUTRAL);
       groupsResolved = true;
     } catch (Exception e) {
-      Logger.warn("[MobClear] Failed to resolve NPC groups: %s", e.getMessage());
+      ErrorHandler.report("[MobClear] Failed to resolve NPC groups", e);
       groupsResolved = false;
     }
   }

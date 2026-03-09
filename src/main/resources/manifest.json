@@ -3,7 +3,7 @@
   "Name": "HyperFactions",
   "Version": "${version}",
   "Description": "Comprehensive faction management for Hytale servers. Create factions, claim territory, manage relations, and wage war. Part of the HyperSystems plugin suite.",
-  "Website": "https://github.com/ZenithDevHQ/HyperFactions",
+  "Website": "https://github.com/HyperSystems-Development/HyperFactions",
   "Main": "com.hyperfactions.platform.HyperFactionsPlugin",
   "ServerVersion": "${serverVersion}",
   "SoftDependencies": ["HyperPerms", "OrbisGuard", "OrbisGuard-Mixins", "HyperProtect-Mixin", "LuckPerms", "VaultUnlocked"],

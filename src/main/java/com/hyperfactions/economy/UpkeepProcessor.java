@@ -10,6 +10,7 @@ import com.hyperfactions.manager.ClaimManager;
 import com.hyperfactions.manager.EconomyManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.integration.economy.VaultEconomyProvider;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -394,7 +395,7 @@ public class UpkeepProcessor {
       try {
         notificationCallback.notifyFaction(factionId, message, hexColor);
       } catch (Exception e) {
-        Logger.warn("Failed to send upkeep notification: %s", e.getMessage());
+        ErrorHandler.report("Failed to send upkeep notification", e);
       }
     }
   }

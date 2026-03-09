@@ -145,7 +145,7 @@ public class AdminBulkEconomyPage extends InteractiveCustomUIPage<AdminBulkEcono
                 }))
             .toArray(CompletableFuture[]::new);
 
-        CompletableFuture.allOf(futures).thenRun(() -> {
+        ErrorHandler.guard("Bulk economy adjustment completion", CompletableFuture.allOf(futures)).thenRun(() -> {
           String msg = String.format("Bulk adjust complete: %s %s to %d factions",
               action, economyManager.formatCurrency(amount.abs()), successCount.get());
           if (failCount.get() > 0) {
