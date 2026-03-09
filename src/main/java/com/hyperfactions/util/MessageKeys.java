@@ -1044,6 +1044,124 @@ public final class MessageKeys {
     private TreasuryGui() {}
   }
 
+  /** Confirmation page messages (disband, leave, transfer). */
+  public static final class ConfirmGui {
+    // DisbandConfirm
+    public static final String DISBAND_NOT_LEADER = "hyperfactions_gui.confirm.disband_not_leader";
+    public static final String DISBANDED = "hyperfactions_gui.confirm.disbanded";
+    public static final String DISBAND_FAILED = "hyperfactions_gui.confirm.disband_failed";
+    // LeaderLeaveConfirm
+    public static final String SUCCESSION_TITLE = "hyperfactions_gui.confirm.succession_title";
+    public static final String NO_MEMBERS_WARNING = "hyperfactions_gui.confirm.no_members_warning";
+    public static final String WILL_DISBAND = "hyperfactions_gui.confirm.will_disband";
+    public static final String NOT_IN_FACTION = "hyperfactions_gui.confirm.not_in_faction";
+    public static final String NOT_LEADER_ANYMORE = "hyperfactions_gui.confirm.not_leader_anymore";
+    public static final String NO_SUCCESSOR = "hyperfactions_gui.confirm.no_successor";
+    public static final String TRANSFER_FAILED = "hyperfactions_gui.confirm.transfer_failed";
+    public static final String LEADER_LEFT = "hyperfactions_gui.confirm.leader_left";
+    public static final String LEAVE_FAILED = "hyperfactions_gui.confirm.leave_failed";
+    // LeaveConfirm
+    public static final String LEADER_CANNOT_LEAVE = "hyperfactions_gui.confirm.leader_cannot_leave";
+    public static final String LEFT_FACTION = "hyperfactions_gui.confirm.left_faction";
+    // TransferConfirm
+    public static final String FACTION_GONE = "hyperfactions_gui.confirm.faction_gone";
+    public static final String NOT_LEADER_TRANSFER = "hyperfactions_gui.confirm.not_leader_transfer";
+    public static final String LEADERSHIP_TRANSFERRED = "hyperfactions_gui.confirm.leadership_transferred";
+
+    private ConfirmGui() {}
+  }
+
+  /** Logs viewer page labels and messages. */
+  public static final class LogsGui {
+    public static final String TITLE = "hyperfactions_gui.logs.title";
+    public static final String ENTRY_COUNT = "hyperfactions_gui.logs.entry_count";
+    public static final String ALL_TYPES = "hyperfactions_gui.logs.all_types";
+    public static final String NO_LOGS_TYPE = "hyperfactions_gui.logs.no_logs_type";
+    public static final String NO_LOGS = "hyperfactions_gui.logs.no_logs";
+
+    private LogsGui() {}
+  }
+
+  /** Faction chat page labels and messages. */
+  public static final class ChatGui {
+    public static final String PLACEHOLDER = "hyperfactions_gui.chat.placeholder";
+    public static final String NO_MESSAGES = "hyperfactions_gui.chat.no_messages";
+    public static final String NO_ALLY_PERMISSION = "hyperfactions_gui.chat.no_ally_permission";
+    public static final String NO_PERMISSION = "hyperfactions_gui.chat.no_permission";
+    public static final String FACTION_GONE = "hyperfactions_gui.chat.faction_gone";
+    public static final String TIME_NOW = "hyperfactions_gui.chat.time_now";
+    public static final String TIME_MINUTES = "hyperfactions_gui.chat.time_minutes";
+    public static final String TIME_HOURS = "hyperfactions_gui.chat.time_hours";
+
+    private ChatGui() {}
+  }
+
+  /** Faction invites page labels and messages. */
+  public static final class InvitesGui {
+    public static final String INVITE_COUNT = "hyperfactions_gui.invites.invite_count";
+    public static final String REQUEST_COUNT = "hyperfactions_gui.invites.request_count";
+    public static final String INVITED_BY = "hyperfactions_gui.invites.invited_by";
+    public static final String NO_MESSAGE = "hyperfactions_gui.invites.no_message";
+    public static final String EXPIRES = "hyperfactions_gui.invites.expires";
+    public static final String TYPE_OUTGOING = "hyperfactions_gui.invites.type_outgoing";
+    public static final String TYPE_REQUEST = "hyperfactions_gui.invites.type_request";
+    public static final String INVITED_BY_LABEL = "hyperfactions_gui.invites.invited_by_label";
+    public static final String EMPTY_OUTGOING = "hyperfactions_gui.invites.empty_outgoing";
+    public static final String EMPTY_REQUESTS = "hyperfactions_gui.invites.empty_requests";
+    public static final String INVALID_PLAYER = "hyperfactions_gui.invites.invalid_player";
+    public static final String CANCELLED_INVITE = "hyperfactions_gui.invites.cancelled_invite";
+    public static final String PLAYER_JOINED = "hyperfactions_gui.invites.player_joined";
+    public static final String FACTION_FULL = "hyperfactions_gui.invites.faction_full";
+    public static final String ADD_FAILED = "hyperfactions_gui.invites.add_failed";
+    public static final String REQUEST_EXPIRED = "hyperfactions_gui.invites.request_expired";
+    public static final String REQUEST_DECLINED = "hyperfactions_gui.invites.request_declined";
+    public static final String TIME_SECONDS = "hyperfactions_gui.invites.time_seconds";
+    public static final String TIME_MINUTES = "hyperfactions_gui.invites.time_minutes";
+    public static final String TIME_HOURS = "hyperfactions_gui.invites.time_hours";
+
+    private InvitesGui() {}
+  }
+
+  /** Chunk map page labels and messages. */
+  public static final class MapGui {
+    public static final String POSITION = "hyperfactions_gui.map.position";
+    public static final String LEGEND_PROTECTED = "hyperfactions_gui.map.legend_protected";
+    public static final String CLAIM_STATS = "hyperfactions_gui.map.claim_stats";
+    public static final String OVERCLAIMED = "hyperfactions_gui.map.overclaimed";
+    public static final String POWER_DISPLAY = "hyperfactions_gui.map.power_display";
+    public static final String JOIN_TO_CLAIM = "hyperfactions_gui.map.join_to_claim";
+    // Claim results
+    public static final String CLAIM_SUCCESS = "hyperfactions_gui.map.claim_success";
+    public static final String CLAIM_NOT_IN_FACTION = "hyperfactions_gui.map.claim_not_in_faction";
+    public static final String CLAIM_NOT_OFFICER = "hyperfactions_gui.map.claim_not_officer";
+    public static final String CLAIM_ALREADY_YOURS = "hyperfactions_gui.map.claim_already_yours";
+    public static final String CLAIM_ALREADY_CLAIMED = "hyperfactions_gui.map.claim_already_claimed";
+    public static final String CLAIM_NOT_ADJACENT = "hyperfactions_gui.map.claim_not_adjacent";
+    public static final String CLAIM_MAX = "hyperfactions_gui.map.claim_max";
+    public static final String CLAIM_WORLD_NOT_ALLOWED = "hyperfactions_gui.map.claim_world_not_allowed";
+    public static final String CLAIM_ORBISGUARD = "hyperfactions_gui.map.claim_orbisguard";
+    public static final String CLAIM_FAILED = "hyperfactions_gui.map.claim_failed";
+    // Unclaim results
+    public static final String UNCLAIM_SUCCESS = "hyperfactions_gui.map.unclaim_success";
+    public static final String UNCLAIM_NOT_IN_FACTION = "hyperfactions_gui.map.unclaim_not_in_faction";
+    public static final String UNCLAIM_NOT_OFFICER = "hyperfactions_gui.map.unclaim_not_officer";
+    public static final String UNCLAIM_NOT_CLAIMED = "hyperfactions_gui.map.unclaim_not_claimed";
+    public static final String UNCLAIM_NOT_YOURS = "hyperfactions_gui.map.unclaim_not_yours";
+    public static final String UNCLAIM_HOME = "hyperfactions_gui.map.unclaim_home";
+    public static final String UNCLAIM_FAILED = "hyperfactions_gui.map.unclaim_failed";
+    // Overclaim results
+    public static final String OVERCLAIM_SUCCESS = "hyperfactions_gui.map.overclaim_success";
+    public static final String OVERCLAIM_NOT_IN_FACTION = "hyperfactions_gui.map.overclaim_not_in_faction";
+    public static final String OVERCLAIM_NOT_OFFICER = "hyperfactions_gui.map.overclaim_not_officer";
+    public static final String OVERCLAIM_ALREADY_YOURS = "hyperfactions_gui.map.overclaim_already_yours";
+    public static final String OVERCLAIM_ALLY = "hyperfactions_gui.map.overclaim_ally";
+    public static final String OVERCLAIM_HAS_POWER = "hyperfactions_gui.map.overclaim_has_power";
+    public static final String OVERCLAIM_MAX = "hyperfactions_gui.map.overclaim_max";
+    public static final String OVERCLAIM_FAILED = "hyperfactions_gui.map.overclaim_failed";
+
+    private MapGui() {}
+  }
+
   /** Player settings page labels. */
   public static final class PlayerSettings {
     public static final String TITLE = "hyperfactions_gui.player_settings.title";

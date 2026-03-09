@@ -274,3 +274,94 @@ treasury.player_transfer_failed = Failed to deposit to player wallet. Transfer r
 treasury.leader_only_perms = Only the leader can change treasury permissions.
 treasury.leader_only_upkeep = Only the leader can change upkeep settings.
 treasury.invalid_limit = Invalid number in limit fields. Use 0 for unlimited.
+
+# ========== Confirmation Pages ==========
+confirm.disband_not_leader = Only the leader can disband the faction.
+confirm.disbanded = Faction '{0}' has been disbanded.
+confirm.disband_failed = Failed to disband faction.
+confirm.succession_title = Leadership will transfer to:
+confirm.no_members_warning = WARNING: No other members!
+confirm.will_disband = Leaving will disband the faction permanently.
+confirm.not_in_faction = You are not in this faction.
+confirm.not_leader_anymore = You are no longer the leader.
+confirm.no_successor = No successor available. Use disband instead.
+confirm.transfer_failed = Failed to transfer leadership: {0}
+confirm.leader_left = Leadership transferred to {0}. You have left {1}.
+confirm.leave_failed = Failed to leave faction: {0}
+confirm.leader_cannot_leave = Leaders cannot leave. Transfer leadership or disband the faction.
+confirm.left_faction = You have left {0}.
+confirm.faction_gone = Faction no longer exists.
+confirm.not_leader_transfer = Only the leader can transfer leadership.
+confirm.leadership_transferred = Leadership transferred to {0}.
+
+# ========== Logs Viewer Page ==========
+logs.title = {0} - Activity Logs
+logs.entry_count = {0} entries
+logs.all_types = All Types
+logs.no_logs_type = No logs of this type.
+logs.no_logs = No activity logs yet.
+
+# ========== Chat Page ==========
+chat.placeholder = Type a message...
+chat.no_messages = No messages yet.
+chat.no_ally_permission = You don't have permission for ally chat.
+chat.no_permission = No permission.
+chat.faction_gone = Your faction no longer exists.
+chat.time_now = now
+chat.time_minutes = {0}m
+chat.time_hours = {0}h
+
+# ========== Invites Page ==========
+invites.invite_count = {0} invites
+invites.request_count = {0} requests
+invites.invited_by = Invited by: {0}
+invites.no_message = No message
+invites.expires = Expires: {0}
+invites.type_outgoing = Outgoing
+invites.type_request = Request
+invites.invited_by_label = Invited by:
+invites.empty_outgoing = No outgoing invites. Use /f invite <player> to invite someone.
+invites.empty_requests = No join requests. Players can request to join with /f request.
+invites.invalid_player = Invalid player.
+invites.cancelled_invite = Cancelled invite to {0}.
+invites.player_joined = {0} has joined the faction!
+invites.faction_full = Faction is full. Cannot accept request.
+invites.add_failed = Failed to add player to faction.
+invites.request_expired = Request not found or expired.
+invites.request_declined = Declined join request from {0}.
+invites.time_seconds = {0}s
+invites.time_minutes = {0}m
+invites.time_hours = {0}h
+
+# ========== Map Page ==========
+map.position = Your Position: Chunk ({0}, {1})
+map.legend_protected = Protected
+map.claim_stats = Claims: {0}/{1} ({2} Available)
+map.overclaimed = OVERCLAIMED by {0}!
+map.power_display = Power: {0}/{1}
+map.join_to_claim = Join a faction to claim
+map.claim_success = Claimed chunk at ({0}, {1})!
+map.claim_not_in_faction = You must be in a faction to claim territory.
+map.claim_not_officer = Only officers and leaders can claim territory.
+map.claim_already_yours = You already own this chunk.
+map.claim_already_claimed = This chunk is already claimed by another faction.
+map.claim_not_adjacent = You can only claim chunks adjacent to your territory.
+map.claim_max = You have reached your maximum claim limit.
+map.claim_world_not_allowed = Claiming is not allowed in this world.
+map.claim_orbisguard = This area is protected by OrbisGuard.
+map.claim_failed = Failed to claim chunk.
+map.unclaim_success = Unclaimed chunk at ({0}, {1}).
+map.unclaim_not_in_faction = You must be in a faction.
+map.unclaim_not_officer = Only officers and leaders can unclaim territory.
+map.unclaim_not_claimed = This chunk is not claimed.
+map.unclaim_not_yours = This chunk belongs to another faction.
+map.unclaim_home = Cannot unclaim the chunk containing your faction home.
+map.unclaim_failed = Failed to unclaim chunk.
+map.overclaim_success = Overclaimed enemy chunk at ({0}, {1})!
+map.overclaim_not_in_faction = You must be in a faction.
+map.overclaim_not_officer = Only officers and leaders can overclaim territory.
+map.overclaim_already_yours = You already own this chunk.
+map.overclaim_ally = You cannot overclaim allied territory.
+map.overclaim_has_power = This faction has enough power to defend their territory.
+map.overclaim_max = You have reached your maximum claim limit.
+map.overclaim_failed = Failed to overclaim chunk.

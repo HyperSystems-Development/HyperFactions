@@ -8,11 +8,12 @@ import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.faction.data.TransferConfirmData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
@@ -102,7 +103,7 @@ public class TransferConfirmPage extends InteractiveCustomUIPage<TransferConfirm
     // Re-fetch faction to ensure fresh state
     Faction currentFaction = factionManager.getFaction(faction.id());
     if (currentFaction == null) {
-      player.sendMessage(MessageUtil.errorText("Faction no longer exists."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.ConfirmGui.FACTION_GONE));
       guiManager.openFactionMain(player, ref, store, playerRef);
       return;
     }
@@ -111,7 +112,7 @@ public class TransferConfirmPage extends InteractiveCustomUIPage<TransferConfirm
 
     // Verify leader permission
     if (member == null || member.role() != FactionRole.LEADER) {
-      player.sendMessage(MessageUtil.errorText("Only the leader can transfer leadership."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.ConfirmGui.NOT_LEADER_TRANSFER));
       guiManager.openFactionMembers(player, ref, store, playerRef, currentFaction);
       return;
     }
@@ -128,11 +129,7 @@ public class TransferConfirmPage extends InteractiveCustomUIPage<TransferConfirm
             faction.id(), targetUuid, uuid);
 
         if (result == FactionManager.FactionResult.SUCCESS) {
-          player.sendMessage(
-              Message.raw("Leadership transferred to ").color("#55FF55")
-                  .insert(Message.raw(targetName).color("#00FFFF"))
-                  .insert(Message.raw(".").color("#55FF55"))
-          );
+          player.sendMessage(MessageUtil.successText(playerRef, MessageKeys.ConfirmGui.LEADERSHIP_TRANSFERRED, targetName));
           // Refresh to show updated roles
           Faction refreshedFaction = factionManager.getFaction(faction.id());
           if (refreshedFaction != null) {
@@ -141,7 +138,7 @@ public class TransferConfirmPage extends InteractiveCustomUIPage<TransferConfirm
             guiManager.openFactionMain(player, ref, store, playerRef);
           }
         } else {
-          player.sendMessage(Message.raw("Failed to transfer leadership: " + result).color("#FF5555"));
+          player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.ConfirmGui.TRANSFER_FAILED, result));
           guiManager.openFactionMembers(player, ref, store, playerRef, currentFaction);
         }
       }

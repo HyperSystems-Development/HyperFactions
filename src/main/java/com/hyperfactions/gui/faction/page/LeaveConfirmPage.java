@@ -8,11 +8,12 @@ import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.faction.data.LeaveConfirmData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
@@ -94,14 +95,14 @@ public class LeaveConfirmPage extends InteractiveCustomUIPage<LeaveConfirmData> 
 
     // Verify still in faction
     if (member == null) {
-      player.sendMessage(MessageUtil.errorText("You are not in this faction."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.ConfirmGui.NOT_IN_FACTION));
       guiManager.openFactionMain(player, ref, store, playerRef);
       return;
     }
 
     // Leaders cannot leave via this modal (they must disband or transfer leadership)
     if (member.role() == FactionRole.LEADER) {
-      player.sendMessage(MessageUtil.errorText("Leaders cannot leave. Transfer leadership or disband the faction."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.ConfirmGui.LEADER_CANNOT_LEAVE));
       guiManager.openFactionDashboard(player, ref, store, playerRef,
           factionManager.getFaction(faction.id()));
       return;
@@ -125,14 +126,10 @@ public class LeaveConfirmPage extends InteractiveCustomUIPage<LeaveConfirmData> 
             faction.id(), uuid, uuid, false);
 
         if (result == FactionManager.FactionResult.SUCCESS) {
-          player.sendMessage(
-              Message.raw("You have left ").color("#FFAA00")
-                  .insert(Message.raw(factionName).color("#00FFFF"))
-                  .insert(Message.raw(".").color("#FFAA00"))
-          );
+          player.sendMessage(MessageUtil.successText(playerRef, MessageKeys.ConfirmGui.LEFT_FACTION, factionName));
           guiManager.openFactionMain(player, ref, store, playerRef);
         } else {
-          player.sendMessage(Message.raw("Failed to leave faction: " + result).color("#FF5555"));
+          player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.ConfirmGui.LEAVE_FAILED, result));
           guiManager.openFactionMain(player, ref, store, playerRef);
         }
       }

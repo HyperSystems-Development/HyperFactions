@@ -8,11 +8,12 @@ import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.shared.data.DisbandConfirmData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
@@ -94,7 +95,7 @@ public class DisbandConfirmPage extends InteractiveCustomUIPage<DisbandConfirmDa
 
     // Verify leader permission
     if (member == null || member.role() != FactionRole.LEADER) {
-      player.sendMessage(MessageUtil.errorText("Only the leader can disband the faction."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.ConfirmGui.DISBAND_NOT_LEADER));
       guiManager.openFactionSettings(player, ref, store, playerRef,
           factionManager.getFaction(faction.id()));
       return;
@@ -115,13 +116,9 @@ public class DisbandConfirmPage extends InteractiveCustomUIPage<DisbandConfirmDa
         FactionManager.FactionResult result = factionManager.disbandFaction(faction.id(), uuid);
 
         if (result == FactionManager.FactionResult.SUCCESS) {
-          player.sendMessage(
-              Message.raw("Faction '").color("#FF5555")
-                  .insert(Message.raw(factionName).color("#AAAAAA"))
-                  .insert(Message.raw("' has been disbanded.").color("#FF5555"))
-          );
+          player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.ConfirmGui.DISBANDED, factionName));
         } else {
-          player.sendMessage(MessageUtil.errorText("Failed to disband faction."));
+          player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.ConfirmGui.DISBAND_FAILED));
         }
 
         guiManager.openFactionMain(player, ref, store, playerRef);

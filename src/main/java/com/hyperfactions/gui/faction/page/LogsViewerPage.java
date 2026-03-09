@@ -10,6 +10,8 @@ import com.hyperfactions.gui.faction.data.FactionPageData;
 import com.hyperfactions.gui.newplayer.NewPlayerNavBarHelper;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.util.TimeUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -79,7 +81,7 @@ public class LogsViewerPage extends InteractiveCustomUIPage<FactionPageData> {
     }
 
     // Set title with faction name
-    cmd.set("#LogsTitle.Text", faction.name() + " - Activity Logs");
+    cmd.set("#LogsTitle.Text", HFMessages.get(playerRef, MessageKeys.LogsGui.TITLE, faction.name()));
 
     buildLogList(cmd, events);
   }
@@ -114,11 +116,11 @@ public class LogsViewerPage extends InteractiveCustomUIPage<FactionPageData> {
     int endIndex = Math.min(startIndex + LOGS_PER_PAGE, totalLogs);
 
     // Log count
-    cmd.set("#LogCount.Text", totalLogs + " entries");
+    cmd.set("#LogCount.Text", HFMessages.get(playerRef, MessageKeys.LogsGui.ENTRY_COUNT, totalLogs));
 
     // Filter dropdown
     List<DropdownEntryInfo> filterOptions = new ArrayList<>();
-    filterOptions.add(new DropdownEntryInfo(LocalizableString.fromString("All Types"), "ALL"));
+    filterOptions.add(new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.LogsGui.ALL_TYPES)), "ALL"));
     for (FactionLog.LogType type : FactionLog.LogType.values()) {
       filterOptions.add(new DropdownEntryInfo(LocalizableString.fromString(type.getDisplayName()), type.name()));
     }
@@ -137,9 +139,11 @@ public class LogsViewerPage extends InteractiveCustomUIPage<FactionPageData> {
     cmd.clear("#LogsList");
 
     if (totalLogs == 0) {
+      String emptyText = filterType != null
+          ? HFMessages.get(playerRef, MessageKeys.LogsGui.NO_LOGS_TYPE)
+          : HFMessages.get(playerRef, MessageKeys.LogsGui.NO_LOGS);
       cmd.appendInline("#LogsList",
-          "Label { Text: \""
-          + (filterType != null ? "No logs of this type." : "No activity logs yet.") +
+          "Label { Text: \"" + emptyText +
           "\"; Style: (FontSize: 11, TextColor: #555555); Anchor: (Height: 30); }");
     } else {
       for (int i = startIndex; i < endIndex; i++) {
@@ -161,7 +165,7 @@ public class LogsViewerPage extends InteractiveCustomUIPage<FactionPageData> {
     }
 
     // Pagination
-    cmd.set("#PageInfo.Text", (currentPage + 1) + "/" + totalPages);
+    cmd.set("#PageInfo.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.PAGE_FORMAT, currentPage + 1, totalPages));
 
     if (currentPage > 0) {
       events.addEventBinding(
