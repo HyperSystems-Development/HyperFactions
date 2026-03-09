@@ -8,13 +8,14 @@ import com.hyperfactions.gui.faction.data.FactionPageData;
 import com.hyperfactions.gui.newplayer.NewPlayerNavBarHelper;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.PowerManager;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.UuidUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.ui.DropdownEntryInfo;
@@ -103,13 +104,13 @@ public class FactionBrowserPage extends InteractiveCustomUIPage<FactionPageData>
     // Get all factions sorted and filtered
     List<FactionEntry> entries = buildFactionEntryList();
 
-    cmd.set("#FactionCount.Text", entries.size() + " factions");
+    cmd.set("#FactionCount.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.FACTION_COUNT, entries.size()));
 
     // Sort dropdown
     cmd.set("#SortDropdown.Entries", List.of(
-        new DropdownEntryInfo(LocalizableString.fromString("Power"), "POWER"),
-        new DropdownEntryInfo(LocalizableString.fromString("Name"), "NAME"),
-        new DropdownEntryInfo(LocalizableString.fromString("Members"), "MEMBERS")
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.GuiCommon.SORT_POWER)), "POWER"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.BrowserGui.SORT_NAME)), "NAME"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.GuiCommon.SORT_MEMBERS)), "MEMBERS")
     ));
     cmd.set("#SortDropdown.Value", sortMode.name());
     events.addEventBinding(
@@ -149,7 +150,7 @@ public class FactionBrowserPage extends InteractiveCustomUIPage<FactionPageData>
     }
 
     // Pagination
-    cmd.set("#PageInfo.Text", (currentPage + 1) + "/" + totalPages);
+    cmd.set("#PageInfo.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.PAGE_FORMAT, currentPage + 1, totalPages));
 
     if (currentPage > 0) {
       events.addEventBinding(
@@ -198,7 +199,7 @@ public class FactionBrowserPage extends InteractiveCustomUIPage<FactionPageData>
           stats.currentPower(),
           stats.maxPower(),
           faction.claims().size(),
-          leader != null ? leader.username() : "None",
+          leader != null ? leader.username() : HFMessages.get(playerRef, MessageKeys.Common.NONE),
           faction.open(),
           faction.description(),
           faction.createdAt()
@@ -229,7 +230,7 @@ public class FactionBrowserPage extends InteractiveCustomUIPage<FactionPageData>
 
     // Basic info
     cmd.set(idx + " #FactionName.Text", entry.name);
-    cmd.set(idx + " #LeaderName.Text", "Leader: " + entry.leaderName);
+    cmd.set(idx + " #LeaderName.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.LEADER_LABEL, entry.leaderName));
 
     // Stats
     cmd.set(idx + " #PowerDisplay.Text", String.format("%.0f/%.0f", entry.power, entry.maxPower));
@@ -238,7 +239,7 @@ public class FactionBrowserPage extends InteractiveCustomUIPage<FactionPageData>
 
     // Own faction indicator
     if (isOwnFaction) {
-      cmd.set(idx + " #OwnIndicator.Text", "(You)");
+      cmd.set(idx + " #OwnIndicator.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.OWN_FACTION));
     }
 
     // Relation indicator (only for faction members viewing other factions)
@@ -268,7 +269,9 @@ public class FactionBrowserPage extends InteractiveCustomUIPage<FactionPageData>
     // Extended info (only set values if expanded)
     if (isExpanded) {
       // Recruitment status
-      cmd.set(idx + " #RecruitmentStatus.Text", entry.isOpen ? "Open" : "Invite Only");
+      cmd.set(idx + " #RecruitmentStatus.Text", entry.isOpen
+          ? HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_OPEN)
+          : HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_INVITE_ONLY));
       cmd.set(idx + " #RecruitmentStatus.Style.TextColor", entry.isOpen ? "#44CC44" : "#FFAA00");
 
       // Created date
@@ -396,7 +399,7 @@ public class FactionBrowserPage extends InteractiveCustomUIPage<FactionPageData>
 
     UUID factionId = UuidUtil.parseOrNull(data.factionId);
     if (factionId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction."));
+      player.sendMessage(MessageUtil.error(playerRef, MessageKeys.BrowserGui.INVALID_FACTION));
       return;
     }
 

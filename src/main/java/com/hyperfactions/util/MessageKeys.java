@@ -773,6 +773,71 @@ public final class MessageKeys {
     private DashboardGui() {}
   }
 
+  /** Shared GUI labels used across multiple pages. */
+  public static final class GuiCommon {
+    public static final String FACTION_COUNT = "hyperfactions_gui.common.faction_count";
+    public static final String LEADER_LABEL = "hyperfactions_gui.common.leader_label";
+    public static final String SORT_POWER = "hyperfactions_gui.common.sort_power";
+    public static final String SORT_MEMBERS = "hyperfactions_gui.common.sort_members";
+    public static final String PAGE_FORMAT = "hyperfactions_gui.common.page_format";
+    public static final String OWN_FACTION = "hyperfactions_gui.common.own_faction";
+
+    private GuiCommon() {}
+  }
+
+  /** Members page labels and messages. */
+  public static final class MembersGui {
+    public static final String MEMBER_COUNT = "hyperfactions_gui.members.count";
+    public static final String SORT_ROLE = "hyperfactions_gui.members.sort_role";
+    public static final String SORT_LAST_ONLINE = "hyperfactions_gui.members.sort_last_online";
+    public static final String JUST_NOW = "hyperfactions_gui.members.just_now";
+    public static final String AGO = "hyperfactions_gui.members.ago";
+    public static final String NEVER = "hyperfactions_gui.members.never";
+    public static final String MEMBER_NOT_FOUND = "hyperfactions_gui.members.member_not_found";
+    public static final String PROMOTED = "hyperfactions_gui.members.promoted";
+    public static final String PROMOTE_FAILED = "hyperfactions_gui.members.promote_failed";
+    public static final String DEMOTED = "hyperfactions_gui.members.demoted";
+    public static final String DEMOTE_FAILED = "hyperfactions_gui.members.demote_failed";
+    public static final String KICKED = "hyperfactions_gui.members.kicked";
+    public static final String KICK_FAILED = "hyperfactions_gui.members.kick_failed";
+
+    private MembersGui() {}
+  }
+
+  /** Browser page labels. */
+  public static final class BrowserGui {
+    public static final String SORT_NAME = "hyperfactions_gui.browser.sort_name";
+    public static final String INVALID_FACTION = "hyperfactions_gui.browser.invalid_faction";
+
+    private BrowserGui() {}
+  }
+
+  /** Leaderboard page labels. */
+  public static final class LeaderboardGui {
+    public static final String SORT_KD = "hyperfactions_gui.leaderboard.sort_kd";
+    public static final String SORT_TERRITORY = "hyperfactions_gui.leaderboard.sort_territory";
+    public static final String SORT_BALANCE = "hyperfactions_gui.leaderboard.sort_balance";
+
+    private LeaderboardGui() {}
+  }
+
+  /** Player info page labels and messages. */
+  public static final class PlayerInfoGui {
+    public static final String NOW = "hyperfactions_gui.playerinfo.now";
+    public static final String HISTORY_COUNT = "hyperfactions_gui.playerinfo.history_count";
+    public static final String JOINED_LABEL = "hyperfactions_gui.playerinfo.joined_label";
+    public static final String CURRENT = "hyperfactions_gui.playerinfo.current";
+    public static final String LEFT_LABEL = "hyperfactions_gui.playerinfo.left_label";
+    public static final String NO_HISTORY = "hyperfactions_gui.playerinfo.no_history";
+    public static final String FACTION_GONE = "hyperfactions_gui.playerinfo.faction_gone";
+    public static final String REASON_ACTIVE = "hyperfactions_gui.playerinfo.reason_active";
+    public static final String REASON_LEFT = "hyperfactions_gui.playerinfo.reason_left";
+    public static final String REASON_KICKED = "hyperfactions_gui.playerinfo.reason_kicked";
+    public static final String REASON_DISBANDED = "hyperfactions_gui.playerinfo.reason_disbanded";
+
+    private PlayerInfoGui() {}
+  }
+
   /** Faction main page (no-faction view) labels and messages. */
   public static final class FactionMainGui {
     public static final String NO_FACTION = "hyperfactions_gui.main.no_faction";
