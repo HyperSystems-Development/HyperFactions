@@ -68,3 +68,34 @@ tag.invalid_format = Tag can only contain letters and numbers.
 tag.same_tag = That's already your faction's tag.
 tag.tag_taken = A faction with that tag already exists.
 tag.success = Faction tag set to [{0}]!
+
+# ========== Dashboard Page ==========
+dashboard.faction_gone = Your faction no longer exists.
+dashboard.available = {0} available
+dashboard.at_risk = At Risk!
+dashboard.online_count = {0} online
+dashboard.status_invite = Invite
+dashboard.in_grace = IN GRACE
+dashboard.billable_chunks = {0} billable chunks
+dashboard.btn_home = Home
+dashboard.btn_set_home = Set Home
+dashboard.btn_claim = Claim
+dashboard.chat_prefix = Chat: {0}
+dashboard.btn_leave = Leave
+dashboard.no_activity = No recent activity.
+dashboard.time_now = now
+dashboard.time_minutes = {0}m ago
+dashboard.time_hours = {0}h ago
+dashboard.time_days = {0}d ago
+dashboard.no_home_hint = Your faction has no home set. Ask an officer to set one.
+dashboard.chat_mode_set = Chat mode: {0}
+dashboard.claim_success = Claimed chunk at ({0}, {1})
+
+# ========== Faction Main Page ==========
+main.no_faction = No Faction
+main.joined = You joined the faction!
+main.join_failed = Failed to join faction: {0}
+main.invite_declined = Invite declined.
+main.cooldown = Teleport on cooldown! {0}s remaining.
+main.world_not_found = Cannot teleport - world not found.
+main.leave_failed = Failed to leave: {0}

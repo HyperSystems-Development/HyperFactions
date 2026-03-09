@@ -30,6 +30,10 @@ common.unknown = Unknown
 common.error_generic = Something went wrong. Please try again.
 common.gui_fallback = Could not access GUI. Use /f help for commands.
 common.admin_prefix = [Admin]
+common.location_error = Could not determine your location.
+common.world_error = Could not determine your world.
+common.invalid_id = Invalid faction ID.
+common.na = N/A
 
 # ========== Commands - Create ==========
 cmd.create.no_permission = You don't have permission to create factions.
@@ -101,6 +105,7 @@ cmd.claim.not_adjacent = You must claim adjacent to existing territory.
 cmd.claim.world_not_allowed = Claiming is not allowed in this world.
 cmd.claim.orbisguard = This area is protected by OrbisGuard.
 cmd.claim.zone_protected = This chunk is in a safezone or warzone.
+cmd.claim.insufficient_power = Your faction doesn't have enough power to claim more land.
 cmd.claim.failed = Failed to claim chunk.
 
 # ========== Commands - Invite ==========

@@ -52,6 +52,10 @@ public final class MessageKeys {
     public static final String ERROR_GENERIC = "hyperfactions.common.error_generic";
     public static final String GUI_FALLBACK = "hyperfactions.common.gui_fallback";
     public static final String ADMIN_PREFIX = "hyperfactions.common.admin_prefix";
+    public static final String LOCATION_ERROR = "hyperfactions.common.location_error";
+    public static final String WORLD_ERROR = "hyperfactions.common.world_error";
+    public static final String INVALID_ID = "hyperfactions.common.invalid_id";
+    public static final String NA = "hyperfactions.common.na";
 
     private Common() {}
   }
@@ -270,6 +274,7 @@ public final class MessageKeys {
     public static final String OVERCLAIM_ALLY = "hyperfactions.cmd.overclaim.ally";
     public static final String TARGET_HAS_POWER = "hyperfactions.cmd.overclaim.target_has_power";
     public static final String OVERCLAIM_FAILED = "hyperfactions.cmd.overclaim.failed";
+    public static final String INSUFFICIENT_POWER = "hyperfactions.cmd.claim.insufficient_power";
 
     private Claim() {}
   }
@@ -736,16 +741,49 @@ public final class MessageKeys {
     private TagGui() {}
   }
 
-  /** Dashboard page labels. */
-  public static final class Dashboard {
+  /** Dashboard page labels and messages. */
+  public static final class DashboardGui {
     public static final String POWER_LABEL = "hyperfactions_gui.dashboard.power_label";
     public static final String LAND_LABEL = "hyperfactions_gui.dashboard.land_label";
     public static final String MEMBERS_LABEL = "hyperfactions_gui.dashboard.members_label";
     public static final String ONLINE_LABEL = "hyperfactions_gui.dashboard.online_label";
     public static final String ALLIES_LABEL = "hyperfactions_gui.dashboard.allies_label";
     public static final String ENEMIES_LABEL = "hyperfactions_gui.dashboard.enemies_label";
+    public static final String FACTION_GONE = "hyperfactions_gui.dashboard.faction_gone";
+    public static final String AVAILABLE = "hyperfactions_gui.dashboard.available";
+    public static final String AT_RISK = "hyperfactions_gui.dashboard.at_risk";
+    public static final String ONLINE_COUNT = "hyperfactions_gui.dashboard.online_count";
+    public static final String STATUS_INVITE = "hyperfactions_gui.dashboard.status_invite";
+    public static final String IN_GRACE = "hyperfactions_gui.dashboard.in_grace";
+    public static final String BILLABLE_CHUNKS = "hyperfactions_gui.dashboard.billable_chunks";
+    public static final String BTN_HOME = "hyperfactions_gui.dashboard.btn_home";
+    public static final String BTN_SET_HOME = "hyperfactions_gui.dashboard.btn_set_home";
+    public static final String BTN_CLAIM = "hyperfactions_gui.dashboard.btn_claim";
+    public static final String CHAT_PREFIX = "hyperfactions_gui.dashboard.chat_prefix";
+    public static final String BTN_LEAVE = "hyperfactions_gui.dashboard.btn_leave";
+    public static final String NO_ACTIVITY = "hyperfactions_gui.dashboard.no_activity";
+    public static final String TIME_NOW = "hyperfactions_gui.dashboard.time_now";
+    public static final String TIME_MINUTES = "hyperfactions_gui.dashboard.time_minutes";
+    public static final String TIME_HOURS = "hyperfactions_gui.dashboard.time_hours";
+    public static final String TIME_DAYS = "hyperfactions_gui.dashboard.time_days";
+    public static final String NO_HOME_HINT = "hyperfactions_gui.dashboard.no_home_hint";
+    public static final String CHAT_MODE_SET = "hyperfactions_gui.dashboard.chat_mode_set";
+    public static final String CLAIM_SUCCESS = "hyperfactions_gui.dashboard.claim_success";
 
-    private Dashboard() {}
+    private DashboardGui() {}
+  }
+
+  /** Faction main page (no-faction view) labels and messages. */
+  public static final class FactionMainGui {
+    public static final String NO_FACTION = "hyperfactions_gui.main.no_faction";
+    public static final String JOINED = "hyperfactions_gui.main.joined";
+    public static final String JOIN_FAILED = "hyperfactions_gui.main.join_failed";
+    public static final String INVITE_DECLINED = "hyperfactions_gui.main.invite_declined";
+    public static final String COOLDOWN = "hyperfactions_gui.main.cooldown";
+    public static final String WORLD_NOT_FOUND = "hyperfactions_gui.main.world_not_found";
+    public static final String LEAVE_FAILED = "hyperfactions_gui.main.leave_failed";
+
+    private FactionMainGui() {}
   }
 
   /** Help GUI category display names. */

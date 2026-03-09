@@ -7,6 +7,8 @@ import com.hyperfactions.gui.faction.NavBarHelper;
 import com.hyperfactions.gui.faction.data.FactionPageData;
 import com.hyperfactions.gui.newplayer.NewPlayerNavBarHelper;
 import com.hyperfactions.manager.*;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.UuidUtil;
 import com.hypixel.hytale.component.Ref;
@@ -15,7 +17,6 @@ import com.hypixel.hytale.math.vector.Vector3d;
 import com.hypixel.hytale.math.vector.Vector3f;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.modules.entity.teleport.Teleport;
@@ -130,7 +131,7 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
   }
 
   private void buildNoFactionView(UICommandBuilder cmd, UIEventBuilder events) {
-    cmd.set("#FactionName.Text", "No Faction");
+    cmd.set("#FactionName.Text", HFMessages.get(playerRef, MessageKeys.FactionMainGui.NO_FACTION));
 
     // Show create/browse buttons
     cmd.append("#ActionArea", UIPaths.NO_FACTION_ACTIONS);
@@ -277,7 +278,7 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
 
     UUID factionId = UuidUtil.parseOrNull(data.factionId);
     if (factionId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction ID."));
+      player.sendMessage(MessageUtil.error(playerRef, MessageKeys.Common.INVALID_ID));
       return;
     }
 
@@ -288,11 +289,11 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
       );
       if (result == FactionManager.FactionResult.SUCCESS) {
         inviteManager.removeInvite(factionId, uuid);
-        player.sendMessage(MessageUtil.text("You joined the faction!", "#44CC44"));
+        player.sendMessage(MessageUtil.success(playerRef, MessageKeys.FactionMainGui.JOINED));
         // Refresh the page
         guiManager.openFactionMain(player, ref, store, playerRef);
       } else {
-        player.sendMessage(Message.raw("Failed to join faction: " + result).color("#FF5555"));
+        player.sendMessage(MessageUtil.error(playerRef, MessageKeys.FactionMainGui.JOIN_FAILED, result));
       }
     }
   }
@@ -305,12 +306,12 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
 
     UUID factionId = UuidUtil.parseOrNull(data.factionId);
     if (factionId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction ID."));
+      player.sendMessage(MessageUtil.error(playerRef, MessageKeys.Common.INVALID_ID));
       return;
     }
 
     inviteManager.removeInvite(factionId, uuid);
-    player.sendMessage(MessageUtil.text("Invite declined.", MessageUtil.COLOR_GOLD));
+    player.sendMessage(MessageUtil.info(playerRef, MessageKeys.FactionMainGui.INVITE_DECLINED, MessageUtil.COLOR_GOLD));
     // Refresh the page
     guiManager.openFactionMain(player, ref, store, playerRef);
   }
@@ -330,14 +331,14 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
     // Check cooldown
     if (teleportManager.isOnCooldown(uuid)) {
       int remaining = teleportManager.getCooldownRemaining(uuid);
-      player.sendMessage(Message.raw("Teleport on cooldown! " + remaining + "s remaining.").color("#FF5555"));
+      player.sendMessage(MessageUtil.error(playerRef, MessageKeys.FactionMainGui.COOLDOWN, remaining));
       return;
     }
 
     // Get current world
     World currentWorld = player.getWorld();
     if (currentWorld == null) {
-      player.sendMessage(MessageUtil.errorText("Cannot teleport - world not found."));
+      player.sendMessage(MessageUtil.error(playerRef, MessageKeys.FactionMainGui.WORLD_NOT_FOUND));
       return;
     }
 
@@ -348,7 +349,7 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
     } else {
       targetWorld = Universe.get().getWorld(home.world());
       if (targetWorld == null) {
-        player.sendMessage(MessageUtil.errorText("Cannot teleport - target world not found."));
+        player.sendMessage(MessageUtil.error(playerRef, MessageKeys.FactionMainGui.WORLD_NOT_FOUND));
         return;
       }
     }
@@ -361,7 +362,7 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
       store.addComponent(ref, Teleport.getComponentType(), teleport);
     });
 
-    player.sendMessage(MessageUtil.text("Teleported to faction home!", "#44CC44"));
+    player.sendMessage(MessageUtil.success(playerRef, MessageKeys.Home.TELEPORTED));
   }
 
   private void handleLeave(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
@@ -372,10 +373,10 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
 
     FactionManager.FactionResult result = factionManager.removeMember(faction.id(), uuid, uuid, false);
     if (result == FactionManager.FactionResult.SUCCESS) {
-      player.sendMessage(MessageUtil.text("You left the faction.", MessageUtil.COLOR_GOLD));
+      player.sendMessage(MessageUtil.success(playerRef, MessageKeys.Leave.SUCCESS));
       guiManager.openFactionMain(player, ref, store, playerRef);
     } else {
-      player.sendMessage(Message.raw("Failed to leave: " + result).color("#FF5555"));
+      player.sendMessage(MessageUtil.error(playerRef, MessageKeys.FactionMainGui.LEAVE_FAILED, result));
     }
   }
 
