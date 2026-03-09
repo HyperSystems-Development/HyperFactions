@@ -1,6 +1,6 @@
 # HyperFactions Command System
 
-> **Version**: 0.10.0 | **44 subcommands** across **10 categories**
+> **Version**: 0.11.0 | **~46 subcommands** across **10 categories**
 
 Architecture documentation for the HyperFactions command system.
 
@@ -329,7 +329,8 @@ if (result == ClaimResult.NO_PERMISSION) {
 - `AdminMapDecayHandler` - Map decay management
 - `AdminInfoHandler` - Admin info/who commands (open admin GUIs directly)
 - `AdminWorldHandler` - Per-world settings management (list/info/set/reset)
-- `AdminEconomyHandler` - Economy management and treasury adjustments
+- `AdminEconomyHandler` - Economy management, treasury adjustments, and upkeep control
+- `AdminSentryHandler` - Sentry error tracking integration management
 
 Admin commands use nested subcommand structure:
 
@@ -367,6 +368,12 @@ Admin commands use nested subcommand structure:
 │   ├── info <world> # Show settings for a world
 │   ├── set <world> <key> <value>  # Set a per-world setting
 │   └── reset <world>              # Reset world to defaults
+├── economy       # Economy management
+│   └── upkeep    # Upkeep system control
+├── sentry        # Sentry error tracking status
+├── sentrytest    # Send test event to Sentry
+├── integration   # Integration management
+│   └── kyuubisoft  # KyuubiSoft Core integration details
 └── debug         # Debug commands
 ```
 

@@ -1,6 +1,6 @@
 # HyperFactions Permission Framework
 
-> **Version**: 0.10.0 | **60 permission nodes** across **12 categories**
+> **Version**: 0.11.0 | **76 permission nodes** across **12 categories**
 
 Architecture documentation for the HyperFactions permission system.
 
@@ -8,7 +8,7 @@ Architecture documentation for the HyperFactions permission system.
 
 HyperFactions uses a centralized permission system with:
 
-- **Permission Constants** - All 47+ nodes defined in `Permissions.java`
+- **Permission Constants** - All 76 nodes defined in `Permissions.java`
 - **Permission Manager** - Chain-based provider resolution (VaultUnlocked → HyperPerms → LuckPerms)
 - **Multiple Provider Support** - VaultUnlocked, HyperPerms, and LuckPerms adapters
 - **Manager-Level Checks** - Permissions enforced in business logic, not just commands

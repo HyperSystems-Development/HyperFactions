@@ -1,6 +1,6 @@
 # Protection Systems & Architecture
 
-> **Version**: 0.10.0 | Developer-focused reference for the HyperFactions protection implementation.
+> **Version**: 0.11.0 | Developer-focused reference for the HyperFactions protection implementation.
 
 For admin/config documentation, see [protection-claims.md](protection-claims.md), [protection-zones.md](protection-zones.md), and [protection-global.md](protection-global.md).
 

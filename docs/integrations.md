@@ -1,6 +1,6 @@
 # HyperFactions Integration Breakdown
 
-> **Version**: 0.10.0 | **Package**: `com.hyperfactions.integration`
+> **Version**: 0.11.0 | **Package**: `com.hyperfactions.integration`
 
 HyperFactions integrates with external plugins through soft dependencies. All integrations use reflection-based detection and fail-open design — if a dependency is missing, the feature gracefully degrades.
 
@@ -19,6 +19,7 @@ HyperFactions integrates with external plugins through soft dependencies. All in
 - [World Map](#world-map)
 - [GravestonePlugin](#gravestoneplugin)
 - [KyuubiSoft Core](#kyuubisoft-core)
+- [Sentry](#sentry)
 - [HyperPerms Context](#hyperperms-context)
 
 ---
@@ -35,6 +36,7 @@ graph TD
     HF --> WM[World Map]
     HF --> GS[Gravestones]
     HF --> KS[KyuubiSoft Core]
+    HF --> SN[Sentry]
     HF --> HPC[HyperPerms Context]
 
     PM --> VU[VaultUnlocked]
@@ -57,6 +59,7 @@ graph TD
     style WM fill:#0891b2,color:#fff
     style GS fill:#dc2626,color:#fff
     style KS fill:#059669,color:#fff
+    style SN fill:#362d59,color:#fff
     style HPC fill:#7c3aed,color:#fff
 ```
 
@@ -580,6 +583,31 @@ HyperFactions integrates with [KyuubiSoft Core](https://kyuubisoft.com) for citi
 **Lifecycle:**
 - Initialized after plugin `enable()` completes
 - Shut down cleanly via `KyuubiSoftIntegration.shutdown()` during plugin disable
+
+---
+
+## Sentry
+
+**Package**: `com.hyperfactions.integration`
+**Purpose**: Error tracking and performance monitoring via [Sentry](https://sentry.io)
+
+HyperFactions optionally integrates with Sentry for server-side error tracking. When configured, unhandled exceptions, protection check failures, and critical manager errors are reported to Sentry with full context (faction state, player info, world data).
+
+### How It Works
+
+1. On startup, HyperFactions checks for a Sentry DSN in the configuration
+2. If configured, the Sentry SDK is initialized with server metadata (version, world count, player count)
+3. Errors are captured with contextual tags (faction ID, player UUID, protection result, etc.)
+4. Breadcrumbs track recent operations leading up to errors
+
+### Admin Commands
+
+- `/f admin sentry` — Shows Sentry integration status (enabled/disabled, DSN configured, event count)
+- `/f admin sentrytest` — Sends a test event to Sentry to verify connectivity
+
+### Graceful Degradation
+
+Sentry is fully optional. If no DSN is configured or the Sentry SDK is unavailable, all error reporting is silently skipped. No runtime impact when disabled.
 
 ---
 

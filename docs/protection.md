@@ -1,6 +1,6 @@
 # HyperFactions Protection System
 
-> **Version**: 0.10.0
+> **Version**: 0.11.0
 
 Multi-layered protection controlling block interactions, PvP combat, damage types, and mob spawning based on zones, faction claims, and player relations.
 
@@ -25,7 +25,7 @@ Multi-layered protection controlling block interactions, PvP combat, damage type
 | Document | Audience | Contents |
 |----------|----------|----------|
 | **[protection-claims.md](protection-claims.md)** | Admins + Devs | 53 faction permission flags, defaults, parent-child hierarchy, check flows, config, server locks, GUI, mixin comparison, bug-prone areas |
-| **[protection-zones.md](protection-zones.md)** | Admins + Devs | 40 zone flags, SafeZone/WarZone defaults, mixin-dependent flags, zone-exclusive features |
+| **[protection-zones.md](protection-zones.md)** | Admins + Devs | 50 zone flags, SafeZone/WarZone defaults, mixin-dependent flags, zone-exclusive features |
 | **[protection-global.md](protection-global.md)** | Admins + Devs | Wilderness, explosions, fire spread, keep inventory, spawn protection, combat tags, death/power loss, bypass permissions, multi-world, integrations |
 | **[protection-systems.md](protection-systems.md)** | Developers | Architecture, ECS systems, mixin bridge, hook slots, codec replacements, damage pipeline, debug tools, class reference |
 
@@ -66,7 +66,7 @@ flowchart TD
 Zone > Claim > Wilderness
 ```
 
-1. **Zones** — Admin SafeZone/WarZone flags (40 flags). Always checked first.
+1. **Zones** — Admin SafeZone/WarZone flags (50 flags). Always checked first.
 2. **Claims** — Faction permissions by role/relation (53 flags). Checked only when NOT in a zone.
 3. **Wilderness** — No protection. All interactions allowed.
 

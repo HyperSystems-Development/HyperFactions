@@ -1,12 +1,12 @@
 # Zone Protection
 
-> **Version**: 0.10.3 | **Source**: [`data/ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.java), [`protection/ProtectionChecker.java`](../src/main/java/com/hyperfactions/protection/ProtectionChecker.java)
+> **Version**: 0.11.0 | **Source**: [`data/ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.java), [`protection/ProtectionChecker.java`](../src/main/java/com/hyperfactions/protection/ProtectionChecker.java)
 
 How admin-created SafeZones and WarZones protect areas. For faction claim protection, see [protection-claims.md](protection-claims.md). For cross-cutting concerns (wilderness, explosions, fire), see [protection-global.md](protection-global.md).
 
 ## Overview
 
-Zones are admin-controlled protected areas with 41 configurable flags. They **always override** faction claim permissions when both apply.
+Zones are admin-controlled protected areas with 50 configurable flags. They **always override** faction claim permissions when both apply.
 
 - **SafeZone**: PvP disabled, building disabled by default. Used for spawns, shops, arenas.
 - **WarZone**: PvP enabled, building controlled by flags. Used for contested areas.
@@ -20,7 +20,7 @@ Source: `ProtectionChecker.canInteractChunk()` lines 173–209
 
 ---
 
-## Zone Flags (41 Flags)
+## Zone Flags (50 Flags)
 
 Source: [`ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.java) — `ALL_FLAGS` array (line 274), `getSafeZoneDefault()` (line 388), `getWarZoneDefault()` (line 452)
 
@@ -117,11 +117,27 @@ Source: [`ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.jav
 
 > **Parent-child**: `mob_spawning` is the parent of the 3 group sub-flags (`hostile`, `passive`, `neutral`). `npc_spawning` is separate and requires a mixin hook.
 
-### Integration Flags (1)
+### Mob Clearing Flags (4)
+
+| Flag | Description | SafeZone Default | WarZone Default |
+|------|-------------|------------------|-----------------|
+| `mob_clear` | Clear all mobs in zone (parent) | false | false |
+| ↳ `hostile_mob_clear` | Clear hostile mobs | false | false |
+| ↳ `passive_mob_clear` | Clear passive mobs | false | false |
+| ↳ `neutral_mob_clear` | Clear neutral mobs | false | false |
+
+> **Parent-child**: `mob_clear` is the parent of the 3 group sub-flags. When enabled, existing mobs of the specified type are periodically removed from the zone.
+
+### Integration Flags (6)
 
 | Flag | Description | SafeZone Default | WarZone Default |
 |------|-------------|------------------|-----------------|
 | `gravestone_access` | Non-owners can loot/break other players' gravestones | false | true |
+| `mount_entry` | Players can mount entities (horses, vehicles) | true | true |
+| `pve_damage` | Players can damage non-player entities (NPCs, animals) | false | true |
+| `show_on_map` | Zone is visible on world map | true | true |
+| `map_visibility` | Zone boundaries visible on map overlays | true | true |
+| `fluid_spread` | Fluid (water/lava) can spread in zone | false | true |
 
 ---
 

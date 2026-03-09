@@ -1,6 +1,6 @@
 # HyperFactions GUI System
 
-> **Version**: 0.10.0 | **64 pages** across **3 registries**
+> **Version**: 0.11.0 | **~76 pages** across **3 registries**
 
 Architecture documentation for the HyperFactions GUI system using Hytale's CustomUI.
 

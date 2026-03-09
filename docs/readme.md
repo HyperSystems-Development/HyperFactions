@@ -1,6 +1,6 @@
 # HyperFactions Developer Documentation
 
-> **Version**: 0.10.0 | **377 classes** | **69 packages** | **20 managers** | **52 commands** | **60 permissions**
+> **Version**: 0.11.0 | **~409 classes** | **69 packages** | **20 managers** | **~46 commands** | **76 permissions**
 
 Developer documentation for HyperFactions - a comprehensive faction management plugin for Hytale servers.
 
@@ -17,11 +17,11 @@ Developer documentation for HyperFactions - a comprehensive faction management p
 
 | Document | Description |
 |----------|-------------|
-| [commands.md](commands.md) | Command system - 52 subcommands across 10 categories |
-| [permissions.md](permissions.md) | Permission framework - 60 nodes, chain-based resolution |
-| [config.md](config.md) | Config system - ConfigManager, 11 config files, config v6 migration |
+| [commands.md](commands.md) | Command system - ~46 subcommands across 10 categories |
+| [permissions.md](permissions.md) | Permission framework - 76 nodes, chain-based resolution |
+| [config.md](config.md) | Config system - ConfigManager, 11 config files, config v7 migration |
 | [storage.md](storage.md) | Storage layer - interfaces, JSON adapters, safe-save, data directory, backup system |
-| [gui.md](gui.md) | GUI system - 59 pages, 3 registries, navigation flows |
+| [gui.md](gui.md) | GUI system - ~76 pages, 3 registries, navigation flows |
 | [protection.md](protection.md) | Protection system - ECS handlers, protection mixin hooks (HyperProtect-Mixin / OrbisGuard-Mixins) |
 
 ### API & Integrations
@@ -37,7 +37,7 @@ Developer documentation for HyperFactions - a comprehensive faction management p
 | Document | Description |
 |----------|-------------|
 | [announcements.md](announcements.md) | Announcement system - 7 event types, config, admin exclusions |
-| [data-import.md](data-import.md) | Data import & migration - ElbaphFactions/HyFactions importers, config v1→v6, data v0→v1 |
+| [data-import.md](data-import.md) | Data import & migration - ElbaphFactions/HyFactions importers, config v1→v7, data v0→v1 |
 
 ## Quick Start
 
@@ -47,7 +47,7 @@ Developer documentation for HyperFactions - a comprehensive faction management p
 |------|---------|
 | [`platform/HyperFactionsPlugin.java`](../src/main/java/com/hyperfactions/platform/HyperFactionsPlugin.java) | Hytale plugin lifecycle (`setup()` → `start()` → `shutdown()`) |
 | [`HyperFactions.java`](../src/main/java/com/hyperfactions/HyperFactions.java) | Core singleton, manager initialization, platform callbacks |
-| [`Permissions.java`](../src/main/java/com/hyperfactions/Permissions.java) | All 60 permission node constants |
+| [`Permissions.java`](../src/main/java/com/hyperfactions/Permissions.java) | All 76 permission node constants |
 | [`api/HyperFactionsAPI.java`](../src/main/java/com/hyperfactions/api/HyperFactionsAPI.java) | Public API for third-party mods |
 
 ### Key Patterns
@@ -82,14 +82,14 @@ PermissionManager.get().hasPermission(playerUuid, Permissions.CLAIM);
 ## Package Overview
 
 ```
-src/main/java/com/hyperfactions/         (377 classes, 69 packages)
+src/main/java/com/hyperfactions/         (~409 classes, 69 packages)
 ├── HyperFactions.java          # Core singleton
-├── Permissions.java            # 60 permission node constants
+├── Permissions.java            # 76 permission node constants
 ├── BuildInfo.java              # Auto-generated version info
 ├── platform/                   # Hytale plugin entry point + extracted handlers
 ├── lifecycle/                  # Plugin lifecycle helpers (callbacks, tasks, history)
 ├── manager/                    # Business logic (15 core managers)
-├── command/                    # Command system (52 subcommands)
+├── command/                    # Command system (~46 subcommands)
 │   └── admin/handler/          # Admin command handlers (8 handler classes)
 ├── gui/                        # CustomUI pages (59 pages)
 │   ├── faction/                # Faction member pages + registry
@@ -105,7 +105,7 @@ src/main/java/com/hyperfactions/         (377 classes, 69 packages)
 │   ├── protection/             # Protection integrations (HyperProtect-Mixin, OrbisGuard, Gravestones)
 │   └── placeholder/            # Placeholder integrations (PAPI, WiFlow)
 ├── backup/                     # GFS backup management
-├── migration/                  # Config migration (v1→v6) and data migration (v0→v1)
+├── migration/                  # Config migration (v1→v7) and data migration (v0→v1)
 ├── importer/                   # ElbaphFactions + HyFactions importers
 ├── worldmap/                   # World map integration (5 refresh modes)
 ├── territory/                  # Territory notifications
