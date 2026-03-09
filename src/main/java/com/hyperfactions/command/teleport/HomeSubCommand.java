@@ -2,6 +2,8 @@ package com.hyperfactions.command.teleport;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
+import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.FactionHomeTeleportEvent;
 import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.TeleportManager;
@@ -85,7 +87,18 @@ public class HomeSubCommand extends FactionSubCommand {
       case NO_HOME -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.NO_HOME));
       case COMBAT_TAGGED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.COMBAT_TAGGED));
       case ON_COOLDOWN -> {} // Message sent by TeleportManager
-      case SUCCESS_INSTANT -> ctx.sendMessage(MessageUtil.success(player, CommandKeys.Home.TELEPORTED));
+      case SUCCESS_INSTANT -> {
+        ctx.sendMessage(MessageUtil.success(player, CommandKeys.Home.TELEPORTED));
+        // Emit event for integrations (e.g. HyperEssentials back tracking)
+        Faction.FactionHome home = faction.home();
+        if (home != null) {
+          EventBus.publish(new FactionHomeTeleportEvent(
+            playerUuid, faction.id(),
+            currentWorld.getName(), pos.getX(), pos.getY(), pos.getZ(),
+            home.world(), home.x(), home.y(), home.z(), home.yaw(), home.pitch()
+          ));
+        }
+      }
       case SUCCESS_WARMUP -> {} // Message sent by TeleportManager, teleport executed by TerritoryTickingSystem
       default -> {}
     }

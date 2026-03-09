@@ -364,6 +364,9 @@ public final class ZoneFlags {
   /** Whether players can claim kits (HyperEssentials integration). */
   public static final String ESSENTIALS_KITS = "essentials_kits";
 
+  /** Whether players can use /back to return to previous locations (HyperEssentials integration). */
+  public static final String ESSENTIALS_BACK = "essentials_back";
+
   /**
    * All available flag names for validation.
    */
@@ -423,12 +426,13 @@ public final class ZoneFlags {
     HOSTILE_MOB_CLEAR,
     PASSIVE_MOB_CLEAR,
     NEUTRAL_MOB_CLEAR,
-    // Integration (5)
+    // Integration (6)
     GRAVESTONE_ACCESS,
     SHOW_ON_MAP,
     ESSENTIALS_HOMES,
     ESSENTIALS_WARPS,
-    ESSENTIALS_KITS
+    ESSENTIALS_KITS,
+    ESSENTIALS_BACK
   };
 
   /**
@@ -453,7 +457,7 @@ public final class ZoneFlags {
 
   public static final String[] MOB_CLEAR_FLAGS = { MOB_CLEAR, HOSTILE_MOB_CLEAR, PASSIVE_MOB_CLEAR, NEUTRAL_MOB_CLEAR };
 
-  public static final String[] INTEGRATION_FLAGS = { GRAVESTONE_ACCESS, SHOW_ON_MAP, ESSENTIALS_HOMES, ESSENTIALS_WARPS, ESSENTIALS_KITS };
+  public static final String[] INTEGRATION_FLAGS = { GRAVESTONE_ACCESS, SHOW_ON_MAP, ESSENTIALS_HOMES, ESSENTIALS_WARPS, ESSENTIALS_KITS, ESSENTIALS_BACK };
 
   /**
    * Flags that require OrbisGuard-Mixins to function.
@@ -580,6 +584,7 @@ public final class ZoneFlags {
       case ESSENTIALS_HOMES -> true;
       case ESSENTIALS_WARPS -> true;
       case ESSENTIALS_KITS -> true;
+      case ESSENTIALS_BACK -> true;
       default -> false;
     };
   }
@@ -660,10 +665,11 @@ public final class ZoneFlags {
       // Integration: Free for all in war zones
       case GRAVESTONE_ACCESS -> true;
       case SHOW_ON_MAP -> false;      // Map hiding stays active in war zones by default
-      // Integration: HyperEssentials — homes blocked in combat zones, warps/kits allowed
+      // Integration: HyperEssentials — homes blocked in combat zones, warps/kits/back allowed
       case ESSENTIALS_HOMES -> false;
       case ESSENTIALS_WARPS -> true;
       case ESSENTIALS_KITS -> true;
+      case ESSENTIALS_BACK -> true;
       default -> false;
     };
   }
@@ -755,6 +761,7 @@ public final class ZoneFlags {
       case ESSENTIALS_HOMES -> "Home Use";
       case ESSENTIALS_WARPS -> "Warp Use";
       case ESSENTIALS_KITS -> "Kit Claiming";
+      case ESSENTIALS_BACK -> "Back Teleport";
       default -> flagName;
     };
   }
@@ -831,6 +838,7 @@ public final class ZoneFlags {
       case ESSENTIALS_HOMES -> "Players can set and teleport to homes (HyperEssentials)";
       case ESSENTIALS_WARPS -> "Players can teleport to warps (HyperEssentials)";
       case ESSENTIALS_KITS -> "Players can claim kits (HyperEssentials)";
+      case ESSENTIALS_BACK -> "Players can use /back to return to previous locations (HyperEssentials)";
       default -> "Unknown flag";
     };
   }
