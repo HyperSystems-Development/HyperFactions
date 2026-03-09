@@ -8,7 +8,9 @@ import com.hyperfactions.data.FactionRelation;
 import com.hyperfactions.gui.ActivePageTracker;
 import com.hyperfactions.gui.GuiUpdateService;
 import com.hyperfactions.integration.PermissionManager;
+import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.MessageKeys;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import java.util.List;
@@ -507,9 +509,9 @@ public class ChatManager {
   @NotNull
   public static String getChannelDisplay(@NotNull ChatChannel channel) {
     return switch (channel) {
-      case NORMAL -> "Public";
-      case FACTION -> "Faction";
-      case ALLY -> "Ally";
+      case NORMAL -> HFMessages.get((PlayerRef) null, MessageKeys.ChatDisplay.PUBLIC);
+      case FACTION -> HFMessages.get((PlayerRef) null, MessageKeys.ChatDisplay.FACTION);
+      case ALLY -> HFMessages.get((PlayerRef) null, MessageKeys.ChatDisplay.ALLY);
     };
   }
 

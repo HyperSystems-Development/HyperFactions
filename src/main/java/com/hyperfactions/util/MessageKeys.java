@@ -602,6 +602,19 @@ public final class MessageKeys {
   // Announcements — faction-wide broadcasts
   // =====================================================================
 
+  /** Server-wide broadcast messages (AnnouncementManager). */
+  public static final class ServerAnnounce {
+    public static final String FACTION_CREATED = "hyperfactions.server_announce.faction_created";
+    public static final String FACTION_DISBANDED = "hyperfactions.server_announce.faction_disbanded";
+    public static final String LEADERSHIP_TRANSFER = "hyperfactions.server_announce.leadership_transfer";
+    public static final String OVERCLAIM = "hyperfactions.server_announce.overclaim";
+    public static final String WAR_DECLARED = "hyperfactions.server_announce.war_declared";
+    public static final String ALLIANCE_FORMED = "hyperfactions.server_announce.alliance_formed";
+    public static final String ALLIANCE_BROKEN = "hyperfactions.server_announce.alliance_broken";
+
+    private ServerAnnounce() {}
+  }
+
   /** Faction-wide broadcast messages. */
   public static final class Announce {
     public static final String MEMBER_JOIN = "hyperfactions.announce.member_join";
@@ -664,6 +677,34 @@ public final class MessageKeys {
     public static final String QUICK_REF = "hyperfactions_gui.help.category.quick_ref";
 
     private HelpGui() {}
+  }
+
+  /** Teleport system messages (TeleportManager). */
+  public static final class Teleport {
+    public static final String COOLDOWN_WAIT = "hyperfactions.teleport.cooldown_wait";
+    public static final String WARMUP_START = "hyperfactions.teleport.warmup_start";
+    public static final String COMBAT_CANCELLED = "hyperfactions.teleport.combat_cancelled";
+    public static final String SUCCESS_DEFAULT = "hyperfactions.teleport.success_default";
+    public static final String NO_HOME = "hyperfactions.teleport.no_home";
+    public static final String WORLD_NOT_FOUND = "hyperfactions.teleport.world_not_found";
+    public static final String FAILED = "hyperfactions.teleport.failed";
+    public static final String COUNTDOWN = "hyperfactions.teleport.countdown";
+    public static final String COUNTDOWN_ONE = "hyperfactions.teleport.countdown_one";
+    public static final String MOVED_CANCELLED = "hyperfactions.teleport.moved_cancelled";
+    public static final String DAMAGE_CANCELLED = "hyperfactions.teleport.damage_cancelled";
+    public static final String MOUNT_TELEPORT_BLOCKED = "hyperfactions.teleport.mount_teleport_blocked";
+    public static final String MOUNT_ENTRY_BLOCKED = "hyperfactions.teleport.mount_entry_blocked";
+
+    private Teleport() {}
+  }
+
+  /** Chat channel display names (ChatManager). */
+  public static final class ChatDisplay {
+    public static final String PUBLIC = "hyperfactions.chat.display.public";
+    public static final String FACTION = "hyperfactions.chat.display.faction";
+    public static final String ALLY = "hyperfactions.chat.display.ally";
+
+    private ChatDisplay() {}
   }
 
   /** Player settings page labels. */

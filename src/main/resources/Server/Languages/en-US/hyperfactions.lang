@@ -408,3 +408,34 @@ protection.pve_territory_denied = You cannot damage mobs in this territory.
 
 # ========== Protection - Combat Tag ==========
 protection.combat_tag_command = You cannot use that command while combat tagged.
+
+# ========== Server Announcements ==========
+# These are broadcast to all online players for significant faction events.
+# {0}, {1} = dynamic values (faction names, player names)
+server_announce.faction_created = {0} has founded the faction {1}!
+server_announce.faction_disbanded = The faction {0} has been disbanded!
+server_announce.leadership_transfer = {0} is now the leader of {1}!
+server_announce.overclaim = {0} has overclaimed territory from {1}!
+server_announce.war_declared = {0} has declared war on {1}!
+server_announce.alliance_formed = {0} and {1} are now allies!
+server_announce.alliance_broken = {0} and {1} are no longer allies!
+
+# ========== Teleport System ==========
+teleport.cooldown_wait = You must wait {0} before teleporting again.
+teleport.warmup_start = Teleporting to faction home in {0} seconds...
+teleport.combat_cancelled = Teleportation cancelled - you are in combat!
+teleport.success_default = Teleported to faction home!
+teleport.no_home = Your faction has no home set.
+teleport.world_not_found = World not found.
+teleport.failed = Teleportation failed.
+teleport.countdown = Teleporting in {0} seconds...
+teleport.countdown_one = Teleporting in 1 second...
+teleport.moved_cancelled = Teleportation cancelled - you moved!
+teleport.damage_cancelled = Teleportation cancelled - you took damage!
+teleport.mount_teleport_blocked = You can't teleport into that zone while mounted.
+teleport.mount_entry_blocked = You can't enter this zone while mounted.
+
+# ========== Chat Display ==========
+chat.display.public = Public
+chat.display.faction = Faction
+chat.display.ally = Ally
