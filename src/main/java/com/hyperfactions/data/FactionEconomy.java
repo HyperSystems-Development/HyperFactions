@@ -13,7 +13,9 @@ public record FactionEconomy(
   @NotNull List<EconomyAPI.Transaction> transactionHistory,
   @NotNull TreasuryLimits limits,
   long lastUpkeepTimestamp,
-  boolean upkeepAutoPay
+  boolean upkeepAutoPay,
+  long upkeepGraceStartTimestamp,
+  int consecutiveMissedPayments
 ) {
   /**
    * Maximum number of transactions to keep in history.
@@ -48,7 +50,7 @@ public record FactionEconomy(
    * @return a new empty FactionEconomy
    */
   public static FactionEconomy empty() {
-    return new FactionEconomy(BigDecimal.ZERO, new ArrayList<>(), TreasuryLimits.defaults(), 0L, true);
+    return new FactionEconomy(BigDecimal.ZERO, new ArrayList<>(), TreasuryLimits.defaults(), 0L, true, 0L, 0);
   }
 
   /**
@@ -58,7 +60,7 @@ public record FactionEconomy(
    * @return a new FactionEconomy
    */
   public static FactionEconomy withStartingBalance(@NotNull BigDecimal startingBalance) {
-    return new FactionEconomy(startingBalance, new ArrayList<>(), TreasuryLimits.defaults(), 0L, true);
+    return new FactionEconomy(startingBalance, new ArrayList<>(), TreasuryLimits.defaults(), 0L, true, 0L, 0);
   }
 
   /**
@@ -76,7 +78,8 @@ public record FactionEconomy(
    * @return a new FactionEconomy with the updated balance
    */
   public FactionEconomy withBalance(@NotNull BigDecimal newBalance) {
-    return new FactionEconomy(newBalance, transactionHistory, limits, lastUpkeepTimestamp, upkeepAutoPay);
+    return new FactionEconomy(newBalance, transactionHistory, limits, lastUpkeepTimestamp, upkeepAutoPay,
+        upkeepGraceStartTimestamp, consecutiveMissedPayments);
   }
 
   /**
@@ -94,7 +97,8 @@ public record FactionEconomy(
       newHistory.remove(newHistory.size() - 1);
     }
 
-    return new FactionEconomy(balance, newHistory, limits, lastUpkeepTimestamp, upkeepAutoPay);
+    return new FactionEconomy(balance, newHistory, limits, lastUpkeepTimestamp, upkeepAutoPay,
+        upkeepGraceStartTimestamp, consecutiveMissedPayments);
   }
 
   /**
@@ -116,17 +120,37 @@ public record FactionEconomy(
    * @return a new FactionEconomy with updated limits
    */
   public FactionEconomy withLimits(@NotNull TreasuryLimits newLimits) {
-    return new FactionEconomy(balance, transactionHistory, newLimits, lastUpkeepTimestamp, upkeepAutoPay);
+    return new FactionEconomy(balance, transactionHistory, newLimits, lastUpkeepTimestamp, upkeepAutoPay,
+        upkeepGraceStartTimestamp, consecutiveMissedPayments);
   }
 
   /** With Last Upkeep Timestamp. */
   public FactionEconomy withLastUpkeepTimestamp(long timestamp) {
-    return new FactionEconomy(balance, transactionHistory, limits, timestamp, upkeepAutoPay);
+    return new FactionEconomy(balance, transactionHistory, limits, timestamp, upkeepAutoPay,
+        upkeepGraceStartTimestamp, consecutiveMissedPayments);
   }
 
   /** With Upkeep Auto Pay. */
   public FactionEconomy withUpkeepAutoPay(boolean autoPay) {
-    return new FactionEconomy(balance, transactionHistory, limits, lastUpkeepTimestamp, autoPay);
+    return new FactionEconomy(balance, transactionHistory, limits, lastUpkeepTimestamp, autoPay,
+        upkeepGraceStartTimestamp, consecutiveMissedPayments);
+  }
+
+  /** With Upkeep Grace Start Timestamp. */
+  public FactionEconomy withUpkeepGraceStartTimestamp(long timestamp) {
+    return new FactionEconomy(balance, transactionHistory, limits, lastUpkeepTimestamp, upkeepAutoPay,
+        timestamp, consecutiveMissedPayments);
+  }
+
+  /** With Consecutive Missed Payments. */
+  public FactionEconomy withConsecutiveMissedPayments(int count) {
+    return new FactionEconomy(balance, transactionHistory, limits, lastUpkeepTimestamp, upkeepAutoPay,
+        upkeepGraceStartTimestamp, count);
+  }
+
+  /** Resets grace state (grace timestamp and missed payments to 0). */
+  public FactionEconomy withGraceReset() {
+    return new FactionEconomy(balance, transactionHistory, limits, lastUpkeepTimestamp, upkeepAutoPay, 0L, 0);
   }
 
   /**

@@ -87,6 +87,74 @@ $C.@PageOverlay {
         }
       }
 
+      // Upkeep stats row (visible when upkeep enabled)
+      Group #UpkeepStatsRow {
+        Visible: false;
+        Anchor: (Height: 50, Bottom: 8);
+        LayoutMode: Left;
+
+        // In Grace
+        Group {
+          FlexWeight: 1;
+          Background: (Color: #1a1a2e);
+          Padding: (Left: 10, Right: 10, Top: 6, Bottom: 6);
+          LayoutMode: Top;
+
+          Label #InGraceCount {
+            Text: "0";
+            Style: (FontSize: 18, TextColor: #55FF55, RenderBold: true);
+            Anchor: (Height: 22);
+          }
+          Label {
+            Text: "In Grace";
+            Style: (FontSize: 9, TextColor: #666666);
+            Anchor: (Height: 12);
+          }
+        }
+
+        Group { Anchor: (Width: 6); }
+
+        // Upkeep Collected (24h)
+        Group {
+          FlexWeight: 1;
+          Background: (Color: #1a1a2e);
+          Padding: (Left: 10, Right: 10, Top: 6, Bottom: 6);
+          LayoutMode: Top;
+
+          Label #UpkeepCollected {
+            Text: "0";
+            Style: (FontSize: 18, TextColor: #FFD700, RenderBold: true);
+            Anchor: (Height: 22);
+          }
+          Label {
+            Text: "Collected (24h)";
+            Style: (FontSize: 9, TextColor: #666666);
+            Anchor: (Height: 12);
+          }
+        }
+
+        Group { Anchor: (Width: 6); }
+
+        // Next Collection
+        Group {
+          FlexWeight: 1;
+          Background: (Color: #1a1a2e);
+          Padding: (Left: 10, Right: 10, Top: 6, Bottom: 6);
+          LayoutMode: Top;
+
+          Label #NextCollection {
+            Text: "--";
+            Style: (FontSize: 18, TextColor: #AAAAAA, RenderBold: true);
+            Anchor: (Height: 22);
+          }
+          Label {
+            Text: "Next Collection";
+            Style: (FontSize: 9, TextColor: #666666);
+            Anchor: (Height: 12);
+          }
+        }
+      }
+
       // Search row
       Group {
         Anchor: (Height: 38, Bottom: 8);

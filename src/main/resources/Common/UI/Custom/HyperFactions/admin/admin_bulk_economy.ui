@@ -1,0 +1,136 @@
+// Admin Bulk Economy - Adjust All Faction Treasuries
+
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+$Nav = "admin_nav_bar.ui";
+
+$C.@PageOverlay {
+  $Nav.@HyperFactionsAdminNavBar #HyperFactionsAdminNavBar {}
+
+  $C.@DecoratedContainer {
+    Anchor: (Width: 440, Height: 380);
+
+    #Title {
+      Group {
+        $C.@Title {
+          @Text = "Bulk Treasury Adjust";
+        }
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+      Padding: (Left: 25, Right: 25, Top: 12, Bottom: 12);
+
+      // Section header
+      Label {
+        Text: "Adjust All Faction Treasuries";
+        Style: (FontSize: 14, TextColor: #00FFFF, RenderBold: true);
+        Anchor: (Height: 28, Bottom: 8);
+      }
+
+      // Server info card
+      Group {
+        Anchor: (Height: 50, Bottom: 12);
+        Background: (Color: #0d1520);
+        Padding: (Left: 15, Right: 15, Top: 10, Bottom: 10);
+        LayoutMode: Top;
+
+        Group {
+          Anchor: (Height: 20);
+          LayoutMode: Left;
+
+          Label {
+            Text: "Factions:";
+            Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
+            Anchor: (Width: 120);
+          }
+          Label #FactionCount {
+            Text: "0";
+            Style: (FontSize: 12, TextColor: #00FFFF, RenderBold: true, VerticalAlignment: Center);
+          }
+        }
+
+        Group {
+          Anchor: (Height: 20);
+          LayoutMode: Left;
+
+          Label {
+            Text: "Total Balance:";
+            Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
+            Anchor: (Width: 120);
+          }
+          Label #TotalBalance {
+            Text: "0";
+            Style: (FontSize: 12, TextColor: #FFD700, RenderBold: true, VerticalAlignment: Center);
+          }
+        }
+      }
+
+      // Amount input
+      Group {
+        Anchor: (Height: 20, Bottom: 4);
+        Label {
+          Text: "Amount (positive to add, negative to remove):";
+          Style: (FontSize: 11, TextColor: #AAAAAA);
+        }
+      }
+
+      $C.@TextField #AmountInput {
+        Anchor: (Height: 30, Bottom: 4);
+        Style: (FontSize: 13, TextColor: #FFFFFF);
+      }
+
+      // Hint text
+      Label {
+        Text: "This will apply to every faction with a treasury";
+        Style: (FontSize: 10, TextColor: #555555);
+        Anchor: (Height: 16, Bottom: 10);
+      }
+
+      // Warning banner
+      Group {
+        Anchor: (Height: 32, Bottom: 10);
+        Background: (Color: #3a2a1a);
+        Padding: (Left: 10, Right: 10, Top: 6, Bottom: 6);
+
+        Label {
+          Text: "Warning: This action affects ALL factions and cannot be undone.";
+          Style: (FontSize: 10, TextColor: #FFAA00);
+        }
+      }
+
+      // Error message
+      Label #ErrorMessage {
+        Text: "";
+        Style: (FontSize: 11, TextColor: #FF5555);
+        Anchor: (Height: 18);
+      }
+
+      // Spacer
+      Group { FlexWeight: 1; }
+
+      // Action buttons
+      Group {
+        Anchor: (Height: 35);
+        LayoutMode: Left;
+
+        TextButton #BackBtn {
+          Text: "Back";
+          Anchor: (Height: 30, Width: 70);
+          Style: $S.@ButtonStyle;
+        }
+
+        Label { FlexWeight: 1; }
+
+        TextButton #ConfirmBtn {
+          Text: "Apply to All";
+          Anchor: (Height: 30, Width: 130);
+          Style: $S.@GoldButtonStyle;
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

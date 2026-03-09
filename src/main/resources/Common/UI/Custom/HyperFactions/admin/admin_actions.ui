@@ -1,5 +1,5 @@
 // Admin Actions Page
-// Server-wide quick actions (global K/D reset, etc.)
+// Server-wide quick actions (global K/D reset, economy bulk actions, upkeep trigger)
 
 $C = "../../Common.ui";
 $S = "../shared/styles.ui";
@@ -9,7 +9,7 @@ $C.@PageOverlay {
   $Nav.@HyperFactionsAdminNavBar #HyperFactionsAdminNavBar {}
 
   $C.@Container {
-    Anchor: (Width: 500, Height: 400);
+    Anchor: (Width: 500, Height: 520);
 
     #Title {
       $C.@Title {
@@ -44,6 +44,60 @@ $C.@PageOverlay {
           Text: "Reset All K/D";
           Anchor: (Height: 30, Width: 160);
           Style: $S.@RedButtonStyle;
+        }
+      }
+
+      // === Economy Section (hidden if economy disabled) ===
+      Group #EconomySection {
+        Visible: false;
+        Background: (Color: #1a2a3a);
+        Padding: (Left: 16, Right: 16, Top: 14, Bottom: 14);
+        LayoutMode: Top;
+        Anchor: (Bottom: 12);
+
+        Label {
+          Text: "Economy";
+          Style: (FontSize: 14, TextColor: #FFFFFF, RenderBold: true);
+          Anchor: (Height: 22, Bottom: 8);
+        }
+
+        Label {
+          Text: "Add or remove money from ALL faction treasuries at once.";
+          Style: (FontSize: 11, TextColor: #888888);
+          Anchor: (Height: 18, Bottom: 10);
+        }
+
+        TextButton #BulkAdjustBtn {
+          Text: "Bulk Add/Remove";
+          Anchor: (Height: 30, Width: 160);
+          Style: $S.@GoldButtonStyle;
+        }
+      }
+
+      // === Upkeep Section (hidden if upkeep disabled) ===
+      Group #UpkeepSection {
+        Visible: false;
+        Background: (Color: #1a2a3a);
+        Padding: (Left: 16, Right: 16, Top: 14, Bottom: 14);
+        LayoutMode: Top;
+        Anchor: (Bottom: 12);
+
+        Label {
+          Text: "Upkeep Collection";
+          Style: (FontSize: 14, TextColor: #FFFFFF, RenderBold: true);
+          Anchor: (Height: 22, Bottom: 8);
+        }
+
+        Label {
+          Text: "Manually trigger upkeep collection for all factions right now, regardless of the scheduled timer.";
+          Style: (FontSize: 11, TextColor: #888888);
+          Anchor: (Height: 32, Bottom: 10);
+        }
+
+        TextButton #TriggerUpkeepBtn {
+          Text: "Trigger Upkeep";
+          Anchor: (Height: 30, Width: 160);
+          Style: $S.@CyanButtonStyle;
         }
       }
 

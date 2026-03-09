@@ -244,9 +244,33 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
       // Upkeep info
       if (ConfigManager.get().isUpkeepEnabled()) {
         cmd.set("#UpkeepStat.Visible", true);
-        java.math.BigDecimal upkeepAmount = ConfigManager.get().getUpkeepCostPerChunk()
-            .multiply(java.math.BigDecimal.valueOf(currentFaction.claims().size()));
-        cmd.set("#UpkeepValue.Text", econ.formatCurrencyCompact(upkeepAmount));
+
+        int freeChunks = ConfigManager.get().getUpkeepFreeChunks();
+        int billableChunks = Math.max(0, claimCount - freeChunks);
+
+        com.hyperfactions.economy.UpkeepProcessor costCalc =
+            new com.hyperfactions.economy.UpkeepProcessor(econ, null, null);
+        java.math.BigDecimal upkeepCost = costCalc.calculateUpkeepCost(billableChunks);
+        cmd.set("#UpkeepValue.Text", econ.formatCurrencyCompact(upkeepCost));
+
+        // Subtext: next collection time or grace status
+        FactionEconomy fEcon = econ.getEconomy(currentFaction.id());
+        if (fEcon != null && fEcon.upkeepGraceStartTimestamp() > 0) {
+          cmd.set("#UpkeepValue.Style.TextColor", "#FF5555");
+          cmd.set("#UpkeepSubtext.Text", "IN GRACE");
+          cmd.set("#UpkeepSubtext.Style.TextColor", "#FF5555");
+        } else if (fEcon != null && fEcon.lastUpkeepTimestamp() > 0) {
+          long intervalMs = ConfigManager.get().getUpkeepIntervalHours() * 3600_000L;
+          long remaining = Math.max(0, (fEcon.lastUpkeepTimestamp() + intervalMs) - System.currentTimeMillis());
+          cmd.set("#UpkeepSubtext.Text", "in " + com.hyperfactions.economy.UpkeepProcessor.formatDuration(remaining));
+        } else {
+          cmd.set("#UpkeepSubtext.Text", billableChunks + " billable chunks");
+        }
+
+        // Color based on affordability
+        if (fEcon != null && fEcon.upkeepGraceStartTimestamp() == 0 && !fEcon.hasFunds(upkeepCost) && billableChunks > 0) {
+          cmd.set("#UpkeepValue.Style.TextColor", "#FFAA00");
+        }
       }
 
       // Personal wallet balance

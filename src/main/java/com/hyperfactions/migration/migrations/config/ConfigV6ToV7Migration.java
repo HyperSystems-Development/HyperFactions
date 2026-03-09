@@ -28,6 +28,8 @@ import org.jetbrains.annotations.NotNull;
  *       organization to the new {@code HyperSystems-Development} organization.</li>
  *   <li>Removes the {@code worldMap} section from server.json — these settings
  *       have been consolidated into worldmap.json's {@code playerVisibility} section.</li>
+ *   <li>Restructures economy.json from flat keys to grouped sections
+ *       (currency, treasury, fees, upkeep).</li>
  * </ul>
  *
  * <p>
@@ -80,7 +82,7 @@ public class ConfigV6ToV7Migration implements Migration {
   @Override
   @NotNull
   public String description() {
-    return "Migrate updater URLs and remove worldMap section (moved to worldmap.json)";
+    return "Migrate updater URLs, remove worldMap section, restructure economy.json";
   }
 
   /** Checks if applicable. */
@@ -155,8 +157,82 @@ public class ConfigV6ToV7Migration implements Migration {
         }
       }
 
-      // === Step 4: Bump configVersion ===
-      options.reportProgress("Bumping configVersion to 7", 4, 4);
+      // === Step 4: Restructure economy.json (flat → grouped sections) ===
+      options.reportProgress("Restructuring economy.json", 4, 5);
+
+      Path economyFile = dataDir.resolve("config/economy.json");
+      if (Files.exists(economyFile)) {
+        try {
+          String econJson = Files.readString(economyFile);
+          JsonObject econ = JsonParser.parseString(econJson).getAsJsonObject();
+
+          // Only migrate if still in flat format (has flat keys, no nested sections)
+          if (econ.has("currencyName") && !econ.has("currency")) {
+            JsonObject migrated = new JsonObject();
+
+            // Preserve top-level enabled
+            if (econ.has("enabled")) {
+              migrated.addProperty("enabled", econ.get("enabled").getAsBoolean());
+            }
+
+            // Currency section
+            JsonObject currency = new JsonObject();
+            moveProperty(econ, "currencyName", currency, "name");
+            moveProperty(econ, "currencyNamePlural", currency, "namePlural");
+            moveProperty(econ, "currencySymbol", currency, "symbol");
+            migrated.add("currency", currency);
+
+            // Treasury section
+            JsonObject treasury = new JsonObject();
+            moveProperty(econ, "startingBalance", treasury, "startingBalance");
+            moveProperty(econ, "disbandRefundToLeader", treasury, "disbandRefundToLeader");
+
+            JsonObject limits = new JsonObject();
+            moveProperty(econ, "defaultMaxWithdrawAmount", limits, "maxWithdrawAmount");
+            moveProperty(econ, "defaultMaxWithdrawPerPeriod", limits, "maxWithdrawPerPeriod");
+            moveProperty(econ, "defaultMaxTransferAmount", limits, "maxTransferAmount");
+            moveProperty(econ, "defaultMaxTransferPerPeriod", limits, "maxTransferPerPeriod");
+            moveProperty(econ, "defaultLimitPeriodHours", limits, "periodHours");
+            treasury.add("limits", limits);
+            migrated.add("treasury", treasury);
+
+            // Fees section
+            JsonObject fees = new JsonObject();
+            moveProperty(econ, "depositFeePercent", fees, "depositPercent");
+            moveProperty(econ, "withdrawFeePercent", fees, "withdrawPercent");
+            moveProperty(econ, "transferFeePercent", fees, "transferPercent");
+            migrated.add("fees", fees);
+
+            // Upkeep section
+            JsonObject upkeep = new JsonObject();
+            moveProperty(econ, "upkeepEnabled", upkeep, "enabled");
+            moveProperty(econ, "upkeepCostPerChunk", upkeep, "costPerChunk");
+            moveProperty(econ, "upkeepIntervalHours", upkeep, "intervalHours");
+            moveProperty(econ, "upkeepGracePeriodHours", upkeep, "gracePeriodHours");
+            moveProperty(econ, "upkeepAutoPayDefault", upkeep, "autoPayDefault");
+            moveProperty(econ, "upkeepFreeChunks", upkeep, "freeChunks");
+            moveProperty(econ, "upkeepClaimLossPerCycle", upkeep, "claimLossPerCycle");
+            moveProperty(econ, "upkeepWarningHours", upkeep, "warningHours");
+            moveProperty(econ, "upkeepMaxCostCap", upkeep, "maxCostCap");
+            moveProperty(econ, "upkeepScalingMode", upkeep, "scalingMode");
+            if (econ.has("upkeepScalingTiers")) {
+              upkeep.add("scalingTiers", econ.get("upkeepScalingTiers"));
+            }
+            migrated.add("upkeep", upkeep);
+
+            Files.writeString(economyFile, GSON.toJson(migrated));
+            filesModified.add("config/economy.json");
+            Logger.info("[Migration] Restructured economy.json into grouped sections");
+          }
+        } catch (Exception e) {
+          warnings.add("Failed to restructure economy.json: " + e.getMessage()
+              + " (will be auto-fixed on next save)");
+          Logger.warn("[Migration] Failed to restructure economy.json: %s", e.getMessage());
+        }
+      }
+
+      // === Step 5: Bump configVersion ===
+      options.reportProgress("Bumping configVersion to 7", 5, 5);
 
       root.addProperty("configVersion", 7);
       changed = true;
@@ -190,6 +266,17 @@ public class ConfigV6ToV7Migration implements Migration {
         false,
         duration
       );
+    }
+  }
+
+  /**
+   * Moves a property from one JSON object to another with a new key name.
+   * No-op if the source key doesn't exist.
+   */
+  private static void moveProperty(@NotNull JsonObject from, @NotNull String fromKey,
+                    @NotNull JsonObject to, @NotNull String toKey) {
+    if (from.has(fromKey)) {
+      to.add(toKey, from.get(fromKey));
     }
   }
 }

@@ -167,7 +167,8 @@ class AdminPageOpener {
       AdminActionsPage page = new AdminActionsPage(
         playerRef,
         guiManager.getPlugin().get().getPlayerStorage(),
-        guiManager
+        guiManager,
+        guiManager.getPlugin().get()
       );
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminActionsPage opened successfully");
@@ -357,6 +358,33 @@ class AdminPageOpener {
       Logger.debug("[GUI] AdminEconomyAdjustPage opened successfully");
     } catch (Exception e) {
       ErrorHandler.report("[GUI] Failed to open AdminEconomyAdjustPage", e);
+    }
+  }
+
+  /**
+   * Opens the Admin Bulk Economy Adjust modal.
+   * Allows adjusting all faction treasuries at once.
+   */
+  public void openAdminBulkEconomy(Player player, Ref<EntityStore> ref,
+                   Store<EntityStore> store, PlayerRef playerRef) {
+    Logger.debug("[GUI] Opening AdminBulkEconomyPage for %s", playerRef.getUsername());
+    try {
+      EconomyManager econ = guiManager.getPlugin().get().getEconomyManager();
+      if (econ == null) {
+        player.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Economy system is not enabled."));
+        return;
+      }
+      PageManager pageManager = player.getPageManager();
+      AdminBulkEconomyPage page = new AdminBulkEconomyPage(
+        playerRef,
+        guiManager.getFactionManager().get(),
+        econ,
+        guiManager
+      );
+      pageManager.openCustomPage(ref, store, page);
+      Logger.debug("[GUI] AdminBulkEconomyPage opened successfully");
+    } catch (Exception e) {
+      ErrorHandler.report("[GUI] Failed to open AdminBulkEconomyPage", e);
     }
   }
 

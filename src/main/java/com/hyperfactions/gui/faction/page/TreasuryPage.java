@@ -6,6 +6,7 @@ import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionEconomy;
 import com.hyperfactions.data.FactionMember;
+import com.hyperfactions.data.FactionLog;
 import com.hyperfactions.data.FactionPermissions;
 import com.hyperfactions.data.FactionRole;
 import com.hyperfactions.gui.GuiManager;
@@ -95,24 +96,14 @@ public class TreasuryPage extends InteractiveCustomUIPage<TreasuryData> {
     // A. Stat cards
     buildStatCards(cmd, economy, uuid);
 
-    // B. Net P&L row
-    buildPnlRow(cmd, economy);
-
     // C. Upkeep section (if enabled)
-    buildUpkeepSection(cmd, economy);
+    buildUpkeepSection(cmd, events, economy);
 
-    // D. Quick action buttons
+    // D. Quick action buttons (includes settings for leaders)
     buildQuickActions(cmd, events, member, isLeader, isOfficerOrHigher);
 
     // E. Transaction log
     buildTransactionLog(cmd, economy);
-
-    // F. Settings button (leader only)
-    if (isLeader) {
-      cmd.set("#SettingsRow.Visible", true);
-      events.addEventBinding(CustomUIEventBindingType.Activating, "#SettingsBtn",
-          EventData.of("Button", "Settings"), false);
-    }
   }
 
   // === Stat Cards ===
@@ -131,27 +122,10 @@ public class TreasuryPage extends InteractiveCustomUIPage<TreasuryData> {
     cmd.set("#ExpensesValue.Text", economyManager.formatCurrencyCompact(pnl.expenses));
   }
 
-  // === P&L Row ===
-
-  private void buildPnlRow(UICommandBuilder cmd, FactionEconomy economy) {
-    PnlResult pnl = calculatePnl(economy);
-    BigDecimal net = pnl.income.subtract(pnl.expenses);
-
-    String color = net.compareTo(BigDecimal.ZERO) >= 0 ? "#44CC44" : "#FF5555";
-    String text;
-    if (net.compareTo(BigDecimal.ZERO) >= 0) {
-      text = "Net (24h): +" + economyManager.formatCurrency(net);
-    } else {
-      text = "Net (24h): -" + economyManager.formatCurrency(net.abs());
-    }
-
-    cmd.set("#PnlValue.Text", text);
-    cmd.set("#PnlValue.Style.TextColor", color);
-  }
-
   // === Upkeep Section ===
 
-  private void buildUpkeepSection(UICommandBuilder cmd, FactionEconomy economy) {
+  private void buildUpkeepSection(UICommandBuilder cmd, UIEventBuilder events,
+                  FactionEconomy economy) {
     ConfigManager config = ConfigManager.get();
     if (!config.isUpkeepEnabled()) {
       return;
@@ -160,22 +134,112 @@ public class TreasuryPage extends InteractiveCustomUIPage<TreasuryData> {
     cmd.set("#UpkeepSection.Visible", true);
 
     int claimCount = faction.getClaimCount();
-    BigDecimal costPerCycle = config.getUpkeepCostPerChunk().multiply(BigDecimal.valueOf(claimCount));
+    int freeChunks = config.getUpkeepFreeChunks();
+    int billableChunks = Math.max(0, claimCount - freeChunks);
 
+    // Calculate cost using UpkeepProcessor for consistency
+    com.hyperfactions.economy.UpkeepProcessor costCalc =
+        new com.hyperfactions.economy.UpkeepProcessor(economyManager, null, null);
+    BigDecimal costPerCycle = costCalc.calculateUpkeepCost(billableChunks);
+
+    int intervalHours = config.getUpkeepIntervalHours();
+    long intervalMs = intervalHours * 3600_000L;
     long lastUpkeep = economy != null ? economy.lastUpkeepTimestamp() : 0L;
-    long intervalMs = config.getUpkeepIntervalHours() * 3600_000L;
-    long nextUpkeep = lastUpkeep + intervalMs;
-    long remaining = Math.max(0, nextUpkeep - System.currentTimeMillis());
-    double progress = intervalMs > 0 ? 1.0 - ((double) remaining / intervalMs) : 0.0;
 
+    // Timer: calculate time until next collection
+    long remaining;
+    double progress;
+    if (lastUpkeep == 0L) {
+      // No cycle has run yet — show "Pending" with full bar
+      remaining = -1; // sentinel for "pending"
+      progress = 1.0;
+    } else {
+      long nextUpkeep = lastUpkeep + intervalMs;
+      remaining = Math.max(0, nextUpkeep - System.currentTimeMillis());
+      progress = intervalMs > 0 ? 1.0 - ((double) remaining / intervalMs) : 0.0;
+    }
+
+    // Show chunk breakdown
+    String chunkDetail = freeChunks > 0
+        ? String.format("%d free + %d billable chunks", Math.min(freeChunks, claimCount), billableChunks)
+        : billableChunks + " billable chunks";
     cmd.set("#UpkeepCost.Text", "Cost: " + economyManager.formatCurrency(costPerCycle)
-        + " every " + config.getUpkeepIntervalHours() + "h");
+        + " every " + intervalHours + "h");
+    cmd.set("#UpkeepDetail.Text", chunkDetail);
+
+    // Color-code the progress bar based on status
+    boolean inGrace = economy != null && economy.upkeepGraceStartTimestamp() > 0;
+    boolean canAfford = economy != null && economy.hasFunds(costPerCycle);
+    String barColor;
+    if (inGrace) {
+      barColor = "#FF5555"; // Red — in grace
+    } else if (!canAfford && billableChunks > 0) {
+      barColor = "#FFAA00"; // Yellow — insufficient funds
+    } else {
+      barColor = "#55FF55"; // Green — paid/sufficient
+    }
     cmd.set("#UpkeepBar.Value", progress);
-    cmd.set("#UpkeepTimer.Text", formatDuration(remaining) + " left");
+    cmd.set("#UpkeepBar.Bar.Color", barColor);
+    cmd.set("#UpkeepTimer.Text", remaining < 0 ? "Pending" : formatDuration(remaining) + " left");
 
     boolean autoPay = economy != null && economy.upkeepAutoPay();
     cmd.set("#AutoPayStatus.Text", "Auto-pay: " + (autoPay ? "ON" : "OFF"));
     cmd.set("#AutoPayStatus.Style.TextColor", autoPay ? "#55FF55" : "#FF5555");
+
+    // Cost projections row
+    if (costPerCycle.compareTo(BigDecimal.ZERO) > 0) {
+      cmd.set("#ProjectionsRow.Visible", true);
+      BigDecimal balance = economy != null ? economy.balance() : BigDecimal.ZERO;
+
+      // Cycles per day = 24 / intervalHours
+      double cyclesPerDay = 24.0 / intervalHours;
+      BigDecimal dailyCost = costPerCycle.multiply(BigDecimal.valueOf(cyclesPerDay))
+          .setScale(2, java.math.RoundingMode.HALF_UP);
+
+      cmd.set("#Cost7d.Text", economyManager.formatCurrency(dailyCost.multiply(BigDecimal.valueOf(7))));
+      cmd.set("#Cost14d.Text", economyManager.formatCurrency(dailyCost.multiply(BigDecimal.valueOf(14))));
+      cmd.set("#Cost30d.Text", economyManager.formatCurrency(dailyCost.multiply(BigDecimal.valueOf(30))));
+
+      // Runway: how many days until funds run out
+      if (dailyCost.compareTo(BigDecimal.ZERO) > 0 && balance.compareTo(BigDecimal.ZERO) > 0) {
+        int runwayDays = balance.divide(dailyCost, 0, java.math.RoundingMode.FLOOR).intValue();
+        String runwayText;
+        String runwayColor;
+        if (runwayDays > 90) {
+          runwayText = "90+ days";
+          runwayColor = "#55FF55";
+        } else if (runwayDays > 0) {
+          runwayText = runwayDays + " day" + (runwayDays != 1 ? "s" : "");
+          runwayColor = runwayDays <= 3 ? "#FF5555" : runwayDays <= 7 ? "#FFAA00" : "#55FF55";
+        } else {
+          runwayText = "< 1 day";
+          runwayColor = "#FF5555";
+        }
+        cmd.set("#RunwayValue.Text", runwayText);
+        cmd.set("#RunwayValue.Style.TextColor", runwayColor);
+      } else {
+        cmd.set("#RunwayValue.Text", balance.compareTo(BigDecimal.ZERO) == 0 ? "No funds" : "N/A");
+        cmd.set("#RunwayValue.Style.TextColor", "#FF5555");
+      }
+    }
+
+    // Grace period warning
+    if (inGrace) {
+      cmd.set("#GraceWarning.Visible", true);
+      long graceMs = config.getUpkeepGracePeriodHours() * 3600_000L;
+      long graceElapsed = System.currentTimeMillis() - economy.upkeepGraceStartTimestamp();
+      long graceRemaining = Math.max(0, graceMs - graceElapsed);
+      cmd.set("#GraceTimer.Text", "Grace expires in: " + formatDuration(graceRemaining));
+      cmd.set("#MissedCount.Text", "Missed payments: " + economy.consecutiveMissedPayments());
+
+      // Show Pay Now button if faction can afford the upkeep cost
+      if (canAfford && billableChunks > 0) {
+        cmd.set("#PayNowRow.Visible", true);
+        cmd.set("#PayNowCost.Text", "Pay " + economyManager.formatCurrency(costPerCycle) + " to clear grace");
+        events.addEventBinding(CustomUIEventBindingType.Activating, "#PayNowBtn",
+            EventData.of("Button", "PayNow"), false);
+      }
+    }
   }
 
   // === Quick Action Buttons ===
@@ -211,6 +275,13 @@ public class TreasuryPage extends InteractiveCustomUIPage<TreasuryData> {
           EventData.of("Button", "Transfer"), false);
     } else {
       cmd.set("#TransferBtn.Disabled", true);
+    }
+
+    // Settings: leader only
+    if (isLeader) {
+      cmd.set("#SettingsBox.Visible", true);
+      events.addEventBinding(CustomUIEventBindingType.Activating, "#SettingsBtn",
+          EventData.of("Button", "Settings"), false);
     }
   }
 
@@ -282,8 +353,85 @@ public class TreasuryPage extends InteractiveCustomUIPage<TreasuryData> {
       case "Withdraw" -> guiManager.openTreasuryDepositModal(player, ref, store, playerRef, faction, "withdraw");
       case "Transfer" -> guiManager.openTreasuryTransferSearch(player, ref, store, playerRef, faction);
       case "Settings" -> guiManager.openTreasurySettings(player, ref, store, playerRef, faction);
+      case "PayNow" -> handlePayNow(player, ref, store, playerRef);
       default -> sendUpdate();
     }
+  }
+
+  // === Pay Now (Grace Period) ===
+
+  private void handlePayNow(Player player, Ref<EntityStore> ref,
+               Store<EntityStore> store, PlayerRef playerRef) {
+    Faction currentFaction = factionManager.getFaction(faction.id());
+    if (currentFaction == null) {
+      sendUpdate();
+      return;
+    }
+
+    FactionEconomy economy = economyManager.getEconomy(faction.id());
+    if (economy == null || economy.upkeepGraceStartTimestamp() == 0L) {
+      // Not in grace — just refresh
+      reopenTreasury(player, ref, store, playerRef, currentFaction);
+      return;
+    }
+
+    ConfigManager config = ConfigManager.get();
+    int freeChunks = config.getUpkeepFreeChunks();
+    int billableChunks = Math.max(0, currentFaction.getClaimCount() - freeChunks);
+    if (billableChunks <= 0) {
+      // No cost — just clear grace
+      FactionEconomy updated = economy.withGraceReset()
+          .withLastUpkeepTimestamp(System.currentTimeMillis());
+      economyManager.updateEconomy(faction.id(), updated);
+      reopenTreasury(player, ref, store, playerRef, currentFaction);
+      return;
+    }
+
+    com.hyperfactions.economy.UpkeepProcessor costCalc =
+        new com.hyperfactions.economy.UpkeepProcessor(economyManager, null, null);
+    BigDecimal cost = costCalc.calculateUpkeepCost(billableChunks);
+
+    if (!economy.hasFunds(cost)) {
+      // Not enough funds — refresh to show current state
+      reopenTreasury(player, ref, store, playerRef, currentFaction);
+      return;
+    }
+
+    // Withdraw upkeep cost
+    EconomyAPI.TransactionResult result = economyManager.systemWithdraw(
+        faction.id(), cost, EconomyAPI.TransactionType.UPKEEP,
+        String.format("Manual upkeep payment: %d billable chunks", billableChunks));
+
+    if (result == EconomyAPI.TransactionResult.SUCCESS) {
+      // Reset grace state
+      FactionEconomy current = economyManager.getEconomy(faction.id());
+      if (current != null) {
+        FactionEconomy updated = current.withGraceReset()
+            .withLastUpkeepTimestamp(System.currentTimeMillis());
+        economyManager.updateEconomy(faction.id(), updated);
+      }
+
+      // Log to faction activity
+      Faction factionNow = factionManager.getFaction(faction.id());
+      if (factionNow != null) {
+        Faction logged = factionNow.withLog(FactionLog.create(FactionLog.LogType.ECONOMY,
+            String.format("Upkeep paid manually: %s (%d billable chunks, grace cleared)",
+                economyManager.formatCurrency(cost), billableChunks),
+            playerRef.getUuid()));
+        factionManager.updateFaction(logged);
+      }
+    }
+
+    // Reopen treasury to show updated state
+    reopenTreasury(player, ref, store, playerRef,
+        factionManager.getFaction(faction.id()));
+  }
+
+  private void reopenTreasury(Player player, Ref<EntityStore> ref,
+                Store<EntityStore> store, PlayerRef playerRef, Faction faction) {
+    TreasuryPage page = new TreasuryPage(playerRef, factionManager, economyManager,
+        guiManager, plugin, faction != null ? faction : this.faction);
+    player.getPageManager().openCustomPage(ref, store, page);
   }
 
   // === P&L Calculation ===

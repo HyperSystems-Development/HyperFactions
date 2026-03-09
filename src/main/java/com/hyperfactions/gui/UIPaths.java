@@ -221,6 +221,8 @@ public final class UIPaths {
 
   public static final String ADMIN_ECONOMY_ADJUST = BASE + "admin/admin_economy_adjust.ui";
 
+  public static final String ADMIN_BULK_ECONOMY = BASE + "admin/admin_bulk_economy.ui";
+
   public static final String ADMIN_ACTIVITY_LOG = BASE + "admin/admin_activity_log.ui";
 
   public static final String ADMIN_ACTIVITY_LOG_ENTRY = BASE + "admin/admin_activity_log_entry.ui";

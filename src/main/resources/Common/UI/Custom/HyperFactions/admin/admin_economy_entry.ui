@@ -9,10 +9,18 @@ Group {
   Padding: (Left: 12, Right: 12, Top: 6, Bottom: 6);
   LayoutMode: Left;
 
+  // Upkeep status indicator (green/yellow/red dot)
+  Group #UpkeepDot {
+    Visible: false;
+    Background: (Color: #55FF55);
+    Anchor: (Width: 8, Height: 8);
+  }
+  Label { Anchor: (Width: 6); }
+
   Label #FactionName {
     Text: "Faction";
     Style: (FontSize: 12, TextColor: #FFFFFF, VerticalAlignment: Center);
-    Anchor: (Width: 160);
+    Anchor: (Width: 150);
   }
 
   Label #Balance {
