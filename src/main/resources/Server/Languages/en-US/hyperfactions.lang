@@ -166,3 +166,53 @@ cmd.rank.transferred = Transferred leadership to {0}!
 cmd.rank.transfer_broadcast = {0} is now the faction leader!
 cmd.rank.transfer_failed = Failed to transfer leadership.
 cmd.rank.transfer_cancelled = Previous confirmation cancelled. Type again to confirm transfer.
+
+# ========== Commands - Unclaim ==========
+cmd.unclaim.no_permission = You don't have permission to unclaim territory.
+cmd.unclaim.success = Unclaimed chunk at {0}, {1}.
+cmd.unclaim.not_officer = You must be an officer to unclaim land.
+cmd.unclaim.chunk_not_claimed = This chunk is not claimed.
+cmd.unclaim.not_your_claim = Your faction doesn't own this chunk.
+cmd.unclaim.cannot_unclaim_home = Cannot unclaim the chunk with faction home.
+cmd.unclaim.would_disconnect = Cannot unclaim — it would disconnect your territory.
+cmd.unclaim.failed = Failed to unclaim chunk.
+
+# ========== Commands - Overclaim ==========
+cmd.overclaim.no_permission = You don't have permission to overclaim territory.
+cmd.overclaim.success = Overclaimed enemy territory!
+cmd.overclaim.not_officer = You must be an officer to overclaim.
+cmd.overclaim.not_claimed = This chunk is not claimed. Use /f claim.
+cmd.overclaim.own_chunk = Your faction already owns this chunk.
+cmd.overclaim.ally = You cannot overclaim ally territory.
+cmd.overclaim.target_has_power = This faction still has enough power.
+cmd.overclaim.failed = Failed to overclaim.
+
+# ========== Commands - Stuck ==========
+cmd.stuck.no_permission = You don't have permission to use /f stuck.
+cmd.stuck.not_stuck = You're not stuck - this is wilderness.
+cmd.stuck.combat_tagged = You cannot use /f stuck while in combat!
+cmd.stuck.no_safe = Could not find a safe location.
+cmd.stuck.teleporting = Teleporting to safety in {0} seconds. Don't move!
+
+# ========== Commands - Home ==========
+cmd.home.no_permission = You don't have permission to teleport to faction home.
+cmd.home.no_home = Your faction has no home set.
+cmd.home.combat_tagged = You cannot teleport while in combat!
+cmd.home.teleported = Teleported to faction home!
+
+# ========== Commands - SetHome ==========
+cmd.sethome.no_permission = You don't have permission to set faction home.
+cmd.sethome.world_not_allowed = Cannot set home in this world.
+cmd.sethome.not_in_territory = You can only set home in your faction's territory.
+cmd.sethome.set = Faction home set!
+cmd.sethome.broadcast = {0} set the faction home.
+cmd.sethome.not_officer = You must be an officer to set the home.
+cmd.sethome.failed = Failed to set home.
+
+# ========== Commands - DelHome ==========
+cmd.delhome.no_permission = You don't have permission to delete faction home.
+cmd.delhome.no_home = Your faction does not have a home set.
+cmd.delhome.deleted = Faction home deleted!
+cmd.delhome.broadcast = {0} deleted the faction home.
+cmd.delhome.not_officer = You must be an officer to delete the home.
+cmd.delhome.failed = Failed to delete home.

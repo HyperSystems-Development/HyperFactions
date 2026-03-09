@@ -236,9 +236,9 @@ public final class MessageKeys {
 
   /** /f claim, /f unclaim, /f overclaim command messages. */
   public static final class Claim {
+    // Claim
     public static final String NO_PERMISSION = "hyperfactions.cmd.claim.no_permission";
     public static final String SUCCESS = "hyperfactions.cmd.claim.success";
-    public static final String UNCLAIMED = "hyperfactions.cmd.claim.unclaimed";
     public static final String ALREADY_CLAIMED = "hyperfactions.cmd.claim.already_claimed";
     public static final String ALREADY_YOURS = "hyperfactions.cmd.claim.already_yours";
     public static final String CANNOT_CLAIM_ALLY = "hyperfactions.cmd.claim.cannot_claim_ally";
@@ -250,25 +250,59 @@ public final class MessageKeys {
     public static final String ORBISGUARD = "hyperfactions.cmd.claim.orbisguard";
     public static final String ZONE_PROTECTED = "hyperfactions.cmd.claim.zone_protected";
     public static final String FAILED = "hyperfactions.cmd.claim.failed";
-    public static final String OVERCLAIMED = "hyperfactions.cmd.claim.overclaimed";
-    public static final String CANNOT_OVERCLAIM = "hyperfactions.cmd.claim.cannot_overclaim";
-    public static final String NOT_YOUR_CLAIM = "hyperfactions.cmd.claim.not_your_claim";
-    public static final String IN_ZONE = "hyperfactions.cmd.claim.in_zone";
+    // Unclaim
+    public static final String UNCLAIM_NO_PERMISSION = "hyperfactions.cmd.unclaim.no_permission";
+    public static final String UNCLAIMED = "hyperfactions.cmd.unclaim.success";
+    public static final String UNCLAIM_NOT_OFFICER = "hyperfactions.cmd.unclaim.not_officer";
+    public static final String CHUNK_NOT_CLAIMED = "hyperfactions.cmd.unclaim.chunk_not_claimed";
+    public static final String NOT_YOUR_CLAIM = "hyperfactions.cmd.unclaim.not_your_claim";
+    public static final String CANNOT_UNCLAIM_HOME = "hyperfactions.cmd.unclaim.cannot_unclaim_home";
+    public static final String WOULD_DISCONNECT = "hyperfactions.cmd.unclaim.would_disconnect";
+    public static final String UNCLAIM_FAILED = "hyperfactions.cmd.unclaim.failed";
+    // Overclaim
+    public static final String OVERCLAIM_NO_PERMISSION = "hyperfactions.cmd.overclaim.no_permission";
+    public static final String OVERCLAIMED = "hyperfactions.cmd.overclaim.success";
+    public static final String OVERCLAIM_NOT_OFFICER = "hyperfactions.cmd.overclaim.not_officer";
+    public static final String OVERCLAIM_NOT_CLAIMED = "hyperfactions.cmd.overclaim.not_claimed";
+    public static final String OVERCLAIM_OWN = "hyperfactions.cmd.overclaim.own_chunk";
+    public static final String OVERCLAIM_ALLY = "hyperfactions.cmd.overclaim.ally";
+    public static final String TARGET_HAS_POWER = "hyperfactions.cmd.overclaim.target_has_power";
+    public static final String OVERCLAIM_FAILED = "hyperfactions.cmd.overclaim.failed";
 
     private Claim() {}
   }
 
   /** /f home, /f sethome, /f delhome, /f stuck command messages. */
   public static final class Home {
-    public static final String TELEPORTING = "hyperfactions.cmd.home.teleporting";
-    public static final String SET = "hyperfactions.cmd.home.set";
-    public static final String DELETED = "hyperfactions.cmd.home.deleted";
+    // Home
+    public static final String NO_PERMISSION = "hyperfactions.cmd.home.no_permission";
     public static final String NO_HOME = "hyperfactions.cmd.home.no_home";
-    public static final String NOT_IN_TERRITORY = "hyperfactions.cmd.home.not_in_territory";
+    public static final String COMBAT_TAGGED = "hyperfactions.cmd.home.combat_tagged";
+    public static final String TELEPORTED = "hyperfactions.cmd.home.teleported";
     public static final String WARMUP = "hyperfactions.cmd.home.warmup";
     public static final String WARMUP_CANCELLED = "hyperfactions.cmd.home.warmup_cancelled";
     public static final String COOLDOWN = "hyperfactions.cmd.home.cooldown";
-    public static final String STUCK_TELEPORTING = "hyperfactions.cmd.home.stuck_teleporting";
+    // SetHome
+    public static final String SETHOME_NO_PERMISSION = "hyperfactions.cmd.sethome.no_permission";
+    public static final String SETHOME_WORLD_NOT_ALLOWED = "hyperfactions.cmd.sethome.world_not_allowed";
+    public static final String NOT_IN_TERRITORY = "hyperfactions.cmd.sethome.not_in_territory";
+    public static final String SET = "hyperfactions.cmd.sethome.set";
+    public static final String SETHOME_BROADCAST = "hyperfactions.cmd.sethome.broadcast";
+    public static final String SETHOME_NOT_OFFICER = "hyperfactions.cmd.sethome.not_officer";
+    public static final String SETHOME_FAILED = "hyperfactions.cmd.sethome.failed";
+    // DelHome
+    public static final String DELHOME_NO_PERMISSION = "hyperfactions.cmd.delhome.no_permission";
+    public static final String DELHOME_NO_HOME = "hyperfactions.cmd.delhome.no_home";
+    public static final String DELETED = "hyperfactions.cmd.delhome.deleted";
+    public static final String DELHOME_BROADCAST = "hyperfactions.cmd.delhome.broadcast";
+    public static final String DELHOME_NOT_OFFICER = "hyperfactions.cmd.delhome.not_officer";
+    public static final String DELHOME_FAILED = "hyperfactions.cmd.delhome.failed";
+    // Stuck
+    public static final String STUCK_NO_PERMISSION = "hyperfactions.cmd.stuck.no_permission";
+    public static final String STUCK_NOT_STUCK = "hyperfactions.cmd.stuck.not_stuck";
+    public static final String STUCK_COMBAT_TAGGED = "hyperfactions.cmd.stuck.combat_tagged";
+    public static final String STUCK_NO_SAFE = "hyperfactions.cmd.stuck.no_safe";
+    public static final String STUCK_TELEPORTING = "hyperfactions.cmd.stuck.teleporting";
 
     private Home() {}
   }
