@@ -1040,7 +1040,8 @@ public class HyFactionsImporter {
       relations,
       logs,
       false, // not open by default
-      null   // use default permissions
+      null,  // use default permissions
+      null   // no hardcore power
     );
   }
 

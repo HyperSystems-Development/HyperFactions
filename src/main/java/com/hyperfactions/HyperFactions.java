@@ -250,7 +250,7 @@ public class HyperFactions {
       // Ensure version marker exists (fresh installs skip migration)
       Path versionFile = dataPath.resolve(".version");
       if (!Files.exists(versionFile)) {
-        Files.writeString(versionFile, "1");
+        Files.writeString(versionFile, "2");
       }
     } catch (IOException e) {
       ErrorHandler.report("[Storage] Failed to initialize data directory", e);
@@ -278,7 +278,7 @@ public class HyperFactions {
 
     // Initialize managers (order matters!)
     factionManager = new FactionManager(factionStorage);
-    powerManager = new PowerManager(playerStorage, factionManager, dataDir);
+    powerManager = new PowerManager(playerStorage, factionManager);
     claimManager = new ClaimManager(factionManager, powerManager);
     relationManager = new RelationManager(factionManager);
     combatTagManager = new CombatTagManager();
@@ -966,14 +966,15 @@ public class HyperFactions {
    */
   public void saveAllData() {
     Logger.info("[AutoSave] Saving data...");
+    // Sync hardcore power into faction records before bulk save
+    if (powerManager != null && ConfigManager.get().isHardcoreMode()) {
+      powerManager.syncHardcorePowerToFactions();
+    }
     if (factionManager != null) {
       factionManager.saveAll().join();
     }
     if (powerManager != null) {
       powerManager.saveAll().join();
-      if (ConfigManager.get().isHardcoreMode()) {
-        powerManager.saveHardcorePowerData().join();
-      }
     }
     if (zoneManager != null) {
       zoneManager.saveAll().join();

@@ -120,7 +120,7 @@ public final class TestFactionFactory {
         }
 
         public Faction build() {
-            return new Faction(id, name, description, tag, color, createdAt, home, members, claims, relations, logs, open);
+            return new Faction(id, name, description, tag, color, createdAt, home, members, claims, relations, logs, open, null, null);
         }
     }
 

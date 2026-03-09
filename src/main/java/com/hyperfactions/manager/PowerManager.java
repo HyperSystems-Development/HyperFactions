@@ -1,19 +1,11 @@
 package com.hyperfactions.manager;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.PlayerPower;
 import com.hyperfactions.storage.PlayerStorage;
 import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -29,8 +21,6 @@ public class PowerManager {
 
   private final FactionManager factionManager;
 
-  private final Path dataDir;
-
   // Cache: player UUID -> PlayerPower
   private final Map<UUID, PlayerPower> powerCache = new ConcurrentHashMap<>();
 
@@ -41,10 +31,9 @@ public class PowerManager {
   private final Map<UUID, Double> hardcoreFactionPower = new ConcurrentHashMap<>();
 
   /** Creates a new PowerManager. */
-  public PowerManager(@NotNull PlayerStorage storage, @NotNull FactionManager factionManager, @NotNull Path dataDir) {
+  public PowerManager(@NotNull PlayerStorage storage, @NotNull FactionManager factionManager) {
     this.storage = storage;
     this.factionManager = factionManager;
-    this.dataDir = dataDir;
   }
 
   /**
@@ -303,7 +292,7 @@ public class PowerManager {
         hardcoreFactionPower.put(faction.id(), after);
         Logger.debugPower("Hardcore death penalty: faction=%s, before=%.2f, after=%.2f, penalty=%.2f",
           faction.name(), before, after, penalty);
-        saveHardcorePowerAsync();
+        saveHardcorePowerForFaction(faction.id());
       }
       return power.power(); // Player power unchanged in hardcore
     }
@@ -362,7 +351,7 @@ public class PowerManager {
         hardcoreFactionPower.put(faction.id(), after);
         Logger.debugPower("Hardcore kill reward: faction=%s, before=%.2f, after=%.2f, reward=%.2f",
           faction.name(), before, after, reward);
-        saveHardcorePowerAsync();
+        saveHardcorePowerForFaction(faction.id());
       }
       return getPlayerPower(playerUuid).power();
     }
@@ -590,58 +579,43 @@ public class PowerManager {
   }
 
   /**
-   * Loads hardcore faction power data from disk.
+   * Loads hardcore faction power data from per-faction records.
+   * Factions must already be loaded before calling this.
    */
   public CompletableFuture<Void> loadHardcorePowerData() {
     return CompletableFuture.runAsync(() -> {
-      Path file = dataDir.resolve("hardcore_power.json");
-      if (!Files.exists(file)) {
-        return;
-      }
-
-      try {
-        String json = Files.readString(file);
-        JsonObject obj = JsonParser.parseString(json).getAsJsonObject();
-        for (var entry : obj.entrySet()) {
-          try {
-            UUID factionId = UUID.fromString(entry.getKey());
-            double power = entry.getValue().getAsDouble();
-            hardcoreFactionPower.put(factionId, power);
-          } catch (Exception e) {
-            ErrorHandler.report(String.format("Invalid hardcore power entry: %s", entry.getKey()), e);
-          }
+      for (Faction faction : factionManager.getAllFactions()) {
+        if (faction.hardcorePower() != null) {
+          hardcoreFactionPower.put(faction.id(), faction.hardcorePower());
         }
-        Logger.info("[Startup] Loaded hardcore power for %d factions", hardcoreFactionPower.size());
-      } catch (Exception e) {
-        ErrorHandler.report("Failed to load hardcore power data", e);
       }
+      Logger.info("[Startup] Loaded hardcore power for %d factions", hardcoreFactionPower.size());
     });
   }
 
   /**
-   * Saves hardcore faction power data to disk.
+   * Syncs in-memory hardcore power values into faction records (cache-only, no save).
+   * Call this before factionManager.saveAll() to ensure values are persisted.
    */
-  public CompletableFuture<Void> saveHardcorePowerData() {
-    return CompletableFuture.runAsync(() -> {
-      Path file = dataDir.resolve("hardcore_power.json");
-      try {
-        JsonObject obj = new JsonObject();
-        for (var entry : hardcoreFactionPower.entrySet()) {
-          obj.addProperty(entry.getKey().toString(), entry.getValue());
-        }
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        Files.writeString(file, gson.toJson(obj));
-      } catch (IOException e) {
-        ErrorHandler.report("Failed to save hardcore power data", e);
+  public void syncHardcorePowerToFactions() {
+    for (var entry : hardcoreFactionPower.entrySet()) {
+      Faction faction = factionManager.getFaction(entry.getKey());
+      if (faction != null && !entry.getValue().equals(faction.hardcorePower())) {
+        factionManager.putFaction(faction.withHardcorePower(entry.getValue()));
       }
-    });
+    }
   }
 
   /**
-   * Async save without blocking the caller.
+   * Saves hardcore power for a single faction immediately.
+   * Called after death penalty and kill reward changes.
    */
-  private void saveHardcorePowerAsync() {
-    saveHardcorePowerData();
+  private void saveHardcorePowerForFaction(@NotNull UUID factionId) {
+    Faction faction = factionManager.getFaction(factionId);
+    if (faction != null) {
+      Double power = hardcoreFactionPower.get(factionId);
+      factionManager.updateFaction(faction.withHardcorePower(power));
+    }
   }
 
   /**

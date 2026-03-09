@@ -400,7 +400,7 @@ class FactionTest {
                     UUID.randomUUID(), "Test", null, null, null,
                     System.currentTimeMillis(), null,
                     java.util.Map.of(), java.util.Set.of(), java.util.Map.of(),
-                    java.util.List.of(), false
+                    java.util.List.of(), false, null, null
             );
 
             assertEquals("f", faction.color());

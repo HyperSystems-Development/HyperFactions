@@ -902,7 +902,8 @@ public class ElbaphFactionsImporter {
       relations,
       logs,
       false, // not open by default
-      permissions
+      permissions,
+      null   // no hardcore power
     );
   }
 

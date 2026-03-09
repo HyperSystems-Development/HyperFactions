@@ -245,6 +245,11 @@ public class JsonFactionStorage implements FactionStorage {
       obj.add("permissions", serializePermissions(faction.permissions()));
     }
 
+    // Hardcore power
+    if (faction.hardcorePower() != null) {
+      obj.addProperty("hardcorePower", faction.hardcorePower());
+    }
+
     return obj;
   }
 
@@ -374,7 +379,10 @@ public class JsonFactionStorage implements FactionStorage {
       permissions = deserializePermissions(obj.getAsJsonObject("permissions"));
     }
 
-    return new Faction(id, name, description, tag, color, createdAt, home, members, claims, relations, logs, open, permissions);
+    // Hardcore power
+    Double hardcorePower = obj.has("hardcorePower") ? obj.get("hardcorePower").getAsDouble() : null;
+
+    return new Faction(id, name, description, tag, color, createdAt, home, members, claims, relations, logs, open, permissions, hardcorePower);
   }
 
   private FactionPermissions deserializePermissions(JsonObject obj) {

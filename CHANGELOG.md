@@ -117,6 +117,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Hardcore power storage consolidated** — faction power pool for hardcore mode moved from standalone `hardcore_power.json` into per-faction data files (`data/factions/{uuid}.json`). All faction state is now co-located. Includes data migration (v1→v2) for existing installations; fresh installs start at data version 2
 - Treasury quick action buttons wrapped in dark boxes with subtitle labels (matching dashboard pattern)
 - Treasury settings button moved into quick actions row as 4th box (leader-only)
 - Treasury settings page: removed Save button, limits auto-save on Back

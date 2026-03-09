@@ -232,7 +232,8 @@ public class FactionManager {
               memoryFaction.relations(),
               memoryFaction.logs(),
               memoryFaction.open(),
-              memoryFaction.permissions()
+              memoryFaction.permissions(),
+              memoryFaction.hardcorePower()
             );
             factions.put(updated.id(), updated);
             factionsUpdated++;
@@ -1029,6 +1030,16 @@ public class FactionManager {
       }
     }
     return cleared;
+  }
+
+  /**
+   * Updates a faction in the in-memory cache without triggering a save.
+   * Used by PowerManager to sync hardcore power before bulk saves.
+   *
+   * @param faction the updated faction
+   */
+  void putFaction(@NotNull Faction faction) {
+    factions.put(faction.id(), faction);
   }
 
   /**

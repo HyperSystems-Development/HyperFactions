@@ -7,6 +7,7 @@ import com.hyperfactions.migration.migrations.config.ConfigV4ToV5Migration;
 import com.hyperfactions.migration.migrations.config.ConfigV5ToV6Migration;
 import com.hyperfactions.migration.migrations.config.ConfigV6ToV7Migration;
 import com.hyperfactions.migration.migrations.data.DataV0ToV1Migration;
+import com.hyperfactions.migration.migrations.data.DataV1ToV2Migration;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -57,6 +58,7 @@ public class MigrationRegistry {
 
     // Data migrations
     register(new DataV0ToV1Migration());
+    register(new DataV1ToV2Migration());
   }
 
   /**
