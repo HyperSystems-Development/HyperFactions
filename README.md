@@ -8,7 +8,7 @@ A comprehensive faction management mod for Hytale servers featuring territory cl
 
 ## Overview
 
-HyperFactions transforms your Hytale server into a dynamic faction-based environment where players create factions, claim territories, forge alliances, manage treasuries, and engage in strategic PvP combat. With 65+ interactive GUI pages, 44 commands, and deep integration with the HyperSystems ecosystem, it provides a complete faction experience out of the box.
+HyperFactions transforms your Hytale server into a dynamic faction-based environment where players create factions, claim territories, forge alliances, manage treasuries, and engage in strategic PvP combat. With 76 interactive GUI pages, 46 commands, and deep integration with the HyperSystems ecosystem, it provides a complete faction experience out of the box.
 
 **Main Commands:** `/faction` | `/f` | `/hf`
 
@@ -84,6 +84,7 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 | Faction treasury with balance tracking | Implemented |
 | Deposits, withdrawals, inter-faction transfers | Implemented |
 | Transaction log | Implemented |
+| Faction upkeep system (flat/progressive tiered pricing) | Implemented |
 | VaultUnlocked integration | Implemented |
 | Ecotale integration | [Planned #20](https://github.com/HyperSystems-Development/HyperFactions/issues/20) |
 
@@ -96,15 +97,17 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 | OrbisGuard-Mixins (11 hooks, alternative) | Implemented |
 | Dual-provider auto-detection | Implemented |
 | Mob spawn suppression | Implemented |
+| Mob clearing zone flags | Implemented |
 | Gravestones integration | Implemented |
-| Zone flags (41) | Implemented |
+| Zone flags (50) | Implemented |
 | Command blocking in zones | Implemented |
+| Sentry error tracking | Implemented |
 
 ### GUI
 
 | Feature | Status |
 |---------|--------|
-| 60+ interactive pages across 3 registries | Implemented |
+| 76 interactive pages across 3 registries | Implemented |
 | Faction leaderboard | Implemented |
 | Admin dashboard | Implemented |
 | Faction browser with search | Implemented |
@@ -118,7 +121,7 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 | Zone management (SafeZone, WarZone) | Implemented |
 | Backup system (GFS rotation) | Implemented |
 | Data import (ElbaphFactions, HyFactions) | Implemented |
-| Config migration (v1-v6) | Implemented |
+| Config migration (v1-v7) | Implemented |
 | Update checker | Implemented |
 | Admin GUI: Config editor | [Planned #40](https://github.com/HyperSystems-Development/HyperFactions/issues/40) |
 | Admin GUI: Backup manager | [Planned #41](https://github.com/HyperSystems-Development/HyperFactions/issues/41) |
@@ -137,6 +140,7 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 | OrbisGuard / OrbisGuard-Mixins | Implemented |
 | Gravestones | Implemented |
 | KyuubiSoft Core (citizen NPC protection) | Implemented |
+| Sentry (error tracking) | Implemented |
 
 ### Planned Features
 
@@ -186,10 +190,10 @@ Comprehensive developer and admin documentation is available in the [`docs/`](do
 | Document | Description |
 |----------|-------------|
 | [commands.md](docs/commands.md) | 52 subcommands across 10 categories with full syntax |
-| [permissions.md](docs/permissions.md) | 60 permission nodes, chain-based resolution |
-| [config.md](docs/config.md) | ConfigManager, 10 config files, migration (v1-v6) |
+| [permissions.md](docs/permissions.md) | 76 permission nodes, chain-based resolution |
+| [config.md](docs/config.md) | ConfigManager, 10 config files, migration (v1-v7) |
 | [storage.md](docs/storage.md) | Interface-based storage, JSON adapters, backup system |
-| [gui.md](docs/gui.md) | 59 pages, 3 registries, navigation flows |
+| [gui.md](docs/gui.md) | 76 pages, 3 registries, navigation flows |
 | [protection.md](docs/protection.md) | ECS handlers, HyperProtect-Mixin / OrbisGuard-Mixins, zone flags |
 
 ### API & Integrations
@@ -221,7 +225,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'com.github.HyperSystems-Development:HyperFactions:v0.10.0'
+    compileOnly 'com.github.HyperSystems-Development:HyperFactions:v0.11.0'
 }
 ```
 
@@ -270,10 +274,11 @@ HyperFactions is part of the HyperSystems plugin ecosystem. All plugins integrat
 | Mod | Description | Status | Link |
 |-----|-------------|--------|------|
 | **HyperPerms** | Permissions management with groups, tracks, and web editor | Production | [GitHub](https://github.com/HyperSystems-Development/HyperPerms) |
-| **HyperHomes** | Personal home teleportation with sharing | Production | [GitHub](https://github.com/HyperSystems-Development/HyperHomes) |
 | **HyperFactions** | Faction management with territory, diplomacy, and economy | Production | [GitHub](https://github.com/HyperSystems-Development/HyperFactions) |
-| **HyperWarp** | Warps, spawns, TPA requests, and /back | Production | [GitHub](https://github.com/HyperSystems-Development/HyperWarp) |
-| **HyperSpawns** | Mob spawn zone control with advanced filtering | Production | [GitHub](https://github.com/HyperSystems-Development/HyperSpawns) |
+| **HyperEssentials** | Modular server essentials (homes, warps, spawns, TPA, kits, moderation) | Production | [GitHub](https://github.com/HyperSystems-Development/HyperEssentials) |
+| **HyperProtect-Mixin** | Server-level event interception for protection hooks | Production | [CurseForge](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) |
+| **Ecotale** | Economy system with balance HUD, admin GUI, multi-storage | Production | [CurseForge](https://www.curseforge.com/hytale/mods/ecotale) |
+| **Werchat** | Channel-based chat system with moderation tools | Production | [CurseForge](https://www.curseforge.com/hytale/mods/werchat) |
 | **HyperGuard** | Server-side anti-cheat | In Development | [GitHub](https://github.com/HyperSystems-Development/HyperGuard) |
 | **HyperVerse** | World management (Multiverse-like) | In Development | [GitHub](https://github.com/HyperSystems-Development/HyperVerse) |
 | **HyperLogger** | Activity logging and rollback | In Development | [GitHub](https://github.com/HyperSystems-Development/HyperLogger) |
