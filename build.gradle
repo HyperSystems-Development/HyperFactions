@@ -128,6 +128,23 @@ public final class BuildInfo {
     }
 }
 
+// Generate help .lang files from markdown sources
+tasks.register('generateHelpLang', JavaExec) {
+    group = 'build'
+    description = 'Generate help .lang files from markdown sources'
+    dependsOn 'compileJava'
+    classpath = sourceSets.main.compileClasspath + files(sourceSets.main.java.classesDirectory)
+    mainClass = 'com.hyperfactions.build.HelpLangGenerator'
+    args = [
+        file('src/main/help').absolutePath,
+        layout.buildDirectory.dir('generated/resources').get().asFile.absolutePath
+    ]
+    inputs.dir(file('src/main/help'))
+    outputs.dir(layout.buildDirectory.dir('generated/resources'))
+}
+
+sourceSets.main.resources.srcDir(layout.buildDirectory.dir('generated/resources'))
+
 // Expand version placeholder in manifest.json
 processResources {
     def ver = buildVersion
@@ -190,6 +207,11 @@ javadoc {
         'https://docs.oracle.com/en/java/javase/21/docs/api/'
     )
     failOnError = false
+}
+
+// Ensure help lang files are generated before processResources copies them
+tasks.named('processResources') {
+    dependsOn 'generateHelpLang'
 }
 
 // Ensure build info is generated and HyperPerms shadowJar is built before compiling

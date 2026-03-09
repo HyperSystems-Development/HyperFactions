@@ -1,0 +1,12 @@
+# HyperFactions GUI - English Translations
+# Format: key = value
+# Note: Keys are auto-prefixed with "hyperfactions_gui." by Hytale's I18nModule
+
+# ========== Help Category Names ==========
+help.category.welcome = Welcome
+help.category.your_faction = Your Faction
+help.category.power_land = Power & Land
+help.category.diplomacy = Diplomacy
+help.category.combat = Combat & Safety
+help.category.economy = Economy
+help.category.quick_ref = Quick Reference
