@@ -1,0 +1,362 @@
+package com.hyperfactions.util;
+
+/**
+ * Static constants for all HyperFactions i18n message keys.
+ *
+ * <p>
+ * Organized by nested inner classes — one per feature domain.
+ * Key format: {@code {file_prefix}.{domain}.{action}}
+ *
+ * <p>
+ * File prefixes map to .lang file names:
+ * <ul>
+ *   <li>{@code hyperfactions.*} → {@code hyperfactions.lang} (commands, errors, common)</li>
+ *   <li>{@code hyperfactions_gui.*} → {@code hyperfactions_gui.lang} (GUI labels, buttons)</li>
+ *   <li>{@code hyperfactions_help.*} → {@code hyperfactions_help.lang} (help content, build-generated)</li>
+ *   <li>{@code hyperfactions_admin.*} → {@code hyperfactions_admin.lang} (admin GUI)</li>
+ * </ul>
+ */
+public final class MessageKeys {
+
+  private MessageKeys() {}
+
+  // =====================================================================
+  // Common — shared messages used across multiple features
+  // =====================================================================
+
+  /** Shared messages used across multiple features (commands, GUI, protection). */
+  public static final class Common {
+    public static final String NO_PERMISSION = "hyperfactions.common.no_permission";
+    public static final String NOT_IN_FACTION = "hyperfactions.common.not_in_faction";
+    public static final String ALREADY_IN_FACTION = "hyperfactions.common.already_in_faction";
+    public static final String PLAYER_NOT_FOUND = "hyperfactions.common.player_not_found";
+    public static final String FACTION_NOT_FOUND = "hyperfactions.common.faction_not_found";
+    public static final String PLAYER_NOT_ONLINE = "hyperfactions.common.player_not_online";
+    public static final String MUST_BE_LEADER = "hyperfactions.common.must_be_leader";
+    public static final String MUST_BE_OFFICER = "hyperfactions.common.must_be_officer";
+    public static final String COMBAT_TAGGED = "hyperfactions.common.combat_tagged";
+    public static final String CANCEL = "hyperfactions.common.cancel";
+    public static final String CONFIRM = "hyperfactions.common.confirm";
+    public static final String SAVE = "hyperfactions.common.save";
+    public static final String CLOSE = "hyperfactions.common.close";
+    public static final String YES = "hyperfactions.common.yes";
+    public static final String NO = "hyperfactions.common.no";
+    public static final String LOADING = "hyperfactions.common.loading";
+    public static final String ONLINE = "hyperfactions.common.online";
+    public static final String OFFLINE = "hyperfactions.common.offline";
+    public static final String ENABLED = "hyperfactions.common.enabled";
+    public static final String DISABLED = "hyperfactions.common.disabled";
+    public static final String NONE = "hyperfactions.common.none";
+    public static final String PAGE = "hyperfactions.common.page";
+    public static final String UNKNOWN = "hyperfactions.common.unknown";
+    public static final String ERROR_GENERIC = "hyperfactions.common.error_generic";
+
+    private Common() {}
+  }
+
+  // =====================================================================
+  // Commands — organized by command group
+  // =====================================================================
+
+  /** /f create command messages. */
+  public static final class Create {
+    public static final String SUCCESS = "hyperfactions.cmd.create.success";
+    public static final String NAME_TAKEN = "hyperfactions.cmd.create.name_taken";
+    public static final String NAME_INVALID = "hyperfactions.cmd.create.name_invalid";
+    public static final String NAME_TOO_SHORT = "hyperfactions.cmd.create.name_too_short";
+    public static final String NAME_TOO_LONG = "hyperfactions.cmd.create.name_too_long";
+    public static final String NAME_PROFANITY = "hyperfactions.cmd.create.name_profanity";
+    public static final String MAX_FACTIONS = "hyperfactions.cmd.create.max_factions";
+
+    private Create() {}
+  }
+
+  /** /f disband command messages. */
+  public static final class Disband {
+    public static final String SUCCESS = "hyperfactions.cmd.disband.success";
+    public static final String CONFIRM_PROMPT = "hyperfactions.cmd.disband.confirm_prompt";
+
+    private Disband() {}
+  }
+
+  /** /f invite command messages. */
+  public static final class Invite {
+    public static final String SENT = "hyperfactions.cmd.invite.sent";
+    public static final String RECEIVED = "hyperfactions.cmd.invite.received";
+    public static final String ALREADY_INVITED = "hyperfactions.cmd.invite.already_invited";
+    public static final String TARGET_IN_FACTION = "hyperfactions.cmd.invite.target_in_faction";
+    public static final String REVOKED = "hyperfactions.cmd.invite.revoked";
+    public static final String MAX_INVITES = "hyperfactions.cmd.invite.max_invites";
+
+    private Invite() {}
+  }
+
+  /** /f join, /f accept, /f request command messages. */
+  public static final class Join {
+    public static final String SUCCESS = "hyperfactions.cmd.join.success";
+    public static final String BROADCAST = "hyperfactions.cmd.join.broadcast";
+    public static final String FACTION_FULL = "hyperfactions.cmd.join.faction_full";
+    public static final String NOT_INVITED = "hyperfactions.cmd.join.not_invited";
+    public static final String FACTION_CLOSED = "hyperfactions.cmd.join.faction_closed";
+    public static final String REQUEST_SENT = "hyperfactions.cmd.join.request_sent";
+    public static final String REQUEST_RECEIVED = "hyperfactions.cmd.join.request_received";
+
+    private Join() {}
+  }
+
+  /** /f leave command messages. */
+  public static final class Leave {
+    public static final String SUCCESS = "hyperfactions.cmd.leave.success";
+    public static final String BROADCAST = "hyperfactions.cmd.leave.broadcast";
+    public static final String LEADER_CANNOT = "hyperfactions.cmd.leave.leader_cannot";
+
+    private Leave() {}
+  }
+
+  /** /f kick command messages. */
+  public static final class Kick {
+    public static final String SUCCESS = "hyperfactions.cmd.kick.success";
+    public static final String KICKED = "hyperfactions.cmd.kick.kicked";
+    public static final String BROADCAST = "hyperfactions.cmd.kick.broadcast";
+    public static final String CANNOT_KICK_SELF = "hyperfactions.cmd.kick.cannot_kick_self";
+    public static final String CANNOT_KICK_HIGHER = "hyperfactions.cmd.kick.cannot_kick_higher";
+    public static final String NOT_IN_YOUR_FACTION = "hyperfactions.cmd.kick.not_in_your_faction";
+
+    private Kick() {}
+  }
+
+  /** /f promote, /f demote, /f transfer command messages. */
+  public static final class Rank {
+    public static final String PROMOTED = "hyperfactions.cmd.rank.promoted";
+    public static final String DEMOTED = "hyperfactions.cmd.rank.demoted";
+    public static final String TRANSFERRED = "hyperfactions.cmd.rank.transferred";
+    public static final String ALREADY_HIGHEST = "hyperfactions.cmd.rank.already_highest";
+    public static final String ALREADY_LOWEST = "hyperfactions.cmd.rank.already_lowest";
+
+    private Rank() {}
+  }
+
+  /** /f claim, /f unclaim, /f overclaim command messages. */
+  public static final class Claim {
+    public static final String SUCCESS = "hyperfactions.cmd.claim.success";
+    public static final String UNCLAIMED = "hyperfactions.cmd.claim.unclaimed";
+    public static final String ALREADY_CLAIMED = "hyperfactions.cmd.claim.already_claimed";
+    public static final String ALREADY_YOURS = "hyperfactions.cmd.claim.already_yours";
+    public static final String NOT_CONNECTED = "hyperfactions.cmd.claim.not_connected";
+    public static final String NOT_ENOUGH_POWER = "hyperfactions.cmd.claim.not_enough_power";
+    public static final String OVERCLAIMED = "hyperfactions.cmd.claim.overclaimed";
+    public static final String CANNOT_OVERCLAIM = "hyperfactions.cmd.claim.cannot_overclaim";
+    public static final String NOT_YOUR_CLAIM = "hyperfactions.cmd.claim.not_your_claim";
+    public static final String IN_ZONE = "hyperfactions.cmd.claim.in_zone";
+
+    private Claim() {}
+  }
+
+  /** /f home, /f sethome, /f delhome, /f stuck command messages. */
+  public static final class Home {
+    public static final String TELEPORTING = "hyperfactions.cmd.home.teleporting";
+    public static final String SET = "hyperfactions.cmd.home.set";
+    public static final String DELETED = "hyperfactions.cmd.home.deleted";
+    public static final String NO_HOME = "hyperfactions.cmd.home.no_home";
+    public static final String NOT_IN_TERRITORY = "hyperfactions.cmd.home.not_in_territory";
+    public static final String WARMUP = "hyperfactions.cmd.home.warmup";
+    public static final String WARMUP_CANCELLED = "hyperfactions.cmd.home.warmup_cancelled";
+    public static final String COOLDOWN = "hyperfactions.cmd.home.cooldown";
+    public static final String STUCK_TELEPORTING = "hyperfactions.cmd.home.stuck_teleporting";
+
+    private Home() {}
+  }
+
+  /** /f power command messages. */
+  public static final class Power {
+    public static final String PERSONAL = "hyperfactions.cmd.power.personal";
+    public static final String FACTION = "hyperfactions.cmd.power.faction";
+    public static final String DEATH_LOSS = "hyperfactions.cmd.power.death_loss";
+    public static final String REGEN = "hyperfactions.cmd.power.regen";
+
+    private Power() {}
+  }
+
+  /** /f ally, /f enemy, /f neutral, /f relations command messages. */
+  public static final class Relation {
+    public static final String ALLY_SENT = "hyperfactions.cmd.relation.ally_sent";
+    public static final String ALLY_RECEIVED = "hyperfactions.cmd.relation.ally_received";
+    public static final String ALLY_FORMED = "hyperfactions.cmd.relation.ally_formed";
+    public static final String ENEMY_DECLARED = "hyperfactions.cmd.relation.enemy_declared";
+    public static final String ENEMY_RECEIVED = "hyperfactions.cmd.relation.enemy_received";
+    public static final String NEUTRAL_SET = "hyperfactions.cmd.relation.neutral_set";
+    public static final String ALREADY_RELATION = "hyperfactions.cmd.relation.already_relation";
+    public static final String CANNOT_SELF = "hyperfactions.cmd.relation.cannot_self";
+    public static final String MAX_ALLIES = "hyperfactions.cmd.relation.max_allies";
+
+    private Relation() {}
+  }
+
+  /** /f c (chat) command messages. */
+  public static final class Chat {
+    public static final String MODE_FACTION = "hyperfactions.cmd.chat.mode_faction";
+    public static final String MODE_ALLY = "hyperfactions.cmd.chat.mode_ally";
+    public static final String MODE_PUBLIC = "hyperfactions.cmd.chat.mode_public";
+
+    private Chat() {}
+  }
+
+  /** /f rename, /f desc, /f color, /f open, /f close, /f settings command messages. */
+  public static final class Settings {
+    public static final String RENAMED = "hyperfactions.cmd.settings.renamed";
+    public static final String DESCRIPTION_SET = "hyperfactions.cmd.settings.description_set";
+    public static final String COLOR_SET = "hyperfactions.cmd.settings.color_set";
+    public static final String OPENED = "hyperfactions.cmd.settings.opened";
+    public static final String CLOSED = "hyperfactions.cmd.settings.closed";
+
+    private Settings() {}
+  }
+
+  /** /f balance, /f deposit, /f withdraw, /f money command messages. */
+  public static final class Economy {
+    public static final String BALANCE = "hyperfactions.cmd.economy.balance";
+    public static final String DEPOSITED = "hyperfactions.cmd.economy.deposited";
+    public static final String WITHDRAWN = "hyperfactions.cmd.economy.withdrawn";
+    public static final String TRANSFERRED = "hyperfactions.cmd.economy.transferred";
+    public static final String INSUFFICIENT = "hyperfactions.cmd.economy.insufficient";
+    public static final String INVALID_AMOUNT = "hyperfactions.cmd.economy.invalid_amount";
+    public static final String ECONOMY_DISABLED = "hyperfactions.cmd.economy.economy_disabled";
+
+    private Economy() {}
+  }
+
+  /** /f info, /f who, /f list, /f members command messages. */
+  public static final class Info {
+    public static final String FACTION_HEADER = "hyperfactions.cmd.info.faction_header";
+    public static final String PLAYER_HEADER = "hyperfactions.cmd.info.player_header";
+
+    private Info() {}
+  }
+
+  /** /f admin command messages. */
+  public static final class Admin {
+    public static final String RELOAD_SUCCESS = "hyperfactions.cmd.admin.reload_success";
+    public static final String SYNC_SUCCESS = "hyperfactions.cmd.admin.sync_success";
+    public static final String BYPASS_ON = "hyperfactions.cmd.admin.bypass_on";
+    public static final String BYPASS_OFF = "hyperfactions.cmd.admin.bypass_off";
+    public static final String NOT_ADMIN = "hyperfactions.cmd.admin.not_admin";
+
+    private Admin() {}
+  }
+
+  // =====================================================================
+  // Protection — denial messages
+  // =====================================================================
+
+  /** Protection denial messages shown when actions are blocked. */
+  public static final class Protection {
+    public static final String BUILD = "hyperfactions.protection.build";
+    public static final String BREAK = "hyperfactions.protection.break_block";
+    public static final String INTERACT = "hyperfactions.protection.interact";
+    public static final String CONTAINER = "hyperfactions.protection.container";
+    public static final String PVP_DISABLED = "hyperfactions.protection.pvp_disabled";
+    public static final String SAFEZONE = "hyperfactions.protection.safezone";
+    public static final String WARZONE = "hyperfactions.protection.warzone";
+
+    private Protection() {}
+  }
+
+  // =====================================================================
+  // Territory — entry/exit notifications, announcements
+  // =====================================================================
+
+  /** Territory entry/exit and announcement messages. */
+  public static final class Territory {
+    public static final String ENTER_OWN = "hyperfactions.territory.enter_own";
+    public static final String ENTER_ALLY = "hyperfactions.territory.enter_ally";
+    public static final String ENTER_ENEMY = "hyperfactions.territory.enter_enemy";
+    public static final String ENTER_NEUTRAL = "hyperfactions.territory.enter_neutral";
+    public static final String ENTER_WILDERNESS = "hyperfactions.territory.enter_wilderness";
+    public static final String ENTER_SAFEZONE = "hyperfactions.territory.enter_safezone";
+    public static final String ENTER_WARZONE = "hyperfactions.territory.enter_warzone";
+    public static final String INTRUDER_ALERT = "hyperfactions.territory.intruder_alert";
+
+    private Territory() {}
+  }
+
+  // =====================================================================
+  // Announcements — faction-wide broadcasts
+  // =====================================================================
+
+  /** Faction-wide broadcast messages. */
+  public static final class Announce {
+    public static final String MEMBER_JOIN = "hyperfactions.announce.member_join";
+    public static final String MEMBER_LEAVE = "hyperfactions.announce.member_leave";
+    public static final String MEMBER_KICK = "hyperfactions.announce.member_kick";
+    public static final String MEMBER_PROMOTED = "hyperfactions.announce.member_promoted";
+    public static final String MEMBER_DEMOTED = "hyperfactions.announce.member_demoted";
+    public static final String MEMBER_DEATH = "hyperfactions.announce.member_death";
+    public static final String TERRITORY_CLAIMED = "hyperfactions.announce.territory_claimed";
+    public static final String TERRITORY_LOST = "hyperfactions.announce.territory_lost";
+    public static final String POWER_LOW = "hyperfactions.announce.power_low";
+    public static final String RAIDABLE = "hyperfactions.announce.raidable";
+
+    private Announce() {}
+  }
+
+  // =====================================================================
+  // GUI — Navigation and shared GUI elements
+  // =====================================================================
+
+  /** Navigation bar labels. */
+  public static final class Nav {
+    public static final String DASHBOARD = "hyperfactions_gui.nav.dashboard";
+    public static final String CHAT = "hyperfactions_gui.nav.chat";
+    public static final String MEMBERS = "hyperfactions_gui.nav.members";
+    public static final String INVITES = "hyperfactions_gui.nav.invites";
+    public static final String BROWSER = "hyperfactions_gui.nav.browser";
+    public static final String MAP = "hyperfactions_gui.nav.map";
+    public static final String LEADERBOARD = "hyperfactions_gui.nav.leaderboard";
+    public static final String RELATIONS = "hyperfactions_gui.nav.relations";
+    public static final String TREASURY = "hyperfactions_gui.nav.treasury";
+    public static final String SETTINGS = "hyperfactions_gui.nav.settings";
+    public static final String LOGS = "hyperfactions_gui.nav.logs";
+    public static final String HELP = "hyperfactions_gui.nav.help";
+    public static final String ADMIN = "hyperfactions_gui.nav.admin";
+
+    private Nav() {}
+  }
+
+  /** Dashboard page labels. */
+  public static final class Dashboard {
+    public static final String POWER_LABEL = "hyperfactions_gui.dashboard.power_label";
+    public static final String LAND_LABEL = "hyperfactions_gui.dashboard.land_label";
+    public static final String MEMBERS_LABEL = "hyperfactions_gui.dashboard.members_label";
+    public static final String ONLINE_LABEL = "hyperfactions_gui.dashboard.online_label";
+    public static final String ALLIES_LABEL = "hyperfactions_gui.dashboard.allies_label";
+    public static final String ENEMIES_LABEL = "hyperfactions_gui.dashboard.enemies_label";
+
+    private Dashboard() {}
+  }
+
+  /** Help GUI category display names. */
+  public static final class HelpGui {
+    public static final String WELCOME = "hyperfactions_gui.help.category.welcome";
+    public static final String YOUR_FACTION = "hyperfactions_gui.help.category.your_faction";
+    public static final String POWER_LAND = "hyperfactions_gui.help.category.power_land";
+    public static final String DIPLOMACY = "hyperfactions_gui.help.category.diplomacy";
+    public static final String COMBAT = "hyperfactions_gui.help.category.combat";
+    public static final String ECONOMY = "hyperfactions_gui.help.category.economy";
+    public static final String QUICK_REF = "hyperfactions_gui.help.category.quick_ref";
+
+    private HelpGui() {}
+  }
+
+  /** Player settings page labels. */
+  public static final class PlayerSettings {
+    public static final String TITLE = "hyperfactions_gui.player_settings.title";
+    public static final String LANGUAGE_SECTION = "hyperfactions_gui.player_settings.language_section";
+    public static final String AUTO_DETECT = "hyperfactions_gui.player_settings.auto_detect";
+    public static final String NOTIFICATIONS_SECTION = "hyperfactions_gui.player_settings.notifications_section";
+    public static final String TERRITORY_ALERTS = "hyperfactions_gui.player_settings.territory_alerts";
+    public static final String DEATH_ANNOUNCEMENTS = "hyperfactions_gui.player_settings.death_announcements";
+    public static final String POWER_NOTIFICATIONS = "hyperfactions_gui.player_settings.power_notifications";
+
+    private PlayerSettings() {}
+  }
+}

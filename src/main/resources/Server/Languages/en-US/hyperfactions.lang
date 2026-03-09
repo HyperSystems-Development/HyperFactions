@@ -1,0 +1,30 @@
+# HyperFactions - English Translations
+# Format: key = value (or key = "quoted value")
+# Note: Keys are auto-prefixed with "hyperfactions." by Hytale's I18nModule
+# Placeholders: {0}, {1}, etc.
+
+# ========== Common ==========
+common.no_permission = You don't have permission to do that.
+common.not_in_faction = You are not in a faction.
+common.already_in_faction = You are already in a faction.
+common.player_not_found = Player not found.
+common.faction_not_found = Faction not found.
+common.player_not_online = That player is not online.
+common.must_be_leader = Only the faction leader can do that.
+common.must_be_officer = You must be an Officer or Leader to do that.
+common.combat_tagged = You can't do that while combat tagged.
+common.cancel = Cancel
+common.confirm = Confirm
+common.save = Save
+common.close = Close
+common.yes = Yes
+common.no = No
+common.loading = Loading...
+common.online = Online
+common.offline = Offline
+common.enabled = Enabled
+common.disabled = Disabled
+common.none = None
+common.page = Page {0} of {1}
+common.unknown = Unknown
+common.error_generic = Something went wrong. Please try again.

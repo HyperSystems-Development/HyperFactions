@@ -47,6 +47,15 @@ public class PlayerData {
 
   private boolean adminBypassEnabled;
 
+  // === Player Preferences (i18n + notifications) ===
+  private String languagePreference;
+
+  private boolean territoryAlertsEnabled = true;
+
+  private boolean deathAnnouncementsEnabled = true;
+
+  private boolean powerNotificationsEnabled = true;
+
   /** Creates a new PlayerData. */
   public PlayerData() {}
 
@@ -314,5 +323,47 @@ public class PlayerData {
   /** Sets the admin bypass enabled. */
   public void setAdminBypassEnabled(boolean adminBypassEnabled) {
     this.adminBypassEnabled = adminBypassEnabled;
+  }
+
+  // === Player Preferences ===
+
+  /** Returns the player's preferred language, or null for auto-detect. */
+  @Nullable public String getLanguagePreference() {
+    return languagePreference;
+  }
+
+  /** Sets the player's preferred language (null = auto-detect from client/server). */
+  public void setLanguagePreference(@Nullable String languagePreference) {
+    this.languagePreference = languagePreference;
+  }
+
+  /** Whether territory entry/exit alerts are enabled for this player. */
+  public boolean isTerritoryAlertsEnabled() {
+    return territoryAlertsEnabled;
+  }
+
+  /** Sets territory entry/exit alerts enabled. */
+  public void setTerritoryAlertsEnabled(boolean territoryAlertsEnabled) {
+    this.territoryAlertsEnabled = territoryAlertsEnabled;
+  }
+
+  /** Whether faction death location broadcasts are enabled for this player. */
+  public boolean isDeathAnnouncementsEnabled() {
+    return deathAnnouncementsEnabled;
+  }
+
+  /** Sets faction death announcement broadcasts enabled. */
+  public void setDeathAnnouncementsEnabled(boolean deathAnnouncementsEnabled) {
+    this.deathAnnouncementsEnabled = deathAnnouncementsEnabled;
+  }
+
+  /** Whether power change notifications are enabled for this player. */
+  public boolean isPowerNotificationsEnabled() {
+    return powerNotificationsEnabled;
+  }
+
+  /** Sets power change notifications enabled. */
+  public void setPowerNotificationsEnabled(boolean powerNotificationsEnabled) {
+    this.powerNotificationsEnabled = powerNotificationsEnabled;
   }
 }
