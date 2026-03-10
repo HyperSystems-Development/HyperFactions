@@ -2,6 +2,7 @@ package com.hyperfactions.command.ui;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.command.FactionSubCommand;
+import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.platform.HyperFactionsPlugin;
@@ -17,14 +18,14 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * Subcommand: /f settings
- * Opens the faction settings GUI.
+ * Subcommand: /f settings [player]
+ * Opens the faction settings GUI, or player settings with "player" argument.
  */
 public class SettingsSubCommand extends FactionSubCommand {
 
   /** Creates a new SettingsSubCommand. */
   public SettingsSubCommand(@NotNull HyperFactions hyperFactions, @NotNull HyperFactionsPlugin plugin) {
-    super("settings", "Open faction settings", hyperFactions, plugin);
+    super("settings", "Open faction or player settings", hyperFactions, plugin);
   }
 
   /** Executes the command. */
@@ -35,6 +36,17 @@ public class SettingsSubCommand extends FactionSubCommand {
              @NotNull PlayerRef player,
              @NotNull World currentWorld) {
 
+    // Check for "player" argument — opens personal settings (no faction required)
+    String[] rawArgs = CommandUtil.parseRawArgs(ctx.getInputString(), 2);
+    if (rawArgs.length > 0 && "player".equalsIgnoreCase(rawArgs[0])) {
+      Player playerEntity = store.getComponent(ref, Player.getComponentType());
+      if (playerEntity != null) {
+        hyperFactions.getGuiManager().openPlayerSettings(playerEntity, ref, store, player);
+      }
+      return;
+    }
+
+    // Default: open faction settings (requires faction + officer)
     Faction faction = requireFaction(ctx, player);
     if (faction == null) {
       return;

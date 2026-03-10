@@ -45,6 +45,8 @@ public final class UIPaths {
 
   public static final String ERROR_PAGE = BASE + "shared/error_page.ui";
 
+  public static final String PLAYER_SETTINGS = BASE + "shared/player_settings.ui";
+
   public static final String INVITE_NOTIFICATION = BASE + "shared/invite_notification.ui";
 
   public static final String DISBAND_CONFIRM = BASE + "shared/disband_confirm.ui";

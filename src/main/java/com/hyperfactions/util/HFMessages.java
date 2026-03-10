@@ -3,6 +3,9 @@ package com.hyperfactions.util;
 import com.hyperfactions.config.ConfigManager;
 import com.hypixel.hytale.server.core.modules.i18n.I18nModule;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,8 +24,8 @@ import org.jetbrains.annotations.Nullable;
  * </ol>
  *
  * <p>
- * Per-player saved language preferences (from PlayerData) will be added
- * when the Player Settings GUI is implemented.
+ * Per-player saved language preferences are cached via
+ * {@link #setLanguageOverride(UUID, String)} when loaded from PlayerData.
  *
  * <p>Usage:
  * <pre>
@@ -33,7 +36,36 @@ import org.jetbrains.annotations.Nullable;
  */
 public final class HFMessages {
 
+  /** Per-player language overrides from PlayerData preferences. */
+  private static final Map<UUID, String> languageOverrides = new ConcurrentHashMap<>();
+
   private HFMessages() {}
+
+  /**
+   * Sets a language override for a player.
+   * Called when preferences are loaded from PlayerData on connect,
+   * or when the player changes their language in settings.
+   *
+   * @param uuid     The player's UUID
+   * @param language The language code, or null to clear the override (auto-detect)
+   */
+  public static void setLanguageOverride(@NotNull UUID uuid, @Nullable String language) {
+    if (language == null) {
+      languageOverrides.remove(uuid);
+    } else {
+      languageOverrides.put(uuid, language);
+    }
+  }
+
+  /**
+   * Clears the language override for a player.
+   * Called on player disconnect.
+   *
+   * @param uuid The player's UUID
+   */
+  public static void clearLanguageOverride(@NotNull UUID uuid) {
+    languageOverrides.remove(uuid);
+  }
 
   /**
    * Gets a translated message for a specific player.
@@ -95,6 +127,7 @@ public final class HFMessages {
    *
    * <p>Resolution order:
    * <ol>
+   *   <li>Player's saved language preference (from PlayerData, cached in memory)</li>
    *   <li>Player's client language (if {@code usePlayerLanguage} enabled in config)</li>
    *   <li>Server default language</li>
    * </ol>
@@ -109,6 +142,12 @@ public final class HFMessages {
 
     if (player == null) {
       return serverDefault;
+    }
+
+    // Check saved language preference first
+    String override = languageOverrides.get(player.getUuid());
+    if (override != null) {
+      return override;
     }
 
     // Use client language if enabled

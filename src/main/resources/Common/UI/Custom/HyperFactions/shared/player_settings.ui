@@ -1,0 +1,132 @@
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+$Nav = "../nav/nav_bar.ui";
+
+$C.@PageOverlay {
+  Group {
+    Anchor: (Width: 620, Height: 520);
+    Style: (HorizontalAlignment: Center, VerticalAlignment: Center);
+    LayoutMode: Top;
+
+    // Navigation bar
+    $Nav.@NavBar #HyperFactionsNavBar {}
+
+    // Page Title
+    Group {
+      Anchor: (Height: 40);
+      Style: (HorizontalAlignment: Center);
+
+      Label #PageTitle {
+        Anchor: (Height: 36);
+        Style: (FontSize: 20, TextColor: #FFFFFF, HorizontalAlignment: Center, VerticalAlignment: Center);
+        Text: "Player Settings";
+      }
+    }
+
+    // Content Area
+    Group #Content {
+      Anchor: (Height: 430);
+      LayoutMode: Top;
+      Padding: (Left: 24, Right: 24, Top: 8, Bottom: 8);
+
+      // === Language Section ===
+      $C.@DecoratedContainer {
+        Anchor: (Bottom: 12);
+        LayoutMode: Top;
+        Padding: (Full: 12);
+
+        Label #LanguageSectionTitle {
+          Anchor: (Height: 26);
+          Style: (FontSize: 15, TextColor: #55FFFF);
+          Text: "Language";
+        }
+
+        // Auto-detect checkbox
+        $C.@CheckBoxWithLabel #AutoDetectCB {
+          @Text = "Auto-detect from client";
+          @Checked = true;
+          Anchor: (Height: 28, Bottom: 4);
+        }
+
+        Label #AutoDetectDesc {
+          Anchor: (Height: 18, Bottom: 8);
+          Style: (FontSize: 11, TextColor: #888888);
+          Text: "Uses your game client's language setting";
+        }
+
+        // Language dropdown row
+        Group #LanguageRow {
+          Anchor: (Height: 32);
+          LayoutMode: Left;
+
+          Label #LanguageLabel {
+            Anchor: (Width: 90, Height: 26);
+            Style: (FontSize: 13, TextColor: #AAAAAA, VerticalAlignment: Center);
+            Text: "Language";
+          }
+
+          Group {
+            Anchor: (Width: 200, Height: 26);
+            Background: (Color: #0d1520);
+            Padding: (Left: 6, Right: 6);
+
+            DropdownBox #LanguageDropdown {
+              Anchor: (Height: 26);
+            }
+          }
+        }
+      }
+
+      // === Notifications Section ===
+      $C.@DecoratedContainer {
+        LayoutMode: Top;
+        Padding: (Full: 12);
+
+        Label #NotifSectionTitle {
+          Anchor: (Height: 26);
+          Style: (FontSize: 15, TextColor: #55FFFF);
+          Text: "Notifications";
+        }
+
+        // Territory Alerts
+        $C.@CheckBoxWithLabel #TerritoryAlertsCB {
+          @Text = "Territory Alerts";
+          @Checked = true;
+          Anchor: (Height: 28, Bottom: 2);
+        }
+
+        Label #TerritoryAlertsDesc {
+          Anchor: (Height: 18, Bottom: 8);
+          Style: (FontSize: 11, TextColor: #888888);
+          Text: "Show notifications when entering/leaving territories";
+        }
+
+        // Death Announcements
+        $C.@CheckBoxWithLabel #DeathAnnounceCB {
+          @Text = "Death Broadcasts";
+          @Checked = true;
+          Anchor: (Height: 28, Bottom: 2);
+        }
+
+        Label #DeathAnnounceDesc {
+          Anchor: (Height: 18, Bottom: 8);
+          Style: (FontSize: 11, TextColor: #888888);
+          Text: "Receive faction member death location announcements";
+        }
+
+        // Power Notifications
+        $C.@CheckBoxWithLabel #PowerNotifCB {
+          @Text = "Power Changes";
+          @Checked = true;
+          Anchor: (Height: 28, Bottom: 2);
+        }
+
+        Label #PowerNotifDesc {
+          Anchor: (Height: 18);
+          Style: (FontSize: 11, TextColor: #888888);
+          Text: "Show messages when your power changes";
+        }
+      }
+    }
+  }
+}

@@ -303,7 +303,15 @@ public class PlayerDeathSystem extends RefChangeSystem<EntityStore, DeathCompone
         }
         PlayerRef member = hyperFactions.lookupPlayer(memberUuid);
         if (member != null) {
-          member.sendMessage(deathMsg);
+          // Check member's death announcement preference
+          final PlayerRef finalMember = member;
+          final Message finalMsg = deathMsg;
+          hyperFactions.getPlayerStorage().loadPlayerData(memberUuid).thenAccept(opt -> {
+            boolean enabled = opt.map(PlayerData::isDeathAnnouncementsEnabled).orElse(true);
+            if (enabled) {
+              finalMember.sendMessage(finalMsg);
+            }
+          });
         }
       }
 

@@ -108,6 +108,27 @@ class FactionPageOpener {
   }
 
   /**
+   * Opens the Player Settings page.
+   */
+  public void openPlayerSettings(Player player, Ref<EntityStore> ref,
+                  Store<EntityStore> store, PlayerRef playerRef) {
+    Logger.debug("[GUI] Opening PlayerSettingsPage for %s", playerRef.getUsername());
+    try {
+      PageManager pageManager = player.getPageManager();
+      PlayerSettingsPage page = new PlayerSettingsPage(
+        playerRef,
+        guiManager.getFactionManager().get(),
+        guiManager.getPlugin().get().getPlayerStorage(),
+        guiManager
+      );
+      pageManager.openCustomPage(ref, store, page);
+      Logger.debug("[GUI] PlayerSettingsPage opened successfully");
+    } catch (Exception e) {
+      ErrorHandler.report("[GUI] Failed to open PlayerSettingsPage", e);
+    }
+  }
+
+  /**
    * Opens the Faction Members page.
    *
    * @param player    The Player entity

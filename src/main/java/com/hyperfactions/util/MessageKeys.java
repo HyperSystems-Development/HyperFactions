@@ -657,6 +657,7 @@ public final class MessageKeys {
     public static final String HELP = "hyperfactions_gui.nav.help";
     public static final String ADMIN = "hyperfactions_gui.nav.admin";
     public static final String CREATE = "hyperfactions_gui.nav.create";
+    public static final String PLAYER_SETTINGS = "hyperfactions_gui.nav.player_settings";
 
     private Nav() {}
   }
@@ -1455,15 +1456,23 @@ public final class MessageKeys {
     private AdminGui() {}
   }
 
-  /** Player settings page labels. */
+  /** Player settings page labels and messages. */
   public static final class PlayerSettings {
     public static final String TITLE = "hyperfactions_gui.player_settings.title";
     public static final String LANGUAGE_SECTION = "hyperfactions_gui.player_settings.language_section";
     public static final String AUTO_DETECT = "hyperfactions_gui.player_settings.auto_detect";
+    public static final String AUTO_DETECT_DESC = "hyperfactions_gui.player_settings.auto_detect_desc";
+    public static final String LANGUAGE_LABEL = "hyperfactions_gui.player_settings.language_label";
     public static final String NOTIFICATIONS_SECTION = "hyperfactions_gui.player_settings.notifications_section";
     public static final String TERRITORY_ALERTS = "hyperfactions_gui.player_settings.territory_alerts";
+    public static final String TERRITORY_ALERTS_DESC = "hyperfactions_gui.player_settings.territory_alerts_desc";
     public static final String DEATH_ANNOUNCEMENTS = "hyperfactions_gui.player_settings.death_announcements";
+    public static final String DEATH_ANNOUNCEMENTS_DESC = "hyperfactions_gui.player_settings.death_announcements_desc";
     public static final String POWER_NOTIFICATIONS = "hyperfactions_gui.player_settings.power_notifications";
+    public static final String POWER_NOTIFICATIONS_DESC = "hyperfactions_gui.player_settings.power_notifications_desc";
+    public static final String LANGUAGE_CHANGED = "hyperfactions_gui.player_settings.language_changed";
+    public static final String PREF_ENABLED = "hyperfactions_gui.player_settings.pref_enabled";
+    public static final String PREF_DISABLED = "hyperfactions_gui.player_settings.pref_disabled";
 
     private PlayerSettings() {}
   }

@@ -290,6 +290,19 @@ public class GuiManager {
         10
     ));
 
+    // Player Settings page (available to all players)
+    registry.registerEntry(new Entry(
+        "player_settings",
+        MessageKeys.Nav.PLAYER_SETTINGS,
+        null,
+        (player, ref, store, playerRef, faction, guiManager) ->
+            new PlayerSettingsPage(playerRef, factionManager.get(),
+                plugin.get().getPlayerStorage(), guiManager),
+        true, // Show in nav bar
+        false, // Doesn't require faction
+        11
+    ));
+
     // Help page (available to all players in faction nav bar)
     registry.registerEntry(new Entry(
         "help",
@@ -299,7 +312,7 @@ public class GuiManager {
             new HelpMainPage(playerRef, guiManager, factionManager.get()),
         true, // Show in nav bar
         false, // Doesn't require faction
-        11
+        12
     ));
 
     // Admin page (requires permission) - accessed via /f admin, not in main nav bar
@@ -311,7 +324,7 @@ public class GuiManager {
             new AdminMainPage(playerRef, factionManager.get(), powerManager.get(), guiManager),
         false,  // Not in main nav bar - separate admin GUI
         false,
-        12
+        13
     ));
 
     Logger.debug("[GUI] Registered %d pages with FactionPageRegistry", registry.getEntries().size());
@@ -386,6 +399,18 @@ public class GuiManager {
         4
     ));
 
+    // Player Settings page
+    registry.registerEntry(new NewPlayerPageRegistry.Entry(
+        "player_settings",
+        MessageKeys.Nav.PLAYER_SETTINGS,
+        null,
+        (player, ref, store, playerRef, guiManager) ->
+            new PlayerSettingsPage(playerRef, factionManager.get(),
+                plugin.get().getPlayerStorage(), guiManager),
+        true,
+        5
+    ));
+
     // Help Page
     registry.registerEntry(new NewPlayerPageRegistry.Entry(
         "help",
@@ -394,7 +419,7 @@ public class GuiManager {
         (player, ref, store, playerRef, guiManager) ->
             new HelpMainPage(playerRef, guiManager, factionManager.get()),
         true,
-        5
+        6
     ));
 
     Logger.debug("[GUI] Registered %d pages with NewPlayerPageRegistry", registry.getEntries().size());
@@ -687,6 +712,12 @@ public class GuiManager {
                   Store<EntityStore> store, PlayerRef playerRef,
                   Faction faction, UUID targetUuid, String targetName) {
     factionPageOpener.openTransferConfirm(player, ref, store, playerRef, faction, targetUuid, targetName);
+  }
+
+  /** Opens the player settings page. */
+  public void openPlayerSettings(Player player, Ref<EntityStore> ref,
+                  Store<EntityStore> store, PlayerRef playerRef) {
+    factionPageOpener.openPlayerSettings(player, ref, store, playerRef);
   }
 
   /** Opens the faction dashboard page. */

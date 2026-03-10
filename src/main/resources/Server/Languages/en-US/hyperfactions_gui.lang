@@ -421,3 +421,21 @@ newplayer.has_invite_hint = You have an invite from this faction! Click ACCEPT i
 newplayer.request_sent = Join request sent to {0}!
 newplayer.officer_review = An officer will review your request.
 newplayer.map_hint = View Only - Join a faction to claim territory!
+
+# Player Settings
+nav.player_settings = Settings
+player_settings.title = Player Settings
+player_settings.language_section = Language
+player_settings.auto_detect = Auto-detect from client
+player_settings.auto_detect_desc = Uses your game client's language setting
+player_settings.language_label = Language
+player_settings.notifications_section = Notifications
+player_settings.territory_alerts = Territory Alerts
+player_settings.territory_alerts_desc = Show notifications when entering/leaving territories
+player_settings.death_announcements = Death Broadcasts
+player_settings.death_announcements_desc = Receive faction member death location announcements
+player_settings.power_notifications = Power Changes
+player_settings.power_notifications_desc = Show messages when your power changes
+player_settings.language_changed = Language changed to {0}
+player_settings.pref_enabled = {0} enabled
+player_settings.pref_disabled = {0} disabled
