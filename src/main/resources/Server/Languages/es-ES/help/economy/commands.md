@@ -3,19 +3,27 @@ id: economy_commands
 ---
 # Comandos de Economia
 
-Referencia rapida de comandos de economia:
+Referencia rapida para todos los comandos de economia de faccion.
 
-`/f balance`
-Ver saldo de la tesoreria.
+| Comando | Descripcion | Rol |
+|---------|-------------|-----|
+| /f balance | Ver saldo de tesoreria | Cualquiera |
+| /f deposit (amount) | Depositar en la tesoreria | Cualquiera |
+| /f withdraw (amount) | Retirar de la tesoreria | Oficial+ |
+| /f money transfer (faction) (amount) | Transferir a otra faccion | Oficial+ |
+| /f money log [page] | Ver historial de transacciones | Oficial+ |
 
-`/f deposit <cantidad>`
-Depositar fondos.
+---
 
-`/f withdraw <cantidad>`
-Retirar fondos. (Oficial+)
+## Alias de Comandos
 
-`/f money transfer <faccion> <cantidad>`
-Transferir a otra faccion.
+- `/f balance` tambien puede usarse como `/f bal`
+- `/f deposit` y `/f withdraw` aceptan cantidades decimales
 
-`/f money log [pagina]`
-Ver historial de transacciones.
+## Permisos
+
+Todos los comandos de economia requieren nodos de permiso
+`hyperfactions.economy.*`. Retirar y transferir estan
+adicionalmente restringidos por rol de faccion (Oficial o superior).
+
+>[!TIP] Usa /f money log para revisar depositos, retiros y transferencias recientes con marcas de tiempo.

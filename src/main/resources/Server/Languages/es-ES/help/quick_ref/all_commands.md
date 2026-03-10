@@ -4,77 +4,91 @@ id: quickref_commands
 # Todos los Comandos
 
 ## Principal
-`/f  —  Abrir menu de faccion (alias: gui, menu)`
-`/f help  —  Abrir este centro de ayuda`
-`/f create <nombre>  —  Crear una faccion`
-`/f disband  —  Disolver tu faccion (Lider)`
-`/f leave  —  Abandonar tu faccion`
 
-## Miembros
-`/f invite <jugador>  —  Invitar jugador (Oficial+)`
-`/f accept [faccion]  —  Aceptar invitacion (alias: join)`
-`/f request <faccion>  —  Solicitar unirse`
-`/f kick <jugador>  —  Expulsar miembro (Oficial+)`
-`/f promote <jugador>  —  Promover a Oficial (Lider)`
-`/f demote <jugador>  —  Degradar a Miembro (Lider)`
-`/f transfer <jugador>  —  Transferir liderazgo`
+| Comando | Descripcion | Rol |
+|---------|-------------|-----|
+| /f | Abrir menu de faccion | Cualquiera |
+| /f help | Abrir centro de ayuda | Cualquiera |
+| /f create (name) | Crear una faccion | Cualquiera |
+| /f disband | Eliminar tu faccion | Lider |
+| /f leave | Abandonar tu faccion | Cualquiera |
+
+## Membresia
+
+| Comando | Descripcion | Rol |
+|---------|-------------|-----|
+| /f invite (player) | Invitar a un jugador | Oficial+ |
+| /f accept [faction] | Aceptar una invitacion | Cualquiera |
+| /f request (faction) | Solicitar unirse | Cualquiera |
+| /f kick (player) | Remover a un miembro | Oficial+ |
+| /f promote (player) | Promover a Oficial | Lider |
+| /f demote (player) | Degradar a Miembro | Lider |
+| /f transfer (player) | Transferir liderazgo | Lider |
 
 ## Territorio
-`/f claim  —  Reclamar chunk actual (Oficial+)`
-`/f unclaim  —  Liberar chunk actual (Oficial+)`
-`/f overclaim  —  Tomar chunk de faccion debilitada`
-`/f map  —  Abrir mapa de territorio`
+
+| Comando | Descripcion | Rol |
+|---------|-------------|-----|
+| /f claim | Reclamar chunk actual | Oficial+ |
+| /f unclaim | Liberar chunk actual | Oficial+ |
+| /f overclaim | Tomar chunk debilitado | Oficial+ |
+| /f map | Abrir mapa de territorio | Cualquiera |
 
 ## Teletransporte
-`/f home  —  Teletransportarse al hogar de faccion`
-`/f sethome  —  Establecer hogar de faccion (Oficial+)`
-`/f delhome  —  Eliminar hogar de faccion (Oficial+)`
-`/f stuck  —  Escapar de territorio enemigo`
+
+| Comando | Descripcion | Rol |
+|---------|-------------|-----|
+| /f home | Teletransportarse al hogar de faccion | Cualquiera |
+| /f sethome | Establecer hogar de faccion | Oficial+ |
+| /f delhome | Eliminar hogar de faccion | Oficial+ |
+| /f stuck | Escapar de territorio enemigo | Cualquiera |
 
 ## Informacion
-`/f info [faccion]  —  Ver detalles de faccion`
-`/f list  —  Explorar todas las facciones`
-`/f members  —  Ver lista de miembros`
-`/f who [jugador]  —  Ver info de jugador`
-`/f power [jugador]  —  Consultar niveles de poder`
-`/f invites  —  Gestionar invitaciones/solicitudes`
-`/f relations  —  Ver relaciones diplomaticas`
+
+| Comando | Descripcion | Rol |
+|---------|-------------|-----|
+| /f info [faction] | Ver detalles de faccion | Cualquiera |
+| /f list | Explorar todas las facciones | Cualquiera |
+| /f members | Ver lista de miembros | Cualquiera |
+| /f who [player] | Ver info de jugador | Cualquiera |
+| /f power [player] | Consultar niveles de poder | Cualquiera |
+| /f invites | Gestionar invitaciones/solicitudes | Cualquiera |
+| /f relations | Ver relaciones diplomaticas | Cualquiera |
 
 ## Diplomacia
-`/f ally <faccion>  —  Solicitar alianza (Oficial+)`
-`/f enemy <faccion>  —  Declarar enemigo (Oficial+)`
-`/f neutral <faccion>  —  Restablecer a neutral`
 
-## Ajustes
-`/f settings  —  Abrir GUI de ajustes (Oficial+)`
-`/f rename <nombre>  —  Renombrar faccion (Lider)`
-`/f desc [texto]  —  Establecer descripcion (Oficial+)`
-`/f color <codigo>  —  Establecer color de faccion (Oficial+)`
-`/f open  —  Permitir que cualquiera se una (Lider)`
-`/f close  —  Requerir invitacion (Lider)`
+| Comando | Descripcion | Rol |
+|---------|-------------|-----|
+| /f ally (faction) | Solicitar alianza | Oficial+ |
+| /f enemy (faction) | Declarar enemigo | Oficial+ |
+| /f neutral (faction) | Restablecer a neutral | Oficial+ |
+
+## Configuracion
+
+| Comando | Descripcion | Rol |
+|---------|-------------|-----|
+| /f settings | Abrir interfaz de configuracion | Oficial+ |
+| /f rename (name) | Renombrar faccion | Lider |
+| /f desc [text] | Establecer descripcion | Oficial+ |
+| /f color (code) | Establecer color de faccion | Oficial+ |
+| /f open | Permitir que cualquiera se una | Lider |
+| /f close | Requerir invitacion | Lider |
 
 ## Economia
-`/f balance  —  Ver tesoreria`
-`/f deposit <cantidad>  —  Depositar fondos`
-`/f withdraw <cantidad>  —  Retirar (Oficial+)`
-`/f money transfer <faccion> <cant>  —  Transferir`
-`/f money log [pagina]  —  Historial de transacciones`
+
+| Comando | Descripcion | Rol |
+|---------|-------------|-----|
+| /f balance | Ver tesoreria | Cualquiera |
+| /f deposit (amount) | Depositar fondos | Cualquiera |
+| /f withdraw (amount) | Retirar fondos | Oficial+ |
+| /f money transfer (faction) (amt) | Transferir fondos | Oficial+ |
+| /f money log [page] | Historial de transacciones | Oficial+ |
 
 ## Chat
-`/f c  —  Ciclo: Normal > Faccion > Aliado`
-`/f c f  —  Chat de faccion`
-`/f c a  —  Chat de aliados`
-`/f c off  —  Chat publico`
 
-## Admin (requiere hyperfactions.admin)
-`/f admin  —  Abrir panel de administracion`
-`/f admin reload  —  Recargar configuracion`
-`/f admin sync  —  Sincronizar datos de faccion`
-`/f admin factions  —  Gestion de facciones`
-`/f admin config  —  Editor de configuracion`
-`/f admin zones  —  Gestion de zonas`
-`/f admin backup create  —  Crear respaldo`
-`/f admin backup restore  —  Restaurar respaldo`
-`/f admin safezone <nombre>  —  Crear SafeZone`
-`/f admin warzone <nombre>  —  Crear WarZone`
-`/f admin debug toggle <cat>  —  Registro de depuracion`
+| Comando | Descripcion | Rol |
+|---------|-------------|-----|
+| /f c | Cambiar modo de chat | Cualquiera |
+| /f c f | Establecer chat de faccion | Cualquiera |
+| /f c a | Establecer chat de aliados | Cualquiera |
+| /f c off | Establecer chat publico | Cualquiera |
