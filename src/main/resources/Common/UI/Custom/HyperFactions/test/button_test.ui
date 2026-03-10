@@ -445,30 +445,26 @@ $C.@PageOverlay {
 
           $C.@SimpleContainer #TestSimpleContainer {
             Anchor: (Height: 60, Bottom: 4);
-            #Content {
-              LayoutMode: Top;
-              Label {
-                Text: "Inside SimpleContainer";
-                Style: (FontSize: 11, TextColor: #aaaaaa);
-                Anchor: (Height: 18);
-              }
+            Padding: (Full: 10);
+            LayoutMode: Top;
+            Label {
+              Text: "Inside SimpleContainer";
+              Style: (FontSize: 11, TextColor: #aaaaaa);
+              Anchor: (Height: 18);
             }
           }
 
           $C.@Panel #TestPanel {
             Anchor: (Height: 80, Bottom: 8);
-            #Title {
-              $C.@PanelTitle {
-                @Text = "Panel Title";
-              }
+            Padding: (Full: 10);
+            LayoutMode: Top;
+            $C.@PanelTitle {
+              @Text = "Panel Title";
             }
-            #Content {
-              LayoutMode: Top;
-              Label {
-                Text: "Content inside Panel template";
-                Style: (FontSize: 11, TextColor: #aaaaaa);
-                Anchor: (Height: 18);
-              }
+            Label {
+              Text: "Content inside Panel template";
+              Style: (FontSize: 11, TextColor: #aaaaaa);
+              Anchor: (Height: 18);
             }
           }
 
