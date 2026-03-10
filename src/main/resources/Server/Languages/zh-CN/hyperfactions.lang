@@ -1,0 +1,452 @@
+# Language: Simplified Chinese (zh-CN)
+# Status: Untranslated — English placeholder values
+# To translate: Replace English values with Simplified Chinese translations
+# Keep keys and {0} placeholders unchanged
+
+# HyperFactions - English Translations
+# Format: key = value (or key = "quoted value")
+# Note: Keys are auto-prefixed with "hyperfactions." by Hytale's I18nModule
+# Placeholders: {0}, {1}, etc.
+
+# ========== Common ==========
+common.no_permission = You don't have permission to do that.
+common.not_in_faction = You are not in a faction.
+common.already_in_faction = You are already in a faction.
+common.player_not_found = Player not found.
+common.faction_not_found = Faction not found.
+common.player_not_online = That player is not online.
+common.must_be_leader = Only the faction leader can do that.
+common.must_be_officer = You must be an Officer or Leader to do that.
+common.combat_tagged = You can't do that while combat tagged.
+common.cancel = Cancel
+common.confirm = Confirm
+common.save = Save
+common.close = Close
+common.yes = Yes
+common.no = No
+common.loading = Loading...
+common.online = Online
+common.offline = Offline
+common.enabled = Enabled
+common.disabled = Disabled
+common.none = None
+common.page = Page {0} of {1}
+common.unknown = Unknown
+common.error_generic = Something went wrong. Please try again.
+common.gui_fallback = Could not access GUI. Use /f help for commands.
+common.admin_prefix = [Admin]
+common.location_error = Could not determine your location.
+common.world_error = Could not determine your world.
+common.invalid_id = Invalid faction ID.
+common.na = N/A
+
+# ========== Commands - Create ==========
+cmd.create.no_permission = You don't have permission to create factions.
+cmd.create.usage = Usage: /f create <name>
+cmd.create.success = Faction '{0}' created!
+cmd.create.already_in_named = You are already in {0}.
+cmd.create.use_leave_first = Use /f leave first if you want to create a new faction.
+cmd.create.name_taken = That faction name is already taken.
+cmd.create.name_too_short = Faction name is too short.
+cmd.create.name_too_long = Faction name is too long.
+cmd.create.failed = Failed to create faction.
+
+# ========== Commands - Disband ==========
+cmd.disband.no_permission = You don't have permission to disband factions.
+cmd.disband.not_leader = Only the faction leader can disband.
+cmd.disband.confirm_prompt = Are you sure you want to disband your faction?
+cmd.disband.confirm_instruction = Type /f disband --text again within {0} seconds to confirm.
+cmd.disband.success = Your faction has been disbanded.
+cmd.disband.failed = Failed to disband faction.
+cmd.disband.cancelled = Previous confirmation cancelled. Type again to confirm disband.
+
+# ========== Commands - Rename ==========
+cmd.rename.no_permission = You don't have permission.
+cmd.rename.not_leader = Only the leader can rename the faction.
+cmd.rename.usage = Usage: /f rename <name>
+cmd.rename.too_short = Name is too short (min {0} chars).
+cmd.rename.too_long = Name is too long (max {0} chars).
+cmd.rename.name_taken = That name is already taken.
+cmd.rename.success = Faction renamed to {0}!
+cmd.rename.broadcast = {0} renamed the faction to {1}
+
+# ========== Commands - Description ==========
+cmd.desc.no_permission = You don't have permission.
+cmd.desc.not_officer = You must be an officer to set the description.
+cmd.desc.set = Faction description set!
+cmd.desc.cleared = Faction description cleared.
+
+# ========== Commands - Open / Close ==========
+cmd.open.no_permission = You don't have permission.
+cmd.open.not_leader = Only the leader can change this setting.
+cmd.open.already_open = Your faction is already open.
+cmd.open.success = Your faction is now open! Anyone can join with /f join.
+cmd.open.broadcast = {0} opened the faction to public joining.
+cmd.close.no_permission = You don't have permission.
+cmd.close.not_leader = Only the leader can change this setting.
+cmd.close.already_closed = Your faction is already closed.
+cmd.close.success = Your faction is now invite-only.
+cmd.close.broadcast = {0} closed the faction to invite-only.
+
+# ========== Commands - Color ==========
+cmd.color.no_permission = You don't have permission.
+cmd.color.not_officer = You must be an officer to change the color.
+cmd.color.colors_disabled = Faction colors are disabled.
+cmd.color.usage = Usage: /f color <code|#hex>
+cmd.color.usage_hint = Valid codes: 0-9, a-f or #RRGGBB hex
+cmd.color.invalid = Invalid color. Use 0-9, a-f, or #RRGGBB.
+cmd.color.success = Faction color updated!
+
+# ========== Commands - Claim ==========
+cmd.claim.no_permission = You don't have permission to claim territory.
+cmd.claim.already_yours = Your faction already owns this chunk.
+cmd.claim.cannot_claim_ally = You cannot claim ally territory.
+cmd.claim.already_claimed_hint = This chunk is claimed. Use /f overclaim if they are raidable.
+cmd.claim.success = Claimed chunk at {0}, {1}!
+cmd.claim.not_officer = You must be an officer to claim land.
+cmd.claim.already_claimed = This chunk is already claimed.
+cmd.claim.max_claims = Your faction has reached max claims. Get more power!
+cmd.claim.not_adjacent = You must claim adjacent to existing territory.
+cmd.claim.world_not_allowed = Claiming is not allowed in this world.
+cmd.claim.orbisguard = This area is protected by OrbisGuard.
+cmd.claim.zone_protected = This chunk is in a safezone or warzone.
+cmd.claim.insufficient_power = Your faction doesn't have enough power to claim more land.
+cmd.claim.failed = Failed to claim chunk.
+
+# ========== Commands - Invite ==========
+cmd.invite.no_permission = You don't have permission to invite players.
+cmd.invite.not_officer = You must be an officer to invite players.
+cmd.invite.usage = Usage: /f invite <player>
+cmd.invite.player_not_found = Player '{0}' not found or offline.
+cmd.invite.target_in_faction = That player is already in a faction.
+cmd.invite.sent = Invited {0} to your faction.
+cmd.invite.received = You have been invited to join {0}!
+cmd.invite.accept_hint = Type /f accept {0} to join.
+
+# ========== Commands - Accept / Join ==========
+cmd.join.no_permission = You don't have permission to join factions.
+cmd.join.already_in_named = You are already in {0}.
+cmd.join.use_leave_hint = Use /f leave first if you want to join another faction.
+cmd.join.no_invites = You have no pending invites.
+cmd.join.faction_not_found = Faction '{0}' not found.
+cmd.join.not_invited = You have no invite from that faction.
+cmd.join.faction_gone = That faction no longer exists.
+cmd.join.success = You have joined {0}!
+cmd.join.broadcast = {0} has joined the faction!
+cmd.join.faction_full = That faction is full.
+cmd.join.failed = Failed to join faction.
+
+# ========== Commands - Kick ==========
+cmd.kick.no_permission = You don't have permission to kick members.
+cmd.kick.usage = Usage: /f kick <player>
+cmd.kick.not_in_your_faction = Player '{0}' is not in your faction.
+cmd.kick.success = Kicked {0} from the faction.
+cmd.kick.broadcast = {0} was kicked from the faction.
+cmd.kick.kicked = You have been kicked from the faction.
+cmd.kick.cannot_kick_higher = You don't have permission to kick that player.
+cmd.kick.cannot_kick_leader = You cannot kick the faction leader.
+cmd.kick.failed = Failed to kick player.
+
+# ========== Commands - Leave ==========
+cmd.leave.no_permission = You don't have permission to leave factions.
+cmd.leave.confirm_prompt = Are you sure you want to leave your faction?
+cmd.leave.confirm_instruction = Type /f leave --text again within {0} seconds to confirm.
+cmd.leave.success = You have left your faction.
+cmd.leave.broadcast = {0} has left the faction.
+cmd.leave.failed = Failed to leave faction.
+cmd.leave.cancelled = Previous confirmation cancelled. Type again to confirm leave.
+
+# ========== Commands - Promote / Demote / Transfer ==========
+cmd.rank.promote_no_permission = You don't have permission to promote members.
+cmd.rank.promote_usage = Usage: /f promote <player>
+cmd.rank.promoted = Promoted {0} to {1}!
+cmd.rank.promote_broadcast = {0} was promoted to {1}!
+cmd.rank.already_highest = Cannot promote further. Use /f transfer to change leader.
+cmd.rank.promote_failed = Failed to promote player.
+cmd.rank.demote_no_permission = You don't have permission to demote members.
+cmd.rank.demote_usage = Usage: /f demote <player>
+cmd.rank.demoted = Demoted {0} to {1}.
+cmd.rank.demote_broadcast = {0} was demoted to {1}.
+cmd.rank.already_lowest = That player is already a Member.
+cmd.rank.demote_failed = Failed to demote player.
+cmd.rank.transfer_no_permission = You don't have permission to transfer leadership.
+cmd.rank.transfer_usage = Usage: /f transfer <player>
+cmd.rank.player_not_in_faction = Player not found in your faction.
+cmd.rank.transfer_confirm = Are you sure you want to transfer leadership to {0}?
+cmd.rank.transfer_confirm_instruction = Type /f transfer {0} --text again within {1} seconds to confirm.
+cmd.rank.transferred = Transferred leadership to {0}!
+cmd.rank.transfer_broadcast = {0} is now the faction leader!
+cmd.rank.transfer_failed = Failed to transfer leadership.
+cmd.rank.transfer_cancelled = Previous confirmation cancelled. Type again to confirm transfer.
+
+# ========== Commands - Unclaim ==========
+cmd.unclaim.no_permission = You don't have permission to unclaim territory.
+cmd.unclaim.success = Unclaimed chunk at {0}, {1}.
+cmd.unclaim.not_officer = You must be an officer to unclaim land.
+cmd.unclaim.chunk_not_claimed = This chunk is not claimed.
+cmd.unclaim.not_your_claim = Your faction doesn't own this chunk.
+cmd.unclaim.cannot_unclaim_home = Cannot unclaim the chunk with faction home.
+cmd.unclaim.would_disconnect = Cannot unclaim — it would disconnect your territory.
+cmd.unclaim.failed = Failed to unclaim chunk.
+
+# ========== Commands - Overclaim ==========
+cmd.overclaim.no_permission = You don't have permission to overclaim territory.
+cmd.overclaim.success = Overclaimed enemy territory!
+cmd.overclaim.not_officer = You must be an officer to overclaim.
+cmd.overclaim.not_claimed = This chunk is not claimed. Use /f claim.
+cmd.overclaim.own_chunk = Your faction already owns this chunk.
+cmd.overclaim.ally = You cannot overclaim ally territory.
+cmd.overclaim.target_has_power = This faction still has enough power.
+cmd.overclaim.failed = Failed to overclaim.
+
+# ========== Commands - Stuck ==========
+cmd.stuck.no_permission = You don't have permission to use /f stuck.
+cmd.stuck.not_stuck = You're not stuck - this is wilderness.
+cmd.stuck.combat_tagged = You cannot use /f stuck while in combat!
+cmd.stuck.no_safe = Could not find a safe location.
+cmd.stuck.teleporting = Teleporting to safety in {0} seconds. Don't move!
+
+# ========== Commands - Home ==========
+cmd.home.no_permission = You don't have permission to teleport to faction home.
+cmd.home.no_home = Your faction has no home set.
+cmd.home.combat_tagged = You cannot teleport while in combat!
+cmd.home.teleported = Teleported to faction home!
+
+# ========== Commands - SetHome ==========
+cmd.sethome.no_permission = You don't have permission to set faction home.
+cmd.sethome.world_not_allowed = Cannot set home in this world.
+cmd.sethome.not_in_territory = You can only set home in your faction's territory.
+cmd.sethome.set = Faction home set!
+cmd.sethome.broadcast = {0} set the faction home.
+cmd.sethome.not_officer = You must be an officer to set the home.
+cmd.sethome.failed = Failed to set home.
+
+# ========== Commands - DelHome ==========
+cmd.delhome.no_permission = You don't have permission to delete faction home.
+cmd.delhome.no_home = Your faction does not have a home set.
+cmd.delhome.deleted = Faction home deleted!
+cmd.delhome.broadcast = {0} deleted the faction home.
+cmd.delhome.not_officer = You must be an officer to delete the home.
+cmd.delhome.failed = Failed to delete home.
+
+# ========== Commands - Relation (Ally/Enemy/Neutral/Relations) ==========
+cmd.relation.ally_no_permission = You don't have permission to manage alliances.
+cmd.relation.ally_usage = Usage: /f ally <faction>
+cmd.relation.ally_sent = Ally request sent to {0}!
+cmd.relation.ally_formed = You are now allies with {0}!
+cmd.relation.already_ally = You are already allied with that faction.
+cmd.relation.ally_failed = Failed to send ally request.
+cmd.relation.enemy_no_permission = You don't have permission to declare enemies.
+cmd.relation.enemy_usage = Usage: /f enemy <faction>
+cmd.relation.enemy_declared = {0} is now your enemy!
+cmd.relation.already_enemy = You are already enemies with that faction.
+cmd.relation.max_enemies = You have reached the maximum number of enemies.
+cmd.relation.enemy_failed = Failed to set enemy.
+cmd.relation.neutral_no_permission = You don't have permission to set neutral relations.
+cmd.relation.neutral_usage = Usage: /f neutral <faction>
+cmd.relation.neutral_set = Your faction is now neutral with {0}.
+cmd.relation.already_neutral = You are already neutral with that faction.
+cmd.relation.neutral_failed = Failed to set neutral.
+cmd.relation.cannot_self = You cannot ally with yourself.
+cmd.relation.max_allies = You have reached the maximum number of allies.
+cmd.relation.view_no_permission = You don't have permission to view relations.
+cmd.relation.header = === Faction Relations ===
+cmd.relation.allies_count = Allies ({0}):
+cmd.relation.enemies_count = Enemies ({0}):
+cmd.relation.list_entry = - {0}
+
+# ========== Commands - Chat ==========
+cmd.chat.usage = Usage: /f c [f|a|off]
+cmd.chat.no_permission = You don't have permission for that chat mode.
+cmd.chat.mode_set = Chat mode set to {0}
+
+# ========== Commands - Invites ==========
+cmd.invites.not_officer = You must be an officer to manage invites.
+cmd.invites.header = === Faction Invites ===
+cmd.invites.no_pending = No pending invites or requests.
+cmd.invites.outgoing = Outgoing Invites:
+cmd.invites.outgoing_entry = {0} (invited by {1})
+cmd.invites.requests = Join Requests:
+cmd.invites.request_entry = {0}{1}
+cmd.invites.your_invites_header = === Your Invites ===
+cmd.invites.no_invites = You have no pending invites.
+cmd.invites.invite_entry = {0} - Use /f accept {1}
+
+# ========== Commands - Request ==========
+cmd.request.no_permission = You don't have permission to request faction membership.
+cmd.request.already_in_named = You are already in {0}.
+cmd.request.use_leave_hint = Use /f leave first if you want to join another faction.
+cmd.request.usage = Usage: /f request <faction> [message]
+cmd.request.faction_open = That faction is open! Use /f accept {0} to join directly.
+cmd.request.already_requested = You already have a pending request to that faction.
+cmd.request.has_invite = You have been invited to that faction! Use /f accept {0} to join.
+cmd.request.sent = Sent join request to {0}!
+cmd.request.your_message = Your message: "{0}"
+cmd.request.officer_review = An officer will review your request.
+cmd.request.officer_notify = {0} has requested to join your faction!
+cmd.request.officer_review_hint = Use /f gui > Invites to review.
+
+# ========== Commands - Info ==========
+cmd.info.faction_header = === {0} ===
+cmd.info.player_header = === {0} ===
+cmd.info.no_permission = You don't have permission to view faction info.
+cmd.info.faction_not_found = Faction '{0}' not found.
+cmd.info.not_in_faction_hint = You are not in a faction. Use /f info <faction>
+cmd.info.leader = Leader: {0}
+cmd.info.members = Members: {0}/{1}
+cmd.info.power = Power: {0}
+cmd.info.claims = Claims: {0}
+cmd.info.raidable = RAIDABLE!
+cmd.info.allies = Allies: {0}
+cmd.info.enemies = Enemies: {0}
+cmd.info.they_consider = They consider you: {0}
+cmd.info.you_consider = You consider them: {0}
+cmd.info.members_no_permission = You don't have permission to view faction members.
+cmd.info.members_header = === {0} Members ({1}) ===
+cmd.info.member_online = [Online]
+cmd.info.list_no_permission = You don't have permission to view faction list.
+cmd.info.list_empty = There are no factions.
+cmd.info.list_header = === Factions ({0}) ===
+cmd.info.list_entry = {0} - {1} members, {2} power
+cmd.info.list_entry_raidable = {0} - {1} members, {2} power [RAIDABLE]
+cmd.info.help_no_permission = You don't have permission to view help.
+cmd.info.who_no_permission = You don't have permission to view player info.
+cmd.info.who_faction = Faction: {0}
+cmd.info.who_role = Role: {0}
+cmd.info.who_joined = Joined: {0}
+cmd.info.who_faction_none = Faction: None
+cmd.info.who_power = Power: {0}
+cmd.info.who_status = Status: {0}
+cmd.info.who_last_seen = Last seen: {0}
+cmd.info.map_no_permission = You don't have permission to view the map.
+cmd.info.map_header = === Territory Map ===
+cmd.info.map_legend = Legend: +You /Own /Ally /Enemy -Wild
+cmd.info.map_gui_hint = Use /f gui for interactive map
+
+# ========== Commands - Power ==========
+cmd.power.personal = Personal Power: {0}/{1}
+cmd.power.faction = Faction Power: {0}/{1}
+cmd.power.death_loss = Death Loss: {0}
+cmd.power.regen = Regen Rate: {0}/hr
+cmd.power.no_permission = You don't have permission to view power info.
+cmd.power.header = {0}'s Power:
+cmd.power.current = Current: {0}
+
+# ========== Commands - Economy ==========
+cmd.economy.balance = Balance: {0}
+cmd.economy.deposited = Deposited {0} into the faction treasury.
+cmd.economy.withdrawn = Withdrew {0} from the faction treasury.
+cmd.economy.transferred = Transferred {0} to {1}.
+cmd.economy.insufficient = Insufficient funds in faction treasury.
+cmd.economy.invalid_amount = Invalid amount: {0}
+cmd.economy.economy_disabled = Economy is disabled.
+cmd.economy.balance_no_permission = You don't have permission to view balances.
+cmd.economy.treasury_unavailable = Treasury is not available.
+cmd.economy.balance_display = {0}'s treasury: {1}
+cmd.economy.deposit_no_permission = You don't have permission to deposit.
+cmd.economy.deposit_faction_denied = You don't have faction permission to deposit.
+cmd.economy.deposit_usage = Usage: /f deposit <amount>
+cmd.economy.amount_positive = Amount must be positive.
+cmd.economy.wallet_insufficient = You don't have enough money. Wallet: {0}
+cmd.economy.wallet_withdraw_failed = Failed to withdraw from your wallet.
+cmd.economy.deposit_failed = Failed to deposit to faction treasury. Money returned.
+cmd.economy.withdraw_no_permission = You don't have permission to withdraw.
+cmd.economy.withdraw_faction_denied = You don't have faction permission to withdraw.
+cmd.economy.withdraw_usage = Usage: /f withdraw <amount>
+cmd.economy.withdraw_limit_denied = Withdrawal denied: {0}
+cmd.economy.wallet_deposit_failed = Warning: Failed to deposit to your wallet. Contact an admin.
+cmd.economy.withdraw_limit_exceeded = Withdrawal denied: limit exceeded.
+cmd.economy.withdraw_failed = Withdrawal failed: {0}
+cmd.economy.transfer_no_permission = You don't have permission to transfer.
+cmd.economy.transfer_faction_denied = You don't have faction permission to transfer.
+cmd.economy.transfer_usage = Usage: /f money transfer <faction> <amount>
+cmd.economy.transfer_self = Cannot transfer to your own faction.
+cmd.economy.transfer_limit_denied = Transfer denied: {0}
+cmd.economy.transfer_limit_exceeded = Transfer denied: limit exceeded.
+cmd.economy.transfer_failed = Transfer failed: {0}
+cmd.economy.log_no_permission = You don't have permission to view the transaction log.
+cmd.economy.log_header = Transaction Log (page {0}/{1})
+cmd.economy.log_empty = No transactions found.
+cmd.economy.money_help_header = Treasury Commands:
+cmd.economy.money_help_balance = /f money balance [faction] - View balance
+cmd.economy.money_help_deposit = /f money deposit <amount> - Deposit into treasury
+cmd.economy.money_help_withdraw = /f money withdraw <amount> - Withdraw from treasury
+cmd.economy.money_help_transfer = /f money transfer <faction> <amount> - Transfer between factions
+cmd.economy.money_help_log = /f money log [page] [type] - View transaction history
+
+# ========== Protection - Action Phrases ==========
+protection.action.generic = You can't do that
+protection.action.build = You can't build or break blocks
+protection.action.interact = You can't interact with that
+protection.action.door = You can't use doors
+protection.action.container = You can't open containers
+protection.action.bench = You can't use crafting stations
+protection.action.processing = You can't use processing stations
+protection.action.seat = You can't use seats
+protection.action.light = You can't toggle lights
+protection.action.teleporter = You can't use teleporters
+protection.action.crate = You can't use crates
+protection.action.tame = You can't tame creatures
+protection.action.npc = You can't interact with NPCs
+protection.action.mount = You can't mount creatures
+protection.action.pve = You can't damage creatures
+protection.action.item_drop = You can't drop items
+protection.action.item_pickup = You can't pick up items
+
+# ========== Protection - Denial Reasons ==========
+protection.denied.safezone = {0} in a SafeZone.
+protection.denied.warzone = {0} in a WarZone.
+protection.denied.enemy_claim = {0} in enemy territory.
+protection.denied.claimed = {0} in claimed territory.
+protection.denied.here = {0} here.
+protection.denied.zone = {0} in this zone.
+protection.denied.faction_perm = {0} here. (Faction permission: {1})
+protection.denied.ally_territory = {0} here. (Ally territory)
+protection.denied.error = Protection error — action blocked for safety.
+
+# ========== Protection - PvP ==========
+protection.pvp.safezone = PvP is disabled in SafeZones.
+protection.pvp.same_faction = You cannot attack faction members.
+protection.pvp.ally = You cannot attack allies.
+protection.pvp.spawn_protected = That player has spawn protection.
+protection.pvp.territory_disabled = PvP is disabled in this territory.
+protection.pvp.generic = You cannot attack this player.
+
+# ========== Protection - Entity Damage ==========
+protection.mob_damage_disabled = Mob damage is disabled in this zone.
+protection.pve_damage_disabled = PvE damage is disabled in this zone.
+protection.pve_territory_denied = You cannot damage mobs in this territory.
+
+# ========== Protection - Combat Tag ==========
+protection.combat_tag_command = You cannot use that command while combat tagged.
+
+# ========== Server Announcements ==========
+# These are broadcast to all online players for significant faction events.
+# {0}, {1} = dynamic values (faction names, player names)
+server_announce.faction_created = {0} has founded the faction {1}!
+server_announce.faction_disbanded = The faction {0} has been disbanded!
+server_announce.leadership_transfer = {0} is now the leader of {1}!
+server_announce.overclaim = {0} has overclaimed territory from {1}!
+server_announce.war_declared = {0} has declared war on {1}!
+server_announce.alliance_formed = {0} and {1} are now allies!
+server_announce.alliance_broken = {0} and {1} are no longer allies!
+
+# ========== Teleport System ==========
+teleport.cooldown_wait = You must wait {0} before teleporting again.
+teleport.warmup_start = Teleporting to faction home in {0} seconds...
+teleport.combat_cancelled = Teleportation cancelled - you are in combat!
+teleport.success_default = Teleported to faction home!
+teleport.no_home = Your faction has no home set.
+teleport.world_not_found = World not found.
+teleport.failed = Teleportation failed.
+teleport.countdown = Teleporting in {0} seconds...
+teleport.countdown_one = Teleporting in 1 second...
+teleport.moved_cancelled = Teleportation cancelled - you moved!
+teleport.damage_cancelled = Teleportation cancelled - you took damage!
+teleport.mount_teleport_blocked = You can't teleport into that zone while mounted.
+teleport.mount_entry_blocked = You can't enter this zone while mounted.
+
+# ========== Chat Display ==========
+chat.display.public = Public
+chat.display.faction = Faction
+chat.display.ally = Ally

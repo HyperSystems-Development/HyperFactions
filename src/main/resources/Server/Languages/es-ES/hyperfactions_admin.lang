@@ -1,0 +1,263 @@
+# HyperFactions Admin GUI - Traducciones al Espanol
+# Formato: clave = valor
+# Nota: Las claves se prefijan automaticamente con "hyperfactions_admin." por el I18nModule de Hytale
+
+# ========== Barra de Navegacion de Admin ==========
+nav.dashboard = Panel
+nav.actions = Acciones
+nav.factions = Facciones
+nav.players = Jugadores
+nav.economy = Economia
+nav.zones = Zonas
+nav.config = Configuracion
+nav.backups = Respaldos
+nav.log = Registro
+nav.updates = Actualizaciones
+nav.help = Ayuda
+nav.version = Version
+
+# ========== Etiquetas Comunes de Admin ==========
+common.faction_not_found = Faccion No Encontrada
+common.no_faction = Sin Faccion
+common.not_set = Sin establecer
+common.on = Activado
+common.off = Desactivado
+common.enable = Activar
+common.disable = Desactivar
+common.none_paren = (Ninguno)
+common.invalid_faction = Faccion invalida.
+common.leader_prefix = Lider: {0}
+common.members_suffix = {0} miembros
+common.claims_suffix = {0} reclamos
+common.factions_suffix = {0} facciones
+common.players_suffix = {0} jugadores
+common.chunks_suffix = {0} chunks
+common.entries_suffix = {0} entradas
+common.found_suffix = {0} encontrados
+common.power_format = {0}/{1} poder
+common.raidable = Vulnerable
+common.protected = Protegida
+common.no_description = Sin descripcion.
+common.officers_more = +{0} mas
+common.custom_max = (max personalizado)
+common.default_max = (max por defecto)
+common.now = Ahora
+common.ago_suffix = hace {0}
+common.just_now = ahora mismo
+common.no_membership_history = Sin historial de membresia
+
+# ========== Panel de Admin ==========
+dashboard.factions_prefix = Facciones: {0}
+dashboard.members_prefix = Total Miembros: {0}
+dashboard.claims_prefix = Total Reclamos: {0}
+
+# ========== Acciones de Admin ==========
+actions.confirm_reset = Confirmar Reinicio?
+actions.confirm_trigger = Confirmar Ejecucion?
+actions.kd_reset = K/D reiniciado para {0} jugadores.
+actions.kd_reset_failed = No se pudo reiniciar K/D: {0}
+actions.upkeep_unavailable = El procesador de mantenimiento no esta disponible.
+actions.upkeep_triggered = Cobro de mantenimiento ejecutado.
+actions.upkeep_failed = Mantenimiento fallido: {0}
+
+# ========== Admin Disolver ==========
+disband.faction_gone = La faccion ya no existe.
+disband.success = La faccion '{0}' ha sido disuelta.
+disband.failed = No se pudo disolver: {0}
+disband.no_leader = La faccion no tiene lider, no se puede disolver.
+
+# ========== Admin Desreclamar Todo ==========
+unclaim.removed = [Admin] Se eliminaron {0} reclamos de {1}.
+unclaim.no_claims = {0} no tenia reclamos para eliminar.
+
+# ========== Lista de Facciones de Admin ==========
+factions.home_not_set = Sin establecer
+factions.teleported = Teletransportado al hogar de {0}.
+factions.no_home = La faccion no tiene hogar establecido.
+factions.world_not_found = Mundo destino no encontrado.
+
+# ========== Info de Faccion de Admin ==========
+info.faction_gone = Esta faccion ya no existe.
+
+# ========== Miembros de Faccion de Admin ==========
+members.sort_role = Rol
+members.sort_online = Conectado
+members.sort_name = Nombre
+members.sort_power = Poder
+members.promoted = [Admin] {0} promovido a {1}.
+members.demoted = [Admin] {0} degradado a {1}.
+members.kicked = [Admin] {0} expulsado de la faccion.
+
+# ========== Relaciones de Faccion de Admin ==========
+relations.allies_header = ALIADOS ({0})
+relations.enemies_header = ENEMIGOS ({0})
+relations.no_allies = Sin aliados.
+relations.no_enemies = Sin enemigos.
+relations.neutral_count = {0} facciones neutrales
+relations.since_today = Desde: hoy
+relations.since_one_day = Desde: hace 1 dia
+relations.since_days = Desde: hace {0} dias
+relations.set_ally = [Admin] Estado de alianza mutua establecido con {0}.
+relations.set_enemy = Estado de enemistad mutua establecido con {0}.
+relations.set_neutral = [Admin] Estado neutral mutuo establecido con {0}.
+
+# ========== Ajustes de Faccion de Admin ==========
+settings.locked = Este ajuste esta bloqueado por la configuracion del servidor.
+settings.perm_toggled = {0} establecido a {1}.
+settings.color_changed = Color de faccion establecido a {0}.
+settings.recruitment_set = Reclutamiento establecido a {0}.
+settings.no_home = [Admin] Esta faccion no tiene hogar establecido.
+settings.home_cleared = Hogar de faccion eliminado para {0}.
+
+# ========== Etiquetas de Ordenamiento ==========
+sort.power = Poder
+sort.name = Nombre
+sort.members = Miembros
+sort.balance = Saldo
+
+# ========== Jugadores de Admin ==========
+players.sort_last_online = Ultima Conexion
+players.sort_faction = Faccion
+players.sort_online = Conectado
+players.not_online = El jugador no esta conectado.
+players.world_not_found = Mundo destino no encontrado.
+players.teleported = [Admin] Teletransportado a {0}.
+
+# ========== Info de Jugador de Admin ==========
+playerinfo.disband_faction = Disolver Faccion
+playerinfo.kick_leader = Expulsar Lider
+playerinfo.enter_valid_number = Ingresa un numero valido.
+playerinfo.enter_valid_positive = Ingresa un numero positivo valido.
+playerinfo.faction_gone = La faccion ya no existe.
+playerinfo.kd_reset = K/D reiniciado para {0}.
+playerinfo.kicked_success = {0} expulsado de {1}.
+playerinfo.kicked_leader = Lider {0} expulsado. Liderazgo transferido a {1}.
+playerinfo.disbanded_kick = [Admin] Faccion '{0}' disuelta (ultimo miembro expulsado).
+
+# ========== Economia de Admin ==========
+economy.no_data = No hay facciones con datos economicos.
+economy.amount_zero = La cantidad no puede ser cero.
+economy.enter_amount = Ingresa una cantidad.
+economy.invalid_number = Numero invalido: {0}
+economy.error = Ocurrio un error.
+economy.balance_negative = El saldo no puede ser negativo.
+economy.failed = Fallo: {0}
+economy.bulk_complete = Ajuste masivo completado: {0} {1} a {2} facciones.
+economy.bulk_failures = ({0} fallaron)
+
+# ========== Zonas de Admin ==========
+zones.not_found = Zona no encontrada.
+zones.invalid_id = ID de zona invalido.
+zones.deleted = Zona {0} eliminada.
+zones.delete_failed = No se pudo eliminar la zona: {0}
+zones.no_chunks = Sin chunks
+zones.chunks_suffix = {0} ({1} chunks)
+
+# ========== Asistente de Creacion de Zona ==========
+wizard.enter_name = Ingresa un nombre para la zona.
+wizard.name_too_short = El nombre de zona debe tener al menos {0} caracteres.
+wizard.name_too_long = El nombre de zona no puede exceder {0} caracteres.
+wizard.name_taken = Ya existe una zona con este nombre.
+wizard.radius_range = El radio debe estar entre 1 y {0}.
+wizard.create_failed = No se pudo crear la zona: {0}
+wizard.created_not_found = Zona creada pero no se pudo encontrar.
+wizard.created = {0} '{1}' creada!
+wizard.chunk_claimed = Chunk reclamado ({0}, {1}).
+wizard.chunk_failed = No se pudo reclamar el chunk actual: {0}
+wizard.radius_claimed = {0} chunks reclamados en un radio de {1} de {2}.
+wizard.radius_no_claims = No se pudieron reclamar chunks (el area puede estar ocupada).
+wizard.no_claims = Zona creada sin reclamos.
+wizard.chunks_preview = ~{0} chunks
+
+# ========== Renombrar Zona ==========
+zone_rename.zone_gone = La zona ya no existe.
+zone_rename.enter_name = Ingresa un nombre para la zona.
+zone_rename.too_short = El nombre de zona debe tener al menos {0} caracter.
+zone_rename.too_long = El nombre de zona no puede exceder {0} caracteres.
+zone_rename.same_name = Ese ya es el nombre de esta zona.
+zone_rename.renamed = [Admin] Zona renombrada de {0} a {1}!
+zone_rename.name_taken = Ya existe una zona con ese nombre.
+zone_rename.invalid_name = Nombre de zona invalido.
+zone_rename.rename_failed = No se pudo renombrar la zona: {0}
+
+# ========== Cambiar Tipo de Zona ==========
+zone_type.zone_gone = La zona ya no existe.
+zone_type.changed = [Admin] {0} cambiada de {1} a {2} ({3}).
+zone_type.failed = No se pudo cambiar el tipo de zona: {0}
+
+# ========== Flags de Integracion de Zona ==========
+zone_int.zone_not_found = Zona No Encontrada
+zone_int.no_plugin = (sin plugin)
+zone_int.default = (por defecto)
+zone_int.custom = (personalizado)
+
+# ========== Registro de Actividad ==========
+log.all_types = Todos los Tipos
+log.no_logs = No hay registros de actividad que coincidan con los filtros.
+
+# ========== Pagina de Version ==========
+version.active = Activo
+version.not_found = No Encontrado
+version.not_detected = No Detectado
+version.not_installed = No Instalado
+version.active_version = Activo (v{0})
+version.active_compatible = Activo (compatible)
+version.active_claims_only = Activo (solo reclamos)
+version.installed_no_perm = Instalado (sin proveedor de permisos)
+version.active_provider = Activo ({0})
+
+# ========== Pagina Principal de Admin ==========
+main.reload_hint = Usa /f reload para recargar la configuracion.
+main.unclaim_hint = Usa /f admin unclaim {0} para desreclamar los {1} chunks.
+
+# ========== Flags/Ajustes de Zona ==========
+zflags.invalid_flag = Flag invalido.
+zflags.zone_not_found = Zona no encontrada.
+zflags.conflict = (conflicto)
+zflags.mixin = (mixin)
+zflags.reset_int = Flags de integracion reiniciados a valores por defecto.
+zflags.reset_all = Todos los flags reiniciados a valores por defecto.
+zflags.reset_failed = No se pudieron reiniciar los flags: {0}
+zflags.back_to_settings = Volver a Ajustes
+
+# ========== Propiedades de Zona ==========
+zprop.current_custom = Actual: "{0}" (personalizado)
+zprop.current_default = Actual: "{0}" (por defecto)
+zprop.pvp_disabled = PvP Desactivado
+zprop.pvp_enabled = PvP Activado
+zprop.name_empty = El nombre no puede estar vacio.
+zprop.renamed = Zona renombrada a "{0}".
+zprop.name_taken = Ya existe una zona con ese nombre.
+zprop.name_invalid = Nombre invalido (maximo 32 caracteres).
+zprop.rename_failed = No se pudo renombrar: {0}
+zprop.upper_empty = El titulo superior no puede estar vacio. Usa Limpiar para reiniciar.
+zprop.upper_set = Titulo superior establecido.
+zprop.upper_reset = Titulo superior reiniciado al valor por defecto.
+zprop.lower_empty = El titulo inferior no puede estar vacio. Usa Limpiar para reiniciar.
+zprop.lower_set = Titulo inferior establecido.
+zprop.lower_reset = Titulo inferior reiniciado al valor por defecto.
+
+# ========== Relaciones Adicionales ==========
+relations.failed = Fallo: {0}
+
+# ========== Miembros Adicionales ==========
+members.never = Nunca
+members.teleported = [Admin] Teletransportado a {0}.
+
+# ========== Info de Jugador Adicional ==========
+playerinfo.records = {0} registros
+playerinfo.joined_date = Ingreso: {0}
+playerinfo.current = Actual
+playerinfo.left_date = Salio: {0}
+
+# ========== Mapa de Zona ==========
+map.world_warning = ADVERTENCIA: Estas en '{0}' - la zona esta en '{1}'
+map.position = Tu Posicion: Chunk ({0}, {1})
+map.zone_gone = La zona ya no existe.
+map.claimed = Chunk ({0}, {1}) reclamado para {2}.
+map.claim_failed = No se pudo reclamar el chunk: {0}
+map.unclaimed = Chunk ({0}, {1}) desreclamado de {2}.
+map.unclaim_failed = No se pudo desreclamar el chunk: {0}
+map.chunk_belongs = Este chunk pertenece a {0}.
+map.chunk_faction = Este chunk esta reclamado por una faccion.
+map.chunk_protected = Este chunk esta en una region protegida.

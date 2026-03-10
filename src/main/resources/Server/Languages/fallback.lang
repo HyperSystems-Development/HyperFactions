@@ -1,0 +1,36 @@
+# HyperFactions — Fallback Language Configuration
+#
+# Hytale's I18nModule automatically falls back to en-US when a translation key
+# is missing from the player's locale. This means:
+#
+#   1. If a locale directory exists (e.g., fr-FR/) but a specific key is missing
+#      from its .lang file, the en-US value is used automatically.
+#
+#   2. If a locale directory does not exist at all, ALL keys fall back to en-US.
+#
+#   3. Partially translated locales work fine — translated keys use the locale's
+#      value, untranslated keys use en-US.
+#
+# No explicit mapping is needed in this file. It exists as documentation for
+# translators and maintainers.
+#
+# Supported locales (directories under Server/Languages/):
+#   en-US  — English (United States) [base language, complete]
+#   de-DE  — German (Germany) [stub — untranslated]
+#   es-ES  — Spanish (Spain) [stub — untranslated]
+#   fr-FR  — French (France) [stub — untranslated]
+#   ja-JP  — Japanese (Japan) [stub — untranslated]
+#   pt-BR  — Portuguese (Brazil) [stub — untranslated]
+#   ru-RU  — Russian (Russia) [stub — untranslated]
+#   tr-TR  — Turkish (Turkey) [stub — untranslated]
+#   zh-CN  — Chinese Simplified (China) [stub — untranslated]
+#
+# To add a new locale:
+#   ./scripts/new-translation.sh <locale-code>
+#   (or scripts\new-translation.bat on Windows)
+#
+# Translation guidelines:
+#   - Keep all keys exactly as they are (left side of =)
+#   - Keep {0}, {1}, etc. placeholders in the translated text
+#   - Do not translate color codes or formatting tokens
+#   - Test in-game by switching language in /f settings

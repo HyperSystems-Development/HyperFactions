@@ -1,0 +1,441 @@
+# HyperFactions GUI - Traducciones al Espanol
+# Formato: clave = valor
+# Nota: Las claves se prefijan automaticamente con "hyperfactions_gui." por el I18nModule de Hytale
+
+# ========== Barra de Navegacion ==========
+nav.dashboard = Panel
+nav.chat = Chat
+nav.members = Miembros
+nav.invites = Invitaciones
+nav.browser = Explorar
+nav.map = Mapa
+nav.leaderboard = Clasificacion
+nav.relations = Relaciones
+nav.treasury = Tesoreria
+nav.settings = Ajustes
+nav.logs = Registros
+nav.help = Ayuda
+nav.admin = Admin
+nav.create = Crear
+
+# ========== Nombres de Categorias de Ayuda ==========
+help.category.welcome = Bienvenida
+help.category.your_faction = Tu Faccion
+help.category.power_land = Poder y Territorio
+help.category.diplomacy = Diplomacia
+help.category.combat = Combate y Seguridad
+help.category.economy = Economia
+help.category.quick_ref = Referencia Rapida
+
+# ========== Menu Principal ==========
+main_menu.section_my_faction = Mi Faccion
+main_menu.section_get_started = Comenzar
+main_menu.section_territory = Territorio
+main_menu.section_browse = Explorar
+main_menu.section_admin = Admin
+main_menu.claim_hint = Usa /f claim para reclamar territorio.
+
+# ========== Pagina de Info de Faccion ==========
+faction_info.no_description = Sin descripcion.
+faction_info.status_open = Abierta
+faction_info.status_invite_only = Solo Invitacion
+faction_info.status_raidable = Vulnerable
+faction_info.status_protected = Protegida
+faction_info.officers_more = +{0} mas
+
+# ========== Modal de Renombrar ==========
+rename.no_permission = No tienes permiso para renombrar la faccion.
+rename.enter_name = Ingresa un nombre para la faccion.
+rename.too_short = El nombre de faccion debe tener al menos {0} caracteres.
+rename.too_long = El nombre de faccion no puede exceder {0} caracteres.
+rename.same_name = Ese ya es el nombre de tu faccion.
+rename.name_taken = Ya existe una faccion con ese nombre.
+rename.success = Faccion renombrada de {0} a {1}!
+
+# ========== Modal de Descripcion ==========
+desc.no_permission = No tienes permiso para editar la descripcion.
+desc.display_none = (Ninguna)
+desc.cleared = Descripcion de la faccion borrada.
+desc.updated = Descripcion de la faccion actualizada!
+
+# ========== Modal de Etiqueta ==========
+tag.no_permission = No tienes permiso para editar la etiqueta.
+tag.display_none = (Ninguna)
+tag.cleared = Etiqueta de la faccion borrada.
+tag.too_short = La etiqueta debe tener al menos {0} caracter.
+tag.too_long = La etiqueta no puede exceder {0} caracteres.
+tag.invalid_format = La etiqueta solo puede contener letras y numeros.
+tag.same_tag = Esa ya es la etiqueta de tu faccion.
+tag.tag_taken = Ya existe una faccion con esa etiqueta.
+tag.success = Etiqueta de faccion establecida a [{0}]!
+
+# ========== Pagina del Panel ==========
+dashboard.faction_gone = Tu faccion ya no existe.
+dashboard.available = {0} disponibles
+dashboard.at_risk = En riesgo!
+dashboard.online_count = {0} conectados
+dashboard.status_invite = Invitacion
+dashboard.in_grace = EN GRACIA
+dashboard.billable_chunks = {0} chunks facturables
+dashboard.btn_home = Hogar
+dashboard.btn_set_home = Fijar Hogar
+dashboard.btn_claim = Reclamar
+dashboard.chat_prefix = Chat: {0}
+dashboard.btn_leave = Salir
+dashboard.no_activity = Sin actividad reciente.
+dashboard.time_now = ahora
+dashboard.time_minutes = hace {0}m
+dashboard.time_hours = hace {0}h
+dashboard.time_days = hace {0}d
+dashboard.no_home_hint = Tu faccion no tiene hogar. Pide a un oficial que lo establezca.
+dashboard.chat_mode_set = Modo de chat: {0}
+dashboard.claim_success = Chunk reclamado en ({0}, {1})
+
+# ========== Pagina Principal de Faccion ==========
+main.no_faction = Sin Faccion
+main.joined = Te uniste a la faccion!
+main.join_failed = No se pudo unir a la faccion: {0}
+main.invite_declined = Invitacion rechazada.
+main.cooldown = Teletransporte en enfriamiento! {0}s restantes.
+main.world_not_found = No se puede teletransportar - mundo no encontrado.
+main.leave_failed = No se pudo salir: {0}
+
+# ========== Etiquetas Compartidas de la Interfaz ==========
+common.faction_count = {0} facciones
+common.leader_label = Lider: {0}
+common.sort_power = Poder
+common.sort_members = Miembros
+common.page_format = {0}/{1}
+common.own_faction = (Tu)
+
+# ========== Pagina de Miembros ==========
+members.count = {0} miembros
+members.sort_role = Rol
+members.sort_last_online = Ultima Conexion
+members.just_now = ahora mismo
+members.ago = hace {0}
+members.never = Nunca
+members.member_not_found = Miembro no encontrado.
+members.promoted = {0} promovido a {1}.
+members.promote_failed = No se pudo promover: {0}
+members.demoted = {0} degradado a {1}.
+members.demote_failed = No se pudo degradar: {0}
+members.kicked = {0} expulsado de la faccion.
+members.kick_failed = No se pudo expulsar: {0}
+
+# ========== Pagina del Explorador ==========
+browser.sort_name = Nombre
+browser.invalid_faction = Faccion invalida.
+
+# ========== Pagina de Clasificacion ==========
+leaderboard.sort_kd = K/D
+leaderboard.sort_territory = Territorio
+leaderboard.sort_balance = Saldo
+
+# ========== Pagina de Info de Jugador ==========
+playerinfo.now = Ahora
+playerinfo.history_count = {0} registros
+playerinfo.joined_label = Ingreso: {0}
+playerinfo.current = Actual
+playerinfo.left_label = Salio: {0}
+playerinfo.no_history = Sin historial de membresia
+playerinfo.faction_gone = La faccion ya no existe.
+playerinfo.reason_active = ACTIVO
+playerinfo.reason_left = SALIO
+playerinfo.reason_kicked = EXPULSADO
+playerinfo.reason_disbanded = DISUELTA
+
+# ========== Pagina de Relaciones ==========
+relations.relation_count = {0} relaciones
+relations.request_count = {0} solicitudes
+relations.type_ally = Aliado
+relations.type_enemy = Enemigo
+relations.type_incoming = Entrante
+relations.type_outgoing = Saliente
+relations.incoming_request = Solicitud entrante
+relations.outgoing_request = Solicitud saliente
+relations.empty_relations = Sin relaciones aun.
+relations.empty_relations_hint = Sin relaciones aun. Haz clic en + ESTABLECER RELACION para agregar aliados o enemigos.
+relations.empty_pending = No hay solicitudes de alianza pendientes.
+relations.today = Hoy
+relations.one_day_ago = Hace 1 dia
+relations.days_ago = Hace {0} dias
+relations.now_neutral = Ahora neutral con {0}.
+relations.now_enemies = Ahora enemigos con {0}!
+relations.request_sent = Solicitud de alianza enviada a {0}.
+relations.now_allied = Ahora aliados con {0}!
+relations.request_declined = Solicitud de alianza de {0} rechazada.
+relations.request_cancelled = Solicitud de alianza a {0} cancelada.
+relations.failed = Fallo: {0}
+relations.search_hint = Busca una faccion para establecer relacion
+relations.no_results = No se encontraron facciones con '{0}'
+relations.power_display = {0} poder
+relations.member_count = {0} miembros
+
+# ========== Pagina de Ajustes ==========
+settings.officers_only = Solo oficiales y lideres pueden cambiar los ajustes de la faccion.
+settings.display_none = (Ninguna)
+settings.home_not_set = Sin establecer
+settings.no_permission = No tienes permiso para cambiar los ajustes.
+settings.only_leader_disband = Solo el lider puede disolver la faccion.
+settings.perm_locked = Este ajuste esta bloqueado por el servidor.
+settings.no_perm_edit = No tienes permiso para editar los permisos de territorio.
+settings.only_leader_officers = Solo el lider puede cambiar el acceso de oficiales.
+settings.pvp_enabled = Activado
+settings.pvp_disabled = Desactivado
+settings.not_in_territory = Debes estar en el territorio de tu faccion para establecer el hogar.
+settings.home_set = Hogar de la faccion establecido en tu ubicacion actual!
+settings.recruitment_set = Reclutamiento establecido a {0}.
+settings.home_no_set = Tu faccion no tiene un hogar establecido.
+settings.home_deleted = Hogar de la faccion eliminado!
+
+# ========== Pagina de Modulos ==========
+modules.treasury_name = Tesoreria
+modules.treasury_desc = Banco y sistema economico de la faccion
+modules.raids_name = Raids
+modules.raids_desc = Batallas de facciones programadas
+modules.levels_name = Niveles
+modules.levels_desc = Progresion y XP de faccion
+modules.war_name = Guerra
+modules.war_desc = Declaraciones formales de guerra
+modules.coming_soon = Proximamente
+modules.active = Activo
+modules.view_treasury = Ver Tesoreria
+modules.unavailable = No disponible
+modules.no_economy = No se detecto plugin de economia
+modules.disabled = Desactivado
+modules.economy_not_available = Las funciones de economia no estan disponibles en este servidor
+
+# ========== Pagina de Tesoreria ==========
+treasury.wallet_label = Tu billetera: {0}
+treasury.treasury_label = Saldo de tesoreria: {0}
+treasury.chunks_detail = {0} gratis + {1} chunks facturables
+treasury.cost_label = Costo: {0}
+treasury.pending = Pendiente
+treasury.auto_pay_on = Pago automatico: ACTIVADO
+treasury.auto_pay_off = Pago automatico: DESACTIVADO
+treasury.runway_90_plus = 90+ dias
+treasury.runway_days = {0} dias
+treasury.runway_day = {0} dia
+treasury.runway_less_day = < 1 dia
+treasury.runway_no_funds = Sin fondos
+treasury.grace_expires = La gracia expira en: {0}
+treasury.missed_payments = Pagos perdidos: {0}
+treasury.pay_to_clear = Paga {0} para limpiar la gracia
+treasury.system = Sistema
+treasury.type_deposit = Deposito
+treasury.type_withdrawal = Retiro
+treasury.type_transfer_in = Transferencia Entrante
+treasury.type_transfer_out = Transferencia Saliente
+treasury.type_player_transfer = Transferencia de Jugador
+treasury.type_upkeep = Mantenimiento
+treasury.type_tax = Recaudacion de Impuestos
+treasury.type_war_cost = Costo de Guerra
+treasury.type_raid_cost = Costo de Raid
+treasury.type_spoils = Botin
+treasury.type_admin = Ajuste de Admin
+treasury.deposit_title = Depositar en la Tesoreria
+treasury.withdraw_title = Retirar de la Tesoreria
+treasury.fee_label = Comision ({0}%)
+treasury.confirm_deposit = Confirmar Deposito
+treasury.confirm_withdrawal = Confirmar Retiro
+treasury.from_wallet = {0} de la billetera
+treasury.to_wallet = {0} a la billetera
+treasury.enter_valid_amount = Ingresa una cantidad positiva valida.
+treasury.insufficient_wallet = Fondos insuficientes en la billetera. Necesitas {0}, tienes {1}.
+treasury.wallet_withdraw_failed = No se pudo retirar de tu billetera.
+treasury.deposit_failed_returned = No se pudo depositar. Dinero devuelto.
+treasury.deposited = Depositaste {0} en la tesoreria.
+treasury.deposited_fee = Depositaste {0} en la tesoreria. (comision: {1})
+treasury.no_withdraw_permission = No tienes permiso para retirar.
+treasury.withdraw_denied = Retiro denegado: {0}
+treasury.insufficient_treasury = Fondos insuficientes en la tesoreria.
+treasury.withdraw_limit = Limite de retiro excedido.
+treasury.withdraw_failed = Retiro fallido: {0}
+treasury.wallet_deposit_warn = Advertencia: No se pudo depositar en tu billetera. Contacta a un admin.
+treasury.withdrew = Retiraste {0} de la tesoreria.
+treasury.withdrew_fee = Retiraste {0} de la tesoreria. (comision: {1}, recibido: {2})
+treasury.search_hint = Buscar jugador o faccion
+treasury.no_results = Sin resultados para '{0}'
+treasury.tag_player = [Jugador]
+treasury.tag_faction = [Faccion]
+treasury.source_online = Conectado
+treasury.source_offline = Desconectado
+treasury.source_player_db = Jugador de Hytale
+treasury.no_transfer_permission = No tienes permiso para transferir.
+treasury.transfer_denied = Transferencia denegada: {0}
+treasury.invalid_target_faction = Faccion de destino invalida.
+treasury.target_faction_gone = La faccion de destino ya no existe.
+treasury.transfer_failed = Transferencia fallida: {0}
+treasury.transfer_failed_returned = Transferencia fallida. Fondos devueltos.
+treasury.transferred = Transferiste {0} a {1}.
+treasury.invalid_target_player = Jugador de destino invalido.
+treasury.player_transfer_failed = No se pudo depositar en la billetera del jugador. Transferencia revertida.
+treasury.leader_only_perms = Solo el lider puede cambiar los permisos de tesoreria.
+treasury.leader_only_upkeep = Solo el lider puede cambiar los ajustes de mantenimiento.
+treasury.invalid_limit = Numero invalido en los campos de limite. Usa 0 para ilimitado.
+
+# ========== Paginas de Confirmacion ==========
+confirm.disband_not_leader = Solo el lider puede disolver la faccion.
+confirm.disbanded = La faccion '{0}' ha sido disuelta.
+confirm.disband_failed = No se pudo disolver la faccion.
+confirm.succession_title = El liderazgo se transferira a:
+confirm.no_members_warning = ADVERTENCIA: No hay otros miembros!
+confirm.will_disband = Salir disolvera la faccion permanentemente.
+confirm.not_in_faction = No estas en esta faccion.
+confirm.not_leader_anymore = Ya no eres el lider.
+confirm.no_successor = No hay sucesor disponible. Usa disolver en su lugar.
+confirm.transfer_failed = No se pudo transferir el liderazgo: {0}
+confirm.leader_left = Liderazgo transferido a {0}. Has salido de {1}.
+confirm.leave_failed = No se pudo salir de la faccion: {0}
+confirm.leader_cannot_leave = Los lideres no pueden salir. Transfiere el liderazgo o disuelve la faccion.
+confirm.left_faction = Has salido de {0}.
+confirm.faction_gone = La faccion ya no existe.
+confirm.not_leader_transfer = Solo el lider puede transferir el liderazgo.
+confirm.leadership_transferred = Liderazgo transferido a {0}.
+
+# ========== Pagina del Visor de Registros ==========
+logs.title = {0} - Registros de Actividad
+logs.entry_count = {0} entradas
+logs.all_types = Todos los Tipos
+logs.no_logs_type = No hay registros de este tipo.
+logs.no_logs = No hay registros de actividad aun.
+
+# ========== Pagina de Chat ==========
+chat.placeholder = Escribe un mensaje...
+chat.no_messages = No hay mensajes aun.
+chat.no_ally_permission = No tienes permiso para el chat de aliados.
+chat.no_permission = Sin permiso.
+chat.faction_gone = Tu faccion ya no existe.
+chat.time_now = ahora
+chat.time_minutes = {0}m
+chat.time_hours = {0}h
+
+# ========== Pagina de Invitaciones ==========
+invites.invite_count = {0} invitaciones
+invites.request_count = {0} solicitudes
+invites.invited_by = Invitado por: {0}
+invites.no_message = Sin mensaje
+invites.expires = Expira: {0}
+invites.type_outgoing = Saliente
+invites.type_request = Solicitud
+invites.invited_by_label = Invitado por:
+invites.empty_outgoing = Sin invitaciones salientes. Usa /f invite <jugador> para invitar a alguien.
+invites.empty_requests = Sin solicitudes de ingreso. Los jugadores pueden solicitar unirse con /f request.
+invites.invalid_player = Jugador invalido.
+invites.cancelled_invite = Invitacion a {0} cancelada.
+invites.player_joined = {0} se ha unido a la faccion!
+invites.faction_full = La faccion esta llena. No se puede aceptar la solicitud.
+invites.add_failed = No se pudo agregar al jugador a la faccion.
+invites.request_expired = Solicitud no encontrada o expirada.
+invites.request_declined = Solicitud de ingreso de {0} rechazada.
+invites.time_seconds = {0}s
+invites.time_minutes = {0}m
+invites.time_hours = {0}h
+
+# ========== Pagina del Mapa ==========
+map.position = Tu Posicion: Chunk ({0}, {1})
+map.legend_protected = Protegido
+map.claim_stats = Reclamos: {0}/{1} ({2} Disponibles)
+map.overclaimed = SOBRERECLAMADO por {0}!
+map.power_display = Poder: {0}/{1}
+map.join_to_claim = Unete a una faccion para reclamar
+map.claim_success = Chunk reclamado en ({0}, {1})!
+map.claim_not_in_faction = Debes estar en una faccion para reclamar territorio.
+map.claim_not_officer = Solo oficiales y lideres pueden reclamar territorio.
+map.claim_already_yours = Ya posees este chunk.
+map.claim_already_claimed = Este chunk ya esta reclamado por otra faccion.
+map.claim_not_adjacent = Solo puedes reclamar chunks adyacentes a tu territorio.
+map.claim_max = Has alcanzado tu limite maximo de reclamos.
+map.claim_world_not_allowed = No se permite reclamar en este mundo.
+map.claim_orbisguard = Esta area esta protegida por OrbisGuard.
+map.claim_failed = No se pudo reclamar el chunk.
+map.unclaim_success = Chunk desreclamado en ({0}, {1}).
+map.unclaim_not_in_faction = Debes estar en una faccion.
+map.unclaim_not_officer = Solo oficiales y lideres pueden desreclamar territorio.
+map.unclaim_not_claimed = Este chunk no esta reclamado.
+map.unclaim_not_yours = Este chunk pertenece a otra faccion.
+map.unclaim_home = No puedes desreclamar el chunk que contiene el hogar de la faccion.
+map.unclaim_failed = No se pudo desreclamar el chunk.
+map.overclaim_success = Chunk enemigo sobrereclamado en ({0}, {1})!
+map.overclaim_not_in_faction = Debes estar en una faccion.
+map.overclaim_not_officer = Solo oficiales y lideres pueden sobrereclamar territorio.
+map.overclaim_already_yours = Ya posees este chunk.
+map.overclaim_ally = No puedes sobrereclamar territorio aliado.
+map.overclaim_has_power = Esta faccion tiene suficiente poder para defender su territorio.
+map.overclaim_max = Has alcanzado tu limite maximo de reclamos.
+map.overclaim_failed = No se pudo sobrereclamar el chunk.
+# ========== Pagina de Crear Faccion ==========
+create.preview_name = Nombre de Tu Faccion
+create.leader_prefix = Lider: {0}
+create.enter_name = Ingresa un nombre para la faccion.
+create.name_too_short = El nombre de faccion debe tener al menos {0} caracteres.
+create.name_too_long = El nombre de faccion no puede exceder {0} caracteres.
+create.name_taken = Ya existe una faccion con este nombre.
+create.tag_length = La etiqueta de faccion debe tener entre {0} y {1} caracteres.
+create.tag_format = La etiqueta de faccion solo puede contener letras y numeros.
+create.desc_too_long = La descripcion no puede exceder {0} caracteres.
+create.created = Faccion {0} creada exitosamente!
+create.created_no_dashboard = Faccion creada pero no se pudo abrir el panel.
+create.invalid_name = Nombre de faccion invalido.
+create.create_failed = No se pudo crear la faccion.
+
+# ========== Paginas de Nuevo Jugador ==========
+newplayer.pending_count = {0} pendientes
+newplayer.received_header = INVITACIONES RECIBIDAS ({0})
+newplayer.requests_header = TUS SOLICITUDES ({0})
+newplayer.no_invites = Sin invitaciones. Explora facciones para encontrar una!
+newplayer.no_requests = Sin solicitudes pendientes.
+newplayer.invited_by = Invitado por: {0}
+newplayer.member_count = {0} miembros
+newplayer.power_count = {0} poder
+newplayer.claim_count = {0} reclamos
+newplayer.awaiting_review = Esperando revision
+newplayer.expires_in = Expira en {0}h
+newplayer.time_just_now = ahora mismo
+newplayer.time_minutes = hace {0} min
+newplayer.time_hours = hace {0}h
+newplayer.time_days = hace {0}d
+newplayer.invalid_faction = Faccion invalida.
+newplayer.invite_expired = Esta invitacion ha expirado o fue revocada.
+newplayer.faction_gone = La faccion ya no existe.
+newplayer.joined = Te uniste a {0}!
+newplayer.faction_full = Esta faccion esta llena.
+newplayer.join_failed = No se pudo unir a la faccion.
+newplayer.invite_declined = Invitacion rechazada.
+newplayer.request_cancelled = Solicitud para unirte a {0} cancelada.
+newplayer.faction_count = {0} facciones
+newplayer.browse_subtitle = Encuentra tu nuevo hogar!
+newplayer.sort_power = Poder
+newplayer.sort_name = Nombre
+newplayer.sort_members = Miembros
+newplayer.btn_accept = Aceptar
+newplayer.btn_pending = Pendiente
+newplayer.btn_join = Unirse
+newplayer.btn_request = Solicitar
+newplayer.invite_only_msg = Esta faccion es solo por invitacion.
+newplayer.welcome_hint = Bienvenido! Usa /f para abrir el menu de facciones.
+newplayer.faction_open_hint = Esta faccion esta abierta! Haz clic en UNIRSE.
+newplayer.already_requested = Ya tienes una solicitud pendiente para esta faccion.
+newplayer.has_invite_hint = Tienes una invitacion de esta faccion! Haz clic en ACEPTAR.
+newplayer.request_sent = Solicitud de ingreso enviada a {0}!
+newplayer.officer_review = Un oficial revisara tu solicitud.
+newplayer.map_hint = Solo Vista - Unete a una faccion para reclamar territorio!
+
+# Ajustes de Jugador
+nav.player_settings = Ajustes
+player_settings.title = Ajustes del Jugador
+player_settings.language_section = Idioma
+player_settings.auto_detect = Detectar automaticamente del cliente
+player_settings.auto_detect_desc = Usa la configuracion de idioma de tu cliente de juego
+player_settings.language_label = Idioma
+player_settings.notifications_section = Notificaciones
+player_settings.territory_alerts = Alertas de Territorio
+player_settings.territory_alerts_desc = Mostrar notificaciones al entrar/salir de territorios
+player_settings.death_announcements = Anuncios de Muerte
+player_settings.death_announcements_desc = Recibir anuncios de ubicacion de muerte de miembros de la faccion
+player_settings.power_notifications = Cambios de Poder
+player_settings.power_notifications_desc = Mostrar mensajes cuando tu poder cambia
+player_settings.language_changed = Idioma cambiado a {0}
+player_settings.pref_enabled = {0} activado
+player_settings.pref_disabled = {0} desactivado

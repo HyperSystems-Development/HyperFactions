@@ -1,0 +1,447 @@
+# HyperFactions - Traducciones al Espanol
+# Formato: clave = valor (o clave = "valor entre comillas")
+# Nota: Las claves se prefijan automaticamente con "hyperfactions." por el I18nModule de Hytale
+# Marcadores: {0}, {1}, etc.
+
+# ========== Comun ==========
+common.no_permission = No tienes permiso para hacer eso.
+common.not_in_faction = No estas en una faccion.
+common.already_in_faction = Ya estas en una faccion.
+common.player_not_found = Jugador no encontrado.
+common.faction_not_found = Faccion no encontrada.
+common.player_not_online = Ese jugador no esta conectado.
+common.must_be_leader = Solo el lider de la faccion puede hacer eso.
+common.must_be_officer = Debes ser Oficial o Lider para hacer eso.
+common.combat_tagged = No puedes hacer eso mientras estas en combate.
+common.cancel = Cancelar
+common.confirm = Confirmar
+common.save = Guardar
+common.close = Cerrar
+common.yes = Si
+common.no = No
+common.loading = Cargando...
+common.online = Conectado
+common.offline = Desconectado
+common.enabled = Activado
+common.disabled = Desactivado
+common.none = Ninguno
+common.page = Pagina {0} de {1}
+common.unknown = Desconocido
+common.error_generic = Algo salio mal. Intentalo de nuevo.
+common.gui_fallback = No se pudo abrir la interfaz. Usa /f help para ver los comandos.
+common.admin_prefix = [Admin]
+common.location_error = No se pudo determinar tu ubicacion.
+common.world_error = No se pudo determinar tu mundo.
+common.invalid_id = ID de faccion invalido.
+common.na = N/D
+
+# ========== Comandos - Crear ==========
+cmd.create.no_permission = No tienes permiso para crear facciones.
+cmd.create.usage = Uso: /f create <nombre>
+cmd.create.success = Faccion '{0}' creada!
+cmd.create.already_in_named = Ya estas en {0}.
+cmd.create.use_leave_first = Usa /f leave primero si quieres crear una nueva faccion.
+cmd.create.name_taken = Ese nombre de faccion ya esta en uso.
+cmd.create.name_too_short = El nombre de la faccion es demasiado corto.
+cmd.create.name_too_long = El nombre de la faccion es demasiado largo.
+cmd.create.failed = No se pudo crear la faccion.
+
+# ========== Comandos - Disolver ==========
+cmd.disband.no_permission = No tienes permiso para disolver facciones.
+cmd.disband.not_leader = Solo el lider de la faccion puede disolverla.
+cmd.disband.confirm_prompt = Estas seguro de que quieres disolver tu faccion?
+cmd.disband.confirm_instruction = Escribe /f disband --text de nuevo en los proximos {0} segundos para confirmar.
+cmd.disband.success = Tu faccion ha sido disuelta.
+cmd.disband.failed = No se pudo disolver la faccion.
+cmd.disband.cancelled = Confirmacion anterior cancelada. Escribe de nuevo para confirmar la disolucion.
+
+# ========== Comandos - Renombrar ==========
+cmd.rename.no_permission = No tienes permiso.
+cmd.rename.not_leader = Solo el lider puede renombrar la faccion.
+cmd.rename.usage = Uso: /f rename <nombre>
+cmd.rename.too_short = El nombre es demasiado corto (min {0} caracteres).
+cmd.rename.too_long = El nombre es demasiado largo (max {0} caracteres).
+cmd.rename.name_taken = Ese nombre ya esta en uso.
+cmd.rename.success = Faccion renombrada a {0}!
+cmd.rename.broadcast = {0} renombro la faccion a {1}
+
+# ========== Comandos - Descripcion ==========
+cmd.desc.no_permission = No tienes permiso.
+cmd.desc.not_officer = Debes ser oficial para establecer la descripcion.
+cmd.desc.set = Descripcion de la faccion establecida!
+cmd.desc.cleared = Descripcion de la faccion borrada.
+
+# ========== Comandos - Abrir / Cerrar ==========
+cmd.open.no_permission = No tienes permiso.
+cmd.open.not_leader = Solo el lider puede cambiar esta configuracion.
+cmd.open.already_open = Tu faccion ya esta abierta.
+cmd.open.success = Tu faccion ahora esta abierta! Cualquiera puede unirse con /f join.
+cmd.open.broadcast = {0} abrio la faccion al ingreso publico.
+cmd.close.no_permission = No tienes permiso.
+cmd.close.not_leader = Solo el lider puede cambiar esta configuracion.
+cmd.close.already_closed = Tu faccion ya esta cerrada.
+cmd.close.success = Tu faccion ahora es solo por invitacion.
+cmd.close.broadcast = {0} cerro la faccion a solo invitacion.
+
+# ========== Comandos - Color ==========
+cmd.color.no_permission = No tienes permiso.
+cmd.color.not_officer = Debes ser oficial para cambiar el color.
+cmd.color.colors_disabled = Los colores de faccion estan desactivados.
+cmd.color.usage = Uso: /f color <codigo|#hex>
+cmd.color.usage_hint = Codigos validos: 0-9, a-f o #RRGGBB hex
+cmd.color.invalid = Color invalido. Usa 0-9, a-f o #RRGGBB.
+cmd.color.success = Color de la faccion actualizado!
+
+# ========== Comandos - Reclamar ==========
+cmd.claim.no_permission = No tienes permiso para reclamar territorio.
+cmd.claim.already_yours = Tu faccion ya posee este chunk.
+cmd.claim.cannot_claim_ally = No puedes reclamar territorio aliado.
+cmd.claim.already_claimed_hint = Este chunk ya esta reclamado. Usa /f overclaim si son vulnerables.
+cmd.claim.success = Chunk reclamado en {0}, {1}!
+cmd.claim.not_officer = Debes ser oficial para reclamar territorio.
+cmd.claim.already_claimed = Este chunk ya esta reclamado.
+cmd.claim.max_claims = Tu faccion alcanzo el maximo de reclamos. Consigue mas poder!
+cmd.claim.not_adjacent = Debes reclamar junto a territorio existente.
+cmd.claim.world_not_allowed = No se permite reclamar en este mundo.
+cmd.claim.orbisguard = Esta area esta protegida por OrbisGuard.
+cmd.claim.zone_protected = Este chunk esta en una zona segura o de guerra.
+cmd.claim.insufficient_power = Tu faccion no tiene suficiente poder para reclamar mas territorio.
+cmd.claim.failed = No se pudo reclamar el chunk.
+
+# ========== Comandos - Invitar ==========
+cmd.invite.no_permission = No tienes permiso para invitar jugadores.
+cmd.invite.not_officer = Debes ser oficial para invitar jugadores.
+cmd.invite.usage = Uso: /f invite <jugador>
+cmd.invite.player_not_found = Jugador '{0}' no encontrado o desconectado.
+cmd.invite.target_in_faction = Ese jugador ya esta en una faccion.
+cmd.invite.sent = Invitaste a {0} a tu faccion.
+cmd.invite.received = Has sido invitado a unirte a {0}!
+cmd.invite.accept_hint = Escribe /f accept {0} para unirte.
+
+# ========== Comandos - Aceptar / Unirse ==========
+cmd.join.no_permission = No tienes permiso para unirte a facciones.
+cmd.join.already_in_named = Ya estas en {0}.
+cmd.join.use_leave_hint = Usa /f leave primero si quieres unirte a otra faccion.
+cmd.join.no_invites = No tienes invitaciones pendientes.
+cmd.join.faction_not_found = Faccion '{0}' no encontrada.
+cmd.join.not_invited = No tienes invitacion de esa faccion.
+cmd.join.faction_gone = Esa faccion ya no existe.
+cmd.join.success = Te has unido a {0}!
+cmd.join.broadcast = {0} se ha unido a la faccion!
+cmd.join.faction_full = Esa faccion esta llena.
+cmd.join.failed = No se pudo unir a la faccion.
+
+# ========== Comandos - Expulsar ==========
+cmd.kick.no_permission = No tienes permiso para expulsar miembros.
+cmd.kick.usage = Uso: /f kick <jugador>
+cmd.kick.not_in_your_faction = El jugador '{0}' no esta en tu faccion.
+cmd.kick.success = Expulsaste a {0} de la faccion.
+cmd.kick.broadcast = {0} fue expulsado de la faccion.
+cmd.kick.kicked = Has sido expulsado de la faccion.
+cmd.kick.cannot_kick_higher = No tienes permiso para expulsar a ese jugador.
+cmd.kick.cannot_kick_leader = No puedes expulsar al lider de la faccion.
+cmd.kick.failed = No se pudo expulsar al jugador.
+
+# ========== Comandos - Salir ==========
+cmd.leave.no_permission = No tienes permiso para salir de facciones.
+cmd.leave.confirm_prompt = Estas seguro de que quieres salir de tu faccion?
+cmd.leave.confirm_instruction = Escribe /f leave --text de nuevo en los proximos {0} segundos para confirmar.
+cmd.leave.success = Has salido de tu faccion.
+cmd.leave.broadcast = {0} ha salido de la faccion.
+cmd.leave.failed = No se pudo salir de la faccion.
+cmd.leave.cancelled = Confirmacion anterior cancelada. Escribe de nuevo para confirmar la salida.
+
+# ========== Comandos - Promover / Degradar / Transferir ==========
+cmd.rank.promote_no_permission = No tienes permiso para promover miembros.
+cmd.rank.promote_usage = Uso: /f promote <jugador>
+cmd.rank.promoted = {0} promovido a {1}!
+cmd.rank.promote_broadcast = {0} fue promovido a {1}!
+cmd.rank.already_highest = No se puede promover mas. Usa /f transfer para cambiar de lider.
+cmd.rank.promote_failed = No se pudo promover al jugador.
+cmd.rank.demote_no_permission = No tienes permiso para degradar miembros.
+cmd.rank.demote_usage = Uso: /f demote <jugador>
+cmd.rank.demoted = {0} degradado a {1}.
+cmd.rank.demote_broadcast = {0} fue degradado a {1}.
+cmd.rank.already_lowest = Ese jugador ya es Miembro.
+cmd.rank.demote_failed = No se pudo degradar al jugador.
+cmd.rank.transfer_no_permission = No tienes permiso para transferir el liderazgo.
+cmd.rank.transfer_usage = Uso: /f transfer <jugador>
+cmd.rank.player_not_in_faction = Jugador no encontrado en tu faccion.
+cmd.rank.transfer_confirm = Estas seguro de que quieres transferir el liderazgo a {0}?
+cmd.rank.transfer_confirm_instruction = Escribe /f transfer {0} --text de nuevo en los proximos {1} segundos para confirmar.
+cmd.rank.transferred = Liderazgo transferido a {0}!
+cmd.rank.transfer_broadcast = {0} ahora es el lider de la faccion!
+cmd.rank.transfer_failed = No se pudo transferir el liderazgo.
+cmd.rank.transfer_cancelled = Confirmacion anterior cancelada. Escribe de nuevo para confirmar la transferencia.
+
+# ========== Comandos - Desreclamar ==========
+cmd.unclaim.no_permission = No tienes permiso para desreclamar territorio.
+cmd.unclaim.success = Chunk desreclamado en {0}, {1}.
+cmd.unclaim.not_officer = Debes ser oficial para desreclamar territorio.
+cmd.unclaim.chunk_not_claimed = Este chunk no esta reclamado.
+cmd.unclaim.not_your_claim = Tu faccion no posee este chunk.
+cmd.unclaim.cannot_unclaim_home = No puedes desreclamar el chunk con el hogar de la faccion.
+cmd.unclaim.would_disconnect = No se puede desreclamar - desconectaria tu territorio.
+cmd.unclaim.failed = No se pudo desreclamar el chunk.
+
+# ========== Comandos - Sobrereclamar ==========
+cmd.overclaim.no_permission = No tienes permiso para sobrereclamar territorio.
+cmd.overclaim.success = Territorio enemigo sobrereclamado!
+cmd.overclaim.not_officer = Debes ser oficial para sobrereclamar.
+cmd.overclaim.not_claimed = Este chunk no esta reclamado. Usa /f claim.
+cmd.overclaim.own_chunk = Tu faccion ya posee este chunk.
+cmd.overclaim.ally = No puedes sobrereclamar territorio aliado.
+cmd.overclaim.target_has_power = Esta faccion aun tiene suficiente poder.
+cmd.overclaim.failed = No se pudo sobrereclamar.
+
+# ========== Comandos - Atrapado ==========
+cmd.stuck.no_permission = No tienes permiso para usar /f stuck.
+cmd.stuck.not_stuck = No estas atrapado - esto es territorio salvaje.
+cmd.stuck.combat_tagged = No puedes usar /f stuck mientras estas en combate!
+cmd.stuck.no_safe = No se encontro una ubicacion segura.
+cmd.stuck.teleporting = Teletransportandote a un lugar seguro en {0} segundos. No te muevas!
+
+# ========== Comandos - Hogar ==========
+cmd.home.no_permission = No tienes permiso para teletransportarte al hogar de la faccion.
+cmd.home.no_home = Tu faccion no tiene hogar establecido.
+cmd.home.combat_tagged = No puedes teletransportarte mientras estas en combate!
+cmd.home.teleported = Teletransportado al hogar de la faccion!
+
+# ========== Comandos - Establecer Hogar ==========
+cmd.sethome.no_permission = No tienes permiso para establecer el hogar de la faccion.
+cmd.sethome.world_not_allowed = No se puede establecer el hogar en este mundo.
+cmd.sethome.not_in_territory = Solo puedes establecer el hogar en el territorio de tu faccion.
+cmd.sethome.set = Hogar de la faccion establecido!
+cmd.sethome.broadcast = {0} establecio el hogar de la faccion.
+cmd.sethome.not_officer = Debes ser oficial para establecer el hogar.
+cmd.sethome.failed = No se pudo establecer el hogar.
+
+# ========== Comandos - Eliminar Hogar ==========
+cmd.delhome.no_permission = No tienes permiso para eliminar el hogar de la faccion.
+cmd.delhome.no_home = Tu faccion no tiene un hogar establecido.
+cmd.delhome.deleted = Hogar de la faccion eliminado!
+cmd.delhome.broadcast = {0} elimino el hogar de la faccion.
+cmd.delhome.not_officer = Debes ser oficial para eliminar el hogar.
+cmd.delhome.failed = No se pudo eliminar el hogar.
+
+# ========== Comandos - Relacion (Aliado/Enemigo/Neutral/Relaciones) ==========
+cmd.relation.ally_no_permission = No tienes permiso para gestionar alianzas.
+cmd.relation.ally_usage = Uso: /f ally <faccion>
+cmd.relation.ally_sent = Solicitud de alianza enviada a {0}!
+cmd.relation.ally_formed = Ahora son aliados con {0}!
+cmd.relation.already_ally = Ya son aliados con esa faccion.
+cmd.relation.ally_failed = No se pudo enviar la solicitud de alianza.
+cmd.relation.enemy_no_permission = No tienes permiso para declarar enemigos.
+cmd.relation.enemy_usage = Uso: /f enemy <faccion>
+cmd.relation.enemy_declared = {0} ahora es tu enemigo!
+cmd.relation.already_enemy = Ya son enemigos con esa faccion.
+cmd.relation.max_enemies = Has alcanzado el numero maximo de enemigos.
+cmd.relation.enemy_failed = No se pudo establecer como enemigo.
+cmd.relation.neutral_no_permission = No tienes permiso para establecer relaciones neutrales.
+cmd.relation.neutral_usage = Uso: /f neutral <faccion>
+cmd.relation.neutral_set = Tu faccion ahora es neutral con {0}.
+cmd.relation.already_neutral = Ya son neutrales con esa faccion.
+cmd.relation.neutral_failed = No se pudo establecer como neutral.
+cmd.relation.cannot_self = No puedes aliarte contigo mismo.
+cmd.relation.max_allies = Has alcanzado el numero maximo de aliados.
+cmd.relation.view_no_permission = No tienes permiso para ver las relaciones.
+cmd.relation.header = === Relaciones de la Faccion ===
+cmd.relation.allies_count = Aliados ({0}):
+cmd.relation.enemies_count = Enemigos ({0}):
+cmd.relation.list_entry = - {0}
+
+# ========== Comandos - Chat ==========
+cmd.chat.usage = Uso: /f c [f|a|off]
+cmd.chat.no_permission = No tienes permiso para ese modo de chat.
+cmd.chat.mode_set = Modo de chat establecido a {0}
+
+# ========== Comandos - Invitaciones ==========
+cmd.invites.not_officer = Debes ser oficial para gestionar invitaciones.
+cmd.invites.header = === Invitaciones de la Faccion ===
+cmd.invites.no_pending = No hay invitaciones ni solicitudes pendientes.
+cmd.invites.outgoing = Invitaciones Enviadas:
+cmd.invites.outgoing_entry = {0} (invitado por {1})
+cmd.invites.requests = Solicitudes de Ingreso:
+cmd.invites.request_entry = {0}{1}
+cmd.invites.your_invites_header = === Tus Invitaciones ===
+cmd.invites.no_invites = No tienes invitaciones pendientes.
+cmd.invites.invite_entry = {0} - Usa /f accept {1}
+
+# ========== Comandos - Solicitud ==========
+cmd.request.no_permission = No tienes permiso para solicitar membresia en facciones.
+cmd.request.already_in_named = Ya estas en {0}.
+cmd.request.use_leave_hint = Usa /f leave primero si quieres unirte a otra faccion.
+cmd.request.usage = Uso: /f request <faccion> [mensaje]
+cmd.request.faction_open = Esa faccion esta abierta! Usa /f accept {0} para unirte directamente.
+cmd.request.already_requested = Ya tienes una solicitud pendiente para esa faccion.
+cmd.request.has_invite = Has sido invitado a esa faccion! Usa /f accept {0} para unirte.
+cmd.request.sent = Solicitud de ingreso enviada a {0}!
+cmd.request.your_message = Tu mensaje: "{0}"
+cmd.request.officer_review = Un oficial revisara tu solicitud.
+cmd.request.officer_notify = {0} ha solicitado unirse a tu faccion!
+cmd.request.officer_review_hint = Usa /f gui > Invitaciones para revisar.
+
+# ========== Comandos - Info ==========
+cmd.info.faction_header = === {0} ===
+cmd.info.player_header = === {0} ===
+cmd.info.no_permission = No tienes permiso para ver informacion de facciones.
+cmd.info.faction_not_found = Faccion '{0}' no encontrada.
+cmd.info.not_in_faction_hint = No estas en una faccion. Usa /f info <faccion>
+cmd.info.leader = Lider: {0}
+cmd.info.members = Miembros: {0}/{1}
+cmd.info.power = Poder: {0}
+cmd.info.claims = Reclamos: {0}
+cmd.info.raidable = VULNERABLE!
+cmd.info.allies = Aliados: {0}
+cmd.info.enemies = Enemigos: {0}
+cmd.info.they_consider = Ellos te consideran: {0}
+cmd.info.you_consider = Tu los consideras: {0}
+cmd.info.members_no_permission = No tienes permiso para ver los miembros de la faccion.
+cmd.info.members_header = === Miembros de {0} ({1}) ===
+cmd.info.member_online = [Conectado]
+cmd.info.list_no_permission = No tienes permiso para ver la lista de facciones.
+cmd.info.list_empty = No hay facciones.
+cmd.info.list_header = === Facciones ({0}) ===
+cmd.info.list_entry = {0} - {1} miembros, {2} poder
+cmd.info.list_entry_raidable = {0} - {1} miembros, {2} poder [VULNERABLE]
+cmd.info.help_no_permission = No tienes permiso para ver la ayuda.
+cmd.info.who_no_permission = No tienes permiso para ver informacion de jugadores.
+cmd.info.who_faction = Faccion: {0}
+cmd.info.who_role = Rol: {0}
+cmd.info.who_joined = Ingreso: {0}
+cmd.info.who_faction_none = Faccion: Ninguna
+cmd.info.who_power = Poder: {0}
+cmd.info.who_status = Estado: {0}
+cmd.info.who_last_seen = Ultima vez visto: {0}
+cmd.info.map_no_permission = No tienes permiso para ver el mapa.
+cmd.info.map_header = === Mapa de Territorio ===
+cmd.info.map_legend = Leyenda: +Tu /Propio /Aliado /Enemigo -Salvaje
+cmd.info.map_gui_hint = Usa /f gui para el mapa interactivo
+
+# ========== Comandos - Poder ==========
+cmd.power.personal = Poder Personal: {0}/{1}
+cmd.power.faction = Poder de Faccion: {0}/{1}
+cmd.power.death_loss = Perdida por Muerte: {0}
+cmd.power.regen = Velocidad de Regeneracion: {0}/hr
+cmd.power.no_permission = No tienes permiso para ver informacion de poder.
+cmd.power.header = Poder de {0}:
+cmd.power.current = Actual: {0}
+
+# ========== Comandos - Economia ==========
+cmd.economy.balance = Saldo: {0}
+cmd.economy.deposited = Depositaste {0} en la tesoreria de la faccion.
+cmd.economy.withdrawn = Retiraste {0} de la tesoreria de la faccion.
+cmd.economy.transferred = Transferiste {0} a {1}.
+cmd.economy.insufficient = Fondos insuficientes en la tesoreria de la faccion.
+cmd.economy.invalid_amount = Cantidad invalida: {0}
+cmd.economy.economy_disabled = La economia esta desactivada.
+cmd.economy.balance_no_permission = No tienes permiso para ver saldos.
+cmd.economy.treasury_unavailable = La tesoreria no esta disponible.
+cmd.economy.balance_display = Tesoreria de {0}: {1}
+cmd.economy.deposit_no_permission = No tienes permiso para depositar.
+cmd.economy.deposit_faction_denied = No tienes permiso de faccion para depositar.
+cmd.economy.deposit_usage = Uso: /f deposit <cantidad>
+cmd.economy.amount_positive = La cantidad debe ser positiva.
+cmd.economy.wallet_insufficient = No tienes suficiente dinero. Billetera: {0}
+cmd.economy.wallet_withdraw_failed = No se pudo retirar de tu billetera.
+cmd.economy.deposit_failed = No se pudo depositar en la tesoreria. Dinero devuelto.
+cmd.economy.withdraw_no_permission = No tienes permiso para retirar.
+cmd.economy.withdraw_faction_denied = No tienes permiso de faccion para retirar.
+cmd.economy.withdraw_usage = Uso: /f withdraw <cantidad>
+cmd.economy.withdraw_limit_denied = Retiro denegado: {0}
+cmd.economy.wallet_deposit_failed = Advertencia: No se pudo depositar en tu billetera. Contacta a un admin.
+cmd.economy.withdraw_limit_exceeded = Retiro denegado: limite excedido.
+cmd.economy.withdraw_failed = Retiro fallido: {0}
+cmd.economy.transfer_no_permission = No tienes permiso para transferir.
+cmd.economy.transfer_faction_denied = No tienes permiso de faccion para transferir.
+cmd.economy.transfer_usage = Uso: /f money transfer <faccion> <cantidad>
+cmd.economy.transfer_self = No puedes transferir a tu propia faccion.
+cmd.economy.transfer_limit_denied = Transferencia denegada: {0}
+cmd.economy.transfer_limit_exceeded = Transferencia denegada: limite excedido.
+cmd.economy.transfer_failed = Transferencia fallida: {0}
+cmd.economy.log_no_permission = No tienes permiso para ver el registro de transacciones.
+cmd.economy.log_header = Registro de Transacciones (pagina {0}/{1})
+cmd.economy.log_empty = No se encontraron transacciones.
+cmd.economy.money_help_header = Comandos de Tesoreria:
+cmd.economy.money_help_balance = /f money balance [faccion] - Ver saldo
+cmd.economy.money_help_deposit = /f money deposit <cantidad> - Depositar en la tesoreria
+cmd.economy.money_help_withdraw = /f money withdraw <cantidad> - Retirar de la tesoreria
+cmd.economy.money_help_transfer = /f money transfer <faccion> <cantidad> - Transferir entre facciones
+cmd.economy.money_help_log = /f money log [pagina] [tipo] - Ver historial de transacciones
+
+# ========== Proteccion - Frases de Accion ==========
+protection.action.generic = No puedes hacer eso
+protection.action.build = No puedes construir ni romper bloques
+protection.action.interact = No puedes interactuar con eso
+protection.action.door = No puedes usar puertas
+protection.action.container = No puedes abrir contenedores
+protection.action.bench = No puedes usar estaciones de crafteo
+protection.action.processing = No puedes usar estaciones de procesamiento
+protection.action.seat = No puedes usar asientos
+protection.action.light = No puedes encender o apagar luces
+protection.action.teleporter = No puedes usar teletransportadores
+protection.action.crate = No puedes usar cajas
+protection.action.tame = No puedes domesticar criaturas
+protection.action.npc = No puedes interactuar con NPCs
+protection.action.mount = No puedes montar criaturas
+protection.action.pve = No puedes danar criaturas
+protection.action.item_drop = No puedes soltar objetos
+protection.action.item_pickup = No puedes recoger objetos
+
+# ========== Proteccion - Razones de Denegacion ==========
+protection.denied.safezone = {0} en una Zona Segura.
+protection.denied.warzone = {0} en una Zona de Guerra.
+protection.denied.enemy_claim = {0} en territorio enemigo.
+protection.denied.claimed = {0} en territorio reclamado.
+protection.denied.here = {0} aqui.
+protection.denied.zone = {0} en esta zona.
+protection.denied.faction_perm = {0} aqui. (Permiso de faccion: {1})
+protection.denied.ally_territory = {0} aqui. (Territorio aliado)
+protection.denied.error = Error de proteccion - accion bloqueada por seguridad.
+
+# ========== Proteccion - PvP ==========
+protection.pvp.safezone = El PvP esta desactivado en Zonas Seguras.
+protection.pvp.same_faction = No puedes atacar a miembros de tu faccion.
+protection.pvp.ally = No puedes atacar a aliados.
+protection.pvp.spawn_protected = Ese jugador tiene proteccion de aparicion.
+protection.pvp.territory_disabled = El PvP esta desactivado en este territorio.
+protection.pvp.generic = No puedes atacar a este jugador.
+
+# ========== Proteccion - Dano a Entidades ==========
+protection.mob_damage_disabled = El dano a mobs esta desactivado en esta zona.
+protection.pve_damage_disabled = El dano PvE esta desactivado en esta zona.
+protection.pve_territory_denied = No puedes danar mobs en este territorio.
+
+# ========== Proteccion - Etiqueta de Combate ==========
+protection.combat_tag_command = No puedes usar ese comando mientras estas en combate.
+
+# ========== Anuncios del Servidor ==========
+# Estos se transmiten a todos los jugadores conectados para eventos significativos de facciones.
+# {0}, {1} = valores dinamicos (nombres de facciones, nombres de jugadores)
+server_announce.faction_created = {0} ha fundado la faccion {1}!
+server_announce.faction_disbanded = La faccion {0} ha sido disuelta!
+server_announce.leadership_transfer = {0} ahora es el lider de {1}!
+server_announce.overclaim = {0} ha sobrereclamado territorio de {1}!
+server_announce.war_declared = {0} ha declarado la guerra a {1}!
+server_announce.alliance_formed = {0} y {1} ahora son aliados!
+server_announce.alliance_broken = {0} y {1} ya no son aliados!
+
+# ========== Sistema de Teletransporte ==========
+teleport.cooldown_wait = Debes esperar {0} antes de teletransportarte de nuevo.
+teleport.warmup_start = Teletransportandote al hogar de la faccion en {0} segundos...
+teleport.combat_cancelled = Teletransporte cancelado - estas en combate!
+teleport.success_default = Teletransportado al hogar de la faccion!
+teleport.no_home = Tu faccion no tiene hogar establecido.
+teleport.world_not_found = Mundo no encontrado.
+teleport.failed = El teletransporte fallo.
+teleport.countdown = Teletransporte en {0} segundos...
+teleport.countdown_one = Teletransporte en 1 segundo...
+teleport.moved_cancelled = Teletransporte cancelado - te moviste!
+teleport.damage_cancelled = Teletransporte cancelado - recibiste dano!
+teleport.mount_teleport_blocked = No puedes teletransportarte a esa zona mientras estas montado.
+teleport.mount_entry_blocked = No puedes entrar a esta zona mientras estas montado.
+
+# ========== Visualizacion del Chat ==========
+chat.display.public = Publico
+chat.display.faction = Faccion
+chat.display.ally = Aliado

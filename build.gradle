@@ -145,6 +145,68 @@ tasks.register('generateHelpLang', JavaExec) {
 
 sourceSets.main.resources.srcDir(layout.buildDirectory.dir('generated/resources'))
 
+// Check translations: compare keys in en-US against other locales
+tasks.register('checkTranslations') {
+    group = 'verification'
+    description = 'Report missing translation keys compared to en-US'
+    doLast {
+        def langDir = file('src/main/resources/Server/Languages')
+        def enDir = new File(langDir, 'en-US')
+        if (!enDir.exists()) {
+            println "No en-US directory found at ${enDir.absolutePath}"
+            return
+        }
+        // Collect en-US keys per file
+        def enKeys = [:]
+        enDir.listFiles({ f -> f.name.endsWith('.lang') } as FileFilter).each { f ->
+            def keys = []
+            f.eachLine { line ->
+                line = line.trim()
+                if (line && !line.startsWith('#') && line.contains('=')) {
+                    keys << line.substring(0, line.indexOf('=')).trim()
+                }
+            }
+            enKeys[f.name] = keys
+        }
+        // Check each locale
+        def locales = langDir.listFiles({ f -> f.isDirectory() && f.name != 'en-US' } as FileFilter)
+        if (!locales) {
+            println "No non-English locales found."
+            return
+        }
+        def totalMissing = 0
+        locales.sort { it.name }.each { localeDir ->
+            def localeMissing = 0
+            enKeys.each { fileName, keys ->
+                def localeFile = new File(localeDir, fileName)
+                if (!localeFile.exists()) {
+                    println "[${localeDir.name}] MISSING FILE: ${fileName} (${keys.size()} keys)"
+                    localeMissing += keys.size()
+                    return
+                }
+                def localeKeys = []
+                localeFile.eachLine { line ->
+                    line = line.trim()
+                    if (line && !line.startsWith('#') && line.contains('=')) {
+                        localeKeys << line.substring(0, line.indexOf('=')).trim()
+                    }
+                }
+                def missing = keys.findAll { !localeKeys.contains(it) }
+                if (missing) {
+                    println "[${localeDir.name}] ${fileName}: ${missing.size()} missing keys"
+                    missing.each { println "  - ${it}" }
+                    localeMissing += missing.size()
+                }
+            }
+            if (localeMissing == 0) {
+                println "[${localeDir.name}] All keys present"
+            }
+            totalMissing += localeMissing
+        }
+        println "\nTotal missing keys across all locales: ${totalMissing}"
+    }
+}
+
 // Expand version placeholder in manifest.json
 processResources {
     def ver = buildVersion
