@@ -136,10 +136,10 @@ tasks.register('generateHelpLang', JavaExec) {
     classpath = sourceSets.main.compileClasspath + files(sourceSets.main.java.classesDirectory)
     mainClass = 'com.hyperfactions.build.HelpLangGenerator'
     args = [
-        file('src/main/help').absolutePath,
+        file('src/main/resources/Server/Languages').absolutePath,
         layout.buildDirectory.dir('generated/resources').get().asFile.absolutePath
     ]
-    inputs.dir(file('src/main/help'))
+    inputs.dir(file('src/main/resources/Server/Languages'))
     outputs.dir(layout.buildDirectory.dir('generated/resources'))
 }
 

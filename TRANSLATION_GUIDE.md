@@ -11,7 +11,7 @@ This guide explains how to contribute translations for HyperFactions.
    ```
 
 2. Edit the `.lang` files in `src/main/resources/Server/Languages/<locale>/`
-3. Edit the help markdown files in `src/main/help/<locale>/`
+3. Edit the help markdown files in `src/main/resources/Server/Languages/<locale>/help/`
 4. Build to verify: `./gradlew :HyperFactions:shadowJar`
 5. Submit a pull request
 
@@ -59,7 +59,7 @@ key.with.placeholder = Hello {0}, you have {1} power
 
 ### Help Markdown Files
 
-Located at `src/main/help/<locale>/<category>/<topic>.md`.
+Located at `src/main/resources/Server/Languages/<locale>/help/<category>/<topic>.md`.
 
 Each file has YAML frontmatter and markdown content:
 

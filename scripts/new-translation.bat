@@ -22,8 +22,8 @@ popd
 set "LANG_SRC=%PROJECT_ROOT%\src\main\resources\Server\Languages\en-US"
 set "LANG_DST=%PROJECT_ROOT%\src\main\resources\Server\Languages\%LOCALE%"
 
-set "HELP_SRC=%PROJECT_ROOT%\src\main\help\en-US"
-set "HELP_DST=%PROJECT_ROOT%\src\main\help\%LOCALE%"
+set "HELP_SRC=%PROJECT_ROOT%\src\main\resources\Server\Languages\en-US\help"
+set "HELP_DST=%PROJECT_ROOT%\src\main\resources\Server\Languages\%LOCALE%\help"
 
 REM --- Validate source exists ---
 if not exist "%LANG_SRC%\" (
@@ -66,10 +66,10 @@ echo.
 echo === Scaffold Summary ===
 echo Locale:      %LOCALE%
 echo Lang files:  %LANG_COUNT% copied to src\main\resources\Server\Languages\%LOCALE%\
-echo Help files:  %HELP_COUNT% copied to src\main\help\%LOCALE%\
+echo Help files:  %HELP_COUNT% copied to src\main\resources\Server\Languages\%LOCALE%\help\
 echo.
 echo Next steps:
 echo   1. Add a header comment to each .lang file indicating the language and status
 echo   2. Translate the values (keep keys and {0} placeholders unchanged)
-echo   3. Translate the help markdown files
+echo   3. Translate the help markdown files in Server\Languages\%LOCALE%\help\
 echo   4. Test in-game with /f settings to switch language
