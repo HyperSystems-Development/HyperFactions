@@ -580,3 +580,59 @@ gui.ver_kyuubisoft = KyuubiSoft
 gui.ver_placeholder_api = PlaceholderAPI
 gui.ver_wiflow_papi = WiFlow PAPI
 gui.ver_treasury = Tesoreria
+
+# Etiquetas de modal de desreclamar todo
+gui.unclaim_title = Desreclamar Todo el Territorio
+gui.unclaim_confirm_msg1 = Estas seguro de que deseas desreclamar todos los
+gui.unclaim_confirm_msg2 = de
+gui.unclaim_warning = Esta accion no se puede deshacer!
+gui.unclaim_all = Desreclamar Todo
+
+# Etiquetas de modal de renombrar zona
+gui.zren_title = Renombrar Zona
+gui.zren_current = Actual:
+gui.zren_new_name = Nuevo Nombre:
+
+# Etiquetas de modal de cambiar tipo de zona
+gui.ztype_title = Cambiar Tipo de Zona
+gui.ztype_zone_label = Zona:
+gui.ztype_current = Actual:
+gui.ztype_will_become = se convertira en
+gui.ztype_new = Nuevo:
+gui.ztype_warning1 = Diferentes tipos de zona tienen diferentes valores de flags por defecto.
+gui.ztype_warning2 = Elige como manejar los ajustes de flags existentes:
+gui.ztype_keep_desc = Mantener anulaciones personalizadas
+gui.ztype_keep_flags = Mantener Flags
+gui.ztype_reset_desc = Usar valores por defecto del nuevo tipo
+gui.ztype_reset_flags = Restablecer Flags
+
+# Etiquetas de asistente de creacion de zona
+gui.czw_title = Crear Zona
+gui.czw_back = < Volver
+gui.czw_create = Crear Zona
+gui.czw_zone_type = Tipo de Zona
+gui.czw_safe_desc = Protegido, sin PvP
+gui.czw_war_desc = Combate, PvP habilitado
+gui.czw_zone_name = Nombre de Zona
+gui.czw_name_desc = Ingresa un nombre unico para la zona
+gui.czw_claim_method = Metodo de Reclamo
+gui.czw_method_none_desc = Crear zona vacia
+gui.czw_method_none = Sin reclamos
+gui.czw_method_single_desc = Tu chunk actual
+gui.czw_method_single = Chunk unico
+gui.czw_method_circle_desc = Area circular
+gui.czw_method_circle = Radio circular
+gui.czw_method_square_desc = Area cuadrada
+gui.czw_method_square = Radio cuadrado
+gui.czw_method_map_desc = Editor de chunks interactivo
+gui.czw_method_map = Usar mapa de reclamos
+gui.czw_radius = Radio
+gui.czw_custom_radius = Personalizado (1-50):
+gui.czw_flags = Flags
+gui.czw_flags_defaults_desc = Basado en tipo de zona
+gui.czw_flags_defaults = Usar por defecto
+gui.czw_flags_customize_desc = Abrir ajustes despues
+gui.czw_flags_customize = Personalizar
+
+# Etiquetas comunes de botones
+gui.cancel = Cancelar

@@ -2068,6 +2068,59 @@ public final class MessageKeys {
     public static final String GUI_VER_WIFLOW_PAPI = "hyperfactions_admin.gui.ver_wiflow_papi";
     public static final String GUI_VER_TREASURY = "hyperfactions_admin.gui.ver_treasury";
 
+    // Unclaim all confirm modal labels
+    public static final String GUI_UNCLAIM_TITLE = "hyperfactions_admin.gui.unclaim_title";
+    public static final String GUI_UNCLAIM_CONFIRM_MSG1 = "hyperfactions_admin.gui.unclaim_confirm_msg1";
+    public static final String GUI_UNCLAIM_CONFIRM_MSG2 = "hyperfactions_admin.gui.unclaim_confirm_msg2";
+    public static final String GUI_UNCLAIM_WARNING = "hyperfactions_admin.gui.unclaim_warning";
+    public static final String GUI_UNCLAIM_ALL = "hyperfactions_admin.gui.unclaim_all";
+
+    // Zone rename modal labels
+    public static final String GUI_ZREN_TITLE = "hyperfactions_admin.gui.zren_title";
+    public static final String GUI_ZREN_CURRENT = "hyperfactions_admin.gui.zren_current";
+    public static final String GUI_ZREN_NEW_NAME = "hyperfactions_admin.gui.zren_new_name";
+
+    // Zone change type modal labels
+    public static final String GUI_ZTYPE_TITLE = "hyperfactions_admin.gui.ztype_title";
+    public static final String GUI_ZTYPE_ZONE_LABEL = "hyperfactions_admin.gui.ztype_zone_label";
+    public static final String GUI_ZTYPE_CURRENT = "hyperfactions_admin.gui.ztype_current";
+    public static final String GUI_ZTYPE_WILL_BECOME = "hyperfactions_admin.gui.ztype_will_become";
+    public static final String GUI_ZTYPE_NEW = "hyperfactions_admin.gui.ztype_new";
+    public static final String GUI_ZTYPE_WARNING1 = "hyperfactions_admin.gui.ztype_warning1";
+    public static final String GUI_ZTYPE_WARNING2 = "hyperfactions_admin.gui.ztype_warning2";
+    public static final String GUI_ZTYPE_KEEP_DESC = "hyperfactions_admin.gui.ztype_keep_desc";
+    public static final String GUI_ZTYPE_KEEP_FLAGS = "hyperfactions_admin.gui.ztype_keep_flags";
+    public static final String GUI_ZTYPE_RESET_DESC = "hyperfactions_admin.gui.ztype_reset_desc";
+    public static final String GUI_ZTYPE_RESET_FLAGS = "hyperfactions_admin.gui.ztype_reset_flags";
+
+    // Create zone wizard labels
+    public static final String GUI_CZW_TITLE = "hyperfactions_admin.gui.czw_title";
+    public static final String GUI_CZW_BACK = "hyperfactions_admin.gui.czw_back";
+    public static final String GUI_CZW_CREATE = "hyperfactions_admin.gui.czw_create";
+    public static final String GUI_CZW_ZONE_TYPE = "hyperfactions_admin.gui.czw_zone_type";
+    public static final String GUI_CZW_SAFE_DESC = "hyperfactions_admin.gui.czw_safe_desc";
+    public static final String GUI_CZW_WAR_DESC = "hyperfactions_admin.gui.czw_war_desc";
+    public static final String GUI_CZW_ZONE_NAME = "hyperfactions_admin.gui.czw_zone_name";
+    public static final String GUI_CZW_NAME_DESC = "hyperfactions_admin.gui.czw_name_desc";
+    public static final String GUI_CZW_CLAIM_METHOD = "hyperfactions_admin.gui.czw_claim_method";
+    public static final String GUI_CZW_METHOD_NONE_DESC = "hyperfactions_admin.gui.czw_method_none_desc";
+    public static final String GUI_CZW_METHOD_NONE = "hyperfactions_admin.gui.czw_method_none";
+    public static final String GUI_CZW_METHOD_SINGLE_DESC = "hyperfactions_admin.gui.czw_method_single_desc";
+    public static final String GUI_CZW_METHOD_SINGLE = "hyperfactions_admin.gui.czw_method_single";
+    public static final String GUI_CZW_METHOD_CIRCLE_DESC = "hyperfactions_admin.gui.czw_method_circle_desc";
+    public static final String GUI_CZW_METHOD_CIRCLE = "hyperfactions_admin.gui.czw_method_circle";
+    public static final String GUI_CZW_METHOD_SQUARE_DESC = "hyperfactions_admin.gui.czw_method_square_desc";
+    public static final String GUI_CZW_METHOD_SQUARE = "hyperfactions_admin.gui.czw_method_square";
+    public static final String GUI_CZW_METHOD_MAP_DESC = "hyperfactions_admin.gui.czw_method_map_desc";
+    public static final String GUI_CZW_METHOD_MAP = "hyperfactions_admin.gui.czw_method_map";
+    public static final String GUI_CZW_RADIUS = "hyperfactions_admin.gui.czw_radius";
+    public static final String GUI_CZW_CUSTOM_RADIUS = "hyperfactions_admin.gui.czw_custom_radius";
+    public static final String GUI_CZW_FLAGS = "hyperfactions_admin.gui.czw_flags";
+    public static final String GUI_CZW_FLAGS_DEFAULTS_DESC = "hyperfactions_admin.gui.czw_flags_defaults_desc";
+    public static final String GUI_CZW_FLAGS_DEFAULTS = "hyperfactions_admin.gui.czw_flags_defaults";
+    public static final String GUI_CZW_FLAGS_CUSTOMIZE_DESC = "hyperfactions_admin.gui.czw_flags_customize_desc";
+    public static final String GUI_CZW_FLAGS_CUSTOMIZE = "hyperfactions_admin.gui.czw_flags_customize";
+
     private AdminGui() {}
   }
 

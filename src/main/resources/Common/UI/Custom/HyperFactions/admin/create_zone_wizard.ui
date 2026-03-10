@@ -61,7 +61,7 @@ $C.@Container {
         Background: (Color: #1a2a3a);
         Padding: (Left: 12, Right: 12, Top: 10, Bottom: 10);
 
-        Label {
+        Label #ZoneTypeHeader {
           Text: "Zone Type";
           Style: (FontSize: 11, TextColor: #00FFFF, RenderBold: true);
           Anchor: (Height: 14, Bottom: 8);
@@ -76,7 +76,7 @@ $C.@Container {
             LayoutMode: Top;
             FlexWeight: 1;
 
-            Label {
+            Label #SafeZoneDesc {
               Text: "Protected, no PvP";
               Style: (FontSize: 10, TextColor: #AAAAAA, HorizontalAlignment: Center);
               Anchor: (Height: 16, Bottom: 4);
@@ -95,7 +95,7 @@ $C.@Container {
             LayoutMode: Top;
             FlexWeight: 1;
 
-            Label {
+            Label #WarZoneDesc {
               Text: "Combat, PvP enabled";
               Style: (FontSize: 10, TextColor: #AAAAAA, HorizontalAlignment: Center);
               Anchor: (Height: 16, Bottom: 4);
@@ -119,13 +119,13 @@ $C.@Container {
         Background: (Color: #1a2a3a);
         Padding: (Left: 12, Right: 12, Top: 10, Bottom: 10);
 
-        Label {
+        Label #ZoneNameHeader {
           Text: "Zone Name";
           Style: (FontSize: 11, TextColor: #00FFFF, RenderBold: true);
           Anchor: (Height: 14, Bottom: 6);
         }
 
-        Label {
+        Label #ZoneNameDesc {
           Text: "Enter a unique name for the zone";
           Style: (FontSize: 10, TextColor: #AAAAAA);
           Anchor: (Height: 16, Bottom: 6);
@@ -151,7 +151,7 @@ $C.@Container {
         Background: (Color: #1a2a3a);
         Padding: (Left: 12, Right: 12, Top: 10, Bottom: 10);
 
-        Label {
+        Label #ClaimMethodHeader {
           Text: "Claiming Method";
           Style: (FontSize: 11, TextColor: #00FFFF, RenderBold: true);
           Anchor: (Height: 14, Bottom: 8);
@@ -166,7 +166,7 @@ $C.@Container {
             LayoutMode: Top;
             FlexWeight: 1;
 
-            Label {
+            Label #MethodNoneDesc {
               Text: "Create empty zone";
               Style: (FontSize: 9, TextColor: #AAAAAA, HorizontalAlignment: Center);
               Anchor: (Height: 14, Bottom: 2);
@@ -184,7 +184,7 @@ $C.@Container {
             LayoutMode: Top;
             FlexWeight: 1;
 
-            Label {
+            Label #MethodSingleDesc {
               Text: "Your current chunk";
               Style: (FontSize: 9, TextColor: #AAAAAA, HorizontalAlignment: Center);
               Anchor: (Height: 14, Bottom: 2);
@@ -206,7 +206,7 @@ $C.@Container {
             LayoutMode: Top;
             FlexWeight: 1;
 
-            Label {
+            Label #MethodCircleDesc {
               Text: "Circular area";
               Style: (FontSize: 9, TextColor: #AAAAAA, HorizontalAlignment: Center);
               Anchor: (Height: 14, Bottom: 2);
@@ -224,7 +224,7 @@ $C.@Container {
             LayoutMode: Top;
             FlexWeight: 1;
 
-            Label {
+            Label #MethodSquareDesc {
               Text: "Square area";
               Style: (FontSize: 9, TextColor: #AAAAAA, HorizontalAlignment: Center);
               Anchor: (Height: 14, Bottom: 2);
@@ -242,7 +242,7 @@ $C.@Container {
           LayoutMode: Top;
           Anchor: (Height: 44);
 
-          Label {
+          Label #MethodMapDesc {
             Text: "Interactive chunk editor";
             Style: (FontSize: 9, TextColor: #AAAAAA, HorizontalAlignment: Center);
             Anchor: (Height: 14, Bottom: 2);
@@ -273,7 +273,7 @@ $C.@Container {
             LayoutMode: Left;
             Anchor: (Height: 14, Bottom: 8);
 
-            Label {
+            Label #RadiusHeader {
               Text: "Radius";
               Style: (FontSize: 11, TextColor: #00FFFF, RenderBold: true);
             }
@@ -325,7 +325,7 @@ $C.@Container {
             LayoutMode: Left;
             Anchor: (Height: 28);
 
-            Label {
+            Label #CustomRadiusLabel {
               Text: "Custom (1-50):";
               Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
               Anchor: (Width: 85);
@@ -349,7 +349,7 @@ $C.@Container {
           Background: (Color: #1a2a3a);
           Padding: (Left: 12, Right: 12, Top: 10, Bottom: 10);
 
-          Label {
+          Label #FlagsHeader {
             Text: "Flags";
             Style: (FontSize: 11, TextColor: #00FFFF, RenderBold: true);
             Anchor: (Height: 14, Bottom: 8);
@@ -363,7 +363,7 @@ $C.@Container {
               LayoutMode: Top;
               FlexWeight: 1;
 
-              Label {
+              Label #FlagsDefaultsDesc {
                 Text: "Based on zone type";
                 Style: (FontSize: 9, TextColor: #AAAAAA, HorizontalAlignment: Center);
                 Anchor: (Height: 14, Bottom: 2);
@@ -381,7 +381,7 @@ $C.@Container {
               LayoutMode: Top;
               FlexWeight: 1;
 
-              Label {
+              Label #FlagsCustomizeDesc {
                 Text: "Open settings after";
                 Style: (FontSize: 9, TextColor: #AAAAAA, HorizontalAlignment: Center);
                 Anchor: (Height: 14, Bottom: 2);

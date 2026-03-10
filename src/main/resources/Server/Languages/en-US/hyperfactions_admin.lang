@@ -580,3 +580,59 @@ gui.ver_kyuubisoft = KyuubiSoft
 gui.ver_placeholder_api = PlaceholderAPI
 gui.ver_wiflow_papi = WiFlow PAPI
 gui.ver_treasury = Treasury
+
+# Unclaim all confirm modal labels
+gui.unclaim_title = Unclaim All Territory
+gui.unclaim_confirm_msg1 = Are you sure you want to unclaim all
+gui.unclaim_confirm_msg2 = from
+gui.unclaim_warning = This action cannot be undone!
+gui.unclaim_all = Unclaim All
+
+# Zone rename modal labels
+gui.zren_title = Rename Zone
+gui.zren_current = Current:
+gui.zren_new_name = New Name:
+
+# Zone change type modal labels
+gui.ztype_title = Change Zone Type
+gui.ztype_zone_label = Zone:
+gui.ztype_current = Current:
+gui.ztype_will_become = will become
+gui.ztype_new = New:
+gui.ztype_warning1 = Different zone types have different default flag values.
+gui.ztype_warning2 = Choose how to handle existing flag settings:
+gui.ztype_keep_desc = Keep custom overrides
+gui.ztype_keep_flags = Keep Flags
+gui.ztype_reset_desc = Use new type defaults
+gui.ztype_reset_flags = Reset Flags
+
+# Create zone wizard labels
+gui.czw_title = Create Zone
+gui.czw_back = < Back
+gui.czw_create = Create Zone
+gui.czw_zone_type = Zone Type
+gui.czw_safe_desc = Protected, no PvP
+gui.czw_war_desc = Combat, PvP enabled
+gui.czw_zone_name = Zone Name
+gui.czw_name_desc = Enter a unique name for the zone
+gui.czw_claim_method = Claiming Method
+gui.czw_method_none_desc = Create empty zone
+gui.czw_method_none = No claims
+gui.czw_method_single_desc = Your current chunk
+gui.czw_method_single = Single chunk
+gui.czw_method_circle_desc = Circular area
+gui.czw_method_circle = Circle radius
+gui.czw_method_square_desc = Square area
+gui.czw_method_square = Square radius
+gui.czw_method_map_desc = Interactive chunk editor
+gui.czw_method_map = Use claim map
+gui.czw_radius = Radius
+gui.czw_custom_radius = Custom (1-50):
+gui.czw_flags = Flags
+gui.czw_flags_defaults_desc = Based on zone type
+gui.czw_flags_defaults = Use defaults
+gui.czw_flags_customize_desc = Open settings after
+gui.czw_flags_customize = Customize
+
+# Common button labels
+gui.cancel = Cancel

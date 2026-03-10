@@ -63,6 +63,14 @@ public class AdminUnclaimAllConfirmPage extends InteractiveCustomUIPage<AdminUnc
 
     cmd.append(UIPaths.UNCLAIM_ALL_CONFIRM);
 
+    // Localize labels
+    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_UNCLAIM_TITLE));
+    cmd.set("#ConfirmMsg1.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_UNCLAIM_CONFIRM_MSG1));
+    cmd.set("#ConfirmMsg2.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_UNCLAIM_CONFIRM_MSG2));
+    cmd.set("#WarningLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_UNCLAIM_WARNING));
+    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CANCEL));
+    cmd.set("#ConfirmBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_UNCLAIM_ALL));
+
     // Set faction info
     cmd.set("#FactionName.Text", factionName);
     cmd.set("#ClaimCount.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.CHUNKS_SUFFIX, claimCount));
