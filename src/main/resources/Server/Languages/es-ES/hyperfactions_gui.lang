@@ -27,6 +27,16 @@ help.category.combat = Combate y Seguridad
 help.category.economy = Economia
 help.category.quick_ref = Referencia Rapida
 
+# ========== Nombres de Categorias de Ayuda Admin ==========
+help.category.admin_overview = General
+help.category.admin_factions = Facciones
+help.category.admin_zones = Zonas
+help.category.admin_power = Poder
+help.category.admin_economy = Economia
+help.category.admin_config = Configuracion
+help.category.admin_maintenance = Mantenimiento
+help.category.admin_reference = Referencia
+
 # ========== Menu Principal ==========
 main_menu.title = HyperFactions
 main_menu.section_my_faction = Mi Faccion

@@ -15,7 +15,17 @@ public enum HelpCategory {
   DIPLOMACY("diplomacy", "hyperfactions_gui.help.category.diplomacy", "#55AAFF", 3),
   COMBAT("combat", "hyperfactions_gui.help.category.combat", "#FF5555", 4),
   ECONOMY("economy", "hyperfactions_gui.help.category.economy", "#FFAA00", 5),
-  QUICK_REFERENCE("quick_ref", "hyperfactions_gui.help.category.quick_ref", "#888888", 6);
+  QUICK_REFERENCE("quick_ref", "hyperfactions_gui.help.category.quick_ref", "#888888", 6),
+
+  // Admin categories (order 100+, filtered from player help)
+  ADMIN_OVERVIEW("admin_overview", "hyperfactions_gui.help.category.admin_overview", "#00FFFF", 100),
+  ADMIN_FACTIONS("admin_factions", "hyperfactions_gui.help.category.admin_factions", "#44CC44", 101),
+  ADMIN_ZONES("admin_zones", "hyperfactions_gui.help.category.admin_zones", "#FFAA00", 102),
+  ADMIN_POWER("admin_power", "hyperfactions_gui.help.category.admin_power", "#FFD700", 103),
+  ADMIN_ECONOMY("admin_economy", "hyperfactions_gui.help.category.admin_economy", "#55FF55", 104),
+  ADMIN_CONFIG("admin_config", "hyperfactions_gui.help.category.admin_config", "#55AAFF", 105),
+  ADMIN_MAINTENANCE("admin_maintenance", "hyperfactions_gui.help.category.admin_maintenance", "#FF5555", 106),
+  ADMIN_REFERENCE("admin_reference", "hyperfactions_gui.help.category.admin_reference", "#888888", 107);
 
   private final String id;
 
@@ -70,6 +80,13 @@ public enum HelpCategory {
    */
   public int order() {
     return order;
+  }
+
+  /**
+   * Returns true if this is an admin-only category (order >= 100).
+   */
+  public boolean isAdmin() {
+    return order >= 100;
   }
 
   /**

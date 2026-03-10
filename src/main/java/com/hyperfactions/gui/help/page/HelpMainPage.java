@@ -117,10 +117,12 @@ public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
     // Page title
     cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.HELP_CENTER_TITLE));
 
-    // Set localized sidebar button labels
+    // Set localized sidebar button labels (player categories only)
+    int catIdx = 0;
     for (HelpCategory category : HelpCategory.values()) {
-      int idx = category.ordinal();
-      cmd.set("#Cat" + idx + ".Text", "  " + category.displayName(playerRef));
+      if (category.isAdmin()) continue;
+      cmd.set("#Cat" + catIdx + ".Text", "  " + category.displayName(playerRef));
+      catIdx++;
     }
 
     // Setup category buttons (disable selected, bind events to others)
@@ -139,8 +141,9 @@ public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
    * and binding click events to the others.
    */
   private void setupCategoryButtons(UICommandBuilder cmd, UIEventBuilder events) {
+    int idx = 0;
     for (HelpCategory category : HelpCategory.values()) {
-      int idx = category.ordinal();
+      if (category.isAdmin()) continue;
       String buttonId = "#Cat" + idx;
       boolean isSelected = category == selectedCategory;
 
@@ -156,6 +159,7 @@ public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
             .append("Category", category.id())
         );
       }
+      idx++;
     }
   }
 

@@ -50,9 +50,15 @@ import java.util.stream.Stream;
  */
 public class HelpLangGenerator {
 
-    /** Fixed category processing order. */
+    /** Fixed category processing order (player help). */
     private static final List<String> CATEGORY_ORDER = List.of(
             "welcome", "your_faction", "power_land", "diplomacy", "combat", "economy", "quick_ref"
+    );
+
+    /** Fixed category processing order (admin help). */
+    private static final List<String> ADMIN_CATEGORY_ORDER = List.of(
+            "admin_overview", "admin_factions", "admin_zones", "admin_power",
+            "admin_economy", "admin_config", "admin_maintenance", "admin_reference"
     );
 
     /** Pattern for inline hex color: [#RRGGBB] text */
@@ -166,7 +172,7 @@ public class HelpLangGenerator {
     private static List<Topic> parseLocale(Path localeDir) throws IOException {
         List<Topic> topics = new ArrayList<>();
 
-        // Process categories in defined order, skip any that don't exist
+        // Process player categories in defined order
         for (String category : CATEGORY_ORDER) {
             Path categoryDir = localeDir.resolve(category);
             if (!Files.isDirectory(categoryDir)) {
@@ -179,6 +185,26 @@ public class HelpLangGenerator {
                 if (topic != null) {
                     topics.add(topic);
                     System.out.println("  Parsed: " + category + "/" + mdFile.getFileName());
+                }
+            }
+        }
+
+        // Process admin categories from help/admin/ subdirectory
+        Path adminDir = localeDir.resolve("admin");
+        if (Files.isDirectory(adminDir)) {
+            for (String category : ADMIN_CATEGORY_ORDER) {
+                Path categoryDir = adminDir.resolve(category);
+                if (!Files.isDirectory(categoryDir)) {
+                    continue;
+                }
+
+                List<Path> mdFiles = listMarkdownFiles(categoryDir);
+                for (Path mdFile : mdFiles) {
+                    Topic topic = parseTopic(category, mdFile);
+                    if (topic != null) {
+                        topics.add(topic);
+                        System.out.println("  Parsed: admin/" + category + "/" + mdFile.getFileName());
+                    }
                 }
             }
         }

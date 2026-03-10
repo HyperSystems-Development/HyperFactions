@@ -956,6 +956,15 @@ public final class MessageKeys {
     public static final String COMBAT = "hyperfactions_gui.help.category.combat";
     public static final String ECONOMY = "hyperfactions_gui.help.category.economy";
     public static final String QUICK_REF = "hyperfactions_gui.help.category.quick_ref";
+    // Admin help categories
+    public static final String ADMIN_OVERVIEW = "hyperfactions_gui.help.category.admin_overview";
+    public static final String ADMIN_FACTIONS = "hyperfactions_gui.help.category.admin_factions";
+    public static final String ADMIN_ZONES = "hyperfactions_gui.help.category.admin_zones";
+    public static final String ADMIN_POWER = "hyperfactions_gui.help.category.admin_power";
+    public static final String ADMIN_ECONOMY = "hyperfactions_gui.help.category.admin_economy";
+    public static final String ADMIN_CONFIG = "hyperfactions_gui.help.category.admin_config";
+    public static final String ADMIN_MAINTENANCE = "hyperfactions_gui.help.category.admin_maintenance";
+    public static final String ADMIN_REFERENCE = "hyperfactions_gui.help.category.admin_reference";
     // Help Center page title
     public static final String HELP_CENTER_TITLE = "hyperfactions_gui.help.center_title";
     // New player help page
