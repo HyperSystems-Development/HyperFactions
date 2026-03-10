@@ -1,12 +1,11 @@
-// Help content line - command callout (yellow bold, slight indent)
+// Help content line - command callout (yellow bold, slight indent, wrapping)
 
 Group {
-  Anchor: (Height: 16);
-  Padding: (Left: 8);
+  Padding: (Left: 8, Top: 1, Bottom: 1);
 
   Label #Text {
     Text: "";
-    Style: (FontSize: 11, TextColor: #FFFF55, RenderBold: true);
-    Anchor: (Left: 0, Right: 0, Top: 0, Bottom: 0);
+    Style: (FontSize: 11, TextColor: #FFFF55, RenderBold: true, Wrap: true, VerticalAlignment: Center);
+    Anchor: (Left: 0, Right: 0);
   }
 }

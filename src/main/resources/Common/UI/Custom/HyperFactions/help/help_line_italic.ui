@@ -1,11 +1,11 @@
-// Help content line - italic text (gray, italic)
+// Help content line - italic text (gray, italic, wrapping)
 
 Group {
-  Anchor: (Height: 16);
+  Padding: (Top: 1, Bottom: 1);
 
   Label #Text {
     Text: "";
-    Style: (FontSize: 11, TextColor: #CCCCCC, RenderItalics: true);
-    Anchor: (Left: 0, Right: 0, Top: 0, Bottom: 0);
+    Style: (FontSize: 11, TextColor: #CCCCCC, RenderItalics: true, Wrap: true, VerticalAlignment: Center);
+    Anchor: (Left: 0, Right: 0);
   }
 }

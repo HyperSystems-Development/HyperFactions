@@ -1,8 +1,7 @@
-// Help content line - callout box with colored left accent bar
+// Help content line - callout box with colored left accent bar (wrapping)
 
 Group {
-  Anchor: (Height: 22, Top: 2, Bottom: 2);
-  Padding: (Left: 12);
+  Padding: (Left: 12, Top: 3, Bottom: 3);
   Background: (Color: #1a2a1a);
 
   Group #AccentBar {
@@ -12,7 +11,7 @@ Group {
 
   Label #Text {
     Text: "";
-    Style: (FontSize: 11, TextColor: #55FF55);
-    Anchor: (Left: 10, Right: 4, Top: 0, Bottom: 0);
+    Style: (FontSize: 11, TextColor: #55FF55, Wrap: true, VerticalAlignment: Center);
+    Anchor: (Left: 10, Right: 4);
   }
 }
