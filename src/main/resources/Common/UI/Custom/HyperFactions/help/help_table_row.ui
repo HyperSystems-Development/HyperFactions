@@ -1,10 +1,16 @@
-// Help table data row - normal column values
+// Help table data row - GitHub-style with bottom border
 
 Group {
-  Padding: (Top: 1, Bottom: 1);
+  Padding: (Top: 4, Bottom: 4);
+
+  // Bottom border
+  Group {
+    Anchor: (Height: 1, Bottom: 0, Left: 0, Right: 0);
+    Background: (Color: #2a3a4a);
+  }
 
   Group #Cols {
     LayoutMode: Left;
-    Anchor: (Left: 0, Right: 0);
+    Anchor: (Left: 0, Top: 0, Bottom: 1);
   }
 }

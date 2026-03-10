@@ -1,11 +1,23 @@
-// Help table header row - bold column labels on dark background
+// Help table header row - GitHub-style with top/bottom border and background
 
 Group {
-  Padding: (Top: 1, Bottom: 1);
-  Background: (Color: #1a2a3a);
+  Padding: (Top: 4, Bottom: 4);
+  Background: (Color: #161b26);
+
+  // Top border
+  Group {
+    Anchor: (Height: 1, Top: 0, Left: 0, Right: 0);
+    Background: (Color: #2a3a4a);
+  }
+
+  // Bottom border
+  Group {
+    Anchor: (Height: 1, Bottom: 0, Left: 0, Right: 0);
+    Background: (Color: #2a3a4a);
+  }
 
   Group #Cols {
     LayoutMode: Left;
-    Anchor: (Left: 0, Right: 0);
+    Anchor: (Left: 0, Top: 1, Bottom: 1);
   }
 }
