@@ -89,6 +89,13 @@ public class FactionBrowserPage extends InteractiveCustomUIPage<FactionPageData>
     // Load the main template
     cmd.append(UIPaths.FACTION_BROWSER);
 
+    // Localize static labels
+    cmd.set("#BrowserTitle.Text", HFMessages.get(playerRef, MessageKeys.BrowserGui.TITLE));
+    cmd.set("#SearchLabel.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.SEARCH));
+    cmd.set("#SortLabel.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.SORT));
+    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.PREV));
+    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.NEXT));
+
     // Setup navigation bar - use new player nav when no faction
     if (viewerFaction != null) {
       NavBarHelper.setupBar(playerRef, viewerFaction, PAGE_ID, cmd, events);

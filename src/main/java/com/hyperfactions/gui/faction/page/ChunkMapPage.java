@@ -141,6 +141,21 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
       cmd.append(UIPaths.CHUNK_MAP);
     }
 
+    // Localize static labels
+    cmd.set("#MapTitle.Text", HFMessages.get(playerRef, MessageKeys.MapGui.TITLE));
+    cmd.set("#ActionHint.Text", HFMessages.get(playerRef, MessageKeys.MapGui.ACTION_HINT));
+    cmd.set("#LegendYourLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_YOUR));
+    cmd.set("#LegendAllyLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_ALLY));
+    cmd.set("#LegendEnemyLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_ENEMY));
+    cmd.set("#LegendOtherLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_OTHER));
+    if (!terrainEnabled) {
+      // Flat mode has additional legend entries
+      cmd.set("#LegendWildernessLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_WILDERNESS));
+    }
+    cmd.set("#LegendSafeLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_SAFE));
+    cmd.set("#LegendWarLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_WAR));
+    cmd.set("#LegendYouLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_YOU));
+
     // Setup navigation bar - use new player nav when no faction
     if (viewerFaction != null) {
       NavBarHelper.setupBar(playerRef, viewerFaction, PAGE_ID, cmd, events);

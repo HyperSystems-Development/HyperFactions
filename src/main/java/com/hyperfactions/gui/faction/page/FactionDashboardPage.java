@@ -121,6 +121,29 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     // Load the main template
     cmd.append(UIPaths.FACTION_DASHBOARD);
 
+    // Localize static labels
+    cmd.set("#DashboardTitle.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.TITLE));
+    cmd.set("#PowerLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.POWER_LABEL));
+    cmd.set("#ClaimsLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.LAND_LABEL));
+    cmd.set("#MembersLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.MEMBERS_LABEL));
+    cmd.set("#RelationsLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.RELATIONS_LABEL));
+    cmd.set("#AllyEnemyLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.ALLY_ENEMY_LABEL));
+    cmd.set("#StatusLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.STATUS_LABEL));
+    cmd.set("#InvitesLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.INVITES_LABEL));
+    cmd.set("#SentRequestsLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.SENT_REQUESTS_LABEL));
+    cmd.set("#TreasuryLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.TREASURY_LABEL));
+    cmd.set("#UpkeepLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.UPKEEP_LABEL));
+    cmd.set("#PerCycleLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.PER_CYCLE));
+    cmd.set("#YourWalletLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.YOUR_WALLET));
+    cmd.set("#PersonalBalanceLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.PERSONAL_BALANCE));
+    cmd.set("#QuickActionsLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.QUICK_ACTIONS));
+    cmd.set("#TeleportLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.TELEPORT_LABEL));
+    cmd.set("#TerritoryLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.TERRITORY_LABEL));
+    cmd.set("#ChannelLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.CHANNEL_LABEL));
+    cmd.set("#MembershipLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.MEMBERSHIP_LABEL));
+    cmd.set("#RecentActivityLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.RECENT_ACTIVITY));
+    cmd.set("#ViewLogsBtn.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.VIEW_ALL));
+
     // Setup navigation bar
     setupNavBar(cmd, events);
 
@@ -259,14 +282,14 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
         FactionEconomy fEcon = econ.getEconomy(currentFaction.id());
         if (fEcon != null && fEcon.upkeepGraceStartTimestamp() > 0) {
           cmd.set("#UpkeepValue.Style.TextColor", "#FF5555");
-          cmd.set("#UpkeepSubtext.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.IN_GRACE));
-          cmd.set("#UpkeepSubtext.Style.TextColor", "#FF5555");
+          cmd.set("#PerCycleLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.IN_GRACE));
+          cmd.set("#PerCycleLabel.Style.TextColor", "#FF5555");
         } else if (fEcon != null && fEcon.lastUpkeepTimestamp() > 0) {
           long intervalMs = ConfigManager.get().getUpkeepIntervalHours() * 3600_000L;
           long remaining = Math.max(0, (fEcon.lastUpkeepTimestamp() + intervalMs) - System.currentTimeMillis());
-          cmd.set("#UpkeepSubtext.Text", "in " + com.hyperfactions.economy.UpkeepProcessor.formatDuration(remaining));
+          cmd.set("#PerCycleLabel.Text", "in " + com.hyperfactions.economy.UpkeepProcessor.formatDuration(remaining));
         } else {
-          cmd.set("#UpkeepSubtext.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.BILLABLE_CHUNKS, billableChunks));
+          cmd.set("#PerCycleLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.BILLABLE_CHUNKS, billableChunks));
         }
 
         // Color based on affordability

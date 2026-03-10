@@ -13,7 +13,7 @@ $C.@PageOverlay {
 
     #Title {
       Group {
-        $C.@Title {
+        $C.@Title #DashboardTitle {
           @Text = "Faction Dashboard";
         }
       }
@@ -64,7 +64,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Right: 5);
 
-          Label {
+          Label #PowerLabel {
             Text: "Power";
             Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 16);
@@ -89,7 +89,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 5, Right: 5);
 
-          Label {
+          Label #ClaimsLabel {
             Text: "Claims";
             Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 16);
@@ -114,7 +114,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 5);
 
-          Label {
+          Label #MembersLabel {
             Text: "Members";
             Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 16);
@@ -145,7 +145,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Right: 5);
 
-          Label {
+          Label #RelationsLabel {
             Text: "Relations";
             Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 16);
@@ -170,7 +170,7 @@ $C.@PageOverlay {
               FlexWeight: 1;
             }
           }
-          Label {
+          Label #AllyEnemyLabel {
             Text: "ally / enemy";
             Style: (FontSize: 9, TextColor: #444444, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 14);
@@ -185,7 +185,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 5, Right: 5);
 
-          Label {
+          Label #StatusLabel {
             Text: "Status";
             Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 16);
@@ -210,7 +210,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 5);
 
-          Label {
+          Label #InvitesLabel {
             Text: "Invites";
             Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 16);
@@ -235,7 +235,7 @@ $C.@PageOverlay {
               FlexWeight: 1;
             }
           }
-          Label {
+          Label #SentRequestsLabel {
             Text: "sent / requests";
             Style: (FontSize: 9, TextColor: #444444, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 14);
@@ -257,7 +257,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Right: 5);
 
-          Label {
+          Label #TreasuryLabel {
             Text: "Treasury";
             Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 16);
@@ -283,7 +283,7 @@ $C.@PageOverlay {
           Anchor: (Left: 5, Right: 5);
           Visible: false;
 
-          Label {
+          Label #UpkeepLabel {
             Text: "Upkeep";
             Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 16);
@@ -293,7 +293,7 @@ $C.@PageOverlay {
             Style: (FontSize: 22, TextColor: #FF5555, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
             FlexWeight: 1;
           }
-          Label #UpkeepSubtext {
+          Label #PerCycleLabel {
             Text: "per cycle";
             Style: (FontSize: 9, TextColor: #888888, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 14);
@@ -308,7 +308,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 5);
 
-          Label {
+          Label #YourWalletLabel {
             Text: "Your Wallet";
             Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 16);
@@ -318,7 +318,7 @@ $C.@PageOverlay {
             Style: (FontSize: 22, TextColor: #AAAAAA, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
             FlexWeight: 1;
           }
-          Label {
+          Label #PersonalBalanceLabel {
             Text: "personal balance";
             Style: (FontSize: 9, TextColor: #444444, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 14);
@@ -330,7 +330,7 @@ $C.@PageOverlay {
       Group {
         Anchor: (Height: 25, Bottom: 8);
 
-        Label {
+        Label #QuickActionsLabel {
           Text: "Quick Actions";
           Style: (FontSize: 11, TextColor: #666666, RenderBold: true);
         }
@@ -347,7 +347,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Right: 4);
 
-          Label {
+          Label #TeleportLabel {
             Text: "Teleport";
             Style: (FontSize: 9, TextColor: #555555);
             Anchor: (Height: 14, Bottom: 4);
@@ -361,7 +361,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 4, Right: 4);
 
-          Label {
+          Label #TerritoryLabel {
             Text: "Territory";
             Style: (FontSize: 9, TextColor: #555555);
             Anchor: (Height: 14, Bottom: 4);
@@ -375,7 +375,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 4, Right: 4);
 
-          Label {
+          Label #ChannelLabel {
             Text: "Channel";
             Style: (FontSize: 9, TextColor: #555555);
             Anchor: (Height: 14, Bottom: 4);
@@ -389,7 +389,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 4);
 
-          Label {
+          Label #MembershipLabel {
             Text: "Membership";
             Style: (FontSize: 9, TextColor: #555555);
             Anchor: (Height: 14, Bottom: 4);
@@ -408,7 +408,7 @@ $C.@PageOverlay {
         Anchor: (Height: 25, Bottom: 5);
         LayoutMode: Left;
 
-        Label {
+        Label #RecentActivityLabel {
           Text: "Recent Activity";
           Style: (FontSize: 11, TextColor: #666666, RenderBold: true);
         }

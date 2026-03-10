@@ -5,6 +5,8 @@ import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.faction.NavBarHelper;
 import com.hyperfactions.gui.faction.data.FactionPageData;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -48,6 +50,31 @@ public class FactionHelpPage extends InteractiveCustomUIPage<FactionPageData> {
 
     // Setup faction navigation bar
     NavBarHelper.setupBar(playerRef, faction, PAGE_ID, cmd, events);
+
+    // Localize all static content
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.GETTING_STARTED_TITLE));
+    cmd.set("#WhatTitle.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.WHAT_ARE_FACTIONS_TITLE));
+    cmd.set("#WhatDesc1.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.WHAT_ARE_FACTIONS_1));
+    cmd.set("#WhatDesc2.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.WHAT_ARE_FACTIONS_2));
+    cmd.set("#WhatBullet1.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.WHAT_ARE_FACTIONS_BULLET_1));
+    cmd.set("#WhatBullet2.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.WHAT_ARE_FACTIONS_BULLET_2));
+    cmd.set("#WhatBullet3.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.WHAT_ARE_FACTIONS_BULLET_3));
+    cmd.set("#JoinTitle.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.JOINING_TITLE));
+    cmd.set("#JoinDesc.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.JOINING_DESC));
+    cmd.set("#JoinBullet1.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.JOINING_BULLET_1));
+    cmd.set("#JoinBullet2.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.JOINING_BULLET_2));
+    cmd.set("#JoinBullet3.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.JOINING_BULLET_3));
+    cmd.set("#CreateTitle.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.CREATING_TITLE));
+    cmd.set("#CreateDesc.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.CREATING_DESC));
+    cmd.set("#CreateBullet1.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.CREATING_BULLET_1));
+    cmd.set("#CreateBullet2.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.CREATING_BULLET_2));
+    cmd.set("#CmdTitle.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.COMMANDS_TITLE));
+    cmd.set("#CmdF.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.CMD_F));
+    cmd.set("#CmdFList.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.CMD_F_LIST));
+    cmd.set("#CmdFJoin.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.CMD_F_JOIN));
+    cmd.set("#CmdFCreate.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.CMD_F_CREATE));
+    cmd.set("#CmdFHelp.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.CMD_F_HELP));
+    cmd.set("#TipText.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.TIP));
   }
 
   /** Handles data event. */

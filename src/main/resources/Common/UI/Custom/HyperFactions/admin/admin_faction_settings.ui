@@ -30,7 +30,7 @@ $C.@PageOverlay {
         Anchor: (Height: 32, Bottom: 8);
         LayoutMode: Left;
 
-        Label {
+        Label #EditingLabel {
           Text: "Editing:";
           Style: (FontSize: 13, TextColor: #AAAAAA, VerticalAlignment: Center);
         }
@@ -44,7 +44,7 @@ $C.@PageOverlay {
 
         Label { FlexWeight: 1; }
 
-        Label {
+        Label #AdminOverrideLabel {
           Text: "[Admin Override]";
           Style: (FontSize: 10, TextColor: #FFAA00, VerticalAlignment: Center);
         }

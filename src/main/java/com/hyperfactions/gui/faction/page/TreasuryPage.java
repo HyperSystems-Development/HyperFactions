@@ -86,6 +86,32 @@ public class TreasuryPage extends InteractiveCustomUIPage<TreasuryData> {
            UIEventBuilder events, Store<EntityStore> store) {
 
     cmd.append(UIPaths.FACTION_TREASURY);
+
+    // Localize static labels
+    cmd.set("#TreasuryTitle.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.TITLE));
+    cmd.set("#BalanceLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.BALANCE_LABEL));
+    cmd.set("#IncomeLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.INCOME_24H));
+    cmd.set("#IncomeDescLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.DEPOSITS_TRANSFERS_IN));
+    cmd.set("#ExpensesLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.EXPENSES_24H));
+    cmd.set("#ExpensesDescLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.WITHDRAWALS_TRANSFERS_OUT));
+    cmd.set("#MaintenanceLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.MAINTENANCE));
+    cmd.set("#RunwayLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.RUNWAY_LABEL));
+    cmd.set("#AddFundsLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.ADD_FUNDS));
+    cmd.set("#DepositBtn.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.DEPOSIT_BTN));
+    cmd.set("#TakeFundsLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.TAKE_FUNDS));
+    cmd.set("#WithdrawBtn.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.WITHDRAW_BTN));
+    cmd.set("#SendToFactionLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.SEND_TO_FACTION));
+    cmd.set("#TransferBtn.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.TRANSFER_BTN));
+    cmd.set("#TreasuryConfigLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.TREASURY_CONFIG));
+    cmd.set("#SettingsBtn.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.SETTINGS_BTN));
+    cmd.set("#RecentTransactionsLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.RECENT_TRANSACTIONS));
+    cmd.set("#ColDateLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.COL_DATE));
+    cmd.set("#ColTypeLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.COL_TYPE));
+    cmd.set("#ColByLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.COL_BY));
+    cmd.set("#ColAmountLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.COL_AMOUNT));
+    cmd.set("#ColDetailsLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.COL_DETAILS));
+    cmd.set("#PayNowBtn.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.PAY_NOW_BTN));
+
     NavBarHelper.setupBar(playerRef, faction, PAGE_ID, cmd, events);
 
     UUID uuid = playerRef.getUuid();

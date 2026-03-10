@@ -80,6 +80,33 @@ public class AdminEconomyPage extends InteractiveCustomUIPage<AdminEconomyData> 
     // Setup admin nav bar
     AdminNavBarHelper.setupBar(playerRef, "economy", cmd, events);
 
+    // Localize page title
+    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ECONOMY));
+
+    // Localize stat card labels
+    cmd.set("#TotalBalanceLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECON_TOTAL_BALANCE));
+    cmd.set("#FactionsLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECON_FACTIONS));
+    cmd.set("#AvgBalanceLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECON_AVG_BALANCE));
+
+    // Localize upkeep stat labels
+    cmd.set("#InGraceLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECON_IN_GRACE));
+    cmd.set("#CollectedLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECON_COLLECTED));
+    cmd.set("#NextCollectionLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECON_NEXT_COLLECTION));
+
+    // Localize search/sort labels
+    cmd.set("#SearchLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SEARCH));
+    cmd.set("#SortLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SORT));
+
+    // Localize column headers
+    cmd.set("#ColFaction.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_COL_FACTION));
+    cmd.set("#ColBalance.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_COL_BALANCE));
+    cmd.set("#ColMembers.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_COL_MEMBERS));
+    cmd.set("#ColActions.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_COL_ACTIONS));
+
+    // Localize pagination buttons
+    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PREV));
+    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_NEXT));
+
     // === Server Economy Stats ===
     buildServerStats(cmd);
 
@@ -240,7 +267,7 @@ public class AdminEconomyPage extends InteractiveCustomUIPage<AdminEconomyData> 
     // Empty state
     if (index == 0) {
       cmd.appendInline("#FactionList",
-          "Label { Text: \"No factions with economy data.\"; "
+          "Label { Text: \"" + HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECON_NO_DATA) + "\"; "
           + "Style: (FontSize: 11, TextColor: #555555); Anchor: (Height: 30); }");
     }
 

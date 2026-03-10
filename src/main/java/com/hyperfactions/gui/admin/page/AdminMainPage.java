@@ -66,6 +66,13 @@ public class AdminMainPage extends InteractiveCustomUIPage<AdminMainData> {
     AdminNavBarHelper.setupBar(playerRef, "dashboard", cmd, events);
 
 
+    // Localize page title and buttons
+    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_MAIN));
+    cmd.set("#ZonesBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZONES_BTN));
+    cmd.set("#ReloadBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_RELOAD_BTN));
+    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PREV));
+    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_NEXT));
+
     // Stats overview
     Collection<Faction> allFactions = factionManager.getAllFactions();
     int totalFactions = allFactions.size();

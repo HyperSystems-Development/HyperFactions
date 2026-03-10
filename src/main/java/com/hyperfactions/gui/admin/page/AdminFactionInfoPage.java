@@ -82,6 +82,39 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
     // Setup admin nav bar
     AdminNavBarHelper.setupBar(playerRef, "factions", cmd, events);
 
+    // Localize page title
+    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_FACTION_INFO));
+
+    // Localize stat card labels
+    cmd.set("#PowerCardLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_POWER));
+    cmd.set("#PowerSubLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_CURRENT_MAX));
+    cmd.set("#ClaimsCardLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_CLAIMS));
+    cmd.set("#ClaimsSubLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_CLAIMED_MAX));
+    cmd.set("#MembersCardLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_MEMBERS));
+    cmd.set("#RelationsCardLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_RELATIONS));
+    cmd.set("#RelationsSubLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_ALLY_ENEMY));
+    cmd.set("#StatusCardLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_STATUS));
+    cmd.set("#InfoCardLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_INFO));
+    cmd.set("#TreasurySubLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_TREASURY_BALANCE));
+
+    // Localize section headers
+    cmd.set("#LeadershipHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_LEADERSHIP));
+    cmd.set("#LeaderLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_LEADER_LABEL));
+    cmd.set("#OfficersLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_OFFICERS_LABEL));
+    cmd.set("#PowerMgmtHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_POWER_MANAGEMENT));
+    cmd.set("#EconMgmtHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_ECON_MGMT));
+    cmd.set("#DangerZoneHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_DANGER_ZONE));
+
+    // Localize button labels
+    cmd.set("#PowerResetAll.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_RESET_ALL_POWER));
+    cmd.set("#EconAdjustBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_ECON_ADJUST));
+    cmd.set("#EconViewLogBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_VIEW_TREASURY));
+    cmd.set("#DisbandBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_DISBAND));
+    cmd.set("#ViewMembersBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_VIEW_MEMBERS));
+    cmd.set("#ViewRelationsBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_VIEW_RELATIONS));
+    cmd.set("#ViewSettingsBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_VIEW_SETTINGS));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_BACK));
+
     // Get the faction
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {

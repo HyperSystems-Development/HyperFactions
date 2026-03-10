@@ -62,6 +62,13 @@ public class LeaderLeaveConfirmPage extends InteractiveCustomUIPage<LeaderLeaveC
     // Load the leader leave confirmation template
     cmd.append(UIPaths.LEADER_LEAVE_CONFIRM);
 
+    // Static labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.LEADER_LEAVE_TITLE));
+    cmd.set("#ConfirmText.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.LEADER_LEAVE_PROMPT));
+    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.CANCEL));
+    cmd.set("#LeaveBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.LEAVE));
+    cmd.set("#DisbandBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.DISBAND));
+
     // Set faction name
     cmd.set("#FactionName.Text", faction.name());
 

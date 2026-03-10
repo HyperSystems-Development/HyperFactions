@@ -25,7 +25,7 @@ $C.@PageOverlay {
         Anchor: (Height: 24, Bottom: 10);
         LayoutMode: Left;
 
-        Label {
+        Label #CurrentLabel {
           Text: "Current:";
           Style: (FontSize: 12, TextColor: #888888, VerticalAlignment: Center);
           Anchor: (Width: 70);
@@ -39,7 +39,7 @@ $C.@PageOverlay {
       }
 
       // New name input
-      Label {
+      Label #NewNameLabel {
         Text: "New Name:";
         Style: (FontSize: 12, TextColor: #888888);
         Anchor: (Height: 24, Bottom: 4);

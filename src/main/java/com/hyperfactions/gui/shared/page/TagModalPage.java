@@ -85,6 +85,14 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
     // Load the modal template
     cmd.append(UIPaths.TAG_MODAL);
 
+    // Static labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.TagGui.TITLE));
+    cmd.set("#CurrentLabel.Text", HFMessages.get(playerRef, MessageKeys.TagGui.CURRENT_LABEL));
+    cmd.set("#TagInstructions.Text", HFMessages.get(playerRef, MessageKeys.TagGui.INSTRUCTIONS));
+    cmd.set("#TagHelpText.Text", HFMessages.get(playerRef, MessageKeys.TagGui.HELP_TEXT));
+    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.CANCEL));
+    cmd.set("#SaveBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.SAVE));
+
     // Show current tag
     String currentTag = faction.tag();
     if (currentTag == null || currentTag.isEmpty()) {

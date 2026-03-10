@@ -34,7 +34,7 @@ $C.@PageOverlay {
 
         Group { FlexWeight: 1; }
 
-        Label {
+        Label #FilterLabel {
           Text: "Filter:";
           Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
           Anchor: (Width: 40);
@@ -51,17 +51,17 @@ $C.@PageOverlay {
         LayoutMode: Left;
         Padding: (Left: 12, Right: 12);
 
-        Label {
+        Label #ColTimeLabel {
           Text: "Time";
           Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
           Anchor: (Width: 90);
         }
-        Label {
+        Label #ColTypeLabel {
           Text: "Type";
           Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
           Anchor: (Width: 75);
         }
-        Label {
+        Label #ColMessageLabel {
           Text: "Message";
           Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
           FlexWeight: 1;

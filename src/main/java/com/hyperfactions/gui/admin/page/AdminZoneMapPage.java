@@ -142,6 +142,18 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
       cmd.append(UIPaths.ADMIN_ZONE_MAP);
     }
 
+    // Localize labels
+    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ZONE_MAP));
+    cmd.set("#ActionHint.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MAP_ACTION_HINT));
+    cmd.set("#ConfirmBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MAP_DONE));
+    cmd.set("#LegendZoneSafe.Text", " " + HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MAP_LEGEND_ZONE_SAFE));
+    cmd.set("#LegendZoneWar.Text", " " + HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MAP_LEGEND_ZONE_WAR));
+    cmd.set("#LegendOtherSafe.Text", " " + HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MAP_LEGEND_OTHER_SAFE));
+    cmd.set("#LegendOtherWar.Text", " " + HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MAP_LEGEND_OTHER_WAR));
+    cmd.set("#LegendFactionClaim.Text", " " + HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MAP_LEGEND_FACTION));
+    cmd.set("#LegendUnclaimed.Text", " " + HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MAP_LEGEND_UNCLAIMED));
+    cmd.set("#LegendYouAreHere.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MAP_LEGEND_YOU_HERE));
+
     // Zone header info
     cmd.set("#ZoneTitle.Text", zone.name() + " (" + zone.type().getDisplayName() + ")");
     cmd.set("#ZoneStats.Text", zone.getChunkCount() + " chunks in " + zone.world());
@@ -154,19 +166,20 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
     }
 
     // Dynamic legend: add OrbisGuard protected region entry when OG is available
+    String protectedLabel = " " + HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MAP_PROTECTED);
     if (OrbisGuardIntegration.isAvailable()) {
       if (terrainEnabled) {
         // Terrain mode: append to row 2 (#LegendContainer[1])
         cmd.appendInline("#LegendContainer[1]",
             "Group { LayoutMode: Left; Anchor: (Width: 110); "
             + "Group { Anchor: (Width: 10, Height: 10); Background: (Color: " + COLOR_OG_PROTECTED + "); } "
-            + "Label { Text: \" Protected\"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); } }");
+            + "Label { Text: \"" + protectedLabel + "\"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); } }");
       } else {
         // Flat mode: append to column 3 (#LegendContainer[2])
         cmd.appendInline("#LegendContainer[2]",
             "Group { LayoutMode: Left; Anchor: (Height: 16); "
             + "Group { Anchor: (Width: 12, Height: 12); Background: (Color: " + COLOR_OG_PROTECTED + "); } "
-            + "Label { Text: \" Protected\"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); } }");
+            + "Label { Text: \"" + protectedLabel + "\"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); } }");
       }
     }
 

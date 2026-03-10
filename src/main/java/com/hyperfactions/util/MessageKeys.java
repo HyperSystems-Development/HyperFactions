@@ -56,6 +56,11 @@ public final class MessageKeys {
     public static final String WORLD_ERROR = "hyperfactions.common.world_error";
     public static final String INVALID_ID = "hyperfactions.common.invalid_id";
     public static final String NA = "hyperfactions.common.na";
+    public static final String CLEAR = "hyperfactions.common.clear";
+    public static final String BACK = "hyperfactions.common.back";
+    public static final String LEAVE = "hyperfactions.common.leave";
+    public static final String TRANSFER = "hyperfactions.common.transfer";
+    public static final String DISBAND = "hyperfactions.common.disband";
 
     private Common() {}
   }
@@ -682,6 +687,7 @@ public final class MessageKeys {
 
   /** Main menu page labels. */
   public static final class MainMenu {
+    public static final String TITLE = "hyperfactions_gui.main_menu.title";
     public static final String SECTION_MY_FACTION = "hyperfactions_gui.main_menu.section_my_faction";
     public static final String SECTION_GET_STARTED = "hyperfactions_gui.main_menu.section_get_started";
     public static final String SECTION_TERRITORY = "hyperfactions_gui.main_menu.section_territory";
@@ -694,18 +700,41 @@ public final class MessageKeys {
 
   /** Faction info page labels. */
   public static final class FactionInfoGui {
+    public static final String TITLE = "hyperfactions_gui.faction_info.title";
     public static final String NO_DESCRIPTION = "hyperfactions_gui.faction_info.no_description";
     public static final String STATUS_OPEN = "hyperfactions_gui.faction_info.status_open";
     public static final String STATUS_INVITE_ONLY = "hyperfactions_gui.faction_info.status_invite_only";
     public static final String STATUS_RAIDABLE = "hyperfactions_gui.faction_info.status_raidable";
     public static final String STATUS_PROTECTED = "hyperfactions_gui.faction_info.status_protected";
     public static final String OFFICERS_MORE = "hyperfactions_gui.faction_info.officers_more";
+    // Stat card headers
+    public static final String POWER_HEADER = "hyperfactions_gui.faction_info.power_header";
+    public static final String CLAIMS_HEADER = "hyperfactions_gui.faction_info.claims_header";
+    public static final String MEMBERS_HEADER = "hyperfactions_gui.faction_info.members_header";
+    public static final String RELATIONS_HEADER = "hyperfactions_gui.faction_info.relations_header";
+    public static final String STATUS_HEADER = "hyperfactions_gui.faction_info.status_header";
+    public static final String TREASURY_HEADER = "hyperfactions_gui.faction_info.treasury_header";
+    // Stat card subtitles
+    public static final String CURRENT_MAX = "hyperfactions_gui.faction_info.current_max";
+    public static final String CLAIMED_MAX = "hyperfactions_gui.faction_info.claimed_max";
+    public static final String ALLY_ENEMY = "hyperfactions_gui.faction_info.ally_enemy";
+    public static final String FACTION_BALANCE = "hyperfactions_gui.faction_info.faction_balance";
+    // Leadership labels
+    public static final String LEADER_LABEL = "hyperfactions_gui.faction_info.leader_label";
+    public static final String OFFICERS_LABEL = "hyperfactions_gui.faction_info.officers_label";
+    // Button text
+    public static final String VIEW_MEMBERS_BTN = "hyperfactions_gui.faction_info.view_members_btn";
+    public static final String RELATIONS_BTN = "hyperfactions_gui.faction_info.relations_btn";
+    public static final String BACK_BTN = "hyperfactions_gui.faction_info.back_btn";
 
     private FactionInfoGui() {}
   }
 
   /** Rename modal page messages. */
   public static final class RenameGui {
+    public static final String TITLE = "hyperfactions_gui.rename.title";
+    public static final String CURRENT_LABEL = "hyperfactions_gui.rename.current_label";
+    public static final String NEW_NAME_LABEL = "hyperfactions_gui.rename.new_name_label";
     public static final String NO_PERMISSION = "hyperfactions_gui.rename.no_permission";
     public static final String ENTER_NAME = "hyperfactions_gui.rename.enter_name";
     public static final String TOO_SHORT = "hyperfactions_gui.rename.too_short";
@@ -719,6 +748,9 @@ public final class MessageKeys {
 
   /** Description modal page messages. */
   public static final class DescGui {
+    public static final String TITLE = "hyperfactions_gui.desc.title";
+    public static final String CURRENT_LABEL = "hyperfactions_gui.desc.current_label";
+    public static final String NEW_DESC_LABEL = "hyperfactions_gui.desc.new_desc_label";
     public static final String NO_PERMISSION = "hyperfactions_gui.desc.no_permission";
     public static final String DISPLAY_NONE = "hyperfactions_gui.desc.display_none";
     public static final String CLEARED = "hyperfactions_gui.desc.cleared";
@@ -729,6 +761,10 @@ public final class MessageKeys {
 
   /** Tag modal page messages. */
   public static final class TagGui {
+    public static final String TITLE = "hyperfactions_gui.tag.title";
+    public static final String CURRENT_LABEL = "hyperfactions_gui.tag.current_label";
+    public static final String INSTRUCTIONS = "hyperfactions_gui.tag.instructions";
+    public static final String HELP_TEXT = "hyperfactions_gui.tag.help_text";
     public static final String NO_PERMISSION = "hyperfactions_gui.tag.no_permission";
     public static final String DISPLAY_NONE = "hyperfactions_gui.tag.display_none";
     public static final String CLEARED = "hyperfactions_gui.tag.cleared";
@@ -744,12 +780,34 @@ public final class MessageKeys {
 
   /** Dashboard page labels and messages. */
   public static final class DashboardGui {
+    public static final String TITLE = "hyperfactions_gui.dashboard.title";
     public static final String POWER_LABEL = "hyperfactions_gui.dashboard.power_label";
     public static final String LAND_LABEL = "hyperfactions_gui.dashboard.land_label";
     public static final String MEMBERS_LABEL = "hyperfactions_gui.dashboard.members_label";
     public static final String ONLINE_LABEL = "hyperfactions_gui.dashboard.online_label";
     public static final String ALLIES_LABEL = "hyperfactions_gui.dashboard.allies_label";
     public static final String ENEMIES_LABEL = "hyperfactions_gui.dashboard.enemies_label";
+    public static final String RELATIONS_LABEL = "hyperfactions_gui.dashboard.relations_label";
+    public static final String ALLY_ENEMY_LABEL = "hyperfactions_gui.dashboard.ally_enemy_label";
+    public static final String STATUS_LABEL = "hyperfactions_gui.dashboard.status_label";
+    public static final String INVITES_LABEL = "hyperfactions_gui.dashboard.invites_label";
+    public static final String SENT_REQUESTS_LABEL = "hyperfactions_gui.dashboard.sent_requests_label";
+    public static final String TREASURY_LABEL = "hyperfactions_gui.dashboard.treasury_label";
+    public static final String UPKEEP_LABEL = "hyperfactions_gui.dashboard.upkeep_label";
+    public static final String PER_CYCLE = "hyperfactions_gui.dashboard.per_cycle";
+    public static final String YOUR_WALLET = "hyperfactions_gui.dashboard.your_wallet";
+    public static final String PERSONAL_BALANCE = "hyperfactions_gui.dashboard.personal_balance";
+    public static final String QUICK_ACTIONS = "hyperfactions_gui.dashboard.quick_actions";
+    public static final String TELEPORT_LABEL = "hyperfactions_gui.dashboard.teleport_label";
+    public static final String TERRITORY_LABEL = "hyperfactions_gui.dashboard.territory_label";
+    public static final String CHANNEL_LABEL = "hyperfactions_gui.dashboard.channel_label";
+    public static final String MEMBERSHIP_LABEL = "hyperfactions_gui.dashboard.membership_label";
+    public static final String RECENT_ACTIVITY = "hyperfactions_gui.dashboard.recent_activity";
+    public static final String VIEW_ALL = "hyperfactions_gui.dashboard.view_all";
+    public static final String INCOME_24H = "hyperfactions_gui.dashboard.income_24h";
+    public static final String DEPOSITS_TRANSFERS_IN = "hyperfactions_gui.dashboard.deposits_transfers_in";
+    public static final String EXPENSES_24H = "hyperfactions_gui.dashboard.expenses_24h";
+    public static final String WITHDRAWALS_TRANSFERS_OUT = "hyperfactions_gui.dashboard.withdrawals_transfers_out";
     public static final String FACTION_GONE = "hyperfactions_gui.dashboard.faction_gone";
     public static final String AVAILABLE = "hyperfactions_gui.dashboard.available";
     public static final String AT_RISK = "hyperfactions_gui.dashboard.at_risk";
@@ -782,12 +840,21 @@ public final class MessageKeys {
     public static final String SORT_MEMBERS = "hyperfactions_gui.common.sort_members";
     public static final String PAGE_FORMAT = "hyperfactions_gui.common.page_format";
     public static final String OWN_FACTION = "hyperfactions_gui.common.own_faction";
+    public static final String SEARCH = "hyperfactions_gui.common.search";
+    public static final String SORT = "hyperfactions_gui.common.sort";
+    public static final String PREV = "hyperfactions_gui.common.prev";
+    public static final String NEXT = "hyperfactions_gui.common.next";
 
     private GuiCommon() {}
   }
 
   /** Members page labels and messages. */
   public static final class MembersGui {
+    public static final String TITLE = "hyperfactions_gui.members.title";
+    public static final String SEARCH_LABEL = "hyperfactions_gui.members.search_label";
+    public static final String SORT_LABEL = "hyperfactions_gui.members.sort_label";
+    public static final String PREV_BTN = "hyperfactions_gui.members.prev_btn";
+    public static final String NEXT_BTN = "hyperfactions_gui.members.next_btn";
     public static final String MEMBER_COUNT = "hyperfactions_gui.members.count";
     public static final String SORT_ROLE = "hyperfactions_gui.members.sort_role";
     public static final String SORT_LAST_ONLINE = "hyperfactions_gui.members.sort_last_online";
@@ -807,6 +874,11 @@ public final class MessageKeys {
 
   /** Browser page labels. */
   public static final class BrowserGui {
+    public static final String TITLE = "hyperfactions_gui.browser.title";
+    public static final String SEARCH_LABEL = "hyperfactions_gui.browser.search_label";
+    public static final String SORT_LABEL = "hyperfactions_gui.browser.sort_label";
+    public static final String PREV_BTN = "hyperfactions_gui.browser.prev_btn";
+    public static final String NEXT_BTN = "hyperfactions_gui.browser.next_btn";
     public static final String SORT_NAME = "hyperfactions_gui.browser.sort_name";
     public static final String INVALID_FACTION = "hyperfactions_gui.browser.invalid_faction";
 
@@ -815,6 +887,14 @@ public final class MessageKeys {
 
   /** Leaderboard page labels. */
   public static final class LeaderboardGui {
+    public static final String TITLE = "hyperfactions_gui.leaderboard.title";
+    public static final String RANK_BY = "hyperfactions_gui.leaderboard.rank_by";
+    public static final String COL_RANK = "hyperfactions_gui.leaderboard.col_rank";
+    public static final String COL_FACTION = "hyperfactions_gui.leaderboard.col_faction";
+    public static final String COL_CLAIMS = "hyperfactions_gui.leaderboard.col_claims";
+    public static final String COL_MEMBERS = "hyperfactions_gui.leaderboard.col_members";
+    public static final String PREV_BTN = "hyperfactions_gui.leaderboard.prev_btn";
+    public static final String NEXT_BTN = "hyperfactions_gui.leaderboard.next_btn";
     public static final String SORT_KD = "hyperfactions_gui.leaderboard.sort_kd";
     public static final String SORT_TERRITORY = "hyperfactions_gui.leaderboard.sort_territory";
     public static final String SORT_BALANCE = "hyperfactions_gui.leaderboard.sort_balance";
@@ -824,6 +904,21 @@ public final class MessageKeys {
 
   /** Player info page labels and messages. */
   public static final class PlayerInfoGui {
+    public static final String TITLE = "hyperfactions_gui.playerinfo.title";
+    public static final String FIRST_JOINED_LABEL = "hyperfactions_gui.playerinfo.first_joined_label";
+    public static final String LAST_ONLINE_LABEL = "hyperfactions_gui.playerinfo.last_online_label";
+    public static final String FACTION_LABEL = "hyperfactions_gui.playerinfo.faction_label";
+    public static final String ROLE_LABEL = "hyperfactions_gui.playerinfo.role_label";
+    public static final String JOINED_LABEL_STATIC = "hyperfactions_gui.playerinfo.joined_label_static";
+    public static final String NOT_IN_FACTION = "hyperfactions_gui.playerinfo.not_in_faction";
+    public static final String POWER_HEADER = "hyperfactions_gui.playerinfo.power_header";
+    public static final String CURRENT_MAX = "hyperfactions_gui.playerinfo.current_max";
+    public static final String COMBAT_HEADER = "hyperfactions_gui.playerinfo.combat_header";
+    public static final String KILLS_DEATHS = "hyperfactions_gui.playerinfo.kills_deaths";
+    public static final String KDR_HEADER = "hyperfactions_gui.playerinfo.kdr_header";
+    public static final String MEMBERSHIP_HISTORY = "hyperfactions_gui.playerinfo.membership_history";
+    public static final String VIEW_FACTION_BTN = "hyperfactions_gui.playerinfo.view_faction_btn";
+    public static final String BACK_BTN = "hyperfactions_gui.playerinfo.back_btn";
     public static final String NOW = "hyperfactions_gui.playerinfo.now";
     public static final String HISTORY_COUNT = "hyperfactions_gui.playerinfo.history_count";
     public static final String JOINED_LABEL = "hyperfactions_gui.playerinfo.joined_label";
@@ -852,7 +947,7 @@ public final class MessageKeys {
     private FactionMainGui() {}
   }
 
-  /** Help GUI category display names. */
+  /** Help GUI category display names and new player help page content. */
   public static final class HelpGui {
     public static final String WELCOME = "hyperfactions_gui.help.category.welcome";
     public static final String YOUR_FACTION = "hyperfactions_gui.help.category.your_faction";
@@ -861,6 +956,32 @@ public final class MessageKeys {
     public static final String COMBAT = "hyperfactions_gui.help.category.combat";
     public static final String ECONOMY = "hyperfactions_gui.help.category.economy";
     public static final String QUICK_REF = "hyperfactions_gui.help.category.quick_ref";
+    // Help Center page title
+    public static final String HELP_CENTER_TITLE = "hyperfactions_gui.help.center_title";
+    // New player help page
+    public static final String GETTING_STARTED_TITLE = "hyperfactions_gui.help.getting_started_title";
+    public static final String WHAT_ARE_FACTIONS_TITLE = "hyperfactions_gui.help.what_are_factions_title";
+    public static final String WHAT_ARE_FACTIONS_1 = "hyperfactions_gui.help.what_are_factions_1";
+    public static final String WHAT_ARE_FACTIONS_2 = "hyperfactions_gui.help.what_are_factions_2";
+    public static final String WHAT_ARE_FACTIONS_BULLET_1 = "hyperfactions_gui.help.what_are_factions_bullet_1";
+    public static final String WHAT_ARE_FACTIONS_BULLET_2 = "hyperfactions_gui.help.what_are_factions_bullet_2";
+    public static final String WHAT_ARE_FACTIONS_BULLET_3 = "hyperfactions_gui.help.what_are_factions_bullet_3";
+    public static final String JOINING_TITLE = "hyperfactions_gui.help.joining_title";
+    public static final String JOINING_DESC = "hyperfactions_gui.help.joining_desc";
+    public static final String JOINING_BULLET_1 = "hyperfactions_gui.help.joining_bullet_1";
+    public static final String JOINING_BULLET_2 = "hyperfactions_gui.help.joining_bullet_2";
+    public static final String JOINING_BULLET_3 = "hyperfactions_gui.help.joining_bullet_3";
+    public static final String CREATING_TITLE = "hyperfactions_gui.help.creating_title";
+    public static final String CREATING_DESC = "hyperfactions_gui.help.creating_desc";
+    public static final String CREATING_BULLET_1 = "hyperfactions_gui.help.creating_bullet_1";
+    public static final String CREATING_BULLET_2 = "hyperfactions_gui.help.creating_bullet_2";
+    public static final String COMMANDS_TITLE = "hyperfactions_gui.help.commands_title";
+    public static final String CMD_F = "hyperfactions_gui.help.cmd_f";
+    public static final String CMD_F_LIST = "hyperfactions_gui.help.cmd_f_list";
+    public static final String CMD_F_JOIN = "hyperfactions_gui.help.cmd_f_join";
+    public static final String CMD_F_CREATE = "hyperfactions_gui.help.cmd_f_create";
+    public static final String CMD_F_HELP = "hyperfactions_gui.help.cmd_f_help";
+    public static final String TIP = "hyperfactions_gui.help.tip";
 
     private HelpGui() {}
   }
@@ -895,6 +1016,12 @@ public final class MessageKeys {
 
   /** Relations page labels and messages. */
   public static final class RelationsGui {
+    public static final String TITLE = "hyperfactions_gui.relations.title";
+    public static final String TAB_RELATIONS = "hyperfactions_gui.relations.tab_relations";
+    public static final String TAB_PENDING = "hyperfactions_gui.relations.tab_pending";
+    public static final String SET_RELATION_BTN = "hyperfactions_gui.relations.set_relation_btn";
+    public static final String PREV_BTN = "hyperfactions_gui.relations.prev_btn";
+    public static final String NEXT_BTN = "hyperfactions_gui.relations.next_btn";
     public static final String RELATION_COUNT = "hyperfactions_gui.relations.relation_count";
     public static final String REQUEST_COUNT = "hyperfactions_gui.relations.request_count";
     public static final String TYPE_ALLY = "hyperfactions_gui.relations.type_ally";
@@ -926,6 +1053,59 @@ public final class MessageKeys {
 
   /** Settings page labels and messages. */
   public static final class SettingsGui {
+    public static final String TITLE = "hyperfactions_gui.settings.title";
+    public static final String GENERAL = "hyperfactions_gui.settings.general";
+    public static final String NAME_LABEL = "hyperfactions_gui.settings.name_label";
+    public static final String TAG_LABEL = "hyperfactions_gui.settings.tag_label";
+    public static final String DESC_LABEL = "hyperfactions_gui.settings.desc_label";
+    public static final String EDIT_BTN = "hyperfactions_gui.settings.edit_btn";
+    public static final String RECRUITMENT = "hyperfactions_gui.settings.recruitment";
+    public static final String STATUS_LABEL = "hyperfactions_gui.settings.status_label";
+    public static final String HOME_LOCATION = "hyperfactions_gui.settings.home_location";
+    public static final String LOCATION_LABEL = "hyperfactions_gui.settings.location_label";
+    public static final String SET_HOME_BTN = "hyperfactions_gui.settings.set_home_btn";
+    public static final String TELEPORT_BTN = "hyperfactions_gui.settings.teleport_btn";
+    public static final String DELETE_BTN = "hyperfactions_gui.settings.delete_btn";
+    public static final String OPTIONAL_FEATURES = "hyperfactions_gui.settings.optional_features";
+    public static final String CONFIGURE_MODULES = "hyperfactions_gui.settings.configure_modules";
+    public static final String MODULES_BTN = "hyperfactions_gui.settings.modules_btn";
+    public static final String DANGER_ZONE = "hyperfactions_gui.settings.danger_zone";
+    public static final String IRREVERSIBLE = "hyperfactions_gui.settings.irreversible";
+    public static final String DISBAND_BTN = "hyperfactions_gui.settings.disband_btn";
+    public static final String LOCK_HINT = "hyperfactions_gui.settings.lock_hint";
+    public static final String TERRITORY_PERMISSIONS = "hyperfactions_gui.settings.territory_permissions";
+    public static final String COL_OUT = "hyperfactions_gui.settings.col_out";
+    public static final String COL_ALLY = "hyperfactions_gui.settings.col_ally";
+    public static final String COL_MEM = "hyperfactions_gui.settings.col_mem";
+    public static final String COL_OFF = "hyperfactions_gui.settings.col_off";
+    public static final String CAT_BUILDING = "hyperfactions_gui.settings.cat_building";
+    public static final String PERM_BREAK = "hyperfactions_gui.settings.perm_break";
+    public static final String PERM_PLACE = "hyperfactions_gui.settings.perm_place";
+    public static final String CAT_INTERACTION = "hyperfactions_gui.settings.cat_interaction";
+    public static final String INTERACTION_HINT = "hyperfactions_gui.settings.interaction_hint";
+    public static final String PERM_ALL = "hyperfactions_gui.settings.perm_all";
+    public static final String PERM_DOOR = "hyperfactions_gui.settings.perm_door";
+    public static final String PERM_CHEST = "hyperfactions_gui.settings.perm_chest";
+    public static final String PERM_BENCH = "hyperfactions_gui.settings.perm_bench";
+    public static final String PERM_PROCESSING = "hyperfactions_gui.settings.perm_processing";
+    public static final String PERM_SEAT = "hyperfactions_gui.settings.perm_seat";
+    public static final String PERM_TRANSPORT = "hyperfactions_gui.settings.perm_transport";
+    public static final String CAT_OTHER = "hyperfactions_gui.settings.cat_other";
+    public static final String PERM_CRATE = "hyperfactions_gui.settings.perm_crate";
+    public static final String PERM_NPC_TAME = "hyperfactions_gui.settings.perm_npc_tame";
+    public static final String PERM_PVE = "hyperfactions_gui.settings.perm_pve";
+    public static final String APPEARANCE = "hyperfactions_gui.settings.appearance";
+    public static final String COLOR_LABEL = "hyperfactions_gui.settings.color_label";
+    public static final String MOB_SPAWNING = "hyperfactions_gui.settings.mob_spawning";
+    public static final String MOB_SPAWNING_HINT = "hyperfactions_gui.settings.mob_spawning_hint";
+    public static final String MOB_SPAWNING_LABEL = "hyperfactions_gui.settings.mob_spawning_label";
+    public static final String HOSTILE_MOBS = "hyperfactions_gui.settings.hostile_mobs";
+    public static final String PASSIVE_MOBS = "hyperfactions_gui.settings.passive_mobs";
+    public static final String NEUTRAL_MOBS = "hyperfactions_gui.settings.neutral_mobs";
+    public static final String FACTION_SETTINGS = "hyperfactions_gui.settings.faction_settings";
+    public static final String PVP_IN_TERRITORY = "hyperfactions_gui.settings.pvp_in_territory";
+    public static final String OFFICERS_CAN_EDIT = "hyperfactions_gui.settings.officers_can_edit";
+    public static final String LEADER_ONLY = "hyperfactions_gui.settings.leader_only";
     public static final String OFFICERS_ONLY = "hyperfactions_gui.settings.officers_only";
     public static final String DISPLAY_NONE = "hyperfactions_gui.settings.display_none";
     public static final String HOME_NOT_SET = "hyperfactions_gui.settings.home_not_set";
@@ -947,6 +1127,10 @@ public final class MessageKeys {
 
   /** Modules page labels. */
   public static final class ModulesGui {
+    public static final String TITLE = "hyperfactions_gui.modules.title";
+    public static final String DESCRIPTION = "hyperfactions_gui.modules.description";
+    public static final String CONFIGURE_BTN = "hyperfactions_gui.modules.configure_btn";
+    public static final String BACK_BTN = "hyperfactions_gui.modules.back_btn";
     public static final String TREASURY_NAME = "hyperfactions_gui.modules.treasury_name";
     public static final String TREASURY_DESC = "hyperfactions_gui.modules.treasury_desc";
     public static final String RAIDS_NAME = "hyperfactions_gui.modules.raids_name";
@@ -968,6 +1152,34 @@ public final class MessageKeys {
 
   /** Treasury page labels and messages. */
   public static final class TreasuryGui {
+    // Page labels
+    public static final String TITLE = "hyperfactions_gui.treasury.title";
+    public static final String BALANCE_LABEL = "hyperfactions_gui.treasury.balance_label";
+    public static final String INCOME_24H = "hyperfactions_gui.treasury.income_24h";
+    public static final String DEPOSITS_TRANSFERS_IN = "hyperfactions_gui.treasury.deposits_transfers_in";
+    public static final String EXPENSES_24H = "hyperfactions_gui.treasury.expenses_24h";
+    public static final String WITHDRAWALS_TRANSFERS_OUT = "hyperfactions_gui.treasury.withdrawals_transfers_out";
+    public static final String MAINTENANCE = "hyperfactions_gui.treasury.maintenance";
+    public static final String RUNWAY_LABEL = "hyperfactions_gui.treasury.runway_label";
+    public static final String ADD_FUNDS = "hyperfactions_gui.treasury.add_funds";
+    public static final String DEPOSIT_BTN = "hyperfactions_gui.treasury.deposit_btn";
+    public static final String TAKE_FUNDS = "hyperfactions_gui.treasury.take_funds";
+    public static final String WITHDRAW_BTN = "hyperfactions_gui.treasury.withdraw_btn";
+    public static final String SEND_TO_FACTION = "hyperfactions_gui.treasury.send_to_faction";
+    public static final String TRANSFER_BTN = "hyperfactions_gui.treasury.transfer_btn";
+    public static final String TREASURY_CONFIG = "hyperfactions_gui.treasury.treasury_config";
+    public static final String SETTINGS_BTN = "hyperfactions_gui.treasury.settings_btn";
+    public static final String RECENT_TRANSACTIONS = "hyperfactions_gui.treasury.recent_transactions";
+    public static final String NO_TRANSACTIONS = "hyperfactions_gui.treasury.no_transactions";
+    public static final String COL_DATE = "hyperfactions_gui.treasury.col_date";
+    public static final String COL_TYPE = "hyperfactions_gui.treasury.col_type";
+    public static final String COL_BY = "hyperfactions_gui.treasury.col_by";
+    public static final String COL_AMOUNT = "hyperfactions_gui.treasury.col_amount";
+    public static final String COL_DETAILS = "hyperfactions_gui.treasury.col_details";
+    public static final String PAY_NOW_BTN = "hyperfactions_gui.treasury.pay_now_btn";
+    public static final String COST_7D = "hyperfactions_gui.treasury.cost_7d";
+    public static final String COST_14D = "hyperfactions_gui.treasury.cost_14d";
+    public static final String COST_30D = "hyperfactions_gui.treasury.cost_30d";
     // Dashboard labels
     public static final String WALLET_LABEL = "hyperfactions_gui.treasury.wallet_label";
     public static final String TREASURY_LABEL = "hyperfactions_gui.treasury.treasury_label";
@@ -1041,12 +1253,41 @@ public final class MessageKeys {
     public static final String LEADER_ONLY_PERMS = "hyperfactions_gui.treasury.leader_only_perms";
     public static final String LEADER_ONLY_UPKEEP = "hyperfactions_gui.treasury.leader_only_upkeep";
     public static final String INVALID_LIMIT = "hyperfactions_gui.treasury.invalid_limit";
+    // Treasury settings page
+    public static final String SETTINGS_TITLE = "hyperfactions_gui.treasury.settings_title";
+    public static final String OFFICER_PERMISSIONS = "hyperfactions_gui.treasury.officer_permissions";
+    public static final String ALLOW_WITHDRAW = "hyperfactions_gui.treasury.allow_withdraw";
+    public static final String ALLOW_TRANSFER = "hyperfactions_gui.treasury.allow_transfer";
+    public static final String LIMITS_SECTION = "hyperfactions_gui.treasury.limits_section";
+    public static final String MAX_PER_WITHDRAWAL = "hyperfactions_gui.treasury.max_per_withdrawal";
+    public static final String MAX_WITHDRAWALS_PER = "hyperfactions_gui.treasury.max_withdrawals_per";
+    public static final String MAX_PER_TRANSFER = "hyperfactions_gui.treasury.max_per_transfer";
+    public static final String MAX_TRANSFERS_PER = "hyperfactions_gui.treasury.max_transfers_per";
+    public static final String LIMIT_PERIOD = "hyperfactions_gui.treasury.limit_period";
+    public static final String NO_LIMIT_HINT = "hyperfactions_gui.treasury.no_limit_hint";
+    public static final String UPKEEP_SETTINGS = "hyperfactions_gui.treasury.upkeep_settings";
+    public static final String AUTO_PAY_UPKEEP = "hyperfactions_gui.treasury.auto_pay_upkeep";
+    public static final String BACK_BTN = "hyperfactions_gui.treasury.back_btn";
 
     private TreasuryGui() {}
   }
 
   /** Confirmation page messages (disband, leave, transfer). */
   public static final class ConfirmGui {
+    // Static UI labels
+    public static final String DISBAND_TITLE = "hyperfactions_gui.confirm.disband_title";
+    public static final String DISBAND_PROMPT = "hyperfactions_gui.confirm.disband_prompt";
+    public static final String DISBAND_WARNING = "hyperfactions_gui.confirm.disband_warning";
+    public static final String LEAVE_TITLE = "hyperfactions_gui.confirm.leave_title";
+    public static final String LEAVE_PROMPT = "hyperfactions_gui.confirm.leave_prompt";
+    public static final String LEAVE_WARNING = "hyperfactions_gui.confirm.leave_warning";
+    public static final String LEADER_LEAVE_TITLE = "hyperfactions_gui.confirm.leader_leave_title";
+    public static final String LEADER_LEAVE_PROMPT = "hyperfactions_gui.confirm.leader_leave_prompt";
+    public static final String TRANSFER_TITLE = "hyperfactions_gui.confirm.transfer_title";
+    public static final String TRANSFER_PROMPT = "hyperfactions_gui.confirm.transfer_prompt";
+    public static final String TRANSFER_WARNING = "hyperfactions_gui.confirm.transfer_warning";
+    public static final String ERROR_TITLE = "hyperfactions_gui.confirm.error_title";
+    public static final String ERROR_DEFAULT = "hyperfactions_gui.confirm.error_default";
     // DisbandConfirm
     public static final String DISBAND_NOT_LEADER = "hyperfactions_gui.confirm.disband_not_leader";
     public static final String DISBANDED = "hyperfactions_gui.confirm.disbanded";
@@ -1076,6 +1317,12 @@ public final class MessageKeys {
   public static final class LogsGui {
     public static final String TITLE = "hyperfactions_gui.logs.title";
     public static final String ENTRY_COUNT = "hyperfactions_gui.logs.entry_count";
+    public static final String FILTER_LABEL = "hyperfactions_gui.logs.filter_label";
+    public static final String COL_TIME = "hyperfactions_gui.logs.col_time";
+    public static final String COL_TYPE = "hyperfactions_gui.logs.col_type";
+    public static final String COL_MESSAGE = "hyperfactions_gui.logs.col_message";
+    public static final String PREV_BTN = "hyperfactions_gui.logs.prev_btn";
+    public static final String NEXT_BTN = "hyperfactions_gui.logs.next_btn";
     public static final String ALL_TYPES = "hyperfactions_gui.logs.all_types";
     public static final String NO_LOGS_TYPE = "hyperfactions_gui.logs.no_logs_type";
     public static final String NO_LOGS = "hyperfactions_gui.logs.no_logs";
@@ -1085,6 +1332,10 @@ public final class MessageKeys {
 
   /** Faction chat page labels and messages. */
   public static final class ChatGui {
+    public static final String TITLE = "hyperfactions_gui.chat.title";
+    public static final String TAB_FACTION = "hyperfactions_gui.chat.tab_faction";
+    public static final String TAB_ALLY = "hyperfactions_gui.chat.tab_ally";
+    public static final String SEND_BTN = "hyperfactions_gui.chat.send_btn";
     public static final String PLACEHOLDER = "hyperfactions_gui.chat.placeholder";
     public static final String NO_MESSAGES = "hyperfactions_gui.chat.no_messages";
     public static final String NO_ALLY_PERMISSION = "hyperfactions_gui.chat.no_ally_permission";
@@ -1099,6 +1350,11 @@ public final class MessageKeys {
 
   /** Faction invites page labels and messages. */
   public static final class InvitesGui {
+    public static final String TITLE = "hyperfactions_gui.invites.title";
+    public static final String TAB_OUTGOING = "hyperfactions_gui.invites.tab_outgoing";
+    public static final String TAB_REQUESTS = "hyperfactions_gui.invites.tab_requests";
+    public static final String PREV_BTN = "hyperfactions_gui.invites.prev_btn";
+    public static final String NEXT_BTN = "hyperfactions_gui.invites.next_btn";
     public static final String INVITE_COUNT = "hyperfactions_gui.invites.invite_count";
     public static final String REQUEST_COUNT = "hyperfactions_gui.invites.request_count";
     public static final String INVITED_BY = "hyperfactions_gui.invites.invited_by";
@@ -1125,6 +1381,16 @@ public final class MessageKeys {
 
   /** Chunk map page labels and messages. */
   public static final class MapGui {
+    public static final String TITLE = "hyperfactions_gui.map.title";
+    public static final String ACTION_HINT = "hyperfactions_gui.map.action_hint";
+    public static final String LEGEND_YOUR = "hyperfactions_gui.map.legend_your";
+    public static final String LEGEND_ALLY = "hyperfactions_gui.map.legend_ally";
+    public static final String LEGEND_ENEMY = "hyperfactions_gui.map.legend_enemy";
+    public static final String LEGEND_OTHER = "hyperfactions_gui.map.legend_other";
+    public static final String LEGEND_WILDERNESS = "hyperfactions_gui.map.legend_wilderness";
+    public static final String LEGEND_SAFE = "hyperfactions_gui.map.legend_safe";
+    public static final String LEGEND_WAR = "hyperfactions_gui.map.legend_war";
+    public static final String LEGEND_YOU = "hyperfactions_gui.map.legend_you";
     public static final String POSITION = "hyperfactions_gui.map.position";
     public static final String LEGEND_PROTECTED = "hyperfactions_gui.map.legend_protected";
     public static final String CLAIM_STATS = "hyperfactions_gui.map.claim_stats";
@@ -1179,12 +1445,39 @@ public final class MessageKeys {
     public static final String CREATED_NO_DASHBOARD = "hyperfactions_gui.create.created_no_dashboard";
     public static final String INVALID_NAME = "hyperfactions_gui.create.invalid_name";
     public static final String CREATE_FAILED = "hyperfactions_gui.create.create_failed";
+    // Static UI labels
+    public static final String TITLE = "hyperfactions_gui.create.title";
+    public static final String SECTION_PREVIEW = "hyperfactions_gui.create.section_preview";
+    public static final String SECTION_BASIC_INFO = "hyperfactions_gui.create.section_basic_info";
+    public static final String SECTION_DETAILS = "hyperfactions_gui.create.section_details";
+    public static final String NAME_PREFIX = "hyperfactions_gui.create.name_prefix";
+    public static final String FACTION_NAME_LABEL = "hyperfactions_gui.create.faction_name_label";
+    public static final String TAG_LABEL = "hyperfactions_gui.create.tag_label";
+    public static final String DESC_LABEL = "hyperfactions_gui.create.desc_label";
+    public static final String RECRUITMENT_LABEL = "hyperfactions_gui.create.recruitment_label";
+    public static final String SECTION_FACTION_COLOR = "hyperfactions_gui.create.section_faction_color";
+    public static final String SECTION_COMBAT = "hyperfactions_gui.create.section_combat";
+    public static final String CREATE_BTN = "hyperfactions_gui.create.create_btn";
 
     private CreateGui() {}
   }
 
   /** New player page labels and messages (invites, browse, map). */
   public static final class NewPlayerGui {
+    // Page titles and static labels
+    public static final String BROWSE_TITLE = "hyperfactions_gui.newplayer.browse_title";
+    public static final String INVITES_TITLE = "hyperfactions_gui.newplayer.invites_title";
+    public static final String MAP_TITLE = "hyperfactions_gui.newplayer.map_title";
+    public static final String VIEW_ONLY_BADGE = "hyperfactions_gui.newplayer.view_only_badge";
+    public static final String LEGEND_LABEL = "hyperfactions_gui.newplayer.legend_label";
+    public static final String LEGEND_SAFEZONE = "hyperfactions_gui.newplayer.legend_safezone";
+    public static final String LEGEND_WARZONE = "hyperfactions_gui.newplayer.legend_warzone";
+    public static final String LEGEND_FACTION = "hyperfactions_gui.newplayer.legend_faction";
+    public static final String LEGEND_WILDERNESS = "hyperfactions_gui.newplayer.legend_wilderness";
+    public static final String SEARCH_LABEL = "hyperfactions_gui.newplayer.search_label";
+    public static final String SORT_LABEL = "hyperfactions_gui.newplayer.sort_label";
+    public static final String PREV_BTN = "hyperfactions_gui.newplayer.prev_btn";
+    public static final String NEXT_BTN = "hyperfactions_gui.newplayer.next_btn";
     // Invites page
     public static final String PENDING_COUNT = "hyperfactions_gui.newplayer.pending_count";
     public static final String RECEIVED_HEADER = "hyperfactions_gui.newplayer.received_header";
@@ -1390,6 +1683,17 @@ public final class MessageKeys {
     public static final String ZINT_NO_PLUGIN = "hyperfactions_admin.zone_int.no_plugin";
     public static final String ZINT_DEFAULT = "hyperfactions_admin.zone_int.default";
     public static final String ZINT_CUSTOM = "hyperfactions_admin.zone_int.custom";
+
+    // Integration flags UI labels
+    public static final String GUI_ZINT_CAT_GRAVESTONES = "hyperfactions_admin.gui.zint_cat_gravestones";
+    public static final String GUI_ZINT_GRAVESTONES_DESC = "hyperfactions_admin.gui.zint_gravestones_desc";
+    public static final String GUI_ZINT_CAT_WORLD_MAP = "hyperfactions_admin.gui.zint_cat_world_map";
+    public static final String GUI_ZINT_WORLD_MAP_DESC = "hyperfactions_admin.gui.zint_world_map_desc";
+    public static final String GUI_ZINT_VISIBILITY_LABEL = "hyperfactions_admin.gui.zint_visibility_label";
+    public static final String GUI_ZINT_CAT_ESSENTIALS = "hyperfactions_admin.gui.zint_cat_essentials";
+    public static final String GUI_ZINT_RESET_DEFAULTS = "hyperfactions_admin.gui.zint_reset_defaults";
+    public static final String GUI_ZINT_BACK_TO_FLAGS = "hyperfactions_admin.gui.zint_back_to_flags";
+
     // Activity log
     public static final String LOG_ALL_TYPES = "hyperfactions_admin.log.all_types";
     public static final String LOG_NO_LOGS = "hyperfactions_admin.log.no_logs";
@@ -1416,6 +1720,22 @@ public final class MessageKeys {
     public static final String ZFLAGS_RESET_ALL = "hyperfactions_admin.zflags.reset_all";
     public static final String ZFLAGS_RESET_FAILED = "hyperfactions_admin.zflags.reset_failed";
     public static final String ZFLAGS_BACK_TO_SETTINGS = "hyperfactions_admin.zflags.back_to_settings";
+
+    // Zone settings UI labels
+    public static final String GUI_ZSET_CAT_COMBAT = "hyperfactions_admin.gui.zset_cat_combat";
+    public static final String GUI_ZSET_CAT_DAMAGE = "hyperfactions_admin.gui.zset_cat_damage";
+    public static final String GUI_ZSET_CAT_DEATH = "hyperfactions_admin.gui.zset_cat_death";
+    public static final String GUI_ZSET_CAT_BUILDING = "hyperfactions_admin.gui.zset_cat_building";
+    public static final String GUI_ZSET_CAT_INTERACTION = "hyperfactions_admin.gui.zset_cat_interaction";
+    public static final String GUI_ZSET_CAT_TRANSPORT = "hyperfactions_admin.gui.zset_cat_transport";
+    public static final String GUI_ZSET_CAT_ITEMS = "hyperfactions_admin.gui.zset_cat_items";
+    public static final String GUI_ZSET_CAT_SPAWNING = "hyperfactions_admin.gui.zset_cat_spawning";
+    public static final String GUI_ZSET_CAT_MOB_CLEAR = "hyperfactions_admin.gui.zset_cat_mob_clear";
+    public static final String GUI_ZSET_CHILDREN_HINT = "hyperfactions_admin.gui.zset_children_hint";
+    public static final String GUI_ZSET_RESET_DEFAULTS = "hyperfactions_admin.gui.zset_reset_defaults";
+    public static final String GUI_ZSET_INTEGRATION_FLAGS = "hyperfactions_admin.gui.zset_integration_flags";
+    public static final String GUI_ZSET_BACK_TO_ZONES = "hyperfactions_admin.gui.zset_back_to_zones";
+
     // Zone properties
     public static final String ZPROP_CURRENT_CUSTOM = "hyperfactions_admin.zprop.current_custom";
     public static final String ZPROP_CURRENT_DEFAULT = "hyperfactions_admin.zprop.current_default";
@@ -1453,6 +1773,301 @@ public final class MessageKeys {
     public static final String MAP_CHUNK_BELONGS = "hyperfactions_admin.map.chunk_belongs";
     public static final String MAP_CHUNK_FACTION = "hyperfactions_admin.map.chunk_faction";
     public static final String MAP_CHUNK_PROTECTED = "hyperfactions_admin.map.chunk_protected";
+
+    // ========== GUI Label Keys (for .ui hardcoded text localization) ==========
+
+    // Page Titles
+    public static final String GUI_TITLE_DASHBOARD = "hyperfactions_admin.gui.title_dashboard";
+    public static final String GUI_TITLE_MAIN = "hyperfactions_admin.gui.title_main";
+    public static final String GUI_TITLE_ACTIONS = "hyperfactions_admin.gui.title_actions";
+    public static final String GUI_TITLE_FACTIONS = "hyperfactions_admin.gui.title_factions";
+    public static final String GUI_TITLE_PLAYERS = "hyperfactions_admin.gui.title_players";
+    public static final String GUI_TITLE_ECONOMY = "hyperfactions_admin.gui.title_economy";
+    public static final String GUI_TITLE_ZONES = "hyperfactions_admin.gui.title_zones";
+    public static final String GUI_TITLE_BACKUPS = "hyperfactions_admin.gui.title_backups";
+    public static final String GUI_TITLE_CONFIG = "hyperfactions_admin.gui.title_config";
+    public static final String GUI_TITLE_HELP = "hyperfactions_admin.gui.title_help";
+    public static final String GUI_TITLE_UPDATES = "hyperfactions_admin.gui.title_updates";
+    public static final String GUI_TITLE_VERSION = "hyperfactions_admin.gui.title_version";
+    public static final String GUI_TITLE_ACTIVITY_LOG = "hyperfactions_admin.gui.title_activity_log";
+    public static final String GUI_TITLE_PLAYER_INFO = "hyperfactions_admin.gui.title_player_info";
+    public static final String GUI_TITLE_FACTION_INFO = "hyperfactions_admin.gui.title_faction_info";
+    public static final String GUI_TITLE_FACTION_SETTINGS = "hyperfactions_admin.gui.title_faction_settings";
+    public static final String GUI_TITLE_FACTION_MEMBERS = "hyperfactions_admin.gui.title_faction_members";
+    public static final String GUI_TITLE_FACTION_RELATIONS = "hyperfactions_admin.gui.title_faction_relations";
+    public static final String GUI_TITLE_ZONE_MAP = "hyperfactions_admin.gui.title_zone_map";
+    public static final String GUI_TITLE_ZONE_SETTINGS = "hyperfactions_admin.gui.title_zone_settings";
+    public static final String GUI_TITLE_ZONE_PROPERTIES = "hyperfactions_admin.gui.title_zone_properties";
+    public static final String GUI_TITLE_BULK_ECONOMY = "hyperfactions_admin.gui.title_bulk_economy";
+    public static final String GUI_TITLE_ECONOMY_ADJUST = "hyperfactions_admin.gui.title_economy_adjust";
+
+    // Dashboard labels
+    public static final String GUI_DASH_SERVER_STATS = "hyperfactions_admin.gui.dash_server_stats";
+    public static final String GUI_DASH_FACTIONS = "hyperfactions_admin.gui.dash_factions";
+    public static final String GUI_DASH_TOTAL_MEMBERS = "hyperfactions_admin.gui.dash_total_members";
+    public static final String GUI_DASH_TOTAL_CLAIMS = "hyperfactions_admin.gui.dash_total_claims";
+    public static final String GUI_DASH_ZONES = "hyperfactions_admin.gui.dash_zones";
+    public static final String GUI_DASH_SAFE_WAR = "hyperfactions_admin.gui.dash_safe_war";
+    public static final String GUI_DASH_TOTAL_POWER = "hyperfactions_admin.gui.dash_total_power";
+    public static final String GUI_DASH_AVG_POWER = "hyperfactions_admin.gui.dash_avg_power";
+    public static final String GUI_DASH_TOTAL_ECONOMY = "hyperfactions_admin.gui.dash_total_economy";
+    public static final String GUI_DASH_WEALTHIEST = "hyperfactions_admin.gui.dash_wealthiest";
+    public static final String GUI_DASH_AVG_BALANCE = "hyperfactions_admin.gui.dash_avg_balance";
+    public static final String GUI_DASH_PROTECTION_BYPASS = "hyperfactions_admin.gui.dash_protection_bypass";
+
+    // Common buttons and labels
+    public static final String GUI_SEARCH = "hyperfactions_admin.gui.search";
+    public static final String GUI_SORT = "hyperfactions_admin.gui.sort";
+    public static final String GUI_PREV = "hyperfactions_admin.gui.prev";
+    public static final String GUI_NEXT = "hyperfactions_admin.gui.next";
+    public static final String GUI_BACK = "hyperfactions_admin.gui.back";
+    public static final String GUI_DONE = "hyperfactions_admin.gui.done";
+    public static final String GUI_CANCEL = "hyperfactions_admin.gui.cancel";
+    public static final String GUI_APPLY = "hyperfactions_admin.gui.apply";
+    public static final String GUI_SET = "hyperfactions_admin.gui.set";
+    public static final String GUI_RESET = "hyperfactions_admin.gui.reset";
+    public static final String GUI_COMING_SOON = "hyperfactions_admin.gui.coming_soon";
+    public static final String GUI_ZONES_BTN = "hyperfactions_admin.gui.zones_btn";
+    public static final String GUI_RELOAD_BTN = "hyperfactions_admin.gui.reload_btn";
+    public static final String GUI_ALL = "hyperfactions_admin.gui.all";
+    public static final String GUI_SAFE = "hyperfactions_admin.gui.safe";
+    public static final String GUI_WAR = "hyperfactions_admin.gui.war";
+    public static final String GUI_CREATE_ZONE = "hyperfactions_admin.gui.create_zone";
+
+    // Actions page labels
+    public static final String GUI_ACT_COMBAT_STATS = "hyperfactions_admin.gui.act_combat_stats";
+    public static final String GUI_ACT_COMBAT_DESC = "hyperfactions_admin.gui.act_combat_desc";
+    public static final String GUI_ACT_RESET_KD = "hyperfactions_admin.gui.act_reset_kd";
+    public static final String GUI_ACT_ECONOMY = "hyperfactions_admin.gui.act_economy";
+    public static final String GUI_ACT_ECONOMY_DESC = "hyperfactions_admin.gui.act_economy_desc";
+    public static final String GUI_ACT_BULK_ADJUST = "hyperfactions_admin.gui.act_bulk_adjust";
+    public static final String GUI_ACT_UPKEEP_COLLECTION = "hyperfactions_admin.gui.act_upkeep_collection";
+    public static final String GUI_ACT_UPKEEP_DESC = "hyperfactions_admin.gui.act_upkeep_desc";
+    public static final String GUI_ACT_TRIGGER_UPKEEP = "hyperfactions_admin.gui.act_trigger_upkeep";
+
+    // Placeholder page labels
+    public static final String GUI_BACKUP_HEADING = "hyperfactions_admin.gui.backup_heading";
+    public static final String GUI_BACKUP_DESC1 = "hyperfactions_admin.gui.backup_desc1";
+    public static final String GUI_BACKUP_DESC2 = "hyperfactions_admin.gui.backup_desc2";
+    public static final String GUI_CONFIG_HEADING = "hyperfactions_admin.gui.config_heading";
+    public static final String GUI_CONFIG_DESC1 = "hyperfactions_admin.gui.config_desc1";
+    public static final String GUI_CONFIG_DESC2 = "hyperfactions_admin.gui.config_desc2";
+    public static final String GUI_HELP_HEADING = "hyperfactions_admin.gui.help_heading";
+    public static final String GUI_HELP_DESC1 = "hyperfactions_admin.gui.help_desc1";
+    public static final String GUI_HELP_DESC2 = "hyperfactions_admin.gui.help_desc2";
+    public static final String GUI_UPDATES_HEADING = "hyperfactions_admin.gui.updates_heading";
+    public static final String GUI_UPDATES_DESC1 = "hyperfactions_admin.gui.updates_desc1";
+    public static final String GUI_UPDATES_DESC2 = "hyperfactions_admin.gui.updates_desc2";
+
+    // Version page labels
+    public static final String GUI_VER_HYPERFACTIONS = "hyperfactions_admin.gui.ver_hyperfactions";
+    public static final String GUI_VER_HYTALE_SERVER = "hyperfactions_admin.gui.ver_hytale_server";
+    public static final String GUI_VER_JAVA = "hyperfactions_admin.gui.ver_java";
+    public static final String GUI_VER_PERMISSIONS = "hyperfactions_admin.gui.ver_permissions";
+    public static final String GUI_VER_PLACEHOLDERS = "hyperfactions_admin.gui.ver_placeholders";
+    public static final String GUI_VER_ECONOMY_SECTION = "hyperfactions_admin.gui.ver_economy_section";
+    public static final String GUI_VER_PROTECTION = "hyperfactions_admin.gui.ver_protection";
+    public static final String GUI_VER_DISABLED = "hyperfactions_admin.gui.ver_disabled";
+
+    // Column headers (shared across pages)
+    public static final String GUI_COL_FACTION = "hyperfactions_admin.gui.col_faction";
+    public static final String GUI_COL_BALANCE = "hyperfactions_admin.gui.col_balance";
+    public static final String GUI_COL_MEMBERS = "hyperfactions_admin.gui.col_members";
+    public static final String GUI_COL_ACTIONS = "hyperfactions_admin.gui.col_actions";
+    public static final String GUI_COL_TIME = "hyperfactions_admin.gui.col_time";
+    public static final String GUI_COL_TYPE = "hyperfactions_admin.gui.col_type";
+    public static final String GUI_COL_MESSAGE = "hyperfactions_admin.gui.col_message";
+
+    // Economy page labels
+    public static final String GUI_ECON_TOTAL_BALANCE = "hyperfactions_admin.gui.econ_total_balance";
+    public static final String GUI_ECON_FACTIONS = "hyperfactions_admin.gui.econ_factions";
+    public static final String GUI_ECON_AVG_BALANCE = "hyperfactions_admin.gui.econ_avg_balance";
+    public static final String GUI_ECON_IN_GRACE = "hyperfactions_admin.gui.econ_in_grace";
+    public static final String GUI_ECON_COLLECTED = "hyperfactions_admin.gui.econ_collected";
+    public static final String GUI_ECON_NEXT_COLLECTION = "hyperfactions_admin.gui.econ_next_collection";
+    public static final String GUI_ECON_NO_DATA = "hyperfactions_admin.gui.econ_no_data";
+
+    // Activity log labels
+    public static final String GUI_LOG_TYPE = "hyperfactions_admin.gui.log_type";
+    public static final String GUI_LOG_TIME = "hyperfactions_admin.gui.log_time";
+    public static final String GUI_LOG_PLAYER = "hyperfactions_admin.gui.log_player";
+    public static final String GUI_LOG_NO_LOGS = "hyperfactions_admin.gui.log_no_logs";
+
+    // Player info labels
+    public static final String GUI_PLR_FIRST_JOINED = "hyperfactions_admin.gui.plr_first_joined";
+    public static final String GUI_PLR_LAST_ONLINE = "hyperfactions_admin.gui.plr_last_online";
+    public static final String GUI_PLR_UUID = "hyperfactions_admin.gui.plr_uuid";
+    public static final String GUI_PLR_FACTION = "hyperfactions_admin.gui.plr_faction";
+    public static final String GUI_PLR_ROLE = "hyperfactions_admin.gui.plr_role";
+    public static final String GUI_PLR_VIEW_FACTION = "hyperfactions_admin.gui.plr_view_faction";
+    public static final String GUI_PLR_POWER = "hyperfactions_admin.gui.plr_power";
+    public static final String GUI_PLR_MAX_POWER = "hyperfactions_admin.gui.plr_max_power";
+    public static final String GUI_PLR_SET_POWER = "hyperfactions_admin.gui.plr_set_power";
+    public static final String GUI_PLR_RESET_POWER = "hyperfactions_admin.gui.plr_reset_power";
+    public static final String GUI_PLR_SET_MAX = "hyperfactions_admin.gui.plr_set_max";
+    public static final String GUI_PLR_RESET_MAX = "hyperfactions_admin.gui.plr_reset_max";
+    public static final String GUI_PLR_NO_POWER_LOSS = "hyperfactions_admin.gui.plr_no_power_loss";
+    public static final String GUI_PLR_NO_CLAIM_DECAY = "hyperfactions_admin.gui.plr_no_claim_decay";
+    public static final String GUI_PLR_KILLS = "hyperfactions_admin.gui.plr_kills";
+    public static final String GUI_PLR_DEATHS = "hyperfactions_admin.gui.plr_deaths";
+    public static final String GUI_PLR_KDR = "hyperfactions_admin.gui.plr_kdr";
+    public static final String GUI_PLR_RESET_KD = "hyperfactions_admin.gui.plr_reset_kd";
+    public static final String GUI_PLR_KICK = "hyperfactions_admin.gui.plr_kick";
+    public static final String GUI_PLR_MEMBERSHIP_HISTORY = "hyperfactions_admin.gui.plr_membership_history";
+    public static final String GUI_PLR_NO_FACTION = "hyperfactions_admin.gui.plr_no_faction_label";
+    public static final String GUI_PLR_POWER_MANAGEMENT = "hyperfactions_admin.gui.plr_power_management";
+    public static final String GUI_PLR_COMBAT_STATS = "hyperfactions_admin.gui.plr_combat_stats";
+    public static final String GUI_PLR_BYPASS_FLAGS = "hyperfactions_admin.gui.plr_bypass_flags";
+    public static final String GUI_PLR_ADMIN_CONTROLS = "hyperfactions_admin.gui.plr_admin_controls";
+    public static final String GUI_PLR_KD_SUBTITLE = "hyperfactions_admin.gui.plr_kd_subtitle";
+    public static final String GUI_PLR_MAX_PREFIX = "hyperfactions_admin.gui.plr_max_prefix";
+    public static final String GUI_PLR_VIEW = "hyperfactions_admin.gui.plr_view";
+    public static final String GUI_PLR_KICK_FROM_FACTION = "hyperfactions_admin.gui.plr_kick_from_faction";
+    public static final String GUI_PLR_SET_MAX_BTN = "hyperfactions_admin.gui.plr_set_max_btn";
+    public static final String GUI_PLR_COMBAT = "hyperfactions_admin.gui.plr_combat";
+
+    // Faction info labels
+    public static final String GUI_FAC_DESCRIPTION = "hyperfactions_admin.gui.fac_description";
+    public static final String GUI_FAC_POWER = "hyperfactions_admin.gui.fac_power";
+    public static final String GUI_FAC_CLAIMS = "hyperfactions_admin.gui.fac_claims";
+    public static final String GUI_FAC_MEMBERS = "hyperfactions_admin.gui.fac_members";
+    public static final String GUI_FAC_RECRUITMENT = "hyperfactions_admin.gui.fac_recruitment";
+    public static final String GUI_FAC_FOUNDED = "hyperfactions_admin.gui.fac_founded";
+    public static final String GUI_FAC_ALLIES = "hyperfactions_admin.gui.fac_allies";
+    public static final String GUI_FAC_ENEMIES = "hyperfactions_admin.gui.fac_enemies";
+    public static final String GUI_FAC_RAIDABLE = "hyperfactions_admin.gui.fac_raidable";
+    public static final String GUI_FAC_TREASURY = "hyperfactions_admin.gui.fac_treasury";
+    public static final String GUI_FAC_LEADER = "hyperfactions_admin.gui.fac_leader";
+    public static final String GUI_FAC_OFFICERS = "hyperfactions_admin.gui.fac_officers";
+    public static final String GUI_FAC_VIEW_MEMBERS = "hyperfactions_admin.gui.fac_view_members";
+    public static final String GUI_FAC_VIEW_RELATIONS = "hyperfactions_admin.gui.fac_view_relations";
+    public static final String GUI_FAC_VIEW_SETTINGS = "hyperfactions_admin.gui.fac_view_settings";
+    public static final String GUI_FAC_DISBAND = "hyperfactions_admin.gui.fac_disband";
+    public static final String GUI_FAC_POWER_MANAGEMENT = "hyperfactions_admin.gui.fac_power_management";
+    public static final String GUI_FAC_RESET_ALL_POWER = "hyperfactions_admin.gui.fac_reset_all_power";
+    public static final String GUI_FAC_ECON_ADJUST = "hyperfactions_admin.gui.fac_econ_adjust";
+    public static final String GUI_FAC_ECON_VIEW_LOG = "hyperfactions_admin.gui.fac_econ_view_log";
+    public static final String GUI_FAC_CURRENT_MAX = "hyperfactions_admin.gui.fac_current_max";
+    public static final String GUI_FAC_CLAIMED_MAX = "hyperfactions_admin.gui.fac_claimed_max";
+    public static final String GUI_FAC_RELATIONS = "hyperfactions_admin.gui.fac_relations";
+    public static final String GUI_FAC_ALLY_ENEMY = "hyperfactions_admin.gui.fac_ally_enemy";
+    public static final String GUI_FAC_STATUS = "hyperfactions_admin.gui.fac_status";
+    public static final String GUI_FAC_INFO = "hyperfactions_admin.gui.fac_info";
+    public static final String GUI_FAC_TREASURY_BALANCE = "hyperfactions_admin.gui.fac_treasury_balance";
+    public static final String GUI_FAC_LEADERSHIP = "hyperfactions_admin.gui.fac_leadership";
+    public static final String GUI_FAC_LEADER_LABEL = "hyperfactions_admin.gui.fac_leader_label";
+    public static final String GUI_FAC_OFFICERS_LABEL = "hyperfactions_admin.gui.fac_officers_label";
+    public static final String GUI_FAC_ECON_MGMT = "hyperfactions_admin.gui.fac_econ_mgmt";
+    public static final String GUI_FAC_DANGER_ZONE = "hyperfactions_admin.gui.fac_danger_zone";
+    public static final String GUI_FAC_VIEW_TREASURY = "hyperfactions_admin.gui.fac_view_treasury";
+
+    // Faction settings labels
+    public static final String GUI_SET_EDITING = "hyperfactions_admin.gui.set_editing";
+    public static final String GUI_SET_GENERAL = "hyperfactions_admin.gui.set_general";
+    public static final String GUI_SET_NAME = "hyperfactions_admin.gui.set_name";
+    public static final String GUI_SET_TAG = "hyperfactions_admin.gui.set_tag";
+    public static final String GUI_SET_DESCRIPTION = "hyperfactions_admin.gui.set_description";
+    public static final String GUI_SET_RECRUITMENT = "hyperfactions_admin.gui.set_recruitment";
+    public static final String GUI_SET_HOME = "hyperfactions_admin.gui.set_home";
+    public static final String GUI_SET_CLEAR_HOME = "hyperfactions_admin.gui.set_clear_home";
+    public static final String GUI_SET_DISBAND_FACTION = "hyperfactions_admin.gui.set_disband_faction";
+    public static final String GUI_SET_FACTION_COLOR = "hyperfactions_admin.gui.set_faction_color";
+    public static final String GUI_SET_ADMIN_OVERRIDE = "hyperfactions_admin.gui.set_admin_override";
+    public static final String GUI_SET_TERRITORY_PERMS = "hyperfactions_admin.gui.set_territory_perms";
+    public static final String GUI_SET_MOB_SPAWNING = "hyperfactions_admin.gui.set_mob_spawning";
+    public static final String GUI_SET_FACTION_SETTINGS = "hyperfactions_admin.gui.set_faction_settings";
+
+    // Faction relations labels
+    public static final String GUI_REL_SUBTITLE = "hyperfactions_admin.gui.rel_subtitle";
+    public static final String GUI_REL_SET_NEW = "hyperfactions_admin.gui.rel_set_new";
+
+    // Zone page labels
+    public static final String GUI_ZONE_SORT_NAME = "hyperfactions_admin.gui.zone_sort_name";
+    public static final String GUI_ZONE_SORT_TYPE = "hyperfactions_admin.gui.zone_sort_type";
+    public static final String GUI_ZONE_SORT_CHUNKS = "hyperfactions_admin.gui.zone_sort_chunks";
+    public static final String GUI_ZONE_SORT_WORLD = "hyperfactions_admin.gui.zone_sort_world";
+    public static final String GUI_ZONE_COUNT_FORMAT = "hyperfactions_admin.gui.zone_count_format";
+
+    // Zone map labels
+    public static final String GUI_MAP_ZONE_CHUNK = "hyperfactions_admin.gui.map_zone_chunk";
+    public static final String GUI_MAP_EMPTY = "hyperfactions_admin.gui.map_empty";
+    public static final String GUI_MAP_OTHER_ZONE = "hyperfactions_admin.gui.map_other_zone";
+    public static final String GUI_MAP_FACTION_CLAIM = "hyperfactions_admin.gui.map_faction_claim";
+    public static final String GUI_MAP_PROTECTED = "hyperfactions_admin.gui.map_protected";
+    public static final String GUI_MAP_YOUR_POS = "hyperfactions_admin.gui.map_your_pos";
+    public static final String GUI_MAP_CLICK_HINT = "hyperfactions_admin.gui.map_click_hint";
+    public static final String GUI_MAP_LEGEND_ZONE_SAFE = "hyperfactions_admin.gui.map_legend_zone_safe";
+    public static final String GUI_MAP_LEGEND_ZONE_WAR = "hyperfactions_admin.gui.map_legend_zone_war";
+    public static final String GUI_MAP_LEGEND_OTHER_SAFE = "hyperfactions_admin.gui.map_legend_other_safe";
+    public static final String GUI_MAP_LEGEND_OTHER_WAR = "hyperfactions_admin.gui.map_legend_other_war";
+    public static final String GUI_MAP_LEGEND_FACTION = "hyperfactions_admin.gui.map_legend_faction";
+    public static final String GUI_MAP_LEGEND_UNCLAIMED = "hyperfactions_admin.gui.map_legend_unclaimed";
+    public static final String GUI_MAP_LEGEND_YOU_HERE = "hyperfactions_admin.gui.map_legend_you_here";
+    public static final String GUI_MAP_ACTION_HINT = "hyperfactions_admin.gui.map_action_hint";
+    public static final String GUI_MAP_DONE = "hyperfactions_admin.gui.map_done";
+
+    // Zone properties labels
+    public static final String GUI_ZPROP_GENERAL = "hyperfactions_admin.gui.zprop_general";
+    public static final String GUI_ZPROP_ZONE_NAME = "hyperfactions_admin.gui.zprop_zone_name";
+    public static final String GUI_ZPROP_ZONE_TYPE = "hyperfactions_admin.gui.zprop_zone_type";
+    public static final String GUI_ZPROP_CHANGE_TYPE = "hyperfactions_admin.gui.zprop_change_type";
+    public static final String GUI_ZPROP_NOTIFICATIONS = "hyperfactions_admin.gui.zprop_notifications";
+    public static final String GUI_ZPROP_SHOW_ENTRY = "hyperfactions_admin.gui.zprop_show_entry";
+    public static final String GUI_ZPROP_UPPER_TITLE = "hyperfactions_admin.gui.zprop_upper_title";
+    public static final String GUI_ZPROP_UPPER_DESC = "hyperfactions_admin.gui.zprop_upper_desc";
+    public static final String GUI_ZPROP_LOWER_TITLE = "hyperfactions_admin.gui.zprop_lower_title";
+    public static final String GUI_ZPROP_LOWER_DESC = "hyperfactions_admin.gui.zprop_lower_desc";
+    public static final String GUI_ZPROP_EDIT_FLAGS = "hyperfactions_admin.gui.zprop_edit_flags";
+    public static final String GUI_ZPROP_BACK_TO_ZONES = "hyperfactions_admin.gui.zprop_back_to_zones";
+    public static final String GUI_SAVE = "hyperfactions_admin.gui.save";
+    public static final String GUI_CLEAR = "hyperfactions_admin.gui.clear";
+
+    // Bulk economy labels
+    public static final String GUI_BULK_HEADER = "hyperfactions_admin.gui.bulk_header";
+    public static final String GUI_BULK_FACTIONS_LABEL = "hyperfactions_admin.gui.bulk_factions_label";
+    public static final String GUI_BULK_TOTAL_LABEL = "hyperfactions_admin.gui.bulk_total_label";
+    public static final String GUI_BULK_AMOUNT_HINT = "hyperfactions_admin.gui.bulk_amount_hint";
+    public static final String GUI_BULK_HINT = "hyperfactions_admin.gui.bulk_hint";
+    public static final String GUI_BULK_WARNING_MSG = "hyperfactions_admin.gui.bulk_warning_msg";
+    public static final String GUI_BULK_APPLY_ALL = "hyperfactions_admin.gui.bulk_apply_all";
+    public static final String GUI_BULK_OPERATION = "hyperfactions_admin.gui.bulk_operation";
+    public static final String GUI_BULK_ADD = "hyperfactions_admin.gui.bulk_add";
+    public static final String GUI_BULK_REMOVE = "hyperfactions_admin.gui.bulk_remove";
+    public static final String GUI_BULK_AMOUNT = "hyperfactions_admin.gui.bulk_amount";
+    public static final String GUI_BULK_WARNING = "hyperfactions_admin.gui.bulk_warning";
+    public static final String GUI_BULK_PREVIEW = "hyperfactions_admin.gui.bulk_preview";
+
+    // Economy adjust labels
+    public static final String GUI_ECADJ_HEADER = "hyperfactions_admin.gui.ecadj_header";
+    public static final String GUI_ECADJ_FACTION_LABEL = "hyperfactions_admin.gui.ecadj_faction_label";
+    public static final String GUI_ECADJ_CURRENT_BALANCE = "hyperfactions_admin.gui.ecadj_current_balance";
+    public static final String GUI_ECADJ_AMOUNT_HINT = "hyperfactions_admin.gui.ecadj_amount_hint";
+    public static final String GUI_ECADJ_PREVIEW_HINT = "hyperfactions_admin.gui.ecadj_preview_hint";
+    public static final String GUI_ECADJ_ADJUSTMENT = "hyperfactions_admin.gui.ecadj_adjustment";
+    public static final String GUI_ECADJ_SET_BALANCE = "hyperfactions_admin.gui.ecadj_set_balance";
+    public static final String GUI_ECADJ_CONFIRM = "hyperfactions_admin.gui.ecadj_confirm";
+    public static final String GUI_ECADJ_OPERATION = "hyperfactions_admin.gui.ecadj_operation";
+    public static final String GUI_ECADJ_ADD = "hyperfactions_admin.gui.ecadj_add";
+    public static final String GUI_ECADJ_REMOVE = "hyperfactions_admin.gui.ecadj_remove";
+    public static final String GUI_ECADJ_SET_TO = "hyperfactions_admin.gui.ecadj_set_to";
+    public static final String GUI_ECADJ_AMOUNT = "hyperfactions_admin.gui.ecadj_amount";
+    public static final String GUI_ECADJ_NEW_BALANCE = "hyperfactions_admin.gui.ecadj_new_balance";
+
+    // Version page integration labels
+    public static final String GUI_VER_HYPERPERMS = "hyperfactions_admin.gui.ver_hyperperms";
+    public static final String GUI_VER_LUCKPERMS = "hyperfactions_admin.gui.ver_luckperms";
+    public static final String GUI_VER_VAULT = "hyperfactions_admin.gui.ver_vault";
+    public static final String GUI_VER_NATIVE = "hyperfactions_admin.gui.ver_native";
+    public static final String GUI_VER_HYPERPROTECT = "hyperfactions_admin.gui.ver_hyperprotect";
+    public static final String GUI_VER_ORBISGUARD_MIXINS = "hyperfactions_admin.gui.ver_orbisguard_mixins";
+    public static final String GUI_VER_ORBISGUARD_API = "hyperfactions_admin.gui.ver_orbisguard_api";
+    public static final String GUI_VER_MIXIN_HOOKS = "hyperfactions_admin.gui.ver_mixin_hooks";
+    public static final String GUI_VER_GRAVESTONES = "hyperfactions_admin.gui.ver_gravestones";
+    public static final String GUI_VER_KYUUBISOFT = "hyperfactions_admin.gui.ver_kyuubisoft";
+    public static final String GUI_VER_PLACEHOLDER_API = "hyperfactions_admin.gui.ver_placeholder_api";
+    public static final String GUI_VER_WIFLOW_PAPI = "hyperfactions_admin.gui.ver_wiflow_papi";
+    public static final String GUI_VER_TREASURY = "hyperfactions_admin.gui.ver_treasury";
+
     private AdminGui() {}
   }
 

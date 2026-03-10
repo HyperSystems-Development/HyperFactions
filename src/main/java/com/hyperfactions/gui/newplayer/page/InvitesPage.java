@@ -89,6 +89,9 @@ public class InvitesPage extends InteractiveCustomUIPage<NewPlayerPageData> impl
     // Load the main template
     cmd.append(UIPaths.NEWPLAYER_INVITES);
 
+    // Static labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.INVITES_TITLE));
+
     // Setup navigation bar for new players
     NewPlayerNavBarHelper.setupBar(playerRef, PAGE_ID, cmd, events);
 

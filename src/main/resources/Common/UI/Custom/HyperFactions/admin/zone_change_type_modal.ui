@@ -26,7 +26,7 @@ $C.@PageOverlay {
         Anchor: (Height: 26, Bottom: 6);
         LayoutMode: Left;
 
-        Label {
+        Label #ZoneLabel {
           Text: "Zone:";
           Style: (FontSize: 12, TextColor: #888888, VerticalAlignment: Center);
           Anchor: (Width: 55);
@@ -44,7 +44,7 @@ $C.@PageOverlay {
         Anchor: (Height: 26, Bottom: 4);
         LayoutMode: Left;
 
-        Label {
+        Label #CurrentLabel {
           Text: "Current:";
           Style: (FontSize: 12, TextColor: #888888, VerticalAlignment: Center);
           Anchor: (Width: 55);
@@ -63,7 +63,7 @@ $C.@PageOverlay {
       }
 
       // Arrow indicator
-      Label {
+      Label #WillBecomeLabel {
         Text: "will become";
         Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center);
         Anchor: (Height: 18);

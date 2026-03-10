@@ -103,6 +103,14 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
     // Load the main template
     cmd.append(UIPaths.FACTION_RELATIONS);
 
+    // Localize static labels
+    cmd.set("#RelationsTitle.Text", HFMessages.get(playerRef, MessageKeys.RelationsGui.TITLE));
+    cmd.set("#TabRelations.Text", HFMessages.get(playerRef, MessageKeys.RelationsGui.TAB_RELATIONS));
+    cmd.set("#TabPending.Text", HFMessages.get(playerRef, MessageKeys.RelationsGui.TAB_PENDING));
+    cmd.set("#SetRelationBtn.Text", HFMessages.get(playerRef, MessageKeys.RelationsGui.SET_RELATION_BTN));
+    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.PREV));
+    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.NEXT));
+
     // Setup navigation bar
     NavBarHelper.setupBar(playerRef, faction, PAGE_ID, cmd, events);
 

@@ -120,6 +120,13 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
     // Load the main template
     cmd.append(UIPaths.NEWPLAYER_BROWSE);
 
+    // Static labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.BROWSE_TITLE));
+    cmd.set("#SearchLabel.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.SEARCH_LABEL));
+    cmd.set("#SortLabel.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.SORT_LABEL));
+    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.PREV_BTN));
+    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.NEXT_BTN));
+
     // Setup navigation bar for new players
     NewPlayerNavBarHelper.setupBar(playerRef, PAGE_ID, cmd, events);
 

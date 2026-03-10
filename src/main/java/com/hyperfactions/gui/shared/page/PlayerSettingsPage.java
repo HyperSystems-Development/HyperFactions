@@ -112,6 +112,10 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
     // Load the template
     cmd.append(UIPaths.PLAYER_SETTINGS);
 
+    // Page title
+    cmd.set("#PageTitle.Text",
+        HFMessages.get(playerRef, MessageKeys.PlayerSettings.TITLE));
+
     // Setup nav bar based on faction status
     if (faction != null) {
       NavBarHelper.setupBar(playerRef, faction, PAGE_ID, cmd, events);
@@ -128,6 +132,8 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
         HFMessages.get(playerRef, MessageKeys.PlayerSettings.LANGUAGE_LABEL));
 
     // Auto-detect checkbox
+    cmd.set("#AutoDetectLabel.Text",
+        HFMessages.get(playerRef, MessageKeys.PlayerSettings.AUTO_DETECT));
     boolean autoDetect = (languagePreference == null);
     cmd.set("#AutoDetectCB #CheckBox.Value", autoDetect);
 
@@ -170,18 +176,24 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
         HFMessages.get(playerRef, MessageKeys.PlayerSettings.NOTIFICATIONS_SECTION));
 
     // Territory Alerts
+    cmd.set("#TerritoryAlertsLabel.Text",
+        HFMessages.get(playerRef, MessageKeys.PlayerSettings.TERRITORY_ALERTS));
     buildNotificationToggle(cmd, events, "#TerritoryAlertsCB",
         MessageKeys.PlayerSettings.TERRITORY_ALERTS,
         MessageKeys.PlayerSettings.TERRITORY_ALERTS_DESC,
         "#TerritoryAlertsDesc", territoryAlerts, "ToggleTerritoryAlerts");
 
     // Death Announcements
+    cmd.set("#DeathAnnounceLabel.Text",
+        HFMessages.get(playerRef, MessageKeys.PlayerSettings.DEATH_ANNOUNCEMENTS));
     buildNotificationToggle(cmd, events, "#DeathAnnounceCB",
         MessageKeys.PlayerSettings.DEATH_ANNOUNCEMENTS,
         MessageKeys.PlayerSettings.DEATH_ANNOUNCEMENTS_DESC,
         "#DeathAnnounceDesc", deathAnnouncements, "ToggleDeathAnnouncements");
 
     // Power Notifications
+    cmd.set("#PowerNotifLabel.Text",
+        HFMessages.get(playerRef, MessageKeys.PlayerSettings.POWER_NOTIFICATIONS));
     buildNotificationToggle(cmd, events, "#PowerNotifCB",
         MessageKeys.PlayerSettings.POWER_NOTIFICATIONS,
         MessageKeys.PlayerSettings.POWER_NOTIFICATIONS_DESC,

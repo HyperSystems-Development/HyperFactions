@@ -74,6 +74,25 @@ public class AdminZonePropertiesPage extends InteractiveCustomUIPage<AdminZonePr
     // Setup admin nav bar
     AdminNavBarHelper.setupBar(playerRef, "zones", cmd, events);
 
+    // Localize labels
+    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ZONE_PROPERTIES));
+    cmd.set("#GeneralHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZPROP_GENERAL));
+    cmd.set("#ZoneNameLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZPROP_ZONE_NAME));
+    cmd.set("#ZoneTypeLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZPROP_ZONE_TYPE));
+    cmd.set("#ChangeTypeBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZPROP_CHANGE_TYPE));
+    cmd.set("#NotificationsHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZPROP_NOTIFICATIONS));
+    cmd.set("#UpperTitleLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZPROP_UPPER_DESC));
+    cmd.set("#LowerTitleLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZPROP_LOWER_DESC));
+    String saveText = HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SAVE);
+    cmd.set("#SaveNameBtn.Text", saveText);
+    cmd.set("#SaveUpperBtn.Text", saveText);
+    cmd.set("#SaveLowerBtn.Text", saveText);
+    String clearText = HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CLEAR);
+    cmd.set("#ClearUpperBtn.Text", clearText);
+    cmd.set("#ClearLowerBtn.Text", clearText);
+    cmd.set("#FlagsBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZPROP_EDIT_FLAGS));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZPROP_BACK_TO_ZONES));
+
     // Get the zone
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {

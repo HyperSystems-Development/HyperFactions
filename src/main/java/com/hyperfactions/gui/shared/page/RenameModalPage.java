@@ -82,6 +82,13 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
     // Load the modal template
     cmd.append(UIPaths.RENAME_MODAL);
 
+    // Static labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.RenameGui.TITLE));
+    cmd.set("#CurrentLabel.Text", HFMessages.get(playerRef, MessageKeys.RenameGui.CURRENT_LABEL));
+    cmd.set("#NewNameLabel.Text", HFMessages.get(playerRef, MessageKeys.RenameGui.NEW_NAME_LABEL));
+    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.CANCEL));
+    cmd.set("#SaveBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.SAVE));
+
     // Show current name
     cmd.set("#CurrentName.Text", faction.name());
 

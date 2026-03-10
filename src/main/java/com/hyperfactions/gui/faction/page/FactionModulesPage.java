@@ -71,6 +71,11 @@ public class FactionModulesPage extends InteractiveCustomUIPage<FactionModulesDa
     // Load the modules template
     cmd.append(UIPaths.FACTION_MODULES);
 
+    // Localize static labels
+    cmd.set("#ModulesTitle.Text", HFMessages.get(playerRef, MessageKeys.ModulesGui.TITLE));
+    cmd.set("#ModulesDescription.Text", HFMessages.get(playerRef, MessageKeys.ModulesGui.DESCRIPTION));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.ModulesGui.BACK_BTN));
+
     // Setup navigation bar
     NavBarHelper.setupBar(playerRef, faction, PAGE_ID, cmd, events);
 

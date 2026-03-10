@@ -28,13 +28,13 @@ $C.@PageOverlay {
         LayoutMode: Top;
         Anchor: (Bottom: 12);
 
-        Label {
+        Label #CombatStatsLabel {
           Text: "Combat Statistics";
           Style: (FontSize: 14, TextColor: #FFFFFF, RenderBold: true);
           Anchor: (Height: 22, Bottom: 8);
         }
 
-        Label {
+        Label #CombatDescLabel {
           Text: "Reset kills and deaths for ALL players on the server. This action cannot be undone.";
           Style: (FontSize: 11, TextColor: #888888);
           Anchor: (Height: 32, Bottom: 10);
@@ -55,13 +55,13 @@ $C.@PageOverlay {
         LayoutMode: Top;
         Anchor: (Bottom: 12);
 
-        Label {
+        Label #EconomyLabel {
           Text: "Economy";
           Style: (FontSize: 14, TextColor: #FFFFFF, RenderBold: true);
           Anchor: (Height: 22, Bottom: 8);
         }
 
-        Label {
+        Label #EconomyDescLabel {
           Text: "Add or remove money from ALL faction treasuries at once.";
           Style: (FontSize: 11, TextColor: #888888);
           Anchor: (Height: 18, Bottom: 10);
@@ -82,13 +82,13 @@ $C.@PageOverlay {
         LayoutMode: Top;
         Anchor: (Bottom: 12);
 
-        Label {
+        Label #UpkeepLabel {
           Text: "Upkeep Collection";
           Style: (FontSize: 14, TextColor: #FFFFFF, RenderBold: true);
           Anchor: (Height: 22, Bottom: 8);
         }
 
-        Label {
+        Label #UpkeepDescLabel {
           Text: "Manually trigger upkeep collection for all factions right now, regardless of the scheduled timer.";
           Style: (FontSize: 11, TextColor: #888888);
           Anchor: (Height: 32, Bottom: 10);

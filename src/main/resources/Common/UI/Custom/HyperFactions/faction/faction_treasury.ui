@@ -13,7 +13,7 @@ $C.@PageOverlay {
 
     #Title {
       Group {
-        $C.@Title {
+        $C.@Title #TreasuryTitle {
           @Text = "Faction Treasury";
         }
       }
@@ -36,7 +36,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Right: 5);
 
-          Label {
+          Label #BalanceLabel {
             Text: "Balance";
             Style: (FontSize: 10, TextColor: #666666);
             Anchor: (Height: 16);
@@ -61,7 +61,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 5, Right: 5);
 
-          Label {
+          Label #IncomeLabel {
             Text: "Income (24h)";
             Style: (FontSize: 10, TextColor: #666666);
             Anchor: (Height: 16);
@@ -71,7 +71,7 @@ $C.@PageOverlay {
             Style: (FontSize: 22, TextColor: #44CC44, RenderBold: true);
             FlexWeight: 1;
           }
-          Label {
+          Label #IncomeDescLabel {
             Text: "deposits, transfers in";
             Style: (FontSize: 10, TextColor: #888888);
             Anchor: (Height: 14);
@@ -86,7 +86,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 5);
 
-          Label {
+          Label #ExpensesLabel {
             Text: "Expenses (24h)";
             Style: (FontSize: 10, TextColor: #666666);
             Anchor: (Height: 16);
@@ -96,7 +96,7 @@ $C.@PageOverlay {
             Style: (FontSize: 22, TextColor: #FF5555, RenderBold: true);
             FlexWeight: 1;
           }
-          Label {
+          Label #ExpensesDescLabel {
             Text: "withdrawals, transfers out";
             Style: (FontSize: 10, TextColor: #888888);
             Anchor: (Height: 14);
@@ -117,7 +117,7 @@ $C.@PageOverlay {
           LayoutMode: Left;
           Anchor: (Height: 18);
 
-          Label {
+          Label #MaintenanceLabel {
             Text: "MAINTENANCE";
             Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
           }
@@ -177,7 +177,7 @@ $C.@PageOverlay {
             LayoutMode: Left;
             Anchor: (Height: 16, Bottom: 4);
 
-            Label {
+            Label #RunwayLabel {
               Text: "Runway:";
               Style: (FontSize: 10, TextColor: #888888);
               Anchor: (Width: 55);
@@ -281,7 +281,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Right: 4);
 
-          Label {
+          Label #AddFundsLabel {
             Text: "Add funds";
             Style: (FontSize: 9, TextColor: #555555);
             Anchor: (Height: 14, Bottom: 4);
@@ -300,7 +300,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 4, Right: 4);
 
-          Label {
+          Label #TakeFundsLabel {
             Text: "Take funds";
             Style: (FontSize: 9, TextColor: #555555);
             Anchor: (Height: 14, Bottom: 4);
@@ -319,7 +319,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 4, Right: 4);
 
-          Label {
+          Label #SendToFactionLabel {
             Text: "Send to faction";
             Style: (FontSize: 9, TextColor: #555555);
             Anchor: (Height: 14, Bottom: 4);
@@ -340,7 +340,7 @@ $C.@PageOverlay {
           Anchor: (Left: 4);
           Visible: false;
 
-          Label {
+          Label #TreasuryConfigLabel {
             Text: "Treasury config";
             Style: (FontSize: 9, TextColor: #555555);
             Anchor: (Height: 14, Bottom: 4);
@@ -364,7 +364,7 @@ $C.@PageOverlay {
         Anchor: (Height: 22);
         LayoutMode: Left;
 
-        Label {
+        Label #RecentTransactionsLabel {
           Text: "Recent Transactions";
           Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
           FlexWeight: 1;
@@ -382,27 +382,27 @@ $C.@PageOverlay {
         Anchor: (Height: 20);
         LayoutMode: Left;
 
-        Label {
+        Label #ColDateLabel {
           Text: "Date";
           Style: (FontSize: 10, TextColor: #555555);
           Anchor: (Width: 100);
         }
-        Label {
+        Label #ColTypeLabel {
           Text: "Type";
           Style: (FontSize: 10, TextColor: #555555);
           Anchor: (Width: 100);
         }
-        Label {
+        Label #ColByLabel {
           Text: "By";
           Style: (FontSize: 10, TextColor: #555555);
           Anchor: (Width: 90);
         }
-        Label {
+        Label #ColAmountLabel {
           Text: "Amount";
           Style: (FontSize: 10, TextColor: #555555);
           Anchor: (Width: 100);
         }
-        Label {
+        Label #ColDetailsLabel {
           Text: "Details";
           Style: (FontSize: 10, TextColor: #555555);
           FlexWeight: 1;

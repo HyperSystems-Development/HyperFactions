@@ -95,6 +95,12 @@ public class FactionChatPage extends InteractiveCustomUIPage<FactionChatData> im
 
     cmd.append(UIPaths.FACTION_CHAT);
 
+    // Localize static labels
+    cmd.set("#ChatTitle.Text", HFMessages.get(playerRef, MessageKeys.ChatGui.TITLE));
+    cmd.set("#TabFactionBtn.Text", HFMessages.get(playerRef, MessageKeys.ChatGui.TAB_FACTION));
+    cmd.set("#TabAllyBtn.Text", HFMessages.get(playerRef, MessageKeys.ChatGui.TAB_ALLY));
+    cmd.set("#SendBtn.Text", HFMessages.get(playerRef, MessageKeys.ChatGui.SEND_BTN));
+
     // Setup navigation bar
     NavBarHelper.setupBar(playerRef, faction, PAGE_ID, cmd, events);
 

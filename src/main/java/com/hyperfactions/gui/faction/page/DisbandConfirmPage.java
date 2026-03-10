@@ -57,6 +57,13 @@ public class DisbandConfirmPage extends InteractiveCustomUIPage<DisbandConfirmDa
     // Load the disband confirmation template
     cmd.append(UIPaths.DISBAND_CONFIRM);
 
+    // Static labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.DISBAND_TITLE));
+    cmd.set("#ConfirmText.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.DISBAND_PROMPT));
+    cmd.set("#WarningText.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.DISBAND_WARNING));
+    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.CANCEL));
+    cmd.set("#ConfirmBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.DISBAND));
+
     // Set faction name in the modal
     cmd.set("#FactionName.Text", faction.name());
 

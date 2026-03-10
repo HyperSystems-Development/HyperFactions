@@ -104,6 +104,23 @@ public class PlayerInfoPage extends InteractiveCustomUIPage<PlayerInfoData> {
     // Load the player info template
     cmd.append(UIPaths.PLAYER_INFO);
 
+    // === Static labels ===
+    cmd.set("#PageTitle.Text", HFMessages.get(viewerRef, MessageKeys.PlayerInfoGui.TITLE));
+    cmd.set("#FirstJoinedLabel.Text", HFMessages.get(viewerRef, MessageKeys.PlayerInfoGui.FIRST_JOINED_LABEL));
+    cmd.set("#LastOnlineLabel.Text", HFMessages.get(viewerRef, MessageKeys.PlayerInfoGui.LAST_ONLINE_LABEL));
+    cmd.set("#FactionLabel.Text", HFMessages.get(viewerRef, MessageKeys.PlayerInfoGui.FACTION_LABEL));
+    cmd.set("#RoleLabel.Text", HFMessages.get(viewerRef, MessageKeys.PlayerInfoGui.ROLE_LABEL));
+    cmd.set("#JoinedLabel.Text", HFMessages.get(viewerRef, MessageKeys.PlayerInfoGui.JOINED_LABEL_STATIC));
+    cmd.set("#NoFactionLabel.Text", HFMessages.get(viewerRef, MessageKeys.PlayerInfoGui.NOT_IN_FACTION));
+    cmd.set("#PowerHeader.Text", HFMessages.get(viewerRef, MessageKeys.PlayerInfoGui.POWER_HEADER));
+    cmd.set("#PowerSubtitle.Text", HFMessages.get(viewerRef, MessageKeys.PlayerInfoGui.CURRENT_MAX));
+    cmd.set("#CombatHeader.Text", HFMessages.get(viewerRef, MessageKeys.PlayerInfoGui.COMBAT_HEADER));
+    cmd.set("#CombatSubtitle.Text", HFMessages.get(viewerRef, MessageKeys.PlayerInfoGui.KILLS_DEATHS));
+    cmd.set("#KDRHeader.Text", HFMessages.get(viewerRef, MessageKeys.PlayerInfoGui.KDR_HEADER));
+    cmd.set("#MembershipHistoryLabel.Text", HFMessages.get(viewerRef, MessageKeys.PlayerInfoGui.MEMBERSHIP_HISTORY));
+    cmd.set("#ViewFactionBtn.Text", HFMessages.get(viewerRef, MessageKeys.PlayerInfoGui.VIEW_FACTION_BTN));
+    cmd.set("#BackBtn.Text", HFMessages.get(viewerRef, MessageKeys.PlayerInfoGui.BACK_BTN));
+
     // === Header ===
     cmd.set("#PlayerName.Text", targetPlayerName);
 

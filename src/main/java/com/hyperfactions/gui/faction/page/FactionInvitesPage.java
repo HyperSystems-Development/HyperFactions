@@ -92,6 +92,13 @@ public class FactionInvitesPage extends InteractiveCustomUIPage<FactionPageData>
     // Load the main template
     cmd.append(UIPaths.FACTION_INVITES);
 
+    // Localize static labels
+    cmd.set("#InvitesTitle.Text", HFMessages.get(playerRef, MessageKeys.InvitesGui.TITLE));
+    cmd.set("#TabOutgoing.Text", HFMessages.get(playerRef, MessageKeys.InvitesGui.TAB_OUTGOING));
+    cmd.set("#TabRequests.Text", HFMessages.get(playerRef, MessageKeys.InvitesGui.TAB_REQUESTS));
+    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.PREV));
+    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.NEXT));
+
     // Setup navigation bar
     NavBarHelper.setupBar(playerRef, faction, PAGE_ID, cmd, events);
 

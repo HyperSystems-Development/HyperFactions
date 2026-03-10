@@ -191,6 +191,16 @@ zone_int.no_plugin = (sin plugin)
 zone_int.default = (por defecto)
 zone_int.custom = (personalizado)
 
+# Etiquetas de interfaz de flags de integracion
+gui.zint_cat_gravestones = Tumbas
+gui.zint_gravestones_desc = Cuando esta EN, otros jugadores pueden saquear tumbas. Los duenos siempre pueden.
+gui.zint_cat_world_map = Mapa del Mundo
+gui.zint_world_map_desc = Sobrescribir ocultamiento en mapa para jugadores en esta zona. Cuando esta habilitado, selecciona quien puede ver jugadores en esta zona.
+gui.zint_visibility_label = Nivel de Visibilidad:
+gui.zint_cat_essentials = HyperEssentials
+gui.zint_reset_defaults = Restablecer Valores
+gui.zint_back_to_flags = Volver a Flags
+
 # ========== Registro de Actividad ==========
 log.all_types = Todos los Tipos
 log.no_logs = No hay registros de actividad que coincidan con los filtros.
@@ -219,6 +229,21 @@ zflags.reset_int = Flags de integracion reiniciados a valores por defecto.
 zflags.reset_all = Todos los flags reiniciados a valores por defecto.
 zflags.reset_failed = No se pudieron reiniciar los flags: {0}
 zflags.back_to_settings = Volver a Ajustes
+
+# Etiquetas de interfaz de ajustes de zona
+gui.zset_cat_combat = Combate
+gui.zset_cat_damage = Dano
+gui.zset_cat_death = Muerte
+gui.zset_cat_building = Construccion
+gui.zset_cat_interaction = Interaccion
+gui.zset_cat_transport = Transporte
+gui.zset_cat_items = Objetos
+gui.zset_cat_spawning = Aparicion de Mobs
+gui.zset_cat_mob_clear = Limpieza de Mobs
+gui.zset_children_hint = (hijos solo aplican cuando el padre esta EN)
+gui.zset_reset_defaults = Restablecer Valores
+gui.zset_integration_flags = Flags de Integracion
+gui.zset_back_to_zones = Volver a Zonas
 
 # ========== Propiedades de Zona ==========
 zprop.current_custom = Actual: "{0}" (personalizado)
@@ -261,3 +286,297 @@ map.unclaim_failed = No se pudo desreclamar el chunk: {0}
 map.chunk_belongs = Este chunk pertenece a {0}.
 map.chunk_faction = Este chunk esta reclamado por una faccion.
 map.chunk_protected = Este chunk esta en una region protegida.
+
+# ========== Claves de Etiquetas GUI (localizacion de texto en .ui) ==========
+
+# Titulos de Pagina
+gui.title_dashboard = Panel de Admin
+gui.title_main = Admin de Facciones
+gui.title_actions = Admin: Acciones del Servidor
+gui.title_factions = Gestion de Facciones
+gui.title_players = Gestion de Jugadores
+gui.title_economy = Admin: Economia del Servidor
+gui.title_zones = Gestion de Zonas
+gui.title_backups = Respaldos
+gui.title_config = Configuracion
+gui.title_help = Ayuda de Admin
+gui.title_updates = Actualizaciones
+gui.title_version = Version e Integraciones
+gui.title_activity_log = Admin: Registro de Actividad
+gui.title_player_info = Admin: Info del Jugador
+gui.title_faction_info = Admin: Info de Faccion
+gui.title_faction_settings = Admin: Ajustes de Faccion
+gui.title_faction_members = Admin: Miembros
+gui.title_faction_relations = Admin: Relaciones
+gui.title_zone_map = Editor de Mapa de Zona
+gui.title_zone_settings = Admin: Ajustes de Zona
+gui.title_zone_properties = Admin: Propiedades de Zona
+gui.title_bulk_economy = Ajuste Masivo de Tesoreria
+gui.title_economy_adjust = Admin: Economia
+
+# Etiquetas del Panel
+gui.dash_server_stats = Estadisticas del Servidor
+gui.dash_factions = Facciones
+gui.dash_total_members = Total Miembros
+gui.dash_total_claims = Total Reclamos
+gui.dash_zones = Zonas
+gui.dash_safe_war = segura / guerra
+gui.dash_total_power = Poder Total
+gui.dash_avg_power = Poder Prom/Faccion
+gui.dash_total_economy = Economia Total
+gui.dash_wealthiest = Mas Rica
+gui.dash_avg_balance = Saldo Promedio
+gui.dash_protection_bypass = Bypass de Proteccion:
+
+# Botones y etiquetas comunes
+gui.search = Buscar:
+gui.sort = Ordenar:
+gui.prev = < Anterior
+gui.next = Siguiente >
+gui.back = Volver
+gui.done = Listo
+gui.cancel = Cancelar
+gui.apply = Aplicar
+gui.set = Establecer
+gui.reset = Reiniciar
+gui.coming_soon = Proximamente
+gui.zones_btn = Zonas
+gui.reload_btn = Recargar
+gui.all = Todas
+gui.safe = Segura
+gui.war = Guerra
+gui.create_zone = + Crear
+
+# Etiquetas de pagina de acciones
+gui.act_combat_stats = Estadisticas de Combate
+gui.act_combat_desc = Reiniciar muertes y asesinatos para TODOS los jugadores del servidor. Esta accion no se puede deshacer.
+gui.act_reset_kd = Reiniciar Todos K/D
+gui.act_economy = Economia
+gui.act_economy_desc = Agregar o quitar dinero de TODAS las tesorerias de facciones a la vez.
+gui.act_bulk_adjust = Agregar/Quitar Masivo
+gui.act_upkeep_collection = Cobro de Mantenimiento
+gui.act_upkeep_desc = Ejecutar manualmente el cobro de mantenimiento para todas las facciones ahora, sin importar el temporizador programado.
+gui.act_trigger_upkeep = Ejecutar Mantenimiento
+
+# Etiquetas de paginas placeholder
+gui.backup_heading = Gestion de Respaldos
+gui.backup_desc1 = Crear, restaurar y gestionar respaldos de datos de facciones.
+gui.backup_desc2 = Los respaldos automaticos se guardan en la carpeta data/backups.
+gui.config_heading = Editor de Configuracion
+gui.config_desc1 = Configurar los ajustes de HyperFactions directamente desde la GUI.
+gui.config_desc2 = Por ahora, usa /f reload para recargar los cambios de configuracion.
+gui.help_heading = Documentacion de Admin
+gui.help_desc1 = Ver documentacion de admin y referencia de comandos.
+gui.help_desc2 = Para ayuda, visita la wiki de HyperFactions.
+gui.updates_heading = Centro de Actualizaciones
+gui.updates_desc1 = Buscar nuevas versiones y ver changelogs.
+gui.updates_desc2 = Visita la pagina de HyperFactions para las ultimas actualizaciones.
+
+# Etiquetas de pagina de version
+gui.ver_hyperfactions = HyperFactions
+gui.ver_hytale_server = Servidor Hytale
+gui.ver_java = Java
+gui.ver_permissions = PERMISOS
+gui.ver_placeholders = PLACEHOLDERS
+gui.ver_economy_section = ECONOMIA
+gui.ver_protection = PROTECCION
+gui.ver_disabled = Desactivado
+
+# Encabezados de columna (compartidos entre paginas)
+gui.col_faction = Faccion
+gui.col_balance = Saldo
+gui.col_members = Miembros
+gui.col_actions = Acciones
+gui.col_time = Hora
+gui.col_type = Tipo
+gui.col_message = Mensaje
+
+# Etiquetas de pagina de economia
+gui.econ_total_balance = Saldo Total
+gui.econ_factions = Facciones
+gui.econ_avg_balance = Saldo Promedio
+gui.econ_in_grace = En Gracia
+gui.econ_collected = Cobrado (24h)
+gui.econ_next_collection = Proximo Cobro
+gui.econ_no_data = No hay facciones con datos economicos.
+
+# Etiquetas de registro de actividad
+gui.log_type = Tipo:
+gui.log_time = Hora:
+gui.log_player = Jugador:
+gui.log_no_logs = No hay registros de actividad que coincidan con los filtros.
+
+# Etiquetas de info de jugador
+gui.plr_first_joined = Primera conexion:
+gui.plr_last_online = Ultima conexion:
+gui.plr_uuid = UUID:
+gui.plr_faction = Faccion:
+gui.plr_role = Rol:
+gui.plr_view_faction = Ver Faccion
+gui.plr_power = Poder
+gui.plr_max_power = Poder Maximo
+gui.plr_set_power = Establecer
+gui.plr_reset_power = Reiniciar
+gui.plr_set_max = Establecer
+gui.plr_reset_max = Reiniciar
+gui.plr_no_power_loss = Sin Perdida de Poder
+gui.plr_no_claim_decay = Sin Decaimiento de Reclamos
+gui.plr_kills = Asesinatos
+gui.plr_deaths = Muertes
+gui.plr_kdr = Ratio K/D
+gui.plr_reset_kd = Reiniciar K/D
+gui.plr_kick = Expulsar
+gui.plr_membership_history = Historial de Membresia
+gui.plr_no_faction_label = No esta en una faccion
+gui.plr_power_management = Gestion de Poder
+gui.plr_combat_stats = Estadisticas de Combate
+gui.plr_bypass_flags = Flags de Bypass
+gui.plr_admin_controls = Controles de Admin
+gui.plr_kd_subtitle = K / D
+gui.plr_max_prefix = Max:
+gui.plr_view = Ver
+gui.plr_kick_from_faction = Expulsar de Faccion
+gui.plr_set_max_btn = Establecer Max
+gui.plr_combat = Combate
+
+# Etiquetas de info de faccion
+gui.fac_description = Descripcion
+gui.fac_power = Poder
+gui.fac_claims = Reclamos
+gui.fac_members = Miembros
+gui.fac_recruitment = Reclutamiento
+gui.fac_founded = Fundada
+gui.fac_allies = Aliados
+gui.fac_enemies = Enemigos
+gui.fac_raidable = Estado de Vulnerabilidad
+gui.fac_treasury = Tesoreria
+gui.fac_leader = Lider
+gui.fac_officers = Oficiales
+gui.fac_view_members = Ver Miembros
+gui.fac_view_relations = Ver Relaciones
+gui.fac_view_settings = Ajustes
+gui.fac_disband = Disolver Faccion
+gui.fac_power_management = Gestion de Poder
+gui.fac_reset_all_power = Reiniciar Todo el Poder
+gui.fac_econ_adjust = Ajustar Saldo
+gui.fac_econ_view_log = Ver Registro de Transacciones
+gui.fac_current_max = actual / max
+gui.fac_claimed_max = reclamado / max
+gui.fac_relations = Relaciones
+gui.fac_ally_enemy = aliado / enemigo
+gui.fac_status = Estado
+gui.fac_info = Info
+gui.fac_treasury_balance = saldo de tesoreria
+gui.fac_leadership = Liderazgo
+gui.fac_leader_label = Lider:
+gui.fac_officers_label = Oficiales:
+gui.fac_econ_mgmt = Gestion de Economia
+gui.fac_danger_zone = Zona de Peligro
+gui.fac_view_treasury = Ver Tesoreria
+
+# Etiquetas de ajustes de faccion
+gui.set_editing = Editando:
+gui.set_general = Ajustes Generales
+gui.set_name = Nombre
+gui.set_tag = Etiqueta
+gui.set_description = Descripcion
+gui.set_recruitment = Reclutamiento
+gui.set_home = Ubicacion del Hogar
+gui.set_clear_home = Limpiar Hogar
+gui.set_disband_faction = Disolver Faccion
+gui.set_faction_color = Color de Faccion
+gui.set_admin_override = [Override de Admin]
+gui.set_territory_perms = Permisos de Territorio
+gui.set_mob_spawning = Generacion de Mobs
+gui.set_faction_settings = Ajustes de Faccion
+
+# Etiquetas de relaciones de faccion
+gui.rel_subtitle = Gestionar relaciones de faccion (sin aprobacion)
+gui.rel_set_new = Establecer Nueva Relacion
+
+# Etiquetas de pagina de zonas
+gui.zone_sort_name = Nombre
+gui.zone_sort_type = Tipo
+gui.zone_sort_chunks = Chunks
+gui.zone_sort_world = Mundo
+gui.zone_count_format = {0} {1}zonas ({2} chunks)
+
+# Etiquetas de mapa de zona
+gui.map_zone_chunk = Chunk de Zona
+gui.map_empty = Vacio
+gui.map_other_zone = Otra Zona
+gui.map_faction_claim = Reclamo de Faccion
+gui.map_protected = Protegido
+gui.map_your_pos = Tu Posicion
+gui.map_click_hint = Clic para reclamar/desreclamar chunks
+gui.map_legend_zone_safe = Esta Zona (Segura)
+gui.map_legend_zone_war = Esta Zona (Guerra)
+gui.map_legend_other_safe = Otra Zona Segura
+gui.map_legend_other_war = Otra Zona de Guerra
+gui.map_legend_faction = Reclamo de Faccion
+gui.map_legend_unclaimed = Sin Reclamar
+gui.map_legend_you_here = Estas aqui
+gui.map_action_hint = Clic izq: Reclamar para zona  |  Clic der: Desreclamar de zona
+gui.map_done = Listo
+
+# Etiquetas de propiedades de zona
+gui.zprop_general = General
+gui.zprop_zone_name = Nombre de Zona
+gui.zprop_zone_type = Tipo de Zona
+gui.zprop_change_type = Cambiar Tipo
+gui.zprop_notifications = Notificaciones
+gui.zprop_show_entry = Mostrar Notificacion de Entrada
+gui.zprop_upper_title = Titulo Superior
+gui.zprop_upper_desc = Titulo Superior (texto pequeno sobre nombre de zona)
+gui.zprop_lower_title = Titulo Inferior
+gui.zprop_lower_desc = Titulo Inferior (texto grande del nombre de zona)
+gui.zprop_edit_flags = Editar Flags
+gui.zprop_back_to_zones = Volver a Zonas
+gui.save = Guardar
+gui.clear = Limpiar
+
+# Etiquetas de economia masiva
+gui.bulk_header = Ajustar Todas las Tesorerias
+gui.bulk_factions_label = Facciones:
+gui.bulk_total_label = Saldo Total:
+gui.bulk_amount_hint = Cantidad (positivo para agregar, negativo para quitar):
+gui.bulk_hint = Esto se aplicara a cada faccion con tesoreria
+gui.bulk_warning_msg = Advertencia: Esta accion afecta TODAS las facciones y no se puede deshacer.
+gui.bulk_apply_all = Aplicar a Todas
+gui.bulk_operation = Operacion
+gui.bulk_add = Agregar
+gui.bulk_remove = Quitar
+gui.bulk_amount = Cantidad
+gui.bulk_warning = Esto afectara TODAS las tesorerias de facciones.
+gui.bulk_preview = Vista Previa
+
+# Etiquetas de ajuste de economia
+gui.ecadj_header = Ajustar Saldo de Tesoreria
+gui.ecadj_faction_label = Faccion:
+gui.ecadj_current_balance = Saldo Actual:
+gui.ecadj_amount_hint = Cantidad (positivo para agregar, negativo para deducir):
+gui.ecadj_preview_hint = Ingresa un numero para previsualizar el cambio
+gui.ecadj_adjustment = Ajuste:
+gui.ecadj_set_balance = Establecer Saldo
+gui.ecadj_confirm = Confirmar +/-
+gui.ecadj_operation = Operacion
+gui.ecadj_add = Agregar
+gui.ecadj_remove = Quitar
+gui.ecadj_set_to = Establecer En
+gui.ecadj_amount = Cantidad
+gui.ecadj_new_balance = Nuevo Saldo:
+
+# Etiquetas de integraciones en pagina de version
+gui.ver_hyperperms = HyperPerms
+gui.ver_luckperms = LuckPerms
+gui.ver_vault = VaultUnlocked
+gui.ver_native = Hytale Nativo
+gui.ver_hyperprotect = HyperProtect
+gui.ver_orbisguard_mixins = OrbisGuard Mixins
+gui.ver_orbisguard_api = OrbisGuard API
+gui.ver_mixin_hooks = Mixin Hooks
+gui.ver_gravestones = Gravestones
+gui.ver_kyuubisoft = KyuubiSoft
+gui.ver_placeholder_api = PlaceholderAPI
+gui.ver_wiflow_papi = WiFlow PAPI
+gui.ver_treasury = Tesoreria

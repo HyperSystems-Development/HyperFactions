@@ -105,6 +105,63 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
     // Load the unified settings template
     cmd.append(UIPaths.FACTION_SETTINGS);
 
+    // Localize static labels
+    cmd.set("#SettingsTitle.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.TITLE));
+    cmd.set("#GeneralHeader.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.GENERAL));
+    cmd.set("#NameLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.NAME_LABEL));
+    cmd.set("#TagLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.TAG_LABEL));
+    cmd.set("#DescLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.DESC_LABEL));
+    cmd.set("#NameEditBtn.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.EDIT_BTN));
+    cmd.set("#TagEditBtn.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.EDIT_BTN));
+    cmd.set("#DescEditBtn.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.EDIT_BTN));
+    cmd.set("#RecruitmentHeader.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.RECRUITMENT));
+    cmd.set("#StatusLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.STATUS_LABEL));
+    cmd.set("#HomeLocationHeader.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.HOME_LOCATION));
+    cmd.set("#LocationLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.LOCATION_LABEL));
+    cmd.set("#SetHomeBtn.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.SET_HOME_BTN));
+    cmd.set("#TeleportHomeBtn.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.TELEPORT_BTN));
+    cmd.set("#DeleteHomeBtn.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.DELETE_BTN));
+    cmd.set("#OptionalFeaturesHeader.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.OPTIONAL_FEATURES));
+    cmd.set("#ModulesDescLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.CONFIGURE_MODULES));
+    cmd.set("#ModulesBtn.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.MODULES_BTN));
+    cmd.set("#DangerZoneHeader.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.DANGER_ZONE));
+    cmd.set("#IrreversibleLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.IRREVERSIBLE));
+    cmd.set("#DisbandBtn.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.DISBAND_BTN));
+    cmd.set("#LockHintLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.LOCK_HINT));
+    cmd.set("#TerritoryPermissionsHeader.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.TERRITORY_PERMISSIONS));
+    cmd.set("#ColOutLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.COL_OUT));
+    cmd.set("#ColAllyLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.COL_ALLY));
+    cmd.set("#ColMemLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.COL_MEM));
+    cmd.set("#ColOffLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.COL_OFF));
+    cmd.set("#BuildingCatLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.CAT_BUILDING));
+    cmd.set("#BreakPermLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_BREAK));
+    cmd.set("#PlacePermLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_PLACE));
+    cmd.set("#InteractionCatLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.CAT_INTERACTION));
+    cmd.set("#InteractionHintLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.INTERACTION_HINT));
+    cmd.set("#AllPermLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_ALL));
+    cmd.set("#DoorPermLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_DOOR));
+    cmd.set("#ChestPermLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_CHEST));
+    cmd.set("#BenchPermLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_BENCH));
+    cmd.set("#ProcessingPermLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_PROCESSING));
+    cmd.set("#SeatPermLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_SEAT));
+    cmd.set("#TransportPermLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_TRANSPORT));
+    cmd.set("#OtherCatLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.CAT_OTHER));
+    cmd.set("#CrateUsePermLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_CRATE));
+    cmd.set("#NpcTamePermLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_NPC_TAME));
+    cmd.set("#PveDamagePermLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_PVE));
+    cmd.set("#AppearanceHeader.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.APPEARANCE));
+    cmd.set("#ColorLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.COLOR_LABEL));
+    cmd.set("#MobSpawningHeader.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.MOB_SPAWNING));
+    cmd.set("#MobSpawningHintLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.MOB_SPAWNING_HINT));
+    cmd.set("#MobSpawningMasterLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.MOB_SPAWNING_LABEL));
+    cmd.set("#HostileMobsLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.HOSTILE_MOBS));
+    cmd.set("#PassiveMobsLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PASSIVE_MOBS));
+    cmd.set("#NeutralMobsLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.NEUTRAL_MOBS));
+    cmd.set("#FactionSettingsHeader.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.FACTION_SETTINGS));
+    cmd.set("#PvpLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PVP_IN_TERRITORY));
+    cmd.set("#OfficersCanEditLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.OFFICERS_CAN_EDIT));
+    cmd.set("#LeaderOnlyLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.LEADER_ONLY));
+
     // Setup navigation bar
     NavBarHelper.setupBar(playerRef, faction, PAGE_ID, cmd, events);
 

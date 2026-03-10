@@ -12,7 +12,7 @@ $C.@PageOverlay {
     Anchor: (Width: 550, Height: 480);
 
     #Title {
-      $C.@Title {
+      $C.@Title #PageTitle {
         @Text = "Player Settings";
       }
     }
@@ -38,11 +38,20 @@ $C.@PageOverlay {
         LayoutMode: Top;
         Anchor: (Bottom: 12);
 
-        // Auto-detect checkbox
-        $C.@CheckBoxWithLabel #AutoDetectCB {
-          @Text = "Auto-detect from client";
-          @Checked = true;
+        // Auto-detect checkbox + label
+        Group {
+          LayoutMode: Left;
           Anchor: (Height: 28, Bottom: 2);
+
+          $C.@CheckBoxWithLabel #AutoDetectCB {
+            @Text = "";
+            @Checked = true;
+            Anchor: (Height: 28, Width: 30);
+          }
+          Label #AutoDetectLabel {
+            Text: "Auto-detect from client";
+            Style: (FontSize: 12, TextColor: #CCCCCC, VerticalAlignment: Center);
+          }
         }
 
         Label #AutoDetectDesc {
@@ -92,7 +101,7 @@ $C.@PageOverlay {
           Background: (Color: #0d1520);
           Padding: (Left: 6, Right: 6);
 
-          Label {
+          Label #TerritoryAlertsLabel {
             Text: "Territory Alerts";
             Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
             Anchor: (Width: 160);
@@ -117,7 +126,7 @@ $C.@PageOverlay {
           Background: (Color: #111a28);
           Padding: (Left: 6, Right: 6);
 
-          Label {
+          Label #DeathAnnounceLabel {
             Text: "Death Broadcasts";
             Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
             Anchor: (Width: 160);
@@ -142,7 +151,7 @@ $C.@PageOverlay {
           Background: (Color: #0d1520);
           Padding: (Left: 6, Right: 6);
 
-          Label {
+          Label #PowerNotifLabel {
             Text: "Power Changes";
             Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
             Anchor: (Width: 160);

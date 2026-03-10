@@ -4,6 +4,8 @@ import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.admin.AdminNavBarHelper;
 import com.hyperfactions.gui.admin.data.AdminBackupsData;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -39,6 +41,13 @@ public class AdminBackupsPage extends InteractiveCustomUIPage<AdminBackupsData> 
 
     // Setup admin nav bar (must be after template load)
     AdminNavBarHelper.setupBar(playerRef, "backups", cmd, events);
+
+    // Localize page title and labels
+    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_BACKUPS));
+    cmd.set("#ComingSoon.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_BACKUP_HEADING));
+    cmd.set("#ComingSoonSub.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_COMING_SOON));
+    cmd.set("#Description.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_BACKUP_DESC1));
+    cmd.set("#Description2.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_BACKUP_DESC2));
   }
 
   /** Handles data event. */

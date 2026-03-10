@@ -26,7 +26,7 @@ $C.@PageOverlay {
         Anchor: (Height: 38, Bottom: 8);
         LayoutMode: Left;
 
-        Label {
+        Label #TypeLabel {
           Text: "Type:";
           Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
           Anchor: (Width: 35);
@@ -38,7 +38,7 @@ $C.@PageOverlay {
 
         Label { Anchor: (Width: 12); }
 
-        Label {
+        Label #TimeLabel {
           Text: "Time:";
           Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
           Anchor: (Width: 35);
@@ -50,7 +50,7 @@ $C.@PageOverlay {
 
         Label { Anchor: (Width: 12); }
 
-        Label {
+        Label #PlayerLabel {
           Text: "Player:";
           Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
           Anchor: (Width: 45);
@@ -79,22 +79,22 @@ $C.@PageOverlay {
         LayoutMode: Left;
         Padding: (Left: 12, Right: 12);
 
-        Label {
+        Label #ColTime {
           Text: "Time";
           Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
           Anchor: (Width: 80);
         }
-        Label {
+        Label #ColType {
           Text: "Type";
           Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
           Anchor: (Width: 65);
         }
-        Label {
+        Label #ColFaction {
           Text: "Faction";
           Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
           Anchor: (Width: 120);
         }
-        Label {
+        Label #ColMessage {
           Text: "Message";
           Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
           FlexWeight: 1;

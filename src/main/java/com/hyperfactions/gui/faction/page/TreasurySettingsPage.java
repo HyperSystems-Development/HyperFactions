@@ -67,6 +67,19 @@ public class TreasurySettingsPage extends InteractiveCustomUIPage<TreasurySettin
 
     cmd.append(UIPaths.TREASURY_SETTINGS);
 
+    // Localize static labels
+    cmd.set("#TreasurySettingsTitle.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.SETTINGS_TITLE));
+    cmd.set("#OfficerPermissionsHeader.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.OFFICER_PERMISSIONS));
+    cmd.set("#LimitsHeader.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.LIMITS_SECTION));
+    cmd.set("#MaxWithdrawLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.MAX_PER_WITHDRAWAL));
+    cmd.set("#MaxWithdrawPeriodLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.MAX_WITHDRAWALS_PER));
+    cmd.set("#MaxTransferLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.MAX_PER_TRANSFER));
+    cmd.set("#MaxTransferPeriodLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.MAX_TRANSFERS_PER));
+    cmd.set("#PeriodHoursLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.LIMIT_PERIOD));
+    cmd.set("#NoLimitHintLabel.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.NO_LIMIT_HINT));
+    cmd.set("#UpkeepSettingsHeader.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.UPKEEP_SETTINGS));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.BACK_BTN));
+
     FactionPermissions perms = faction.getEffectivePermissions();
     FactionEconomy economy = economyManager.getEconomy(faction.id());
 

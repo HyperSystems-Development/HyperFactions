@@ -99,6 +99,27 @@ public class AdminZoneSettingsPage extends InteractiveCustomUIPage<AdminZoneSett
     // Setup admin nav bar
     AdminNavBarHelper.setupBar(playerRef, "zones", cmd, events);
 
+    // Localize labels
+    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ZONE_SETTINGS));
+    cmd.set("#CatCombat.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZSET_CAT_COMBAT));
+    cmd.set("#CatDamage.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZSET_CAT_DAMAGE));
+    cmd.set("#CatDeath.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZSET_CAT_DEATH));
+    cmd.set("#CatBuilding.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZSET_CAT_BUILDING));
+    cmd.set("#CatInteraction.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZSET_CAT_INTERACTION));
+    cmd.set("#CatTransport.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZSET_CAT_TRANSPORT));
+    cmd.set("#CatItems.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZSET_CAT_ITEMS));
+    cmd.set("#CatSpawning.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZSET_CAT_SPAWNING));
+    cmd.set("#CatMobClear.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZSET_CAT_MOB_CLEAR));
+    String childrenHint = HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZSET_CHILDREN_HINT);
+    cmd.set("#CatCombatSub.Text", childrenHint);
+    cmd.set("#CatBuildingSub.Text", childrenHint);
+    cmd.set("#CatInteractionSub.Text", childrenHint);
+    cmd.set("#CatSpawningSub.Text", childrenHint);
+    cmd.set("#CatMobClearSub.Text", childrenHint);
+    cmd.set("#ResetBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZSET_RESET_DEFAULTS));
+    cmd.set("#IntegrationFlagsBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZSET_INTEGRATION_FLAGS));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZSET_BACK_TO_ZONES));
+
     // Get the zone
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {

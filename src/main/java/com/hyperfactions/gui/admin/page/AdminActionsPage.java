@@ -69,6 +69,16 @@ public class AdminActionsPage extends InteractiveCustomUIPage<AdminActionsData> 
     // Setup admin nav bar (highlight "actions" tab)
     AdminNavBarHelper.setupBar(playerRef, "actions", cmd, events);
 
+    // Localize page title and labels
+    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ACTIONS));
+    cmd.set("#CombatStatsLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ACT_COMBAT_STATS));
+    cmd.set("#CombatDescLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ACT_COMBAT_DESC));
+    cmd.set("#EconomyLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ACT_ECONOMY));
+    cmd.set("#EconomyDescLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ACT_ECONOMY_DESC));
+    cmd.set("#BulkAdjustBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ACT_BULK_ADJUST));
+    cmd.set("#UpkeepLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ACT_UPKEEP_COLLECTION));
+    cmd.set("#UpkeepDescLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ACT_UPKEEP_DESC));
+
     buildContent(cmd, events);
   }
 

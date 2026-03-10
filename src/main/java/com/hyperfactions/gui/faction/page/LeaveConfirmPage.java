@@ -57,6 +57,13 @@ public class LeaveConfirmPage extends InteractiveCustomUIPage<LeaveConfirmData> 
     // Load the leave confirmation template
     cmd.append(UIPaths.LEAVE_CONFIRM);
 
+    // Static labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.LEAVE_TITLE));
+    cmd.set("#ConfirmText.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.LEAVE_PROMPT));
+    cmd.set("#WarningText.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.LEAVE_WARNING));
+    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.CANCEL));
+    cmd.set("#ConfirmBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.LEAVE));
+
     // Set faction name in the modal
     cmd.set("#FactionName.Text", faction.name());
 

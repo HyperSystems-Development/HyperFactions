@@ -10,7 +10,7 @@ $C.@PageOverlay {
 
     #Title {
       Group {
-        $C.@Title {
+        $C.@Title #PageTitle {
           @Text = "Disband Faction";
         }
       }
@@ -20,7 +20,7 @@ $C.@PageOverlay {
       LayoutMode: Top;
       Padding: (Left: 20, Right: 20, Top: 15, Bottom: 15);
 
-      Label {
+      Label #ConfirmText {
         Text: "Are you sure you want to disband";
         Style: (FontSize: 13, TextColor: #AAAAAA, HorizontalAlignment: Center);
         Anchor: (Height: 22);
@@ -32,7 +32,7 @@ $C.@PageOverlay {
         Anchor: (Height: 24, Bottom: 8);
       }
 
-      Label {
+      Label #WarningText {
         Text: "This action cannot be undone!";
         Style: (FontSize: 12, TextColor: #AA5555, HorizontalAlignment: Center);
         Anchor: (Height: 20, Bottom: 15);

@@ -13,7 +13,7 @@ $C.@PageOverlay {
 
     #Title {
       Group {
-        $C.@Title {
+        $C.@Title #ModulesTitle {
           @Text = "Faction Modules";
         }
       }
@@ -27,7 +27,7 @@ $C.@PageOverlay {
       Group {
         Anchor: (Height: 35, Bottom: 10);
 
-        Label {
+        Label #ModulesDescription {
           Text: "Optional features to enhance your faction";
           Style: (FontSize: 12, TextColor: #888888, VerticalAlignment: Center);
         }

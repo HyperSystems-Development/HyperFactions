@@ -62,7 +62,7 @@ $C.@PageOverlay {
 
           Group {
             Anchor: (Height: 18, Bottom: 4);
-            Label {
+            Label #CatGravestones {
               Text: "Gravestones";
               Style: (FontSize: 11, TextColor: #00AAAA, RenderBold: true);
             }
@@ -93,7 +93,7 @@ $C.@PageOverlay {
           Group {
             Anchor: (Height: 16);
             Padding: (Left: 4, Right: 0, Top: 0, Bottom: 0);
-            Label {
+            Label #GravestonesDesc {
               Text: "When ON, non-owners can loot graves. Owners always can.";
               Style: (FontSize: 9, TextColor: #666666);
             }
@@ -109,7 +109,7 @@ $C.@PageOverlay {
 
           Group {
             Anchor: (Height: 18, Bottom: 4);
-            Label {
+            Label #CatWorldMap {
               Text: "World Map";
               Style: (FontSize: 11, TextColor: #00AAAA, RenderBold: true);
             }
@@ -162,7 +162,7 @@ $C.@PageOverlay {
           Group {
             Anchor: (Height: 24);
             Padding: (Left: 4, Right: 0, Top: 2, Bottom: 0);
-            Label {
+            Label #WorldMapDesc {
               Text: "Override map hiding for players in this zone. When enabled, select who can see players in this zone.";
               Style: (FontSize: 9, TextColor: #666666);
             }
@@ -178,7 +178,7 @@ $C.@PageOverlay {
 
           Group {
             Anchor: (Height: 18, Bottom: 4);
-            Label {
+            Label #CatEssentials {
               Text: "HyperEssentials";
               Style: (FontSize: 11, TextColor: #00AAAA, RenderBold: true);
             }

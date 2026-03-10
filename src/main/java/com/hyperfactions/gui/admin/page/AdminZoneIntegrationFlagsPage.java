@@ -68,6 +68,17 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
     // Setup admin nav bar
     AdminNavBarHelper.setupBar(playerRef, "zones", cmd, events);
 
+    // Localize labels
+    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ZONE_SETTINGS));
+    cmd.set("#CatGravestones.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZINT_CAT_GRAVESTONES));
+    cmd.set("#GravestonesDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZINT_GRAVESTONES_DESC));
+    cmd.set("#CatWorldMap.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZINT_CAT_WORLD_MAP));
+    cmd.set("#WorldMapDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZINT_WORLD_MAP_DESC));
+    cmd.set("#MapVisibilityLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZINT_VISIBILITY_LABEL));
+    cmd.set("#CatEssentials.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZINT_CAT_ESSENTIALS));
+    cmd.set("#ResetBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZINT_RESET_DEFAULTS));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZINT_BACK_TO_FLAGS));
+
     // Get the zone
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {

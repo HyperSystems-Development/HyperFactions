@@ -65,6 +65,13 @@ public class TransferConfirmPage extends InteractiveCustomUIPage<TransferConfirm
     // Load the transfer confirmation template
     cmd.append(UIPaths.TRANSFER_CONFIRM);
 
+    // Static labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.TRANSFER_TITLE));
+    cmd.set("#ConfirmText.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.TRANSFER_PROMPT));
+    cmd.set("#WarningText.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.TRANSFER_WARNING));
+    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.CANCEL));
+    cmd.set("#ConfirmBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.TRANSFER));
+
     // Set dynamic values
     cmd.set("#TargetName.Text", targetName);
 

@@ -23,7 +23,7 @@ $C.@PageOverlay {
       Padding: (Left: 25, Right: 25, Top: 12, Bottom: 12);
 
       // Section header
-      Label {
+      Label #SectionHeader {
         Text: "Adjust Treasury Balance";
         Style: (FontSize: 14, TextColor: #00FFFF, RenderBold: true);
         Anchor: (Height: 28, Bottom: 8);
@@ -40,7 +40,7 @@ $C.@PageOverlay {
           Anchor: (Height: 20);
           LayoutMode: Left;
 
-          Label {
+          Label #FactionLabel {
             Text: "Faction:";
             Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
             Anchor: (Width: 100);
@@ -55,7 +55,7 @@ $C.@PageOverlay {
           Anchor: (Height: 20);
           LayoutMode: Left;
 
-          Label {
+          Label #CurrentBalanceLabel {
             Text: "Current Balance:";
             Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
             Anchor: (Width: 100);
@@ -70,7 +70,7 @@ $C.@PageOverlay {
       // Amount input
       Group {
         Anchor: (Height: 20, Bottom: 4);
-        Label {
+        Label #AmountLabel {
           Text: "Amount (positive to add, negative to deduct):";
           Style: (FontSize: 11, TextColor: #AAAAAA);
         }
@@ -100,7 +100,7 @@ $C.@PageOverlay {
           Anchor: (Height: 20);
           LayoutMode: Left;
 
-          Label {
+          Label #AdjustmentLabel {
             Text: "Adjustment:";
             Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
             Anchor: (Width: 100);
@@ -115,7 +115,7 @@ $C.@PageOverlay {
           Anchor: (Height: 20);
           LayoutMode: Left;
 
-          Label {
+          Label #NewBalanceLabel {
             Text: "New Balance:";
             Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
             Anchor: (Width: 100);

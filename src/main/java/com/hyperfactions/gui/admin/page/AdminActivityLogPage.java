@@ -98,6 +98,24 @@ public class AdminActivityLogPage extends InteractiveCustomUIPage<AdminActivityL
     // Setup admin nav bar
     AdminNavBarHelper.setupBar(playerRef, "log", cmd, events);
 
+    // Localize page title
+    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ACTIVITY_LOG));
+
+    // Localize filter labels
+    cmd.set("#TypeLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_LOG_TYPE));
+    cmd.set("#TimeLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_LOG_TIME));
+    cmd.set("#PlayerLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_LOG_PLAYER));
+
+    // Localize column headers
+    cmd.set("#ColTime.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_COL_TIME));
+    cmd.set("#ColType.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_COL_TYPE));
+    cmd.set("#ColFaction.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_COL_FACTION));
+    cmd.set("#ColMessage.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_COL_MESSAGE));
+
+    // Localize pagination buttons
+    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PREV));
+    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_NEXT));
+
     buildLogList(cmd, events);
   }
 
@@ -196,7 +214,7 @@ public class AdminActivityLogPage extends InteractiveCustomUIPage<AdminActivityL
     // Empty state
     if (index == 0) {
       cmd.appendInline("#LogList",
-          "Label { Text: \"No activity logs matching filters.\"; "
+          "Label { Text: \"" + HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_LOG_NO_LOGS) + "\"; "
           + "Style: (FontSize: 11, TextColor: #555555); Anchor: (Height: 30); }");
     }
 

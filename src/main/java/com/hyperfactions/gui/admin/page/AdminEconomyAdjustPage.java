@@ -69,6 +69,19 @@ public class AdminEconomyAdjustPage extends InteractiveCustomUIPage<AdminEconomy
     // Setup admin nav bar
     AdminNavBarHelper.setupBar(playerRef, "economy", cmd, events);
 
+    // Localize labels
+    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ECONOMY_ADJUST));
+    cmd.set("#SectionHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECADJ_HEADER));
+    cmd.set("#FactionLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECADJ_FACTION_LABEL));
+    cmd.set("#CurrentBalanceLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECADJ_CURRENT_BALANCE));
+    cmd.set("#AmountLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECADJ_AMOUNT_HINT));
+    cmd.set("#HintText.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECADJ_PREVIEW_HINT));
+    cmd.set("#AdjustmentLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECADJ_ADJUSTMENT));
+    cmd.set("#NewBalanceLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECADJ_NEW_BALANCE));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_BACK));
+    cmd.set("#SetBalanceBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECADJ_SET_BALANCE));
+    cmd.set("#ConfirmBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECADJ_CONFIRM));
+
     // Get faction info
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {

@@ -23,7 +23,7 @@ $C.@PageOverlay {
       Padding: (Left: 25, Right: 25, Top: 12, Bottom: 12);
 
       // Section header
-      Label {
+      Label #SectionHeader {
         Text: "Adjust All Faction Treasuries";
         Style: (FontSize: 14, TextColor: #00FFFF, RenderBold: true);
         Anchor: (Height: 28, Bottom: 8);
@@ -40,7 +40,7 @@ $C.@PageOverlay {
           Anchor: (Height: 20);
           LayoutMode: Left;
 
-          Label {
+          Label #FactionsInfoLabel {
             Text: "Factions:";
             Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
             Anchor: (Width: 120);
@@ -55,7 +55,7 @@ $C.@PageOverlay {
           Anchor: (Height: 20);
           LayoutMode: Left;
 
-          Label {
+          Label #TotalBalanceInfoLabel {
             Text: "Total Balance:";
             Style: (FontSize: 12, TextColor: #AAAAAA, VerticalAlignment: Center);
             Anchor: (Width: 120);
@@ -70,7 +70,7 @@ $C.@PageOverlay {
       // Amount input
       Group {
         Anchor: (Height: 20, Bottom: 4);
-        Label {
+        Label #AmountLabel {
           Text: "Amount (positive to add, negative to remove):";
           Style: (FontSize: 11, TextColor: #AAAAAA);
         }
@@ -82,7 +82,7 @@ $C.@PageOverlay {
       }
 
       // Hint text
-      Label {
+      Label #HintLabel {
         Text: "This will apply to every faction with a treasury";
         Style: (FontSize: 10, TextColor: #555555);
         Anchor: (Height: 16, Bottom: 10);
@@ -94,7 +94,7 @@ $C.@PageOverlay {
         Background: (Color: #3a2a1a);
         Padding: (Left: 10, Right: 10, Top: 6, Bottom: 6);
 
-        Label {
+        Label #WarningLabel {
           Text: "Warning: This action affects ALL factions and cannot be undone.";
           Style: (FontSize: 10, TextColor: #FFAA00);
         }

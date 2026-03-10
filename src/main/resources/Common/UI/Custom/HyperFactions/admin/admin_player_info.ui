@@ -56,7 +56,7 @@ $C.@PageOverlay {
           LayoutMode: Left;
           Anchor: (Height: 16);
 
-          Label {
+          Label #FirstJoinedLabel {
             Text: "First joined:";
             Style: (FontSize: 9, TextColor: #666666, VerticalAlignment: Center);
             Anchor: (Width: 68);
@@ -67,7 +67,7 @@ $C.@PageOverlay {
             Anchor: (Width: 120);
           }
 
-          Label {
+          Label #LastOnlineLabel {
             Text: "Last online:";
             Style: (FontSize: 9, TextColor: #666666, VerticalAlignment: Center);
             Anchor: (Width: 64);
@@ -80,7 +80,7 @@ $C.@PageOverlay {
 
           Label { FlexWeight: 1; }
 
-          Label {
+          Label #UuidLabel {
             Text: "UUID:";
             Style: (FontSize: 8, TextColor: #444444, VerticalAlignment: Center);
             Anchor: (Width: 28);
@@ -111,7 +111,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Right: 3);
 
-          Label {
+          Label #PowerLabel {
             Text: "Power";
             Style: (FontSize: 8, TextColor: #666666);
             Anchor: (Height: 12);
@@ -137,7 +137,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 3, Right: 3);
 
-          Label {
+          Label #CombatLabel {
             Text: "Combat";
             Style: (FontSize: 8, TextColor: #666666);
             Anchor: (Height: 12);
@@ -160,7 +160,7 @@ $C.@PageOverlay {
               Style: (FontSize: 13, TextColor: #FF5555, RenderBold: true, VerticalAlignment: Center);
             }
           }
-          Label {
+          Label #KDLabel {
             Text: "K / D";
             Style: (FontSize: 8, TextColor: #444444);
             Anchor: (Height: 10);
@@ -175,7 +175,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 3, Right: 3);
 
-          Label {
+          Label #KDRLabel {
             Text: "K/D Ratio";
             Style: (FontSize: 8, TextColor: #666666);
             Anchor: (Height: 12);
@@ -200,7 +200,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 3);
 
-          Label {
+          Label #FactionLabel {
             Text: "Faction";
             Style: (FontSize: 8, TextColor: #666666);
             Anchor: (Height: 12);
@@ -258,7 +258,7 @@ $C.@PageOverlay {
             Anchor: (Height: 16, Bottom: 3);
             LayoutMode: Left;
 
-            Label {
+            Label #HistoryHeader {
               Text: "Membership History";
               Style: (FontSize: 10, TextColor: #666666, RenderBold: true, VerticalAlignment: Center);
             }
@@ -284,7 +284,7 @@ $C.@PageOverlay {
           Padding: (Left: 8);
 
           // Admin Controls header (aligns with Membership History header)
-          Label {
+          Label #AdminControlsHeader {
             Text: "Admin Controls";
             Style: (FontSize: 10, TextColor: #666666, RenderBold: true, VerticalAlignment: Center);
             Anchor: (Height: 16, Bottom: 3);
@@ -302,7 +302,7 @@ $C.@PageOverlay {
               LayoutMode: Left;
               Anchor: (Height: 18, Bottom: 3);
 
-              Label {
+              Label #PowerMgmtHeader {
                 Text: "Power Management";
                 Style: (FontSize: 10, TextColor: #666666, RenderBold: true, VerticalAlignment: Center);
               }
@@ -359,7 +359,7 @@ $C.@PageOverlay {
               LayoutMode: Left;
               Anchor: (Height: 26);
 
-              Label {
+              Label #MaxLabel {
                 Text: "Max:";
                 Style: (FontSize: 11, TextColor: #AAAAAA, VerticalAlignment: Center);
                 Anchor: (Width: 33);
@@ -392,7 +392,7 @@ $C.@PageOverlay {
               LayoutMode: Left;
               Anchor: (Height: 26);
 
-              Label {
+              Label #CombatSectionHeader {
                 Text: "Combat";
                 Style: (FontSize: 10, TextColor: #666666, RenderBold: true, VerticalAlignment: Center);
               }
@@ -411,7 +411,7 @@ $C.@PageOverlay {
             Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
             LayoutMode: Top;
 
-            Label {
+            Label #BypassHeader {
               Text: "Power Bypass Toggles";
               Style: (FontSize: 10, TextColor: #666666, RenderBold: true);
               Anchor: (Height: 16, Bottom: 3);

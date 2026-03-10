@@ -72,6 +72,14 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
     // Load the modal template
     cmd.append(UIPaths.DESCRIPTION_MODAL);
 
+    // Static labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.DescGui.TITLE));
+    cmd.set("#CurrentLabel.Text", HFMessages.get(playerRef, MessageKeys.DescGui.CURRENT_LABEL));
+    cmd.set("#NewDescLabel.Text", HFMessages.get(playerRef, MessageKeys.DescGui.NEW_DESC_LABEL));
+    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.CANCEL));
+    cmd.set("#ClearBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.CLEAR));
+    cmd.set("#SaveBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.SAVE));
+
     // Show current description
     String currentDesc = faction.description();
     if (currentDesc == null || currentDesc.isEmpty()) {

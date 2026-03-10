@@ -94,6 +94,40 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
            UIEventBuilder events, Store<EntityStore> store) {
     cmd.append(UIPaths.ADMIN_PLAYER_INFO);
     AdminNavBarHelper.setupBar(playerRef, "factions", cmd, events);
+
+    // Localize page title
+    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_PLAYER_INFO));
+
+    // Localize header labels
+    cmd.set("#FirstJoinedLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_FIRST_JOINED));
+    cmd.set("#LastOnlineLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_LAST_ONLINE));
+    cmd.set("#UuidLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_UUID));
+
+    // Localize stat card labels
+    cmd.set("#PowerLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_POWER));
+    cmd.set("#CombatLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_COMBAT));
+    cmd.set("#KDLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_KD_SUBTITLE));
+    cmd.set("#KDRLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_KDR));
+    cmd.set("#FactionLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_FACTION));
+
+    // Localize section headers
+    cmd.set("#HistoryHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_MEMBERSHIP_HISTORY));
+    cmd.set("#AdminControlsHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ADMIN_CONTROLS));
+    cmd.set("#PowerMgmtHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_POWER_MANAGEMENT));
+    cmd.set("#CombatSectionHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_COMBAT));
+    cmd.set("#BypassHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_BYPASS_FLAGS));
+
+    // Localize button labels
+    cmd.set("#SetPowerBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET));
+    cmd.set("#ResetPowerBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_RESET));
+    cmd.set("#MaxLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_MAX_PREFIX));
+    cmd.set("#SetMaxBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_SET_MAX_BTN));
+    cmd.set("#ResetMaxBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_RESET));
+    cmd.set("#ResetKDBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_RESET_KD));
+    cmd.set("#ViewFactionBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_VIEW));
+    cmd.set("#KickBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_KICK_FROM_FACTION));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_BACK));
+
     buildContent(cmd, events);
   }
 

@@ -66,6 +66,12 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     // Setup admin nav bar
     AdminNavBarHelper.setupBar(playerRef, "factions", cmd, events);
 
+    // Localize page title and labels
+    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_FACTION_SETTINGS));
+    cmd.set("#EditingLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_EDITING));
+    cmd.set("#AdminOverrideLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_ADMIN_OVERRIDE));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_BACK));
+
     // Get the faction
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {

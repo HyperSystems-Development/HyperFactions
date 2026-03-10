@@ -136,6 +136,9 @@ public class FactionInfoPage extends InteractiveCustomUIPage<FactionPageData> {
     Faction viewerFaction = factionManager.getPlayerFaction(viewerRef.getUuid());
     boolean isOwnFaction = viewerFaction != null && viewerFaction.id().equals(targetFaction.id());
 
+    // === Page Title ===
+    cmd.set("#PageTitle.Text", HFMessages.get(viewerRef, MessageKeys.FactionInfoGui.TITLE));
+
     // === Header Section ===
     // Faction name
     cmd.set("#FactionName.Text", targetFaction.name());
@@ -162,6 +165,27 @@ public class FactionInfoPage extends InteractiveCustomUIPage<FactionPageData> {
     // Note: Cannot dynamically set text color via cmd.set()
 
     // === Stats Section ===
+    // Set stat card headers and subtitles
+    cmd.set("#PowerHeader.Text", HFMessages.get(viewerRef, MessageKeys.FactionInfoGui.POWER_HEADER));
+    cmd.set("#PowerSubtitle.Text", HFMessages.get(viewerRef, MessageKeys.FactionInfoGui.CURRENT_MAX));
+    cmd.set("#ClaimsHeader.Text", HFMessages.get(viewerRef, MessageKeys.FactionInfoGui.CLAIMS_HEADER));
+    cmd.set("#ClaimsSubtitle.Text", HFMessages.get(viewerRef, MessageKeys.FactionInfoGui.CLAIMED_MAX));
+    cmd.set("#MembersHeader.Text", HFMessages.get(viewerRef, MessageKeys.FactionInfoGui.MEMBERS_HEADER));
+    cmd.set("#RelationsHeader.Text", HFMessages.get(viewerRef, MessageKeys.FactionInfoGui.RELATIONS_HEADER));
+    cmd.set("#RelationsSubtitle.Text", HFMessages.get(viewerRef, MessageKeys.FactionInfoGui.ALLY_ENEMY));
+    cmd.set("#StatusHeader.Text", HFMessages.get(viewerRef, MessageKeys.FactionInfoGui.STATUS_HEADER));
+    cmd.set("#TreasuryHeader.Text", HFMessages.get(viewerRef, MessageKeys.FactionInfoGui.TREASURY_HEADER));
+    cmd.set("#TreasurySubtitle.Text", HFMessages.get(viewerRef, MessageKeys.FactionInfoGui.FACTION_BALANCE));
+
+    // Leadership labels
+    cmd.set("#LeaderLabel.Text", HFMessages.get(viewerRef, MessageKeys.FactionInfoGui.LEADER_LABEL));
+    cmd.set("#OfficersLabel.Text", HFMessages.get(viewerRef, MessageKeys.FactionInfoGui.OFFICERS_LABEL));
+
+    // Button text
+    cmd.set("#ViewMembersBtn.Text", HFMessages.get(viewerRef, MessageKeys.FactionInfoGui.VIEW_MEMBERS_BTN));
+    cmd.set("#ViewRelationsBtn.Text", HFMessages.get(viewerRef, MessageKeys.FactionInfoGui.RELATIONS_BTN));
+    cmd.set("#BackBtn.Text", HFMessages.get(viewerRef, MessageKeys.FactionInfoGui.BACK_BTN));
+
     PowerManager.FactionPowerStats powerStats = powerManager.getFactionPowerStats(targetFaction.id());
 
     // Power

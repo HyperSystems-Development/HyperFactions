@@ -28,6 +28,7 @@ help.category.economy = Economia
 help.category.quick_ref = Referencia Rapida
 
 # ========== Menu Principal ==========
+main_menu.title = HyperFactions
 main_menu.section_my_faction = Mi Faccion
 main_menu.section_get_started = Comenzar
 main_menu.section_territory = Territorio
@@ -36,14 +37,33 @@ main_menu.section_admin = Admin
 main_menu.claim_hint = Usa /f claim para reclamar territorio.
 
 # ========== Pagina de Info de Faccion ==========
+faction_info.title = Info de Faccion
 faction_info.no_description = Sin descripcion.
 faction_info.status_open = Abierta
 faction_info.status_invite_only = Solo Invitacion
 faction_info.status_raidable = Vulnerable
 faction_info.status_protected = Protegida
 faction_info.officers_more = +{0} mas
+faction_info.power_header = Poder
+faction_info.claims_header = Reclamos
+faction_info.members_header = Miembros
+faction_info.relations_header = Relaciones
+faction_info.status_header = Estado
+faction_info.treasury_header = Tesoreria
+faction_info.current_max = actual / max
+faction_info.claimed_max = reclamados / max
+faction_info.ally_enemy = aliado / enemigo
+faction_info.faction_balance = saldo de faccion
+faction_info.leader_label = Lider:
+faction_info.officers_label = Oficiales:
+faction_info.view_members_btn = Ver Miembros
+faction_info.relations_btn = Relaciones
+faction_info.back_btn = Volver
 
 # ========== Modal de Renombrar ==========
+rename.title = Renombrar Faccion
+rename.current_label = Actual:
+rename.new_name_label = Nuevo Nombre:
 rename.no_permission = No tienes permiso para renombrar la faccion.
 rename.enter_name = Ingresa un nombre para la faccion.
 rename.too_short = El nombre de faccion debe tener al menos {0} caracteres.
@@ -53,12 +73,19 @@ rename.name_taken = Ya existe una faccion con ese nombre.
 rename.success = Faccion renombrada de {0} a {1}!
 
 # ========== Modal de Descripcion ==========
+desc.title = Editar Descripcion
+desc.current_label = Actual:
+desc.new_desc_label = Nueva Descripcion:
 desc.no_permission = No tienes permiso para editar la descripcion.
 desc.display_none = (Ninguna)
 desc.cleared = Descripcion de la faccion borrada.
 desc.updated = Descripcion de la faccion actualizada!
 
 # ========== Modal de Etiqueta ==========
+tag.title = Editar Etiqueta
+tag.current_label = Actual:
+tag.instructions = Etiqueta (1-5 caracteres, solo letras y numeros):
+tag.help_text = Las etiquetas aparecen en el chat y en el mapa
 tag.no_permission = No tienes permiso para editar la etiqueta.
 tag.display_none = (Ninguna)
 tag.cleared = Etiqueta de la faccion borrada.
@@ -70,6 +97,34 @@ tag.tag_taken = Ya existe una faccion con esa etiqueta.
 tag.success = Etiqueta de faccion establecida a [{0}]!
 
 # ========== Pagina del Panel ==========
+dashboard.title = Panel de Faccion
+dashboard.power_label = Poder
+dashboard.land_label = Reclamos
+dashboard.members_label = Miembros
+dashboard.online_label = Conectados
+dashboard.allies_label = Aliados
+dashboard.enemies_label = Enemigos
+dashboard.relations_label = Relaciones
+dashboard.ally_enemy_label = aliado / enemigo
+dashboard.status_label = Estado
+dashboard.invites_label = Invitaciones
+dashboard.sent_requests_label = enviadas / solicitudes
+dashboard.treasury_label = Tesoreria
+dashboard.upkeep_label = Mantenimiento
+dashboard.per_cycle = por ciclo
+dashboard.your_wallet = Tu Billetera
+dashboard.personal_balance = saldo personal
+dashboard.quick_actions = Acciones Rapidas
+dashboard.teleport_label = Teletransporte
+dashboard.territory_label = Territorio
+dashboard.channel_label = Canal
+dashboard.membership_label = Membresia
+dashboard.recent_activity = Actividad Reciente
+dashboard.view_all = Ver Todo
+dashboard.income_24h = Ingresos (24h)
+dashboard.deposits_transfers_in = depositos, transferencias entrantes
+dashboard.expenses_24h = Gastos (24h)
+dashboard.withdrawals_transfers_out = retiros, transferencias salientes
 dashboard.faction_gone = Tu faccion ya no existe.
 dashboard.available = {0} disponibles
 dashboard.at_risk = En riesgo!
@@ -107,8 +162,17 @@ common.sort_power = Poder
 common.sort_members = Miembros
 common.page_format = {0}/{1}
 common.own_faction = (Tu)
+common.search = Buscar:
+common.sort = Ordenar:
+common.prev = < Anterior
+common.next = Siguiente >
 
 # ========== Pagina de Miembros ==========
+members.title = Miembros
+members.search_label = Buscar:
+members.sort_label = Ordenar:
+members.prev_btn = < Anterior
+members.next_btn = Siguiente >
 members.count = {0} miembros
 members.sort_role = Rol
 members.sort_last_online = Ultima Conexion
@@ -124,15 +188,43 @@ members.kicked = {0} expulsado de la faccion.
 members.kick_failed = No se pudo expulsar: {0}
 
 # ========== Pagina del Explorador ==========
+browser.title = Explorar Facciones
+browser.search_label = Buscar:
+browser.sort_label = Ordenar:
+browser.prev_btn = < Anterior
+browser.next_btn = Siguiente >
 browser.sort_name = Nombre
 browser.invalid_faction = Faccion invalida.
 
 # ========== Pagina de Clasificacion ==========
+leaderboard.title = Clasificacion de Facciones
+leaderboard.rank_by = Clasificar por:
+leaderboard.col_rank = #
+leaderboard.col_faction = Faccion
+leaderboard.col_claims = Reclamos
+leaderboard.col_members = Miembros
+leaderboard.prev_btn = < Anterior
+leaderboard.next_btn = Siguiente >
 leaderboard.sort_kd = K/D
 leaderboard.sort_territory = Territorio
 leaderboard.sort_balance = Saldo
 
 # ========== Pagina de Info de Jugador ==========
+playerinfo.title = Info de Jugador
+playerinfo.first_joined_label = Primera conexion:
+playerinfo.last_online_label = Ultima conexion:
+playerinfo.faction_label = Faccion:
+playerinfo.role_label = Rol:
+playerinfo.joined_label_static = Ingreso:
+playerinfo.not_in_faction = No esta en una faccion
+playerinfo.power_header = Poder
+playerinfo.current_max = actual / max
+playerinfo.combat_header = Combate
+playerinfo.kills_deaths = muertes / asesinatos
+playerinfo.kdr_header = Ratio K/D
+playerinfo.membership_history = Historial de Membresia
+playerinfo.view_faction_btn = Ver Faccion
+playerinfo.back_btn = Volver
 playerinfo.now = Ahora
 playerinfo.history_count = {0} registros
 playerinfo.joined_label = Ingreso: {0}
@@ -146,6 +238,12 @@ playerinfo.reason_kicked = EXPULSADO
 playerinfo.reason_disbanded = DISUELTA
 
 # ========== Pagina de Relaciones ==========
+relations.title = Relaciones
+relations.tab_relations = Relaciones
+relations.tab_pending = Pendientes
+relations.set_relation_btn = + Establecer Relacion
+relations.prev_btn = < Anterior
+relations.next_btn = Siguiente >
 relations.relation_count = {0} relaciones
 relations.request_count = {0} solicitudes
 relations.type_ally = Aliado
@@ -173,6 +271,59 @@ relations.power_display = {0} poder
 relations.member_count = {0} miembros
 
 # ========== Pagina de Ajustes ==========
+settings.title = Ajustes de Faccion
+settings.general = General
+settings.name_label = Nombre:
+settings.tag_label = Etiqueta:
+settings.desc_label = Desc:
+settings.edit_btn = Editar
+settings.recruitment = Reclutamiento
+settings.status_label = Estado:
+settings.home_location = Ubicacion del Hogar
+settings.location_label = Ubicacion:
+settings.set_home_btn = Fijar Hogar
+settings.teleport_btn = Teletransportar
+settings.delete_btn = Eliminar
+settings.optional_features = Funciones Opcionales
+settings.configure_modules = Configurar modulos opcionales.
+settings.modules_btn = Modulos
+settings.danger_zone = Zona de Peligro
+settings.irreversible = Esta accion es irreversible.
+settings.disband_btn = Disolver Faccion
+settings.lock_hint = Algunas opciones pueden estar bloqueadas por el servidor y no aceptaran cambios.
+settings.territory_permissions = Permisos de Territorio
+settings.col_out = Ext
+settings.col_ally = Ali
+settings.col_mem = Mie
+settings.col_off = Ofi
+settings.cat_building = CONSTRUCCION
+settings.perm_break = Romper
+settings.perm_place = Colocar
+settings.cat_interaction = INTERACCION
+settings.interaction_hint = (hijos desactivados cuando Todo esta apagado)
+settings.perm_all = Todo
+settings.perm_door = Puerta
+settings.perm_chest = Cofre
+settings.perm_bench = Banco
+settings.perm_processing = Procesamiento
+settings.perm_seat = Asiento
+settings.perm_transport = Transporte
+settings.cat_other = OTROS
+settings.perm_crate = Uso de Caja
+settings.perm_npc_tame = Domar NPC
+settings.perm_pve = Dano PvE
+settings.appearance = Apariencia
+settings.color_label = Color:
+settings.mob_spawning = Generacion de Mobs
+settings.mob_spawning_hint = (hijos desactivados cuando el maestro esta apagado)
+settings.mob_spawning_label = Generacion de Mobs
+settings.hostile_mobs = Mobs Hostiles
+settings.passive_mobs = Mobs Pasivos
+settings.neutral_mobs = Mobs Neutrales
+settings.faction_settings = Ajustes de Faccion
+settings.pvp_in_territory = PvP en Territorio
+settings.officers_can_edit = Oficiales pueden editar
+settings.leader_only = Solo lider
 settings.officers_only = Solo oficiales y lideres pueden cambiar los ajustes de la faccion.
 settings.display_none = (Ninguna)
 settings.home_not_set = Sin establecer
@@ -190,6 +341,10 @@ settings.home_no_set = Tu faccion no tiene un hogar establecido.
 settings.home_deleted = Hogar de la faccion eliminado!
 
 # ========== Pagina de Modulos ==========
+modules.title = Modulos de Faccion
+modules.description = Funciones opcionales para mejorar tu faccion
+modules.configure_btn = Configurar
+modules.back_btn = < Volver a Ajustes
 modules.treasury_name = Tesoreria
 modules.treasury_desc = Banco y sistema economico de la faccion
 modules.raids_name = Raids
@@ -207,6 +362,47 @@ modules.disabled = Desactivado
 modules.economy_not_available = Las funciones de economia no estan disponibles en este servidor
 
 # ========== Pagina de Tesoreria ==========
+treasury.title = Tesoreria de Faccion
+treasury.balance_label = Saldo
+treasury.income_24h = Ingresos (24h)
+treasury.deposits_transfers_in = depositos, transferencias entrantes
+treasury.expenses_24h = Gastos (24h)
+treasury.withdrawals_transfers_out = retiros, transferencias salientes
+treasury.maintenance = MANTENIMIENTO
+treasury.runway_label = Duracion:
+treasury.add_funds = Agregar fondos
+treasury.deposit_btn = Depositar
+treasury.take_funds = Retirar fondos
+treasury.withdraw_btn = Retirar
+treasury.send_to_faction = Enviar a faccion
+treasury.transfer_btn = Transferir
+treasury.treasury_config = Config. tesoreria
+treasury.settings_btn = Ajustes
+treasury.recent_transactions = Transacciones Recientes
+treasury.no_transactions = Sin transacciones aun
+treasury.col_date = Fecha
+treasury.col_type = Tipo
+treasury.col_by = Por
+treasury.col_amount = Monto
+treasury.col_details = Detalles
+treasury.pay_now_btn = Pagar Ahora
+treasury.cost_7d = 7d:
+treasury.cost_14d = 14d:
+treasury.cost_30d = 30d:
+treasury.settings_title = Ajustes de Tesoreria
+treasury.officer_permissions = PERMISOS DE OFICIALES
+treasury.allow_withdraw = Permitir a Oficiales Retirar
+treasury.allow_transfer = Permitir a Oficiales Transferir
+treasury.limits_section = LIMITES DE RETIRO Y TRANSFERENCIA
+treasury.max_per_withdrawal = Max por retiro:
+treasury.max_withdrawals_per = Max retiros por periodo:
+treasury.max_per_transfer = Max por transferencia:
+treasury.max_transfers_per = Max transferencias por periodo:
+treasury.limit_period = Periodo de limite (horas):
+treasury.no_limit_hint = Usar 0 para sin limite
+treasury.upkeep_settings = AJUSTES DE MANTENIMIENTO
+treasury.auto_pay_upkeep = Pago automatico de mantenimiento desde tesoreria
+treasury.back_btn = Volver
 treasury.wallet_label = Tu billetera: {0}
 treasury.treasury_label = Saldo de tesoreria: {0}
 treasury.chunks_detail = {0} gratis + {1} chunks facturables
@@ -276,6 +472,17 @@ treasury.leader_only_upkeep = Solo el lider puede cambiar los ajustes de manteni
 treasury.invalid_limit = Numero invalido en los campos de limite. Usa 0 para ilimitado.
 
 # ========== Paginas de Confirmacion ==========
+confirm.disband_title = Disolver Faccion
+confirm.disband_prompt = Estas seguro de que quieres disolver
+confirm.disband_warning = Esta accion no se puede deshacer!
+confirm.leave_title = Salir de la Faccion
+confirm.leave_prompt = Estas seguro de que quieres salir de
+confirm.leave_warning = Perderas acceso al territorio de la faccion.
+confirm.leader_leave_title = Salir como Lider
+confirm.leader_leave_prompt = Estas saliendo de
+confirm.transfer_title = Transferir Liderazgo
+confirm.transfer_prompt = Estas seguro de que quieres transferir el liderazgo a
+confirm.transfer_warning = Te convertiras en Oficial.
 confirm.disband_not_leader = Solo el lider puede disolver la faccion.
 confirm.disbanded = La faccion '{0}' ha sido disuelta.
 confirm.disband_failed = No se pudo disolver la faccion.
@@ -302,6 +509,10 @@ logs.no_logs_type = No hay registros de este tipo.
 logs.no_logs = No hay registros de actividad aun.
 
 # ========== Pagina de Chat ==========
+chat.title = Chat de Faccion
+chat.tab_faction = Faccion
+chat.tab_ally = Aliado
+chat.send_btn = Enviar
 chat.placeholder = Escribe un mensaje...
 chat.no_messages = No hay mensajes aun.
 chat.no_ally_permission = No tienes permiso para el chat de aliados.
@@ -312,6 +523,11 @@ chat.time_minutes = {0}m
 chat.time_hours = {0}h
 
 # ========== Pagina de Invitaciones ==========
+invites.title = Invitaciones
+invites.tab_outgoing = Salientes
+invites.tab_requests = Solicitudes
+invites.prev_btn = < Anterior
+invites.next_btn = Siguiente >
 invites.invite_count = {0} invitaciones
 invites.request_count = {0} solicitudes
 invites.invited_by = Invitado por: {0}
@@ -334,6 +550,16 @@ invites.time_minutes = {0}m
 invites.time_hours = {0}h
 
 # ========== Pagina del Mapa ==========
+map.title = Mapa de Territorio
+map.action_hint = Clic izquierdo: Reclamar | Clic derecho: Desreclamar
+map.legend_your = Tu Territorio
+map.legend_ally = Territorio Aliado
+map.legend_enemy = Territorio Enemigo
+map.legend_other = Otra Faccion
+map.legend_wilderness = Naturaleza
+map.legend_safe = Zona Segura
+map.legend_war = Zona de Guerra
+map.legend_you = Estas aqui
 map.position = Tu Posicion: Chunk ({0}, {1})
 map.legend_protected = Protegido
 map.claim_stats = Reclamos: {0}/{1} ({2} Disponibles)
@@ -366,6 +592,18 @@ map.overclaim_has_power = Esta faccion tiene suficiente poder para defender su t
 map.overclaim_max = Has alcanzado tu limite maximo de reclamos.
 map.overclaim_failed = No se pudo sobrereclamar el chunk.
 # ========== Pagina de Crear Faccion ==========
+create.title = Crea Tu Faccion
+create.section_preview = Vista Previa
+create.section_basic_info = Info Basica
+create.section_details = Detalles
+create.name_prefix = Nombre:
+create.faction_name_label = Nombre de Faccion *
+create.tag_label = ETIQUETA (2-4 caracteres, automatica si vacia)
+create.desc_label = Descripcion (Opcional)
+create.recruitment_label = Reclutamiento
+create.section_faction_color = Color de Faccion
+create.section_combat = Combate
+create.create_btn = Crear Faccion
 create.preview_name = Nombre de Tu Faccion
 create.leader_prefix = Lider: {0}
 create.enter_name = Ingresa un nombre para la faccion.
@@ -381,6 +619,19 @@ create.invalid_name = Nombre de faccion invalido.
 create.create_failed = No se pudo crear la faccion.
 
 # ========== Paginas de Nuevo Jugador ==========
+newplayer.browse_title = Explorar Facciones
+newplayer.invites_title = Invitaciones y Solicitudes
+newplayer.map_title = Mapa de Territorio
+newplayer.view_only_badge = Solo Vista
+newplayer.legend_label = Leyenda:
+newplayer.legend_safezone = Zona Segura
+newplayer.legend_warzone = Zona de Guerra
+newplayer.legend_faction = Faccion
+newplayer.legend_wilderness = Naturaleza
+newplayer.search_label = Buscar:
+newplayer.sort_label = Ordenar:
+newplayer.prev_btn = < Anterior
+newplayer.next_btn = Siguiente >
 newplayer.pending_count = {0} pendientes
 newplayer.received_header = INVITACIONES RECIBIDAS ({0})
 newplayer.requests_header = TUS SOLICITUDES ({0})
@@ -439,3 +690,29 @@ player_settings.power_notifications_desc = Mostrar mensajes cuando tu poder camb
 player_settings.language_changed = Idioma cambiado a {0}
 player_settings.pref_enabled = {0} activado
 player_settings.pref_disabled = {0} desactivado
+
+# ========== Paginas de Ayuda ==========
+help.center_title = Centro de Ayuda
+help.getting_started_title = Primeros Pasos
+help.what_are_factions_title = Que son las Facciones?
+help.what_are_factions_1 = Las facciones son grupos creados por jugadores que trabajan juntos
+help.what_are_factions_2 = para reclamar territorio, construir bases y competir.
+help.what_are_factions_bullet_1 = - Territorio protegido para construir
+help.what_are_factions_bullet_2 = - Companeros de equipo para jugar
+help.what_are_factions_bullet_3 = - Acceso al chat y funciones de faccion
+help.joining_title = Unirse a una Faccion
+help.joining_desc = Hay varias formas de unirse a una faccion:
+help.joining_bullet_1 = - Explorar - Encuentra facciones abiertas y haz clic en UNIRSE
+help.joining_bullet_2 = - Invitaciones - Acepta invitaciones de oficiales
+help.joining_bullet_3 = - Solicitar - Pide unirte a facciones de solo invitacion
+help.creating_title = Crear una Faccion
+help.creating_desc = Ve a la pestana Crear para iniciar tu propia faccion.
+help.creating_bullet_1 = - Invita y administra miembros
+help.creating_bullet_2 = - Reclama y protege territorio
+help.commands_title = Comandos Rapidos
+help.cmd_f = /f - Abrir menu de faccion
+help.cmd_f_list = /f list - Listar todas las facciones
+help.cmd_f_join = /f join <nombre> - Unirse a una faccion abierta
+help.cmd_f_create = /f create <nombre> - Crear una nueva faccion
+help.cmd_f_help = /f help - Lista completa de comandos
+help.tip = Consejo: Explora facciones para encontrar un grupo que se adapte a ti!

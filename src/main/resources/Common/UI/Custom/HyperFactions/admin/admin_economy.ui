@@ -34,7 +34,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Right: 4);
 
-          Label {
+          Label #TotalBalanceLabel {
             Text: "Total Balance";
             Style: (FontSize: 9, TextColor: #666666);
             Anchor: (Height: 14);
@@ -54,7 +54,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 4, Right: 4);
 
-          Label {
+          Label #FactionsLabel {
             Text: "Factions";
             Style: (FontSize: 9, TextColor: #666666);
             Anchor: (Height: 14);
@@ -74,7 +74,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 4);
 
-          Label {
+          Label #AvgBalanceLabel {
             Text: "Avg Balance";
             Style: (FontSize: 9, TextColor: #666666);
             Anchor: (Height: 14);
@@ -105,7 +105,7 @@ $C.@PageOverlay {
             Style: (FontSize: 18, TextColor: #55FF55, RenderBold: true);
             Anchor: (Height: 22);
           }
-          Label {
+          Label #InGraceLabel {
             Text: "In Grace";
             Style: (FontSize: 9, TextColor: #666666);
             Anchor: (Height: 12);
@@ -126,7 +126,7 @@ $C.@PageOverlay {
             Style: (FontSize: 18, TextColor: #FFD700, RenderBold: true);
             Anchor: (Height: 22);
           }
-          Label {
+          Label #CollectedLabel {
             Text: "Collected (24h)";
             Style: (FontSize: 9, TextColor: #666666);
             Anchor: (Height: 12);
@@ -147,7 +147,7 @@ $C.@PageOverlay {
             Style: (FontSize: 18, TextColor: #AAAAAA, RenderBold: true);
             Anchor: (Height: 22);
           }
-          Label {
+          Label #NextCollectionLabel {
             Text: "Next Collection";
             Style: (FontSize: 9, TextColor: #666666);
             Anchor: (Height: 12);
@@ -160,7 +160,7 @@ $C.@PageOverlay {
         Anchor: (Height: 38, Bottom: 8);
         LayoutMode: Left;
 
-        Label {
+        Label #SearchLabel {
           Text: "Search:";
           Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
           Anchor: (Width: 55);
@@ -184,7 +184,7 @@ $C.@PageOverlay {
 
         Group { FlexWeight: 1; }
 
-        Label {
+        Label #SortLabel {
           Text: "Sort:";
           Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
           Anchor: (Width: 35);
@@ -207,23 +207,23 @@ $C.@PageOverlay {
         LayoutMode: Left;
         Padding: (Left: 12, Right: 12);
 
-        Label {
+        Label #ColFaction {
           Text: "Faction";
           Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
           Anchor: (Width: 160);
         }
-        Label {
+        Label #ColBalance {
           Text: "Balance";
           Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
           Anchor: (Width: 120);
         }
-        Label {
+        Label #ColMembers {
           Text: "Members";
           Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
           Anchor: (Width: 80);
         }
         Label { FlexWeight: 1; }
-        Label {
+        Label #ColActions {
           Text: "Actions";
           Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
           Anchor: (Width: 135);

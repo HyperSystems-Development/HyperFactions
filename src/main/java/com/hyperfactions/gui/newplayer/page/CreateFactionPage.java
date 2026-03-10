@@ -80,6 +80,53 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
     // Setup navigation bar
     NewPlayerNavBarHelper.setupBar(playerRef, PAGE_ID, cmd, events);
 
+    // Localize static labels — page title and section headers
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.CreateGui.TITLE));
+    cmd.set("#SectionPreview.Text", HFMessages.get(playerRef, MessageKeys.CreateGui.SECTION_PREVIEW));
+    cmd.set("#NamePrefix.Text", HFMessages.get(playerRef, MessageKeys.CreateGui.NAME_PREFIX));
+    cmd.set("#SectionBasicInfo.Text", HFMessages.get(playerRef, MessageKeys.CreateGui.SECTION_BASIC_INFO));
+    cmd.set("#FactionNameLabel.Text", HFMessages.get(playerRef, MessageKeys.CreateGui.FACTION_NAME_LABEL));
+    cmd.set("#TagLabel.Text", HFMessages.get(playerRef, MessageKeys.CreateGui.TAG_LABEL));
+    cmd.set("#SectionDetails.Text", HFMessages.get(playerRef, MessageKeys.CreateGui.SECTION_DETAILS));
+    cmd.set("#DescLabel.Text", HFMessages.get(playerRef, MessageKeys.CreateGui.DESC_LABEL));
+    cmd.set("#RecruitmentLabel.Text", HFMessages.get(playerRef, MessageKeys.CreateGui.RECRUITMENT_LABEL));
+
+    // Localize middle column — territory permissions (reuse SettingsGui keys)
+    cmd.set("#LockHint.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.LOCK_HINT));
+    cmd.set("#TerritoryPermissionsLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.TERRITORY_PERMISSIONS));
+    cmd.set("#ColOut.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.COL_OUT));
+    cmd.set("#ColAlly.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.COL_ALLY));
+    cmd.set("#ColMem.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.COL_MEM));
+    cmd.set("#ColOff.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.COL_OFF));
+    cmd.set("#CatBuilding.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.CAT_BUILDING));
+    cmd.set("#PermBreak.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_BREAK));
+    cmd.set("#PermPlace.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_PLACE));
+    cmd.set("#CatInteraction.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.CAT_INTERACTION));
+    cmd.set("#InteractionHint.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.INTERACTION_HINT));
+    cmd.set("#PermAll.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_ALL));
+    cmd.set("#PermDoor.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_DOOR));
+    cmd.set("#PermChest.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_CHEST));
+    cmd.set("#PermBench.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_BENCH));
+    cmd.set("#PermProcessing.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_PROCESSING));
+    cmd.set("#PermSeat.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_SEAT));
+    cmd.set("#PermTransport.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_TRANSPORT));
+    cmd.set("#CatOther.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.CAT_OTHER));
+    cmd.set("#PermCrate.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_CRATE));
+    cmd.set("#PermNpcTame.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_NPC_TAME));
+    cmd.set("#PermPve.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PERM_PVE));
+
+    // Localize right column — faction color, mob spawning, combat
+    cmd.set("#SectionFactionColor.Text", HFMessages.get(playerRef, MessageKeys.CreateGui.SECTION_FACTION_COLOR));
+    cmd.set("#SectionMobSpawning.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.MOB_SPAWNING));
+    cmd.set("#MobSpawningHint.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.MOB_SPAWNING_HINT));
+    cmd.set("#MobSpawningLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.MOB_SPAWNING_LABEL));
+    cmd.set("#HostileMobsLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.HOSTILE_MOBS));
+    cmd.set("#PassiveMobsLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PASSIVE_MOBS));
+    cmd.set("#NeutralMobsLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.NEUTRAL_MOBS));
+    cmd.set("#SectionCombat.Text", HFMessages.get(playerRef, MessageKeys.CreateGui.SECTION_COMBAT));
+    cmd.set("#PvPLabel.Text", HFMessages.get(playerRef, MessageKeys.SettingsGui.PVP_IN_TERRITORY));
+    cmd.set("#CreateBtn.Text", HFMessages.get(playerRef, MessageKeys.CreateGui.CREATE_BTN));
+
     // Set default ColorPicker value (cyan)
     cmd.set("#FactionColorPicker.Value", DEFAULT_COLOR);
 

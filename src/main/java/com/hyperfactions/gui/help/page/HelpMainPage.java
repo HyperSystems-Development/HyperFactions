@@ -8,6 +8,8 @@ import com.hyperfactions.gui.help.*;
 import com.hyperfactions.gui.help.data.HelpPageData;
 import com.hyperfactions.gui.newplayer.NewPlayerNavBarHelper;
 import com.hyperfactions.manager.FactionManager;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -91,6 +93,15 @@ public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
       NavBarHelper.setupBar(playerRef, faction, PAGE_ID, cmd, events);
     } else {
       NewPlayerNavBarHelper.setupBar(playerRef, PAGE_ID, cmd, events);
+    }
+
+    // Page title
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.HELP_CENTER_TITLE));
+
+    // Set localized sidebar button labels
+    for (HelpCategory category : HelpCategory.values()) {
+      int idx = category.ordinal();
+      cmd.set("#Cat" + idx + ".Text", "  " + category.displayName(playerRef));
     }
 
     // Setup category buttons (disable selected, bind events to others)

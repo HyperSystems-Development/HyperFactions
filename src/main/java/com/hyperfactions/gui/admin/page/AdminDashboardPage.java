@@ -70,6 +70,21 @@ public class AdminDashboardPage extends InteractiveCustomUIPage<AdminDashboardDa
     // Setup admin nav bar
     AdminNavBarHelper.setupBar(playerRef, "dashboard", cmd, events);
 
+    // Localize page title and stat labels
+    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_DASHBOARD));
+    cmd.set("#ServerStatsLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_SERVER_STATS));
+    cmd.set("#FactionsLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_FACTIONS));
+    cmd.set("#TotalMembersLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_TOTAL_MEMBERS));
+    cmd.set("#TotalClaimsLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_TOTAL_CLAIMS));
+    cmd.set("#ZonesLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_ZONES));
+    cmd.set("#SafeWarLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_SAFE_WAR));
+    cmd.set("#TotalPowerLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_TOTAL_POWER));
+    cmd.set("#AvgPowerLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_AVG_POWER));
+    cmd.set("#TotalEconomyLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_TOTAL_ECONOMY));
+    cmd.set("#WealthiestLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_WEALTHIEST));
+    cmd.set("#AvgBalanceLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_AVG_BALANCE));
+    cmd.set("#BypassLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_PROTECTION_BYPASS));
+
     // Calculate server-wide statistics
     Collection<Faction> allFactions = factionManager.getAllFactions();
     int totalFactions = allFactions.size();

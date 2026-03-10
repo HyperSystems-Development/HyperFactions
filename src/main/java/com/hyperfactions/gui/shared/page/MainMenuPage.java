@@ -56,7 +56,7 @@ public class MainMenuPage extends InteractiveCustomUIPage<MainMenuData> {
     cmd.append(UIPaths.MAIN_MENU);
 
     // Set title
-    cmd.set("#MenuTitle.Text", "HyperFactions");
+    cmd.set("#MenuTitle.Text", HFMessages.get(playerRef, MessageKeys.MainMenu.TITLE));
 
     // Section: My Faction
     if (faction != null) {

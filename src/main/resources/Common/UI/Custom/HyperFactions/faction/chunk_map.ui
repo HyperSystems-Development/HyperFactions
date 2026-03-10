@@ -14,7 +14,7 @@ $C.@PageOverlay {
 
     #Title {
       Group {
-        $C.@Title {
+        $C.@Title #MapTitle {
           @Text = "Territory Map";
         }
       }
@@ -66,19 +66,19 @@ $C.@PageOverlay {
             LayoutMode: Left;
             Anchor: (Height: 16);
             Group { Anchor: (Width: 12, Height: 12); Background: (Color: #4ade80); }
-            Label { Text: " Your Territory"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); }
+            Label #LegendYourLabel { Text: " Your Territory"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); }
           }
           Group {
             LayoutMode: Left;
             Anchor: (Height: 16);
             Group { Anchor: (Width: 12, Height: 12); Background: (Color: #60a5fa); }
-            Label { Text: " Ally Territory"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); }
+            Label #LegendAllyLabel { Text: " Ally Territory"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); }
           }
           Group {
             LayoutMode: Left;
             Anchor: (Height: 16);
             Group { Anchor: (Width: 12, Height: 12); Background: (Color: #f87171); }
-            Label { Text: " Enemy Territory"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); }
+            Label #LegendEnemyLabel { Text: " Enemy Territory"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); }
           }
         }
 
@@ -91,13 +91,13 @@ $C.@PageOverlay {
             LayoutMode: Left;
             Anchor: (Height: 16);
             Group { Anchor: (Width: 12, Height: 12); Background: (Color: #fbbf24); }
-            Label { Text: " Other Faction"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); }
+            Label #LegendOtherLabel { Text: " Other Faction"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); }
           }
           Group {
             LayoutMode: Left;
             Anchor: (Height: 16);
             Group { Anchor: (Width: 12, Height: 12); Background: (Color: #1e293b); }
-            Label { Text: " Wilderness"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); }
+            Label #LegendWildernessLabel { Text: " Wilderness"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); }
           }
         }
 
@@ -110,13 +110,13 @@ $C.@PageOverlay {
             LayoutMode: Left;
             Anchor: (Height: 16);
             Group { Anchor: (Width: 12, Height: 12); Background: (Color: #2dd4bf); }
-            Label { Text: " Safe Zone"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); }
+            Label #LegendSafeLabel { Text: " Safe Zone"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); }
           }
           Group {
             LayoutMode: Left;
             Anchor: (Height: 16);
             Group { Anchor: (Width: 12, Height: 12); Background: (Color: #c084fc); }
-            Label { Text: " War Zone"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); }
+            Label #LegendWarLabel { Text: " War Zone"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); }
           }
         }
 
@@ -129,7 +129,7 @@ $C.@PageOverlay {
             LayoutMode: Left;
             Anchor: (Height: 16);
             Label { Text: " + "; Style: (FontSize: 10, TextColor: #ffffff, RenderBold: true, VerticalAlignment: Center); Anchor: (Width: 16); }
-            Label { Text: "You are here"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); }
+            Label #LegendYouLabel { Text: "You are here"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); }
           }
         }
       }

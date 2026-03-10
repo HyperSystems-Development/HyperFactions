@@ -62,14 +62,14 @@ $C.@PageOverlay {
         LayoutMode: Top;
         Anchor: (Bottom: 12);
 
-        Label {
+        Label #GeneralHeader {
           Text: "General";
           Style: (FontSize: 13, TextColor: #00AAAA, RenderBold: true);
           Anchor: (Height: 20, Bottom: 4);
         }
 
         // Name subsection
-        Label {
+        Label #ZoneNameLabel {
           Text: "Zone Name";
           Style: (FontSize: 11, TextColor: #888888);
           Anchor: (Height: 16, Bottom: 2);
@@ -102,7 +102,7 @@ $C.@PageOverlay {
         }
 
         // Type subsection
-        Label {
+        Label #ZoneTypeLabel {
           Text: "Zone Type";
           Style: (FontSize: 11, TextColor: #888888);
           Anchor: (Height: 16, Bottom: 2);
@@ -132,7 +132,7 @@ $C.@PageOverlay {
         LayoutMode: Top;
         Anchor: (Bottom: 12);
 
-        Label {
+        Label #NotificationsHeader {
           Text: "Notifications";
           Style: (FontSize: 13, TextColor: #00AAAA, RenderBold: true);
           Anchor: (Height: 20, Bottom: 4);
@@ -152,7 +152,7 @@ $C.@PageOverlay {
         }
 
         // Upper title
-        Label {
+        Label #UpperTitleLabel {
           Text: "Upper Title (small text above zone name)";
           Style: (FontSize: 11, TextColor: #888888);
           Anchor: (Height: 16);
@@ -191,7 +191,7 @@ $C.@PageOverlay {
         }
 
         // Lower title
-        Label {
+        Label #LowerTitleLabel {
           Text: "Lower Title (large zone name text)";
           Style: (FontSize: 11, TextColor: #888888);
           Anchor: (Height: 16);

@@ -15,7 +15,7 @@ $C.@PageOverlay {
       Group {
         LayoutMode: Left;
 
-        $C.@Title {
+        $C.@Title #PageTitle {
           @Text = "Territory Map";
         }
 
@@ -58,7 +58,7 @@ $C.@PageOverlay {
         Anchor: (Height: 60, Top: 10);
         LayoutMode: Top;
 
-        Label {
+        Label #LegendTitle {
           Text: "Legend:";
           Style: (FontSize: 11, TextColor: #888888);
           Anchor: (Height: 18);

@@ -83,6 +83,14 @@ public class LogsViewerPage extends InteractiveCustomUIPage<FactionPageData> {
     // Set title with faction name
     cmd.set("#LogsTitle.Text", HFMessages.get(playerRef, MessageKeys.LogsGui.TITLE, faction.name()));
 
+    // Localize static labels
+    cmd.set("#FilterLabel.Text", HFMessages.get(playerRef, MessageKeys.LogsGui.FILTER_LABEL));
+    cmd.set("#ColTimeLabel.Text", HFMessages.get(playerRef, MessageKeys.LogsGui.COL_TIME));
+    cmd.set("#ColTypeLabel.Text", HFMessages.get(playerRef, MessageKeys.LogsGui.COL_TYPE));
+    cmd.set("#ColMessageLabel.Text", HFMessages.get(playerRef, MessageKeys.LogsGui.COL_MESSAGE));
+    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.PREV));
+    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.NEXT));
+
     buildLogList(cmd, events);
   }
 

@@ -58,6 +58,13 @@ public class AdminFactionRelationsPage extends InteractiveCustomUIPage<AdminFact
   public void build(Ref<EntityStore> ref, UICommandBuilder cmd, UIEventBuilder events, Store<EntityStore> store) {
     cmd.append(UIPaths.ADMIN_FACTION_RELATIONS);
     AdminNavBarHelper.setupBar(playerRef, "factions", cmd, events);
+
+    // Localize page title and labels
+    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_FACTION_RELATIONS));
+    cmd.set("#SubtitleLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_REL_SUBTITLE));
+    cmd.set("#SetNewRelationLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_REL_SET_NEW));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_BACK));
+
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {
       cmd.set("#FactionName.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.FACTION_NOT_FOUND_LABEL));

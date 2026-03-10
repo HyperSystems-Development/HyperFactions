@@ -102,6 +102,13 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
     // Load the main template
     cmd.append(UIPaths.FACTION_MEMBERS);
 
+    // Localize static labels
+    cmd.set("#MembersTitle.Text", HFMessages.get(playerRef, MessageKeys.MembersGui.TITLE));
+    cmd.set("#SearchLabel.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.SEARCH));
+    cmd.set("#SortLabel.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.SORT));
+    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.PREV));
+    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.NEXT));
+
     // Setup navigation bar
     NavBarHelper.setupBar(playerRef, faction, PAGE_ID, cmd, events);
 

@@ -42,11 +42,19 @@ public enum HelpCategory {
   }
 
   /**
-   * Gets the display name shown in the UI, resolved via i18n.
+   * Gets the display name shown in the UI, resolved via i18n (default locale).
    */
   @NotNull
   public String displayName() {
     return HFMessages.get((PlayerRef) null, displayNameKey);
+  }
+
+  /**
+   * Gets the display name shown in the UI, resolved via i18n for a specific player.
+   */
+  @NotNull
+  public String displayName(PlayerRef playerRef) {
+    return HFMessages.get(playerRef, displayNameKey);
   }
 
   /**

@@ -92,6 +92,16 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
     // Setup admin nav bar
     AdminNavBarHelper.setupBar(playerRef, "zones", cmd, events);
 
+    // Localize page title and common labels
+    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ZONES));
+    cmd.set("#TabAll.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ALL));
+    cmd.set("#TabSafe.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SAFE));
+    cmd.set("#TabWar.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_WAR));
+    cmd.set("#CreateZoneBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CREATE_ZONE));
+    cmd.set("#SortLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SORT));
+    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PREV));
+    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_NEXT));
+
     // Build zone list
     buildZoneList(cmd, events);
   }
@@ -126,10 +136,10 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
 
     // Sort dropdown
     cmd.set("#SortDropdown.Entries", List.of(
-        new DropdownEntryInfo(LocalizableString.fromString("Name"), "NAME"),
-        new DropdownEntryInfo(LocalizableString.fromString("Type"), "TYPE"),
-        new DropdownEntryInfo(LocalizableString.fromString("Chunks"), "CHUNKS"),
-        new DropdownEntryInfo(LocalizableString.fromString("World"), "WORLD")
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZONE_SORT_NAME)), "NAME"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZONE_SORT_TYPE)), "TYPE"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZONE_SORT_CHUNKS)), "CHUNKS"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZONE_SORT_WORLD)), "WORLD")
     ));
     cmd.set("#SortDropdown.Value", zoneSortMode.name());
     events.addEventBinding(
@@ -157,7 +167,7 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
     // Zone count (with total chunks)
     int totalChunks = zones.stream().mapToInt(Zone::getChunkCount).sum();
     String tabLabel = currentTab.equals("all") ? "" : currentTab + " ";
-    cmd.set("#ZoneCount.Text", zones.size() + " " + tabLabel + "zones (" + totalChunks + " chunks)");
+    cmd.set("#ZoneCount.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZONE_COUNT_FORMAT, zones.size(), tabLabel, totalChunks));
 
     // Create zone button
     events.addEventBinding(
@@ -186,7 +196,7 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
     }
 
     // Pagination
-    cmd.set("#PageInfo.Text", (currentPage + 1) + "/" + totalPages);
+    cmd.set("#PageInfo.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.PAGE_FORMAT, currentPage + 1, totalPages));
 
     if (currentPage > 0) {
       events.addEventBinding(

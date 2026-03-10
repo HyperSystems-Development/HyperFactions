@@ -91,6 +91,13 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
     // Setup admin nav bar
     AdminNavBarHelper.setupBar(playerRef, "factions", cmd, events);
 
+    // Localize page title and common labels
+    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_FACTIONS));
+    cmd.set("#SearchLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SEARCH));
+    cmd.set("#SortLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SORT));
+    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PREV));
+    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_NEXT));
+
     // Build faction list
     buildFactionList(cmd, events);
   }

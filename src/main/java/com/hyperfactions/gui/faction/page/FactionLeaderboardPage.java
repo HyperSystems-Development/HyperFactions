@@ -98,6 +98,16 @@ public class FactionLeaderboardPage extends InteractiveCustomUIPage<FactionPageD
 
     cmd.append(UIPaths.FACTION_LEADERBOARD);
 
+    // Localize static labels
+    cmd.set("#LeaderboardTitle.Text", HFMessages.get(playerRef, MessageKeys.LeaderboardGui.TITLE));
+    cmd.set("#RankByLabel.Text", HFMessages.get(playerRef, MessageKeys.LeaderboardGui.RANK_BY));
+    cmd.set("#ColRankLabel.Text", HFMessages.get(playerRef, MessageKeys.LeaderboardGui.COL_RANK));
+    cmd.set("#ColFactionLabel.Text", HFMessages.get(playerRef, MessageKeys.LeaderboardGui.COL_FACTION));
+    cmd.set("#ColClaimsLabel.Text", HFMessages.get(playerRef, MessageKeys.LeaderboardGui.COL_CLAIMS));
+    cmd.set("#ColMembersLabel.Text", HFMessages.get(playerRef, MessageKeys.LeaderboardGui.COL_MEMBERS));
+    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.PREV));
+    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.NEXT));
+
     // Setup navigation bar
     if (viewerFaction != null) {
       NavBarHelper.setupBar(playerRef, viewerFaction, PAGE_ID, cmd, events);

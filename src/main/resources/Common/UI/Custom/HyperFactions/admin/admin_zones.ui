@@ -71,7 +71,7 @@ $C.@PageOverlay {
 
         Group { FlexWeight: 1; }
 
-        Label {
+        Label #SortLabel {
           Text: "Sort:";
           Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
           Anchor: (Width: 35);
