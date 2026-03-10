@@ -192,13 +192,14 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
         MessageKeys.PlayerSettings.DEATH_ANNOUNCEMENTS_DESC,
         "#DeathAnnounceDesc", deathAnnouncements, "ToggleDeathAnnouncements");
 
-    // Power Notifications
+    // TODO: Wire up power change notifications in PowerManager, then enable this toggle
+    // Power Notifications (not yet wired up — disable toggle)
     cmd.set("#PowerNotifLabel.Text",
         HFMessages.get(playerRef, MessageKeys.PlayerSettings.POWER_NOTIFICATIONS));
-    buildNotificationToggle(cmd, events, "#PowerNotifCB",
-        MessageKeys.PlayerSettings.POWER_NOTIFICATIONS,
-        MessageKeys.PlayerSettings.POWER_NOTIFICATIONS_DESC,
-        "#PowerNotifDesc", powerNotifications, "TogglePowerNotifications");
+    cmd.set("#PowerNotifDesc.Text",
+        HFMessages.get(playerRef, MessageKeys.PlayerSettings.POWER_NOTIFICATIONS_DESC));
+    cmd.set("#PowerNotifCB #CheckBox.Value", powerNotifications);
+    cmd.set("#PowerNotifCB #CheckBox.Disabled", true);
   }
 
   private void buildNotificationToggle(UICommandBuilder cmd, UIEventBuilder events,
