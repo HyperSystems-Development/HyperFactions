@@ -184,6 +184,14 @@ public final class UIPaths {
 
   public static final String HELP_LINE_CALLOUT = BASE + "help/help_line_callout.ui";
 
+  public static final String HELP_TABLE_HEADER = BASE + "help/help_table_header.ui";
+
+  public static final String HELP_TABLE_ROW = BASE + "help/help_table_row.ui";
+
+  public static final String HELP_TABLE_CELL = BASE + "help/help_table_cell.ui";
+
+  public static final String HELP_TABLE_HEADER_CELL = BASE + "help/help_table_header_cell.ui";
+
   // ── Admin pages ─────────────────────────────────────────────────────────
   public static final String ADMIN_MAIN = BASE + "admin/admin_main.ui";
 

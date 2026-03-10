@@ -22,7 +22,10 @@ import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Main Help page with colored sidebar navigation and card-based content area.
@@ -52,6 +55,14 @@ public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
   private static final String TPL_SEPARATOR = UIPaths.HELP_SEPARATOR;
 
   private static final String TPL_LINE_CALLOUT = UIPaths.HELP_LINE_CALLOUT;
+
+  private static final String TPL_TABLE_HEADER = UIPaths.HELP_TABLE_HEADER;
+
+  private static final String TPL_TABLE_ROW = UIPaths.HELP_TABLE_ROW;
+
+  private static final String TPL_TABLE_HEADER_CELL = UIPaths.HELP_TABLE_HEADER_CELL;
+
+  private static final String TPL_TABLE_CELL = UIPaths.HELP_TABLE_CELL;
 
   private final PlayerRef playerRef;
 
@@ -167,6 +178,29 @@ public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
       int lineIndex = 0;
       for (HelpEntry entry : topic.entries()) {
         String linesContainer = cardPrefix + " #Lines";
+
+        // Table entries need special rendering
+        if (entry.type() == HelpEntry.EntryType.TABLE_HEADER || entry.type() == HelpEntry.EntryType.TABLE_ROW) {
+          boolean isHeader = entry.type() == HelpEntry.EntryType.TABLE_HEADER;
+          String rowTemplate = isHeader ? TPL_TABLE_HEADER : TPL_TABLE_ROW;
+          String cellTemplate = isHeader ? TPL_TABLE_HEADER_CELL : TPL_TABLE_CELL;
+
+          cmd.append(linesContainer, rowTemplate);
+          String rowSelector = linesContainer + "[" + lineIndex + "]";
+          String colsContainer = rowSelector + " #Cols";
+
+          String[] columnKeys = entry.columnKeys();
+          for (int col = 0; col < columnKeys.length; col++) {
+            cmd.append(colsContainer, cellTemplate);
+            String cellSelector = colsContainer + "[" + col + "]";
+            String cellText = HelpMessages.get(playerRef, columnKeys[col]);
+            applyCellFormatting(cmd, cellSelector, cellText, entry.color());
+          }
+
+          lineIndex++;
+          continue;
+        }
+
         String template = getTemplateForType(entry.type());
         cmd.append(linesContainer, template);
 
@@ -201,6 +235,57 @@ public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
   /**
    * Returns the appropriate template path for an entry type.
    */
+  private static final Pattern CELL_HEX_COLOR = Pattern.compile("^\\[#([0-9A-Fa-f]{6})]\\s*(.+)$");
+
+  /**
+   * Applies inline formatting to a table cell.
+   * Supports: **bold**, *italic*, `command`, [#RRGGBB] color prefix.
+   */
+  private void applyCellFormatting(UICommandBuilder cmd, String cellSelector,
+                   String text, @Nullable String rowColor) {
+    String displayText = text;
+    String cellColor = rowColor;
+    boolean bold = false;
+    boolean italic = false;
+
+    // Check for inline hex color: [#RRGGBB] text
+    Matcher hexMatcher = CELL_HEX_COLOR.matcher(displayText);
+    if (hexMatcher.matches()) {
+      cellColor = "#" + hexMatcher.group(1);
+      displayText = hexMatcher.group(2);
+    }
+
+    // Check for bold: **text**
+    if (displayText.startsWith("**") && displayText.endsWith("**") && displayText.length() > 4) {
+      displayText = displayText.substring(2, displayText.length() - 2);
+      bold = true;
+    }
+    // Check for command: `text`
+    else if (displayText.startsWith("`") && displayText.endsWith("`") && displayText.length() > 2) {
+      displayText = displayText.substring(1, displayText.length() - 1);
+      bold = true;
+      if (cellColor == null) {
+        cellColor = "#FFFF55";
+      }
+    }
+    // Check for italic: *text*
+    else if (displayText.startsWith("*") && displayText.endsWith("*") && displayText.length() > 2) {
+      displayText = displayText.substring(1, displayText.length() - 1);
+      italic = true;
+    }
+
+    cmd.set(cellSelector + " #CellText.Text", displayText);
+    if (bold) {
+      cmd.set(cellSelector + " #CellText.Style.RenderBold", true);
+    }
+    if (italic) {
+      cmd.set(cellSelector + " #CellText.Style.RenderItalics", true);
+    }
+    if (cellColor != null) {
+      cmd.set(cellSelector + " #CellText.Style.TextColor", cellColor);
+    }
+  }
+
   private String getTemplateForType(HelpEntry.EntryType type) {
     return switch (type) {
       case TEXT -> TPL_LINE_TEXT;
@@ -212,6 +297,8 @@ public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
       case LIST -> TPL_LINE_LIST;
       case SEPARATOR -> TPL_SEPARATOR;
       case CALLOUT -> TPL_LINE_CALLOUT;
+      case TABLE_HEADER -> TPL_TABLE_HEADER;
+      case TABLE_ROW -> TPL_TABLE_ROW;
     };
   }
 

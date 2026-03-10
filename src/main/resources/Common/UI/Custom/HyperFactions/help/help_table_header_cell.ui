@@ -1,0 +1,10 @@
+// Help table header cell - bold column label
+
+Group {
+  Label #CellText {
+    Text: "";
+    Style: (FontSize: 10, TextColor: #00AAAA, RenderBold: true, Wrap: true);
+    Padding: (Left: 4, Right: 4);
+    Anchor: (Left: 0, Right: 0);
+  }
+}

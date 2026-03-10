@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.StringJoiner;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -151,6 +152,20 @@ public final class HelpRegistry {
           case "LIST" -> HelpEntry.list(key);
           case "SEPARATOR" -> HelpEntry.separator();
           case "CALLOUT" -> HelpEntry.callout(key, color);
+          case "TABLE_HEADER", "TABLE_ROW" -> {
+            // Table entries store column keys as a JSON array
+            JsonArray cols = entryObj.has("columns") ? entryObj.getAsJsonArray("columns") : null;
+            if (cols != null && !cols.isEmpty()) {
+              StringJoiner joiner = new StringJoiner("|");
+              for (JsonElement col : cols) {
+                joiner.add(col.getAsString());
+              }
+              yield "TABLE_HEADER".equals(type)
+                  ? HelpEntry.tableHeader(joiner.toString())
+                  : HelpEntry.tableRow(joiner.toString());
+            }
+            yield null;
+          }
           default -> null;
         };
         if (entry != null) {

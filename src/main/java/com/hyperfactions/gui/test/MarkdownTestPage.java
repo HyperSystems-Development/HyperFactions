@@ -14,6 +14,8 @@ import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Visual test page that renders every supported markdown entry type
@@ -34,6 +36,10 @@ public class MarkdownTestPage extends InteractiveCustomUIPage<PlaceholderData> {
   private static final String TPL_LINE_LIST = UIPaths.HELP_LINE_LIST;
   private static final String TPL_SEPARATOR = UIPaths.HELP_SEPARATOR;
   private static final String TPL_LINE_CALLOUT = UIPaths.HELP_LINE_CALLOUT;
+  private static final String TPL_TABLE_HEADER = UIPaths.HELP_TABLE_HEADER;
+  private static final String TPL_TABLE_ROW = UIPaths.HELP_TABLE_ROW;
+  private static final String TPL_TABLE_HEADER_CELL = UIPaths.HELP_TABLE_HEADER_CELL;
+  private static final String TPL_TABLE_CELL = UIPaths.HELP_TABLE_CELL;
 
   /** Creates a new MarkdownTestPage. */
   public MarkdownTestPage(PlayerRef playerRef) {
@@ -56,6 +62,28 @@ public class MarkdownTestPage extends InteractiveCustomUIPage<PlaceholderData> {
         cmd.set(selector + " #Text.Text", entry.text);
         cmd.set(selector + " #Text.Style.TextColor", "#666666");
         cmd.set(selector + " #Text.Style.FontSize", 10);
+        index++;
+        continue;
+      }
+
+      // Table entries need special rendering
+      if (entry.type == EntryType.TABLE_HEADER || entry.type == EntryType.TABLE_ROW) {
+        boolean isHeader = entry.type == EntryType.TABLE_HEADER;
+        String rowTemplate = isHeader ? TPL_TABLE_HEADER : TPL_TABLE_ROW;
+        String cellTemplate = isHeader ? TPL_TABLE_HEADER_CELL : TPL_TABLE_CELL;
+
+        cmd.append("#ContentList", rowTemplate);
+        String rowSelector = "#ContentList[" + index + "]";
+        String colsContainer = rowSelector + " #Cols";
+
+        // Table text stores pipe-separated column values
+        String[] columns = entry.text.split("\\|");
+        for (int col = 0; col < columns.length; col++) {
+          cmd.append(colsContainer, cellTemplate);
+          String cellSelector = colsContainer + "[" + col + "]";
+          applyCellFormatting(cmd, cellSelector, columns[col].trim(), entry.color);
+        }
+
         index++;
         continue;
       }
@@ -105,6 +133,8 @@ public class MarkdownTestPage extends InteractiveCustomUIPage<PlaceholderData> {
       case LIST -> TPL_LINE_LIST;
       case SEPARATOR -> TPL_SEPARATOR;
       case CALLOUT -> TPL_LINE_CALLOUT;
+      case TABLE_HEADER -> TPL_TABLE_HEADER;
+      case TABLE_ROW -> TPL_TABLE_ROW;
     };
   }
 
@@ -242,6 +272,54 @@ public class MarkdownTestPage extends InteractiveCustomUIPage<PlaceholderData> {
 
     entry(entries, EntryType.SPACER, "");
 
+    // ── Section: Tables ──
+    section(entries, "TABLES");
+
+    syntax(entries, "| Level | Members | Daily Upkeep |");
+    syntax(entries, "|-------|---------|--------------|");
+    syntax(entries, "| 1     | 1-5     | 0            |");
+    syntax(entries, "| 2     | 6-10    | 5            |");
+    syntax(entries, "| 3     | 11-20   | 15           |");
+
+    // Render the actual table
+    table(entries, true, "Level", "Members", "Daily Upkeep");
+    table(entries, false, "1", "1-5", "0");
+    table(entries, false, "2", "6-10", "5");
+    table(entries, false, "3", "11-20", "15");
+
+    entry(entries, EntryType.SPACER, "");
+
+    syntax(entries, "Two-column table:");
+    table(entries, true, "Command", "Description");
+    table(entries, false, "/f create <name>", "Create a new faction");
+    table(entries, false, "/f claim", "Claim the chunk you're in");
+    table(entries, false, "/f invite <player>", "Invite a player to your faction");
+    table(entries, false, "/f home", "Teleport to faction home");
+
+    entry(entries, EntryType.SPACER, "");
+
+    // ── Section: Formatted Tables ──
+    section(entries, "FORMATTED TABLE CELLS");
+
+    syntax(entries, "Cells with inline formatting:");
+    table(entries, true, "Syntax", "Result", "Description");
+    table(entries, false, "**bold cell**", "Normal", "Bold via ** markers");
+    table(entries, false, "*italic cell*", "Normal", "Italic via * markers");
+    table(entries, false, "`command`", "Normal", "Command style (yellow bold)");
+    table(entries, false, "[#FF5555] red text", "Normal", "Hex color prefix");
+    table(entries, false, "[#55FF55] green text", "[#55AAFF] blue text", "Per-cell colors");
+
+    entry(entries, EntryType.SPACER, "");
+
+    syntax(entries, "Row-level color override (all cells colored):");
+    table(entries, true, "Status", "Zone", "Note");
+    table(entries, false, "Active", "Spawn", "Normal row");
+    tableColored(entries, "#FF5555", "Danger", "Warzone", "Red row");
+    tableColored(entries, "#55FF55", "Safe", "Safezone", "Green row");
+    tableColored(entries, "#55AAFF", "Info", "Claimed", "Blue row");
+
+    entry(entries, EntryType.SPACER, "");
+
     // ── Section: Edge Cases ──
     section(entries, "EDGE CASES");
 
@@ -302,6 +380,60 @@ public class MarkdownTestPage extends InteractiveCustomUIPage<PlaceholderData> {
 
   private void callout(List<TestEntry> entries, String text, String color) {
     entries.add(new TestEntry(EntryType.CALLOUT, text, color, false));
+  }
+
+  private void table(List<TestEntry> entries, boolean header, String... columns) {
+    EntryType type = header ? EntryType.TABLE_HEADER : EntryType.TABLE_ROW;
+    entries.add(new TestEntry(type, String.join("|", columns), null, false));
+  }
+
+  private void tableColored(List<TestEntry> entries, String color, String... columns) {
+    entries.add(new TestEntry(EntryType.TABLE_ROW, String.join("|", columns), color, false));
+  }
+
+  private static final Pattern CELL_HEX_COLOR = Pattern.compile("^\\[#([0-9A-Fa-f]{6})]\\s*(.+)$");
+
+  /**
+   * Applies inline formatting to a table cell.
+   * Supports: **bold**, *italic*, `command`, [#RRGGBB] color prefix.
+   */
+  private void applyCellFormatting(UICommandBuilder cmd, String cellSelector,
+                   String text, String rowColor) {
+    String displayText = text;
+    String cellColor = rowColor;
+    boolean bold = false;
+    boolean italic = false;
+
+    Matcher hexMatcher = CELL_HEX_COLOR.matcher(displayText);
+    if (hexMatcher.matches()) {
+      cellColor = "#" + hexMatcher.group(1);
+      displayText = hexMatcher.group(2);
+    }
+
+    if (displayText.startsWith("**") && displayText.endsWith("**") && displayText.length() > 4) {
+      displayText = displayText.substring(2, displayText.length() - 2);
+      bold = true;
+    } else if (displayText.startsWith("`") && displayText.endsWith("`") && displayText.length() > 2) {
+      displayText = displayText.substring(1, displayText.length() - 1);
+      bold = true;
+      if (cellColor == null) {
+        cellColor = "#FFFF55";
+      }
+    } else if (displayText.startsWith("*") && displayText.endsWith("*") && displayText.length() > 2) {
+      displayText = displayText.substring(1, displayText.length() - 1);
+      italic = true;
+    }
+
+    cmd.set(cellSelector + " #CellText.Text", displayText);
+    if (bold) {
+      cmd.set(cellSelector + " #CellText.Style.RenderBold", true);
+    }
+    if (italic) {
+      cmd.set(cellSelector + " #CellText.Style.RenderItalics", true);
+    }
+    if (cellColor != null) {
+      cmd.set(cellSelector + " #CellText.Style.TextColor", cellColor);
+    }
   }
 
   /**

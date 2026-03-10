@@ -83,6 +83,9 @@ Each file has YAML frontmatter and markdown content. See [docs/help-markdown.md]
 | `>[!TYPE] text` | CALLOUT | Yes (translate text only) |
 | `[#RRGGBB] text` | TEXT (colored) | Yes (translate text only) |
 | `!warning text` | TEXT (colored) | Yes (translate text only) |
+| `\| col \| col \|` header row | TABLE_HEADER | Yes (translate column labels) |
+| `\| val \| val \|` data row | TABLE_ROW | Yes (translate cell values) |
+| `\|---\|---\|` separator | — (consumed) | Keep as-is |
 
 ### Do NOT Translate
 
@@ -94,6 +97,8 @@ These are syntax markers or identifiers — keep them exactly as written:
 - **Named color keywords**: `!warning`, `!success`, `!note`, `!muted`
 - **Callout type tags**: `>[!WARNING]`, `>[!TIP]`, `>[!INFO]`, `>[!NOTE]`, `>[!SUCCESS]`
 - **Separator syntax**: `---`
+- **Table separators**: `|---|---|---|` (the row between header and data)
+- **Table pipe syntax**: `|` characters (keep the pipe structure intact)
 
 ### Do Translate
 
@@ -104,6 +109,7 @@ These are syntax markers or identifiers — keep them exactly as written:
 - List item text (after `- ` or `1. `)
 - Callout text (after `> ` or `>[!TYPE] `)
 - Colored text (after `[#RRGGBB] ` or `!warning `)
+- Table header labels and data cell values (between `|` pipes)
 
 **Example:**
 

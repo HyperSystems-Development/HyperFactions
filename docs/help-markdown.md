@@ -101,6 +101,26 @@ Callouts render as boxed text with a colored left accent bar and tinted backgrou
 
 The type tag (`[!WARNING]`, etc.) controls the accent bar and text color.
 
+### Tables
+
+Tables use standard markdown pipe syntax:
+
+```markdown
+| Level | Members | Daily Upkeep |
+|-------|---------|--------------|
+| 1     | 1-5     | 0            |
+| 2     | 6-10    | 5            |
+| 3     | 11-20   | 15           |
+```
+
+- The first row is the **header** (bold, teal `#00AAAA`) — it must be followed by a separator row (`|---|---|---|`)
+- The separator row is consumed by the parser and not rendered
+- Subsequent `|` rows are **data rows** (normal text, `#CCCCCC`)
+- Columns are laid out horizontally using `LayoutMode: Left`
+- Each cell is individually localized (e.g., `line.5.col.0`, `line.5.col.1`)
+
+Tables are ideal for reference data like upkeep scales, permission lists, or config examples.
+
 ## Example Topic
 
 ```markdown
@@ -133,6 +153,14 @@ as many chunks as it has power.
 >[!WARNING] Don't wander into enemy territory with auto-claim on!
 
 ---
+
+## Power Costs
+
+| Chunks | Power Cost |
+|--------|------------|
+| 1-10   | 1 per chunk |
+| 11-25  | 2 per chunk |
+| 26+    | 3 per chunk |
 
 ## Losing Claims
 

@@ -1,0 +1,10 @@
+// Help table data row - normal column values
+
+Group {
+  Padding: (Top: 1, Bottom: 1);
+
+  Group #Cols {
+    LayoutMode: Left;
+    Anchor: (Left: 0, Right: 0);
+  }
+}

@@ -43,6 +43,8 @@ import java.util.stream.Stream;
  * >[!INFO] text           → CALLOUT + #55AAFF
  * >[!NOTE] text           → CALLOUT + #FFAA55
  * >[!SUCCESS] text        → CALLOUT + #55FF55
+ * | col | col |           → TABLE_HEADER (if followed by separator)
+ * | val | val |           → TABLE_ROW
  * blank line              → SPACER
  * </pre>
  */
@@ -65,6 +67,9 @@ public class HelpLangGenerator {
     /** Pattern for horizontal rule: 3+ dashes on a line */
     private static final Pattern HR_PATTERN = Pattern.compile("^-{3,}$");
 
+    /** Pattern for table separator row: |---|---|---| (with optional colons for alignment) */
+    private static final Pattern TABLE_SEPARATOR_PATTERN = Pattern.compile("^\\|[-:| ]+\\|$");
+
     /** Named color shortcuts */
     private static final Map<String, String> NAMED_COLORS = Map.of(
             "warning", "#FF5555",
@@ -84,10 +89,17 @@ public class HelpLangGenerator {
 
     // ── Data structures ──────────────────────────────────────────────────
 
+    /** A column within a table entry. */
+    record ColumnEntry(String key, String text) {}
+
     /** A single parsed entry from a markdown topic file. */
-    record Entry(String type, String key, String color) {
+    record Entry(String type, String key, String color, List<ColumnEntry> columns) {
         Entry(String type, String key) {
-            this(type, key, null);
+            this(type, key, null, null);
+        }
+
+        Entry(String type, String key, String color) {
+            this(type, key, color, null);
         }
     }
 
@@ -355,6 +367,38 @@ public class HelpLangGenerator {
                 continue;
             }
 
+            // 9.5. Table row: | col1 | col2 | col3 |
+            if (trimmed.startsWith("|") && trimmed.endsWith("|") && trimmed.length() > 2) {
+                // Parse cells
+                String inner = trimmed.substring(1, trimmed.length() - 1);
+                String[] rawCells = inner.split("\\|");
+                List<String> cellTexts = new ArrayList<>();
+                for (String cell : rawCells) {
+                    cellTexts.add(cell.trim());
+                }
+
+                // Check if next line is a table separator (indicates this is a header row)
+                boolean isHeader = false;
+                if (i + 1 < lines.size()) {
+                    String nextLine = lines.get(i + 1).trim();
+                    if (TABLE_SEPARATOR_PATTERN.matcher(nextLine).matches()) {
+                        isHeader = true;
+                        i++; // skip separator line
+                    }
+                }
+
+                lineCounter++;
+                String type = isHeader ? "TABLE_HEADER" : "TABLE_ROW";
+                List<ColumnEntry> columns = new ArrayList<>();
+                for (int col = 0; col < cellTexts.size(); col++) {
+                    String colKey = keyPrefix + ".line." + lineCounter + ".col." + col;
+                    columns.add(new ColumnEntry(colKey, cellTexts.get(col)));
+                }
+                entries.add(new Entry(type, null, null, columns));
+                entryTexts.add(null);
+                continue;
+            }
+
             // 10. H2 → HEADING
             if (trimmed.startsWith("## ")) {
                 lineCounter++;
@@ -411,7 +455,12 @@ public class HelpLangGenerator {
 
             for (int i = 0; i < topic.entries().size(); i++) {
                 Entry entry = topic.entries().get(i);
-                if (entry.key() != null) {
+                if (entry.columns() != null) {
+                    // Table entry — write each column as a separate lang key
+                    for (ColumnEntry col : entry.columns()) {
+                        sb.append(col.key()).append(" = ").append(col.text()).append("\n");
+                    }
+                } else if (entry.key() != null) {
                     String text = topic.entryTexts().get(i);
                     sb.append(entry.key()).append(" = ").append(text).append("\n");
                 }
@@ -437,12 +486,18 @@ public class HelpLangGenerator {
             topicMap.put("titleKey", "hyperfactions_help." + topic.titleKey());
             topicMap.put("commands", topic.commands());
 
-            List<Map<String, String>> entryList = new ArrayList<>();
+            List<Map<String, Object>> entryList = new ArrayList<>();
             for (int i = 0; i < topic.entries().size(); i++) {
                 Entry entry = topic.entries().get(i);
-                Map<String, String> entryMap = new LinkedHashMap<>();
+                Map<String, Object> entryMap = new LinkedHashMap<>();
                 entryMap.put("type", entry.type());
-                if (entry.key() != null) {
+                if (entry.columns() != null) {
+                    // Table entry — store column keys as JSON array
+                    List<String> colKeys = entry.columns().stream()
+                            .map(c -> "hyperfactions_help." + c.key())
+                            .toList();
+                    entryMap.put("columns", colKeys);
+                } else if (entry.key() != null) {
                     entryMap.put("key", "hyperfactions_help." + entry.key());
                 }
                 if (entry.color() != null) {

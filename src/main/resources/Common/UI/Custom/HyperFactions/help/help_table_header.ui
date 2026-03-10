@@ -1,0 +1,11 @@
+// Help table header row - bold column labels on dark background
+
+Group {
+  Padding: (Top: 1, Bottom: 1);
+  Background: (Color: #1a2a3a);
+
+  Group #Cols {
+    LayoutMode: Left;
+    Anchor: (Left: 0, Right: 0);
+  }
+}

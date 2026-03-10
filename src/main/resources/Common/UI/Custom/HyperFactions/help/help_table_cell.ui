@@ -1,0 +1,10 @@
+// Help table cell - single column value
+
+Group {
+  Label #CellText {
+    Text: "";
+    Style: (FontSize: 10, TextColor: #CCCCCC, Wrap: true);
+    Padding: (Left: 4, Right: 4);
+    Anchor: (Left: 0, Right: 0);
+  }
+}
