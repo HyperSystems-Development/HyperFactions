@@ -61,41 +61,61 @@ key.with.placeholder = Hello {0}, you have {1} power
 
 Located at `src/main/resources/Server/Languages/<locale>/help/<category>/<topic>.md`.
 
-Each file has YAML frontmatter and markdown content:
+Each file has YAML frontmatter and markdown content. See [docs/help-markdown.md](help-markdown.md) for the full syntax reference.
+
+## What to Translate vs. What to Keep
+
+### Markdown Syntax → Entry Type Mapping
+
+| Markdown Syntax | Entry Type | Translate? |
+|---|---|---|
+| `# Heading` | Topic title | Yes |
+| `## Subheading` | HEADING | Yes |
+| Plain text line | TEXT | Yes |
+| Blank line | SPACER | Keep as-is |
+| `` `command text` `` | COMMAND | **No** — command syntax stays in English |
+| `**bold text**` | BOLD | Yes |
+| `*italic text*` | ITALIC | Yes |
+| `- list item` | LIST | Yes |
+| `1. numbered item` | LIST | Yes (translate text, keep number) |
+| `---` | SEPARATOR | Keep as-is |
+| `> tip text` | CALLOUT | Yes |
+| `>[!TYPE] text` | CALLOUT | Yes (translate text only) |
+| `[#RRGGBB] text` | TEXT (colored) | Yes (translate text only) |
+| `!warning text` | TEXT (colored) | Yes (translate text only) |
+
+### Do NOT Translate
+
+These are syntax markers or identifiers — keep them exactly as written:
+
+- **Frontmatter**: `id:` and `commands:` values
+- **Command syntax**: `/f create <name>`, `/f claim`, etc.
+- **Color codes**: `[#FF5555]`, `[#55AAFF]`, etc.
+- **Named color keywords**: `!warning`, `!success`, `!note`, `!muted`
+- **Callout type tags**: `>[!WARNING]`, `>[!TIP]`, `>[!INFO]`, `>[!NOTE]`, `>[!SUCCESS]`
+- **Separator syntax**: `---`
+
+### Do Translate
+
+- Topic titles (`# Getting Started`)
+- Heading text after `## `
+- Plain text lines
+- Text content in bold (`**text here**`) and italic (`*text here*`)
+- List item text (after `- ` or `1. `)
+- Callout text (after `> ` or `>[!TYPE] `)
+- Colored text (after `[#RRGGBB] ` or `!warning `)
+
+**Example:**
 
 ```markdown
----
-id: welcome_started
-commands: gui, menu
----
-# Getting Started
-
-Ready to dive in? Here's how:
-
-`/f`
-Opens the faction menu.
-
-> Tip: Once in, explore territory and start claiming!
+# Getting Started              ← Translate: "Primeros Pasos"
+## How Claims Work              ← Translate: "Como Funcionan los Reclamos"
+`/f claim`                      ← Do NOT translate
+- Stand in the chunk            ← Translate: "- Parate en el chunk"
+>[!WARNING] Don't wander off!   ← Translate: ">[!WARNING] No te alejes!"
+!note Power regenerates         ← Translate: "!note El poder se regenera"
+[#FF5555] Important info        ← Translate: "[#FF5555] Informacion importante"
 ```
-
-**Rules:**
-- **YAML frontmatter** (`---` block): Do NOT translate `id` or `commands` — these are identifiers
-- **`# Title`**: Translate the heading text
-- **Plain text**: Translate normally
-- **`` `command` ``** (backtick lines): Do NOT translate command syntax (e.g., `/f create <name>`)
-- **`> Tip text`** (blockquotes): Translate the tip content
-- **Blank lines**: Keep as-is (they create spacing in the help viewer)
-
-### Markdown → Entry Type Mapping
-
-| Markdown Syntax            | Help Entry Type | Translate? |
-|----------------------------|-----------------|------------|
-| `# Heading`                | Topic title     | Yes        |
-| `## Subheading`            | HEADING entry   | Yes        |
-| Plain text line            | TEXT entry      | Yes        |
-| Blank line                 | SPACER entry    | Keep as-is |
-| `` `command text` ``       | COMMAND entry   | No         |
-| `> Tip text`               | TIP entry       | Yes        |
 
 ## Translation Tips
 
