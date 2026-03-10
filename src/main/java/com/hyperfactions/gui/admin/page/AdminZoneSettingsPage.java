@@ -100,7 +100,7 @@ public class AdminZoneSettingsPage extends InteractiveCustomUIPage<AdminZoneSett
     AdminNavBarHelper.setupBar(playerRef, "zones", cmd, events);
 
     // Localize labels
-    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ZONE_SETTINGS));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ZONE_SETTINGS));
     cmd.set("#CatCombat.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZSET_CAT_COMBAT));
     cmd.set("#CatDamage.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZSET_CAT_DAMAGE));
     cmd.set("#CatDeath.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZSET_CAT_DEATH));

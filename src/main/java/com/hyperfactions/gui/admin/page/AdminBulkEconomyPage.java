@@ -65,7 +65,7 @@ public class AdminBulkEconomyPage extends InteractiveCustomUIPage<AdminBulkEcono
     AdminNavBarHelper.setupBar(playerRef, "actions", cmd, events);
 
     // Localize labels
-    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_BULK_ECONOMY));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_BULK_ECONOMY));
     cmd.set("#SectionHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_BULK_HEADER));
     cmd.set("#FactionsInfoLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_BULK_FACTIONS_LABEL));
     cmd.set("#TotalBalanceInfoLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_BULK_TOTAL_LABEL));

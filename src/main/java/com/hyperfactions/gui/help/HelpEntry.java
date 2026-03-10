@@ -1,6 +1,8 @@
 package com.hyperfactions.gui.help;
 
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * A typed content entry within a help topic.
@@ -29,13 +31,21 @@ public record HelpEntry(@NotNull EntryType type, @NotNull String messageKey) {
   }
 
   /**
-   * Gets the resolved display text for this entry.
+   * Gets the resolved display text for this entry (server default language).
    *
    * @return The localized text, or empty string for spacers
    */
   @NotNull
   public String text() {
     return type == EntryType.SPACER ? "" : HelpMessages.get(messageKey);
+  }
+
+  /**
+   * Gets the resolved display text for a specific player's language.
+   */
+  @NotNull
+  public String text(@Nullable PlayerRef playerRef) {
+    return type == EntryType.SPACER ? "" : HelpMessages.get(playerRef, messageKey);
   }
 
   /** Creates a TEXT entry. */

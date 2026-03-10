@@ -45,17 +45,18 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
   );
 
   /**
-   * Returns the native display name for a locale code (e.g. "es-ES" → "Español (España)").
-   * Uses Java's Locale class so each language name is shown in its own language.
+   * Returns a compact native display name for a locale code (e.g. "es-ES" → "Español (ES)").
+   * Language name is shown in its own language; country uses the short ISO code.
    */
   private static String nativeDisplayName(String localeCode) {
     Locale locale = Locale.forLanguageTag(localeCode);
-    String name = locale.getDisplayName(locale);
+    String lang = locale.getDisplayLanguage(locale);
     // Capitalize first letter (Java returns lowercase for some locales)
-    if (!name.isEmpty()) {
-      name = Character.toUpperCase(name.charAt(0)) + name.substring(1);
+    if (!lang.isEmpty()) {
+      lang = Character.toUpperCase(lang.charAt(0)) + lang.substring(1);
     }
-    return name;
+    String country = locale.getCountry();
+    return country.isEmpty() ? lang : lang + " (" + country + ")";
   }
 
   private final PlayerRef playerRef;

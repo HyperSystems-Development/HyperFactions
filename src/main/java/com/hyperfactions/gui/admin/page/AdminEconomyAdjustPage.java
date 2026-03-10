@@ -70,7 +70,7 @@ public class AdminEconomyAdjustPage extends InteractiveCustomUIPage<AdminEconomy
     AdminNavBarHelper.setupBar(playerRef, "economy", cmd, events);
 
     // Localize labels
-    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ECONOMY_ADJUST));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ECONOMY_ADJUST));
     cmd.set("#SectionHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECADJ_HEADER));
     cmd.set("#FactionLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECADJ_FACTION_LABEL));
     cmd.set("#CurrentBalanceLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECADJ_CURRENT_BALANCE));

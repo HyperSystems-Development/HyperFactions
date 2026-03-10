@@ -11,7 +11,7 @@ $C.@Container {
   Anchor: (Width: 620, Height: 760);
 
   #Title {
-    $C.@Title {
+    $C.@Title #PageTitle {
       @Text = "Zone Map Editor";
     }
   }

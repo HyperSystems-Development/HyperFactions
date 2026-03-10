@@ -99,7 +99,7 @@ public class AdminActivityLogPage extends InteractiveCustomUIPage<AdminActivityL
     AdminNavBarHelper.setupBar(playerRef, "log", cmd, events);
 
     // Localize page title
-    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ACTIVITY_LOG));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ACTIVITY_LOG));
 
     // Localize filter labels
     cmd.set("#TypeLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_LOG_TYPE));

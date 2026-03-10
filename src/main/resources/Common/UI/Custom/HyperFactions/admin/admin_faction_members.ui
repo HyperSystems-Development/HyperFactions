@@ -17,7 +17,7 @@ $C.@PageOverlay {
         LayoutMode: Left;
 
         Group {
-          $C.@Title {
+          $C.@Title #PageTitle {
             @Text = "Admin: Members";
           }
         }

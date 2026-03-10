@@ -143,7 +143,7 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
     }
 
     // Localize labels
-    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ZONE_MAP));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ZONE_MAP));
     cmd.set("#ActionHint.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MAP_ACTION_HINT));
     cmd.set("#ConfirmBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MAP_DONE));
     cmd.set("#LegendZoneSafe.Text", " " + HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MAP_LEGEND_ZONE_SAFE));

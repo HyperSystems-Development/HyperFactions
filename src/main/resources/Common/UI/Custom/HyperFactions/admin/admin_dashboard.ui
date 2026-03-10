@@ -9,7 +9,7 @@ $C.@PageOverlay {
     Anchor: (Width: 520, Height: 480);
 
     #Title {
-      $C.@Title {
+      $C.@Title #PageTitle {
         @Text = "Admin Dashboard";
       }
     }

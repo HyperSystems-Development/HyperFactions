@@ -13,7 +13,7 @@ $C.@PageOverlay {
     Anchor: (Width: 640, Height: 600);
 
     #Title {
-      $C.@Title {
+      $C.@Title #PageTitle {
         @Text = "Admin: Faction Info";
       }
     }

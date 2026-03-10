@@ -96,7 +96,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
     AdminNavBarHelper.setupBar(playerRef, "factions", cmd, events);
 
     // Localize page title
-    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_PLAYER_INFO));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_PLAYER_INFO));
 
     // Localize header labels
     cmd.set("#FirstJoinedLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_FIRST_JOINED));

@@ -71,7 +71,7 @@ public class AdminDashboardPage extends InteractiveCustomUIPage<AdminDashboardDa
     AdminNavBarHelper.setupBar(playerRef, "dashboard", cmd, events);
 
     // Localize page title and stat labels
-    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_DASHBOARD));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_DASHBOARD));
     cmd.set("#ServerStatsLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_SERVER_STATS));
     cmd.set("#FactionsLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_FACTIONS));
     cmd.set("#TotalMembersLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_TOTAL_MEMBERS));

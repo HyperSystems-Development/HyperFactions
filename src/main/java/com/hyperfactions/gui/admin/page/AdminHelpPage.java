@@ -43,7 +43,7 @@ public class AdminHelpPage extends InteractiveCustomUIPage<AdminHelpData> {
     AdminNavBarHelper.setupBar(playerRef, "help", cmd, events);
 
     // Localize page title and labels
-    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_HELP));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_HELP));
     cmd.set("#ComingSoon.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_HELP_HEADING));
     cmd.set("#ComingSoonSub.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_COMING_SOON));
     cmd.set("#Description.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_HELP_DESC1));

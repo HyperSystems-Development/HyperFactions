@@ -63,7 +63,7 @@ public class AdminVersionPage extends InteractiveCustomUIPage<AdminVersionData> 
     AdminNavBarHelper.setupBar(playerRef, "version", cmd, events);
 
     // Localize page title
-    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_VERSION));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_VERSION));
 
     // Localize version card labels
     cmd.set("#VersionLabelFactions.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_VER_HYPERFACTIONS));

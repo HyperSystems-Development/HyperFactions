@@ -84,6 +84,20 @@ public class ZoneChangeTypeModalPage extends InteractiveCustomUIPage<ZoneChangeT
     // Load the modal template
     cmd.append(UIPaths.ZONE_CHANGE_TYPE_MODAL);
 
+    // Localize labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_TITLE));
+    cmd.set("#ZoneLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_ZONE_LABEL));
+    cmd.set("#CurrentLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_CURRENT));
+    cmd.set("#WillBecomeLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_WILL_BECOME));
+    cmd.set("#NewLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_NEW));
+    cmd.set("#WarningLine1.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_WARNING1));
+    cmd.set("#WarningLine2.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_WARNING2));
+    cmd.set("#KeepFlagsDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_KEEP_DESC));
+    cmd.set("#KeepFlagsBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_KEEP_FLAGS));
+    cmd.set("#ResetFlagsDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_RESET_DESC));
+    cmd.set("#ResetFlagsBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_RESET_FLAGS));
+    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CANCEL));
+
     // Zone name
     cmd.set("#ZoneName.Text", zone.name());
 

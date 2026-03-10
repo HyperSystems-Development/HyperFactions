@@ -73,6 +73,13 @@ public class ZoneRenameModalPage extends InteractiveCustomUIPage<ZoneRenameModal
     // Load the modal template
     cmd.append(UIPaths.ZONE_RENAME_MODAL);
 
+    // Localize labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZREN_TITLE));
+    cmd.set("#CurrentLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZREN_CURRENT));
+    cmd.set("#NewNameLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZREN_NEW_NAME));
+    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CANCEL));
+    cmd.set("#SaveBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SAVE));
+
     // Show current name
     cmd.set("#CurrentName.Text", zone.name());
 

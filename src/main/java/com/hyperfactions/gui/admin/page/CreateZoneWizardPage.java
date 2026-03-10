@@ -133,6 +133,35 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
     // Load the template
     cmd.append(UIPaths.CREATE_ZONE_WIZARD);
 
+    // Localize labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_TITLE));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_BACK));
+    cmd.set("#CreateBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_CREATE));
+    cmd.set("#ZoneTypeHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_ZONE_TYPE));
+    cmd.set("#SafeZoneDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_SAFE_DESC));
+    cmd.set("#WarZoneDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_WAR_DESC));
+    cmd.set("#ZoneNameHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_ZONE_NAME));
+    cmd.set("#ZoneNameDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_NAME_DESC));
+    cmd.set("#ClaimMethodHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_CLAIM_METHOD));
+    cmd.set("#MethodNoneDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_METHOD_NONE_DESC));
+    cmd.set("#MethodNone.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_METHOD_NONE));
+    cmd.set("#MethodSingleDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_METHOD_SINGLE_DESC));
+    cmd.set("#MethodSingle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_METHOD_SINGLE));
+    cmd.set("#MethodCircleDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_METHOD_CIRCLE_DESC));
+    cmd.set("#MethodCircle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_METHOD_CIRCLE));
+    cmd.set("#MethodSquareDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_METHOD_SQUARE_DESC));
+    cmd.set("#MethodSquare.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_METHOD_SQUARE));
+    cmd.set("#MethodMapDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_METHOD_MAP_DESC));
+    cmd.set("#MethodMap.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_METHOD_MAP));
+    cmd.set("#RadiusHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_RADIUS));
+    cmd.set("#CustomRadiusLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_CUSTOM_RADIUS));
+    cmd.set("#ApplyCustomRadius.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_APPLY));
+    cmd.set("#FlagsHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_FLAGS));
+    cmd.set("#FlagsDefaultsDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_FLAGS_DEFAULTS_DESC));
+    cmd.set("#FlagsDefaults.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_FLAGS_DEFAULTS));
+    cmd.set("#FlagsCustomizeDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_FLAGS_CUSTOMIZE_DESC));
+    cmd.set("#FlagsCustomize.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_FLAGS_CUSTOMIZE));
+
     // Restore preserved input value
     if (!preservedName.isEmpty()) {
       cmd.set("#NameInput.Value", preservedName);

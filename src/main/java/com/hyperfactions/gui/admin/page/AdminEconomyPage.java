@@ -81,7 +81,7 @@ public class AdminEconomyPage extends InteractiveCustomUIPage<AdminEconomyData> 
     AdminNavBarHelper.setupBar(playerRef, "economy", cmd, events);
 
     // Localize page title
-    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ECONOMY));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ECONOMY));
 
     // Localize stat card labels
     cmd.set("#TotalBalanceLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECON_TOTAL_BALANCE));

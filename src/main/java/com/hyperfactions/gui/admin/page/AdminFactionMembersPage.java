@@ -80,7 +80,7 @@ public class AdminFactionMembersPage extends InteractiveCustomUIPage<AdminFactio
     AdminNavBarHelper.setupBar(playerRef, "factions", cmd, events);
 
     // Localize page title and labels
-    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_FACTION_MEMBERS));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_FACTION_MEMBERS));
     cmd.set("#SearchLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SEARCH));
     cmd.set("#SortLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SORT));
     cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PREV));

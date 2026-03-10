@@ -60,7 +60,7 @@ public class AdminFactionRelationsPage extends InteractiveCustomUIPage<AdminFact
     AdminNavBarHelper.setupBar(playerRef, "factions", cmd, events);
 
     // Localize page title and labels
-    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_FACTION_RELATIONS));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_FACTION_RELATIONS));
     cmd.set("#SubtitleLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_REL_SUBTITLE));
     cmd.set("#SetNewRelationLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_REL_SET_NEW));
     cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_BACK));

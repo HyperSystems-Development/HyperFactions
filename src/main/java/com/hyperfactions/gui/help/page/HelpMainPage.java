@@ -108,7 +108,7 @@ public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
     setupCategoryButtons(cmd, events);
 
     // Set the category title header text and color
-    cmd.set("#CategoryTitle.Text", selectedCategory.displayName().toUpperCase());
+    cmd.set("#CategoryTitle.Text", selectedCategory.displayName(playerRef).toUpperCase());
     cmd.set("#CategoryTitle.Style.TextColor", selectedCategory.color());
 
     // Build topic cards for selected category
@@ -153,7 +153,7 @@ public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
       String cardPrefix = "#ContentList[" + cardIndex + "]";
 
       // Set card title
-      cmd.set(cardPrefix + " #Title.Text", topic.title());
+      cmd.set(cardPrefix + " #Title.Text", topic.title(playerRef));
 
       // Append lines into card's #Lines container
       int lineIndex = 0;
@@ -163,7 +163,7 @@ public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
         cmd.append(linesContainer, template);
 
         if (entry.type() != HelpEntry.EntryType.SPACER) {
-          String text = entry.text();
+          String text = entry.text(playerRef);
           // Prefix tips with >> for visual distinction
           if (entry.type() == HelpEntry.EntryType.TIP) {
             text = ">> " + text;

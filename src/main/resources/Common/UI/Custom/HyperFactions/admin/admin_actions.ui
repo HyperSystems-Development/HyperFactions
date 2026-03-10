@@ -12,7 +12,7 @@ $C.@PageOverlay {
     Anchor: (Width: 500, Height: 520);
 
     #Title {
-      $C.@Title {
+      $C.@Title #PageTitle {
         @Text = "Admin: Server Actions";
       }
     }

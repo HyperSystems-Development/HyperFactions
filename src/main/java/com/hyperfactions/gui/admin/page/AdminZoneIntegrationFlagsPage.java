@@ -69,7 +69,7 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
     AdminNavBarHelper.setupBar(playerRef, "zones", cmd, events);
 
     // Localize labels
-    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ZONE_SETTINGS));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ZONE_SETTINGS));
     cmd.set("#CatGravestones.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZINT_CAT_GRAVESTONES));
     cmd.set("#GravestonesDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZINT_GRAVESTONES_DESC));
     cmd.set("#CatWorldMap.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZINT_CAT_WORLD_MAP));

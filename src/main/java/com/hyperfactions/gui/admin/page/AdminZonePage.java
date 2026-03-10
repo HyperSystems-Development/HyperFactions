@@ -93,7 +93,7 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
     AdminNavBarHelper.setupBar(playerRef, "zones", cmd, events);
 
     // Localize page title and common labels
-    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ZONES));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ZONES));
     cmd.set("#TabAll.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ALL));
     cmd.set("#TabSafe.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SAFE));
     cmd.set("#TabWar.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_WAR));

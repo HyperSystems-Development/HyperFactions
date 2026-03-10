@@ -12,7 +12,7 @@ $C.@PageOverlay {
 
     #Title {
       Group {
-        $C.@Title {
+        $C.@Title #PageTitle {
           @Text = "Bulk Treasury Adjust";
         }
       }

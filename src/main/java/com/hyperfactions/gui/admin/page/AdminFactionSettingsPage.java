@@ -67,10 +67,65 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     AdminNavBarHelper.setupBar(playerRef, "factions", cmd, events);
 
     // Localize page title and labels
-    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_FACTION_SETTINGS));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_FACTION_SETTINGS));
     cmd.set("#EditingLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_EDITING));
     cmd.set("#AdminOverrideLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_ADMIN_OVERRIDE));
-    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_BACK));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_BACK_TO_INFO));
+
+    // Left column section headers and row labels
+    cmd.set("#SectionGeneral.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_GENERAL));
+    cmd.set("#NameLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_NAME_LABEL));
+    cmd.set("#TagLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_TAG_LABEL));
+    cmd.set("#DescLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_DESC_LABEL));
+    String editText = HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_EDIT);
+    cmd.set("#NameEditBtn.Text", editText);
+    cmd.set("#TagEditBtn.Text", editText);
+    cmd.set("#DescEditBtn.Text", editText);
+    cmd.set("#SectionRecruitment.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_RECRUITMENT));
+    cmd.set("#StatusLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_STATUS_LABEL));
+    cmd.set("#SectionHome.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_HOME));
+    cmd.set("#LocationLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_LOCATION_LABEL));
+    cmd.set("#ClearHomeBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_CLEAR_HOME));
+    cmd.set("#SectionDangerZone.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_DANGER_ZONE));
+    cmd.set("#IrreversibleWarning.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_IRREVERSIBLE));
+    cmd.set("#DisbandBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_DISBAND_FACTION));
+
+    // Middle column - territory permissions
+    cmd.set("#LockHint.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_LOCK_HINT));
+    cmd.set("#SectionTerritoryPerms.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_TERRITORY_PERMS));
+    cmd.set("#ColOutsider.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_COL_OUT));
+    cmd.set("#ColAlly.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_COL_ALLY));
+    cmd.set("#ColMember.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_COL_MEM));
+    cmd.set("#ColOfficer.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_COL_OFF));
+    cmd.set("#CatBuilding.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_CAT_BUILDING));
+    cmd.set("#PermBreak.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_BREAK));
+    cmd.set("#PermPlace.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_PLACE));
+    cmd.set("#CatInteraction.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_CAT_INTERACTION));
+    cmd.set("#CatInteractionSub.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_CAT_INTERACT_SUB));
+    cmd.set("#PermAll.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_ALL));
+    cmd.set("#PermDoor.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_DOOR));
+    cmd.set("#PermChest.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_CHEST));
+    cmd.set("#PermBench.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_BENCH));
+    cmd.set("#PermProcessing.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_PROCESSING));
+    cmd.set("#PermSeat.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_SEAT));
+    cmd.set("#PermTransport.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_TRANSPORT));
+    cmd.set("#CatOther.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_CAT_OTHER));
+    cmd.set("#PermCrateUse.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_CRATE_USE));
+    cmd.set("#PermNpcTame.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_NPC_TAME));
+    cmd.set("#PermPveDamage.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_PVE_DAMAGE));
+
+    // Right column - appearance, mob spawning, faction settings
+    cmd.set("#SectionAppearance.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_APPEARANCE));
+    cmd.set("#ColorLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_COLOR_LABEL));
+    cmd.set("#SectionMobSpawning.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_MOB_SPAWNING));
+    cmd.set("#SectionMobSpawningSub.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_MOB_SUB));
+    cmd.set("#PermMobSpawning.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_MOB_SPAWNING));
+    cmd.set("#PermHostile.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_HOSTILE));
+    cmd.set("#PermPassive.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_PASSIVE));
+    cmd.set("#PermNeutral.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_NEUTRAL));
+    cmd.set("#SectionFactionSettings.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_FACTION_SETTINGS));
+    cmd.set("#PermPvP.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_PVP));
+    cmd.set("#PermOfficersEdit.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_OFFICERS_EDIT));
 
     // Get the faction
     Faction faction = factionManager.getFaction(factionId);

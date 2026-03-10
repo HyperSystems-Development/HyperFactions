@@ -75,7 +75,7 @@ public class AdminZonePropertiesPage extends InteractiveCustomUIPage<AdminZonePr
     AdminNavBarHelper.setupBar(playerRef, "zones", cmd, events);
 
     // Localize labels
-    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ZONE_PROPERTIES));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ZONE_PROPERTIES));
     cmd.set("#GeneralHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZPROP_GENERAL));
     cmd.set("#ZoneNameLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZPROP_ZONE_NAME));
     cmd.set("#ZoneTypeLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZPROP_ZONE_TYPE));

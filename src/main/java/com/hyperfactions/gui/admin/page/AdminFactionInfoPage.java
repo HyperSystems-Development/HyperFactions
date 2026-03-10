@@ -83,7 +83,7 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
     AdminNavBarHelper.setupBar(playerRef, "factions", cmd, events);
 
     // Localize page title
-    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_FACTION_INFO));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_FACTION_INFO));
 
     // Localize stat card labels
     cmd.set("#PowerCardLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_POWER));

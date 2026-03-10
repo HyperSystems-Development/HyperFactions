@@ -73,7 +73,7 @@ $C.@PageOverlay {
 
           DropdownBox #LanguageDropdown {
             Style: $C.@DefaultDropdownBoxStyle;
-            Anchor: (Height: 28, Width: 180);
+            Anchor: (Height: 28, Width: 220);
           }
         }
       }

@@ -9,7 +9,7 @@ $C.@PageOverlay {
     Anchor: (Width: 600, Height: 470);
 
     #Title {
-      $C.@Title {
+      $C.@Title #PageTitle {
         @Text = "Admin Help";
       }
     }

@@ -11,7 +11,7 @@ $C.@PageOverlay {
 
     #Title {
       Group {
-        $C.@Title {
+        $C.@Title #PageTitle {
           @Text = "Change Zone Type";
         }
       }

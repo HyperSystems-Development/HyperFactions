@@ -43,7 +43,7 @@ public class AdminConfigPage extends InteractiveCustomUIPage<AdminConfigData> {
     AdminNavBarHelper.setupBar(playerRef, "config", cmd, events);
 
     // Localize page title and labels
-    cmd.set("#Title.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_CONFIG));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_CONFIG));
     cmd.set("#ComingSoon.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CONFIG_HEADING));
     cmd.set("#ComingSoonSub.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_COMING_SOON));
     cmd.set("#Description.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CONFIG_DESC1));
