@@ -22,8 +22,6 @@ Quick reference for all faction economy commands.
 
 ## Permissions
 
-All economy commands require `hyperfactions.economy.*`
-permission nodes. Withdraw and transfer are further
-restricted by faction role (Officer or higher).
+All economy commands require `hyperfactions.economy.*` permission nodes. Withdraw and transfer are further restricted by faction role (Officer or higher).
 
 >[!TIP] Use /f money log to review recent deposits, withdrawals, and transfers with timestamps.

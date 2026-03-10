@@ -4,14 +4,11 @@ commands: home, sethome, stuck
 ---
 # Death and Recovery
 
-Death carries real consequences in factions. Every
-death costs you personal power, weakening your
-faction's ability to hold territory.
+Death carries real consequences in factions. Every death costs you personal power, weakening your faction's ability to hold territory.
 
 ## Power Loss
 
-Each death costs **-1.0 power** from your personal
-total. This lowers the faction's combined power.
+Each death costs **-1.0 power** from your personal total. This lowers the faction's combined power.
 
 | Event | Power Change |
 |-------|-------------|
@@ -29,16 +26,12 @@ total. This lowers the faction's combined power.
 
 ## Recovery
 
-Power regenerates at 0.1 per minute while online.
-Recovering 1.0 lost power takes about 10 minutes.
-Multiple deaths stack, so avoid repeated fights.
+Power regenerates at 0.1 per minute while online. Recovering 1.0 lost power takes about 10 minutes. Multiple deaths stack, so avoid repeated fights.
 
 ---
 
 ## All Death Types
 
-Power loss applies to all deaths: PvP, mob kills,
-fall damage, drowning, and any other cause.
-There is no safe way to die.
+Power loss applies to all deaths: PvP, mob kills, fall damage, drowning, and any other cause. There is no safe way to die.
 
 >[!TIP] Set a faction home with /f sethome so members can regroup quickly after dying.

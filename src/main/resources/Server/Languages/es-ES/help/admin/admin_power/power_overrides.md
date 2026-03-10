@@ -3,8 +3,7 @@ id: admin_power_overrides
 ---
 # Sobrescrituras de Poder
 
-Comandos especiales de poder que cambian como funciona
-el poder para jugadores o facciones especificos.
+Comandos especiales de poder que cambian como funciona el poder para jugadores o facciones especificos.
 
 ## Comandos de Sobrescritura
 
@@ -18,17 +17,14 @@ el poder para jugadores o facciones especificos.
 ## Poder Maximo Personalizado
 
 `/f admin power setmax <player> <amount>`
-Establece un limite maximo de poder personal para el
-jugador, sobrescribiendo el valor predeterminado del servidor.
+Establece un limite maximo de poder personal para el jugador, sobrescribiendo el valor predeterminado del servidor.
 
 >[!INFO] Establecer un maximo personalizado **no** cambia el poder actual. Solo cambia el techo. El jugador aun debe ganar poder hasta el nuevo limite.
 
 ## Modo Sin Perdida
 
 `/f admin power noloss <player>`
-Alterna la inmunidad a perdida de poder por muerte.
-Cuando esta habilitado, el jugador **no** perdera poder
-al morir.
+Alterna la inmunidad a perdida de poder por muerte. Cuando esta habilitado, el jugador **no** perdera poder al morir.
 
 Util para:
 - Periodos de proteccion para nuevos jugadores
@@ -38,9 +34,7 @@ Util para:
 ## Modo Sin Deterioro
 
 `/f admin power nodecay <player>`
-Alterna la inmunidad al deterioro de poder por desconexion.
-Cuando esta habilitado, el poder del jugador **no**
-disminuira mientras este desconectado.
+Alterna la inmunidad al deterioro de poder por desconexion. Cuando esta habilitado, el poder del jugador **no** disminuira mientras este desconectado.
 
 Util para:
 - Jugadores en ausencia prolongada

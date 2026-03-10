@@ -3,8 +3,7 @@ id: admin_quickref_commands
 ---
 # Referencia de Comandos de Administracion
 
-Lista completa de todos los subcomandos de `/f admin`
-con sintaxis y permisos requeridos.
+Lista completa de todos los subcomandos de `/f admin` con sintaxis y permisos requeridos.
 
 ## Panel y General
 
@@ -14,7 +13,7 @@ con sintaxis y permisos requeridos.
 | `/f admin version` | admin.use |
 | `/f admin reload` | admin.reload |
 | `/f admin sync` | admin.use |
-| `/f admin bypass` | admin.bypass.limits |
+| `/f admin sentry` | admin.use |
 
 ## Gestion de Facciones
 

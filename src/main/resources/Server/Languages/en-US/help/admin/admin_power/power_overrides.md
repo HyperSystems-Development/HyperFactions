@@ -3,8 +3,7 @@ id: admin_power_overrides
 ---
 # Power Overrides
 
-Special power commands that change how power behaves
-for specific players or factions.
+Special power commands that change how power behaves for specific players or factions.
 
 ## Override Commands
 
@@ -18,16 +17,14 @@ for specific players or factions.
 ## Custom Max Power
 
 `/f admin power setmax <player> <amount>`
-Sets a personal maximum power cap for the player,
-overriding the server default.
+Sets a personal maximum power cap for the player, overriding the server default.
 
 >[!INFO] Setting a custom max does **not** change current power. It only changes the ceiling. The player must still earn power up to the new limit.
 
 ## No-Loss Mode
 
 `/f admin power noloss <player>`
-Toggles death power loss immunity. When enabled, the
-player will **not** lose power on death.
+Toggles death power loss immunity. When enabled, the player will **not** lose power on death.
 
 Useful for:
 - New player protection periods
@@ -37,8 +34,7 @@ Useful for:
 ## No-Decay Mode
 
 `/f admin power nodecay <player>`
-Toggles offline power decay immunity. When enabled,
-the player's power will **not** decrease while offline.
+Toggles offline power decay immunity. When enabled, the player's power will **not** decrease while offline.
 
 Useful for:
 - Players on extended leave

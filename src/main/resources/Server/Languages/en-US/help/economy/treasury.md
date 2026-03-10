@@ -4,14 +4,11 @@ commands: balance
 ---
 # Faction Treasury
 
-Every faction has a shared treasury that serves as
-the faction's bank. Funds are used for upkeep costs,
-territory maintenance, and faction operations.
+Every faction has a shared treasury that serves as the faction's bank. Funds are used for upkeep costs, territory maintenance, and faction operations.
 
 ## Starting Balance
 
-New factions start with **0** in their treasury.
-Members must deposit funds to build up reserves.
+New factions start with **0** in their treasury. Members must deposit funds to build up reserves.
 
 ## Who Can Manage
 
@@ -22,8 +19,7 @@ Members must deposit funds to build up reserves.
 ---
 
 `/f balance`
-Check your faction's current treasury balance.
-Also available as `/f bal`.
+Check your faction's current treasury balance. Also available as `/f bal`.
 
 >[!TIP] Contribute regularly to keep your faction funded. Territory upkeep costs can drain an empty treasury quickly.
 

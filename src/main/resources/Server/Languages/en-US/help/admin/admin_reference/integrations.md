@@ -3,9 +3,7 @@ id: admin_integrations
 ---
 # Plugin Integrations
 
-HyperFactions integrates with several external plugins
-through soft dependencies. All integrations are
-optional and fail gracefully if unavailable.
+HyperFactions integrates with several external plugins through soft dependencies. All integrations are optional and fail gracefully if unavailable.
 
 ## Checking Integration Status
 
@@ -13,8 +11,7 @@ optional and fail gracefully if unavailable.
 Shows current version and detected integrations.
 
 `/f admin integration`
-Opens the integration management panel with detailed
-status for each detected plugin.
+Opens the integration management panel with detailed status for each detected plugin.
 
 ## Integration Table
 

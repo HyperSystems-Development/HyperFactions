@@ -3,8 +3,7 @@ id: admin_permissions
 ---
 # Admin Permissions
 
-All admin features are gated behind permission nodes
-in the `hyperfactions.admin` namespace.
+All admin features are gated behind permission nodes in the `hyperfactions.admin` namespace.
 
 ## Permission Nodes
 
@@ -24,10 +23,7 @@ in the `hyperfactions.admin` namespace.
 
 ## Fallback Behavior
 
-When **no permission plugin** is installed, admin
-permissions fall back to server operator (OP) status.
-This is controlled by `adminRequiresOp` in the server
-config (default: `true`).
+When **no permission plugin** is installed, admin permissions fall back to server operator (OP) status. This is controlled by `adminRequiresOp` in the server config (default: `true`).
 
 >[!NOTE] The `hyperfactions.admin.*` wildcard grants every admin permission. Use individual nodes for granular control over your staff team.
 

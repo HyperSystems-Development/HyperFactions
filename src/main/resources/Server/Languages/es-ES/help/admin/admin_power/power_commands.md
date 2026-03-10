@@ -3,8 +3,7 @@ id: admin_power_commands
 ---
 # Comandos de Administracion de Poder
 
-Sobrescribir valores de poder de jugadores y facciones.
-Todos los comandos requieren el permiso `hyperfactions.admin.power`.
+Sobrescribir valores de poder de jugadores y facciones. Todos los comandos requieren el permiso `hyperfactions.admin.power`.
 
 ## Comandos de Poder de Jugador
 
@@ -18,9 +17,7 @@ Todos los comandos requieren el permiso `hyperfactions.admin.power`.
 
 ## Como Afecta el Poder a las Facciones
 
-El poder total de una faccion es la suma del poder
-individual de todos sus miembros. Las reclamaciones de
-territorio requieren poder total suficiente para mantenerse.
+El poder total de una faccion es la suma del poder individual de todos sus miembros. Las reclamaciones de territorio requieren poder total suficiente para mantenerse.
 
 | Escenario | Efecto |
 |----------|--------|

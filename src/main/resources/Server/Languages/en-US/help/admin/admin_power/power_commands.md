@@ -3,8 +3,7 @@ id: admin_power_commands
 ---
 # Power Admin Commands
 
-Override player and faction power values. All commands
-require `hyperfactions.admin.power` permission.
+Override player and faction power values. All commands require `hyperfactions.admin.power` permission.
 
 ## Player Power Commands
 
@@ -18,9 +17,7 @@ require `hyperfactions.admin.power` permission.
 
 ## How Power Affects Factions
 
-A faction's total power is the sum of all its members'
-individual power. Territory claims require sufficient
-total power to maintain.
+A faction's total power is the sum of all its members' individual power. Territory claims require sufficient total power to maintain.
 
 | Scenario | Effect |
 |----------|--------|

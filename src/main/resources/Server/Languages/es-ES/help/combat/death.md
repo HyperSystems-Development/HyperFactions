@@ -4,14 +4,11 @@ commands: home, sethome, stuck
 ---
 # Muerte y Recuperacion
 
-La muerte tiene consecuencias reales en facciones. Cada
-muerte te cuesta poder personal, debilitando la capacidad
-de tu faccion para mantener territorio.
+La muerte tiene consecuencias reales en facciones. Cada muerte te cuesta poder personal, debilitando la capacidad de tu faccion para mantener territorio.
 
 ## Perdida de Poder
 
-Cada muerte cuesta **-1.0 de poder** de tu total personal.
-Esto reduce el poder combinado de la faccion.
+Cada muerte cuesta **-1.0 de poder** de tu total personal. Esto reduce el poder combinado de la faccion.
 
 | Evento | Cambio de Poder |
 |--------|-----------------|
@@ -29,16 +26,12 @@ Esto reduce el poder combinado de la faccion.
 
 ## Recuperacion
 
-El poder se regenera a 0.1 por minuto mientras estas en linea.
-Recuperar 1.0 de poder perdido toma aproximadamente 10 minutos.
-Las muertes multiples se acumulan, asi que evita peleas repetidas.
+El poder se regenera a 0.1 por minuto mientras estas en linea. Recuperar 1.0 de poder perdido toma aproximadamente 10 minutos. Las muertes multiples se acumulan, asi que evita peleas repetidas.
 
 ---
 
 ## Todos los Tipos de Muerte
 
-La perdida de poder aplica a todas las muertes: PvP, muertes
-por mobs, dano por caida, ahogamiento y cualquier otra causa.
-No hay forma segura de morir.
+La perdida de poder aplica a todas las muertes: PvP, muertes por mobs, dano por caida, ahogamiento y cualquier otra causa. No hay forma segura de morir.
 
 >[!TIP] Establece un hogar de faccion con /f sethome para que los miembros puedan reagruparse rapidamente despues de morir.

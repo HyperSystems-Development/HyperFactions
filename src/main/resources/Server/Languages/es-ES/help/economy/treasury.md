@@ -4,14 +4,11 @@ commands: balance
 ---
 # Tesoreria de Faccion
 
-Cada faccion tiene una tesoreria compartida que sirve como
-el banco de la faccion. Los fondos se usan para costos de
-mantenimiento, mantenimiento de territorio y operaciones de faccion.
+Cada faccion tiene una tesoreria compartida que sirve como el banco de la faccion. Los fondos se usan para costos de mantenimiento, mantenimiento de territorio y operaciones de faccion.
 
 ## Saldo Inicial
 
-Las facciones nuevas comienzan con **0** en su tesoreria.
-Los miembros deben depositar fondos para acumular reservas.
+Las facciones nuevas comienzan con **0** en su tesoreria. Los miembros deben depositar fondos para acumular reservas.
 
 ## Quien Puede Gestionar
 
@@ -22,8 +19,7 @@ Los miembros deben depositar fondos para acumular reservas.
 ---
 
 `/f balance`
-Consulta el saldo actual de la tesoreria de tu faccion.
-Tambien disponible como `/f bal`.
+Consulta el saldo actual de la tesoreria de tu faccion. Tambien disponible como `/f bal`.
 
 >[!TIP] Contribuye regularmente para mantener tu faccion financiada. Los costos de mantenimiento de territorio pueden vaciar una tesoreria rapidamente.
 

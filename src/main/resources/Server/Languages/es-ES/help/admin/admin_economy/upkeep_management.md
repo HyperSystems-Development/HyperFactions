@@ -3,19 +3,14 @@ id: admin_upkeep_management
 ---
 # Gestion de Mantenimiento
 
-El mantenimiento de faccion cobra a las facciones
-periodicamente basandose en su territorio y cantidad
-de miembros.
+El mantenimiento de faccion cobra a las facciones periodicamente basandose en su territorio y cantidad de miembros.
 
 ## Controles del Administrador
 
-Los ajustes de mantenimiento se gestionan a traves del
-archivo de configuracion de economia o la GUI de
-configuracion del administrador.
+Los ajustes de mantenimiento se gestionan a traves del archivo de configuracion de economia o la GUI de configuracion del administrador.
 
 `/f admin config`
-Abre el editor de configuracion y navega a los ajustes
-de economia para modificar valores de mantenimiento.
+Abre el editor de configuracion y navega a los ajustes de economia para modificar valores de mantenimiento.
 
 ## Ajustes Predeterminados de Mantenimiento
 
@@ -42,7 +37,6 @@ Usa `/f admin info <faction>` para ver:
 
 ## Formula de Mantenimiento
 
-**Mantenimiento total** = (chunks reclamados x costo por reclamacion) +
-(cantidad de miembros x costo por miembro)
+**Mantenimiento total** = (chunks reclamados x costo por reclamacion) + (cantidad de miembros x costo por miembro)
 
 >[!WARNING] Habilitar el mantenimiento en un servidor con facciones existentes puede causar bancarrotas inesperadas. Considera establecer un periodo de gracia o anunciar el cambio con anticipacion.

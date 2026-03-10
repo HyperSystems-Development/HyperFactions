@@ -3,14 +3,12 @@ id: admin_disbanding
 ---
 # Disolucion Forzada
 
-Los administradores pueden disolver cualquier faccion
-por la fuerza, sin importar los deseos del lider.
+Los administradores pueden disolver cualquier faccion por la fuerza, sin importar los deseos del lider.
 
 ## Comando
 
 `/f admin disband <faction>`
-Disuelve la faccion indicada por la fuerza. Aparecera
-un mensaje de confirmacion antes de ejecutar la accion.
+Disuelve la faccion indicada por la fuerza. Aparecera un mensaje de confirmacion antes de ejecutar la accion.
 
 **Permiso**: `hyperfactions.admin.disband`
 
@@ -36,4 +34,4 @@ Cuando una faccion es disuelta:
 3. Documenta la razon para los registros del servidor
 4. Revisa `/f admin info <faction>` antes de actuar
 
->[!TIP] Si el problema es con un miembro especifico, considera usar `/f admin modify` para transferir el liderazgo en lugar de disolver toda la faccion.
+>[!TIP] Si el problema es con un miembro especifico, considera usar el panel de administracion de facciones para transferir el liderazgo en lugar de disolver toda la faccion.

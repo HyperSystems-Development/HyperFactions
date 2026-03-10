@@ -3,8 +3,7 @@ id: admin_treasury_management
 ---
 # Treasury Management
 
-Admin commands for managing faction treasuries.
-Requires `hyperfactions.admin.economy` permission.
+Admin commands for managing faction treasuries. Requires `hyperfactions.admin.economy` permission.
 
 ## Treasury Commands
 

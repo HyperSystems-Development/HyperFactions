@@ -3,18 +3,15 @@ id: admin_managing_factions
 ---
 # Managing Factions
 
-Admins can inspect and modify any faction on the
-server through the dashboard or commands.
+Admins can inspect and modify any faction on the server through the dashboard or commands.
 
 ## Browsing Factions
 
 `/f admin factions`
-Opens the admin faction browser. View all factions
-with member counts, power levels, and territory.
+Opens the admin faction browser. View all factions with member counts, power levels, and territory.
 
 `/f admin info <faction>`
-Opens the admin info panel for a specific faction
-with full details and management options.
+Opens the admin info panel for a specific faction with full details and management options.
 
 ## Modifying Faction Settings
 

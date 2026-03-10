@@ -3,9 +3,7 @@ id: quickref_permissions
 ---
 # Permisos
 
-Nodos de permisos clave para HyperFactions. Todos
-los nodos estan bajo el espacio de nombres raiz
-**hyperfactions**.
+Nodos de permisos clave para HyperFactions. Todos los nodos estan bajo el espacio de nombres raiz **hyperfactions**.
 
 ## Permisos Principales
 

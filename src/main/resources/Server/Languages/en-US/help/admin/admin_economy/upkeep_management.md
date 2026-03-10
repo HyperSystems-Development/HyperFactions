@@ -3,17 +3,14 @@ id: admin_upkeep_management
 ---
 # Upkeep Management
 
-Faction upkeep charges factions periodically based on
-their territory and member count.
+Faction upkeep charges factions periodically based on their territory and member count.
 
 ## Admin Controls
 
-Upkeep settings are managed through the economy config
-file or the admin config GUI.
+Upkeep settings are managed through the economy config file or the admin config GUI.
 
 `/f admin config`
-Open the config editor and navigate to economy
-settings to adjust upkeep values.
+Open the config editor and navigate to economy settings to adjust upkeep values.
 
 ## Default Upkeep Settings
 
@@ -40,7 +37,6 @@ Use `/f admin info <faction>` to see:
 
 ## Upkeep Formula
 
-**Total upkeep** = (claimed chunks x per-claim cost) +
-(member count x per-member cost)
+**Total upkeep** = (claimed chunks x per-claim cost) + (member count x per-member cost)
 
 >[!WARNING] Enabling upkeep on a server with existing factions may cause unexpected bankruptcies. Consider setting a grace period or announcing the change in advance.

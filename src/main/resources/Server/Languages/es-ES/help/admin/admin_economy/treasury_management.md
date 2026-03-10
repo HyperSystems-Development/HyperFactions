@@ -3,8 +3,7 @@ id: admin_treasury_management
 ---
 # Gestion de Tesoreria
 
-Comandos de administracion para gestionar tesorerias
-de facciones. Requiere el permiso `hyperfactions.admin.economy`.
+Comandos de administracion para gestionar tesorerias de facciones. Requiere el permiso `hyperfactions.admin.economy`.
 
 ## Comandos de Tesoreria
 

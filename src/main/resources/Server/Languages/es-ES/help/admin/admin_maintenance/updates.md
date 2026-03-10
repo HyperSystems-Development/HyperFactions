@@ -3,8 +3,7 @@ id: admin_updates
 ---
 # Verificacion de Actualizaciones
 
-HyperFactions puede verificar nuevas versiones y
-gestionar la dependencia HyperProtect-Mixin.
+HyperFactions puede verificar nuevas versiones y gestionar la dependencia HyperProtect-Mixin.
 
 ## Comandos de Actualizacion
 
@@ -26,12 +25,10 @@ gestionar la dependencia HyperProtect-Mixin.
 
 ## HyperProtect-Mixin
 
-HyperProtect-Mixin es el mixin de proteccion recomendado
-que habilita indicadores de zona avanzados (explosiones,
-propagacion de fuego, conservar inventario, etc.).
+HyperProtect-Mixin es el mixin de proteccion recomendado que habilita indicadores de zona avanzados (explosiones, propagacion de fuego, conservar inventario, etc.).
 
 - `/f admin update mixin` verifica la ultima version
-  y la descarga si hay una version mas nueva disponible
+y la descarga si hay una version mas nueva disponible
 - La descarga automatica puede alternarse por servidor
 
 >[!TIP] Despues de descargar una nueva version del mixin, se requiere reiniciar el servidor para que los cambios tomen efecto.

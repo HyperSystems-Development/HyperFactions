@@ -3,8 +3,7 @@ id: admin_permissions
 ---
 # Permisos de Administracion
 
-Todas las funciones de administracion estan protegidas
-por nodos de permisos en el espacio `hyperfactions.admin`.
+Todas las funciones de administracion estan protegidas por nodos de permisos en el espacio `hyperfactions.admin`.
 
 ## Nodos de Permisos
 
@@ -24,10 +23,7 @@ por nodos de permisos en el espacio `hyperfactions.admin`.
 
 ## Comportamiento Alternativo
 
-Cuando **no hay un plugin de permisos** instalado, los
-permisos de administracion recurren al estado de operador
-del servidor (OP). Esto se controla mediante `adminRequiresOp`
-en la configuracion del servidor (por defecto: `true`).
+Cuando **no hay un plugin de permisos** instalado, los permisos de administracion recurren al estado de operador del servidor (OP). Esto se controla mediante `adminRequiresOp` en la configuracion del servidor (por defecto: `true`).
 
 >[!NOTE] El comodin `hyperfactions.admin.*` otorga todos los permisos de administracion. Usa nodos individuales para un control granular sobre tu equipo de staff.
 

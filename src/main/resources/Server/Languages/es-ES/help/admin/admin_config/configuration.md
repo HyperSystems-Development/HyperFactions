@@ -3,8 +3,7 @@ id: admin_configuration
 ---
 # Sistema de Configuracion
 
-HyperFactions usa un sistema de configuracion modular
-en JSON con 11 archivos de configuracion.
+HyperFactions usa un sistema de configuracion modular en JSON con 11 archivos de configuracion.
 
 ## Comandos de Configuracion del Administrador
 

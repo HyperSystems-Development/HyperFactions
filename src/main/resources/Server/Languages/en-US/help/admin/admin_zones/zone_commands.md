@@ -3,8 +3,7 @@ id: admin_zone_commands
 ---
 # Zone Command Reference
 
-Complete reference for all zone management commands.
-All require `hyperfactions.admin.zones` permission.
+Complete reference for all zone management commands. All require `hyperfactions.admin.zones` permission.
 
 ## Quick Creation
 

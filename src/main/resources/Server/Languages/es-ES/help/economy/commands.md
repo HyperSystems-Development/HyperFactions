@@ -22,8 +22,6 @@ Referencia rapida para todos los comandos de economia de faccion.
 
 ## Permisos
 
-Todos los comandos de economia requieren nodos de permiso
-`hyperfactions.economy.*`. Retirar y transferir estan
-adicionalmente restringidos por rol de faccion (Oficial o superior).
+Todos los comandos de economia requieren nodos de permiso `hyperfactions.economy.*`. Retirar y transferir estan adicionalmente restringidos por rol de faccion (Oficial o superior).
 
 >[!TIP] Usa /f money log para revisar depositos, retiros y transferencias recientes con marcas de tiempo.

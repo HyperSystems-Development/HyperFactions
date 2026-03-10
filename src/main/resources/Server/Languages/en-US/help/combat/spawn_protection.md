@@ -3,8 +3,7 @@ id: combat_spawn_protection
 ---
 # Spawn Protection
 
-After respawning from death, you receive temporary
-protection to prevent spawn camping.
+After respawning from death, you receive temporary protection to prevent spawn camping.
 
 ## How It Works
 
@@ -19,9 +18,7 @@ Spawn protection ends early if you:
 - **Attack** another player or entity
 - **Move** from your spawn position
 
-This prevents abuse. You cannot attack others while
-invulnerable. Once you take any action, protection
-drops and normal combat rules apply.
+This prevents abuse. You cannot attack others while invulnerable. Once you take any action, protection drops and normal combat rules apply.
 
 ---
 

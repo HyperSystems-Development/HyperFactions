@@ -3,8 +3,7 @@ id: admin_zone_flags
 ---
 # Indicadores de Zona
 
-Las zonas soportan **47 indicadores booleanos** en 10 categorias.
-Cada indicador controla un comportamiento especifico dentro de la zona.
+Las zonas soportan **47 indicadores booleanos** en 10 categorias. Cada indicador controla un comportamiento especifico dentro de la zona.
 
 ## Resumen de Categorias de Indicadores
 

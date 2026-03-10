@@ -61,6 +61,18 @@ public class HelpLangGenerator {
             "admin_economy", "admin_config", "admin_maintenance", "admin_reference"
     );
 
+    /** Pattern for inline bold: **text** */
+    private static final Pattern INLINE_BOLD_PATTERN = Pattern.compile("\\*\\*(.+?)\\*\\*");
+
+    /** Pattern for inline code: `text` */
+    private static final Pattern INLINE_CODE_PATTERN = Pattern.compile("`(.+?)`");
+
+    /** Pattern for inline italic: *text* (not bold **) */
+    private static final Pattern INLINE_ITALIC_PATTERN = Pattern.compile("(?<!\\*)\\*(?!\\*)(.+?)(?<!\\*)\\*(?!\\*)");
+
+    /** Pattern for em-dash: -- (space-bounded or at boundaries) */
+    private static final Pattern EM_DASH_PATTERN = Pattern.compile(" -- ");
+
     /** Pattern for inline hex color: [#RRGGBB] text */
     private static final Pattern HEX_COLOR_PATTERN = Pattern.compile("^\\[#([0-9A-Fa-f]{6})]\\s*(.+)$");
 
@@ -483,12 +495,13 @@ public class HelpLangGenerator {
                 Entry entry = topic.entries().get(i);
                 if (entry.columns() != null) {
                     // Table entry — write each column as a separate lang key
+                    // (table cell formatting is handled at render time by applyCellFormatting)
                     for (ColumnEntry col : entry.columns()) {
                         sb.append(col.key()).append(" = ").append(col.text()).append("\n");
                     }
                 } else if (entry.key() != null) {
                     String text = topic.entryTexts().get(i);
-                    sb.append(entry.key()).append(" = ").append(text).append("\n");
+                    sb.append(entry.key()).append(" = ").append(stripInlineMarkers(text)).append("\n");
                 }
             }
 
@@ -552,6 +565,29 @@ public class HelpLangGenerator {
         Files.createDirectories(manifestFile.getParent());
         Files.writeString(manifestFile, json + "\n");
         System.out.println("Wrote: " + manifestFile);
+    }
+
+    // ── Inline marker stripping ─────────────────────────────────────────
+
+    /**
+     * Strips inline markdown markers from text destined for .lang files.
+     * <p>The UI Labels can't mix bold and regular text in one element,
+     * so we strip markers to produce clean readable text:
+     * <ul>
+     *   <li>{@code **bold**} → {@code bold}</li>
+     *   <li>{@code `code`} → {@code code}</li>
+     *   <li>{@code *italic*} → {@code italic}</li>
+     *   <li>{@code " -- "} → {@code " — "} (em-dash)</li>
+     * </ul>
+     */
+    private static String stripInlineMarkers(String text) {
+        if (text == null) return null;
+        // Order matters: strip bold (**) before italic (*) to avoid partial matches
+        text = INLINE_BOLD_PATTERN.matcher(text).replaceAll("$1");
+        text = INLINE_CODE_PATTERN.matcher(text).replaceAll("$1");
+        text = INLINE_ITALIC_PATTERN.matcher(text).replaceAll("$1");
+        text = EM_DASH_PATTERN.matcher(text).replaceAll(" \u2014 ");
+        return text;
     }
 
     // ── Utility ──────────────────────────────────────────────────────────

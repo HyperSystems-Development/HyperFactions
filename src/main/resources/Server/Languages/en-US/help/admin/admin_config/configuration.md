@@ -3,8 +3,7 @@ id: admin_configuration
 ---
 # Configuration System
 
-HyperFactions uses a modular JSON config system with
-11 configuration files.
+HyperFactions uses a modular JSON config system with 11 configuration files.
 
 ## Admin Config Commands
 

@@ -3,8 +3,7 @@ id: quickref_permissions
 ---
 # Permissions
 
-Key permission nodes for HyperFactions. All nodes
-fall under the **hyperfactions** root namespace.
+Key permission nodes for HyperFactions. All nodes fall under the **hyperfactions** root namespace.
 
 ## Core Permissions
 

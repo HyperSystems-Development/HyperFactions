@@ -3,8 +3,7 @@ id: admin_backups
 ---
 # Sistema de Copias de Seguridad
 
-HyperFactions incluye copias de seguridad automaticas y
-manuales con rotacion GFS (Abuelo-Padre-Hijo).
+HyperFactions incluye copias de seguridad automaticas y manuales con rotacion GFS (Abuelo-Padre-Hijo).
 
 ## Comandos de Copias de Seguridad
 

@@ -3,16 +3,14 @@ id: admin_zone_basics
 ---
 # Conceptos Basicos de Zonas
 
-Las zonas son territorios controlados por el administrador
-con reglas personalizadas que anulan la proteccion normal
-de facciones.
+Las zonas son territorios controlados por el administrador con reglas personalizadas que anulan la proteccion normal de facciones.
 
 ## Tipos de Zonas
 
 - **Zona Segura** -- Sin PvP, sin construccion, sin dano.
-  Ideal para areas de spawn y centros de comercio.
+Ideal para areas de spawn y centros de comercio.
 - **Zona de Guerra** -- PvP siempre habilitado, sin construccion.
-  Ideal para arenas y areas de batalla disputadas.
+Ideal para arenas y areas de batalla disputadas.
 
 ## Crear Zonas
 
@@ -22,8 +20,7 @@ Crea una Zona Segura y reclama tu chunk actual.
 `/f admin warzone <name>`
 Crea una Zona de Guerra y reclama tu chunk actual.
 
-Despues de la creacion, colocate en chunks adicionales
-y usa `/f admin zone claim <zone>` para expandir la zona.
+Despues de la creacion, colocate en chunks adicionales y usa `/f admin zone claim <zone>` para expandir la zona.
 
 ## Gestionar Chunks de Zonas
 
@@ -39,8 +36,7 @@ Reclama un cuadrado de chunks alrededor de tu posicion.
 ## Eliminar Zonas
 
 `/f admin removezone <name>`
-Elimina permanentemente la zona y libera todos sus
-chunks reclamados.
+Elimina permanentemente la zona y libera todos sus chunks reclamados.
 
 >[!WARNING] Eliminar una zona libera todos sus chunks instantaneamente. Esto no se puede deshacer sin una restauracion de copia de seguridad.
 

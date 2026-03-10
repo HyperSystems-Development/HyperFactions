@@ -3,8 +3,7 @@ id: admin_quickref_commands
 ---
 # Admin Command Reference
 
-Complete list of all `/f admin` subcommands with
-syntax and required permissions.
+Complete list of all `/f admin` subcommands with syntax and required permissions.
 
 ## Dashboard and General
 
@@ -14,7 +13,7 @@ syntax and required permissions.
 | `/f admin version` | admin.use |
 | `/f admin reload` | admin.reload |
 | `/f admin sync` | admin.use |
-| `/f admin bypass` | admin.bypass.limits |
+| `/f admin sentry` | admin.use |
 
 ## Faction Management
 

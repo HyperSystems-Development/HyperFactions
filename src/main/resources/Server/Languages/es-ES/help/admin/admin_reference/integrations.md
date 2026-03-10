@@ -3,10 +3,7 @@ id: admin_integrations
 ---
 # Integraciones de Plugins
 
-HyperFactions se integra con varios plugins externos
-a traves de dependencias suaves. Todas las integraciones
-son opcionales y funcionan correctamente si no estan
-disponibles.
+HyperFactions se integra con varios plugins externos a traves de dependencias suaves. Todas las integraciones son opcionales y funcionan correctamente si no estan disponibles.
 
 ## Verificar Estado de Integraciones
 
@@ -14,8 +11,7 @@ disponibles.
 Muestra la version actual y las integraciones detectadas.
 
 `/f admin integration`
-Abre el panel de gestion de integraciones con el estado
-detallado de cada plugin detectado.
+Abre el panel de gestion de integraciones con el estado detallado de cada plugin detectado.
 
 ## Tabla de Integraciones
 

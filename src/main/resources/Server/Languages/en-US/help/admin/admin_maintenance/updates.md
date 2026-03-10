@@ -3,8 +3,7 @@ id: admin_updates
 ---
 # Update Checking
 
-HyperFactions can check for new versions and manage
-the HyperProtect-Mixin dependency.
+HyperFactions can check for new versions and manage the HyperProtect-Mixin dependency.
 
 ## Update Commands
 
@@ -26,12 +25,10 @@ the HyperProtect-Mixin dependency.
 
 ## HyperProtect-Mixin
 
-HyperProtect-Mixin is the recommended protection
-mixin that enables advanced zone flags (explosions,
-fire spread, keep inventory, etc.).
+HyperProtect-Mixin is the recommended protection mixin that enables advanced zone flags (explosions, fire spread, keep inventory, etc.).
 
 - `/f admin update mixin` checks for the latest version
-  and downloads it if a newer version is available
+and downloads it if a newer version is available
 - Auto-download can be toggled on or off per server
 
 >[!TIP] After downloading a new mixin version, a server restart is required for the changes to take effect.

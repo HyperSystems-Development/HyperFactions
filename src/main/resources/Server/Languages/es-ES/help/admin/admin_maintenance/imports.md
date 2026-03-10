@@ -3,8 +3,7 @@ id: admin_imports
 ---
 # Importacion de Datos
 
-Importa datos de facciones desde otros plugins para
-migrar tu servidor a HyperFactions.
+Importa datos de facciones desde otros plugins para migrar tu servidor a HyperFactions.
 
 ## Comando de Importacion
 

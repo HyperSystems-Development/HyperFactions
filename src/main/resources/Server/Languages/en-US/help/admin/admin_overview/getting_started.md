@@ -3,14 +3,12 @@ id: admin_getting_started
 ---
 # Getting Started as Admin
 
-Welcome to HyperFactions administration. This guide
-covers your first steps after installing the plugin.
+Welcome to HyperFactions administration. This guide covers your first steps after installing the plugin.
 
 ## Opening the Admin Dashboard
 
 `/f admin`
-Opens the admin dashboard GUI with access to all
-management tools, zone editors, and server settings.
+Opens the admin dashboard GUI with access to all management tools, zone editors, and server settings.
 
 >[!INFO] You need **hyperfactions.admin.use** permission or OP status to access admin commands.
 
@@ -18,7 +16,7 @@ management tools, zone editors, and server settings.
 
 - **With a permission plugin**: Grant `hyperfactions.admin.use`
 - **Without a permission plugin**: The player must be a
-  server operator (`adminRequiresOp=true` by default)
+server operator (`adminRequiresOp=true` by default)
 
 ## First Steps After Install
 

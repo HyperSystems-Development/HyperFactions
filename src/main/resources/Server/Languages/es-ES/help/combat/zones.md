@@ -3,20 +3,15 @@ id: combat_zones
 ---
 # Zonas Especiales
 
-Los administradores pueden designar areas con reglas especiales
-que anulan la proteccion normal de territorio de faccion.
+Los administradores pueden designar areas con reglas especiales que anulan la proteccion normal de territorio de faccion.
 
 ## Zona Segura
 
-Sin dano PvP, sin destruccion de bloques por no administradores.
-Ideal para areas de aparicion, centros de comercio y areas de
-preparacion de eventos. Los jugadores no pueden ser danados aqui.
+Sin dano PvP, sin destruccion de bloques por no administradores. Ideal para areas de aparicion, centros de comercio y areas de preparacion de eventos. Los jugadores no pueden ser danados aqui.
 
 ## Zona de Guerra
 
-PvP siempre habilitado. No aplica proteccion de bloques.
-Areas de batalla abierta donde todo vale. No recibes
-beneficios de proteccion de territorio en una Zona de Guerra.
+PvP siempre habilitado. No aplica proteccion de bloques. Areas de batalla abierta donde todo vale. No recibes beneficios de proteccion de territorio en una Zona de Guerra.
 
 ---
 

@@ -3,15 +3,12 @@ id: admin_getting_started
 ---
 # Primeros Pasos como Administrador
 
-Bienvenido a la administracion de HyperFactions. Esta
-guia cubre tus primeros pasos despues de instalar el plugin.
+Bienvenido a la administracion de HyperFactions. Esta guia cubre tus primeros pasos despues de instalar el plugin.
 
 ## Abrir el Panel de Administracion
 
 `/f admin`
-Abre la interfaz del panel de administracion con acceso
-a todas las herramientas de gestion, editores de zonas
-y configuracion del servidor.
+Abre la interfaz del panel de administracion con acceso a todas las herramientas de gestion, editores de zonas y configuracion del servidor.
 
 >[!INFO] Necesitas el permiso **hyperfactions.admin.use** o estado de OP para acceder a los comandos de administracion.
 
@@ -19,7 +16,7 @@ y configuracion del servidor.
 
 - **Con un plugin de permisos**: Otorga `hyperfactions.admin.use`
 - **Sin un plugin de permisos**: El jugador debe ser un
-  operador del servidor (`adminRequiresOp=true` por defecto)
+operador del servidor (`adminRequiresOp=true` por defecto)
 
 ## Primeros Pasos Tras la Instalacion
 

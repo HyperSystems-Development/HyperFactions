@@ -3,14 +3,12 @@ id: admin_disbanding
 ---
 # Force Disbanding
 
-Admins can forcefully disband any faction, regardless
-of the leader's wishes.
+Admins can forcefully disband any faction, regardless of the leader's wishes.
 
 ## Command
 
 `/f admin disband <faction>`
-Force-disband the named faction. A confirmation
-prompt will appear before the action is executed.
+Force-disband the named faction. A confirmation prompt will appear before the action is executed.
 
 **Permission**: `hyperfactions.admin.disband`
 
@@ -36,4 +34,4 @@ When a faction is disbanded:
 3. Document the reason for server records
 4. Check `/f admin info <faction>` to review before acting
 
->[!TIP] If the issue is with a specific member, consider using `/f admin modify` to transfer leadership rather than disbanding the entire faction.
+>[!TIP] If the issue is with a specific member, consider using the admin factions GUI to transfer leadership rather than disbanding the entire faction.

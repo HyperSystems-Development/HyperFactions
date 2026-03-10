@@ -3,8 +3,7 @@ id: admin_backups
 ---
 # Backup System
 
-HyperFactions includes automatic and manual backups
-with GFS (Grandfather-Father-Son) rotation.
+HyperFactions includes automatic and manual backups with GFS (Grandfather-Father-Son) rotation.
 
 ## Backup Commands
 

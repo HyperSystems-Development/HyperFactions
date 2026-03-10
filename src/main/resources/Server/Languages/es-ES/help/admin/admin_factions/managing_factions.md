@@ -3,20 +3,15 @@ id: admin_managing_factions
 ---
 # Gestion de Facciones
 
-Los administradores pueden inspeccionar y modificar
-cualquier faccion del servidor a traves del panel o comandos.
+Los administradores pueden inspeccionar y modificar cualquier faccion del servidor a traves del panel o comandos.
 
 ## Explorar Facciones
 
 `/f admin factions`
-Abre el explorador de facciones del administrador. Ve
-todas las facciones con cantidad de miembros, niveles
-de poder y territorio.
+Abre el explorador de facciones del administrador. Ve todas las facciones con cantidad de miembros, niveles de poder y territorio.
 
 `/f admin info <faction>`
-Abre el panel de informacion del administrador para una
-faccion especifica con detalles completos y opciones
-de gestion.
+Abre el panel de informacion del administrador para una faccion especifica con detalles completos y opciones de gestion.
 
 ## Modificar Configuracion de Facciones
 

@@ -3,8 +3,7 @@ id: combat_spawn_protection
 ---
 # Proteccion de Aparicion
 
-Despues de reaparecer tras la muerte, recibes proteccion
-temporal para prevenir el campeo de aparicion.
+Despues de reaparecer tras la muerte, recibes proteccion temporal para prevenir el campeo de aparicion.
 
 ## Como Funciona
 
@@ -19,9 +18,7 @@ La proteccion de aparicion termina antes si:
 - **Atacas** a otro jugador o entidad
 - **Te mueves** de tu posicion de aparicion
 
-Esto previene el abuso. No puedes atacar a otros mientras
-eres invulnerable. Una vez que realizas cualquier accion,
-la proteccion cae y las reglas normales de combate aplican.
+Esto previene el abuso. No puedes atacar a otros mientras eres invulnerable. Una vez que realizas cualquier accion, la proteccion cae y las reglas normales de combate aplican.
 
 ---
 

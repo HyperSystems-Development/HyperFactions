@@ -3,8 +3,7 @@ id: admin_zone_flags
 ---
 # Zone Flags
 
-Zones support **47 boolean flags** across 10 categories.
-Each flag controls a specific behavior within the zone.
+Zones support **47 boolean flags** across 10 categories. Each flag controls a specific behavior within the zone.
 
 ## Flag Categories Overview
 

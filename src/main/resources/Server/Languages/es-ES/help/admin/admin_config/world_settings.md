@@ -3,8 +3,7 @@ id: admin_world_settings
 ---
 # Ajustes por Mundo
 
-HyperFactions soporta configuracion por mundo para
-reclamaciones, PvP y comportamiento de proteccion.
+HyperFactions soporta configuracion por mundo para reclamaciones, PvP y comportamiento de proteccion.
 
 ## Comandos de Mundo
 
@@ -27,8 +26,7 @@ reclamaciones, PvP y comportamiento de proteccion.
 
 ## Lista Blanca / Lista Negra de Mundos
 
-Controla que mundos permiten funciones de facciones
-a traves del archivo de configuracion `worlds.json`:
+Controla que mundos permiten funciones de facciones a traves del archivo de configuracion `worlds.json`:
 
 - **Modo lista blanca**: Solo los mundos listados permiten reclamar
 - **Modo lista negra**: Todos los mundos permiten reclamar excepto los listados

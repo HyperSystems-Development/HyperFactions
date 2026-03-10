@@ -3,8 +3,7 @@ id: admin_world_settings
 ---
 # Per-World Settings
 
-HyperFactions supports per-world configuration for
-claiming, PvP, and protection behavior.
+HyperFactions supports per-world configuration for claiming, PvP, and protection behavior.
 
 ## World Commands
 
@@ -27,8 +26,7 @@ claiming, PvP, and protection behavior.
 
 ## World Whitelist / Blacklist
 
-Control which worlds allow faction features through
-the `worlds.json` config file:
+Control which worlds allow faction features through the `worlds.json` config file:
 
 - **Whitelist mode**: Only listed worlds allow claiming
 - **Blacklist mode**: All worlds allow claiming except listed
