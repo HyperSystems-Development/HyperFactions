@@ -10,9 +10,10 @@ import org.jetbrains.annotations.Nullable;
  * doesn't rely on fragile string-prefix detection.
  *
  * @param type       The visual type of this entry
- * @param messageKey The HelpMessages key for this entry's text (ignored for SPACER)
+ * @param messageKey The HelpMessages key for this entry's text (ignored for SPACER/SEPARATOR)
+ * @param color      Optional color override (hex string like "#FF5555"), null for default
  */
-public record HelpEntry(@NotNull EntryType type, @NotNull String messageKey) {
+public record HelpEntry(@NotNull EntryType type, @NotNull String messageKey, @Nullable String color) {
 
   /**
    * Visual types for help content lines.
@@ -22,22 +23,30 @@ public record HelpEntry(@NotNull EntryType type, @NotNull String messageKey) {
     TEXT,
     /** Command callout (#FFFF55, bold). */
     COMMAND,
-    /** Green tip/advice text (#55FF55). */
-    TIP,
     /** Bold sub-heading within a card (#00AAAA). */
     HEADING,
     /** Visual separator (no text). */
-    SPACER
+    SPACER,
+    /** Bold text (#CCCCCC, bold). */
+    BOLD,
+    /** Italic text (#CCCCCC, italic). */
+    ITALIC,
+    /** List item with indent (#CCCCCC). */
+    LIST,
+    /** Horizontal rule separator (no text). */
+    SEPARATOR,
+    /** Boxed callout with colored accent bar. */
+    CALLOUT
   }
 
   /**
    * Gets the resolved display text for this entry (server default language).
    *
-   * @return The localized text, or empty string for spacers
+   * @return The localized text, or empty string for spacers/separators
    */
   @NotNull
   public String text() {
-    return type == EntryType.SPACER ? "" : HelpMessages.get(messageKey);
+    return type == EntryType.SPACER || type == EntryType.SEPARATOR ? "" : HelpMessages.get(messageKey);
   }
 
   /**
@@ -45,31 +54,56 @@ public record HelpEntry(@NotNull EntryType type, @NotNull String messageKey) {
    */
   @NotNull
   public String text(@Nullable PlayerRef playerRef) {
-    return type == EntryType.SPACER ? "" : HelpMessages.get(playerRef, messageKey);
+    return type == EntryType.SPACER || type == EntryType.SEPARATOR ? "" : HelpMessages.get(playerRef, messageKey);
   }
 
   /** Creates a TEXT entry. */
   public static HelpEntry text(@NotNull String messageKey) {
-    return new HelpEntry(EntryType.TEXT, messageKey);
+    return new HelpEntry(EntryType.TEXT, messageKey, null);
   }
 
   /** Creates a COMMAND entry. */
   public static HelpEntry command(@NotNull String messageKey) {
-    return new HelpEntry(EntryType.COMMAND, messageKey);
-  }
-
-  /** Creates a TIP entry. */
-  public static HelpEntry tip(@NotNull String messageKey) {
-    return new HelpEntry(EntryType.TIP, messageKey);
+    return new HelpEntry(EntryType.COMMAND, messageKey, null);
   }
 
   /** Creates a HEADING entry. */
   public static HelpEntry heading(@NotNull String messageKey) {
-    return new HelpEntry(EntryType.HEADING, messageKey);
+    return new HelpEntry(EntryType.HEADING, messageKey, null);
   }
 
   /** Creates a SPACER entry. */
   public static HelpEntry spacer() {
-    return new HelpEntry(EntryType.SPACER, "");
+    return new HelpEntry(EntryType.SPACER, "", null);
+  }
+
+  /** Creates a BOLD entry. */
+  public static HelpEntry bold(@NotNull String messageKey) {
+    return new HelpEntry(EntryType.BOLD, messageKey, null);
+  }
+
+  /** Creates an ITALIC entry. */
+  public static HelpEntry italic(@NotNull String messageKey) {
+    return new HelpEntry(EntryType.ITALIC, messageKey, null);
+  }
+
+  /** Creates a LIST entry. */
+  public static HelpEntry list(@NotNull String messageKey) {
+    return new HelpEntry(EntryType.LIST, messageKey, null);
+  }
+
+  /** Creates a SEPARATOR entry. */
+  public static HelpEntry separator() {
+    return new HelpEntry(EntryType.SEPARATOR, "", null);
+  }
+
+  /** Creates a CALLOUT entry with a color. */
+  public static HelpEntry callout(@NotNull String messageKey, @Nullable String color) {
+    return new HelpEntry(EntryType.CALLOUT, messageKey, color);
+  }
+
+  /** Creates a TEXT entry with a custom color. */
+  public static HelpEntry colored(@NotNull String messageKey, @NotNull String color) {
+    return new HelpEntry(EntryType.TEXT, messageKey, color);
   }
 }

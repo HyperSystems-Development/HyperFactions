@@ -1,0 +1,12 @@
+// Help content line - list item with left indent
+
+Group {
+  Anchor: (Height: 16);
+  Padding: (Left: 12);
+
+  Label #Text {
+    Text: "";
+    Style: (FontSize: 11, TextColor: #CCCCCC);
+    Anchor: (Left: 0, Right: 0, Top: 0, Bottom: 0);
+  }
+}

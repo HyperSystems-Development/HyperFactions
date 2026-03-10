@@ -39,11 +39,19 @@ public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
 
   private static final String TPL_LINE_COMMAND = UIPaths.HELP_LINE_COMMAND;
 
-  private static final String TPL_LINE_TIP = UIPaths.HELP_LINE_TIP;
-
   private static final String TPL_LINE_HEADING = UIPaths.HELP_LINE_HEADING;
 
   private static final String TPL_SPACER = UIPaths.HELP_SPACER;
+
+  private static final String TPL_LINE_BOLD = UIPaths.HELP_LINE_BOLD;
+
+  private static final String TPL_LINE_ITALIC = UIPaths.HELP_LINE_ITALIC;
+
+  private static final String TPL_LINE_LIST = UIPaths.HELP_LINE_LIST;
+
+  private static final String TPL_SEPARATOR = UIPaths.HELP_SEPARATOR;
+
+  private static final String TPL_LINE_CALLOUT = UIPaths.HELP_LINE_CALLOUT;
 
   private final PlayerRef playerRef;
 
@@ -162,13 +170,27 @@ public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
         String template = getTemplateForType(entry.type());
         cmd.append(linesContainer, template);
 
-        if (entry.type() != HelpEntry.EntryType.SPACER) {
+        String selector = linesContainer + "[" + lineIndex + "]";
+
+        if (entry.type() != HelpEntry.EntryType.SPACER && entry.type() != HelpEntry.EntryType.SEPARATOR) {
           String text = entry.text(playerRef);
-          // Prefix tips with >> for visual distinction
-          if (entry.type() == HelpEntry.EntryType.TIP) {
-            text = ">> " + text;
+
+          // Add bullet prefix for unordered list items
+          if (entry.type() == HelpEntry.EntryType.LIST && !text.matches("^\\d+\\.\\s.*")) {
+            text = "\u2022 " + text;
           }
-          cmd.set(linesContainer + "[" + lineIndex + "] #Text.Text", text);
+
+          cmd.set(selector + " #Text.Text", text);
+
+          // Apply color override if present
+          if (entry.color() != null) {
+            cmd.set(selector + " #Text.Style.TextColor", entry.color());
+
+            // For callouts, also color the accent bar
+            if (entry.type() == HelpEntry.EntryType.CALLOUT) {
+              cmd.set(selector + " #AccentBar.Background.Color", entry.color());
+            }
+          }
         }
         lineIndex++;
       }
@@ -183,9 +205,13 @@ public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
     return switch (type) {
       case TEXT -> TPL_LINE_TEXT;
       case COMMAND -> TPL_LINE_COMMAND;
-      case TIP -> TPL_LINE_TIP;
       case HEADING -> TPL_LINE_HEADING;
       case SPACER -> TPL_SPACER;
+      case BOLD -> TPL_LINE_BOLD;
+      case ITALIC -> TPL_LINE_ITALIC;
+      case LIST -> TPL_LINE_LIST;
+      case SEPARATOR -> TPL_SEPARATOR;
+      case CALLOUT -> TPL_LINE_CALLOUT;
     };
   }
 

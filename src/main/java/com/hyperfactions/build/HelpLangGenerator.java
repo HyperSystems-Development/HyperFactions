@@ -6,19 +6,45 @@ import com.google.gson.GsonBuilder;
 import java.io.IOException;
 import java.nio.file.*;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 /**
  * Build-time tool that converts help markdown files into .lang translation files
  * and a help-manifest.json for the HyperFactions help system.
  *
- * <p>Usage: {@code java HelpLangGenerator <helpDir> <outputDir>}
+ * <p>Usage: {@code java HelpLangGenerator <langDir> <outputDir>}
  *
- * <p>Reads {@code src/main/help/{locale}/{category}/{topic}.md} and produces:
+ * <p>Reads {@code Server/Languages/{locale}/help/{category}/{topic}.md} and produces:
  * <ul>
  *   <li>{@code {outputDir}/Server/Languages/{locale}/hyperfactions_help.lang}</li>
  *   <li>{@code {outputDir}/help-manifest.json} (generated from en-US only)</li>
  * </ul>
+ *
+ * <h3>Supported Markdown Syntax</h3>
+ * <pre>
+ * Plain text              → TEXT
+ * ## Heading              → HEADING
+ * `command`               → COMMAND
+ * **bold text**           → BOLD
+ * *italic text*           → ITALIC
+ * - list item             → LIST
+ * 1. numbered item        → LIST
+ * ---                     → SEPARATOR
+ * [#RRGGBB] text          → TEXT + color
+ * !warning text           → TEXT + #FF5555
+ * !success text           → TEXT + #55FF55
+ * !note text              → TEXT + #55AAFF
+ * !muted text             → TEXT + #888888
+ * > tip text              → CALLOUT + #55FF55
+ * >[!TIP] text            → CALLOUT + #55FF55
+ * >[!WARNING] text        → CALLOUT + #FF5555
+ * >[!INFO] text           → CALLOUT + #55AAFF
+ * >[!NOTE] text           → CALLOUT + #FFAA55
+ * >[!SUCCESS] text        → CALLOUT + #55FF55
+ * blank line              → SPACER
+ * </pre>
  */
 public class HelpLangGenerator {
 
@@ -27,10 +53,43 @@ public class HelpLangGenerator {
             "welcome", "your_faction", "power_land", "diplomacy", "combat", "economy", "quick_ref"
     );
 
+    /** Pattern for inline hex color: [#RRGGBB] text */
+    private static final Pattern HEX_COLOR_PATTERN = Pattern.compile("^\\[#([0-9A-Fa-f]{6})]\\s*(.+)$");
+
+    /** Pattern for callout with type: >[!TYPE] text */
+    private static final Pattern CALLOUT_TYPE_PATTERN = Pattern.compile("^>\\[!([A-Z]+)]\\s*(.+)$");
+
+    /** Pattern for numbered list: 1. text, 2. text, etc. */
+    private static final Pattern NUMBERED_LIST_PATTERN = Pattern.compile("^\\d+\\.\\s+(.+)$");
+
+    /** Pattern for horizontal rule: 3+ dashes on a line */
+    private static final Pattern HR_PATTERN = Pattern.compile("^-{3,}$");
+
+    /** Named color shortcuts */
+    private static final Map<String, String> NAMED_COLORS = Map.of(
+            "warning", "#FF5555",
+            "success", "#55FF55",
+            "note", "#55AAFF",
+            "muted", "#888888"
+    );
+
+    /** Callout type colors */
+    private static final Map<String, String> CALLOUT_COLORS = Map.of(
+            "TIP", "#55FF55",
+            "WARNING", "#FF5555",
+            "INFO", "#55AAFF",
+            "NOTE", "#FFAA55",
+            "SUCCESS", "#55FF55"
+    );
+
     // ── Data structures ──────────────────────────────────────────────────
 
     /** A single parsed entry from a markdown topic file. */
-    record Entry(String type, String key) {}
+    record Entry(String type, String key, String color) {
+        Entry(String type, String key) {
+            this(type, key, null);
+        }
+    }
 
     /** A fully parsed topic ready for manifest / lang output. */
     record Topic(
@@ -48,30 +107,33 @@ public class HelpLangGenerator {
 
     public static void main(String[] args) {
         if (args.length < 2) {
-            System.err.println("Usage: HelpLangGenerator <helpDir> <outputDir>");
+            System.err.println("Usage: HelpLangGenerator <langDir> <outputDir>");
             System.exit(1);
         }
 
-        Path helpDir = Paths.get(args[0]);
+        Path langDir = Paths.get(args[0]);
         Path outputDir = Paths.get(args[1]);
 
-        if (!Files.isDirectory(helpDir)) {
-            System.err.println("Help directory not found: " + helpDir);
+        if (!Files.isDirectory(langDir)) {
+            System.err.println("Languages directory not found: " + langDir);
             System.exit(1);
         }
 
         try {
-            List<String> locales = listSortedDirectories(helpDir);
+            // Find locales that have a help/ subdirectory
+            List<String> locales = listSortedDirectories(langDir).stream()
+                    .filter(d -> Files.isDirectory(langDir.resolve(d).resolve("help")))
+                    .toList();
             if (locales.isEmpty()) {
-                System.err.println("No locale directories found under " + helpDir);
+                System.err.println("No locale directories with help/ found under " + langDir);
                 System.exit(1);
             }
 
-            System.out.println("Found locales: " + locales);
+            System.out.println("Found locales with help content: " + locales);
 
             for (String locale : locales) {
-                Path localeDir = helpDir.resolve(locale);
-                List<Topic> topics = parseLocale(localeDir);
+                Path helpDir = langDir.resolve(locale).resolve("help");
+                List<Topic> topics = parseLocale(helpDir);
                 writeLangFile(outputDir, locale, topics);
 
                 if ("en-US".equals(locale)) {
@@ -124,12 +186,15 @@ public class HelpLangGenerator {
         String id = null;
         List<String> commands = new ArrayList<>();
         int contentStart = 0;
+        boolean inFrontmatter = false;
 
         if (!lines.isEmpty() && "---".equals(lines.get(0).trim())) {
+            inFrontmatter = true;
             for (int i = 1; i < lines.size(); i++) {
                 String line = lines.get(i).trim();
                 if ("---".equals(line)) {
                     contentStart = i + 1;
+                    inFrontmatter = false;
                     break;
                 }
                 if (line.startsWith("id:")) {
@@ -187,8 +252,111 @@ public class HelpLangGenerator {
 
             foundFirstContent = true;
 
+            // ── Order matters: check specific patterns before plain text ──
+
+            // 1. Horizontal rule: --- (3+ dashes, not in frontmatter context)
+            if (HR_PATTERN.matcher(trimmed).matches()) {
+                entries.add(new Entry("SEPARATOR", null));
+                entryTexts.add(null);
+                continue;
+            }
+
+            // 2. Callout with explicit type: >[!WARNING] text, >[!TIP] text, etc.
+            Matcher calloutMatcher = CALLOUT_TYPE_PATTERN.matcher(trimmed);
+            if (calloutMatcher.matches()) {
+                String calloutType = calloutMatcher.group(1);
+                String text = calloutMatcher.group(2).trim();
+                String color = CALLOUT_COLORS.getOrDefault(calloutType, "#55FF55");
+                lineCounter++;
+                String key = keyPrefix + ".line." + lineCounter;
+                entries.add(new Entry("CALLOUT", key, color));
+                entryTexts.add(text);
+                continue;
+            }
+
+            // 3. Simple blockquote → CALLOUT (tip shorthand, green)
+            if (trimmed.startsWith("> ")) {
+                lineCounter++;
+                String key = keyPrefix + ".line." + lineCounter;
+                String text = trimmed.substring(2).trim();
+                entries.add(new Entry("CALLOUT", key, "#55FF55"));
+                entryTexts.add(text);
+                continue;
+            }
+
+            // 4. Inline hex color: [#RRGGBB] text
+            Matcher hexMatcher = HEX_COLOR_PATTERN.matcher(trimmed);
+            if (hexMatcher.matches()) {
+                String color = "#" + hexMatcher.group(1);
+                String text = hexMatcher.group(2).trim();
+                lineCounter++;
+                String key = keyPrefix + ".line." + lineCounter;
+                entries.add(new Entry("TEXT", key, color));
+                entryTexts.add(text);
+                continue;
+            }
+
+            // 5. Named color shortcuts: !warning, !success, !note, !muted
+            if (trimmed.startsWith("!")) {
+                String rest = trimmed.substring(1);
+                int spaceIdx = rest.indexOf(' ');
+                if (spaceIdx > 0) {
+                    String colorName = rest.substring(0, spaceIdx).toLowerCase();
+                    String color = NAMED_COLORS.get(colorName);
+                    if (color != null) {
+                        String text = rest.substring(spaceIdx + 1).trim();
+                        lineCounter++;
+                        String key = keyPrefix + ".line." + lineCounter;
+                        entries.add(new Entry("TEXT", key, color));
+                        entryTexts.add(text);
+                        continue;
+                    }
+                }
+            }
+
+            // 6. Bold: **text** (whole line wrapped)
+            if (trimmed.startsWith("**") && trimmed.endsWith("**") && trimmed.length() > 4) {
+                lineCounter++;
+                String key = keyPrefix + ".line." + lineCounter;
+                String text = trimmed.substring(2, trimmed.length() - 2);
+                entries.add(new Entry("BOLD", key));
+                entryTexts.add(text);
+                continue;
+            }
+
+            // 7. Italic: *text* (whole line wrapped, but not bold **)
+            if (trimmed.startsWith("*") && trimmed.endsWith("*") && !trimmed.startsWith("**") && trimmed.length() > 2) {
+                lineCounter++;
+                String key = keyPrefix + ".line." + lineCounter;
+                String text = trimmed.substring(1, trimmed.length() - 1);
+                entries.add(new Entry("ITALIC", key));
+                entryTexts.add(text);
+                continue;
+            }
+
+            // 8. Bullet list: - text
+            if (trimmed.startsWith("- ")) {
+                lineCounter++;
+                String key = keyPrefix + ".line." + lineCounter;
+                String text = trimmed.substring(2).trim();
+                entries.add(new Entry("LIST", key));
+                entryTexts.add(text);
+                continue;
+            }
+
+            // 9. Numbered list: 1. text, 2. text, etc.
+            Matcher numberedMatcher = NUMBERED_LIST_PATTERN.matcher(trimmed);
+            if (numberedMatcher.matches()) {
+                lineCounter++;
+                String key = keyPrefix + ".line." + lineCounter;
+                // Preserve the number prefix as part of the text
+                entries.add(new Entry("LIST", key));
+                entryTexts.add(trimmed);
+                continue;
+            }
+
+            // 10. H2 → HEADING
             if (trimmed.startsWith("## ")) {
-                // H2 → HEADING
                 lineCounter++;
                 String key = keyPrefix + ".line." + lineCounter;
                 String text = trimmed.substring(3).trim();
@@ -197,8 +365,8 @@ public class HelpLangGenerator {
                 continue;
             }
 
+            // 11. Command line (backtick-wrapped)
             if (trimmed.startsWith("`") && trimmed.endsWith("`") && trimmed.length() > 2) {
-                // Command line (backtick-wrapped)
                 lineCounter++;
                 String key = keyPrefix + ".line." + lineCounter;
                 String text = trimmed.substring(1, trimmed.length() - 1);
@@ -207,17 +375,7 @@ public class HelpLangGenerator {
                 continue;
             }
 
-            if (trimmed.startsWith("> ")) {
-                // Blockquote → TIP
-                lineCounter++;
-                String key = keyPrefix + ".line." + lineCounter;
-                String text = trimmed.substring(2).trim();
-                entries.add(new Entry("TIP", key));
-                entryTexts.add(text);
-                continue;
-            }
-
-            // Plain text → TEXT
+            // 12. Plain text → TEXT
             lineCounter++;
             String key = keyPrefix + ".line." + lineCounter;
             entries.add(new Entry("TEXT", key));
@@ -243,8 +401,8 @@ public class HelpLangGenerator {
         sb.append("# AUTO-GENERATED by HelpLangGenerator — do not edit manually\n\n");
 
         for (Topic topic : topics) {
-            sb.append("# AUTO-GENERATED from src/main/help/")
-                    .append(locale).append("/")
+            sb.append("# AUTO-GENERATED from Server/Languages/")
+                    .append(locale).append("/help/")
                     .append(topic.category()).append("/")
                     .append(topic.topic()).append(".md\n");
 
@@ -286,6 +444,9 @@ public class HelpLangGenerator {
                 entryMap.put("type", entry.type());
                 if (entry.key() != null) {
                     entryMap.put("key", "hyperfactions_help." + entry.key());
+                }
+                if (entry.color() != null) {
+                    entryMap.put("color", entry.color());
                 }
                 entryList.add(entryMap);
             }

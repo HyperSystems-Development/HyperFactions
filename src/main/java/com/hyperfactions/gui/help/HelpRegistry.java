@@ -138,13 +138,19 @@ public final class HelpRegistry {
         JsonObject entryObj = entryElement.getAsJsonObject();
         String type = entryObj.get("type").getAsString();
         String key = entryObj.has("key") ? entryObj.get("key").getAsString() : "";
+        String color = entryObj.has("color") ? entryObj.get("color").getAsString() : null;
 
         HelpEntry entry = switch (type) {
-          case "TEXT" -> HelpEntry.text(key);
+          case "TEXT" -> color != null ? HelpEntry.colored(key, color) : HelpEntry.text(key);
           case "COMMAND" -> HelpEntry.command(key);
-          case "TIP" -> HelpEntry.tip(key);
+          case "TIP" -> HelpEntry.callout(key, "#55FF55"); // backward compat
           case "HEADING" -> HelpEntry.heading(key);
           case "SPACER" -> HelpEntry.spacer();
+          case "BOLD" -> HelpEntry.bold(key);
+          case "ITALIC" -> HelpEntry.italic(key);
+          case "LIST" -> HelpEntry.list(key);
+          case "SEPARATOR" -> HelpEntry.separator();
+          case "CALLOUT" -> HelpEntry.callout(key, color);
           default -> null;
         };
         if (entry != null) {

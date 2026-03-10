@@ -174,6 +174,16 @@ public final class UIPaths {
 
   public static final String HELP_SPACER = BASE + "help/help_spacer.ui";
 
+  public static final String HELP_LINE_BOLD = BASE + "help/help_line_bold.ui";
+
+  public static final String HELP_LINE_ITALIC = BASE + "help/help_line_italic.ui";
+
+  public static final String HELP_LINE_LIST = BASE + "help/help_line_list.ui";
+
+  public static final String HELP_SEPARATOR = BASE + "help/help_separator.ui";
+
+  public static final String HELP_LINE_CALLOUT = BASE + "help/help_line_callout.ui";
+
   // ── Admin pages ─────────────────────────────────────────────────────────
   public static final String ADMIN_MAIN = BASE + "admin/admin_main.ui";
 
@@ -255,4 +265,6 @@ public final class UIPaths {
 
   // ── Test ────────────────────────────────────────────────────────────────
   public static final String BUTTON_TEST = BASE + "test/button_test.ui";
+
+  public static final String MARKDOWN_TEST = BASE + "test/markdown_test.ui";
 }
