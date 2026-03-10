@@ -423,7 +423,7 @@ newplayer.officer_review = Un oficial revisara tu solicitud.
 newplayer.map_hint = Solo Vista - Unete a una faccion para reclamar territorio!
 
 # Ajustes de Jugador
-nav.player_settings = Ajustes
+nav.player_settings = Jugador
 player_settings.title = Ajustes del Jugador
 player_settings.language_section = Idioma
 player_settings.auto_detect = Detectar automaticamente del cliente

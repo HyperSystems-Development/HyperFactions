@@ -25,6 +25,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import com.hypixel.hytale.server.core.ui.DropdownEntryInfo;
 import com.hypixel.hytale.server.core.ui.LocalizableString;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,13 +40,23 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
 
   /** Available locale codes. New locales are added here as translations are completed. */
   private static final List<String> AVAILABLE_LOCALES = List.of(
-      "en-US"
+      "en-US",
+      "es-ES"
   );
 
-  /** Display names for available locales (parallel to AVAILABLE_LOCALES). */
-  private static final List<String> LOCALE_DISPLAY_NAMES = List.of(
-      "English (US)"
-  );
+  /**
+   * Returns the native display name for a locale code (e.g. "es-ES" → "Español (España)").
+   * Uses Java's Locale class so each language name is shown in its own language.
+   */
+  private static String nativeDisplayName(String localeCode) {
+    Locale locale = Locale.forLanguageTag(localeCode);
+    String name = locale.getDisplayName(locale);
+    // Capitalize first letter (Java returns lowercase for some locales)
+    if (!name.isEmpty()) {
+      name = Character.toUpperCase(name.charAt(0)) + name.substring(1);
+    }
+    return name;
+  }
 
   private final PlayerRef playerRef;
 
@@ -128,12 +139,12 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
         false
     );
 
-    // Language dropdown
+    // Language dropdown — display names in native language
     List<DropdownEntryInfo> localeEntries = new java.util.ArrayList<>();
-    for (int i = 0; i < AVAILABLE_LOCALES.size(); i++) {
+    for (String code : AVAILABLE_LOCALES) {
       localeEntries.add(new DropdownEntryInfo(
-          LocalizableString.fromString(LOCALE_DISPLAY_NAMES.get(i)),
-          AVAILABLE_LOCALES.get(i)));
+          LocalizableString.fromString(nativeDisplayName(code)),
+          code));
     }
     cmd.set("#LanguageDropdown.Entries", localeEntries);
     String selectedLocale = (languagePreference != null && AVAILABLE_LOCALES.contains(languagePreference))
@@ -248,16 +259,13 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
 
       case "LanguageChanged" -> {
         // Dropdown value is the locale code string (e.g. "en-US")
-        if (data.language != null) {
-          int idx = AVAILABLE_LOCALES.indexOf(data.language);
-          if (idx >= 0) {
-            languagePreference = data.language;
-            savePreference(uuid, d -> d.setLanguagePreference(languagePreference));
-            HFMessages.setLanguageOverride(uuid, languagePreference);
-            player.sendMessage(MessageUtil.successText(playerRef,
-                MessageKeys.PlayerSettings.LANGUAGE_CHANGED,
-                LOCALE_DISPLAY_NAMES.get(idx)));
-          }
+        if (data.language != null && AVAILABLE_LOCALES.contains(data.language)) {
+          languagePreference = data.language;
+          savePreference(uuid, d -> d.setLanguagePreference(languagePreference));
+          HFMessages.setLanguageOverride(uuid, languagePreference);
+          player.sendMessage(MessageUtil.successText(playerRef,
+              MessageKeys.PlayerSettings.LANGUAGE_CHANGED,
+              nativeDisplayName(data.language)));
         }
         rebuild();
       }
