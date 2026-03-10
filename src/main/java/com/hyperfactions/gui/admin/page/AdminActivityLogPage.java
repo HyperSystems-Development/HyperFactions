@@ -1,5 +1,8 @@
 package com.hyperfactions.gui.admin.page;
 
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
+
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionLog;
 import com.hyperfactions.data.FactionMember;
@@ -103,7 +106,7 @@ public class AdminActivityLogPage extends InteractiveCustomUIPage<AdminActivityL
 
     // Type filter dropdown
     List<DropdownEntryInfo> typeOptions = new ArrayList<>();
-    typeOptions.add(new DropdownEntryInfo(LocalizableString.fromString("All Types"), "ALL"));
+    typeOptions.add(new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.LOG_ALL_TYPES)), "ALL"));
     for (FactionLog.LogType type : FactionLog.LogType.values()) {
       typeOptions.add(new DropdownEntryInfo(LocalizableString.fromString(type.getDisplayName()), type.name()));
     }
@@ -149,7 +152,7 @@ public class AdminActivityLogPage extends InteractiveCustomUIPage<AdminActivityL
     // === Collect and filter logs ===
     List<GlobalLogEntry> allLogs = collectGlobalLogs();
 
-    cmd.set("#LogCount.Text", allLogs.size() + " entries");
+    cmd.set("#LogCount.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ENTRIES_SUFFIX, allLogs.size()));
 
     // Calculate pagination
     int totalPages = Math.max(1, (int) Math.ceil((double) allLogs.size() / LOGS_PER_PAGE));
@@ -198,7 +201,7 @@ public class AdminActivityLogPage extends InteractiveCustomUIPage<AdminActivityL
     }
 
     // Pagination
-    cmd.set("#PageInfo.Text", (currentPage + 1) + "/" + totalPages);
+    cmd.set("#PageInfo.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.PAGE_FORMAT, currentPage + 1, totalPages));
 
     if (currentPage > 0) {
       events.addEventBinding(

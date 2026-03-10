@@ -6,11 +6,12 @@ import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.admin.data.AdminDisbandConfirmData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
@@ -101,7 +102,7 @@ public class AdminDisbandConfirmPage extends InteractiveCustomUIPage<AdminDisban
         // Re-fetch faction to verify it still exists
         Faction faction = factionManager.getFaction(factionId);
         if (faction == null) {
-          player.sendMessage(MessageUtil.errorText("Faction no longer exists."));
+          player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.DISBAND_FACTION_GONE));
           guiManager.openAdminMain(player, ref, store, playerRef);
           return;
         }
@@ -111,16 +112,12 @@ public class AdminDisbandConfirmPage extends InteractiveCustomUIPage<AdminDisban
         if (leaderId != null) {
           FactionManager.FactionResult result = factionManager.disbandFaction(factionId, leaderId);
           if (result == FactionManager.FactionResult.SUCCESS) {
-            player.sendMessage(
-                Message.raw("Faction '").color("#FF5555")
-                    .insert(Message.raw(factionName).color("#AAAAAA"))
-                    .insert(Message.raw("' has been disbanded.").color("#FF5555"))
-            );
+            player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.DISBAND_SUCCESS, factionName));
           } else {
-            player.sendMessage(MessageUtil.errorText("Failed to disband: " + result));
+            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.DISBAND_FAILED, result));
           }
         } else {
-          player.sendMessage(MessageUtil.errorText("Faction has no leader, cannot disband."));
+          player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.DISBAND_NO_LEADER));
         }
 
         // Return to admin page (will show updated list)

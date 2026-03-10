@@ -1,5 +1,8 @@
 package com.hyperfactions.gui.admin.page;
 
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
+
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionLog;
@@ -82,8 +85,8 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
     // Get the faction
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {
-      cmd.set("#FactionName.Text", "Faction Not Found");
-      cmd.set("#FactionDescription.Text", "This faction no longer exists.");
+      cmd.set("#FactionName.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.FACTION_NOT_FOUND_LABEL));
+      cmd.set("#FactionDescription.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.INFO_FACTION_GONE));
       return;
     }
 
@@ -101,10 +104,10 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
     // Description
     String description = faction.description();
     cmd.set("#FactionDescription.Text",
-        description != null && !description.isEmpty() ? description : "No description set.");
+        description != null && !description.isEmpty() ? description : HFMessages.get(playerRef, MessageKeys.AdminGui.NO_DESCRIPTION));
 
     // Open/Closed status indicator
-    cmd.set("#StatusIndicator.Text", faction.open() ? "Open" : "Invite Only");
+    cmd.set("#StatusIndicator.Text", faction.open() ? HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_OPEN) : HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_INVITE_ONLY));
 
     // === Stats Section ===
     PowerManager.FactionPowerStats powerStats = powerManager.getFactionPowerStats(faction.id());
@@ -121,7 +124,7 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
     cmd.set("#MembersValue.Text", String.format("%d / %d", memberCount, maxMembers));
 
     // Recruitment status
-    cmd.set("#RecruitmentValue.Text", faction.open() ? "Open" : "Invite Only");
+    cmd.set("#RecruitmentValue.Text", faction.open() ? HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_OPEN) : HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_INVITE_ONLY));
 
     // Founded date
     cmd.set("#FoundedValue.Text", TimeUtil.formatRelative(faction.createdAt()));
@@ -134,21 +137,21 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
 
     // Raidable status
     if (powerStats.isRaidable()) {
-      cmd.set("#RaidableValue.Text", "Raidable");
+      cmd.set("#RaidableValue.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.RAIDABLE));
     } else {
-      cmd.set("#RaidableValue.Text", "Protected");
+      cmd.set("#RaidableValue.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.PROTECTED));
     }
 
     // === Leadership Section ===
     FactionMember leader = faction.getLeader();
-    cmd.set("#LeaderName.Text", leader != null ? leader.username() : "Unknown");
+    cmd.set("#LeaderName.Text", leader != null ? leader.username() : HFMessages.get(playerRef, MessageKeys.Common.UNKNOWN));
 
     // Officers
     List<FactionMember> officers = faction.getMembersSorted().stream()
         .filter(m -> m.role() == FactionRole.OFFICER)
         .toList();
     if (officers.isEmpty()) {
-      cmd.set("#OfficersValue.Text", "None");
+      cmd.set("#OfficersValue.Text", HFMessages.get(playerRef, MessageKeys.Common.NONE));
     } else {
       String officerNames = officers.stream()
           .map(FactionMember::username)

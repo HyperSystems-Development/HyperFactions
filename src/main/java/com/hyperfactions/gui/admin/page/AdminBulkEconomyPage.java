@@ -1,5 +1,8 @@
 package com.hyperfactions.gui.admin.page;
 
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
+
 import com.hyperfactions.api.EconomyAPI;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.gui.GuiManager;
@@ -114,7 +117,7 @@ public class AdminBulkEconomyPage extends InteractiveCustomUIPage<AdminBulkEcono
         }
 
         if (amount.compareTo(BigDecimal.ZERO) == 0) {
-          showError("Amount cannot be zero.");
+          showError(HFMessages.get(playerRef, MessageKeys.AdminGui.ECON_AMOUNT_ZERO));
           return;
         }
 
@@ -165,13 +168,13 @@ public class AdminBulkEconomyPage extends InteractiveCustomUIPage<AdminBulkEcono
 
   private BigDecimal parseAmountOrError(String amount) {
     if (amount == null || amount.isBlank()) {
-      showError("Please enter an amount.");
+      showError(HFMessages.get(playerRef, MessageKeys.AdminGui.ECON_ENTER_AMOUNT));
       return null;
     }
     try {
       return new BigDecimal(amount.trim());
     } catch (NumberFormatException e) {
-      showError("Invalid number: " + amount);
+      showError(HFMessages.get(playerRef, MessageKeys.AdminGui.ECON_INVALID_NUMBER, amount));
       return null;
     }
   }

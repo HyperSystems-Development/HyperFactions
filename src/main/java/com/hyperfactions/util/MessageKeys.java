@@ -1231,6 +1231,230 @@ public final class MessageKeys {
 
     private NewPlayerGui() {}
   }
+  /** Admin GUI page labels and messages. */
+  public static final class AdminGui {
+    // Common admin labels
+    public static final String FACTION_NOT_FOUND_LABEL = "hyperfactions_admin.common.faction_not_found";
+    public static final String NO_FACTION = "hyperfactions_admin.common.no_faction";
+    public static final String NOT_SET = "hyperfactions_admin.common.not_set";
+    public static final String ON = "hyperfactions_admin.common.on";
+    public static final String OFF = "hyperfactions_admin.common.off";
+    public static final String ENABLE_BTN = "hyperfactions_admin.common.enable";
+    public static final String DISABLE_BTN = "hyperfactions_admin.common.disable";
+    public static final String NONE_PAREN = "hyperfactions_admin.common.none_paren";
+    public static final String INVALID_FACTION = "hyperfactions_admin.common.invalid_faction";
+    public static final String LEADER_PREFIX = "hyperfactions_admin.common.leader_prefix";
+    public static final String MEMBERS_SUFFIX = "hyperfactions_admin.common.members_suffix";
+    public static final String CLAIMS_SUFFIX = "hyperfactions_admin.common.claims_suffix";
+    public static final String FACTIONS_SUFFIX = "hyperfactions_admin.common.factions_suffix";
+    public static final String PLAYERS_SUFFIX = "hyperfactions_admin.common.players_suffix";
+    public static final String CHUNKS_SUFFIX = "hyperfactions_admin.common.chunks_suffix";
+    public static final String ENTRIES_SUFFIX = "hyperfactions_admin.common.entries_suffix";
+    public static final String FOUND_SUFFIX = "hyperfactions_admin.common.found_suffix";
+    public static final String POWER_FORMAT = "hyperfactions_admin.common.power_format";
+    public static final String RAIDABLE = "hyperfactions_admin.common.raidable";
+    public static final String PROTECTED = "hyperfactions_admin.common.protected";
+    public static final String NO_DESCRIPTION = "hyperfactions_admin.common.no_description";
+    public static final String OFFICERS_MORE = "hyperfactions_admin.common.officers_more";
+    public static final String CUSTOM_MAX = "hyperfactions_admin.common.custom_max";
+    public static final String DEFAULT_MAX = "hyperfactions_admin.common.default_max";
+    public static final String NOW = "hyperfactions_admin.common.now";
+    public static final String AGO_SUFFIX = "hyperfactions_admin.common.ago_suffix";
+    public static final String JUST_NOW = "hyperfactions_admin.common.just_now";
+    public static final String NO_MEMBERSHIP_HISTORY = "hyperfactions_admin.common.no_membership_history";
+    // Dashboard
+    public static final String DASH_FACTIONS_PREFIX = "hyperfactions_admin.dashboard.factions_prefix";
+    public static final String DASH_MEMBERS_PREFIX = "hyperfactions_admin.dashboard.members_prefix";
+    public static final String DASH_CLAIMS_PREFIX = "hyperfactions_admin.dashboard.claims_prefix";
+    // Actions
+    public static final String ACT_CONFIRM_RESET = "hyperfactions_admin.actions.confirm_reset";
+    public static final String ACT_CONFIRM_TRIGGER = "hyperfactions_admin.actions.confirm_trigger";
+    public static final String ACT_KD_RESET = "hyperfactions_admin.actions.kd_reset";
+    public static final String ACT_KD_RESET_FAILED = "hyperfactions_admin.actions.kd_reset_failed";
+    public static final String ACT_UPKEEP_UNAVAILABLE = "hyperfactions_admin.actions.upkeep_unavailable";
+    public static final String ACT_UPKEEP_TRIGGERED = "hyperfactions_admin.actions.upkeep_triggered";
+    public static final String ACT_UPKEEP_FAILED = "hyperfactions_admin.actions.upkeep_failed";
+    // Disband confirm
+    public static final String DISBAND_FACTION_GONE = "hyperfactions_admin.disband.faction_gone";
+    public static final String DISBAND_SUCCESS = "hyperfactions_admin.disband.success";
+    public static final String DISBAND_FAILED = "hyperfactions_admin.disband.failed";
+    public static final String DISBAND_NO_LEADER = "hyperfactions_admin.disband.no_leader";
+    // Unclaim all confirm
+    public static final String UNCLAIM_REMOVED = "hyperfactions_admin.unclaim.removed";
+    public static final String UNCLAIM_NO_CLAIMS = "hyperfactions_admin.unclaim.no_claims";
+    // Factions list
+    public static final String FAC_HOME_NOT_SET = "hyperfactions_admin.factions.home_not_set";
+    public static final String FAC_TELEPORTED = "hyperfactions_admin.factions.teleported";
+    public static final String FAC_NO_HOME = "hyperfactions_admin.factions.no_home";
+    public static final String FAC_WORLD_NOT_FOUND = "hyperfactions_admin.factions.world_not_found";
+    // Faction info
+    public static final String INFO_FACTION_GONE = "hyperfactions_admin.info.faction_gone";
+    // Faction members
+    public static final String MEM_SORT_ROLE = "hyperfactions_admin.members.sort_role";
+    public static final String MEM_SORT_ONLINE = "hyperfactions_admin.members.sort_online";
+    public static final String MEM_SORT_NAME = "hyperfactions_admin.members.sort_name";
+    public static final String MEM_SORT_POWER = "hyperfactions_admin.members.sort_power";
+    public static final String MEM_PROMOTED = "hyperfactions_admin.members.promoted";
+    public static final String MEM_DEMOTED = "hyperfactions_admin.members.demoted";
+    public static final String MEM_KICKED = "hyperfactions_admin.members.kicked";
+    // Faction relations
+    public static final String REL_ALLIES_HEADER = "hyperfactions_admin.relations.allies_header";
+    public static final String REL_ENEMIES_HEADER = "hyperfactions_admin.relations.enemies_header";
+    public static final String REL_NO_ALLIES = "hyperfactions_admin.relations.no_allies";
+    public static final String REL_NO_ENEMIES = "hyperfactions_admin.relations.no_enemies";
+    public static final String REL_NEUTRAL_COUNT = "hyperfactions_admin.relations.neutral_count";
+    public static final String REL_SINCE_TODAY = "hyperfactions_admin.relations.since_today";
+    public static final String REL_SINCE_ONE_DAY = "hyperfactions_admin.relations.since_one_day";
+    public static final String REL_SINCE_DAYS = "hyperfactions_admin.relations.since_days";
+    public static final String REL_SET_ALLY = "hyperfactions_admin.relations.set_ally";
+    public static final String REL_SET_ENEMY = "hyperfactions_admin.relations.set_enemy";
+    public static final String REL_SET_NEUTRAL = "hyperfactions_admin.relations.set_neutral";
+    // Faction settings
+    public static final String SET_LOCKED = "hyperfactions_admin.settings.locked";
+    public static final String SET_PERM_TOGGLED = "hyperfactions_admin.settings.perm_toggled";
+    public static final String SET_COLOR_CHANGED = "hyperfactions_admin.settings.color_changed";
+    public static final String SET_RECRUITMENT_SET = "hyperfactions_admin.settings.recruitment_set";
+    public static final String SET_NO_HOME = "hyperfactions_admin.settings.no_home";
+    public static final String SET_HOME_CLEARED = "hyperfactions_admin.settings.home_cleared";
+    // Sort dropdown labels (shared)
+    public static final String SORT_POWER = "hyperfactions_admin.sort.power";
+    public static final String SORT_NAME = "hyperfactions_admin.sort.name";
+    public static final String SORT_MEMBERS = "hyperfactions_admin.sort.members";
+    public static final String SORT_BALANCE = "hyperfactions_admin.sort.balance";
+    // Players
+    public static final String PLR_SORT_LAST_ONLINE = "hyperfactions_admin.players.sort_last_online";
+    public static final String PLR_SORT_FACTION = "hyperfactions_admin.players.sort_faction";
+    public static final String PLR_SORT_ONLINE = "hyperfactions_admin.players.sort_online";
+    public static final String PLR_NOT_ONLINE = "hyperfactions_admin.players.not_online";
+    public static final String PLR_WORLD_NOT_FOUND = "hyperfactions_admin.players.world_not_found";
+    public static final String PLR_TELEPORTED = "hyperfactions_admin.players.teleported";
+    // Player info
+    public static final String PLR_DISBAND_FACTION = "hyperfactions_admin.playerinfo.disband_faction";
+    public static final String PLR_KICK_LEADER = "hyperfactions_admin.playerinfo.kick_leader";
+    public static final String PLR_ENTER_VALID_NUMBER = "hyperfactions_admin.playerinfo.enter_valid_number";
+    public static final String PLR_ENTER_VALID_POSITIVE = "hyperfactions_admin.playerinfo.enter_valid_positive";
+    public static final String PLR_FACTION_GONE = "hyperfactions_admin.playerinfo.faction_gone";
+    public static final String PLR_KD_RESET = "hyperfactions_admin.playerinfo.kd_reset";
+    public static final String PLR_KICKED_SUCCESS = "hyperfactions_admin.playerinfo.kicked_success";
+    public static final String PLR_KICKED_LEADER = "hyperfactions_admin.playerinfo.kicked_leader";
+    public static final String PLR_DISBANDED_KICK = "hyperfactions_admin.playerinfo.disbanded_kick";
+    // Economy
+    public static final String ECON_NO_DATA = "hyperfactions_admin.economy.no_data";
+    public static final String ECON_AMOUNT_ZERO = "hyperfactions_admin.economy.amount_zero";
+    public static final String ECON_ENTER_AMOUNT = "hyperfactions_admin.economy.enter_amount";
+    public static final String ECON_INVALID_NUMBER = "hyperfactions_admin.economy.invalid_number";
+    public static final String ECON_ERROR = "hyperfactions_admin.economy.error";
+    public static final String ECON_BALANCE_NEGATIVE = "hyperfactions_admin.economy.balance_negative";
+    public static final String ECON_FAILED = "hyperfactions_admin.economy.failed";
+    public static final String ECON_BULK_COMPLETE = "hyperfactions_admin.economy.bulk_complete";
+    public static final String ECON_BULK_FAILURES = "hyperfactions_admin.economy.bulk_failures";
+    // Zones
+    public static final String ZONE_NOT_FOUND = "hyperfactions_admin.zones.not_found";
+    public static final String ZONE_INVALID_ID = "hyperfactions_admin.zones.invalid_id";
+    public static final String ZONE_DELETED = "hyperfactions_admin.zones.deleted";
+    public static final String ZONE_DELETE_FAILED = "hyperfactions_admin.zones.delete_failed";
+    public static final String ZONE_NO_CHUNKS = "hyperfactions_admin.zones.no_chunks";
+    public static final String ZONE_CHUNKS_SUFFIX = "hyperfactions_admin.zones.chunks_suffix";
+    // Zone create wizard
+    public static final String WIZ_ENTER_NAME = "hyperfactions_admin.wizard.enter_name";
+    public static final String WIZ_NAME_TOO_SHORT = "hyperfactions_admin.wizard.name_too_short";
+    public static final String WIZ_NAME_TOO_LONG = "hyperfactions_admin.wizard.name_too_long";
+    public static final String WIZ_NAME_TAKEN = "hyperfactions_admin.wizard.name_taken";
+    public static final String WIZ_RADIUS_RANGE = "hyperfactions_admin.wizard.radius_range";
+    public static final String WIZ_CREATE_FAILED = "hyperfactions_admin.wizard.create_failed";
+    public static final String WIZ_CREATED_NOT_FOUND = "hyperfactions_admin.wizard.created_not_found";
+    public static final String WIZ_CREATED = "hyperfactions_admin.wizard.created";
+    public static final String WIZ_CHUNK_CLAIMED = "hyperfactions_admin.wizard.chunk_claimed";
+    public static final String WIZ_CHUNK_FAILED = "hyperfactions_admin.wizard.chunk_failed";
+    public static final String WIZ_RADIUS_CLAIMED = "hyperfactions_admin.wizard.radius_claimed";
+    public static final String WIZ_RADIUS_NO_CLAIMS = "hyperfactions_admin.wizard.radius_no_claims";
+    public static final String WIZ_NO_CLAIMS = "hyperfactions_admin.wizard.no_claims";
+    public static final String WIZ_CHUNKS_PREVIEW = "hyperfactions_admin.wizard.chunks_preview";
+    // Zone rename
+    public static final String ZREN_ZONE_GONE = "hyperfactions_admin.zone_rename.zone_gone";
+    public static final String ZREN_ENTER_NAME = "hyperfactions_admin.zone_rename.enter_name";
+    public static final String ZREN_TOO_SHORT = "hyperfactions_admin.zone_rename.too_short";
+    public static final String ZREN_TOO_LONG = "hyperfactions_admin.zone_rename.too_long";
+    public static final String ZREN_SAME_NAME = "hyperfactions_admin.zone_rename.same_name";
+    public static final String ZREN_RENAMED = "hyperfactions_admin.zone_rename.renamed";
+    public static final String ZREN_NAME_TAKEN = "hyperfactions_admin.zone_rename.name_taken";
+    public static final String ZREN_INVALID_NAME = "hyperfactions_admin.zone_rename.invalid_name";
+    public static final String ZREN_RENAME_FAILED = "hyperfactions_admin.zone_rename.rename_failed";
+    // Zone change type
+    public static final String ZTYPE_ZONE_GONE = "hyperfactions_admin.zone_type.zone_gone";
+    public static final String ZTYPE_CHANGED = "hyperfactions_admin.zone_type.changed";
+    public static final String ZTYPE_FAILED = "hyperfactions_admin.zone_type.failed";
+    // Zone integration flags
+    public static final String ZINT_ZONE_NOT_FOUND = "hyperfactions_admin.zone_int.zone_not_found";
+    public static final String ZINT_NO_PLUGIN = "hyperfactions_admin.zone_int.no_plugin";
+    public static final String ZINT_DEFAULT = "hyperfactions_admin.zone_int.default";
+    public static final String ZINT_CUSTOM = "hyperfactions_admin.zone_int.custom";
+    // Activity log
+    public static final String LOG_ALL_TYPES = "hyperfactions_admin.log.all_types";
+    public static final String LOG_NO_LOGS = "hyperfactions_admin.log.no_logs";
+    // Version page
+    public static final String VER_ACTIVE = "hyperfactions_admin.version.active";
+    public static final String VER_NOT_FOUND = "hyperfactions_admin.version.not_found";
+    public static final String VER_NOT_DETECTED = "hyperfactions_admin.version.not_detected";
+    public static final String VER_NOT_INSTALLED = "hyperfactions_admin.version.not_installed";
+    public static final String VER_ACTIVE_VERSION = "hyperfactions_admin.version.active_version";
+    public static final String VER_ACTIVE_COMPATIBLE = "hyperfactions_admin.version.active_compatible";
+    public static final String VER_ACTIVE_CLAIMS_ONLY = "hyperfactions_admin.version.active_claims_only";
+    public static final String VER_INSTALLED_NO_PERM = "hyperfactions_admin.version.installed_no_perm";
+    public static final String VER_ACTIVE_PROVIDER = "hyperfactions_admin.version.active_provider";
+    // Admin main page
+    public static final String MAIN_RELOAD_HINT = "hyperfactions_admin.main.reload_hint";
+    public static final String MAIN_UNCLAIM_HINT = "hyperfactions_admin.main.unclaim_hint";
+
+    // Zone flags/settings (shared)
+    public static final String ZFLAGS_INVALID_FLAG = "hyperfactions_admin.zflags.invalid_flag";
+    public static final String ZFLAGS_ZONE_NOT_FOUND = "hyperfactions_admin.zflags.zone_not_found";
+    public static final String ZFLAGS_CONFLICT = "hyperfactions_admin.zflags.conflict";
+    public static final String ZFLAGS_MIXIN = "hyperfactions_admin.zflags.mixin";
+    public static final String ZFLAGS_RESET_INT = "hyperfactions_admin.zflags.reset_int";
+    public static final String ZFLAGS_RESET_ALL = "hyperfactions_admin.zflags.reset_all";
+    public static final String ZFLAGS_RESET_FAILED = "hyperfactions_admin.zflags.reset_failed";
+    public static final String ZFLAGS_BACK_TO_SETTINGS = "hyperfactions_admin.zflags.back_to_settings";
+    // Zone properties
+    public static final String ZPROP_CURRENT_CUSTOM = "hyperfactions_admin.zprop.current_custom";
+    public static final String ZPROP_CURRENT_DEFAULT = "hyperfactions_admin.zprop.current_default";
+    public static final String ZPROP_PVP_DISABLED = "hyperfactions_admin.zprop.pvp_disabled";
+    public static final String ZPROP_PVP_ENABLED = "hyperfactions_admin.zprop.pvp_enabled";
+    public static final String ZPROP_NAME_EMPTY = "hyperfactions_admin.zprop.name_empty";
+    public static final String ZPROP_RENAMED = "hyperfactions_admin.zprop.renamed";
+    public static final String ZPROP_NAME_TAKEN = "hyperfactions_admin.zprop.name_taken";
+    public static final String ZPROP_NAME_INVALID = "hyperfactions_admin.zprop.name_invalid";
+    public static final String ZPROP_RENAME_FAILED = "hyperfactions_admin.zprop.rename_failed";
+    public static final String ZPROP_UPPER_EMPTY = "hyperfactions_admin.zprop.upper_empty";
+    public static final String ZPROP_UPPER_SET = "hyperfactions_admin.zprop.upper_set";
+    public static final String ZPROP_UPPER_RESET = "hyperfactions_admin.zprop.upper_reset";
+    public static final String ZPROP_LOWER_EMPTY = "hyperfactions_admin.zprop.lower_empty";
+    public static final String ZPROP_LOWER_SET = "hyperfactions_admin.zprop.lower_set";
+    public static final String ZPROP_LOWER_RESET = "hyperfactions_admin.zprop.lower_reset";
+    // Relations additional
+    public static final String REL_FAILED = "hyperfactions_admin.relations.failed";
+    // Members additional
+    public static final String MEM_NEVER = "hyperfactions_admin.members.never";
+    public static final String MEM_TELEPORTED = "hyperfactions_admin.members.teleported";
+    // Player info additional
+    public static final String PLR_RECORDS = "hyperfactions_admin.playerinfo.records";
+    public static final String PLR_JOINED_DATE = "hyperfactions_admin.playerinfo.joined_date";
+    public static final String PLR_CURRENT = "hyperfactions_admin.playerinfo.current";
+    public static final String PLR_LEFT_DATE = "hyperfactions_admin.playerinfo.left_date";
+    // Zone map
+    public static final String MAP_WORLD_WARNING = "hyperfactions_admin.map.world_warning";
+    public static final String MAP_POSITION = "hyperfactions_admin.map.position";
+    public static final String MAP_ZONE_GONE = "hyperfactions_admin.map.zone_gone";
+    public static final String MAP_CLAIMED = "hyperfactions_admin.map.claimed";
+    public static final String MAP_CLAIM_FAILED = "hyperfactions_admin.map.claim_failed";
+    public static final String MAP_UNCLAIMED = "hyperfactions_admin.map.unclaimed";
+    public static final String MAP_UNCLAIM_FAILED = "hyperfactions_admin.map.unclaim_failed";
+    public static final String MAP_CHUNK_BELONGS = "hyperfactions_admin.map.chunk_belongs";
+    public static final String MAP_CHUNK_FACTION = "hyperfactions_admin.map.chunk_faction";
+    public static final String MAP_CHUNK_PROTECTED = "hyperfactions_admin.map.chunk_protected";
+    private AdminGui() {}
+  }
+
   /** Player settings page labels. */
   public static final class PlayerSettings {
     public static final String TITLE = "hyperfactions_gui.player_settings.title";

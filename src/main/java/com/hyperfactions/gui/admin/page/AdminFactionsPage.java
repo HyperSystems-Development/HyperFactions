@@ -8,6 +8,8 @@ import com.hyperfactions.gui.admin.data.AdminFactionsData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hyperfactions.util.UuidUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -97,7 +99,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
     // Get all factions sorted
     List<Faction> factions = getSortedFactions();
 
-    cmd.set("#FactionCount.Text", factions.size() + " factions");
+    cmd.set("#FactionCount.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.FACTIONS_SUFFIX, factions.size()));
 
     // Search input
     if (!searchQuery.isEmpty()) {
@@ -112,9 +114,9 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
 
     // Sort dropdown
     cmd.set("#SortDropdown.Entries", List.of(
-        new DropdownEntryInfo(LocalizableString.fromString("Power"), "POWER"),
-        new DropdownEntryInfo(LocalizableString.fromString("Name"), "NAME"),
-        new DropdownEntryInfo(LocalizableString.fromString("Members"), "MEMBERS")
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.SORT_POWER)), "POWER"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.SORT_NAME)), "NAME"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.SORT_MEMBERS)), "MEMBERS")
     ));
     cmd.set("#SortDropdown.Value", sortMode.name());
     events.addEventBinding(
@@ -143,7 +145,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
     }
 
     // Pagination
-    cmd.set("#PageInfo.Text", (currentPage + 1) + "/" + totalPages);
+    cmd.set("#PageInfo.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.PAGE_FORMAT, currentPage + 1, totalPages));
 
     if (currentPage > 0) {
       events.addEventBinding(
@@ -181,8 +183,8 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
 
     // Leader info
     FactionMember leader = faction.getLeader();
-    String leaderName = leader != null ? leader.username() : "None";
-    cmd.set(idx + " #LeaderName.Text", "Leader: " + leaderName);
+    String leaderName = leader != null ? leader.username() : HFMessages.get(playerRef, MessageKeys.Common.NONE);
+    cmd.set(idx + " #LeaderName.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.LEADER_PREFIX, leaderName));
 
     // Stats
     cmd.set(idx + " #PowerDisplay.Text", String.format("%.0f/%.0f", stats.currentPower(), stats.maxPower()));
@@ -216,7 +218,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
             String.format("%s (%.0f, %.0f, %.0f)", home.world(), home.x(), home.y(), home.z()));
         cmd.set(idx + " #TpHomeBtn.Visible", true);
       } else {
-        cmd.set(idx + " #HomeLocation.Text", "Not set");
+        cmd.set(idx + " #HomeLocation.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.NOT_SET));
         cmd.set(idx + " #TpHomeBtn.Visible", false);
       }
 
@@ -387,7 +389,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.INVALID_FACTION));
             return;
           }
           Faction faction = factionManager.getFaction(factionId);
@@ -398,7 +400,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
             // Get target world
             World targetWorld = Universe.get().getWorld(home.world());
             if (targetWorld == null) {
-              player.sendMessage(MessageUtil.errorText("Target world not found."));
+              player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.FAC_WORLD_NOT_FOUND));
               return;
             }
 
@@ -410,9 +412,9 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
               store.addComponent(ref, Teleport.getComponentType(), teleport);
             });
 
-            player.sendMessage(MessageUtil.text("Teleported to " + faction.name() + "'s home.", "#00FFFF"));
+            player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.FAC_TELEPORTED, "#00FFFF", faction.name()));
           } else {
-            player.sendMessage(MessageUtil.errorText("Faction has no home set."));
+            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.FAC_NO_HOME));
           }
         }
       }
@@ -421,7 +423,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.INVALID_FACTION));
             return;
           }
           Faction faction = factionManager.getFaction(factionId);
@@ -436,7 +438,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.INVALID_FACTION));
             return;
           }
           Faction faction = factionManager.getFaction(factionId);
@@ -450,7 +452,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.INVALID_FACTION));
             return;
           }
           Faction faction = factionManager.getFaction(factionId);
@@ -464,7 +466,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.INVALID_FACTION));
             return;
           }
           guiManager.openAdminDisbandConfirm(player, ref, store, playerRef, factionId, data.factionName);
@@ -475,7 +477,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.INVALID_FACTION));
             return;
           }
           Faction faction = factionManager.getFaction(factionId);

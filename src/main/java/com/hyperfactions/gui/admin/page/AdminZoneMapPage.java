@@ -14,6 +14,8 @@ import com.hyperfactions.manager.ZoneManager;
 import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -146,9 +148,9 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
 
     // Show world mismatch warning if player is in different world
     if (!sameWorld) {
-      cmd.set("#PositionInfo.Text", "WARNING: You are in '" + worldName + "' - zone is in '" + zone.world() + "'");
+      cmd.set("#PositionInfo.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.MAP_WORLD_WARNING, worldName, zone.world()));
     } else {
-      cmd.set("#PositionInfo.Text", "Your Position: Chunk (" + playerChunkX + ", " + playerChunkZ + ")");
+      cmd.set("#PositionInfo.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.MAP_POSITION, playerChunkX, playerChunkZ));
     }
 
     // Dynamic legend: add OrbisGuard protected region entry when OG is available
@@ -434,7 +436,7 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
     // Get fresh zone data
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.errorText("Zone no longer exists."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.MAP_ZONE_GONE));
       guiManager.openAdminZone(player, ref, store, playerRef);
       return;
     }
@@ -455,9 +457,9 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
       case "Claim" -> {
         ZoneManager.ZoneResult result = zoneManager.claimChunk(zoneId, zoneWorld, data.chunkX, data.chunkZ);
         if (result == ZoneManager.ZoneResult.SUCCESS) {
-          player.sendMessage(MessageUtil.text("Claimed chunk (" + data.chunkX + ", " + data.chunkZ + ") for " + zone.name(), "#44cc44"));
+          player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.MAP_CLAIMED, "#44cc44", data.chunkX, data.chunkZ, zone.name()));
         } else {
-          player.sendMessage(MessageUtil.errorText("Failed to claim chunk: " + result));
+          player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.MAP_CLAIM_FAILED, result));
         }
 
         // Refresh by opening new page with fresh zone data, preserving openFlagsAfter
@@ -470,9 +472,9 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
       case "Unclaim" -> {
         ZoneManager.ZoneResult result = zoneManager.unclaimChunk(zoneId, zoneWorld, data.chunkX, data.chunkZ);
         if (result == ZoneManager.ZoneResult.SUCCESS) {
-          player.sendMessage(MessageUtil.text("Unclaimed chunk (" + data.chunkX + ", " + data.chunkZ + ") from " + zone.name(), "#44cc44"));
+          player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.MAP_UNCLAIMED, "#44cc44", data.chunkX, data.chunkZ, zone.name()));
         } else {
-          player.sendMessage(MessageUtil.errorText("Failed to unclaim chunk: " + result));
+          player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.MAP_UNCLAIM_FAILED, result));
         }
 
         // Refresh by opening new page with fresh zone data, preserving openFlagsAfter
@@ -485,15 +487,15 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
       case "OtherZone" -> {
         Zone otherZone = zoneManager.getZone(zoneWorld, data.chunkX, data.chunkZ);
         String zoneName = otherZone != null ? otherZone.name() : "another zone";
-        player.sendMessage(MessageUtil.text("This chunk belongs to " + zoneName + ".", MessageUtil.COLOR_GOLD));
+        player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.MAP_CHUNK_BELONGS, MessageUtil.COLOR_GOLD, zoneName));
       }
 
       case "Faction" -> {
-        player.sendMessage(MessageUtil.text("This chunk is claimed by a faction.", MessageUtil.COLOR_GOLD));
+        player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.MAP_CHUNK_FACTION, MessageUtil.COLOR_GOLD));
       }
 
       case "Protected" -> {
-        player.sendMessage(MessageUtil.text("This chunk is in a protected region.", MessageUtil.COLOR_GOLD));
+        player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.MAP_CHUNK_PROTECTED, MessageUtil.COLOR_GOLD));
       }
 
       default -> {}

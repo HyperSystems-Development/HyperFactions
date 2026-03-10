@@ -11,6 +11,8 @@ import com.hyperfactions.storage.PlayerStorage;
 import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -73,7 +75,7 @@ public class AdminActionsPage extends InteractiveCustomUIPage<AdminActionsData> 
   private void buildContent(UICommandBuilder cmd, UIEventBuilder events) {
     // Reset button text depends on confirmation state
     if (confirmResetKD) {
-      cmd.set("#ResetAllKDBtn.Text", "Confirm Reset?");
+      cmd.set("#ResetAllKDBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ACT_CONFIRM_RESET));
     }
 
     // Bind the reset button
@@ -94,7 +96,7 @@ public class AdminActionsPage extends InteractiveCustomUIPage<AdminActionsData> 
 
       if (upkeepEnabled) {
         if (confirmUpkeep) {
-          cmd.set("#TriggerUpkeepBtn.Text", "Confirm Trigger?");
+          cmd.set("#TriggerUpkeepBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ACT_CONFIRM_TRIGGER));
         }
         events.addEventBinding(CustomUIEventBindingType.Activating, "#TriggerUpkeepBtn",
             EventData.of("Button", "TriggerUpkeep"), false);
@@ -130,7 +132,7 @@ public class AdminActionsPage extends InteractiveCustomUIPage<AdminActionsData> 
           confirmResetKD = true;
           UICommandBuilder cmd = new UICommandBuilder();
           UIEventBuilder events = new UIEventBuilder();
-          cmd.set("#ResetAllKDBtn.Text", "Confirm Reset?");
+          cmd.set("#ResetAllKDBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ACT_CONFIRM_RESET));
           events.addEventBinding(CustomUIEventBindingType.Activating, "#ResetAllKDBtn",
               EventData.of("Button", "ResetAllKD"), false);
           sendUpdate(cmd, events, false);
@@ -149,7 +151,7 @@ public class AdminActionsPage extends InteractiveCustomUIPage<AdminActionsData> 
             Logger.info("[Admin] %s reset K/D stats for all %d players",
                 playerRef.getUsername(), allUuids.size());
           } catch (Exception e) {
-            player.sendMessage(MessageUtil.adminError("Failed to reset K/D: " + e.getMessage()));
+            player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.ACT_KD_RESET_FAILED, e.getMessage()));
             ErrorHandler.report("[Admin] Global K/D reset failed", e);
           }
           guiManager.openAdminActions(player, ref, store, playerRef);
@@ -163,7 +165,7 @@ public class AdminActionsPage extends InteractiveCustomUIPage<AdminActionsData> 
           confirmUpkeep = true;
           UICommandBuilder cmd = new UICommandBuilder();
           UIEventBuilder events = new UIEventBuilder();
-          cmd.set("#TriggerUpkeepBtn.Text", "Confirm Trigger?");
+          cmd.set("#TriggerUpkeepBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ACT_CONFIRM_TRIGGER));
           events.addEventBinding(CustomUIEventBindingType.Activating, "#TriggerUpkeepBtn",
               EventData.of("Button", "TriggerUpkeep"), false);
           sendUpdate(cmd, events, false);
@@ -171,15 +173,15 @@ public class AdminActionsPage extends InteractiveCustomUIPage<AdminActionsData> 
           confirmUpkeep = false;
           UpkeepProcessor processor = plugin.getUpkeepProcessor();
           if (processor == null) {
-            player.sendMessage(MessageUtil.adminError("Upkeep processor is not available."));
+            player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.ACT_UPKEEP_UNAVAILABLE));
           } else {
             try {
               processor.processUpkeep();
-              player.sendMessage(MessageUtil.adminSuccess("Upkeep collection triggered."));
+              player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.ACT_UPKEEP_TRIGGERED));
               Logger.info("[Admin] %s manually triggered upkeep collection via GUI",
                   playerRef.getUsername());
             } catch (Exception e) {
-              player.sendMessage(MessageUtil.adminError("Upkeep failed: " + e.getMessage()));
+              player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.ACT_UPKEEP_FAILED, e.getMessage()));
               ErrorHandler.report("[Admin] Manual upkeep trigger failed", e);
             }
           }

@@ -1,5 +1,8 @@
 package com.hyperfactions.gui.admin.page;
 
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
+
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionEconomy;
 import com.hyperfactions.data.FactionMember;
@@ -151,7 +154,7 @@ public class AdminEconomyPage extends InteractiveCustomUIPage<AdminEconomyData> 
     // Get sorted/filtered factions
     List<FactionEntry> factions = getSortedFactions();
 
-    cmd.set("#FactionCount.Text", factions.size() + " factions");
+    cmd.set("#FactionCount.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.FACTIONS_SUFFIX, factions.size()));
 
     // Search input
     if (!searchQuery.isEmpty()) {
@@ -166,9 +169,9 @@ public class AdminEconomyPage extends InteractiveCustomUIPage<AdminEconomyData> 
 
     // Sort dropdown
     cmd.set("#SortDropdown.Entries", List.of(
-        new DropdownEntryInfo(LocalizableString.fromString("Balance"), "BALANCE"),
-        new DropdownEntryInfo(LocalizableString.fromString("Name"), "NAME"),
-        new DropdownEntryInfo(LocalizableString.fromString("Members"), "MEMBERS")
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.SORT_BALANCE)), "BALANCE"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.SORT_NAME)), "NAME"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.SORT_MEMBERS)), "MEMBERS")
     ));
     cmd.set("#SortDropdown.Value", sortMode.name());
     events.addEventBinding(
@@ -242,7 +245,7 @@ public class AdminEconomyPage extends InteractiveCustomUIPage<AdminEconomyData> 
     }
 
     // Pagination
-    cmd.set("#PageInfo.Text", (currentPage + 1) + "/" + totalPages);
+    cmd.set("#PageInfo.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.PAGE_FORMAT, currentPage + 1, totalPages));
 
     if (currentPage > 0) {
       events.addEventBinding(

@@ -1,5 +1,8 @@
 package com.hyperfactions.gui.admin.page;
 
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
+
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.gui.GuiManager;
@@ -68,7 +71,7 @@ public class AdminVersionPage extends InteractiveCustomUIPage<AdminVersionData> 
     cmd.set("#JavaVersion.Text", System.getProperty("java.version", "Unknown"));
 
     // --- Permissions ---
-    setStatus(cmd, "#HyperPermsStatus", HyperPermsIntegration.isAvailable(), "Active", "Not Found");
+    setStatus(cmd, "#HyperPermsStatus", HyperPermsIntegration.isAvailable(), HFMessages.get(playerRef, MessageKeys.AdminGui.VER_ACTIVE), HFMessages.get(playerRef, MessageKeys.AdminGui.VER_NOT_FOUND));
 
     String providerNames = PermissionManager.get().getProviderNames();
 
@@ -87,7 +90,7 @@ public class AdminVersionPage extends InteractiveCustomUIPage<AdminVersionData> 
     } else if (vaultInstalled) {
       setStatusColor(cmd, "#VaultUnlockedStatus", "Installed (no perm provider)", COLOR_YELLOW);
     } else {
-      setStatusColor(cmd, "#VaultUnlockedStatus", "Not Installed", COLOR_GRAY);
+      setStatusColor(cmd, "#VaultUnlockedStatus", HFMessages.get(playerRef, MessageKeys.AdminGui.VER_NOT_INSTALLED), COLOR_GRAY);
     }
 
     setStatus(cmd, "#NativeStatus", providerNames.contains("HytaleNative"), "Active", "Not Found");
@@ -105,14 +108,14 @@ public class AdminVersionPage extends InteractiveCustomUIPage<AdminVersionData> 
       case HYPERPROTECT -> {
         String hpVersion = System.getProperty("hyperprotect.bridge.version", "unknown");
         setStatusColor(cmd, "#HyperProtectStatus", "Active (v" + hpVersion + ")", COLOR_GREEN);
-        setStatusColor(cmd, "#OrbisGuardMixinsStatus", "N/A", COLOR_GRAY);
+        setStatusColor(cmd, "#OrbisGuardMixinsStatus", HFMessages.get(playerRef, MessageKeys.Common.NA), COLOR_GRAY);
       }
       case ORBISGUARD -> {
-        setStatusColor(cmd, "#HyperProtectStatus", "Not Detected", COLOR_GRAY);
+        setStatusColor(cmd, "#HyperProtectStatus", HFMessages.get(playerRef, MessageKeys.AdminGui.VER_NOT_DETECTED), COLOR_GRAY);
         setStatusColor(cmd, "#OrbisGuardMixinsStatus", "Active", COLOR_GREEN);
       }
       case NONE -> {
-        setStatusColor(cmd, "#HyperProtectStatus", "Not Detected", COLOR_GRAY);
+        setStatusColor(cmd, "#HyperProtectStatus", HFMessages.get(playerRef, MessageKeys.AdminGui.VER_NOT_DETECTED), COLOR_GRAY);
         setStatusColor(cmd, "#OrbisGuardMixinsStatus", "Not Detected", COLOR_GRAY);
       }
       default -> throw new IllegalStateException("Unexpected value");
@@ -125,7 +128,7 @@ public class AdminVersionPage extends InteractiveCustomUIPage<AdminVersionData> 
           ? COLOR_YELLOW : COLOR_GREEN;
       setStatusColor(cmd, "#OrbisGuardApiStatus", ogLabel, ogColor);
     } else {
-      setStatusColor(cmd, "#OrbisGuardApiStatus", "Not Detected", COLOR_GRAY);
+      setStatusColor(cmd, "#OrbisGuardApiStatus", HFMessages.get(playerRef, MessageKeys.AdminGui.VER_NOT_DETECTED), COLOR_GRAY);
     }
 
     String mixinStatus = ProtectionMixinBridge.getStatusSummary();

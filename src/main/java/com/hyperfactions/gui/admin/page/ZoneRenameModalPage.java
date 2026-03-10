@@ -6,6 +6,8 @@ import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.admin.data.ZoneRenameModalData;
 import com.hyperfactions.manager.ZoneManager;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -106,7 +108,7 @@ public class ZoneRenameModalPage extends InteractiveCustomUIPage<ZoneRenameModal
 
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.errorText("Zone no longer exists."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.ZREN_ZONE_GONE));
       guiManager.openAdminZone(player, ref, store, playerRef, currentTab, currentPage);
       return;
     }
@@ -121,7 +123,7 @@ public class ZoneRenameModalPage extends InteractiveCustomUIPage<ZoneRenameModal
 
         // Validation
         if (newName == null || newName.trim().isEmpty()) {
-          player.sendMessage(MessageUtil.errorText("Please enter a zone name."));
+          player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.ZREN_ENTER_NAME));
           sendUpdate();
           return;
         }
@@ -129,20 +131,20 @@ public class ZoneRenameModalPage extends InteractiveCustomUIPage<ZoneRenameModal
         newName = newName.trim();
 
         if (newName.length() < MIN_NAME_LENGTH) {
-          player.sendMessage(MessageUtil.errorText("Zone name must be at least " + MIN_NAME_LENGTH + " character."));
+          player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.ZREN_TOO_SHORT, MIN_NAME_LENGTH));
           sendUpdate();
           return;
         }
 
         if (newName.length() > MAX_NAME_LENGTH) {
-          player.sendMessage(MessageUtil.errorText("Zone name cannot exceed " + MAX_NAME_LENGTH + " characters."));
+          player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.ZREN_TOO_LONG, MAX_NAME_LENGTH));
           sendUpdate();
           return;
         }
 
         // Check if name is the same
         if (newName.equalsIgnoreCase(zone.name())) {
-          player.sendMessage(MessageUtil.text("That's already this zone's name.", MessageUtil.COLOR_GOLD));
+          player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.ZREN_SAME_NAME, MessageUtil.COLOR_GOLD));
           sendUpdate();
           return;
         }
@@ -153,29 +155,23 @@ public class ZoneRenameModalPage extends InteractiveCustomUIPage<ZoneRenameModal
 
         switch (result) {
           case SUCCESS -> {
-            player.sendMessage(
-                Message.raw("[Admin] Zone renamed from ").color("#AAAAAA")
-                    .insert(Message.raw(oldName).color("#888888"))
-                    .insert(Message.raw(" to ").color("#AAAAAA"))
-                    .insert(Message.raw(newName).color("#00FFFF"))
-                    .insert(Message.raw("!").color("#AAAAAA"))
-            );
+            player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.ZREN_RENAMED, "#AAAAAA", oldName, newName));
             guiManager.openAdminZone(player, ref, store, playerRef, currentTab, currentPage);
           }
           case NAME_TAKEN -> {
-            player.sendMessage(MessageUtil.errorText("A zone with that name already exists."));
+            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.ZREN_NAME_TAKEN));
             sendUpdate();
           }
           case INVALID_NAME -> {
-            player.sendMessage(MessageUtil.errorText("Invalid zone name."));
+            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.ZREN_INVALID_NAME));
             sendUpdate();
           }
           case NOT_FOUND -> {
-            player.sendMessage(MessageUtil.errorText("Zone no longer exists."));
+            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.ZREN_ZONE_GONE));
             guiManager.openAdminZone(player, ref, store, playerRef, currentTab, currentPage);
           }
           default -> {
-            player.sendMessage(MessageUtil.errorText("Failed to rename zone: " + result));
+            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.ZREN_RENAME_FAILED, result));
             sendUpdate();
           }
         }

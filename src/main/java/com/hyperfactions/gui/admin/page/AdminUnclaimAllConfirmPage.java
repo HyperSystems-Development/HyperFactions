@@ -1,5 +1,9 @@
 package com.hyperfactions.gui.admin.page;
 
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.MessageUtil;
+
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.gui.UIPaths;
@@ -61,7 +65,7 @@ public class AdminUnclaimAllConfirmPage extends InteractiveCustomUIPage<AdminUnc
 
     // Set faction info
     cmd.set("#FactionName.Text", factionName);
-    cmd.set("#ClaimCount.Text", claimCount + " chunks");
+    cmd.set("#ClaimCount.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.CHUNKS_SUFFIX, claimCount));
 
     // Cancel button
     events.addEventBinding(
@@ -103,19 +107,9 @@ public class AdminUnclaimAllConfirmPage extends InteractiveCustomUIPage<AdminUnc
         claimManager.unclaimAll(factionId);
 
         if (claimCount > 0) {
-          player.sendMessage(
-              Message.raw("[Admin] Removed ").color("#FF5555")
-                  .insert(Message.raw(String.valueOf(claimCount)).color("#FFFFFF"))
-                  .insert(Message.raw(" claims from ").color("#FF5555"))
-                  .insert(Message.raw(factionName).color("#00FFFF"))
-                  .insert(Message.raw(".").color("#FF5555"))
-          );
+          player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.UNCLAIM_REMOVED, "#FF5555", claimCount, factionName));
         } else {
-          player.sendMessage(
-              Message.raw("[Admin] ").color("#FFAA00")
-                  .insert(Message.raw(factionName).color("#00FFFF"))
-                  .insert(Message.raw(" had no claims to remove.").color("#FFAA00"))
-          );
+          player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.UNCLAIM_NO_CLAIMS, "#FFAA00", factionName));
         }
 
         guiManager.openAdminFactions(player, ref, store, playerRef);

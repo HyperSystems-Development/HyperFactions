@@ -7,6 +7,8 @@ import com.hyperfactions.gui.admin.AdminNavBarHelper;
 import com.hyperfactions.gui.admin.data.AdminZonePropertiesData;
 import com.hyperfactions.manager.ZoneManager;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -75,7 +77,7 @@ public class AdminZonePropertiesPage extends InteractiveCustomUIPage<AdminZonePr
     // Get the zone
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      cmd.set("#ZoneName.Text", "Zone Not Found");
+      cmd.set("#ZoneName.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ZINT_ZONE_NOT_FOUND));
       cmd.set("#GeneralBox.Visible", false);
       cmd.set("#NotificationsBox.Visible", false);
       return;
@@ -151,11 +153,11 @@ public class AdminZonePropertiesPage extends InteractiveCustomUIPage<AdminZonePr
     // Upper title
     String upperCustom = zone.notifyTitleUpper();
     if (upperCustom != null && !upperCustom.isEmpty()) {
-      cmd.set("#UpperCurrent.Text", "Current: \"" + upperCustom + "\" (custom)");
+      cmd.set("#UpperCurrent.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ZPROP_CURRENT_CUSTOM, upperCustom));
       cmd.set("#UpperTitleInput.Value", upperCustom);
     } else {
-      String defaultUpper = zone.isSafeZone() ? "PvP Disabled" : "PvP Enabled";
-      cmd.set("#UpperCurrent.Text", "Current: \"" + defaultUpper + "\" (default)");
+      String defaultUpper = zone.isSafeZone() ? HFMessages.get(playerRef, MessageKeys.AdminGui.ZPROP_PVP_DISABLED) : HFMessages.get(playerRef, MessageKeys.AdminGui.ZPROP_PVP_ENABLED);
+      cmd.set("#UpperCurrent.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ZPROP_CURRENT_DEFAULT, defaultUpper));
     }
 
     events.addEventBinding(
@@ -178,10 +180,10 @@ public class AdminZonePropertiesPage extends InteractiveCustomUIPage<AdminZonePr
     // Lower title
     String lowerCustom = zone.notifyTitleLower();
     if (lowerCustom != null && !lowerCustom.isEmpty()) {
-      cmd.set("#LowerCurrent.Text", "Current: \"" + lowerCustom + "\" (custom)");
+      cmd.set("#LowerCurrent.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ZPROP_CURRENT_CUSTOM, lowerCustom));
       cmd.set("#LowerTitleInput.Value", lowerCustom);
     } else {
-      cmd.set("#LowerCurrent.Text", "Current: \"" + zone.name() + "\" (default)");
+      cmd.set("#LowerCurrent.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ZPROP_CURRENT_DEFAULT, zone.name()));
     }
 
     events.addEventBinding(
@@ -267,7 +269,7 @@ public class AdminZonePropertiesPage extends InteractiveCustomUIPage<AdminZonePr
   private void handleSaveName(Player player, AdminZonePropertiesData data) {
     String newName = data.name;
     if (newName == null || newName.isBlank()) {
-      nameError = "Name cannot be empty.";
+      nameError = HFMessages.get(playerRef, MessageKeys.AdminGui.ZPROP_NAME_EMPTY);
       rebuildPage();
       return;
     }
@@ -278,11 +280,11 @@ public class AdminZonePropertiesPage extends InteractiveCustomUIPage<AdminZonePr
     switch (result) {
       case SUCCESS -> {
         nameError = null;
-        player.sendMessage(MessageUtil.adminSuccess("Zone renamed to \"" + newName + "\"."));
+        player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.ZPROP_RENAMED, newName));
       }
-      case NAME_TAKEN -> nameError = "A zone with that name already exists.";
-      case INVALID_NAME -> nameError = "Invalid name (max 32 characters).";
-      default -> nameError = "Failed to rename: " + result;
+      case NAME_TAKEN -> nameError = HFMessages.get(playerRef, MessageKeys.AdminGui.ZPROP_NAME_TAKEN);
+      case INVALID_NAME -> nameError = HFMessages.get(playerRef, MessageKeys.AdminGui.ZPROP_NAME_INVALID);
+      default -> nameError = HFMessages.get(playerRef, MessageKeys.AdminGui.ZPROP_RENAME_FAILED, result);
     }
 
     rebuildPage();
@@ -306,38 +308,38 @@ public class AdminZonePropertiesPage extends InteractiveCustomUIPage<AdminZonePr
   private void handleSaveUpper(Player player, AdminZonePropertiesData data) {
     String upper = data.upperTitle;
     if (upper == null || upper.isBlank()) {
-      player.sendMessage(MessageUtil.adminError("Upper title cannot be empty. Use Clear to reset."));
+      player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.ZPROP_UPPER_EMPTY));
       sendUpdate();
       return;
     }
 
     zoneManager.setZoneNotifyTitle(zoneId, upper.trim(), null);
-    player.sendMessage(MessageUtil.adminSuccess("Upper title set."));
+    player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.ZPROP_UPPER_SET));
     rebuildPage();
   }
 
   private void handleClearUpper(Player player) {
     zoneManager.setZoneNotifyTitle(zoneId, "clear", null);
-    player.sendMessage(MessageUtil.adminSuccess("Upper title reset to default."));
+    player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.ZPROP_UPPER_RESET));
     rebuildPage();
   }
 
   private void handleSaveLower(Player player, AdminZonePropertiesData data) {
     String lower = data.lowerTitle;
     if (lower == null || lower.isBlank()) {
-      player.sendMessage(MessageUtil.adminError("Lower title cannot be empty. Use Clear to reset."));
+      player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.ZPROP_LOWER_EMPTY));
       sendUpdate();
       return;
     }
 
     zoneManager.setZoneNotifyTitle(zoneId, null, lower.trim());
-    player.sendMessage(MessageUtil.adminSuccess("Lower title set."));
+    player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.ZPROP_LOWER_SET));
     rebuildPage();
   }
 
   private void handleClearLower(Player player) {
     zoneManager.setZoneNotifyTitle(zoneId, null, "clear");
-    player.sendMessage(MessageUtil.adminSuccess("Lower title reset to default."));
+    player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.ZPROP_LOWER_RESET));
     rebuildPage();
   }
 

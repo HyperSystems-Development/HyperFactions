@@ -9,6 +9,8 @@ import com.hyperfactions.gui.admin.AdminNavBarHelper;
 import com.hyperfactions.gui.admin.data.AdminFactionSettingsData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -67,7 +69,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     // Get the faction
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {
-      cmd.set("#FactionName.Text", "Faction Not Found");
+      cmd.set("#FactionName.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.FACTION_NOT_FOUND_LABEL));
       return;
     }
 
@@ -104,7 +106,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     // Tag
     String tagDisplay = faction.tag() != null && !faction.tag().isEmpty()
         ? "[" + faction.tag().toUpperCase() + "]"
-        : "(None)";
+        : HFMessages.get(playerRef, MessageKeys.AdminGui.NONE_PAREN);
     cmd.set("#TagValue.Text", tagDisplay);
     events.addEventBinding(
         CustomUIEventBindingType.Activating,
@@ -116,7 +118,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     // Description
     String desc = faction.description() != null && !faction.description().isEmpty()
         ? faction.description()
-        : "(None)";
+        : HFMessages.get(playerRef, MessageKeys.AdminGui.NONE_PAREN);
     cmd.set("#DescValue.Text", desc);
     events.addEventBinding(
         CustomUIEventBindingType.Activating,
@@ -127,8 +129,8 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
 
     // Recruitment dropdown
     cmd.set("#RecruitmentDropdown.Entries", List.of(
-        new DropdownEntryInfo(LocalizableString.fromString("Open"), "OPEN"),
-        new DropdownEntryInfo(LocalizableString.fromString("Invite Only"), "INVITE_ONLY")
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_OPEN)), "OPEN"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_INVITE_ONLY)), "INVITE_ONLY")
     ));
     cmd.set("#RecruitmentDropdown.Value", faction.open() ? "OPEN" : "INVITE_ONLY");
     events.addEventBinding(
@@ -150,7 +152,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
           worldName, home.x(), home.y(), home.z());
       cmd.set("#HomeLocation.Text", homeText);
     } else {
-      cmd.set("#HomeLocation.Text", "Not set");
+      cmd.set("#HomeLocation.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.NOT_SET));
     }
     events.addEventBinding(
         CustomUIEventBindingType.Activating,
@@ -220,7 +222,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
 
     // PvP toggle
     buildToggle(cmd, events, "PvPToggle", "pvpEnabled", perms.pvpEnabled(), config, false);
-    cmd.set("#PvPStatus.Text", perms.pvpEnabled() ? "Enabled" : "Disabled");
+    cmd.set("#PvPStatus.Text", perms.pvpEnabled() ? HFMessages.get(playerRef, MessageKeys.SettingsGui.PVP_ENABLED) : HFMessages.get(playerRef, MessageKeys.SettingsGui.PVP_DISABLED));
     cmd.set("#PvPStatus.Style.TextColor", perms.pvpEnabled() ? "#55FF55" : "#FF5555");
 
     // Officers can edit
@@ -284,7 +286,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
 
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null && !data.button.equals("Back")) {
-      player.sendMessage(MessageUtil.adminError("Faction not found."));
+      player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.Common.FACTION_NOT_FOUND));
       sendUpdate();
       return;
     }
@@ -324,7 +326,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
 
     // Check if server has locked this setting
     if (config.isPermissionLocked(permName)) {
-      player.sendMessage(MessageUtil.adminError("This setting is locked by server configuration."));
+      player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.SET_LOCKED));
       sendUpdate();
       return;
     }
@@ -332,7 +334,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     // Get current faction
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {
-      player.sendMessage(MessageUtil.adminError("Faction not found."));
+      player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.Common.FACTION_NOT_FOUND));
       sendUpdate();
       return;
     }
@@ -349,7 +351,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     String displayName = formatPermissionName(permName);
     boolean newValue = updated.get(permName);
 
-    player.sendMessage(MessageUtil.adminSuccess("Set " + displayName + " to " + (newValue ? "ON" : "OFF")));
+    player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.SET_PERM_TOGGLED, displayName, newValue ? HFMessages.get(playerRef, MessageKeys.AdminGui.ON) : HFMessages.get(playerRef, MessageKeys.AdminGui.OFF)));
 
     // Rebuild page with fresh data
     rebuildPage();
@@ -375,7 +377,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     Faction updatedFaction = faction.withColor(hexColor);
     factionManager.updateFaction(updatedFaction);
 
-    player.sendMessage(MessageUtil.adminSuccess("Set faction color to " + hexColor));
+    player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.SET_COLOR_CHANGED, hexColor));
 
     rebuildPage();
   }
@@ -392,14 +394,14 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     Faction updatedFaction = faction.withOpen(isOpen);
     factionManager.updateFaction(updatedFaction);
 
-    player.sendMessage(MessageUtil.adminSuccess("Set recruitment to " + (isOpen ? "Open" : "Invite Only")));
+    player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.SET_RECRUITMENT_SET, isOpen ? HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_OPEN) : HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_INVITE_ONLY)));
 
     rebuildPage();
   }
 
   private void handleClearHome(Player player, Ref<EntityStore> ref, Store<EntityStore> store, Faction faction) {
     if (faction.home() == null) {
-      player.sendMessage(MessageUtil.text("[Admin] This faction has no home set.", MessageUtil.COLOR_GOLD));
+      player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.SET_NO_HOME, MessageUtil.COLOR_GOLD));
       sendUpdate();
       return;
     }
@@ -407,7 +409,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     Faction updatedFaction = faction.withHome(null);
     factionManager.updateFaction(updatedFaction);
 
-    player.sendMessage(MessageUtil.adminSuccess("Cleared faction home for " + faction.name()));
+    player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.SET_HOME_CLEARED, faction.name()));
 
     // Rebuild page with fresh data
     rebuildPage();
@@ -425,7 +427,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     // Get fresh faction data
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {
-      cmd.set("#FactionName.Text", "Faction Not Found");
+      cmd.set("#FactionName.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.FACTION_NOT_FOUND_LABEL));
       sendUpdate(cmd, events, false);
       return;
     }
@@ -452,19 +454,19 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     // Tag
     String tagDisplay = faction.tag() != null && !faction.tag().isEmpty()
         ? "[" + faction.tag().toUpperCase() + "]"
-        : "(None)";
+        : HFMessages.get(playerRef, MessageKeys.AdminGui.NONE_PAREN);
     cmd.set("#TagValue.Text", tagDisplay);
 
     // Description
     String desc = faction.description() != null && !faction.description().isEmpty()
         ? faction.description()
-        : "(None)";
+        : HFMessages.get(playerRef, MessageKeys.AdminGui.NONE_PAREN);
     cmd.set("#DescValue.Text", desc);
 
     // Recruitment dropdown
     cmd.set("#RecruitmentDropdown.Entries", List.of(
-        new DropdownEntryInfo(LocalizableString.fromString("Open"), "OPEN"),
-        new DropdownEntryInfo(LocalizableString.fromString("Invite Only"), "INVITE_ONLY")
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_OPEN)), "OPEN"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_INVITE_ONLY)), "INVITE_ONLY")
     ));
     cmd.set("#RecruitmentDropdown.Value", faction.open() ? "OPEN" : "INVITE_ONLY");
     events.addEventBinding(
@@ -486,7 +488,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
           worldName, home.x(), home.y(), home.z());
       cmd.set("#HomeLocation.Text", homeText);
     } else {
-      cmd.set("#HomeLocation.Text", "Not set");
+      cmd.set("#HomeLocation.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.NOT_SET));
     }
   }
 

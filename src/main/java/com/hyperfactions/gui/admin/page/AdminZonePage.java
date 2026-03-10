@@ -7,6 +7,8 @@ import com.hyperfactions.gui.admin.AdminNavBarHelper;
 import com.hyperfactions.gui.admin.data.AdminZoneData;
 import com.hyperfactions.manager.ZoneManager;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hyperfactions.util.UuidUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -260,7 +262,7 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
         cmd.set(idx + " #Bounds.Text",
             String.format("(%d,%d) to (%d,%d)", minX, minZ, maxX, maxZ));
       } else {
-        cmd.set(idx + " #Bounds.Text", "No chunks");
+        cmd.set(idx + " #Bounds.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ZONE_NO_CHUNKS));
       }
 
       // Created date
@@ -384,14 +386,14 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
         if (data.zoneId != null) {
           UUID zoneId = UuidUtil.parseOrNull(data.zoneId);
           if (zoneId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid zone ID."));
+            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.ZONE_INVALID_ID));
             return;
           }
           Zone zone = zoneManager.getZoneById(zoneId);
           if (zone != null) {
             guiManager.openAdminZoneMap(player, ref, store, playerRef, zone);
           } else {
-            player.sendMessage(MessageUtil.errorText("Zone not found."));
+            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.ZONE_NOT_FOUND));
             rebuildList();
           }
         }
@@ -401,7 +403,7 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
         if (data.zoneId != null) {
           UUID zoneId = UuidUtil.parseOrNull(data.zoneId);
           if (zoneId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid zone ID."));
+            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.ZONE_INVALID_ID));
             return;
           }
           guiManager.openAdminZoneSettings(player, ref, store, playerRef, zoneId);
@@ -412,7 +414,7 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
         if (data.zoneId != null) {
           UUID zoneId = UuidUtil.parseOrNull(data.zoneId);
           if (zoneId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid zone ID."));
+            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.ZONE_INVALID_ID));
             return;
           }
           guiManager.openAdminZoneProperties(player, ref, store, playerRef,
@@ -424,15 +426,15 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
         if (data.zoneId != null) {
           UUID zoneId = UuidUtil.parseOrNull(data.zoneId);
           if (zoneId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid zone ID."));
+            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.ZONE_INVALID_ID));
             return;
           }
           ZoneManager.ZoneResult result = zoneManager.removeZone(zoneId);
           if (result == ZoneManager.ZoneResult.SUCCESS) {
-            player.sendMessage(MessageUtil.errorText("Zone " + data.zoneName + " deleted."));
+            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.ZONE_DELETED, data.zoneName));
             expandedZones.remove(zoneId);
           } else {
-            player.sendMessage(MessageUtil.errorText("Failed to delete zone: " + result));
+            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.ZONE_DELETE_FAILED, result));
           }
           rebuildList();
         }

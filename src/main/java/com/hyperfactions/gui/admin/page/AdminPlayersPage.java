@@ -11,6 +11,8 @@ import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.storage.PlayerStorage;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hyperfactions.util.TimeUtil;
 import com.hyperfactions.util.UuidUtil;
 import com.hypixel.hytale.component.Ref;
@@ -214,18 +216,18 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
 
     // Count display
     if (searchQuery.isEmpty()) {
-      cmd.set("#PlayerCount.Text", filtered.size() + " players");
+      cmd.set("#PlayerCount.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.PLAYERS_SUFFIX, filtered.size()));
     } else {
-      cmd.set("#PlayerCount.Text", filtered.size() + " found");
+      cmd.set("#PlayerCount.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.FOUND_SUFFIX, filtered.size()));
     }
 
     // Sort dropdown
     cmd.set("#SortDropdown.Entries", List.of(
-        new DropdownEntryInfo(LocalizableString.fromString("Name"), "NAME"),
-        new DropdownEntryInfo(LocalizableString.fromString("Power"), "POWER"),
-        new DropdownEntryInfo(LocalizableString.fromString("Last Online"), "LAST_ONLINE"),
-        new DropdownEntryInfo(LocalizableString.fromString("Faction"), "FACTION"),
-        new DropdownEntryInfo(LocalizableString.fromString("Online"), "ONLINE")
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.SORT_NAME)), "NAME"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.SORT_POWER)), "POWER"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.PLR_SORT_LAST_ONLINE)), "LAST_ONLINE"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.PLR_SORT_FACTION)), "FACTION"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.PLR_SORT_ONLINE)), "ONLINE")
     ));
     cmd.set("#SortDropdown.Value", sortMode.name());
     events.addEventBinding(
@@ -262,7 +264,7 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
     }
 
     // Pagination
-    cmd.set("#PageInfo.Text", (currentPage + 1) + "/" + totalPages);
+    cmd.set("#PageInfo.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.PAGE_FORMAT, currentPage + 1, totalPages));
 
     if (currentPage > 0) {
       events.addEventBinding(
@@ -301,7 +303,7 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
     cmd.set(idx + " #PlayerName.Style.TextColor", info.isOnline() ? "#00FFFF" : "#CCCCCC");
 
     // Online status
-    cmd.set(idx + " #OnlineStatus.Text", info.isOnline() ? "Online" : "Offline");
+    cmd.set(idx + " #OnlineStatus.Text", info.isOnline() ? HFMessages.get(playerRef, MessageKeys.Common.ONLINE) : HFMessages.get(playerRef, MessageKeys.Common.OFFLINE));
     cmd.set(idx + " #OnlineStatus.Style.TextColor", GuiColors.forOnlineStatus(info.isOnline()));
 
     // Faction name
@@ -309,7 +311,7 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
       cmd.set(idx + " #FactionName.Text", info.factionName());
       cmd.set(idx + " #FactionName.Style.TextColor", "#AAAAAA");
     } else {
-      cmd.set(idx + " #FactionName.Text", "No Faction");
+      cmd.set(idx + " #FactionName.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.NO_FACTION));
       cmd.set(idx + " #FactionName.Style.TextColor", "#666666");
     }
 
@@ -347,11 +349,11 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
       // Last online
       String lastOnlineText;
       if (info.isOnline()) {
-        lastOnlineText = "Now";
+        lastOnlineText = HFMessages.get(playerRef, MessageKeys.AdminGui.NOW);
       } else if (info.lastOnline() > 0) {
         lastOnlineText = TimeUtil.formatDuration(System.currentTimeMillis() - info.lastOnline()) + " ago";
       } else {
-        lastOnlineText = "Unknown";
+        lastOnlineText = HFMessages.get(playerRef, MessageKeys.Common.UNKNOWN);
       }
       cmd.set(idx + " #LastOnline.Text", lastOnlineText);
 
@@ -532,7 +534,7 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
             guiManager.closePage(player, ref, store);
             var targetWorld = Universe.get().getWorld(targetPlayer.getWorldUuid());
             if (targetWorld == null) {
-              player.sendMessage(MessageUtil.errorText("Target world not found."));
+              player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.PLR_WORLD_NOT_FOUND));
               return;
             }
             var targetTransform = targetPlayer.getTransform();
@@ -543,11 +545,9 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
                   targetWorld, targetPos, targetRot);
               store.addComponent(ref, Teleport.getComponentType(), teleport);
             });
-            player.sendMessage(Message.raw("[Admin] Teleported to ").color("#55FF55")
-                .insert(Message.raw(data.playerName != null ? data.playerName : "player").color("#00FFFF"))
-                .insert(Message.raw(".").color("#55FF55")));
+            player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.PLR_TELEPORTED, "#55FF55", data.playerName != null ? data.playerName : "player"));
           } else {
-            player.sendMessage(MessageUtil.errorText("Player is not online."));
+            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.PLR_NOT_ONLINE));
             sendUpdate();
           }
         }

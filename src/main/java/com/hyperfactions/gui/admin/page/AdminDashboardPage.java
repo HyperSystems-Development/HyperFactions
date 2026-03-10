@@ -1,5 +1,8 @@
 package com.hyperfactions.gui.admin.page;
 
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
+
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.data.*;
 import com.hyperfactions.gui.GuiManager;
@@ -112,7 +115,7 @@ public class AdminDashboardPage extends InteractiveCustomUIPage<AdminDashboardDa
       cmd.set("#TotalEconomy.Text", econ.formatCurrencyCompact(total));
 
       // Find wealthiest faction
-      String wealthiestName = "None";
+      String wealthiestName = HFMessages.get(playerRef, MessageKeys.Common.NONE);
       java.math.BigDecimal wealthiestBalance = java.math.BigDecimal.ZERO;
       for (Faction f : allFactions) {
         java.math.BigDecimal balance = econ.getFactionBalance(f.id());
@@ -127,9 +130,9 @@ public class AdminDashboardPage extends InteractiveCustomUIPage<AdminDashboardDa
 
     // Setup bypass toggle
     boolean bypassEnabled = plugin.isAdminBypassEnabled(playerRef.getUuid());
-    cmd.set("#BypassState.Text", bypassEnabled ? "On" : "Off");
+    cmd.set("#BypassState.Text", bypassEnabled ? HFMessages.get(playerRef, MessageKeys.AdminGui.ON) : HFMessages.get(playerRef, MessageKeys.AdminGui.OFF));
     cmd.set("#BypassState.Style.TextColor", bypassEnabled ? "#55FF55" : "#FF5555");
-    cmd.set("#ToggleBypassBtn.Text", bypassEnabled ? "Disable" : "Enable");
+    cmd.set("#ToggleBypassBtn.Text", bypassEnabled ? HFMessages.get(playerRef, MessageKeys.AdminGui.DISABLE_BTN) : HFMessages.get(playerRef, MessageKeys.AdminGui.ENABLE_BTN));
 
     events.addEventBinding(
         CustomUIEventBindingType.Activating,
@@ -173,9 +176,9 @@ public class AdminDashboardPage extends InteractiveCustomUIPage<AdminDashboardDa
     UIEventBuilder events = new UIEventBuilder();
 
     // Update bypass state display
-    cmd.set("#BypassState.Text", bypassEnabled ? "On" : "Off");
+    cmd.set("#BypassState.Text", bypassEnabled ? HFMessages.get(playerRef, MessageKeys.AdminGui.ON) : HFMessages.get(playerRef, MessageKeys.AdminGui.OFF));
     cmd.set("#BypassState.Style.TextColor", bypassEnabled ? "#55FF55" : "#FF5555");
-    cmd.set("#ToggleBypassBtn.Text", bypassEnabled ? "Disable" : "Enable");
+    cmd.set("#ToggleBypassBtn.Text", bypassEnabled ? HFMessages.get(playerRef, MessageKeys.AdminGui.DISABLE_BTN) : HFMessages.get(playerRef, MessageKeys.AdminGui.ENABLE_BTN));
 
     // Re-bind the toggle button event
     events.addEventBinding(

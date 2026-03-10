@@ -8,6 +8,8 @@ import com.hyperfactions.gui.admin.data.AdminFactionRelationsData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.RelationManager;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hyperfactions.util.UuidUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -58,24 +60,24 @@ public class AdminFactionRelationsPage extends InteractiveCustomUIPage<AdminFact
     AdminNavBarHelper.setupBar(playerRef, "factions", cmd, events);
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {
-      cmd.set("#FactionName.Text", "Faction Not Found");
+      cmd.set("#FactionName.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.FACTION_NOT_FOUND_LABEL));
       return;
     }
     cmd.set("#FactionName.Text", faction.name());
     events.addEventBinding(CustomUIEventBindingType.Activating, "#BackBtn", EventData.of("Button", "Back").append("FactionId", factionId.toString()), false);
     List<RelationEntry> allies = getRelationsOfType(faction, RelationType.ALLY);
     List<RelationEntry> enemies = getRelationsOfType(faction, RelationType.ENEMY);
-    cmd.set("#AlliesHeader.Text", "ALLIES (" + allies.size() + ")");
+    cmd.set("#AlliesHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.REL_ALLIES_HEADER, allies.size()));
     cmd.clear("#AlliesList");
-    if (allies.isEmpty()) { cmd.appendInline("#AlliesList", "Label { Text: \"No allies.\"; Style: (FontSize: 11, TextColor: #666666); Anchor: (Height: 24); }"); }
+    if (allies.isEmpty()) { cmd.appendInline("#AlliesList", "Label { Text: \"" + HFMessages.get(playerRef, MessageKeys.AdminGui.REL_NO_ALLIES) + "\"; Style: (FontSize: 11, TextColor: #666666); Anchor: (Height: 24); }"); }
     else {
       for (int i = 0;
       i < allies.size();
       i++) buildRelationEntry(cmd, events, "#AlliesList", i, allies.get(i), "ally");
     }
-    cmd.set("#EnemiesHeader.Text", "ENEMIES (" + enemies.size() + ")");
+    cmd.set("#EnemiesHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.REL_ENEMIES_HEADER, enemies.size()));
     cmd.clear("#EnemiesList");
-    if (enemies.isEmpty()) { cmd.appendInline("#EnemiesList", "Label { Text: \"No enemies.\"; Style: (FontSize: 11, TextColor: #666666); Anchor: (Height: 24); }"); }
+    if (enemies.isEmpty()) { cmd.appendInline("#EnemiesList", "Label { Text: \"" + HFMessages.get(playerRef, MessageKeys.AdminGui.REL_NO_ENEMIES) + "\"; Style: (FontSize: 11, TextColor: #666666); Anchor: (Height: 24); }"); }
     else {
       for (int i = 0;
       i < enemies.size();
@@ -88,7 +90,7 @@ public class AdminFactionRelationsPage extends InteractiveCustomUIPage<AdminFact
     cmd.append(container, UIPaths.ADMIN_FACTION_RELATIONS_ENTRY);
     String idx = container + "[" + index + "]";
     cmd.set(idx + " #FactionName.Text", entry.factionName);
-    cmd.set(idx + " #LeaderName.Text", "Leader: " + entry.leaderName);
+    cmd.set(idx + " #LeaderName.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.LEADER_PREFIX, entry.leaderName));
     cmd.set(idx + " #DateEstablished.Text", formatDate(entry.sinceMillis));
     if ("ally".equals(type)) {
       events.addEventBinding(CustomUIEventBindingType.Activating, idx + " #SetNeutralBtn", EventData.of("Button", "AdminSetNeutral").append("TargetFactionId", entry.factionId.toString()), false);
@@ -110,7 +112,7 @@ public class AdminFactionRelationsPage extends InteractiveCustomUIPage<AdminFact
       }
     }
     int count = Math.min(5, neutralFactions.size());
-    cmd.set("#NeutralCount.Text", neutralFactions.size() + " neutral factions");
+    cmd.set("#NeutralCount.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.REL_NEUTRAL_COUNT, neutralFactions.size()));
     cmd.clear("#NeutralList");
     for (int i = 0; i < count; i++) {
       Faction other = neutralFactions.get(i);
@@ -119,7 +121,7 @@ public class AdminFactionRelationsPage extends InteractiveCustomUIPage<AdminFact
       FactionMember leader = other.getLeader();
       String leaderName = leader != null ? leader.username() : "Unknown";
       cmd.set(idx + " #FactionName.Text", other.name());
-      cmd.set(idx + " #LeaderName.Text", "Leader: " + leaderName);
+      cmd.set(idx + " #LeaderName.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.LEADER_PREFIX, leaderName));
       cmd.set(idx + " #DateEstablished.Text", "");
       events.addEventBinding(CustomUIEventBindingType.Activating, idx + " #SetAllyBtn", EventData.of("Button", "AdminSetAlly").append("TargetFactionId", other.id().toString()), false);
       events.addEventBinding(CustomUIEventBindingType.Activating, idx + " #SetEnemyBtn", EventData.of("Button", "AdminSetEnemy").append("TargetFactionId", other.id().toString()), false);
@@ -129,11 +131,11 @@ public class AdminFactionRelationsPage extends InteractiveCustomUIPage<AdminFact
   private String formatDate(long sinceMillis) {
     long daysSince = ChronoUnit.DAYS.between(Instant.ofEpochMilli(sinceMillis), Instant.now());
     if (daysSince == 0) {
-      return "Since: today";
+      return HFMessages.get(playerRef, MessageKeys.AdminGui.REL_SINCE_TODAY);
     } else if (daysSince == 1) {
-      return "Since: 1 day ago";
+      return HFMessages.get(playerRef, MessageKeys.AdminGui.REL_SINCE_ONE_DAY);
     } else {
-      return "Since: " + daysSince + " days ago";
+      return HFMessages.get(playerRef, MessageKeys.AdminGui.REL_SINCE_DAYS, daysSince);
     }
   }
 
@@ -174,9 +176,9 @@ public class AdminFactionRelationsPage extends InteractiveCustomUIPage<AdminFact
     }
     switch (data.button) {
       case "Back" -> guiManager.openAdminFactionInfo(player, ref, store, playerRef, factionId);
-      case "AdminSetAlly" -> { if (data.targetFactionId != null) { UUID targetId = UuidUtil.parseOrNull(data.targetFactionId); if (targetId == null) { player.sendMessage(MessageUtil.errorText("Invalid faction.")); return; } Faction target = factionManager.getFaction(targetId); String targetName = target != null ? target.name() : "Unknown"; RelationManager.RelationResult result = relationManager.adminSetRelation(factionId, targetId, RelationType.ALLY); if (result == RelationManager.RelationResult.SUCCESS) player.sendMessage(MessageUtil.text("[Admin] Set mutual ally status with " + targetName + ".", MessageUtil.COLOR_BLUE)); else player.sendMessage(MessageUtil.adminError("Failed: " + result)); refresh(player, ref, store, playerRef); } }
-      case "AdminSetEnemy" -> { if (data.targetFactionId != null) { UUID targetId = UuidUtil.parseOrNull(data.targetFactionId); if (targetId == null) { player.sendMessage(MessageUtil.errorText("Invalid faction.")); return; } Faction target = factionManager.getFaction(targetId); String targetName = target != null ? target.name() : "Unknown"; RelationManager.RelationResult result = relationManager.adminSetRelation(factionId, targetId, RelationType.ENEMY); if (result == RelationManager.RelationResult.SUCCESS) player.sendMessage(MessageUtil.adminError("Set mutual enemy status with " + targetName + ".")); else player.sendMessage(MessageUtil.adminError("Failed: " + result)); refresh(player, ref, store, playerRef); } }
-      case "AdminSetNeutral" -> { if (data.targetFactionId != null) { UUID targetId = UuidUtil.parseOrNull(data.targetFactionId); if (targetId == null) { player.sendMessage(MessageUtil.errorText("Invalid faction.")); return; } Faction target = factionManager.getFaction(targetId); String targetName = target != null ? target.name() : "Unknown"; RelationManager.RelationResult result = relationManager.adminSetRelation(factionId, targetId, RelationType.NEUTRAL); if (result == RelationManager.RelationResult.SUCCESS) player.sendMessage(MessageUtil.text("[Admin] Set mutual neutral status with " + targetName + ".", "#888888")); else player.sendMessage(MessageUtil.adminError("Failed: " + result)); refresh(player, ref, store, playerRef); } }
+      case "AdminSetAlly" -> { if (data.targetFactionId != null) { UUID targetId = UuidUtil.parseOrNull(data.targetFactionId); if (targetId == null) { player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.INVALID_FACTION)); return; } Faction target = factionManager.getFaction(targetId); String targetName = target != null ? target.name() : "Unknown"; RelationManager.RelationResult result = relationManager.adminSetRelation(factionId, targetId, RelationType.ALLY); if (result == RelationManager.RelationResult.SUCCESS) player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.REL_SET_ALLY, MessageUtil.COLOR_BLUE, targetName)); else player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.REL_FAILED, result)); refresh(player, ref, store, playerRef); } }
+      case "AdminSetEnemy" -> { if (data.targetFactionId != null) { UUID targetId = UuidUtil.parseOrNull(data.targetFactionId); if (targetId == null) { player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.INVALID_FACTION)); return; } Faction target = factionManager.getFaction(targetId); String targetName = target != null ? target.name() : "Unknown"; RelationManager.RelationResult result = relationManager.adminSetRelation(factionId, targetId, RelationType.ENEMY); if (result == RelationManager.RelationResult.SUCCESS) player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.REL_SET_ENEMY, targetName)); else player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.REL_FAILED, result)); refresh(player, ref, store, playerRef); } }
+      case "AdminSetNeutral" -> { if (data.targetFactionId != null) { UUID targetId = UuidUtil.parseOrNull(data.targetFactionId); if (targetId == null) { player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.INVALID_FACTION)); return; } Faction target = factionManager.getFaction(targetId); String targetName = target != null ? target.name() : "Unknown"; RelationManager.RelationResult result = relationManager.adminSetRelation(factionId, targetId, RelationType.NEUTRAL); if (result == RelationManager.RelationResult.SUCCESS) player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.REL_SET_NEUTRAL, "#888888", targetName)); else player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.REL_FAILED, result)); refresh(player, ref, store, playerRef); } }
       default -> sendUpdate();
     }
   }

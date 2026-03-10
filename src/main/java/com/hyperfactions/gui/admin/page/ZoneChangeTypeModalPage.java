@@ -7,6 +7,8 @@ import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.admin.data.ZoneChangeTypeModalData;
 import com.hyperfactions.manager.ZoneManager;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -137,7 +139,7 @@ public class ZoneChangeTypeModalPage extends InteractiveCustomUIPage<ZoneChangeT
 
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.errorText("Zone no longer exists."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.ZTYPE_ZONE_GONE));
       navigateBack(player, ref, store, playerRef);
       return;
     }
@@ -170,17 +172,11 @@ public class ZoneChangeTypeModalPage extends InteractiveCustomUIPage<ZoneChangeT
       String oldColor = oldType == ZoneType.SAFE ? "#55FF55" : "#FF5555";
       String newColor = newType == ZoneType.SAFE ? "#55FF55" : "#FF5555";
 
-      player.sendMessage(
-          Message.raw("[Admin] Changed ").color("#AAAAAA")
-              .insert(Message.raw(zone.name()).color("#00FFFF"))
-              .insert(Message.raw(" from ").color("#AAAAAA"))
-              .insert(Message.raw(oldType.getDisplayName()).color(oldColor))
-              .insert(Message.raw(" to ").color("#AAAAAA"))
-              .insert(Message.raw(newType.getDisplayName()).color(newColor))
-              .insert(Message.raw(resetFlags ? " (flags reset)" : " (flags kept)").color("#888888"))
-      );
+      player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.ZTYPE_CHANGED, "#AAAAAA",
+          zone.name(), oldType.getDisplayName(), newType.getDisplayName(),
+          resetFlags ? "flags reset" : "flags kept"));
     } else {
-      player.sendMessage(MessageUtil.adminError("Failed to change zone type: " + result));
+      player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.ZTYPE_FAILED, result));
     }
 
     navigateBack(player, ref, store, playerRef);
