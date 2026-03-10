@@ -1128,10 +1128,16 @@ public class GuiManager {
     newPlayerPageOpener.openHelp(player, ref, store, playerRef, category);
   }
 
-  /** Opens the button test page page. */
+  /** Opens the button test page. */
   public void openButtonTestPage(Player player, Ref<EntityStore> ref,
                  Store<EntityStore> store, PlayerRef playerRef) {
     factionPageOpener.openButtonTestPage(player, ref, store, playerRef);
+  }
+
+  /** Opens the markdown rendering test page. */
+  public void openMarkdownTestPage(Player player, Ref<EntityStore> ref,
+                   Store<EntityStore> store, PlayerRef playerRef) {
+    factionPageOpener.openMarkdownTestPage(player, ref, store, playerRef);
   }
 
   /**

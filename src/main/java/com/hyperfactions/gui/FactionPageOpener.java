@@ -13,6 +13,7 @@ import com.hyperfactions.gui.help.page.HelpMainPage;
 import com.hyperfactions.gui.newplayer.page.*;
 import com.hyperfactions.gui.shared.page.*;
 import com.hyperfactions.gui.test.ButtonTestPage;
+import com.hyperfactions.gui.test.MarkdownTestPage;
 import com.hyperfactions.manager.*;
 import com.hyperfactions.storage.PlayerStorage;
 import com.hyperfactions.util.ErrorHandler;
@@ -1012,7 +1013,6 @@ class FactionPageOpener {
 
   /**
    * Opens the button style test page.
-   * Temporary — DELETE after testing is complete.
    */
   public void openButtonTestPage(Player player, Ref<EntityStore> ref,
                  Store<EntityStore> store, PlayerRef playerRef) {
@@ -1023,6 +1023,21 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
     } catch (Exception e) {
       ErrorHandler.report("[GUI] Failed to open ButtonTestPage", e);
+    }
+  }
+
+  /**
+   * Opens the markdown rendering test page.
+   */
+  public void openMarkdownTestPage(Player player, Ref<EntityStore> ref,
+                   Store<EntityStore> store, PlayerRef playerRef) {
+    Logger.info("[GUI] Opening MarkdownTestPage for %s", playerRef.getUsername());
+    try {
+      PageManager pageManager = player.getPageManager();
+      MarkdownTestPage page = new MarkdownTestPage(playerRef);
+      pageManager.openCustomPage(ref, store, page);
+    } catch (Exception e) {
+      ErrorHandler.report("[GUI] Failed to open MarkdownTestPage", e);
     }
   }
 
