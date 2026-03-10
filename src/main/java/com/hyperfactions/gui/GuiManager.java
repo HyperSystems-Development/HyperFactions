@@ -290,19 +290,6 @@ public class GuiManager {
         10
     ));
 
-    // Player Settings page (available to all players)
-    registry.registerEntry(new Entry(
-        "player_settings",
-        MessageKeys.Nav.PLAYER_SETTINGS,
-        null,
-        (player, ref, store, playerRef, faction, guiManager) ->
-            new PlayerSettingsPage(playerRef, factionManager.get(),
-                plugin.get().getPlayerStorage(), guiManager),
-        true, // Show in nav bar
-        false, // Doesn't require faction
-        11
-    ));
-
     // Help page (available to all players in faction nav bar)
     registry.registerEntry(new Entry(
         "help",
@@ -312,7 +299,20 @@ public class GuiManager {
             new HelpMainPage(playerRef, guiManager, factionManager.get()),
         true, // Show in nav bar
         false, // Doesn't require faction
-        12
+        11
+    ));
+
+    // Player Settings page (registered but NOT in nav bar — rendered separately on far right)
+    registry.registerEntry(new Entry(
+        "player_settings",
+        MessageKeys.Nav.PLAYER_SETTINGS,
+        null,
+        (player, ref, store, playerRef, faction, guiManager) ->
+            new PlayerSettingsPage(playerRef, factionManager.get(),
+                plugin.get().getPlayerStorage(), guiManager),
+        false, // NOT in nav bar (rendered separately on far right)
+        false, // Doesn't require faction
+        99
     ));
 
     // Admin page (requires permission) - accessed via /f admin, not in main nav bar
@@ -399,18 +399,6 @@ public class GuiManager {
         4
     ));
 
-    // Player Settings page
-    registry.registerEntry(new NewPlayerPageRegistry.Entry(
-        "player_settings",
-        MessageKeys.Nav.PLAYER_SETTINGS,
-        null,
-        (player, ref, store, playerRef, guiManager) ->
-            new PlayerSettingsPage(playerRef, factionManager.get(),
-                plugin.get().getPlayerStorage(), guiManager),
-        true,
-        5
-    ));
-
     // Help Page
     registry.registerEntry(new NewPlayerPageRegistry.Entry(
         "help",
@@ -419,7 +407,19 @@ public class GuiManager {
         (player, ref, store, playerRef, guiManager) ->
             new HelpMainPage(playerRef, guiManager, factionManager.get()),
         true,
-        6
+        5
+    ));
+
+    // Player Settings page (registered but NOT in nav bar — rendered separately on far right)
+    registry.registerEntry(new NewPlayerPageRegistry.Entry(
+        "player_settings",
+        MessageKeys.Nav.PLAYER_SETTINGS,
+        null,
+        (player, ref, store, playerRef, guiManager) ->
+            new PlayerSettingsPage(playerRef, factionManager.get(),
+                plugin.get().getPlayerStorage(), guiManager),
+        false,
+        99
     ));
 
     Logger.debug("[GUI] Registered %d pages with NewPlayerPageRegistry", registry.getEntries().size());

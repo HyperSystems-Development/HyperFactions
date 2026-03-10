@@ -9,7 +9,6 @@ import com.hyperfactions.gui.shared.data.PlayerSettingsData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.storage.PlayerStorage;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.MessageKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
@@ -23,10 +22,11 @@ import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
+import com.hypixel.hytale.server.core.ui.DropdownEntryInfo;
+import com.hypixel.hytale.server.core.ui.LocalizableString;
 import java.util.List;
 import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Player Settings page for personal preferences.
@@ -108,9 +108,6 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
       NewPlayerNavBarHelper.setupBar(playerRef, PAGE_ID, cmd, events);
     }
 
-    // Page title
-    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.PlayerSettings.TITLE));
-
     // === Language Section ===
     cmd.set("#LanguageSectionTitle.Text",
         HFMessages.get(playerRef, MessageKeys.PlayerSettings.LANGUAGE_SECTION));
@@ -132,18 +129,21 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
     );
 
     // Language dropdown
-    cmd.set("#LanguageDropdown.Entries", LOCALE_DISPLAY_NAMES);
-    int selectedIndex = 0;
-    if (languagePreference != null) {
-      int idx = AVAILABLE_LOCALES.indexOf(languagePreference);
-      if (idx >= 0) {
-        selectedIndex = idx;
-      }
+    List<DropdownEntryInfo> localeEntries = new java.util.ArrayList<>();
+    for (int i = 0; i < AVAILABLE_LOCALES.size(); i++) {
+      localeEntries.add(new DropdownEntryInfo(
+          LocalizableString.fromString(LOCALE_DISPLAY_NAMES.get(i)),
+          AVAILABLE_LOCALES.get(i)));
     }
-    cmd.set("#LanguageDropdown.Value", selectedIndex);
+    cmd.set("#LanguageDropdown.Entries", localeEntries);
+    String selectedLocale = (languagePreference != null && AVAILABLE_LOCALES.contains(languagePreference))
+        ? languagePreference : AVAILABLE_LOCALES.get(0);
+    cmd.set("#LanguageDropdown.Value", selectedLocale);
 
     // Disable dropdown when auto-detect is on
-    cmd.set("#LanguageRow.Visible", !autoDetect);
+    if (autoDetect) {
+      cmd.set("#LanguageDropdown.Disabled", true);
+    }
 
     // Language dropdown change event
     events.addEventBinding(
@@ -243,27 +243,23 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
         }
         savePreference(uuid, d -> d.setLanguagePreference(languagePreference));
         HFMessages.setLanguageOverride(uuid, languagePreference);
-        sendUpdate();
+        rebuild();
       }
 
       case "LanguageChanged" -> {
-        // Dropdown value is an index into AVAILABLE_LOCALES
+        // Dropdown value is the locale code string (e.g. "en-US")
         if (data.language != null) {
-          try {
-            int index = Integer.parseInt(data.language);
-            if (index >= 0 && index < AVAILABLE_LOCALES.size()) {
-              languagePreference = AVAILABLE_LOCALES.get(index);
-              savePreference(uuid, d -> d.setLanguagePreference(languagePreference));
-              HFMessages.setLanguageOverride(uuid, languagePreference);
-              player.sendMessage(MessageUtil.successText(playerRef,
-                  MessageKeys.PlayerSettings.LANGUAGE_CHANGED,
-                  LOCALE_DISPLAY_NAMES.get(index)));
-            }
-          } catch (NumberFormatException e) {
-            // Invalid dropdown value
+          int idx = AVAILABLE_LOCALES.indexOf(data.language);
+          if (idx >= 0) {
+            languagePreference = data.language;
+            savePreference(uuid, d -> d.setLanguagePreference(languagePreference));
+            HFMessages.setLanguageOverride(uuid, languagePreference);
+            player.sendMessage(MessageUtil.successText(playerRef,
+                MessageKeys.PlayerSettings.LANGUAGE_CHANGED,
+                LOCALE_DISPLAY_NAMES.get(idx)));
           }
         }
-        sendUpdate();
+        rebuild();
       }
 
       case "ToggleTerritoryAlerts" -> {
@@ -274,7 +270,7 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
                 HFMessages.get(playerRef, MessageKeys.PlayerSettings.TERRITORY_ALERTS))
             : MessageUtil.text(playerRef, MessageKeys.PlayerSettings.PREF_DISABLED, "#FFAA00",
                 HFMessages.get(playerRef, MessageKeys.PlayerSettings.TERRITORY_ALERTS)));
-        sendUpdate();
+        rebuild();
       }
 
       case "ToggleDeathAnnouncements" -> {
@@ -285,7 +281,7 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
                 HFMessages.get(playerRef, MessageKeys.PlayerSettings.DEATH_ANNOUNCEMENTS))
             : MessageUtil.text(playerRef, MessageKeys.PlayerSettings.PREF_DISABLED, "#FFAA00",
                 HFMessages.get(playerRef, MessageKeys.PlayerSettings.DEATH_ANNOUNCEMENTS)));
-        sendUpdate();
+        rebuild();
       }
 
       case "TogglePowerNotifications" -> {
@@ -296,7 +292,7 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
                 HFMessages.get(playerRef, MessageKeys.PlayerSettings.POWER_NOTIFICATIONS))
             : MessageUtil.text(playerRef, MessageKeys.PlayerSettings.PREF_DISABLED, "#FFAA00",
                 HFMessages.get(playerRef, MessageKeys.PlayerSettings.POWER_NOTIFICATIONS)));
-        sendUpdate();
+        rebuild();
       }
 
       default -> sendUpdate();

@@ -423,7 +423,7 @@ newplayer.officer_review = An officer will review your request.
 newplayer.map_hint = View Only - Join a faction to claim territory!
 
 # Player Settings
-nav.player_settings = Settings
+nav.player_settings = Player
 player_settings.title = Player Settings
 player_settings.language_section = Language
 player_settings.auto_detect = Auto-detect from client

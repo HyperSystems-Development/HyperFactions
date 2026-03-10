@@ -1,56 +1,53 @@
+// Player Settings Page - Language & Notification Preferences
+// Available to all players (faction and non-faction)
+
 $C = "../../Common.ui";
 $S = "../shared/styles.ui";
 $Nav = "../nav/nav_bar.ui";
 
 $C.@PageOverlay {
-  Group {
-    Anchor: (Width: 620, Height: 520);
-    Style: (HorizontalAlignment: Center, VerticalAlignment: Center);
-    LayoutMode: Top;
+  $Nav.@HyperFactionsNavBar #HyperFactionsNavBar {}
 
-    // Navigation bar
-    $Nav.@NavBar #HyperFactionsNavBar {}
+  $C.@Container {
+    Anchor: (Width: 550, Height: 480);
 
-    // Page Title
-    Group {
-      Anchor: (Height: 40);
-      Style: (HorizontalAlignment: Center);
-
-      Label #PageTitle {
-        Anchor: (Height: 36);
-        Style: (FontSize: 20, TextColor: #FFFFFF, HorizontalAlignment: Center, VerticalAlignment: Center);
-        Text: "Player Settings";
+    #Title {
+      $C.@Title {
+        @Text = "Player Settings";
       }
     }
 
-    // Content Area
-    Group #Content {
-      Anchor: (Height: 430);
+    #Content {
       LayoutMode: Top;
-      Padding: (Left: 24, Right: 24, Top: 8, Bottom: 8);
+      Padding: (Left: 20, Right: 20, Top: 10, Bottom: 10);
 
       // === Language Section ===
-      $C.@DecoratedContainer {
-        Anchor: (Bottom: 12);
-        LayoutMode: Top;
-        Padding: (Full: 12);
+      Label #LanguageSectionTitle {
+        Text: "Language";
+        Style: (FontSize: 13, TextColor: #55FFFF, RenderBold: true);
+        Anchor: (Height: 22, Bottom: 4);
+      }
+      Group {
+        Anchor: (Height: 1, Bottom: 8);
+        Background: (Color: #334455);
+      }
 
-        Label #LanguageSectionTitle {
-          Anchor: (Height: 26);
-          Style: (FontSize: 15, TextColor: #55FFFF);
-          Text: "Language";
-        }
+      Group {
+        Background: (Color: #1a2a3a);
+        Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+        LayoutMode: Top;
+        Anchor: (Bottom: 12);
 
         // Auto-detect checkbox
         $C.@CheckBoxWithLabel #AutoDetectCB {
           @Text = "Auto-detect from client";
           @Checked = true;
-          Anchor: (Height: 28, Bottom: 4);
+          Anchor: (Height: 28, Bottom: 2);
         }
 
         Label #AutoDetectDesc {
-          Anchor: (Height: 18, Bottom: 8);
-          Style: (FontSize: 11, TextColor: #888888);
+          Anchor: (Height: 16, Bottom: 8);
+          Style: (FontSize: 10, TextColor: #666666);
           Text: "Uses your game client's language setting";
         }
 
@@ -60,73 +57,111 @@ $C.@PageOverlay {
           LayoutMode: Left;
 
           Label #LanguageLabel {
-            Anchor: (Width: 90, Height: 26);
-            Style: (FontSize: 13, TextColor: #AAAAAA, VerticalAlignment: Center);
+            Anchor: (Width: 80, Height: 26);
+            Style: (FontSize: 12, TextColor: #888888, VerticalAlignment: Center);
             Text: "Language";
           }
 
-          Group {
-            Anchor: (Width: 200, Height: 26);
-            Background: (Color: #0d1520);
-            Padding: (Left: 6, Right: 6);
-
-            DropdownBox #LanguageDropdown {
-              Anchor: (Height: 26);
-            }
+          DropdownBox #LanguageDropdown {
+            Style: $C.@DefaultDropdownBoxStyle;
+            Anchor: (Height: 28, Width: 180);
           }
         }
       }
 
       // === Notifications Section ===
-      $C.@DecoratedContainer {
-        LayoutMode: Top;
-        Padding: (Full: 12);
+      Label #NotifSectionTitle {
+        Text: "Notifications";
+        Style: (FontSize: 13, TextColor: #55FFFF, RenderBold: true);
+        Anchor: (Height: 22, Bottom: 4);
+      }
+      Group {
+        Anchor: (Height: 1, Bottom: 8);
+        Background: (Color: #334455);
+      }
 
-        Label #NotifSectionTitle {
-          Anchor: (Height: 26);
-          Style: (FontSize: 15, TextColor: #55FFFF);
-          Text: "Notifications";
-        }
+      Group {
+        Background: (Color: #1a2a3a);
+        Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
+        LayoutMode: Top;
 
         // Territory Alerts
-        $C.@CheckBoxWithLabel #TerritoryAlertsCB {
-          @Text = "Territory Alerts";
-          @Checked = true;
-          Anchor: (Height: 28, Bottom: 2);
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 28, Bottom: 1);
+          Background: (Color: #0d1520);
+          Padding: (Left: 6, Right: 6);
+
+          Label {
+            Text: "Territory Alerts";
+            Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+            Anchor: (Width: 160);
+          }
+          Label { FlexWeight: 1; }
+          $C.@CheckBoxWithLabel #TerritoryAlertsCB {
+            @Text = ""; @Checked = true;
+            Anchor: (Height: 22, Width: 44);
+          }
         }
 
         Label #TerritoryAlertsDesc {
-          Anchor: (Height: 18, Bottom: 8);
-          Style: (FontSize: 11, TextColor: #888888);
+          Anchor: (Height: 16, Bottom: 6);
+          Style: (FontSize: 10, TextColor: #555555);
           Text: "Show notifications when entering/leaving territories";
         }
 
         // Death Announcements
-        $C.@CheckBoxWithLabel #DeathAnnounceCB {
-          @Text = "Death Broadcasts";
-          @Checked = true;
-          Anchor: (Height: 28, Bottom: 2);
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 28, Bottom: 1);
+          Background: (Color: #111a28);
+          Padding: (Left: 6, Right: 6);
+
+          Label {
+            Text: "Death Broadcasts";
+            Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+            Anchor: (Width: 160);
+          }
+          Label { FlexWeight: 1; }
+          $C.@CheckBoxWithLabel #DeathAnnounceCB {
+            @Text = ""; @Checked = true;
+            Anchor: (Height: 22, Width: 44);
+          }
         }
 
         Label #DeathAnnounceDesc {
-          Anchor: (Height: 18, Bottom: 8);
-          Style: (FontSize: 11, TextColor: #888888);
+          Anchor: (Height: 16, Bottom: 6);
+          Style: (FontSize: 10, TextColor: #555555);
           Text: "Receive faction member death location announcements";
         }
 
         // Power Notifications
-        $C.@CheckBoxWithLabel #PowerNotifCB {
-          @Text = "Power Changes";
-          @Checked = true;
-          Anchor: (Height: 28, Bottom: 2);
+        Group {
+          LayoutMode: Left;
+          Anchor: (Height: 28, Bottom: 1);
+          Background: (Color: #0d1520);
+          Padding: (Left: 6, Right: 6);
+
+          Label {
+            Text: "Power Changes";
+            Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+            Anchor: (Width: 160);
+          }
+          Label { FlexWeight: 1; }
+          $C.@CheckBoxWithLabel #PowerNotifCB {
+            @Text = ""; @Checked = true;
+            Anchor: (Height: 22, Width: 44);
+          }
         }
 
         Label #PowerNotifDesc {
-          Anchor: (Height: 18);
-          Style: (FontSize: 11, TextColor: #888888);
+          Anchor: (Height: 16);
+          Style: (FontSize: 10, TextColor: #555555);
           Text: "Show messages when your power changes";
         }
       }
     }
   }
 }
+
+$C.@BackButton {}
