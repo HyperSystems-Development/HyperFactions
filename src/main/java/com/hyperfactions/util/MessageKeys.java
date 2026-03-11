@@ -868,6 +868,15 @@ public final class MessageKeys {
     public static final String DEMOTE_FAILED = "hyperfactions_gui.members.demote_failed";
     public static final String KICKED = "hyperfactions_gui.members.kicked";
     public static final String KICK_FAILED = "hyperfactions_gui.members.kick_failed";
+    public static final String LABEL_POWER = "hyperfactions_gui.members.label_power";
+    public static final String LABEL_JOINED = "hyperfactions_gui.members.label_joined";
+    public static final String LABEL_LAST_DEATH = "hyperfactions_gui.members.label_last_death";
+    public static final String BTN_PROMOTE = "hyperfactions_gui.members.btn_promote";
+    public static final String BTN_DEMOTE = "hyperfactions_gui.members.btn_demote";
+    public static final String BTN_KICK = "hyperfactions_gui.members.btn_kick";
+    public static final String BTN_MAKE_LEADER = "hyperfactions_gui.members.btn_make_leader";
+    public static final String BTN_PROFILE = "hyperfactions_gui.members.btn_profile";
+    public static final String SELF_LABEL = "hyperfactions_gui.members.self_label";
 
     private MembersGui() {}
   }
@@ -889,6 +898,7 @@ public final class MessageKeys {
     public static final String LABEL_DESCRIPTION = "hyperfactions_gui.browser.label_description";
     public static final String VIEW_INFO_BTN = "hyperfactions_gui.browser.view_info_btn";
     public static final String LABEL_LEADER = "hyperfactions_gui.browser.label_leader";
+    public static final String NO_DESCRIPTION = "hyperfactions_gui.browser.no_description";
 
     private BrowserGui() {}
   }

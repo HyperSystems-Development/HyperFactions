@@ -196,6 +196,15 @@ members.demoted = {0} degradado a {1}.
 members.demote_failed = No se pudo degradar: {0}
 members.kicked = {0} expulsado de la faccion.
 members.kick_failed = No se pudo expulsar: {0}
+members.label_power = Poder:
+members.label_joined = Ingreso:
+members.label_last_death = Ultima Muerte:
+members.btn_promote = Promover
+members.btn_demote = Degradar
+members.btn_kick = Expulsar
+members.btn_make_leader = Hacer Lider
+members.btn_profile = Perfil
+members.self_label = (Tu)
 
 # ========== Pagina del Explorador ==========
 browser.title = Explorar Facciones
@@ -213,6 +222,7 @@ browser.label_created = Creada:
 browser.label_description = Descripcion:
 browser.view_info_btn = Ver Info
 browser.label_leader = Lider:
+browser.no_description = Sin descripcion
 
 # ========== Pagina de Clasificacion ==========
 leaderboard.title = Clasificacion de Facciones

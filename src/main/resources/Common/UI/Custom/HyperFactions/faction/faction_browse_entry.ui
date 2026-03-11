@@ -139,7 +139,7 @@ Group {
       Label #RecruitmentLabel {
         Text: "Recruitment:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
-        Anchor: (Width: 85);
+        Anchor: (Width: 95);
       }
       Label #RecruitmentStatus {
         Text: "Unknown";

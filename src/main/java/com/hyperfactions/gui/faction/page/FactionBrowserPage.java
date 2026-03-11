@@ -302,6 +302,8 @@ public class FactionBrowserPage extends InteractiveCustomUIPage<FactionPageData>
             ? entry.description.substring(0, 57) + "..."
             : entry.description;
         cmd.set(idx + " #Description.Text", desc);
+      } else {
+        cmd.set(idx + " #Description.Text", HFMessages.get(playerRef, MessageKeys.BrowserGui.NO_DESCRIPTION));
       }
 
       // View Info button

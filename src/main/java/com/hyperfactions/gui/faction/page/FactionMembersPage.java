@@ -226,6 +226,17 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
     // Use indexed selector like NavBarHelper does
     String idx = "#IndexCards[" + index + "]";
 
+    // Localize entry labels
+    cmd.set(idx + " #PowerLabel.Text", HFMessages.get(playerRef, MessageKeys.MembersGui.LABEL_POWER));
+    cmd.set(idx + " #JoinedLabel.Text", HFMessages.get(playerRef, MessageKeys.MembersGui.LABEL_JOINED));
+    cmd.set(idx + " #LastDeathLabel.Text", HFMessages.get(playerRef, MessageKeys.MembersGui.LABEL_LAST_DEATH));
+    cmd.set(idx + " #PromoteBtn.Text", HFMessages.get(playerRef, MessageKeys.MembersGui.BTN_PROMOTE));
+    cmd.set(idx + " #DemoteBtn.Text", HFMessages.get(playerRef, MessageKeys.MembersGui.BTN_DEMOTE));
+    cmd.set(idx + " #KickBtn.Text", HFMessages.get(playerRef, MessageKeys.MembersGui.BTN_KICK));
+    cmd.set(idx + " #TransferBtn.Text", HFMessages.get(playerRef, MessageKeys.MembersGui.BTN_MAKE_LEADER));
+    cmd.set(idx + " #ProfileBtn.Text", HFMessages.get(playerRef, MessageKeys.MembersGui.BTN_PROFILE));
+    cmd.set(idx + " #SelfLabel.Text", HFMessages.get(playerRef, MessageKeys.MembersGui.SELF_LABEL));
+
     // Basic info
     cmd.set(idx + " #MemberName.Text", member.username());
     cmd.set(idx + " #MemberRole.Text", formatRole(member.role()));

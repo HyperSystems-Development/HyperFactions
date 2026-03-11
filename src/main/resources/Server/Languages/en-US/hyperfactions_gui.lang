@@ -196,6 +196,15 @@ members.demoted = Demoted {0} to {1}.
 members.demote_failed = Failed to demote: {0}
 members.kicked = Kicked {0} from the faction.
 members.kick_failed = Failed to kick: {0}
+members.label_power = Power:
+members.label_joined = Joined:
+members.label_last_death = Last Death:
+members.btn_promote = Promote
+members.btn_demote = Demote
+members.btn_kick = Kick
+members.btn_make_leader = Make Leader
+members.btn_profile = Profile
+members.self_label = (You)
 
 # ========== Browser Page ==========
 browser.title = Browse Factions
@@ -213,6 +222,7 @@ browser.label_created = Created:
 browser.label_description = Description:
 browser.view_info_btn = View Info
 browser.label_leader = Leader:
+browser.no_description = No description set
 
 # ========== Leaderboard Page ==========
 leaderboard.title = Faction Leaderboard
