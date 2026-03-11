@@ -188,7 +188,7 @@ public class ZoneChangeTypeModalPage extends InteractiveCustomUIPage<ZoneChangeT
 
       player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.ZTYPE_CHANGED, "#AAAAAA",
           zone.name(), oldType.getDisplayName(), newType.getDisplayName(),
-          resetFlags ? "flags reset" : "flags kept"));
+          HFMessages.get(playerRef, resetFlags ? MessageKeys.AdminGui.ZTYPE_FLAGS_RESET : MessageKeys.AdminGui.ZTYPE_FLAGS_KEPT)));
     } else {
       player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.ZTYPE_FAILED, result));
     }

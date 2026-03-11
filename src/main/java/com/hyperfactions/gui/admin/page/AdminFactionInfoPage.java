@@ -191,7 +191,7 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
           .limit(3)
           .collect(Collectors.joining(", "));
       if (officers.size() > 3) {
-        officerNames += " +" + (officers.size() - 3) + " more";
+        officerNames += " " + HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_INFO_MORE, officers.size() - 3);
       }
       cmd.set("#OfficersValue.Text", officerNames);
     }

@@ -184,6 +184,8 @@ zone_rename.rename_failed = No se pudo renombrar la zona: {0}
 zone_type.zone_gone = La zona ya no existe.
 zone_type.changed = [Admin] {0} cambiada de {1} a {2} ({3}).
 zone_type.failed = No se pudo cambiar el tipo de zona: {0}
+zone_type.flags_reset = flags reiniciados
+zone_type.flags_kept = flags conservados
 
 # ========== Flags de Integracion de Zona ==========
 zone_int.zone_not_found = Zona No Encontrada
@@ -510,6 +512,14 @@ gui.mem_btn_teleport = Teletransportar
 gui.mem_btn_promote = Promover
 gui.mem_btn_demote = Degradar
 gui.mem_btn_kick = Expulsar
+gui.econ_not_enabled = El sistema de economia no esta habilitado.
+gui.info_more = +{0} mas
+gui.log_time_1h = 1h
+gui.log_time_24h = 24h
+gui.log_time_7d = 7d
+gui.log_time_all = Todos
+gui.shape_circular = circular
+gui.shape_square = cuadrado
 
 # Etiquetas de info de faccion
 gui.fac_description = Descripcion

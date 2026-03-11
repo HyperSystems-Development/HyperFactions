@@ -80,9 +80,10 @@ public class AdminVersionPage extends InteractiveCustomUIPage<AdminVersionData> 
     cmd.set("#FactionsVersion.Text", "v" + HyperFactions.VERSION);
 
     String serverVersion = ManifestUtil.getVersion();
-    cmd.set("#ServerVersion.Text", serverVersion != null ? serverVersion : "Unknown");
+    cmd.set("#ServerVersion.Text", serverVersion != null ? serverVersion : HFMessages.get(playerRef, MessageKeys.Common.UNKNOWN));
 
-    cmd.set("#JavaVersion.Text", System.getProperty("java.version", "Unknown"));
+    String javaVersion = System.getProperty("java.version");
+    cmd.set("#JavaVersion.Text", javaVersion != null ? javaVersion : HFMessages.get(playerRef, MessageKeys.Common.UNKNOWN));
 
     // --- Permissions ---
     setStatus(cmd, "#HyperPermsStatus", HyperPermsIntegration.isAvailable(), HFMessages.get(playerRef, MessageKeys.AdminGui.VER_ACTIVE), HFMessages.get(playerRef, MessageKeys.AdminGui.VER_NOT_FOUND));

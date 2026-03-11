@@ -287,7 +287,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
         } else if (fEcon != null && fEcon.lastUpkeepTimestamp() > 0) {
           long intervalMs = ConfigManager.get().getUpkeepIntervalHours() * 3600_000L;
           long remaining = Math.max(0, (fEcon.lastUpkeepTimestamp() + intervalMs) - System.currentTimeMillis());
-          cmd.set("#PerCycleLabel.Text", "in " + com.hyperfactions.economy.UpkeepProcessor.formatDuration(remaining));
+          cmd.set("#PerCycleLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.UPKEEP_IN, com.hyperfactions.economy.UpkeepProcessor.formatDuration(remaining)));
         } else {
           cmd.set("#PerCycleLabel.Text", HFMessages.get(playerRef, MessageKeys.DashboardGui.BILLABLE_CHUNKS, billableChunks));
         }

@@ -828,6 +828,7 @@ public final class MessageKeys {
     public static final String NO_HOME_HINT = "hyperfactions_gui.dashboard.no_home_hint";
     public static final String CHAT_MODE_SET = "hyperfactions_gui.dashboard.chat_mode_set";
     public static final String CLAIM_SUCCESS = "hyperfactions_gui.dashboard.claim_success";
+    public static final String UPKEEP_IN = "hyperfactions_gui.dashboard.upkeep_in";
 
     private DashboardGui() {}
   }
@@ -844,6 +845,8 @@ public final class MessageKeys {
     public static final String SORT = "hyperfactions_gui.common.sort";
     public static final String PREV = "hyperfactions_gui.common.prev";
     public static final String NEXT = "hyperfactions_gui.common.next";
+
+    public static final String TREASURY_NOT_AVAILABLE = "hyperfactions_gui.common.treasury_not_available";
 
     private GuiCommon() {}
   }
@@ -1782,6 +1785,14 @@ public final class MessageKeys {
     public static final String PLR_KICKED_SUCCESS = "hyperfactions_admin.playerinfo.kicked_success";
     public static final String PLR_KICKED_LEADER = "hyperfactions_admin.playerinfo.kicked_leader";
     public static final String PLR_DISBANDED_KICK = "hyperfactions_admin.playerinfo.disbanded_kick";
+    public static final String ECON_NOT_ENABLED = "hyperfactions_admin.gui.econ_not_enabled";
+    public static final String GUI_INFO_MORE = "hyperfactions_admin.gui.info_more";
+    public static final String LOG_TIME_1H = "hyperfactions_admin.gui.log_time_1h";
+    public static final String LOG_TIME_24H = "hyperfactions_admin.gui.log_time_24h";
+    public static final String LOG_TIME_7D = "hyperfactions_admin.gui.log_time_7d";
+    public static final String LOG_TIME_ALL = "hyperfactions_admin.gui.log_time_all";
+    public static final String SHAPE_CIRCULAR = "hyperfactions_admin.gui.shape_circular";
+    public static final String SHAPE_SQUARE = "hyperfactions_admin.gui.shape_square";
     // Economy
     public static final String ECON_NO_DATA = "hyperfactions_admin.economy.no_data";
     public static final String ECON_AMOUNT_ZERO = "hyperfactions_admin.economy.amount_zero";
@@ -1828,6 +1839,8 @@ public final class MessageKeys {
     public static final String ZTYPE_ZONE_GONE = "hyperfactions_admin.zone_type.zone_gone";
     public static final String ZTYPE_CHANGED = "hyperfactions_admin.zone_type.changed";
     public static final String ZTYPE_FAILED = "hyperfactions_admin.zone_type.failed";
+    public static final String ZTYPE_FLAGS_RESET = "hyperfactions_admin.zone_type.flags_reset";
+    public static final String ZTYPE_FLAGS_KEPT = "hyperfactions_admin.zone_type.flags_kept";
     // Zone integration flags
     public static final String ZINT_ZONE_NOT_FOUND = "hyperfactions_admin.zone_int.zone_not_found";
     public static final String ZINT_NO_PLUGIN = "hyperfactions_admin.zone_int.no_plugin";

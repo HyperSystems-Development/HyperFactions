@@ -155,6 +155,7 @@ dashboard.time_days = {0}d ago
 dashboard.no_home_hint = Your faction has no home set. Ask an officer to set one.
 dashboard.chat_mode_set = Chat mode: {0}
 dashboard.claim_success = Claimed chunk at ({0}, {1})
+dashboard.upkeep_in = in {0}
 
 # ========== Faction Main Page ==========
 main.no_faction = No Faction
@@ -176,6 +177,7 @@ common.search = Search:
 common.sort = Sort:
 common.prev = < Prev
 common.next = Next >
+common.treasury_not_available = Treasury is not available.
 
 # ========== Members Page ==========
 members.title = Members

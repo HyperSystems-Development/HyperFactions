@@ -528,7 +528,7 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
           int claimed = zoneManager.claimRadius(newZone.id(), worldName, centerX, centerZ, radius, circle);
 
           if (claimed > 0) {
-            player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.WIZ_RADIUS_CLAIMED, "#44cc44", claimed, (circle ? "circular" : "square"), radius));
+            player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.WIZ_RADIUS_CLAIMED, "#44cc44", claimed, HFMessages.get(playerRef, circle ? MessageKeys.AdminGui.SHAPE_CIRCULAR : MessageKeys.AdminGui.SHAPE_SQUARE), radius));
             newZone = zoneManager.getZoneById(newZone.id());
           } else {
             player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.WIZ_RADIUS_NO_CLAIMS, MessageUtil.COLOR_GOLD));

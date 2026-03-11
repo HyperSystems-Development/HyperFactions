@@ -184,6 +184,8 @@ zone_rename.rename_failed = Failed to rename zone: {0}
 zone_type.zone_gone = Zone no longer exists.
 zone_type.changed = [Admin] Changed {0} from {1} to {2} ({3}).
 zone_type.failed = Failed to change zone type: {0}
+zone_type.flags_reset = flags reset
+zone_type.flags_kept = flags kept
 
 # ========== Zone Integration Flags ==========
 zone_int.zone_not_found = Zone Not Found
@@ -510,6 +512,14 @@ gui.mem_btn_teleport = Teleport
 gui.mem_btn_promote = Promote
 gui.mem_btn_demote = Demote
 gui.mem_btn_kick = Kick
+gui.econ_not_enabled = Economy system is not enabled.
+gui.info_more = +{0} more
+gui.log_time_1h = 1h
+gui.log_time_24h = 24h
+gui.log_time_7d = 7d
+gui.log_time_all = All
+gui.shape_circular = circular
+gui.shape_square = square
 
 # Faction info labels
 gui.fac_description = Description

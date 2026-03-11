@@ -155,6 +155,7 @@ dashboard.time_days = hace {0}d
 dashboard.no_home_hint = Tu faccion no tiene hogar. Pide a un oficial que lo establezca.
 dashboard.chat_mode_set = Modo de chat: {0}
 dashboard.claim_success = Chunk reclamado en ({0}, {1})
+dashboard.upkeep_in = en {0}
 
 # ========== Pagina Principal de Faccion ==========
 main.no_faction = Sin Faccion
@@ -176,6 +177,7 @@ common.search = Buscar:
 common.sort = Orden:
 common.prev = < Anterior
 common.next = Siguiente >
+common.treasury_not_available = La tesoreria no esta disponible.
 
 # ========== Pagina de Miembros ==========
 members.title = Miembros

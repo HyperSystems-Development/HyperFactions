@@ -64,17 +64,17 @@ public class AdminActivityLogPage extends InteractiveCustomUIPage<AdminActivityL
   ) {}
 
   private enum TimeFilter {
-    HOUR_1("1h", 3600_000L),
-    HOUR_24("24h", 86400_000L),
-    DAY_7("7d", 604800_000L),
-    ALL("All", Long.MAX_VALUE);
+    HOUR_1(MessageKeys.AdminGui.LOG_TIME_1H, 3600_000L),
+    HOUR_24(MessageKeys.AdminGui.LOG_TIME_24H, 86400_000L),
+    DAY_7(MessageKeys.AdminGui.LOG_TIME_7D, 604800_000L),
+    ALL(MessageKeys.AdminGui.LOG_TIME_ALL, Long.MAX_VALUE);
 
-    private final String displayName;
+    private final String messageKey;
 
     private final long millis;
 
-    TimeFilter(String displayName, long millis) {
-      this.displayName = displayName;
+    TimeFilter(String messageKey, long millis) {
+      this.messageKey = messageKey;
       this.millis = millis;
     }
   }
@@ -144,7 +144,7 @@ public class AdminActivityLogPage extends InteractiveCustomUIPage<AdminActivityL
     // Time filter dropdown
     List<DropdownEntryInfo> timeOptions = new ArrayList<>();
     for (TimeFilter tf : TimeFilter.values()) {
-      timeOptions.add(new DropdownEntryInfo(LocalizableString.fromString(tf.displayName), tf.name()));
+      timeOptions.add(new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, tf.messageKey)), tf.name()));
     }
     cmd.set("#TimeDropdown.Entries", timeOptions);
     cmd.set("#TimeDropdown.Value", timeFilter.name());
