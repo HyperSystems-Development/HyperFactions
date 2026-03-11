@@ -97,7 +97,7 @@ Group {
       LayoutMode: Left;
       Anchor: (Height: 18, Bottom: 6);
 
-      Label {
+      Label #MessageLabel {
         Text: "Message:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
         Anchor: (Width: 70);

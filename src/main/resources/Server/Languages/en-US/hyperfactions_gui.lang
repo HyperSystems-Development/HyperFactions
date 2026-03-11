@@ -297,6 +297,18 @@ relations.search_hint = Search for a faction to set relation
 relations.no_results = No factions found matching '{0}'
 relations.power_display = {0} power
 relations.member_count = {0} members
+relations.label_members = members
+relations.label_power = power
+relations.label_since = Since:
+relations.label_claims = Claims:
+relations.label_direction = Direction:
+relations.btn_view = View
+relations.btn_neutral = Neutral
+relations.btn_enemy = Enemy
+relations.btn_ally = Ally
+relations.btn_accept = Accept
+relations.btn_decline = Decline
+relations.btn_cancel = Cancel
 
 # ========== Settings Page ==========
 settings.title = Faction Settings
@@ -676,6 +688,10 @@ invites.request_declined = Declined join request from {0}.
 invites.time_seconds = {0}s
 invites.time_minutes = {0}m
 invites.time_hours = {0}h
+invites.label_message = Message:
+invites.btn_cancel = Cancel
+invites.btn_accept = Accept
+invites.btn_decline = Decline
 
 # ========== Map Page ==========
 map.title = Territory Map

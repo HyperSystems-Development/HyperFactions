@@ -339,6 +339,20 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
     String idx = "#IndexCards[" + index + "]";
 
+    // Localize entry labels and buttons
+    cmd.set(idx + " #MemberLabel.Text", HFMessages.get(playerRef, MessageKeys.RelationsGui.LABEL_MEMBERS));
+    cmd.set(idx + " #PowerLabel.Text", HFMessages.get(playerRef, MessageKeys.RelationsGui.LABEL_POWER));
+    cmd.set(idx + " #SinceLabel.Text", HFMessages.get(playerRef, MessageKeys.RelationsGui.LABEL_SINCE));
+    cmd.set(idx + " #ClaimsLabel.Text", HFMessages.get(playerRef, MessageKeys.RelationsGui.LABEL_CLAIMS));
+    cmd.set(idx + " #DirectionLabel.Text", HFMessages.get(playerRef, MessageKeys.RelationsGui.LABEL_DIRECTION));
+    cmd.set(idx + " #ViewBtn.Text", HFMessages.get(playerRef, MessageKeys.RelationsGui.BTN_VIEW));
+    cmd.set(idx + " #NeutralBtn.Text", HFMessages.get(playerRef, MessageKeys.RelationsGui.BTN_NEUTRAL));
+    cmd.set(idx + " #EnemyBtn.Text", HFMessages.get(playerRef, MessageKeys.RelationsGui.BTN_ENEMY));
+    cmd.set(idx + " #AllyBtn.Text", HFMessages.get(playerRef, MessageKeys.RelationsGui.BTN_ALLY));
+    cmd.set(idx + " #AcceptBtn.Text", HFMessages.get(playerRef, MessageKeys.RelationsGui.BTN_ACCEPT));
+    cmd.set(idx + " #DeclineBtn.Text", HFMessages.get(playerRef, MessageKeys.RelationsGui.BTN_DECLINE));
+    cmd.set(idx + " #CancelBtn.Text", HFMessages.get(playerRef, MessageKeys.RelationsGui.BTN_CANCEL));
+
     // === Header info ===
     cmd.set(idx + " #FactionName.Text", item.factionName);
     cmd.set(idx + " #LeaderName.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.LEADER_LABEL, item.leaderName));

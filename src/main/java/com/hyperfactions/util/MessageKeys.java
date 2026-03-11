@@ -1074,6 +1074,18 @@ public final class MessageKeys {
     public static final String NO_RESULTS = "hyperfactions_gui.relations.no_results";
     public static final String POWER_DISPLAY = "hyperfactions_gui.relations.power_display";
     public static final String MEMBER_COUNT_DISPLAY = "hyperfactions_gui.relations.member_count";
+    public static final String LABEL_MEMBERS = "hyperfactions_gui.relations.label_members";
+    public static final String LABEL_POWER = "hyperfactions_gui.relations.label_power";
+    public static final String LABEL_SINCE = "hyperfactions_gui.relations.label_since";
+    public static final String LABEL_CLAIMS = "hyperfactions_gui.relations.label_claims";
+    public static final String LABEL_DIRECTION = "hyperfactions_gui.relations.label_direction";
+    public static final String BTN_VIEW = "hyperfactions_gui.relations.btn_view";
+    public static final String BTN_NEUTRAL = "hyperfactions_gui.relations.btn_neutral";
+    public static final String BTN_ENEMY = "hyperfactions_gui.relations.btn_enemy";
+    public static final String BTN_ALLY = "hyperfactions_gui.relations.btn_ally";
+    public static final String BTN_ACCEPT = "hyperfactions_gui.relations.btn_accept";
+    public static final String BTN_DECLINE = "hyperfactions_gui.relations.btn_decline";
+    public static final String BTN_CANCEL = "hyperfactions_gui.relations.btn_cancel";
 
     private RelationsGui() {}
   }
@@ -1509,6 +1521,10 @@ public final class MessageKeys {
     public static final String TIME_SECONDS = "hyperfactions_gui.invites.time_seconds";
     public static final String TIME_MINUTES = "hyperfactions_gui.invites.time_minutes";
     public static final String TIME_HOURS = "hyperfactions_gui.invites.time_hours";
+    public static final String LABEL_MESSAGE = "hyperfactions_gui.invites.label_message";
+    public static final String BTN_CANCEL = "hyperfactions_gui.invites.btn_cancel";
+    public static final String BTN_ACCEPT = "hyperfactions_gui.invites.btn_accept";
+    public static final String BTN_DECLINE = "hyperfactions_gui.invites.btn_decline";
 
     private InvitesGui() {}
   }

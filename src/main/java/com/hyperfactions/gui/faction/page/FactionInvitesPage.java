@@ -257,6 +257,12 @@ public class FactionInvitesPage extends InteractiveCustomUIPage<FactionPageData>
 
     String idx = "#IndexCards[" + index + "]";
 
+    // Localize entry labels and buttons
+    cmd.set(idx + " #MessageLabel.Text", HFMessages.get(playerRef, MessageKeys.InvitesGui.LABEL_MESSAGE));
+    cmd.set(idx + " #CancelBtn.Text", HFMessages.get(playerRef, MessageKeys.InvitesGui.BTN_CANCEL));
+    cmd.set(idx + " #AcceptBtn.Text", HFMessages.get(playerRef, MessageKeys.InvitesGui.BTN_ACCEPT));
+    cmd.set(idx + " #DeclineBtn.Text", HFMessages.get(playerRef, MessageKeys.InvitesGui.BTN_DECLINE));
+
     // Basic info
     cmd.set(idx + " #PlayerName.Text", item.playerName);
     cmd.set(idx + " #StatusInfo.Text", HFMessages.get(playerRef, MessageKeys.InvitesGui.EXPIRES, formatTime(item.remainingSeconds)));
@@ -349,7 +355,7 @@ public class FactionInvitesPage extends InteractiveCustomUIPage<FactionPageData>
         return member.username();
       }
     }
-    return "Unknown";
+    return HFMessages.get(playerRef, MessageKeys.Common.UNKNOWN);
   }
 
   private String formatTime(int seconds) {

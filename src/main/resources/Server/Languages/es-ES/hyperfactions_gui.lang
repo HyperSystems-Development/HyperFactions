@@ -297,6 +297,18 @@ relations.search_hint = Busca una faccion para establecer relacion
 relations.no_results = No se encontraron facciones con '{0}'
 relations.power_display = {0} poder
 relations.member_count = {0} miembros
+relations.label_members = miembros
+relations.label_power = poder
+relations.label_since = Desde:
+relations.label_claims = Reclamos:
+relations.label_direction = Direccion:
+relations.btn_view = Ver
+relations.btn_neutral = Neutral
+relations.btn_enemy = Enemigo
+relations.btn_ally = Aliado
+relations.btn_accept = Aceptar
+relations.btn_decline = Rechazar
+relations.btn_cancel = Cancelar
 
 # ========== Pagina de Ajustes ==========
 settings.title = Ajustes de Faccion
@@ -676,6 +688,10 @@ invites.request_declined = Solicitud de ingreso de {0} rechazada.
 invites.time_seconds = {0}s
 invites.time_minutes = {0}m
 invites.time_hours = {0}h
+invites.label_message = Mensaje:
+invites.btn_cancel = Cancelar
+invites.btn_accept = Aceptar
+invites.btn_decline = Rechazar
 
 # ========== Pagina del Mapa ==========
 map.title = Mapa de Territorio
