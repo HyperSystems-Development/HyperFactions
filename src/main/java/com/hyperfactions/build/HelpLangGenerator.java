@@ -501,7 +501,7 @@ public class HelpLangGenerator {
                     }
                 } else if (entry.key() != null) {
                     String text = topic.entryTexts().get(i);
-                    sb.append(entry.key()).append(" = ").append(stripInlineMarkers(text)).append("\n");
+                    sb.append(entry.key()).append(" = ").append(text).append("\n");
                 }
             }
 

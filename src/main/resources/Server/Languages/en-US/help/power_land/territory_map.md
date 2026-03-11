@@ -20,12 +20,12 @@ Opens the territory map GUI centered on your current location.
 
 | Color | Meaning |
 |-------|---------|
-| [#55FF55] **Your faction's color** | Territory claimed by your faction |
-| [#5555FF] **Blue** | Allied faction territory |
-| [#FF5555] **Red** | Enemy faction territory |
-| [#AAAAAA] **Gray** | Neutral faction territory |
-| [#333333] **Dark** | Wilderness (unclaimed land) |
-| [#FFAA00] **Gold** | Special zones (safezone, warzone) |
+| [#55FF55] Your faction's color | Territory claimed by your faction |
+| [#5555FF] Blue | Allied faction territory |
+| [#FF5555] Red | Enemy faction territory |
+| [#AAAAAA] Gray | Neutral faction territory |
+| [#333333] Dark | Wilderness (unclaimed land) |
+| [#FFAA00] Gold | Special zones (safezone, warzone) |
 
 >[!INFO] Your faction's color on the map matches the color you set with the faction color setting. Allies and enemies use fixed colors for easy identification.
 
@@ -35,8 +35,8 @@ Opens the territory map GUI centered on your current location.
 
 The map is not just for viewing -- you can interact with it directly.
 
-- **Click an unclaimed chunk** to claim it (requires Officer+ rank and sufficient power)
-- **Click a claimed chunk** to see which faction owns it
+- Click an unclaimed chunk to claim it (requires Officer+ rank and sufficient power)
+- Click a claimed chunk to see which faction owns it
 - Scroll or pan to explore the area around you
 
 >[!TIP] The map is the easiest way to plan your territory expansion. Look for unclaimed areas near your base and claim strategically to create a contiguous border.

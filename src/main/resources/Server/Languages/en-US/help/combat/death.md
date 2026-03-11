@@ -8,13 +8,15 @@ Death carries real consequences in factions. Every death costs you personal powe
 
 ## Power Loss
 
-Each death costs **-1.0 power** from your personal total. This lowers the faction's combined power.
+Each death costs -1.0 power from your personal total. This lowers the faction's combined power.
 
 | Event | Power Change |
 |-------|-------------|
 | Death (any cause) | -1.0 |
 | Online regen | +0.1 per minute |
 | Combat logout | -1.0 (killed) |
+
+>[!NOTE] These are default values. Your server administrator may have configured different settings.
 
 ## Example Scenarios
 

@@ -14,6 +14,8 @@ Factions must pay ongoing upkeep to maintain their claimed territory. This preve
 | Free chunks | 3 (no cost) |
 | Scaling mode | Flat rate |
 
+>[!NOTE] These are default values. Your server administrator may have configured different settings.
+
 Your first 3 chunks are free. Beyond that, each additional claimed chunk costs 2.0 per payment cycle.
 
 ## Auto-Pay

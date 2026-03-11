@@ -1,4 +1,4 @@
-// Help Center - Wide sidebar layout (750x650)
+// Help Center - Wide sidebar layout (863x748)
 // Left: Colored category sidebar (180px), Right: Scrollable card content
 $C = "../../Common.ui";
 $S = "../shared/styles.ui";
@@ -115,7 +115,7 @@ $C.@PageOverlay {
   $Nav.@HyperFactionsNavBar #HyperFactionsNavBar {}
 
   $C.@DecoratedContainer {
-    Anchor: (Width: 750, Height: 650);
+    Anchor: (Width: 863, Height: 748);
 
     #Title {
       Group {

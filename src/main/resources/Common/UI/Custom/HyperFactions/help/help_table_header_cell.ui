@@ -1,7 +1,7 @@
 // Help table header cell - bold label with left border separator
 
 Group {
-  Anchor: (Width: 200);
+  FlexWeight: 1;
 
   // Left border (acts as column separator + table left border on first cell)
   Group {
@@ -11,8 +11,8 @@ Group {
 
   Label #CellText {
     Text: "";
-    Style: (FontSize: 10, TextColor: #CCCCCC, RenderBold: true, Wrap: true, VerticalAlignment: Center);
-    Padding: (Left: 10, Right: 8);
-    Anchor: (Left: 1, Right: 0, Top: 0, Bottom: 0);
+    Style: (FontSize: 10, TextColor: #CCCCCC, RenderBold: true, Wrap: true);
+    Padding: (Left: 10, Right: 8, Top: 4, Bottom: 4);
+    Anchor: (Left: 1, Right: 0);
   }
 }

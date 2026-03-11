@@ -17,11 +17,11 @@ Quick reference for all faction economy commands.
 
 ## Command Aliases
 
-- `/f balance` can also be used as `/f bal`
-- `/f deposit` and `/f withdraw` accept decimal amounts
+- /f balance can also be used as /f bal
+- /f deposit and /f withdraw accept decimal amounts
 
-## Permissions
+## Role Requirements
 
-All economy commands require `hyperfactions.economy.*` permission nodes. Withdraw and transfer are further restricted by faction role (Officer or higher).
+Withdraw and transfer commands are restricted to Officers and Leaders. All other economy commands are available to any faction member.
 
 >[!TIP] Use /f money log to review recent deposits, withdrawals, and transfers with timestamps.

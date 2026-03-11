@@ -18,26 +18,26 @@ Officers and Leaders share responsibility for managing the faction roster. Here 
 | `/f demote <player>` | Demotes an Officer to Member | Leader only |
 | `/f transfer <player>` | Transfers faction ownership | Leader only |
 
->[!NOTE] Officers can only kick **Members**. To remove another Officer, the Leader must either demote them first or kick them directly.
+>[!NOTE] Officers can only kick Members. To remove another Officer, the Leader must either demote them first or kick them directly.
 
 ---
 
 ## Invitations
 
-- Invitations expire after **5 minutes** if not accepted
-- The invited player sees it in their Invites tab when they open `/f`
+- Invitations expire after 5 minutes if not accepted
+- The invited player sees it in their Invites tab when they open /f
 - There is no limit to how many invitations you can send at once
-- Your faction can hold up to **50 members** total
+- Your faction can hold up to 50 members total
 
 ## Promotions and Demotions
 
-- Only the **Leader** can promote or demote
-- `/f promote <player>` raises a Member to Officer
-- `/f demote <player>` lowers an Officer back to Member
+- Only the Leader can promote or demote
+- /f promote raises a Member to Officer
+- /f demote lowers an Officer back to Member
 
 ## Transferring Leadership
 
->[!WARNING] Transferring leadership is **irreversible**. You will be demoted to Officer and the target player becomes the new Leader. Make sure you trust them completely.
+>[!WARNING] Transferring leadership is irreversible. You will be demoted to Officer and the target player becomes the new Leader. Make sure you trust them completely.
 
 `/f transfer <player>`
 

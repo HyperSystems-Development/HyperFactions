@@ -1,16 +1,35 @@
-// Help table data row - GitHub-style with bottom border
+// Help table data row - Col0 in stretching Group (like callout AccentBar), Col1 drives height
 
 Group {
   Padding: (Top: 4, Bottom: 4);
+  Background: (Color: #0f1520);
+
+  // Column 1 wrapper - Group stretches vertically (like AccentBar in callout)
+  Group {
+    Anchor: (Left: 2, Width: 217, Top: 0, Bottom: 0);
+
+    Label #Col0 {
+      Text: "";
+      Style: (FontSize: 10, TextColor: #CCCCCC, Wrap: true, VerticalAlignment: Center);
+      Padding: (Left: 12, Right: 8);
+      Anchor: (Left: 0, Right: 0, Top: 0, Bottom: 0);
+    }
+  }
+
+  // Column 2 - DRIVES row height through content wrapping (like Text in callout)
+  Label #Col1 {
+    Text: "";
+    Style: (FontSize: 10, TextColor: #CCCCCC, Wrap: true);
+    Padding: (Left: 12, Right: 8, Top: 2, Bottom: 2);
+    Anchor: (Left: 222, Right: 2);
+  }
 
   // Bottom border
-  Group {
-    Anchor: (Height: 1, Bottom: 0, Left: 0, Right: 0);
-    Background: (Color: #2a3a4a);
-  }
-
-  Group #Cols {
-    LayoutMode: Left;
-    Anchor: (Left: 0, Top: 0, Bottom: 1);
-  }
+  Group { Anchor: (Height: 1, Bottom: 0, Left: 0, Right: 0); Background: (Color: #2a3a4a); }
+  // Left border
+  Group { Anchor: (Width: 1, Left: 0, Top: 0, Bottom: 0); Background: (Color: #2a3a4a); }
+  // Column separator
+  Group { Anchor: (Width: 1, Left: 220, Top: 0, Bottom: 0); Background: (Color: #2a3a4a); }
+  // Right border
+  Group { Anchor: (Width: 1, Right: 0, Top: 0, Bottom: 0); Background: (Color: #2a3a4a); }
 }

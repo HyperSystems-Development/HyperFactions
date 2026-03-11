@@ -4,7 +4,7 @@ commands: ally
 ---
 # Forming Alliances
 
-Alliances are **mutual agreements** between two factions that provide protection and cooperation benefits.
+Alliances are mutual agreements between two factions that provide protection and cooperation benefits.
 
 ---
 
@@ -12,7 +12,7 @@ Alliances are **mutual agreements** between two factions that provide protection
 
 `/f ally <faction>`
 
-Sends an alliance request to the target faction. The alliance only takes effect once **both sides agree**. An Officer or Leader from the other faction must also run `/f ally <your faction>` to confirm.
+Sends an alliance request to the target faction. The alliance only takes effect once both sides agree. An Officer or Leader from the other faction must also run the same command targeting your faction to confirm.
 
 ## How to Break an Alliance
 
@@ -26,13 +26,13 @@ Either side can unilaterally end an alliance by resetting the relation to neutra
 
 | Benefit | Details |
 |---------|---------|
-| **No friendly fire** | Allied players cannot damage each other (when allyDamage is disabled) |
-| **Shared map visibility** | Allied territory shows in [#5555FF] blue on the territory map |
-| **Territory interaction** | Allies can use doors, seats, and transport in your territory by default |
-| **Ally chat** | Use `/f c` to cycle to ally chat mode for cross-faction communication |
-| **Overclaim protection** | Allies cannot overclaim each other's territory |
+| No friendly fire | Allied players cannot damage each other |
+| Shared map visibility | Allied territory shows in blue on the territory map |
+| Territory interaction | Allies can use doors, seats, and transport in your territory |
+| Ally chat | Cycle to ally chat mode for cross-faction communication |
+| Overclaim protection | Allies cannot overclaim each other's territory |
 
->[!NOTE] Your faction can have up to **10 alliances** at a time. Choose your allies wisely.
+>[!NOTE] Your faction can have up to 10 alliances at a time. Choose your allies wisely.
 
 ---
 
