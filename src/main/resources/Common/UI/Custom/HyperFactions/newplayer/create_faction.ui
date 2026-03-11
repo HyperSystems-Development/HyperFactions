@@ -170,14 +170,14 @@ $C.@PageOverlay {
 
           // Lock hint
           Group {
-            Anchor: (Height: 22, Bottom: 6);
+            Anchor: (Height: 32, Bottom: 6);
             Background: (Color: #1a1a2a);
-            Padding: (Left: 8, Right: 8, Top: 0, Bottom: 0);
+            Padding: (Left: 8, Right: 8, Top: 4, Bottom: 4);
             LayoutMode: Left;
 
             Label #LockHint {
               Text: "Some options may be locked by the server and won't accept changes.";
-              Style: (FontSize: 9, TextColor: #555577, VerticalAlignment: Center);
+              Style: (FontSize: 9, TextColor: #555577, VerticalAlignment: Center, Wrap: true);
               FlexWeight: 1;
             }
           }

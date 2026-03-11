@@ -9,7 +9,7 @@ $C.@PageOverlay {
   $Nav.@HyperFactionsAdminNavBar #HyperFactionsAdminNavBar {}
 
   $C.@Container {
-    Anchor: (Width: 720, Height: 600);
+    Anchor: (Width: 780, Height: 600);
 
     #Title {
       $C.@Title #PageTitle {
@@ -59,18 +59,18 @@ $C.@PageOverlay {
           Label #FirstJoinedLabel {
             Text: "First joined:";
             Style: (FontSize: 9, TextColor: #666666, VerticalAlignment: Center);
-            Anchor: (Width: 68);
+            Anchor: (Width: 108);
           }
           Label #FirstJoinedValue {
             Text: "";
             Style: (FontSize: 9, TextColor: #AAAAAA, VerticalAlignment: Center);
-            Anchor: (Width: 120);
+            Anchor: (Width: 100);
           }
 
           Label #LastOnlineLabel {
             Text: "Last online:";
             Style: (FontSize: 9, TextColor: #666666, VerticalAlignment: Center);
-            Anchor: (Width: 64);
+            Anchor: (Width: 104);
           }
           Label #LastOnlineValue {
             Text: "";
@@ -320,36 +320,36 @@ $C.@PageOverlay {
 
               TextButton #SubFive {
                 Text: "-5";
-                Anchor: (Height: 24, Width: 34, Right: 2);
+                Anchor: (Height: 24, Width: 30, Right: 2);
                 Style: $S.@RedButtonStyle;
               }
               TextButton #SubOne {
                 Text: "-1";
-                Anchor: (Height: 24, Width: 34, Right: 3);
+                Anchor: (Height: 24, Width: 30, Right: 2);
                 Style: $S.@RedButtonStyle;
               }
               $C.@TextField #PowerInput {
-                Anchor: (Height: 24, Width: 52, Right: 3);
+                Anchor: (Height: 24, Width: 46, Right: 2);
                 Style: (FontSize: 11, TextColor: #FFFFFF);
               }
               TextButton #AddOne {
                 Text: "+1";
-                Anchor: (Height: 24, Width: 34, Right: 2);
+                Anchor: (Height: 24, Width: 30, Right: 2);
                 Style: $S.@ButtonStyle;
               }
               TextButton #AddFive {
                 Text: "+5";
-                Anchor: (Height: 24, Width: 34, Right: 3);
+                Anchor: (Height: 24, Width: 30, Right: 2);
                 Style: $S.@ButtonStyle;
               }
               TextButton #SetPowerBtn {
                 Text: "Set";
-                Anchor: (Height: 24, Width: 36, Right: 2);
+                Anchor: (Height: 24, Width: 78, Right: 2);
                 Style: $S.@CyanButtonStyle;
               }
               TextButton #ResetPowerBtn {
                 Text: "Reset";
-                Anchor: (Height: 24, Width: 44);
+                Anchor: (Height: 24, Width: 68);
                 Style: $S.@RedButtonStyle;
               }
             }
@@ -365,17 +365,17 @@ $C.@PageOverlay {
                 Anchor: (Width: 33);
               }
               $C.@TextField #MaxPowerInput {
-                Anchor: (Height: 24, Width: 56, Right: 3);
+                Anchor: (Height: 24, Width: 50, Right: 2);
                 Style: (FontSize: 11, TextColor: #FFFFFF);
               }
               TextButton #SetMaxBtn {
                 Text: "Set Max";
-                Anchor: (Height: 24, Width: 58, Right: 2);
+                Anchor: (Height: 24, Width: 104, Right: 2);
                 Style: $S.@CyanButtonStyle;
               }
               TextButton #ResetMaxBtn {
                 Text: "Reset";
-                Anchor: (Height: 24, Width: 44);
+                Anchor: (Height: 24, Width: 68);
                 Style: $S.@RedButtonStyle;
               }
             }
@@ -422,9 +422,14 @@ $C.@PageOverlay {
               Anchor: (Height: 26, Bottom: 3);
 
               $C.@CheckBoxWithLabel #NoLossCheck {
-                @Text = "Disable Power Loss";
+                @Text = "";
                 @Checked = false;
-                Anchor: (Height: 22, Width: 175);
+                Anchor: (Height: 22, Width: 28);
+              }
+              Label #NoLossLabel {
+                Text: "Disable Power Loss";
+                Style: (FontSize: 10, TextColor: #CCCCCC, VerticalAlignment: Center);
+                FlexWeight: 1;
               }
             }
 
@@ -433,9 +438,14 @@ $C.@PageOverlay {
               Anchor: (Height: 26);
 
               $C.@CheckBoxWithLabel #NoDecayCheck {
-                @Text = "Disable Claim Decay";
+                @Text = "";
                 @Checked = false;
-                Anchor: (Height: 22, Width: 175);
+                Anchor: (Height: 22, Width: 28);
+              }
+              Label #NoDecayLabel {
+                Text: "Disable Claim Decay";
+                Style: (FontSize: 10, TextColor: #CCCCCC, VerticalAlignment: Center);
+                FlexWeight: 1;
               }
             }
           }

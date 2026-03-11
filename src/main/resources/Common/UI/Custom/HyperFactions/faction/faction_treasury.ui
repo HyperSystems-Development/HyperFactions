@@ -385,22 +385,22 @@ $C.@PageOverlay {
         Label #ColDateLabel {
           Text: "Date";
           Style: (FontSize: 10, TextColor: #555555);
-          Anchor: (Width: 100);
+          Anchor: (Width: 80);
         }
         Label #ColTypeLabel {
           Text: "Type";
           Style: (FontSize: 10, TextColor: #555555);
-          Anchor: (Width: 100);
+          Anchor: (Width: 155);
         }
         Label #ColByLabel {
           Text: "By";
           Style: (FontSize: 10, TextColor: #555555);
-          Anchor: (Width: 90);
+          Anchor: (Width: 75);
         }
         Label #ColAmountLabel {
           Text: "Amount";
           Style: (FontSize: 10, TextColor: #555555);
-          Anchor: (Width: 100);
+          Anchor: (Width: 80);
         }
         Label #ColDetailsLabel {
           Text: "Details";

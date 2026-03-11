@@ -24,4 +24,6 @@ Tus objetos caen donde te desconectaste y los enemigos pueden saquearlos. Siempr
 
 El temporizador de etiqueta de combate aparece en pantalla cuando entras en combate. Cada nuevo golpe lo reinicia a 15 segundos. Una vez que llega a cero, todas las restricciones se levantan.
 
+>[!NOTE] Estos son valores predeterminados. El administrador de tu servidor puede haber configurado ajustes diferentes.
+
 >[!TIP] Desvincularte y espera a que el temporizador termine si necesitas teletransportarte.

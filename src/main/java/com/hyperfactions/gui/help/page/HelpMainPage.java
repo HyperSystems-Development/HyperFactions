@@ -242,7 +242,7 @@ public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
   private static int[] getColumnPixelWidths(int numCols) {
     return switch (numCols) {
       case 3 -> new int[]{170, 170, 280};
-      case 4 -> new int[]{170, 85, 85, 270};
+      case 4 -> new int[]{140, 140, 140, 190};
       default -> new int[]{217, 400};
     };
   }
@@ -251,7 +251,7 @@ public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
   private static int[] getColumnFixedWidths(int numCols) {
     return switch (numCols) {
       case 3 -> new int[]{170, 170};
-      case 4 -> new int[]{170, 85, 85};
+      case 4 -> new int[]{140, 140, 140};
       default -> new int[]{217};
     };
   }

@@ -115,7 +115,7 @@ Group {
       Label #LastOnlineLabel {
         Text: "Last Online:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
-        Anchor: (Width: 70);
+        Anchor: (Width: 105);
       }
       Label #LastOnline {
         Text: "Unknown";
@@ -181,7 +181,7 @@ Group {
       }
       TextButton #TeleportBtn {
         Text: "Teleport";
-        Anchor: (Height: 24, Width: 80, Right: 6);
+        Anchor: (Height: 24, Width: 110, Right: 6);
         Style: $S.@ButtonStyle;
       }
       Group { FlexWeight: 1; }

@@ -136,11 +136,20 @@ public class NewPlayerMapPage extends InteractiveCustomUIPage<NewPlayerPageData>
     // Setup navigation bar for new players (instead of faction nav bar)
     NewPlayerNavBarHelper.setupBar(playerRef, PAGE_ID, cmd, events);
 
-    // Update position info
+    // Localize static labels (title, position, legend)
+    cmd.set("#MapTitle.Text", HFMessages.get(playerRef, MessageKeys.MapGui.TITLE));
     cmd.set("#PositionInfo.Text", HFMessages.get(playerRef, MessageKeys.MapGui.POSITION, playerChunkX, playerChunkZ));
-
-    // Update hint text for read-only mode
     cmd.set("#ActionHint.Text", HFMessages.get(playerRef, MessageKeys.NewPlayerGui.MAP_HINT));
+    cmd.set("#LegendYourLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_YOUR));
+    cmd.set("#LegendAllyLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_ALLY));
+    cmd.set("#LegendEnemyLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_ENEMY));
+    cmd.set("#LegendOtherLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_OTHER));
+    if (!terrainEnabled) {
+      cmd.set("#LegendWildernessLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_WILDERNESS));
+    }
+    cmd.set("#LegendSafeLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_SAFE));
+    cmd.set("#LegendWarLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_WAR));
+    cmd.set("#LegendYouLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_YOU));
 
     // Hide claim/power stats (not relevant for new players)
     cmd.set("#ClaimStats.Text", "");

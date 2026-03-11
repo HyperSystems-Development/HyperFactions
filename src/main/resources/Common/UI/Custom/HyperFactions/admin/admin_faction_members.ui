@@ -69,7 +69,7 @@ $C.@PageOverlay {
         Label #SortLabel {
           Text: "Sort:";
           Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
-          Anchor: (Width: 50);
+          Anchor: (Width: 65);
         }
         DropdownBox #SortDropdown {
           Style: $C.@DefaultDropdownBoxStyle;

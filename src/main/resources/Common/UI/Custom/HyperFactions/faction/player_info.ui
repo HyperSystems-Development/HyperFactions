@@ -50,18 +50,18 @@ $C.@PageOverlay {
           Label #FirstJoinedLabel {
             Text: "First joined:";
             Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
-            Anchor: (Width: 75);
+            Anchor: (Width: 110);
           }
           Label #FirstJoinedValue {
             Text: "";
             Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
-            Anchor: (Width: 130);
+            Anchor: (Width: 110);
           }
 
           Label #LastOnlineLabel {
             Text: "Last online:";
             Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
-            Anchor: (Width: 70);
+            Anchor: (Width: 100);
           }
           Label #LastOnlineValue {
             Text: "";

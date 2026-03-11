@@ -347,10 +347,10 @@ public class TreasuryPage extends InteractiveCustomUIPage<TreasuryData> {
 
       cmd.appendInline("#TransactionList",
           "Group { LayoutMode: Left; Anchor: (Height: 22); Background: (Color: " + bgColor + "); Padding: (Left: 6, Right: 6); "
-          + "Label { Text: \"" + time + "\"; Style: (FontSize: 10, TextColor: #666666); Anchor: (Width: 100); } "
-          + "Label { Text: \"" + typeName + "\"; Style: (FontSize: 10, TextColor: " + typeColor + "); Anchor: (Width: 100); } "
-          + "Label { Text: \"" + actorName + "\"; Style: (FontSize: 10, TextColor: #AAAAAA); Anchor: (Width: 90); } "
-          + "Label { Text: \"" + amountStr + "\"; Style: (FontSize: 10, TextColor: #FFFFFF); Anchor: (Width: 100); } "
+          + "Label { Text: \"" + time + "\"; Style: (FontSize: 10, TextColor: #666666); Anchor: (Width: 80); } "
+          + "Label { Text: \"" + typeName + "\"; Style: (FontSize: 10, TextColor: " + typeColor + "); Anchor: (Width: 155); } "
+          + "Label { Text: \"" + actorName + "\"; Style: (FontSize: 10, TextColor: #AAAAAA); Anchor: (Width: 75); } "
+          + "Label { Text: \"" + amountStr + "\"; Style: (FontSize: 10, TextColor: #FFFFFF); Anchor: (Width: 80); } "
           + "Label { Text: \"" + desc + "\"; Style: (FontSize: 10, TextColor: #555555); FlexWeight: 1; } "
           + "}");
     }

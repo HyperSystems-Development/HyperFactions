@@ -27,7 +27,7 @@ Cualquier lado puede terminar unilateralmente una alianza restableciendo la rela
 | Beneficio | Detalles |
 |-----------|----------|
 | **Sin fuego amigo** | Los jugadores aliados no pueden danarse entre si (cuando el dano entre aliados esta desactivado) |
-| **Visibilidad compartida en mapa** | El territorio aliado se muestra en [#5555FF] azul en el mapa de territorio |
+| **Visibilidad compartida en mapa** | El territorio aliado se muestra en azul en el mapa de territorio |
 | **Interaccion con territorio** | Los aliados pueden usar puertas, asientos y transporte en tu territorio por defecto |
 | **Chat de aliados** | Usa `/f c` para cambiar al modo de chat de aliados para comunicacion entre facciones |
 | **Proteccion contra sobrereclamacion** | Los aliados no pueden sobrereclamar el territorio del otro |

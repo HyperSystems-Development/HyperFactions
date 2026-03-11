@@ -263,7 +263,7 @@ $C.@PageOverlay {
         Label #BypassState {
           Text: "Off";
           Style: (FontSize: 14, TextColor: #FF5555, RenderBold: true, VerticalAlignment: Center);
-          Anchor: (Width: 80);
+          Anchor: (Width: 105);
         }
         TextButton #ToggleBypassBtn {
           Text: "Enable";

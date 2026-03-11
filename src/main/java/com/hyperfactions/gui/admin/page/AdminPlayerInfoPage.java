@@ -128,10 +128,10 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
     cmd.set("#KickBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_KICK_FROM_FACTION));
     cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_BACK));
 
-    // Localize bypass checkbox labels and no-faction label
-    cmd.set("#NoLossCheck #CheckBox.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_NO_POWER_LOSS));
-    cmd.set("#NoDecayCheck #CheckBox.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_NO_CLAIM_DECAY));
+    // Localize no-faction label and bypass checkbox labels
     cmd.set("#NoFactionLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.NO_FACTION));
+    cmd.set("#NoLossLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_NO_POWER_LOSS));
+    cmd.set("#NoDecayLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_NO_CLAIM_DECAY));
 
     buildContent(cmd, events);
   }
