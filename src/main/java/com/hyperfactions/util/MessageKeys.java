@@ -1895,6 +1895,16 @@ public final class MessageKeys {
     // Members additional
     public static final String MEM_NEVER = "hyperfactions_admin.members.never";
     public static final String MEM_TELEPORTED = "hyperfactions_admin.members.teleported";
+    // Member entry labels
+    public static final String GUI_MEM_LABEL_POWER = "hyperfactions_admin.gui.mem_label_power";
+    public static final String GUI_MEM_LABEL_JOINED = "hyperfactions_admin.gui.mem_label_joined";
+    public static final String GUI_MEM_LABEL_LAST_DEATH = "hyperfactions_admin.gui.mem_label_last_death";
+    public static final String GUI_MEM_LABEL_UUID = "hyperfactions_admin.gui.mem_label_uuid";
+    public static final String GUI_MEM_BTN_INFO = "hyperfactions_admin.gui.mem_btn_info";
+    public static final String GUI_MEM_BTN_TELEPORT = "hyperfactions_admin.gui.mem_btn_teleport";
+    public static final String GUI_MEM_BTN_PROMOTE = "hyperfactions_admin.gui.mem_btn_promote";
+    public static final String GUI_MEM_BTN_DEMOTE = "hyperfactions_admin.gui.mem_btn_demote";
+    public static final String GUI_MEM_BTN_KICK = "hyperfactions_admin.gui.mem_btn_kick";
     // Player info additional
     public static final String PLR_RECORDS = "hyperfactions_admin.playerinfo.records";
     public static final String PLR_JOINED_DATE = "hyperfactions_admin.playerinfo.joined_date";
@@ -2063,6 +2073,11 @@ public final class MessageKeys {
     public static final String GUI_PLR_KICK_FROM_FACTION = "hyperfactions_admin.gui.plr_kick_from_faction";
     public static final String GUI_PLR_SET_MAX_BTN = "hyperfactions_admin.gui.plr_set_max_btn";
     public static final String GUI_PLR_COMBAT = "hyperfactions_admin.gui.plr_combat";
+    // Player info history reason labels
+    public static final String GUI_PLR_REASON_ACTIVE = "hyperfactions_admin.gui.plr_reason_active";
+    public static final String GUI_PLR_REASON_LEFT = "hyperfactions_admin.gui.plr_reason_left";
+    public static final String GUI_PLR_REASON_KICKED = "hyperfactions_admin.gui.plr_reason_kicked";
+    public static final String GUI_PLR_REASON_DISBANDED = "hyperfactions_admin.gui.plr_reason_disbanded";
 
     // Faction info labels
     public static final String GUI_FAC_DESCRIPTION = "hyperfactions_admin.gui.fac_description";

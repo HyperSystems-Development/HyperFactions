@@ -495,6 +495,21 @@ gui.plr_view = Ver
 gui.plr_kick_from_faction = Expulsar de Faccion
 gui.plr_set_max_btn = Establecer Max
 gui.plr_combat = Combate
+gui.plr_reason_active = ACTIVO
+gui.plr_reason_left = SALIO
+gui.plr_reason_kicked = EXPULSADO
+gui.plr_reason_disbanded = DISUELTO
+
+# Etiquetas de entrada de miembros
+gui.mem_label_power = Poder:
+gui.mem_label_joined = Ingreso:
+gui.mem_label_last_death = Ultima Muerte:
+gui.mem_label_uuid = UUID:
+gui.mem_btn_info = Info
+gui.mem_btn_teleport = Teletransportar
+gui.mem_btn_promote = Promover
+gui.mem_btn_demote = Degradar
+gui.mem_btn_kick = Expulsar
 
 # Etiquetas de info de faccion
 gui.fac_description = Descripcion

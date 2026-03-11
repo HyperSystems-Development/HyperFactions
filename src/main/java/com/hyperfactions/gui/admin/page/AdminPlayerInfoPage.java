@@ -128,6 +128,11 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
     cmd.set("#KickBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_KICK_FROM_FACTION));
     cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_BACK));
 
+    // Localize bypass checkbox labels and no-faction label
+    cmd.set("#NoLossCheck #CheckBox.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_NO_POWER_LOSS));
+    cmd.set("#NoDecayCheck #CheckBox.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_NO_CLAIM_DECAY));
+    cmd.set("#NoFactionLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.NO_FACTION));
+
     buildContent(cmd, events);
   }
 
@@ -555,10 +560,10 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
 
   private String formatReason(MembershipRecord.LeaveReason reason) {
     return switch (reason) {
-      case ACTIVE -> "ACTIVE";
-      case LEFT -> "LEFT";
-      case KICKED -> "KICKED";
-      case DISBANDED -> "DISBANDED";
+      case ACTIVE -> HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_REASON_ACTIVE);
+      case LEFT -> HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_REASON_LEFT);
+      case KICKED -> HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_REASON_KICKED);
+      case DISBANDED -> HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_REASON_DISBANDED);
     };
   }
 

@@ -94,7 +94,7 @@ Group {
       LayoutMode: Left;
       Anchor: (Height: 20, Bottom: 4);
 
-      Label {
+      Label #PowerLabel {
         Text: "Power:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
         Anchor: (Width: 45);
@@ -105,10 +105,10 @@ Group {
         Anchor: (Width: 60);
       }
 
-      Label {
+      Label #JoinedLabel {
         Text: "Joined:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
-        Anchor: (Width: 45);
+        Anchor: (Width: 50);
       }
       Label #JoinedDate {
         Text: "Unknown";
@@ -116,10 +116,10 @@ Group {
         Anchor: (Width: 80);
       }
 
-      Label {
+      Label #LastDeathLabel {
         Text: "Last Death:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
-        Anchor: (Width: 65);
+        Anchor: (Width: 75);
       }
       Label #LastDeath {
         Text: "Never";
@@ -133,7 +133,7 @@ Group {
       LayoutMode: Left;
       Anchor: (Height: 18, Bottom: 8);
 
-      Label {
+      Label #UuidLabel {
         Text: "UUID:";
         Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
         Anchor: (Width: 40);
@@ -157,7 +157,7 @@ Group {
       }
       TextButton #TeleportBtn {
         Text: "Teleport";
-        Anchor: (Height: 24, Width: 80, Right: 6);
+        Anchor: (Height: 24, Width: 95, Right: 6);
         Style: $S.@ButtonStyle;
       }
       TextButton #PromoteBtn {

@@ -495,6 +495,21 @@ gui.plr_view = View
 gui.plr_kick_from_faction = Kick from Faction
 gui.plr_set_max_btn = Set Max
 gui.plr_combat = Combat
+gui.plr_reason_active = ACTIVE
+gui.plr_reason_left = LEFT
+gui.plr_reason_kicked = KICKED
+gui.plr_reason_disbanded = DISBANDED
+
+# Member entry labels
+gui.mem_label_power = Power:
+gui.mem_label_joined = Joined:
+gui.mem_label_last_death = Last Death:
+gui.mem_label_uuid = UUID:
+gui.mem_btn_info = Info
+gui.mem_btn_teleport = Teleport
+gui.mem_btn_promote = Promote
+gui.mem_btn_demote = Demote
+gui.mem_btn_kick = Kick
 
 # Faction info labels
 gui.fac_description = Description

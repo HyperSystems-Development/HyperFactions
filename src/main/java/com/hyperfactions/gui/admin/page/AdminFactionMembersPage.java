@@ -129,6 +129,17 @@ public class AdminFactionMembersPage extends InteractiveCustomUIPage<AdminFactio
     boolean memberIsOnline = isOnline(member);
     cmd.append("#IndexCards", UIPaths.ADMIN_FACTION_MEMBERS_ENTRY);
     String idx = "#IndexCards[" + index + "]";
+    // Localize entry labels and buttons
+    cmd.set(idx + " #PowerLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MEM_LABEL_POWER));
+    cmd.set(idx + " #JoinedLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MEM_LABEL_JOINED));
+    cmd.set(idx + " #LastDeathLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MEM_LABEL_LAST_DEATH));
+    cmd.set(idx + " #UuidLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MEM_LABEL_UUID));
+    cmd.set(idx + " #ViewInfoBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MEM_BTN_INFO));
+    cmd.set(idx + " #TeleportBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MEM_BTN_TELEPORT));
+    cmd.set(idx + " #PromoteBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MEM_BTN_PROMOTE));
+    cmd.set(idx + " #DemoteBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MEM_BTN_DEMOTE));
+    cmd.set(idx + " #KickBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MEM_BTN_KICK));
+
     cmd.set(idx + " #MemberName.Text", member.username());
     cmd.set(idx + " #MemberRole.Text", formatRole(member.role()));
     cmd.set(idx + " #RoleIndicator.Background.Color", GuiColors.forRole(member.role()));
