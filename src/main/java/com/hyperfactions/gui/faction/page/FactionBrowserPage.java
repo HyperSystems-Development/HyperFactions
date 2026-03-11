@@ -244,6 +244,11 @@ public class FactionBrowserPage extends InteractiveCustomUIPage<FactionPageData>
     cmd.set(idx + " #ClaimsDisplay.Text", String.valueOf(entry.claimCount));
     cmd.set(idx + " #MemberCount.Text", String.valueOf(entry.memberCount));
 
+    // Localized stat labels
+    cmd.set(idx + " #PowerLabel.Text", HFMessages.get(playerRef, MessageKeys.BrowserGui.LABEL_POWER));
+    cmd.set(idx + " #ClaimsLabel.Text", HFMessages.get(playerRef, MessageKeys.BrowserGui.LABEL_CLAIMS));
+    cmd.set(idx + " #MemberLabel.Text", HFMessages.get(playerRef, MessageKeys.BrowserGui.LABEL_MEMBERS));
+
     // Own faction indicator
     if (isOwnFaction) {
       cmd.set(idx + " #OwnIndicator.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.OWN_FACTION));
@@ -275,6 +280,12 @@ public class FactionBrowserPage extends InteractiveCustomUIPage<FactionPageData>
 
     // Extended info (only set values if expanded)
     if (isExpanded) {
+      // Localized extended labels
+      cmd.set(idx + " #RecruitmentLabel.Text", HFMessages.get(playerRef, MessageKeys.BrowserGui.LABEL_RECRUITMENT));
+      cmd.set(idx + " #CreatedLabel.Text", HFMessages.get(playerRef, MessageKeys.BrowserGui.LABEL_CREATED));
+      cmd.set(idx + " #DescriptionLabel.Text", HFMessages.get(playerRef, MessageKeys.BrowserGui.LABEL_DESCRIPTION));
+      cmd.set(idx + " #ViewInfoBtn.Text", HFMessages.get(playerRef, MessageKeys.BrowserGui.VIEW_INFO_BTN));
+
       // Recruitment status
       cmd.set(idx + " #RecruitmentStatus.Text", entry.isOpen
           ? HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_OPEN)

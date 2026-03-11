@@ -27,6 +27,7 @@ import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -126,7 +127,8 @@ public class AdminActivityLogPage extends InteractiveCustomUIPage<AdminActivityL
     List<DropdownEntryInfo> typeOptions = new ArrayList<>();
     typeOptions.add(new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.LOG_ALL_TYPES)), "ALL"));
     for (FactionLog.LogType type : FactionLog.LogType.values()) {
-      typeOptions.add(new DropdownEntryInfo(LocalizableString.fromString(type.getDisplayName()), type.name()));
+      typeOptions.add(new DropdownEntryInfo(LocalizableString.fromString(
+          HFMessages.get(playerRef, MessageKeys.LogsGui.typeKey(type.name()))), type.name()));
     }
     cmd.set("#TypeDropdown.Entries", typeOptions);
     cmd.set("#TypeDropdown.Value", filterType != null ? filterType.name() : "ALL");
@@ -190,11 +192,11 @@ public class AdminActivityLogPage extends InteractiveCustomUIPage<AdminActivityL
 
       cmd.append("#LogList", UIPaths.ADMIN_ACTIVITY_LOG_ENTRY);
 
-      // Time
-      cmd.set(sel + " #LogTime.Text", TimeUtil.formatRelative(entry.log.timestamp()));
+      // Time (localized)
+      cmd.set(sel + " #LogTime.Text", formatRelativeTime(entry.log.timestamp()));
 
-      // Type with color
-      cmd.set(sel + " #LogType.Text", entry.log.type().getDisplayName());
+      // Type with color (localized)
+      cmd.set(sel + " #LogType.Text", HFMessages.get(playerRef, MessageKeys.LogsGui.typeKey(entry.log.type().name())));
       cmd.set(sel + " #LogType.Style.TextColor", GuiColors.forLogType(entry.log.type()));
 
       // Faction name with color
@@ -360,6 +362,28 @@ public class AdminActivityLogPage extends InteractiveCustomUIPage<AdminActivityL
       }
 
       default -> sendUpdate();
+    }
+  }
+
+  /** Returns a localized relative time string for the given timestamp. */
+  private String formatRelativeTime(long timestamp) {
+    long diff = System.currentTimeMillis() - timestamp;
+    if (diff < 60_000) {
+      return HFMessages.get(playerRef, MessageKeys.LogsGui.TIME_JUST_NOW);
+    } else if (diff < 3600_000) {
+      long m = TimeUnit.MILLISECONDS.toMinutes(diff);
+      return HFMessages.get(playerRef, m == 1 ? MessageKeys.LogsGui.TIME_MINUTE : MessageKeys.LogsGui.TIME_MINUTES, m);
+    } else if (diff < 86400_000) {
+      long h = TimeUnit.MILLISECONDS.toHours(diff);
+      return HFMessages.get(playerRef, h == 1 ? MessageKeys.LogsGui.TIME_HOUR : MessageKeys.LogsGui.TIME_HOURS, h);
+    } else if (diff < 604800_000) {
+      long d = TimeUnit.MILLISECONDS.toDays(diff);
+      return HFMessages.get(playerRef, d == 1 ? MessageKeys.LogsGui.TIME_DAY : MessageKeys.LogsGui.TIME_DAYS, d);
+    } else if (diff < 2592000_000L) {
+      long w = TimeUnit.MILLISECONDS.toDays(diff) / 7;
+      return HFMessages.get(playerRef, w == 1 ? MessageKeys.LogsGui.TIME_WEEK : MessageKeys.LogsGui.TIME_WEEKS, w);
+    } else {
+      return TimeUtil.formatDate(timestamp);
     }
   }
 

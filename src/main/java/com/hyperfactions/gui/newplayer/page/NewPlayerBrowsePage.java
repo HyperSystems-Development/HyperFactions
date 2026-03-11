@@ -283,6 +283,10 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
     cmd.set(idx + " #PowerDisplay.Text", String.format("%.0f/%.0f", entry.power, entry.maxPower));
     cmd.set(idx + " #MemberCount.Text", String.valueOf(entry.memberCount));
 
+    // Localized stat labels
+    cmd.set(idx + " #PowerLabel.Text", HFMessages.get(playerRef, MessageKeys.BrowserGui.LABEL_POWER));
+    cmd.set(idx + " #MemberLabel.Text", HFMessages.get(playerRef, MessageKeys.BrowserGui.LABEL_MEMBERS));
+
     // Expansion state
     cmd.set(idx + " #ExpandIcon.Visible", !isExpanded);
     cmd.set(idx + " #CollapseIcon.Visible", isExpanded);
@@ -299,6 +303,12 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
 
     // Extended info (only set values if expanded)
     if (isExpanded) {
+      // Localized extended labels
+      cmd.set(idx + " #LeaderLabel.Text", HFMessages.get(playerRef, MessageKeys.BrowserGui.LABEL_LEADER));
+      cmd.set(idx + " #ClaimsLabel.Text", HFMessages.get(playerRef, MessageKeys.BrowserGui.LABEL_CLAIMS));
+      cmd.set(idx + " #DescriptionLabel.Text", HFMessages.get(playerRef, MessageKeys.BrowserGui.LABEL_DESCRIPTION));
+      cmd.set(idx + " #ViewInfoBtn.Text", HFMessages.get(playerRef, MessageKeys.BrowserGui.VIEW_INFO_BTN));
+
       // Leader and claims
       cmd.set(idx + " #LeaderName.Text", entry.leaderName);
       cmd.set(idx + " #ClaimsDisplay.Text", String.valueOf(entry.claimCount));

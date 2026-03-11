@@ -205,6 +205,14 @@ browser.prev_btn = < Prev
 browser.next_btn = Next >
 browser.sort_name = Name
 browser.invalid_faction = Invalid faction.
+browser.label_power = power
+browser.label_claims = claims
+browser.label_members = members
+browser.label_recruitment = Recruitment:
+browser.label_created = Created:
+browser.label_description = Description:
+browser.view_info_btn = View Info
+browser.label_leader = Leader:
 
 # ========== Leaderboard Page ==========
 leaderboard.title = Faction Leaderboard
@@ -523,6 +531,32 @@ logs.next_btn = Next >
 logs.all_types = All Types
 logs.no_logs_type = No logs of this type.
 logs.no_logs = No activity logs yet.
+logs.time_just_now = just now
+logs.time_minute = {0} minute ago
+logs.time_minutes = {0} minutes ago
+logs.time_hour = {0} hour ago
+logs.time_hours = {0} hours ago
+logs.time_day = {0} day ago
+logs.time_days = {0} days ago
+logs.time_week = {0} week ago
+logs.time_weeks = {0} weeks ago
+logs.type_member_join = Join
+logs.type_member_leave = Leave
+logs.type_member_kick = Kick
+logs.type_member_promote = Promote
+logs.type_member_demote = Demote
+logs.type_claim = Claim
+logs.type_unclaim = Unclaim
+logs.type_overclaim = Overclaim
+logs.type_home_set = Home Set
+logs.type_relation_ally = Ally
+logs.type_relation_enemy = Enemy
+logs.type_relation_neutral = Neutral
+logs.type_leader_transfer = Transfer
+logs.type_settings_change = Settings
+logs.type_power_change = Power
+logs.type_economy = Economy
+logs.type_admin_power = Admin Power
 
 # ========== Chat Page ==========
 chat.title = Faction Chat

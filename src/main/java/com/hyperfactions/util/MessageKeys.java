@@ -881,6 +881,14 @@ public final class MessageKeys {
     public static final String NEXT_BTN = "hyperfactions_gui.browser.next_btn";
     public static final String SORT_NAME = "hyperfactions_gui.browser.sort_name";
     public static final String INVALID_FACTION = "hyperfactions_gui.browser.invalid_faction";
+    public static final String LABEL_POWER = "hyperfactions_gui.browser.label_power";
+    public static final String LABEL_CLAIMS = "hyperfactions_gui.browser.label_claims";
+    public static final String LABEL_MEMBERS = "hyperfactions_gui.browser.label_members";
+    public static final String LABEL_RECRUITMENT = "hyperfactions_gui.browser.label_recruitment";
+    public static final String LABEL_CREATED = "hyperfactions_gui.browser.label_created";
+    public static final String LABEL_DESCRIPTION = "hyperfactions_gui.browser.label_description";
+    public static final String VIEW_INFO_BTN = "hyperfactions_gui.browser.view_info_btn";
+    public static final String LABEL_LEADER = "hyperfactions_gui.browser.label_leader";
 
     private BrowserGui() {}
   }
@@ -1335,6 +1343,37 @@ public final class MessageKeys {
     public static final String ALL_TYPES = "hyperfactions_gui.logs.all_types";
     public static final String NO_LOGS_TYPE = "hyperfactions_gui.logs.no_logs_type";
     public static final String NO_LOGS = "hyperfactions_gui.logs.no_logs";
+    public static final String TIME_JUST_NOW = "hyperfactions_gui.logs.time_just_now";
+    public static final String TIME_MINUTE = "hyperfactions_gui.logs.time_minute";
+    public static final String TIME_MINUTES = "hyperfactions_gui.logs.time_minutes";
+    public static final String TIME_HOUR = "hyperfactions_gui.logs.time_hour";
+    public static final String TIME_HOURS = "hyperfactions_gui.logs.time_hours";
+    public static final String TIME_DAY = "hyperfactions_gui.logs.time_day";
+    public static final String TIME_DAYS = "hyperfactions_gui.logs.time_days";
+    public static final String TIME_WEEK = "hyperfactions_gui.logs.time_week";
+    public static final String TIME_WEEKS = "hyperfactions_gui.logs.time_weeks";
+    public static final String TYPE_MEMBER_JOIN = "hyperfactions_gui.logs.type_member_join";
+    public static final String TYPE_MEMBER_LEAVE = "hyperfactions_gui.logs.type_member_leave";
+    public static final String TYPE_MEMBER_KICK = "hyperfactions_gui.logs.type_member_kick";
+    public static final String TYPE_MEMBER_PROMOTE = "hyperfactions_gui.logs.type_member_promote";
+    public static final String TYPE_MEMBER_DEMOTE = "hyperfactions_gui.logs.type_member_demote";
+    public static final String TYPE_CLAIM = "hyperfactions_gui.logs.type_claim";
+    public static final String TYPE_UNCLAIM = "hyperfactions_gui.logs.type_unclaim";
+    public static final String TYPE_OVERCLAIM = "hyperfactions_gui.logs.type_overclaim";
+    public static final String TYPE_HOME_SET = "hyperfactions_gui.logs.type_home_set";
+    public static final String TYPE_RELATION_ALLY = "hyperfactions_gui.logs.type_relation_ally";
+    public static final String TYPE_RELATION_ENEMY = "hyperfactions_gui.logs.type_relation_enemy";
+    public static final String TYPE_RELATION_NEUTRAL = "hyperfactions_gui.logs.type_relation_neutral";
+    public static final String TYPE_LEADER_TRANSFER = "hyperfactions_gui.logs.type_leader_transfer";
+    public static final String TYPE_SETTINGS_CHANGE = "hyperfactions_gui.logs.type_settings_change";
+    public static final String TYPE_POWER_CHANGE = "hyperfactions_gui.logs.type_power_change";
+    public static final String TYPE_ECONOMY = "hyperfactions_gui.logs.type_economy";
+    public static final String TYPE_ADMIN_POWER = "hyperfactions_gui.logs.type_admin_power";
+
+    /** Derives the lang key for a FactionLog.LogType enum by name. */
+    public static String typeKey(String logTypeName) {
+      return "hyperfactions_gui.logs.type_" + logTypeName.toLowerCase();
+    }
 
     private LogsGui() {}
   }
