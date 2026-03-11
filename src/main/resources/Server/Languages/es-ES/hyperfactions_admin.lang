@@ -672,6 +672,3 @@ gui.czw_flags_defaults_desc = Basado en tipo de zona
 gui.czw_flags_defaults = Usar por defecto
 gui.czw_flags_customize_desc = Abrir ajustes despues
 gui.czw_flags_customize = Personalizar
-
-# Etiquetas comunes de botones
-gui.cancel = Cancelar
