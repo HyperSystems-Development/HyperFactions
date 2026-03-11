@@ -1694,6 +1694,9 @@ public final class MessageKeys {
     public static final String MEMBERS_SUFFIX = "hyperfactions_admin.common.members_suffix";
     public static final String CLAIMS_SUFFIX = "hyperfactions_admin.common.claims_suffix";
     public static final String FACTIONS_SUFFIX = "hyperfactions_admin.common.factions_suffix";
+    public static final String NAV_TITLE = "hyperfactions_admin.gui.nav_title";
+    public static final String GUI_ECON_BTN_ADJUST = "hyperfactions_admin.gui.econ_btn_adjust";
+    public static final String GUI_ECON_BTN_INFO = "hyperfactions_admin.gui.econ_btn_info";
     public static final String PLAYERS_SUFFIX = "hyperfactions_admin.common.players_suffix";
     public static final String CHUNKS_SUFFIX = "hyperfactions_admin.common.chunks_suffix";
     public static final String ENTRIES_SUFFIX = "hyperfactions_admin.common.entries_suffix";

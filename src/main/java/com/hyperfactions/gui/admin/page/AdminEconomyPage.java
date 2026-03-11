@@ -227,6 +227,10 @@ public class AdminEconomyPage extends InteractiveCustomUIPage<AdminEconomyData> 
       cmd.set(sel + " #Balance.Text", economyManager.formatCurrencyCompact(entry.economy.balance()));
       cmd.set(sel + " #MemberCount.Text", String.valueOf(entry.faction.getMemberCount()));
 
+      // Localize entry buttons
+      cmd.set(sel + " #AdjustBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECON_BTN_ADJUST));
+      cmd.set(sel + " #ViewBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECON_BTN_INFO));
+
       // Upkeep status indicator
       if (com.hyperfactions.config.ConfigManager.get().isUpkeepEnabled()) {
         cmd.set(sel + " #UpkeepDot.Visible", true);

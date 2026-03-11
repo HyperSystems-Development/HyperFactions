@@ -520,6 +520,9 @@ gui.log_time_7d = 7d
 gui.log_time_all = Todos
 gui.shape_circular = circular
 gui.shape_square = cuadrado
+gui.nav_title = Panel de Admin
+gui.econ_btn_adjust = Ajustar
+gui.econ_btn_info = Info
 
 # Etiquetas de info de faccion
 gui.fac_description = Descripcion

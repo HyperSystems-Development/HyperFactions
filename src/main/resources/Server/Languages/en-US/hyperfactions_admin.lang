@@ -520,6 +520,9 @@ gui.log_time_7d = 7d
 gui.log_time_all = All
 gui.shape_circular = circular
 gui.shape_square = square
+gui.nav_title = Admin Panel
+gui.econ_btn_adjust = Adjust
+gui.econ_btn_info = Info
 
 # Faction info labels
 gui.fac_description = Description
