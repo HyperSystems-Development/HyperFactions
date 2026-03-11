@@ -61,6 +61,7 @@ public final class MessageKeys {
     public static final String LEAVE = "hyperfactions.common.leave";
     public static final String TRANSFER = "hyperfactions.common.transfer";
     public static final String DISBAND = "hyperfactions.common.disband";
+    public static final String WORLD_FALLBACK = "hyperfactions.common.world_fallback";
 
     private Common() {}
   }
@@ -1310,6 +1311,9 @@ public final class MessageKeys {
     public static final String UPKEEP_SETTINGS = "hyperfactions_gui.treasury.upkeep_settings";
     public static final String AUTO_PAY_UPKEEP = "hyperfactions_gui.treasury.auto_pay_upkeep";
     public static final String BACK_BTN = "hyperfactions_gui.treasury.back_btn";
+    // Upkeep format strings
+    public static final String UPKEEP_COST_FORMAT = "hyperfactions_gui.treasury.upkeep_cost_format";
+    public static final String UPKEEP_TIME_LEFT = "hyperfactions_gui.treasury.upkeep_time_left";
 
     private TreasuryGui() {}
   }
@@ -1953,6 +1957,7 @@ public final class MessageKeys {
     public static final String MAP_CHUNK_BELONGS = "hyperfactions_admin.map.chunk_belongs";
     public static final String MAP_CHUNK_FACTION = "hyperfactions_admin.map.chunk_faction";
     public static final String MAP_CHUNK_PROTECTED = "hyperfactions_admin.map.chunk_protected";
+    public static final String MAP_ANOTHER_ZONE = "hyperfactions_admin.map.another_zone";
 
     // ========== GUI Label Keys (for .ui hardcoded text localization) ==========
 

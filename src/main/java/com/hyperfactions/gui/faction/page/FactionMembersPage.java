@@ -496,7 +496,7 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
             sendUpdate();
             return;
           }
-          String targetName = data.target != null ? data.target : "Unknown";
+          String targetName = data.target != null ? data.target : HFMessages.get(playerRef, MessageKeys.Common.UNKNOWN);
           guiManager.openPlayerInfo(player, ref, store, playerRef, uuid, targetName, "members");
         }
       }

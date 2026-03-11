@@ -122,7 +122,7 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
     Player player = store.getComponent(ref, Player.getComponentType());
     TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
     World world = player != null ? player.getWorld() : null;
-    String worldName = world != null ? world.getName() : "world";
+    String worldName = world != null ? world.getName() : HFMessages.get(playerRef, MessageKeys.Common.WORLD_FALLBACK);
 
     int playerChunkX = 0;
     int playerChunkZ = 0;
@@ -545,7 +545,7 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
 
     Faction viewerFaction = factionManager.getPlayerFaction(playerRef.getUuid());
     World world = player.getWorld();
-    String worldName = world != null ? world.getName() : "world";
+    String worldName = world != null ? world.getName() : HFMessages.get(playerRef, MessageKeys.Common.WORLD_FALLBACK);
 
     // Handle navigation - use new player nav when no faction
     if (viewerFaction != null) {

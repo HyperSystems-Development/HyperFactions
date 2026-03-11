@@ -121,7 +121,7 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
     Player player = store.getComponent(ref, Player.getComponentType());
     TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
     World world = player != null ? player.getWorld() : null;
-    String worldName = world != null ? world.getName() : "world";
+    String worldName = world != null ? world.getName() : HFMessages.get(playerRef, MessageKeys.Common.WORLD_FALLBACK);
 
     // Check if player is in the same world as the zone
     boolean sameWorld = zone.world().equals(worldName);
@@ -499,7 +499,7 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
 
       case "OtherZone" -> {
         Zone otherZone = zoneManager.getZone(zoneWorld, data.chunkX, data.chunkZ);
-        String zoneName = otherZone != null ? otherZone.name() : "another zone";
+        String zoneName = otherZone != null ? otherZone.name() : HFMessages.get(playerRef, MessageKeys.AdminGui.MAP_ANOTHER_ZONE);
         player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.MAP_CHUNK_BELONGS, MessageUtil.COLOR_GOLD, zoneName));
       }
 

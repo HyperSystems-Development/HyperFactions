@@ -528,7 +528,7 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
             sendUpdate();
             return;
           }
-          String targetName = data.playerName != null ? data.playerName : "Unknown";
+          String targetName = data.playerName != null ? data.playerName : HFMessages.get(playerRef, MessageKeys.Common.UNKNOWN);
           // Find the player's faction for context
           UUID factionId = null;
           for (Faction faction : factionManager.getAllFactions()) {

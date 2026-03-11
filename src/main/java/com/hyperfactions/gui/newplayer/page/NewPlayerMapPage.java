@@ -115,7 +115,7 @@ public class NewPlayerMapPage extends InteractiveCustomUIPage<NewPlayerPageData>
     Player player = store.getComponent(ref, Player.getComponentType());
     TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
     World world = player != null ? player.getWorld() : null;
-    String worldName = world != null ? world.getName() : "world";
+    String worldName = world != null ? world.getName() : HFMessages.get(playerRef, MessageKeys.Common.WORLD_FALLBACK);
 
     int playerChunkX = 0;
     int playerChunkZ = 0;

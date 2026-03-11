@@ -358,7 +358,7 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
     Player player = store.getComponent(ref, Player.getComponentType());
     PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
     World world = player != null ? player.getWorld() : null;
-    String worldName = world != null ? world.getName() : "world";
+    String worldName = world != null ? world.getName() : HFMessages.get(playerRef, MessageKeys.Common.WORLD_FALLBACK);
 
     if (player == null || playerRef == null || data.button == null) {
       sendUpdate();

@@ -345,6 +345,7 @@ map.unclaim_failed = Failed to unclaim chunk: {0}
 map.chunk_belongs = This chunk belongs to {0}.
 map.chunk_faction = This chunk is claimed by a faction.
 map.chunk_protected = This chunk is in a protected region.
+map.another_zone = another zone
 
 # ========== GUI Label Keys (for .ui hardcoded text localization) ==========
 

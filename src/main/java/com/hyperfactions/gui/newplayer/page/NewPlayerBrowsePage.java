@@ -236,7 +236,7 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
           stats.currentPower(),
           stats.maxPower(),
           faction.claims().size(),
-          leader != null ? leader.username() : "None",
+          leader != null ? leader.username() : HFMessages.get(playerRef, MessageKeys.Common.NONE),
           faction.open(),
           faction.description()
       ));

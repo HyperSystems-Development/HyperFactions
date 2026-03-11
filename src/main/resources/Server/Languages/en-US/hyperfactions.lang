@@ -22,6 +22,7 @@ common.back = Back
 common.leave = Leave
 common.transfer = Transfer
 common.disband = Disband
+common.world_fallback = world
 common.yes = Yes
 common.no = No
 common.loading = Loading...

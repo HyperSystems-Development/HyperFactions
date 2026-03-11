@@ -345,6 +345,7 @@ map.unclaim_failed = No se pudo desreclamar el chunk: {0}
 map.chunk_belongs = Este chunk pertenece a {0}.
 map.chunk_faction = Este chunk esta reclamado por una faccion.
 map.chunk_protected = Este chunk esta en una region protegida.
+map.another_zone = otra zona
 
 # ========== Claves de Etiquetas GUI (localizacion de texto en .ui) ==========
 

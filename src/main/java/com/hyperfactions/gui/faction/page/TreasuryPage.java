@@ -191,7 +191,7 @@ public class TreasuryPage extends InteractiveCustomUIPage<TreasuryData> {
     // Show chunk breakdown
     String chunkDetail = HFMessages.get(playerRef, MessageKeys.TreasuryGui.CHUNKS_DETAIL,
         Math.min(freeChunks, claimCount), billableChunks);
-    String costString = economyManager.formatCurrency(costPerCycle) + " every " + intervalHours + "h";
+    String costString = HFMessages.get(playerRef, MessageKeys.TreasuryGui.UPKEEP_COST_FORMAT, economyManager.formatCurrency(costPerCycle), intervalHours);
     cmd.set("#UpkeepCost.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.COST_LABEL, costString));
     cmd.set("#UpkeepDetail.Text", chunkDetail);
 
@@ -210,7 +210,7 @@ public class TreasuryPage extends InteractiveCustomUIPage<TreasuryData> {
     cmd.set("#UpkeepBar.Bar.Color", barColor);
     cmd.set("#UpkeepTimer.Text", remaining < 0
         ? HFMessages.get(playerRef, MessageKeys.TreasuryGui.PENDING)
-        : formatDuration(remaining) + " left");
+        : HFMessages.get(playerRef, MessageKeys.TreasuryGui.UPKEEP_TIME_LEFT, formatDuration(remaining)));
 
     boolean autoPay = economy != null && economy.upkeepAutoPay();
     cmd.set("#AutoPayStatus.Text", autoPay

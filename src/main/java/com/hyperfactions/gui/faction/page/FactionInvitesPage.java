@@ -510,7 +510,7 @@ public class FactionInvitesPage extends InteractiveCustomUIPage<FactionPageData>
     }
 
     JoinRequest request = joinRequestManager.getRequest(faction.id(), targetUuid);
-    String playerName = request != null ? request.playerName() : "Unknown";
+    String playerName = request != null ? request.playerName() : HFMessages.get(playerRef, MessageKeys.Common.UNKNOWN);
 
     joinRequestManager.declineRequest(faction.id(), targetUuid);
 
