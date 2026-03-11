@@ -258,14 +258,13 @@ $C.@PageOverlay {
         Label #BypassLabel {
           Text: "Protection Bypass:";
           Style: (FontSize: 13, TextColor: #AAAAAA, VerticalAlignment: Center);
-          Anchor: (Width: 130);
+          FlexWeight: 1;
         }
         Label #BypassState {
           Text: "Off";
           Style: (FontSize: 14, TextColor: #FF5555, RenderBold: true, VerticalAlignment: Center);
-          Anchor: (Width: 50);
+          Anchor: (Width: 80);
         }
-        Label { FlexWeight: 1; }
         TextButton #ToggleBypassBtn {
           Text: "Enable";
           Anchor: (Height: 30, Width: 100);

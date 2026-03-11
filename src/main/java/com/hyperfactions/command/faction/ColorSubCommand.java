@@ -97,7 +97,8 @@ public class ColorSubCommand extends FactionSubCommand {
 
     Faction updated = faction.withColor(hexColor)
       .withLog(FactionLog.create(FactionLog.LogType.SETTINGS_CHANGE,
-        "Color changed to '" + hexColor + "'", player.getUuid()));
+        "Color changed to '" + hexColor + "'", player.getUuid(),
+        MessageKeys.LogsGui.MSG_COLOR_CHANGED, hexColor));
 
     hyperFactions.getFactionManager().updateFaction(updated);
 

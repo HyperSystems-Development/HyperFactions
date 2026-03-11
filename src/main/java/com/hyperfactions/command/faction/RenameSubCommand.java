@@ -93,7 +93,8 @@ public class RenameSubCommand extends FactionSubCommand {
     String oldName = faction.name();
     Faction updated = faction.withName(newName)
       .withLog(FactionLog.create(FactionLog.LogType.SETTINGS_CHANGE,
-        "Renamed from '" + oldName + "' to '" + newName + "'", player.getUuid()));
+        "Renamed from '" + oldName + "' to '" + newName + "'", player.getUuid(),
+        MessageKeys.LogsGui.MSG_RENAMED, oldName, newName));
 
     hyperFactions.getFactionManager().updateFaction(updated);
 

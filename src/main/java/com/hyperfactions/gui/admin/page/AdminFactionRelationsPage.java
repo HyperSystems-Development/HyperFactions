@@ -99,6 +99,9 @@ public class AdminFactionRelationsPage extends InteractiveCustomUIPage<AdminFact
     cmd.set(idx + " #FactionName.Text", entry.factionName);
     cmd.set(idx + " #LeaderName.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.LEADER_PREFIX, entry.leaderName));
     cmd.set(idx + " #DateEstablished.Text", formatDate(entry.sinceMillis));
+    cmd.set(idx + " #SetAllyBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_REL_BTN_ALLY));
+    cmd.set(idx + " #SetNeutralBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_REL_BTN_NEUTRAL));
+    cmd.set(idx + " #SetEnemyBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_REL_BTN_ENEMY));
     if ("ally".equals(type)) {
       events.addEventBinding(CustomUIEventBindingType.Activating, idx + " #SetNeutralBtn", EventData.of("Button", "AdminSetNeutral").append("TargetFactionId", entry.factionId.toString()), false);
       events.addEventBinding(CustomUIEventBindingType.Activating, idx + " #SetEnemyBtn", EventData.of("Button", "AdminSetEnemy").append("TargetFactionId", entry.factionId.toString()), false);
@@ -130,6 +133,9 @@ public class AdminFactionRelationsPage extends InteractiveCustomUIPage<AdminFact
       cmd.set(idx + " #FactionName.Text", other.name());
       cmd.set(idx + " #LeaderName.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.LEADER_PREFIX, leaderName));
       cmd.set(idx + " #DateEstablished.Text", "");
+      cmd.set(idx + " #SetAllyBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_REL_BTN_ALLY));
+      cmd.set(idx + " #SetNeutralBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_REL_BTN_NEUTRAL));
+      cmd.set(idx + " #SetEnemyBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_REL_BTN_ENEMY));
       events.addEventBinding(CustomUIEventBindingType.Activating, idx + " #SetAllyBtn", EventData.of("Button", "AdminSetAlly").append("TargetFactionId", other.id().toString()), false);
       events.addEventBinding(CustomUIEventBindingType.Activating, idx + " #SetEnemyBtn", EventData.of("Button", "AdminSetEnemy").append("TargetFactionId", other.id().toString()), false);
     }

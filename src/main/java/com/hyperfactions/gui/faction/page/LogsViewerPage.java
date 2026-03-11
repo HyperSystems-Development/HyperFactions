@@ -169,8 +169,8 @@ public class LogsViewerPage extends InteractiveCustomUIPage<FactionPageData> {
         cmd.set(sel + " #LogType.Text", getLocalizedTypeName(log.type()));
         cmd.set(sel + " #LogType.Style.TextColor", GuiColors.forLogType(log.type()));
 
-        // Message
-        cmd.set(sel + " #LogMessage.Text", log.message());
+        // Message (localized if key available, else English fallback)
+        cmd.set(sel + " #LogMessage.Text", HFMessages.resolveLogMessage(playerRef, log));
       }
     }
 

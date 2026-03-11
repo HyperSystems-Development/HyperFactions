@@ -360,7 +360,7 @@ $C.@PageOverlay {
 
               TextButton #PowerResetAll {
                 Text: "Reset All Power";
-                Anchor: (Height: 26, Width: 130);
+                Anchor: (Height: 26, Width: 170);
                 Style: $S.@CyanButtonStyle;
               }
             }
@@ -426,7 +426,7 @@ $C.@PageOverlay {
 
         TextButton #ViewMembersBtn {
           Text: "Members";
-          Anchor: (Height: 30, Width: 85);
+          Anchor: (Height: 30, Width: 110);
           Style: $S.@ButtonStyle;
         }
 
@@ -434,7 +434,7 @@ $C.@PageOverlay {
 
         TextButton #ViewRelationsBtn {
           Text: "Relations";
-          Anchor: (Height: 30, Width: 85);
+          Anchor: (Height: 30, Width: 110);
           Style: $S.@ButtonStyle;
         }
 

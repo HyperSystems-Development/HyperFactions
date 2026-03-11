@@ -131,7 +131,7 @@ public class AdminZoneSettingsPage extends InteractiveCustomUIPage<AdminZoneSett
     // Zone info header
     cmd.set("#ZoneName.Text", zone.name());
     cmd.set("#ZoneType.Text", zone.type().name());
-    cmd.set("#ZoneChunks.Text", zone.getChunkCount() + " chunks");
+    cmd.set("#ZoneChunks.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZSET_CHUNKS, zone.getChunkCount()));
 
     // Type indicator color
     String typeColor = zone.isSafeZone() ? "#55FF55" : "#FF5555";
@@ -228,9 +228,8 @@ public class AdminZoneSettingsPage extends InteractiveCustomUIPage<AdminZoneSett
       spawnConflict = true;
     }
 
-    // Flag name (display name from ZoneFlags)
-    String displayName = ZoneFlags.getDisplayName(flagName);
-    cmd.set(idx + "Name.Text", displayName);
+    // Flag name (localized display name via i18n)
+    cmd.set(idx + "Name.Text", HFMessages.get(playerRef, ZoneFlags.getDisplayNameKey(flagName)));
 
     // Set checkbox value via child selector
     // When parent is off, show children as unchecked for clearer visual state

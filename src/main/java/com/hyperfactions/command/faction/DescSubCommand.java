@@ -73,7 +73,8 @@ public class DescSubCommand extends FactionSubCommand {
 
     Faction updated = faction.withDescription(description)
       .withLog(FactionLog.create(FactionLog.LogType.SETTINGS_CHANGE,
-        description != null ? "Description set" : "Description cleared", player.getUuid()));
+        description != null ? "Description set" : "Description cleared", player.getUuid(),
+        description != null ? MessageKeys.LogsGui.MSG_DESC_SET : MessageKeys.LogsGui.MSG_DESC_CLEARED));
 
     hyperFactions.getFactionManager().updateFaction(updated);
 

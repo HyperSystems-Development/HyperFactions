@@ -10,6 +10,7 @@ import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.storage.FactionStorage;
 import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.MessageKeys;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
@@ -581,7 +582,8 @@ public class FactionManager {
     // Add member
     FactionMember member = FactionMember.create(playerUuid, playerName);
     Faction updated = faction.withMember(member)
-      .withLog(FactionLog.create(FactionLog.LogType.MEMBER_JOIN, playerName + " joined the faction", playerUuid));
+      .withLog(FactionLog.create(FactionLog.LogType.MEMBER_JOIN, playerName + " joined the faction", playerUuid,
+        MessageKeys.LogsGui.MSG_MEMBER_JOINED, playerName));
 
     // Update caches
     factions.put(factionId, updated);
@@ -635,7 +637,8 @@ public class FactionManager {
           .withoutMember(playerUuid)
           .withMember(promoted)
           .withLog(FactionLog.create(FactionLog.LogType.LEADER_TRANSFER,
-              target.username() + " left, " + promoted.username() + " is now leader", playerUuid));
+              target.username() + " left, " + promoted.username() + " is now leader", playerUuid,
+              MessageKeys.LogsGui.MSG_LEADER_LEFT_TRANSFER, target.username(), promoted.username()));
 
       factions.put(factionId, updated);
       playerToFaction.remove(playerUuid);
@@ -669,9 +672,10 @@ public class FactionManager {
     // Remove member
     FactionLog.LogType logType = isKick ? FactionLog.LogType.MEMBER_KICK : FactionLog.LogType.MEMBER_LEAVE;
     String message = isKick ? target.username() + " was kicked" : target.username() + " left the faction";
+    String msgKey = isKick ? MessageKeys.LogsGui.MSG_MEMBER_KICKED : MessageKeys.LogsGui.MSG_MEMBER_LEFT;
 
     Faction updated = faction.withoutMember(playerUuid)
-      .withLog(FactionLog.create(logType, message, actorUuid));
+      .withLog(FactionLog.create(logType, message, actorUuid, msgKey, target.username()));
 
     // Update caches
     factions.put(factionId, updated);
@@ -773,7 +777,8 @@ public class FactionManager {
 
     Faction updated = faction.withMember(promoted)
       .withLog(FactionLog.create(FactionLog.LogType.MEMBER_PROMOTE,
-        target.username() + " promoted to " + ConfigManager.get().getRoleDisplayName(newRole), actorUuid));
+        target.username() + " promoted to " + ConfigManager.get().getRoleDisplayName(newRole), actorUuid,
+        MessageKeys.LogsGui.MSG_MEMBER_PROMOTED, target.username(), ConfigManager.get().getRoleDisplayName(newRole)));
 
     factions.put(factionId, updated);
     storage.saveFaction(updated);
@@ -823,7 +828,8 @@ public class FactionManager {
 
     Faction updated = faction.withMember(demoted)
       .withLog(FactionLog.create(FactionLog.LogType.MEMBER_DEMOTE,
-        target.username() + " demoted to " + ConfigManager.get().getRoleDisplayName(FactionRole.MEMBER), actorUuid));
+        target.username() + " demoted to " + ConfigManager.get().getRoleDisplayName(FactionRole.MEMBER), actorUuid,
+        MessageKeys.LogsGui.MSG_MEMBER_DEMOTED, target.username(), ConfigManager.get().getRoleDisplayName(FactionRole.MEMBER)));
 
     factions.put(factionId, updated);
     storage.saveFaction(updated);
@@ -871,7 +877,8 @@ public class FactionManager {
       .withMember(oldLeader)
       .withMember(promoted)
       .withLog(FactionLog.create(FactionLog.LogType.LEADER_TRANSFER,
-        "Leadership transferred to " + target.username(), actorUuid));
+        "Leadership transferred to " + target.username(), actorUuid,
+        MessageKeys.LogsGui.MSG_LEADER_TRANSFERRED, target.username()));
 
     factions.put(factionId, updated);
     storage.saveFaction(updated);
@@ -923,7 +930,8 @@ public class FactionManager {
     FactionMember updatedMember = target.withRole(newRole);
     updated = updated.withMember(updatedMember)
       .withLog(FactionLog.create(FactionLog.LogType.MEMBER_PROMOTE,
-        "[Admin] " + target.username() + " role set to " + ConfigManager.get().getRoleDisplayName(newRole), null));
+        "[Admin] " + target.username() + " role set to " + ConfigManager.get().getRoleDisplayName(newRole), null,
+        MessageKeys.LogsGui.MSG_ADMIN_ROLE_SET, target.username(), ConfigManager.get().getRoleDisplayName(newRole)));
 
     factions.put(factionId, updated);
     storage.saveFaction(updated);
@@ -960,7 +968,8 @@ public class FactionManager {
     // Remove member
     Faction updated = faction.withoutMember(playerUuid)
       .withLog(FactionLog.create(FactionLog.LogType.MEMBER_KICK,
-        "[Admin] " + target.username() + " was kicked", null));
+        "[Admin] " + target.username() + " was kicked", null,
+        MessageKeys.LogsGui.MSG_ADMIN_KICKED, target.username()));
 
     factions.put(factionId, updated);
     playerToFaction.remove(playerUuid);
@@ -999,7 +1008,8 @@ public class FactionManager {
 
     Faction updated = faction.withHome(home)
       .withLog(FactionLog.create(FactionLog.LogType.HOME_SET,
-        home != null ? "Home set" : "Home cleared", actorUuid));
+        home != null ? "Home set" : "Home cleared", actorUuid,
+        home != null ? MessageKeys.LogsGui.MSG_HOME_SET : MessageKeys.LogsGui.MSG_HOME_CLEARED));
 
     factions.put(factionId, updated);
     storage.saveFaction(updated);
@@ -1021,7 +1031,8 @@ public class FactionManager {
       if (home != null && !ConfigManager.get().isWorldAllowed(home.world())) {
         Faction updated = faction.withHome(null)
           .withLog(FactionLog.create(FactionLog.LogType.HOME_SET,
-            "Home in '" + home.world() + "' cleared (world disallows claiming)", null));
+            "Home in '" + home.world() + "' cleared (world disallows claiming)", null,
+            MessageKeys.LogsGui.MSG_HOME_CLEARED_WORLD, home.world()));
         factions.put(faction.id(), updated);
         storage.saveFaction(updated);
         cleared++;

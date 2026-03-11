@@ -13,6 +13,7 @@ import com.hyperfactions.data.PlayerPower;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.CommandHelp;
 import com.hyperfactions.util.HelpFormatter;
+import com.hyperfactions.util.MessageKeys;
 import com.hyperfactions.util.PlayerResolver;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -132,6 +133,14 @@ public class AdminPowerHandler {
     }
   }
 
+  private void logAdminPowerChange(UUID targetUuid, UUID adminUuid, String message, String key, String... args) {
+    Faction faction = hyperFactions.getFactionManager().getPlayerFaction(targetUuid);
+    if (faction != null) {
+      Faction updated = faction.withLog(FactionLog.create(FactionLog.LogType.ADMIN_POWER, message, adminUuid, key, args));
+      hyperFactions.getFactionManager().updateFaction(updated);
+    }
+  }
+
   // /f admin power set <player> <amount>
   /** Handles power set. */
   public void handlePowerSet(CommandContext ctx, UUID senderUuid, String[] args) {
@@ -155,7 +164,8 @@ public class AdminPowerHandler {
     double oldPower = hyperFactions.getPowerManager().getPlayerPower(target.uuid()).power();
     double newPower = hyperFactions.getPowerManager().setPlayerPower(target.uuid(), amount);
     logAdminPowerChange(target.uuid(), senderUuid,
-      "Admin set " + target.name() + "'s power to " + String.format("%.1f", newPower) + " (was " + String.format("%.1f", oldPower) + ")");
+      "Admin set " + target.name() + "'s power to " + String.format("%.1f", newPower) + " (was " + String.format("%.1f", oldPower) + ")",
+      MessageKeys.LogsGui.MSG_ADMIN_POWER_SET, target.name(), String.format("%.1f", newPower), String.format("%.1f", oldPower));
     ctx.sendMessage(prefix().insert(msg("Set ", COLOR_GREEN))
       .insert(msg(target.name(), COLOR_CYAN))
       .insert(msg("'s power to ", COLOR_GREEN))
@@ -186,7 +196,8 @@ public class AdminPowerHandler {
     double oldPower = hyperFactions.getPowerManager().getPlayerPower(target.uuid()).power();
     double newPower = hyperFactions.getPowerManager().adjustPlayerPower(target.uuid(), amount);
     logAdminPowerChange(target.uuid(), senderUuid,
-      "Admin added " + String.format("%.1f", amount) + " power to " + target.name() + " (" + String.format("%.1f", oldPower) + " -> " + String.format("%.1f", newPower) + ")");
+      "Admin added " + String.format("%.1f", amount) + " power to " + target.name() + " (" + String.format("%.1f", oldPower) + " -> " + String.format("%.1f", newPower) + ")",
+      MessageKeys.LogsGui.MSG_ADMIN_POWER_ADD, String.format("%.1f", amount), target.name(), String.format("%.1f", oldPower), String.format("%.1f", newPower));
     ctx.sendMessage(prefix().insert(msg("Added ", COLOR_GREEN))
       .insert(msg(String.format("%.1f", amount), COLOR_WHITE))
       .insert(msg(" power to ", COLOR_GREEN))
@@ -217,7 +228,8 @@ public class AdminPowerHandler {
     double oldPower = hyperFactions.getPowerManager().getPlayerPower(target.uuid()).power();
     double newPower = hyperFactions.getPowerManager().adjustPlayerPower(target.uuid(), -amount);
     logAdminPowerChange(target.uuid(), senderUuid,
-      "Admin removed " + String.format("%.1f", amount) + " power from " + target.name() + " (" + String.format("%.1f", oldPower) + " -> " + String.format("%.1f", newPower) + ")");
+      "Admin removed " + String.format("%.1f", amount) + " power from " + target.name() + " (" + String.format("%.1f", oldPower) + " -> " + String.format("%.1f", newPower) + ")",
+      MessageKeys.LogsGui.MSG_ADMIN_POWER_REMOVE, String.format("%.1f", amount), target.name(), String.format("%.1f", oldPower), String.format("%.1f", newPower));
     ctx.sendMessage(prefix().insert(msg("Removed ", COLOR_GREEN))
       .insert(msg(String.format("%.1f", amount), COLOR_WHITE))
       .insert(msg(" power from ", COLOR_GREEN))
@@ -241,7 +253,8 @@ public class AdminPowerHandler {
     double oldPower = hyperFactions.getPowerManager().getPlayerPower(target.uuid()).power();
     double newPower = hyperFactions.getPowerManager().resetPlayerPower(target.uuid());
     logAdminPowerChange(target.uuid(), senderUuid,
-      "Admin reset " + target.name() + "'s power to " + String.format("%.1f", newPower) + " (was " + String.format("%.1f", oldPower) + ")");
+      "Admin reset " + target.name() + "'s power to " + String.format("%.1f", newPower) + " (was " + String.format("%.1f", oldPower) + ")",
+      MessageKeys.LogsGui.MSG_ADMIN_POWER_RESET, target.name(), String.format("%.1f", newPower), String.format("%.1f", oldPower));
     ctx.sendMessage(prefix().insert(msg("Reset ", COLOR_GREEN))
       .insert(msg(target.name(), COLOR_CYAN))
       .insert(msg("'s power to ", COLOR_GREEN))
@@ -277,7 +290,8 @@ public class AdminPowerHandler {
     double oldMax = oldPower.getEffectiveMaxPower();
     double newCurrentPower = hyperFactions.getPowerManager().setPlayerMaxPower(target.uuid(), amount);
     logAdminPowerChange(target.uuid(), senderUuid,
-      "Admin set " + target.name() + "'s max power to " + String.format("%.1f", amount) + " (was " + String.format("%.1f", oldMax) + ")");
+      "Admin set " + target.name() + "'s max power to " + String.format("%.1f", amount) + " (was " + String.format("%.1f", oldMax) + ")",
+      MessageKeys.LogsGui.MSG_ADMIN_MAXPOWER_SET, target.name(), String.format("%.1f", amount), String.format("%.1f", oldMax));
     ctx.sendMessage(prefix().insert(msg("Set ", COLOR_GREEN))
       .insert(msg(target.name(), COLOR_CYAN))
       .insert(msg("'s max power to ", COLOR_GREEN))
@@ -303,7 +317,8 @@ public class AdminPowerHandler {
     hyperFactions.getPowerManager().resetPlayerMaxPower(target.uuid());
     double globalMax = ConfigManager.get().getMaxPlayerPower();
     logAdminPowerChange(target.uuid(), senderUuid,
-      "Admin reset " + target.name() + "'s max power to global default (" + String.format("%.1f", globalMax) + ")");
+      "Admin reset " + target.name() + "'s max power to global default (" + String.format("%.1f", globalMax) + ")",
+      MessageKeys.LogsGui.MSG_ADMIN_MAXPOWER_RESET, target.name(), String.format("%.1f", globalMax));
     ctx.sendMessage(prefix().insert(msg("Reset ", COLOR_GREEN))
       .insert(msg(target.name(), COLOR_CYAN))
       .insert(msg("'s max power to global default ", COLOR_GREEN))
@@ -328,7 +343,8 @@ public class AdminPowerHandler {
     boolean newState = !current.powerLossDisabled();
     hyperFactions.getPowerManager().setPlayerPowerLossDisabled(target.uuid(), newState);
     logAdminPowerChange(target.uuid(), senderUuid,
-      "Admin " + (newState ? "disabled" : "enabled") + " power loss for " + target.name());
+      "Admin " + (newState ? "disabled" : "enabled") + " power loss for " + target.name(),
+      newState ? MessageKeys.LogsGui.MSG_ADMIN_POWERLOSS_DISABLED : MessageKeys.LogsGui.MSG_ADMIN_POWERLOSS_ENABLED, target.name());
     ctx.sendMessage(prefix().insert(msg("Power loss ", COLOR_GREEN))
       .insert(msg(newState ? "disabled" : "enabled", newState ? COLOR_RED : COLOR_GREEN))
       .insert(msg(" for ", COLOR_GREEN))
@@ -352,7 +368,8 @@ public class AdminPowerHandler {
     boolean newState = !current.claimDecayExempt();
     hyperFactions.getPowerManager().setPlayerClaimDecayExempt(target.uuid(), newState);
     logAdminPowerChange(target.uuid(), senderUuid,
-      "Admin " + (newState ? "enabled" : "disabled") + " claim decay exemption for " + target.name());
+      "Admin " + (newState ? "enabled" : "disabled") + " claim decay exemption for " + target.name(),
+      newState ? MessageKeys.LogsGui.MSG_ADMIN_DECAY_ENABLED : MessageKeys.LogsGui.MSG_ADMIN_DECAY_DISABLED, target.name());
     ctx.sendMessage(prefix().insert(msg("Claim decay exemption ", COLOR_GREEN))
       .insert(msg(newState ? "enabled" : "disabled", newState ? COLOR_GREEN : COLOR_RED))
       .insert(msg(" for ", COLOR_GREEN))
@@ -392,7 +409,8 @@ public class AdminPowerHandler {
         hyperFactions.getFactionManager().updateFaction(faction.withLog(FactionLog.create(
           FactionLog.LogType.ADMIN_POWER,
           "Admin set all " + members.size() + " members' power to " + String.format("%.1f", amount),
-          senderUuid)));
+          senderUuid,
+          MessageKeys.LogsGui.MSG_ADMIN_POWER_SET_ALL, String.valueOf(members.size()), String.format("%.1f", amount))));
         ctx.sendMessage(prefix().insert(msg("Set power to ", COLOR_GREEN))
           .insert(msg(String.format("%.1f", amount), COLOR_WHITE))
           .insert(msg(" for " + members.size() + " members of ", COLOR_GREEN))
@@ -413,7 +431,8 @@ public class AdminPowerHandler {
         hyperFactions.getFactionManager().updateFaction(faction.withLog(FactionLog.create(
           FactionLog.LogType.ADMIN_POWER,
           "Admin added " + String.format("%.1f", amount) + " power to all " + members.size() + " members",
-          senderUuid)));
+          senderUuid,
+          MessageKeys.LogsGui.MSG_ADMIN_POWER_ADD_ALL, String.format("%.1f", amount), String.valueOf(members.size()))));
         ctx.sendMessage(prefix().insert(msg("Added ", COLOR_GREEN))
           .insert(msg(String.format("%.1f", amount), COLOR_WHITE))
           .insert(msg(" power to " + members.size() + " members of ", COLOR_GREEN))
@@ -434,7 +453,8 @@ public class AdminPowerHandler {
         hyperFactions.getFactionManager().updateFaction(faction.withLog(FactionLog.create(
           FactionLog.LogType.ADMIN_POWER,
           "Admin removed " + String.format("%.1f", amount) + " power from all " + members.size() + " members",
-          senderUuid)));
+          senderUuid,
+          MessageKeys.LogsGui.MSG_ADMIN_POWER_REMOVE_ALL, String.format("%.1f", amount), String.valueOf(members.size()))));
         ctx.sendMessage(prefix().insert(msg("Removed ", COLOR_GREEN))
           .insert(msg(String.format("%.1f", amount), COLOR_WHITE))
           .insert(msg(" power from " + members.size() + " members of ", COLOR_GREEN))
@@ -447,7 +467,8 @@ public class AdminPowerHandler {
         hyperFactions.getFactionManager().updateFaction(faction.withLog(FactionLog.create(
           FactionLog.LogType.ADMIN_POWER,
           "Admin reset power for all " + members.size() + " members",
-          senderUuid)));
+          senderUuid,
+          MessageKeys.LogsGui.MSG_ADMIN_POWER_RESET_ALL, String.valueOf(members.size()))));
         ctx.sendMessage(prefix().insert(msg("Reset power for ", COLOR_GREEN))
           .insert(msg(String.valueOf(members.size()), COLOR_WHITE))
           .insert(msg(" members of ", COLOR_GREEN))

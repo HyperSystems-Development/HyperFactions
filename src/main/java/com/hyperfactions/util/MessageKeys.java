@@ -1375,6 +1375,82 @@ public final class MessageKeys {
       return "hyperfactions_gui.logs.type_" + logTypeName.toLowerCase();
     }
 
+    // === Log message templates (i18n for FactionLog.message content) ===
+
+    // Player actions
+    public static final String MSG_FACTION_CREATED = "hyperfactions_gui.logs.msg_faction_created";
+    public static final String MSG_MEMBER_JOINED = "hyperfactions_gui.logs.msg_member_joined";
+    public static final String MSG_MEMBER_LEFT = "hyperfactions_gui.logs.msg_member_left";
+    public static final String MSG_MEMBER_KICKED = "hyperfactions_gui.logs.msg_member_kicked";
+    public static final String MSG_MEMBER_PROMOTED = "hyperfactions_gui.logs.msg_member_promoted";
+    public static final String MSG_MEMBER_DEMOTED = "hyperfactions_gui.logs.msg_member_demoted";
+    public static final String MSG_LEADER_TRANSFERRED = "hyperfactions_gui.logs.msg_leader_transferred";
+    public static final String MSG_LEADER_LEFT_TRANSFER = "hyperfactions_gui.logs.msg_leader_left_transfer";
+    public static final String MSG_RELATION_SET = "hyperfactions_gui.logs.msg_relation_set";
+
+    // Territory
+    public static final String MSG_CLAIMED = "hyperfactions_gui.logs.msg_claimed";
+    public static final String MSG_UNCLAIMED = "hyperfactions_gui.logs.msg_unclaimed";
+    public static final String MSG_OVERCLAIM_LOST = "hyperfactions_gui.logs.msg_overclaim_lost";
+    public static final String MSG_OVERCLAIM_TAKEN = "hyperfactions_gui.logs.msg_overclaim_taken";
+    public static final String MSG_ALL_UNCLAIMED = "hyperfactions_gui.logs.msg_all_unclaimed";
+    public static final String MSG_CLAIM_REMOVED_WORLD = "hyperfactions_gui.logs.msg_claim_removed_world";
+    public static final String MSG_CLAIMS_LOST_UPKEEP = "hyperfactions_gui.logs.msg_claims_lost_upkeep";
+    public static final String MSG_CLAIMS_REMOVED_INACTIVE = "hyperfactions_gui.logs.msg_claims_removed_inactive";
+
+    // Home
+    public static final String MSG_HOME_SET = "hyperfactions_gui.logs.msg_home_set";
+    public static final String MSG_HOME_CLEARED = "hyperfactions_gui.logs.msg_home_cleared";
+    public static final String MSG_HOME_CLEARED_WORLD = "hyperfactions_gui.logs.msg_home_cleared_world";
+
+    // Settings
+    public static final String MSG_RENAMED = "hyperfactions_gui.logs.msg_renamed";
+    public static final String MSG_SET_OPEN = "hyperfactions_gui.logs.msg_set_open";
+    public static final String MSG_SET_CLOSED = "hyperfactions_gui.logs.msg_set_closed";
+    public static final String MSG_DESC_SET = "hyperfactions_gui.logs.msg_desc_set";
+    public static final String MSG_DESC_CLEARED = "hyperfactions_gui.logs.msg_desc_cleared";
+    public static final String MSG_COLOR_CHANGED = "hyperfactions_gui.logs.msg_color_changed";
+
+    // Economy
+    public static final String MSG_DEPOSIT = "hyperfactions_gui.logs.msg_deposit";
+    public static final String MSG_WITHDRAWAL = "hyperfactions_gui.logs.msg_withdrawal";
+    public static final String MSG_UPKEEP_PAID = "hyperfactions_gui.logs.msg_upkeep_paid";
+    public static final String MSG_UPKEEP_GRACE_STARTED = "hyperfactions_gui.logs.msg_upkeep_grace_started";
+    public static final String MSG_UPKEEP_MISSED = "hyperfactions_gui.logs.msg_upkeep_missed";
+    public static final String MSG_UPKEEP_MANUAL = "hyperfactions_gui.logs.msg_upkeep_manual";
+
+    // Admin power
+    public static final String MSG_ADMIN_POWER_SET = "hyperfactions_gui.logs.msg_admin_power_set";
+    public static final String MSG_ADMIN_POWER_ADD = "hyperfactions_gui.logs.msg_admin_power_add";
+    public static final String MSG_ADMIN_POWER_REMOVE = "hyperfactions_gui.logs.msg_admin_power_remove";
+    public static final String MSG_ADMIN_POWER_RESET = "hyperfactions_gui.logs.msg_admin_power_reset";
+    public static final String MSG_ADMIN_POWER_ADJUSTED = "hyperfactions_gui.logs.msg_admin_power_adjusted";
+    public static final String MSG_ADMIN_MAXPOWER_SET = "hyperfactions_gui.logs.msg_admin_maxpower_set";
+    public static final String MSG_ADMIN_MAXPOWER_RESET = "hyperfactions_gui.logs.msg_admin_maxpower_reset";
+    public static final String MSG_ADMIN_POWERLOSS_ENABLED = "hyperfactions_gui.logs.msg_admin_powerloss_enabled";
+    public static final String MSG_ADMIN_POWERLOSS_DISABLED = "hyperfactions_gui.logs.msg_admin_powerloss_disabled";
+    public static final String MSG_ADMIN_DECAY_ENABLED = "hyperfactions_gui.logs.msg_admin_decay_enabled";
+    public static final String MSG_ADMIN_DECAY_DISABLED = "hyperfactions_gui.logs.msg_admin_decay_disabled";
+    public static final String MSG_ADMIN_KD_RESET = "hyperfactions_gui.logs.msg_admin_kd_reset";
+    public static final String MSG_ADMIN_POWER_SET_ALL = "hyperfactions_gui.logs.msg_admin_power_set_all";
+    public static final String MSG_ADMIN_POWER_ADD_ALL = "hyperfactions_gui.logs.msg_admin_power_add_all";
+    public static final String MSG_ADMIN_POWER_REMOVE_ALL = "hyperfactions_gui.logs.msg_admin_power_remove_all";
+    public static final String MSG_ADMIN_POWER_RESET_ALL = "hyperfactions_gui.logs.msg_admin_power_reset_all";
+    public static final String MSG_ADMIN_POWER_ADJUSTED_ALL = "hyperfactions_gui.logs.msg_admin_power_adjusted_all";
+
+    // Admin faction
+    public static final String MSG_ADMIN_KICKED = "hyperfactions_gui.logs.msg_admin_kicked";
+    public static final String MSG_ADMIN_ROLE_SET = "hyperfactions_gui.logs.msg_admin_role_set";
+    public static final String MSG_ADMIN_LEADER_KICK = "hyperfactions_gui.logs.msg_admin_leader_kick";
+    public static final String MSG_ADMIN_ECON_ADDED = "hyperfactions_gui.logs.msg_admin_econ_added";
+    public static final String MSG_ADMIN_ECON_DEDUCTED = "hyperfactions_gui.logs.msg_admin_econ_deducted";
+    public static final String MSG_ADMIN_ECON_SET = "hyperfactions_gui.logs.msg_admin_econ_set";
+
+    // Import
+    public static final String MSG_LEFT_IMPORT = "hyperfactions_gui.logs.msg_left_import";
+    public static final String MSG_LEADER_IMPORT_TRANSFER = "hyperfactions_gui.logs.msg_leader_import_transfer";
+    public static final String MSG_IMPORTED_FROM = "hyperfactions_gui.logs.msg_imported_from";
+
     private LogsGui() {}
   }
 
@@ -1741,6 +1817,9 @@ public final class MessageKeys {
     public static final String GUI_ZINT_CAT_ESSENTIALS = "hyperfactions_admin.gui.zint_cat_essentials";
     public static final String GUI_ZINT_RESET_DEFAULTS = "hyperfactions_admin.gui.zint_reset_defaults";
     public static final String GUI_ZINT_BACK_TO_FLAGS = "hyperfactions_admin.gui.zint_back_to_flags";
+    public static final String GUI_ZINT_MAP_VIS_FACTION = "hyperfactions_admin.gui.zint_map_vis_faction";
+    public static final String GUI_ZINT_MAP_VIS_ALLY = "hyperfactions_admin.gui.zint_map_vis_ally";
+    public static final String GUI_ZINT_MAP_VIS_ALL = "hyperfactions_admin.gui.zint_map_vis_all";
 
     // Activity log
     public static final String LOG_ALL_TYPES = "hyperfactions_admin.log.all_types";
@@ -1783,6 +1862,7 @@ public final class MessageKeys {
     public static final String GUI_ZSET_RESET_DEFAULTS = "hyperfactions_admin.gui.zset_reset_defaults";
     public static final String GUI_ZSET_INTEGRATION_FLAGS = "hyperfactions_admin.gui.zset_integration_flags";
     public static final String GUI_ZSET_BACK_TO_ZONES = "hyperfactions_admin.gui.zset_back_to_zones";
+    public static final String GUI_ZSET_CHUNKS = "hyperfactions_admin.gui.zset_chunks";
 
     // Zone properties
     public static final String ZPROP_CURRENT_CUSTOM = "hyperfactions_admin.zprop.current_custom";
@@ -2067,6 +2147,9 @@ public final class MessageKeys {
     // Faction relations labels
     public static final String GUI_REL_SUBTITLE = "hyperfactions_admin.gui.rel_subtitle";
     public static final String GUI_REL_SET_NEW = "hyperfactions_admin.gui.rel_set_new";
+    public static final String GUI_REL_BTN_ALLY = "hyperfactions_admin.gui.rel_btn_ally";
+    public static final String GUI_REL_BTN_NEUTRAL = "hyperfactions_admin.gui.rel_btn_neutral";
+    public static final String GUI_REL_BTN_ENEMY = "hyperfactions_admin.gui.rel_btn_enemy";
 
     // Zone page labels
     public static final String GUI_ZONE_SORT_NAME = "hyperfactions_admin.gui.zone_sort_name";
@@ -2207,6 +2290,40 @@ public final class MessageKeys {
     public static final String GUI_CZW_FLAGS_DEFAULTS = "hyperfactions_admin.gui.czw_flags_defaults";
     public static final String GUI_CZW_FLAGS_CUSTOMIZE_DESC = "hyperfactions_admin.gui.czw_flags_customize_desc";
     public static final String GUI_CZW_FLAGS_CUSTOMIZE = "hyperfactions_admin.gui.czw_flags_customize";
+
+    // Faction entry labels
+    public static final String GUI_FAC_ENTRY_POWER = "hyperfactions_admin.gui.fac_entry_power";
+    public static final String GUI_FAC_ENTRY_CLAIMS = "hyperfactions_admin.gui.fac_entry_claims";
+    public static final String GUI_FAC_ENTRY_MEMBERS = "hyperfactions_admin.gui.fac_entry_members";
+    public static final String GUI_FAC_ENTRY_CREATED = "hyperfactions_admin.gui.fac_entry_created";
+    public static final String GUI_FAC_ENTRY_HOME = "hyperfactions_admin.gui.fac_entry_home";
+    public static final String GUI_FAC_ENTRY_TP_HOME = "hyperfactions_admin.gui.fac_entry_tp_home";
+    public static final String GUI_FAC_ENTRY_VIEW_INFO = "hyperfactions_admin.gui.fac_entry_view_info";
+    public static final String GUI_FAC_ENTRY_MEMBERS_BTN = "hyperfactions_admin.gui.fac_entry_members_btn";
+    public static final String GUI_FAC_ENTRY_SETTINGS = "hyperfactions_admin.gui.fac_entry_settings";
+    public static final String GUI_FAC_ENTRY_UNCLAIM_ALL = "hyperfactions_admin.gui.fac_entry_unclaim_all";
+    public static final String GUI_FAC_ENTRY_DISBAND = "hyperfactions_admin.gui.fac_entry_disband";
+    // Player entry labels
+    public static final String GUI_PLR_ENTRY_ROLE = "hyperfactions_admin.gui.plr_entry_role";
+    public static final String GUI_PLR_ENTRY_JOINED = "hyperfactions_admin.gui.plr_entry_joined";
+    public static final String GUI_PLR_ENTRY_LAST_ONLINE = "hyperfactions_admin.gui.plr_entry_last_online";
+    public static final String GUI_PLR_ENTRY_KDR = "hyperfactions_admin.gui.plr_entry_kdr";
+    public static final String GUI_PLR_ENTRY_POWER = "hyperfactions_admin.gui.plr_entry_power";
+    public static final String GUI_PLR_ENTRY_UUID = "hyperfactions_admin.gui.plr_entry_uuid";
+    public static final String GUI_PLR_ENTRY_INFO = "hyperfactions_admin.gui.plr_entry_info";
+    public static final String GUI_PLR_ENTRY_TELEPORT = "hyperfactions_admin.gui.plr_entry_teleport";
+    public static final String GUI_PLR_ENTRY_NA = "hyperfactions_admin.gui.plr_entry_na";
+    public static final String GUI_PLR_ENTRY_UNKNOWN = "hyperfactions_admin.gui.plr_entry_unknown";
+    public static final String GUI_PLR_ENTRY_AGO = "hyperfactions_admin.gui.plr_entry_ago";
+    // Zone entry labels
+    public static final String GUI_ZONE_ENTRY_WORLD = "hyperfactions_admin.gui.zone_entry_world";
+    public static final String GUI_ZONE_ENTRY_CHUNKS = "hyperfactions_admin.gui.zone_entry_chunks";
+    public static final String GUI_ZONE_ENTRY_BOUNDS = "hyperfactions_admin.gui.zone_entry_bounds";
+    public static final String GUI_ZONE_ENTRY_CREATED = "hyperfactions_admin.gui.zone_entry_created";
+    public static final String GUI_ZONE_ENTRY_EDIT_MAP = "hyperfactions_admin.gui.zone_entry_edit_map";
+    public static final String GUI_ZONE_ENTRY_FLAGS = "hyperfactions_admin.gui.zone_entry_flags";
+    public static final String GUI_ZONE_ENTRY_SETTINGS = "hyperfactions_admin.gui.zone_entry_settings";
+    public static final String GUI_ZONE_ENTRY_DELETE = "hyperfactions_admin.gui.zone_entry_delete";
 
     private AdminGui() {}
   }

@@ -86,6 +86,8 @@ public class AdminActionsPage extends InteractiveCustomUIPage<AdminActionsData> 
     // Reset button text depends on confirmation state
     if (confirmResetKD) {
       cmd.set("#ResetAllKDBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ACT_CONFIRM_RESET));
+    } else {
+      cmd.set("#ResetAllKDBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ACT_RESET_KD));
     }
 
     // Bind the reset button
@@ -107,6 +109,8 @@ public class AdminActionsPage extends InteractiveCustomUIPage<AdminActionsData> 
       if (upkeepEnabled) {
         if (confirmUpkeep) {
           cmd.set("#TriggerUpkeepBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ACT_CONFIRM_TRIGGER));
+        } else {
+          cmd.set("#TriggerUpkeepBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ACT_TRIGGER_UPKEEP));
         }
         events.addEventBinding(CustomUIEventBindingType.Activating, "#TriggerUpkeepBtn",
             EventData.of("Button", "TriggerUpkeep"), false);

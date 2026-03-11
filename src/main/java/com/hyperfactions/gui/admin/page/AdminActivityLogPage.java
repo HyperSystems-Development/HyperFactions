@@ -207,8 +207,8 @@ public class AdminActivityLogPage extends InteractiveCustomUIPage<AdminActivityL
       cmd.set(sel + " #FactionName.Text", factionDisplay);
       cmd.set(sel + " #FactionName.Style.TextColor", entry.factionColor);
 
-      // Message
-      cmd.set(sel + " #LogMessage.Text", entry.log.message());
+      // Message (localized if key available, else English fallback)
+      cmd.set(sel + " #LogMessage.Text", HFMessages.resolveLogMessage(playerRef, entry.log()));
 
       index++;
     }

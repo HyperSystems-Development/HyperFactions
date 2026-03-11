@@ -424,7 +424,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
       cmd.append("#ActivityFeed", UIPaths.ACTIVITY_ENTRY);
       cmd.set(idx + " #ActivityType.Text",
           HFMessages.get(playerRef, MessageKeys.LogsGui.typeKey(log.type().name())).toUpperCase());
-      cmd.set(idx + " #ActivityMessage.Text", log.message());
+      cmd.set(idx + " #ActivityMessage.Text", HFMessages.resolveLogMessage(playerRef, log));
       cmd.set(idx + " #ActivityTime.Text", formatTimeAgo(log.timestamp()));
     }
   }

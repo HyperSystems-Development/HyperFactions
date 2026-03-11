@@ -198,6 +198,11 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
     cmd.set(idx + " #ClaimsDisplay.Text", String.valueOf(faction.claims().size()));
     cmd.set(idx + " #MemberCount.Text", String.valueOf(faction.members().size()));
 
+    // Localize stat labels
+    cmd.set(idx + " #PowerLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_ENTRY_POWER));
+    cmd.set(idx + " #ClaimsLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_ENTRY_CLAIMS));
+    cmd.set(idx + " #MembersLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_ENTRY_MEMBERS));
+
     // Expansion state
     cmd.set(idx + " #ExpandIcon.Visible", !isExpanded);
     cmd.set(idx + " #CollapseIcon.Visible", isExpanded);
@@ -214,6 +219,18 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
 
     // Extended info (only set values if expanded)
     if (isExpanded) {
+      // Localize expanded labels
+      cmd.set(idx + " #CreatedLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_ENTRY_CREATED));
+      cmd.set(idx + " #HomeLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_ENTRY_HOME));
+
+      // Localize button texts
+      cmd.set(idx + " #TpHomeBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_ENTRY_TP_HOME));
+      cmd.set(idx + " #ViewInfoBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_ENTRY_VIEW_INFO));
+      cmd.set(idx + " #MembersBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_ENTRY_MEMBERS_BTN));
+      cmd.set(idx + " #SettingsBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_ENTRY_SETTINGS));
+      cmd.set(idx + " #UnclaimAllBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_ENTRY_UNCLAIM_ALL));
+      cmd.set(idx + " #DisbandBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_FAC_ENTRY_DISBAND));
+
       // Created date
       String createdDate = DATE_FORMAT.format(Instant.ofEpochMilli(faction.createdAt()));
       cmd.set(idx + " #CreatedDate.Text", createdDate);

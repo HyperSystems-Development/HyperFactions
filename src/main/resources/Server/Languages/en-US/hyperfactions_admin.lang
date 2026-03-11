@@ -200,6 +200,9 @@ gui.zint_visibility_label = Visibility Level:
 gui.zint_cat_essentials = HyperEssentials
 gui.zint_reset_defaults = Reset to Defaults
 gui.zint_back_to_flags = Back to Flags
+gui.zint_map_vis_faction = Faction Only
+gui.zint_map_vis_ally = Faction + Allies
+gui.zint_map_vis_all = All Players
 
 # ========== Activity Log ==========
 log.all_types = All Types
@@ -244,6 +247,60 @@ gui.zset_children_hint = (children only apply when parent ON)
 gui.zset_reset_defaults = Reset to Defaults
 gui.zset_integration_flags = Integration Flags
 gui.zset_back_to_zones = Back to Zones
+gui.zset_chunks = {0} chunks
+
+# Zone Flag Display Names
+gui.zflag_pvp_enabled = PvP Enabled
+gui.zflag_friendly_fire = Friendly Fire
+gui.zflag_friendly_fire_faction = Faction Damage
+gui.zflag_friendly_fire_ally = Ally Damage
+gui.zflag_projectile_damage = Projectile Damage
+gui.zflag_mob_damage = Take Mob Damage
+gui.zflag_pve_damage = Give Mob Damage
+gui.zflag_fall_damage = Fall Damage
+gui.zflag_environmental_damage = Env. Damage
+gui.zflag_explosion_damage = Explosion Damage
+gui.zflag_fire_spread = Fire Spread
+gui.zflag_keep_inventory = Keep Inventory
+gui.zflag_power_loss = Power Loss
+gui.zflag_build_allowed = Building Allowed
+gui.zflag_block_place = Block Placement
+gui.zflag_hammer_use = Hammer Use
+gui.zflag_builder_tools_use = Builder Tools
+gui.zflag_block_interact = Block Interaction
+gui.zflag_door_use = Door Use
+gui.zflag_container_use = Container Use
+gui.zflag_bench_use = Bench Use
+gui.zflag_processing_use = Processing Use
+gui.zflag_seat_use = Seat Use
+gui.zflag_mount_use = Mount Use
+gui.zflag_light_use = Light Use
+gui.zflag_npc_use = NPC Interaction
+gui.zflag_crate_pickup = Crate Pickup
+gui.zflag_crate_place = Crate Place
+gui.zflag_npc_tame = NPC Tame
+gui.zflag_npc_interact = NPC Interact
+gui.zflag_teleporter_use = Teleporter Use
+gui.zflag_portal_use = Portal Use
+gui.zflag_mount_entry = Mount Entry
+gui.zflag_item_drop = Item Drop
+gui.zflag_item_pickup = Auto Pickup
+gui.zflag_item_pickup_manual = F-Key Pickup
+gui.zflag_invincible_items = Invincible Items
+gui.zflag_mob_spawning = Mob Spawning
+gui.zflag_hostile_mob_spawning = Hostile Mobs
+gui.zflag_passive_mob_spawning = Passive Mobs
+gui.zflag_neutral_mob_spawning = Neutral Mobs
+gui.zflag_npc_spawning = NPC Spawning
+gui.zflag_mob_clear = Mob Clearing
+gui.zflag_hostile_mob_clear = Clear Hostile Mobs
+gui.zflag_passive_mob_clear = Clear Passive Mobs
+gui.zflag_neutral_mob_clear = Clear Neutral Mobs
+gui.zflag_gravestone_access = Others Loot Graves
+gui.zflag_show_on_map = Show on Map
+gui.zflag_essentials_homes = Home Use
+gui.zflag_essentials_warps = Warp Use
+gui.zflag_essentials_kits = Kit Claiming
 
 # ========== Zone Properties ==========
 zprop.current_custom = Current: "{0}" (custom)
@@ -532,6 +589,9 @@ gui.set_perm_officers_edit = Officers can edit
 # Faction relations labels
 gui.rel_subtitle = Manage faction relations (bypasses approval)
 gui.rel_set_new = Set New Relation
+gui.rel_btn_ally = Ally
+gui.rel_btn_neutral = Neutral
+gui.rel_btn_enemy = Enemy
 
 # Zone page labels
 gui.zone_sort_name = Name
@@ -672,3 +732,41 @@ gui.czw_flags_defaults_desc = Based on zone type
 gui.czw_flags_defaults = Use defaults
 gui.czw_flags_customize_desc = Open settings after
 gui.czw_flags_customize = Customize
+
+# ========== Entry Labels (Faction/Player/Zone list entries) ==========
+
+# Faction entry labels
+gui.fac_entry_power = power
+gui.fac_entry_claims = claims
+gui.fac_entry_members = members
+gui.fac_entry_created = Created:
+gui.fac_entry_home = Home:
+gui.fac_entry_tp_home = TP Home
+gui.fac_entry_view_info = View Info
+gui.fac_entry_members_btn = Members
+gui.fac_entry_settings = Settings
+gui.fac_entry_unclaim_all = Unclaim All
+gui.fac_entry_disband = Disband
+
+# Player entry labels
+gui.plr_entry_role = Role:
+gui.plr_entry_joined = Joined:
+gui.plr_entry_last_online = Last Online:
+gui.plr_entry_kdr = K/D/R:
+gui.plr_entry_power = Power:
+gui.plr_entry_uuid = UUID:
+gui.plr_entry_info = Info
+gui.plr_entry_teleport = Teleport
+gui.plr_entry_na = N/A
+gui.plr_entry_unknown = Unknown
+gui.plr_entry_ago = {0} ago
+
+# Zone entry labels
+gui.zone_entry_world = World:
+gui.zone_entry_chunks = Chunks:
+gui.zone_entry_bounds = Bounds:
+gui.zone_entry_created = Created:
+gui.zone_entry_edit_map = Edit Map
+gui.zone_entry_flags = Flags
+gui.zone_entry_settings = Settings
+gui.zone_entry_delete = Delete

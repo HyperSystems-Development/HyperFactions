@@ -200,6 +200,9 @@ gui.zint_visibility_label = Nivel de Visibilidad:
 gui.zint_cat_essentials = HyperEssentials
 gui.zint_reset_defaults = Restablecer Valores
 gui.zint_back_to_flags = Volver a Flags
+gui.zint_map_vis_faction = Solo Faccion
+gui.zint_map_vis_ally = Faccion + Aliados
+gui.zint_map_vis_all = Todos los Jugadores
 
 # ========== Registro de Actividad ==========
 log.all_types = Todos los Tipos
@@ -244,6 +247,60 @@ gui.zset_children_hint = (hijos solo aplican cuando el padre esta EN)
 gui.zset_reset_defaults = Restablecer Valores
 gui.zset_integration_flags = Flags de Integracion
 gui.zset_back_to_zones = Volver a Zonas
+gui.zset_chunks = {0} chunks
+
+# Nombres de Flags de Zona
+gui.zflag_pvp_enabled = PvP Activado
+gui.zflag_friendly_fire = Fuego Amigo
+gui.zflag_friendly_fire_faction = Dano de Faccion
+gui.zflag_friendly_fire_ally = Dano de Aliado
+gui.zflag_projectile_damage = Dano de Proyectil
+gui.zflag_mob_damage = Recibir Dano de Mob
+gui.zflag_pve_damage = Dar Dano a Mob
+gui.zflag_fall_damage = Dano por Caida
+gui.zflag_environmental_damage = Dano Ambiental
+gui.zflag_explosion_damage = Dano de Explosion
+gui.zflag_fire_spread = Propagacion de Fuego
+gui.zflag_keep_inventory = Conservar Inventario
+gui.zflag_power_loss = Perdida de Poder
+gui.zflag_build_allowed = Construccion Permitida
+gui.zflag_block_place = Colocar Bloques
+gui.zflag_hammer_use = Uso de Martillo
+gui.zflag_builder_tools_use = Herr. de Constructor
+gui.zflag_block_interact = Interaccion de Bloques
+gui.zflag_door_use = Uso de Puertas
+gui.zflag_container_use = Uso de Contenedores
+gui.zflag_bench_use = Uso de Bancos
+gui.zflag_processing_use = Uso de Procesadores
+gui.zflag_seat_use = Uso de Asientos
+gui.zflag_mount_use = Uso de Monturas
+gui.zflag_light_use = Uso de Luces
+gui.zflag_npc_use = Interaccion con NPC
+gui.zflag_crate_pickup = Recoger Cajas
+gui.zflag_crate_place = Colocar Cajas
+gui.zflag_npc_tame = Domesticar NPC
+gui.zflag_npc_interact = Interactuar con NPC
+gui.zflag_teleporter_use = Uso de Teletransporte
+gui.zflag_portal_use = Uso de Portales
+gui.zflag_mount_entry = Entrada a Montura
+gui.zflag_item_drop = Soltar Objetos
+gui.zflag_item_pickup = Recoger Automatico
+gui.zflag_item_pickup_manual = Recoger con F
+gui.zflag_invincible_items = Objetos Invencibles
+gui.zflag_mob_spawning = Aparicion de Mobs
+gui.zflag_hostile_mob_spawning = Mobs Hostiles
+gui.zflag_passive_mob_spawning = Mobs Pasivos
+gui.zflag_neutral_mob_spawning = Mobs Neutrales
+gui.zflag_npc_spawning = Aparicion de NPC
+gui.zflag_mob_clear = Limpieza de Mobs
+gui.zflag_hostile_mob_clear = Limpiar Mobs Hostiles
+gui.zflag_passive_mob_clear = Limpiar Mobs Pasivos
+gui.zflag_neutral_mob_clear = Limpiar Mobs Neutrales
+gui.zflag_gravestone_access = Saquear Tumbas Ajenas
+gui.zflag_show_on_map = Mostrar en Mapa
+gui.zflag_essentials_homes = Uso de Hogar
+gui.zflag_essentials_warps = Uso de Warps
+gui.zflag_essentials_kits = Reclamo de Kits
 
 # ========== Propiedades de Zona ==========
 zprop.current_custom = Actual: "{0}" (personalizado)
@@ -532,6 +589,9 @@ gui.set_perm_officers_edit = Oficiales pueden editar
 # Etiquetas de relaciones de faccion
 gui.rel_subtitle = Gestionar relaciones de faccion (sin aprobacion)
 gui.rel_set_new = Establecer Nueva Relacion
+gui.rel_btn_ally = Aliado
+gui.rel_btn_neutral = Neutral
+gui.rel_btn_enemy = Enemigo
 
 # Etiquetas de pagina de zonas
 gui.zone_sort_name = Nombre
@@ -672,3 +732,41 @@ gui.czw_flags_defaults_desc = Basado en tipo de zona
 gui.czw_flags_defaults = Usar por defecto
 gui.czw_flags_customize_desc = Abrir ajustes despues
 gui.czw_flags_customize = Personalizar
+
+# ========== Etiquetas de Entradas (listas de Faccion/Jugador/Zona) ==========
+
+# Etiquetas de entrada de faccion
+gui.fac_entry_power = poder
+gui.fac_entry_claims = reclamos
+gui.fac_entry_members = miembros
+gui.fac_entry_created = Creada:
+gui.fac_entry_home = Hogar:
+gui.fac_entry_tp_home = TP Hogar
+gui.fac_entry_view_info = Ver Info
+gui.fac_entry_members_btn = Miembros
+gui.fac_entry_settings = Ajustes
+gui.fac_entry_unclaim_all = Desreclamar
+gui.fac_entry_disband = Disolver
+
+# Etiquetas de entrada de jugador
+gui.plr_entry_role = Rol:
+gui.plr_entry_joined = Ingreso:
+gui.plr_entry_last_online = Ultima Conexion:
+gui.plr_entry_kdr = K/D/R:
+gui.plr_entry_power = Poder:
+gui.plr_entry_uuid = UUID:
+gui.plr_entry_info = Info
+gui.plr_entry_teleport = Teletransportar
+gui.plr_entry_na = N/D
+gui.plr_entry_unknown = Desconocido
+gui.plr_entry_ago = hace {0}
+
+# Etiquetas de entrada de zona
+gui.zone_entry_world = Mundo:
+gui.zone_entry_chunks = Chunks:
+gui.zone_entry_bounds = Limites:
+gui.zone_entry_created = Creada:
+gui.zone_entry_edit_map = Editar Mapa
+gui.zone_entry_flags = Flags
+gui.zone_entry_settings = Ajustes
+gui.zone_entry_delete = Eliminar

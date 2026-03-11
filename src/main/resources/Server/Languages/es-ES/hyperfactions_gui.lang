@@ -558,6 +558,74 @@ logs.type_power_change = Poder
 logs.type_economy = Economia
 logs.type_admin_power = Admin
 
+# Plantillas de mensajes de registro (i18n para contenido del registro de actividad)
+# Acciones de jugador
+logs.msg_faction_created = {0} creo la faccion
+logs.msg_member_joined = {0} se unio a la faccion
+logs.msg_member_left = {0} abandono la faccion
+logs.msg_member_kicked = {0} fue expulsado
+logs.msg_member_promoted = {0} ascendido a {1}
+logs.msg_member_demoted = {0} degradado a {1}
+logs.msg_leader_transferred = Liderazgo transferido a {0}
+logs.msg_leader_left_transfer = {0} se fue, {1} es ahora el lider
+logs.msg_relation_set = {0} establecido como {1}
+# Territorio
+logs.msg_claimed = Chunk reclamado en {0}, {1} en {2}
+logs.msg_unclaimed = Chunk abandonado en {0}, {1} en {2}
+logs.msg_overclaim_lost = Chunk perdido en {0}, {1} ante {2}
+logs.msg_overclaim_taken = Sobrerreclamo de chunk en {0}, {1} de {2}
+logs.msg_all_unclaimed = Todo el territorio abandonado
+logs.msg_claim_removed_world = Reclamo en '{0}' eliminado (mundo no permite reclamos)
+logs.msg_claims_lost_upkeep = {0} reclamo(s) perdidos por mantenimiento (faltan {1} pagos)
+logs.msg_claims_removed_inactive = {0} reclamos eliminados por inactividad ({1} dias)
+# Hogar
+logs.msg_home_set = Hogar establecido
+logs.msg_home_cleared = Hogar eliminado
+logs.msg_home_cleared_world = Hogar en '{0}' eliminado (mundo no permite reclamos)
+# Ajustes
+logs.msg_renamed = Renombrado de '{0}' a '{1}'
+logs.msg_set_open = Faccion abierta al publico
+logs.msg_set_closed = Faccion solo por invitacion
+logs.msg_desc_set = Descripcion establecida
+logs.msg_desc_cleared = Descripcion eliminada
+logs.msg_color_changed = Color cambiado a '{0}'
+# Economia
+logs.msg_deposit = Deposito: {0} (+{1})
+logs.msg_withdrawal = Retiro: {0} (-{1})
+logs.msg_upkeep_paid = Mantenimiento pagado: {0} ({1} chunks facturables)
+logs.msg_upkeep_grace_started = Mantenimiento fallido: periodo de gracia iniciado ({0}h)
+logs.msg_upkeep_missed = Mantenimiento no pagado (pago {0}), gracia expira en {1}
+logs.msg_upkeep_manual = Mantenimiento pagado manualmente: {0} ({1} chunks facturables, gracia eliminada)
+# Admin poder
+logs.msg_admin_power_set = Admin establecio el poder de {0} a {1} (era {2})
+logs.msg_admin_power_add = Admin agrego {0} de poder a {1} ({2} -> {3})
+logs.msg_admin_power_remove = Admin quito {0} de poder de {1} ({2} -> {3})
+logs.msg_admin_power_reset = Admin reinicio el poder de {0} a {1} (era {2})
+logs.msg_admin_power_adjusted = Admin ajusto el poder de {0} en {1} ({2} -> {3})
+logs.msg_admin_maxpower_set = Admin establecio el poder maximo de {0} a {1} (era {2})
+logs.msg_admin_maxpower_reset = Admin reinicio el poder maximo de {0} al valor predeterminado ({1})
+logs.msg_admin_powerloss_enabled = Admin habilito perdida de poder para {0}
+logs.msg_admin_powerloss_disabled = Admin deshabilito perdida de poder para {0}
+logs.msg_admin_decay_enabled = Admin habilito exencion de deterioro de reclamos para {0}
+logs.msg_admin_decay_disabled = Admin deshabilito exencion de deterioro de reclamos para {0}
+logs.msg_admin_kd_reset = Admin reinicio K/D de {0}
+logs.msg_admin_power_set_all = Admin establecio el poder de los {0} miembros a {1}
+logs.msg_admin_power_add_all = Admin agrego {0} de poder a los {1} miembros
+logs.msg_admin_power_remove_all = Admin quito {0} de poder de los {1} miembros
+logs.msg_admin_power_reset_all = Admin reinicio el poder de los {0} miembros
+logs.msg_admin_power_adjusted_all = Admin ajusto el poder de los {0} miembros en {1}
+# Admin faccion
+logs.msg_admin_kicked = [Admin] {0} fue expulsado
+logs.msg_admin_role_set = [Admin] Rol de {0} establecido a {1}
+logs.msg_admin_leader_kick = [Admin] Liderazgo transferido de {0} a {1} (expulsion admin)
+logs.msg_admin_econ_added = Admin agrego: {0} (saldo: {1})
+logs.msg_admin_econ_deducted = Admin dedujo: {0} (saldo: {1})
+logs.msg_admin_econ_set = Admin establecio saldo a {0} (era {1})
+# Importacion
+logs.msg_left_import = {0} se fue (importado a otra faccion)
+logs.msg_leader_import_transfer = {0} se convirtio en lider (lider anterior importado a otra faccion)
+logs.msg_imported_from = Faccion importada desde {0}
+
 # ========== Pagina de Chat ==========
 chat.title = Chat de Faccion
 chat.tab_faction = Faccion

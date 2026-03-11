@@ -90,7 +90,7 @@ Group {
       LayoutMode: Left;
       Anchor: (Height: 20, Bottom: 4);
 
-      Label {
+      Label #RoleLabel {
         Text: "Role:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
         Anchor: (Width: 35);
@@ -101,7 +101,7 @@ Group {
         Anchor: (Width: 70);
       }
 
-      Label {
+      Label #JoinedLabel {
         Text: "Joined:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
         Anchor: (Width: 45);
@@ -112,7 +112,7 @@ Group {
         Anchor: (Width: 80);
       }
 
-      Label {
+      Label #LastOnlineLabel {
         Text: "Last Online:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
         Anchor: (Width: 70);
@@ -129,7 +129,7 @@ Group {
       LayoutMode: Left;
       Anchor: (Height: 20, Bottom: 4);
 
-      Label {
+      Label #KdrLabel {
         Text: "K/D/R:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
         Anchor: (Width: 40);
@@ -140,7 +140,7 @@ Group {
         Anchor: (Width: 100);
       }
 
-      Label {
+      Label #PowerLabel {
         Text: "Power:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
         Anchor: (Width: 45);
@@ -157,7 +157,7 @@ Group {
       LayoutMode: Left;
       Anchor: (Height: 18, Bottom: 8);
 
-      Label {
+      Label #UuidLabel {
         Text: "UUID:";
         Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
         Anchor: (Width: 40);

@@ -326,7 +326,8 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
             }
             Faction updated = faction.withLog(FactionLog.create(FactionLog.LogType.ADMIN_POWER,
                 "Admin adjusted all " + faction.getMemberCount() + " members' power by " + String.format("%.1f", delta),
-                playerRef.getUuid()));
+                playerRef.getUuid(),
+                MessageKeys.LogsGui.MSG_ADMIN_POWER_ADJUSTED_ALL, String.valueOf(faction.getMemberCount()), String.format("%.1f", delta)));
             factionManager.updateFaction(updated);
             // Rebuild page to show updated stats
             guiManager.openAdminFactionInfo(player, ref, store, playerRef, factionId);
@@ -342,7 +343,8 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
           }
           Faction updated = faction.withLog(FactionLog.create(FactionLog.LogType.ADMIN_POWER,
               "Admin reset power for all " + faction.getMemberCount() + " members",
-              playerRef.getUuid()));
+              playerRef.getUuid(),
+              MessageKeys.LogsGui.MSG_ADMIN_POWER_RESET_ALL, String.valueOf(faction.getMemberCount())));
           factionManager.updateFaction(updated);
           guiManager.openAdminFactionInfo(player, ref, store, playerRef, factionId);
         }

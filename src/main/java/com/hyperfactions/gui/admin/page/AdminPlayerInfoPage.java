@@ -333,7 +333,9 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
         double newPower = powerManager.adjustPlayerPower(targetPlayerUuid, delta);
         logAdminPowerChange(adminUuid,
           "Admin adjusted " + targetPlayerName + "'s power by " + String.format("%.1f", delta)
-          + " (" + String.format("%.1f", oldPower) + " -> " + String.format("%.1f", newPower) + ")");
+          + " (" + String.format("%.1f", oldPower) + " -> " + String.format("%.1f", newPower) + ")",
+          MessageKeys.LogsGui.MSG_ADMIN_POWER_ADJUSTED, targetPlayerName,
+          String.format("%.1f", delta), String.format("%.1f", oldPower), String.format("%.1f", newPower));
         reopenPage(player, ref, store, playerRef);
       }
 
@@ -347,7 +349,9 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
         double newPower = powerManager.setPlayerPower(targetPlayerUuid, amount);
         logAdminPowerChange(adminUuid,
           "Admin set " + targetPlayerName + "'s power to " + String.format("%.1f", newPower)
-          + " (was " + String.format("%.1f", oldPower) + ")");
+          + " (was " + String.format("%.1f", oldPower) + ")",
+          MessageKeys.LogsGui.MSG_ADMIN_POWER_SET, targetPlayerName,
+          String.format("%.1f", newPower), String.format("%.1f", oldPower));
         reopenPage(player, ref, store, playerRef);
       }
 
@@ -356,7 +360,9 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
         double newPower = powerManager.resetPlayerPower(targetPlayerUuid);
         logAdminPowerChange(adminUuid,
           "Admin reset " + targetPlayerName + "'s power to " + String.format("%.1f", newPower)
-          + " (was " + String.format("%.1f", oldPower) + ")");
+          + " (was " + String.format("%.1f", oldPower) + ")",
+          MessageKeys.LogsGui.MSG_ADMIN_POWER_RESET, targetPlayerName,
+          String.format("%.1f", newPower), String.format("%.1f", oldPower));
         reopenPage(player, ref, store, playerRef);
       }
 
@@ -371,7 +377,9 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
         powerManager.setPlayerMaxPower(targetPlayerUuid, amount);
         logAdminPowerChange(adminUuid,
           "Admin set " + targetPlayerName + "'s max power to " + String.format("%.1f", amount)
-          + " (was " + String.format("%.1f", oldMax) + ")");
+          + " (was " + String.format("%.1f", oldMax) + ")",
+          MessageKeys.LogsGui.MSG_ADMIN_MAXPOWER_SET, targetPlayerName,
+          String.format("%.1f", amount), String.format("%.1f", oldMax));
         reopenPage(player, ref, store, playerRef);
       }
 
@@ -380,7 +388,10 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
         double oldMax = old.getEffectiveMaxPower();
         powerManager.resetPlayerMaxPower(targetPlayerUuid);
         logAdminPowerChange(adminUuid,
-          "Admin reset " + targetPlayerName + "'s max power to global default");
+          "Admin reset " + targetPlayerName + "'s max power to global default ("
+          + String.format("%.1f", ConfigManager.get().getMaxPlayerPower()) + ")",
+          MessageKeys.LogsGui.MSG_ADMIN_MAXPOWER_RESET, targetPlayerName,
+          String.format("%.1f", ConfigManager.get().getMaxPlayerPower()));
         reopenPage(player, ref, store, playerRef);
       }
 
@@ -390,7 +401,9 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
         boolean newState = !current.powerLossDisabled();
         powerManager.setPlayerPowerLossDisabled(targetPlayerUuid, newState);
         logAdminPowerChange(adminUuid,
-          "Admin " + (newState ? "disabled" : "enabled") + " power loss for " + targetPlayerName);
+          "Admin " + (newState ? "disabled" : "enabled") + " power loss for " + targetPlayerName,
+          newState ? MessageKeys.LogsGui.MSG_ADMIN_POWERLOSS_DISABLED : MessageKeys.LogsGui.MSG_ADMIN_POWERLOSS_ENABLED,
+          targetPlayerName);
         reopenPage(player, ref, store, playerRef);
       }
 
@@ -400,7 +413,9 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
         boolean newState = !current.claimDecayExempt();
         powerManager.setPlayerClaimDecayExempt(targetPlayerUuid, newState);
         logAdminPowerChange(adminUuid,
-          "Admin " + (newState ? "enabled" : "disabled") + " claim decay exemption for " + targetPlayerName);
+          "Admin " + (newState ? "enabled" : "disabled") + " claim decay exemption for " + targetPlayerName,
+          newState ? MessageKeys.LogsGui.MSG_ADMIN_DECAY_ENABLED : MessageKeys.LogsGui.MSG_ADMIN_DECAY_DISABLED,
+          targetPlayerName);
         reopenPage(player, ref, store, playerRef);
       }
 
@@ -412,7 +427,8 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
         Faction faction = factionManager.getPlayerFaction(targetPlayerUuid);
         if (faction != null) {
           Faction updated = faction.withLog(FactionLog.create(FactionLog.LogType.ADMIN_POWER,
-              "Admin reset K/D for " + targetPlayerName, adminUuid));
+              "Admin reset K/D for " + targetPlayerName, adminUuid,
+              MessageKeys.LogsGui.MSG_ADMIN_KD_RESET, targetPlayerName));
           factionManager.updateFaction(updated);
         }
         player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.PLR_KD_RESET, targetPlayerName));
@@ -449,7 +465,8 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
                 .withLog(FactionLog.create(FactionLog.LogType.LEADER_TRANSFER,
                   "[Admin] Leadership transferred from " + targetPlayerName
                   + " to " + successor.username() + " (admin kick)",
-                  adminUuid));
+                  adminUuid,
+                  MessageKeys.LogsGui.MSG_ADMIN_LEADER_KICK, targetPlayerName, successor.username()));
               factionManager.updateFaction(updated);
 
               // Now kick the demoted member
@@ -501,6 +518,14 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
     Faction faction = factionManager.getPlayerFaction(targetPlayerUuid);
     if (faction != null) {
       Faction updated = faction.withLog(FactionLog.create(FactionLog.LogType.ADMIN_POWER, message, adminUuid));
+      factionManager.updateFaction(updated);
+    }
+  }
+
+  private void logAdminPowerChange(UUID adminUuid, String message, String key, String... args) {
+    Faction faction = factionManager.getPlayerFaction(targetPlayerUuid);
+    if (faction != null) {
+      Faction updated = faction.withLog(FactionLog.create(FactionLog.LogType.ADMIN_POWER, message, adminUuid, key, args));
       factionManager.updateFaction(updated);
     }
   }

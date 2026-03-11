@@ -1,6 +1,7 @@
 package com.hyperfactions.util;
 
 import com.hyperfactions.config.ConfigManager;
+import com.hyperfactions.data.FactionLog;
 import com.hypixel.hytale.server.core.modules.i18n.I18nModule;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import java.util.Map;
@@ -156,6 +157,23 @@ public final class HFMessages {
     }
 
     return serverDefault;
+  }
+
+  /**
+   * Resolves a FactionLog's message for display, using the i18n key if available.
+   * Falls back to the English message for legacy logs without a messageKey.
+   *
+   * @param player the player viewing the log (determines locale)
+   * @param log    the faction log entry
+   * @return the localized message, or the English fallback
+   */
+  @NotNull
+  public static String resolveLogMessage(@Nullable PlayerRef player, @NotNull FactionLog log) {
+    if (log.messageKey() != null) {
+      Object[] args = log.messageArgs() != null ? log.messageArgs().toArray() : new Object[0];
+      return get(player, log.messageKey(), args);
+    }
+    return log.message();
   }
 
   /**

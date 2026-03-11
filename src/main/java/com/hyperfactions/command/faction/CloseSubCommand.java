@@ -62,7 +62,8 @@ public class CloseSubCommand extends FactionSubCommand {
 
     Faction updated = faction.withOpen(false)
       .withLog(FactionLog.create(FactionLog.LogType.SETTINGS_CHANGE,
-        "Faction set to invite-only", player.getUuid()));
+        "Faction set to invite-only", player.getUuid(),
+        MessageKeys.LogsGui.MSG_SET_CLOSED));
 
     hyperFactions.getFactionManager().updateFaction(updated);
 

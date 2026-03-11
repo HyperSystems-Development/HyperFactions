@@ -143,9 +143,8 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
     // Check if the integration for this flag is available
     boolean integrationUnavailable = !isIntegrationAvailable(flagName);
 
-    // Flag name (display name from ZoneFlags)
-    String displayName = ZoneFlags.getDisplayName(flagName);
-    cmd.set(idx + "Name.Text", displayName);
+    // Flag name (localized display name)
+    cmd.set(idx + "Name.Text", HFMessages.get(playerRef, ZoneFlags.getDisplayNameKey(flagName)));
 
     // Set checkbox value via child selector
     // When integration is unavailable, show as unchecked
@@ -185,9 +184,14 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
     cmd.set("#MapVisibilityRow.Visible", showOnMapEnabled);
 
     if (showOnMapEnabled) {
-      // Set button text to current selection
-      String displayText = ZoneFlags.getSettingValueDisplay(ZoneFlags.MAP_VISIBILITY, visibility);
-      cmd.set("#MapVisibilityBtn.Text", displayText);
+      // Set button text to current selection (localized)
+      String visKey = switch (visibility) {
+        case ZoneFlags.MAP_VISIBILITY_FACTION -> MessageKeys.AdminGui.GUI_ZINT_MAP_VIS_FACTION;
+        case ZoneFlags.MAP_VISIBILITY_ALLY -> MessageKeys.AdminGui.GUI_ZINT_MAP_VIS_ALLY;
+        case ZoneFlags.MAP_VISIBILITY_ALL -> MessageKeys.AdminGui.GUI_ZINT_MAP_VIS_ALL;
+        default -> MessageKeys.AdminGui.GUI_ZINT_MAP_VIS_FACTION;
+      };
+      cmd.set("#MapVisibilityBtn.Text", HFMessages.get(playerRef, visKey));
 
       // Default indicator
       if (isDefault) {

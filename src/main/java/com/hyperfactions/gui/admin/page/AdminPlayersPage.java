@@ -344,13 +344,25 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
 
     // Extended info
     if (isExpanded) {
+      // Localize expanded labels
+      cmd.set(idx + " #RoleLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_ROLE));
+      cmd.set(idx + " #JoinedLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_JOINED));
+      cmd.set(idx + " #LastOnlineLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_LAST_ONLINE));
+      cmd.set(idx + " #KdrLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_KDR));
+      cmd.set(idx + " #PowerLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_POWER));
+      cmd.set(idx + " #UuidLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_UUID));
+
+      // Localize button texts
+      cmd.set(idx + " #ViewInfoBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_INFO));
+      cmd.set(idx + " #TeleportBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_TELEPORT));
+
       // Role
-      cmd.set(idx + " #RoleValue.Text", info.factionRole() != null ? info.factionRole() : "N/A");
+      cmd.set(idx + " #RoleValue.Text", info.factionRole() != null ? info.factionRole() : HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_NA));
 
       // First joined
       String joinedDate = info.firstJoined() > 0
           ? DATE_FORMAT.format(Instant.ofEpochMilli(info.firstJoined()))
-          : "Unknown";
+          : HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_UNKNOWN);
       cmd.set(idx + " #JoinedDate.Text", joinedDate);
 
       // Last online
@@ -358,7 +370,7 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
       if (info.isOnline()) {
         lastOnlineText = HFMessages.get(playerRef, MessageKeys.AdminGui.NOW);
       } else if (info.lastOnline() > 0) {
-        lastOnlineText = TimeUtil.formatDuration(System.currentTimeMillis() - info.lastOnline()) + " ago";
+        lastOnlineText = HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_AGO, TimeUtil.formatDuration(System.currentTimeMillis() - info.lastOnline()));
       } else {
         lastOnlineText = HFMessages.get(playerRef, MessageKeys.Common.UNKNOWN);
       }

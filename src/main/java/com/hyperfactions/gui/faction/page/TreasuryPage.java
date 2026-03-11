@@ -456,7 +456,8 @@ public class TreasuryPage extends InteractiveCustomUIPage<TreasuryData> {
         Faction logged = factionNow.withLog(FactionLog.create(FactionLog.LogType.ECONOMY,
             String.format("Upkeep paid manually: %s (%d billable chunks, grace cleared)",
                 economyManager.formatCurrency(cost), billableChunks),
-            playerRef.getUuid()));
+            playerRef.getUuid(),
+            MessageKeys.LogsGui.MSG_UPKEEP_MANUAL, economyManager.formatCurrency(cost), String.valueOf(billableChunks)));
         factionManager.updateFaction(logged);
       }
     }

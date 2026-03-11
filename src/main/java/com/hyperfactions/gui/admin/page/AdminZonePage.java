@@ -240,6 +240,10 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
     // Inline stats (visible in collapsed row)
     cmd.set(idx + " #InlineChunks.Text", String.valueOf(zone.getChunkCount()));
 
+    // Localize header labels
+    cmd.set(idx + " #WorldLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZONE_ENTRY_WORLD));
+    cmd.set(idx + " #InlineChunksLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZONE_ENTRY_CHUNKS));
+
     // Expansion state
     cmd.set(idx + " #ExpandIcon.Visible", !isExpanded);
     cmd.set(idx + " #CollapseIcon.Visible", isExpanded);
@@ -256,6 +260,17 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
 
     // Extended info (only bind events if expanded)
     if (isExpanded) {
+      // Localize expanded labels
+      cmd.set(idx + " #ChunksLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZONE_ENTRY_CHUNKS));
+      cmd.set(idx + " #BoundsLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZONE_ENTRY_BOUNDS));
+      cmd.set(idx + " #CreatedLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZONE_ENTRY_CREATED));
+
+      // Localize button texts
+      cmd.set(idx + " #EditMapBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZONE_ENTRY_EDIT_MAP));
+      cmd.set(idx + " #SettingsBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZONE_ENTRY_FLAGS));
+      cmd.set(idx + " #SettingsBtn2.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZONE_ENTRY_SETTINGS));
+      cmd.set(idx + " #DeleteBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZONE_ENTRY_DELETE));
+
       // Chunk count
       cmd.set(idx + " #ChunkCount.Text", String.valueOf(zone.getChunkCount()));
 

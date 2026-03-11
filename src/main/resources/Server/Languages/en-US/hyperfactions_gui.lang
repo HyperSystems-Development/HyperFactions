@@ -558,6 +558,74 @@ logs.type_power_change = Power
 logs.type_economy = Economy
 logs.type_admin_power = Admin Power
 
+# Log message templates (i18n for activity log content)
+# Player actions
+logs.msg_faction_created = {0} created the faction
+logs.msg_member_joined = {0} joined the faction
+logs.msg_member_left = {0} left the faction
+logs.msg_member_kicked = {0} was kicked
+logs.msg_member_promoted = {0} promoted to {1}
+logs.msg_member_demoted = {0} demoted to {1}
+logs.msg_leader_transferred = Leadership transferred to {0}
+logs.msg_leader_left_transfer = {0} left, {1} is now leader
+logs.msg_relation_set = Set {0} as {1}
+# Territory
+logs.msg_claimed = Claimed chunk at {0}, {1} in {2}
+logs.msg_unclaimed = Unclaimed chunk at {0}, {1} in {2}
+logs.msg_overclaim_lost = Lost chunk at {0}, {1} to {2}
+logs.msg_overclaim_taken = Overclaimed chunk at {0}, {1} from {2}
+logs.msg_all_unclaimed = All territory unclaimed
+logs.msg_claim_removed_world = Claim in '{0}' removed (world disallows claiming)
+logs.msg_claims_lost_upkeep = Lost {0} claim(s) to upkeep (missed {1} payments)
+logs.msg_claims_removed_inactive = {0} claims removed due to inactivity ({1} days)
+# Home
+logs.msg_home_set = Home set
+logs.msg_home_cleared = Home cleared
+logs.msg_home_cleared_world = Home in '{0}' cleared (world disallows claiming)
+# Settings
+logs.msg_renamed = Renamed from '{0}' to '{1}'
+logs.msg_set_open = Faction set to open
+logs.msg_set_closed = Faction set to invite-only
+logs.msg_desc_set = Description set
+logs.msg_desc_cleared = Description cleared
+logs.msg_color_changed = Color changed to '{0}'
+# Economy
+logs.msg_deposit = Deposit: {0} (+{1})
+logs.msg_withdrawal = Withdrawal: {0} (-{1})
+logs.msg_upkeep_paid = Upkeep paid: {0} ({1} billable chunks)
+logs.msg_upkeep_grace_started = Upkeep failed: grace period started ({0}h)
+logs.msg_upkeep_missed = Upkeep missed (payment {0}), grace expires in {1}
+logs.msg_upkeep_manual = Upkeep paid manually: {0} ({1} billable chunks, grace cleared)
+# Admin power
+logs.msg_admin_power_set = Admin set {0}'s power to {1} (was {2})
+logs.msg_admin_power_add = Admin added {0} power to {1} ({2} -> {3})
+logs.msg_admin_power_remove = Admin removed {0} power from {1} ({2} -> {3})
+logs.msg_admin_power_reset = Admin reset {0}'s power to {1} (was {2})
+logs.msg_admin_power_adjusted = Admin adjusted {0}'s power by {1} ({2} -> {3})
+logs.msg_admin_maxpower_set = Admin set {0}'s max power to {1} (was {2})
+logs.msg_admin_maxpower_reset = Admin reset {0}'s max power to global default ({1})
+logs.msg_admin_powerloss_enabled = Admin enabled power loss for {0}
+logs.msg_admin_powerloss_disabled = Admin disabled power loss for {0}
+logs.msg_admin_decay_enabled = Admin enabled claim decay exemption for {0}
+logs.msg_admin_decay_disabled = Admin disabled claim decay exemption for {0}
+logs.msg_admin_kd_reset = Admin reset K/D for {0}
+logs.msg_admin_power_set_all = Admin set all {0} members' power to {1}
+logs.msg_admin_power_add_all = Admin added {0} power to all {1} members
+logs.msg_admin_power_remove_all = Admin removed {0} power from all {1} members
+logs.msg_admin_power_reset_all = Admin reset power for all {0} members
+logs.msg_admin_power_adjusted_all = Admin adjusted all {0} members' power by {1}
+# Admin faction
+logs.msg_admin_kicked = [Admin] {0} was kicked
+logs.msg_admin_role_set = [Admin] {0} role set to {1}
+logs.msg_admin_leader_kick = [Admin] Leadership transferred from {0} to {1} (admin kick)
+logs.msg_admin_econ_added = Admin added: {0} (balance: {1})
+logs.msg_admin_econ_deducted = Admin deducted: {0} (balance: {1})
+logs.msg_admin_econ_set = Admin set balance to {0} (was {1})
+# Import
+logs.msg_left_import = {0} left (imported to another faction)
+logs.msg_leader_import_transfer = {0} became leader (previous leader imported to another faction)
+logs.msg_imported_from = Faction imported from {0}
+
 # ========== Chat Page ==========
 chat.title = Faction Chat
 chat.tab_faction = Faction

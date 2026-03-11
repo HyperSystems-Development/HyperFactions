@@ -12,6 +12,7 @@ import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.manager.ZoneManager;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.MessageKeys;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -901,7 +902,8 @@ public class HyFactionsImporter {
           .withLog(FactionLog.create(
             FactionLog.LogType.MEMBER_LEAVE,
             playerName + " left (imported to another faction)",
-            null // System action
+            null, // System action
+            MessageKeys.LogsGui.MSG_LEFT_IMPORT, playerName
           ));
 
         // CRITICAL: Remove player from the player-to-faction index
@@ -924,7 +926,8 @@ public class HyFactionsImporter {
                 .withLog(FactionLog.create(
                   FactionLog.LogType.LEADER_TRANSFER,
                   promoted.username() + " became leader (previous leader imported to another faction)",
-                  null
+                  null,
+                  MessageKeys.LogsGui.MSG_LEADER_IMPORT_TRANSFER, promoted.username()
                 ));
               progress("    - %s promoted to leader of '%s'",
                 promoted.username(), existingFaction.name());

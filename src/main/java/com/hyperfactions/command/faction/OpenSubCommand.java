@@ -62,7 +62,8 @@ public class OpenSubCommand extends FactionSubCommand {
 
     Faction updated = faction.withOpen(true)
       .withLog(FactionLog.create(FactionLog.LogType.SETTINGS_CHANGE,
-        "Faction set to open", player.getUuid()));
+        "Faction set to open", player.getUuid(),
+        MessageKeys.LogsGui.MSG_SET_OPEN));
 
     hyperFactions.getFactionManager().updateFaction(updated);
 
