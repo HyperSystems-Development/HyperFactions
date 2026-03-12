@@ -172,6 +172,7 @@ public class ZoneMobClearManager {
    * (forEachEntityParallel, removeEntity) must run on the owning world thread.
    */
   private void sweepWorld(@NotNull World world, @NotNull Map<Long, ClearConfig> chunkConfigs) {
+    try {
     world.execute(() -> {
       EntityStore entityStoreHolder = world.getEntityStore();
       if (entityStoreHolder == null) {
@@ -227,6 +228,10 @@ public class ZoneMobClearManager {
       Logger.debug("[MobClear] Removed %d mobs from world '%s'", removed[0], world.getName());
     }
     });
+    } catch (Exception e) {
+      // World thread not accepting tasks (e.g., dungeon instances shutting down) — safe to skip
+      Logger.debugSpawning("[MobClear] Skipping world '%s': %s", world.getName(), e.getMessage());
+    }
   }
 
   /**
