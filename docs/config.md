@@ -438,6 +438,50 @@ Chat formatting:
 | `relationColors.neutral` | string | "#AAAAAA" | Neutral color |
 | `relationColors.enemy` | string | "#FF0000" | Enemy color |
 
+### EconomyConfig
+
+[`config/modules/EconomyConfig.java`](../src/main/java/com/hyperfactions/config/modules/EconomyConfig.java)
+
+Faction treasury, currency display, fees, and upkeep:
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `currency.name` | string | "dollar" | Singular currency name |
+| `currency.namePlural` | string | "dollars" | Plural currency name |
+| `currency.symbol` | string | "$" | Currency symbol |
+| `currency.symbolPosition` | string | "left" | Symbol placement: `"left"` (`$100.00`) or `"right"` (`100.00$`) |
+| `treasury.startingBalance` | decimal | 0 | Starting balance for new factions |
+| `treasury.disbandRefundToLeader` | bool | true | Refund balance to leader on disband |
+| `treasury.limits.maxWithdrawAmount` | decimal | 0 | Per-transaction withdraw limit (0 = unlimited) |
+| `treasury.limits.maxWithdrawPerPeriod` | decimal | 0 | Cumulative withdraw limit per period (0 = unlimited) |
+| `treasury.limits.maxTransferAmount` | decimal | 0 | Per-transaction transfer limit (0 = unlimited) |
+| `treasury.limits.maxTransferPerPeriod` | decimal | 0 | Cumulative transfer limit per period (0 = unlimited) |
+| `treasury.limits.periodHours` | int | 24 | Rolling window for cumulative limits |
+| `fees.depositPercent` | decimal | 0 | Deposit fee percentage (0–100) |
+| `fees.withdrawPercent` | decimal | 0 | Withdrawal fee percentage (0–100) |
+| `fees.transferPercent` | decimal | 0 | Transfer fee percentage (0–100) |
+| `upkeep.enabled` | bool | true | Enable territory upkeep costs |
+| `upkeep.costPerChunk` | decimal | 2.0 | Cost per chunk per cycle (flat mode) |
+| `upkeep.intervalHours` | int | 24 | Collection interval |
+| `upkeep.gracePeriodHours` | int | 48 | Grace period before claim forfeiture |
+| `upkeep.autoPayDefault` | bool | true | Default auto-pay for new factions |
+| `upkeep.freeChunks` | int | 3 | Chunks exempt from upkeep |
+| `upkeep.claimLossPerCycle` | int | 1 | Claims lost per failed cycle after grace |
+| `upkeep.warningHours` | int | 6 | Hours before collection to warn members |
+| `upkeep.maxCostCap` | decimal | 0 | Max cost per cycle (0 = unlimited) |
+| `upkeep.scalingMode` | string | "flat" | `"flat"` or `"progressive"` tiered pricing |
+| `upkeep.scalingTiers` | array | see below | Progressive tier definitions |
+
+**Scaling tiers** (when `scalingMode` is `"progressive"`):
+```json
+[
+  { "chunkCount": 10, "costPerChunk": "2.00" },
+  { "chunkCount": 15, "costPerChunk": "3.00" },
+  { "chunkCount": 0, "costPerChunk": "5.00" }
+]
+```
+A `chunkCount` of `0` means "all remaining chunks".
+
 ### DebugConfig
 
 [`config/modules/DebugConfig.java`](../src/main/java/com/hyperfactions/config/modules/DebugConfig.java)

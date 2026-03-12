@@ -5,6 +5,20 @@ All notable changes to HyperFactions will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+*No changes yet*
+
+## [0.11.1] - 2026-03-11
+
+**Server Version:** `2026.02.19-1a311a592`
+
+### Added
+- **Currency symbol position config** — new `currency.symbolPosition` option in `economy.json` (`"left"` or `"right"`) for locale-appropriate formatting (e.g., `100.00$` vs `$100.00`). Defaults to `"left"` for backward compatibility ([#94](https://github.com/HyperSystems-Development/HyperFactions/issues/94))
+
+### Fixed
+- **World thread crash on dead dungeon worlds** — `world.execute()` calls on terminated dungeon world threads no longer throw unhandled exceptions ([#93](https://github.com/HyperSystems-Development/HyperFactions/issues/93))
+
 ## [0.11.0] - 2026-03-08
 
 ### Added
