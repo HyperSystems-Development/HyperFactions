@@ -866,6 +866,11 @@ public class ConfigManager {
     return economyConfig.getCurrencySymbol();
   }
 
+  /** Checks if the economy currency symbol should be placed on the right side. */
+  public boolean isEconomyCurrencySymbolRight() {
+    return economyConfig.isSymbolRight();
+  }
+
   @NotNull public java.math.BigDecimal getEconomyStartingBalance() {
     return economyConfig.getStartingBalance();
   }

@@ -535,7 +535,9 @@ public class EconomyManager implements EconomyAPI {
   @NotNull
   public String formatCurrency(@NotNull BigDecimal amount) {
     String symbol = ConfigManager.get().getEconomyCurrencySymbol();
-    return symbol + amount.setScale(2, RoundingMode.HALF_UP).toPlainString();
+    String formatted = amount.setScale(2, RoundingMode.HALF_UP).toPlainString();
+    return ConfigManager.get().isEconomyCurrencySymbolRight()
+        ? formatted + symbol : symbol + formatted;
   }
 
   /**
@@ -557,14 +559,23 @@ public class EconomyManager implements EconomyAPI {
     BigDecimal thousand = new BigDecimal("1000");
 
     if (abs.compareTo(billion) >= 0) {
-      return String.format("%s%s%.1fB", sign, symbol, abs.divide(billion, 1, RoundingMode.HALF_UP).doubleValue());
+      return applySymbol(sign, symbol, String.format("%.1fB", abs.divide(billion, 1, RoundingMode.HALF_UP).doubleValue()));
     } else if (abs.compareTo(million) >= 0) {
-      return String.format("%s%s%.1fM", sign, symbol, abs.divide(million, 1, RoundingMode.HALF_UP).doubleValue());
+      return applySymbol(sign, symbol, String.format("%.1fM", abs.divide(million, 1, RoundingMode.HALF_UP).doubleValue()));
     } else if (abs.compareTo(tenThousand) >= 0) {
-      return String.format("%s%s%.1fK", sign, symbol, abs.divide(thousand, 1, RoundingMode.HALF_UP).doubleValue());
+      return applySymbol(sign, symbol, String.format("%.1fK", abs.divide(thousand, 1, RoundingMode.HALF_UP).doubleValue()));
     } else {
-      return sign + symbol + abs.setScale(2, RoundingMode.HALF_UP).toPlainString();
+      return applySymbol(sign, symbol, abs.setScale(2, RoundingMode.HALF_UP).toPlainString());
     }
+  }
+
+  /**
+   * Applies the currency symbol to a formatted value, respecting the configured position.
+   */
+  @NotNull
+  private String applySymbol(@NotNull String sign, @NotNull String symbol, @NotNull String value) {
+    return ConfigManager.get().isEconomyCurrencySymbolRight()
+        ? sign + value + symbol : sign + symbol + value;
   }
 
   /** Checks if enabled. */
