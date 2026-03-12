@@ -12,6 +12,7 @@ import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.manager.ZoneManager;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.MessageKeys;
 import java.io.File;
 import java.io.FileReader;
 import java.nio.file.Path;
@@ -901,7 +902,8 @@ public class FactionsXImporter {
     // Create import log entry
     List<FactionLog> logs = new ArrayList<>();
     logs.add(FactionLog.system(FactionLog.LogType.MEMBER_JOIN,
-      "Faction imported from FactionsX"));
+      "Faction imported from FactionsX",
+      MessageKeys.LogsGui.MSG_IMPORTED_FROM, "FactionsX"));
 
     return new Faction(
       factionId,
@@ -916,7 +918,8 @@ public class FactionsXImporter {
       relations,
       logs,
       false, // not open by default
-      permissions
+      permissions,
+      null  // no hardcore power
     );
   }
 
@@ -1151,7 +1154,8 @@ public class FactionsXImporter {
           .withLog(FactionLog.create(
             FactionLog.LogType.MEMBER_LEAVE,
             playerName + " left (imported to another faction)",
-            null
+            null,
+            MessageKeys.LogsGui.MSG_LEFT_IMPORT, playerName
           ));
 
         factionManager.removePlayerFromIndex(memberUuid);
@@ -1169,7 +1173,8 @@ public class FactionsXImporter {
                 .withLog(FactionLog.create(
                   FactionLog.LogType.LEADER_TRANSFER,
                   promoted.username() + " became leader (previous leader imported to another faction)",
-                  null
+                  null,
+                  MessageKeys.LogsGui.MSG_LEADER_IMPORT_TRANSFER, promoted.username()
                 ));
               progress("    - %s promoted to leader of '%s'",
                 promoted.username(), existingFaction.name());
