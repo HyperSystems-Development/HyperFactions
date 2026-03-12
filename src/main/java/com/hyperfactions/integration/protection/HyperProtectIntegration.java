@@ -1140,8 +1140,8 @@ public final class HyperProtectIntegration {
       try {
         ProtectionChecker checker = hf.getProtectionChecker();
         boolean hidden = checker.shouldHideMapMarker(viewer, target, worldName, x, z);
-        Logger.debugInteraction("[Mixin:MapMarker] viewer=%s, target=%s, world=%s, pos=(%d,%d,%d), hidden=%b",
-          viewer, target, worldName, x, y, z, hidden);
+        // Logger.debugInteraction("[Mixin:MapMarker] viewer=%s, target=%s, world=%s, pos=(%d,%d,%d), hidden=%b",
+        //   viewer, target, worldName, x, y, z, hidden);
         return hidden ? 1 : 0;
       } catch (Exception e) {
         ErrorHandler.report("Map marker filter mixin hook error (fail-open)", e);
@@ -1159,8 +1159,8 @@ public final class HyperProtectIntegration {
       try {
         ProtectionChecker checker = hf.getProtectionChecker();
         boolean hidden = checker.shouldHideSharedMarker(viewer, creator, worldName, x, z);
-        Logger.debugInteraction("[Mixin:SharedMarker] viewer=%s, creator=%s, world=%s, pos=(%.0f,%.0f), hidden=%b",
-          viewer, creator, worldName, x, z, hidden);
+        // Logger.debugInteraction("[Mixin:SharedMarker] viewer=%s, creator=%s, world=%s, pos=(%.0f,%.0f), hidden=%b",
+        //   viewer, creator, worldName, x, z, hidden);
         return hidden ? 1 : 0;
       } catch (Exception e) {
         ErrorHandler.report("Shared marker filter mixin hook error (fail-open)", e);

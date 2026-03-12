@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-*No changes yet*
+### Fixed
+- **Water/lava disappears in own faction claim** — fluid spread was incorrectly tied to `fireSpreadAllowed` config, causing all fluid to be removed in claims when fire spread was disabled. Fluid spread in faction claims is now always allowed ([#95](https://github.com/HyperSystems-Development/HyperFactions/issues/95))
 
 ## [0.11.1] - 2026-03-11
 

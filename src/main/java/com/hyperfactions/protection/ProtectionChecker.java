@@ -1226,7 +1226,9 @@ public class ProtectionChecker {
 
   /**
    * Checks if fluid spread (water/lava) should be blocked at a location.
-   * Uses the same logic as fire spread — blocks in claimed/zoned territory.
+   * Only blocks in zones with FIRE_SPREAD disabled. Faction claims always allow
+   * fluid spread — unlike fire, fluid is intentionally placed by players and
+   * blocking it prevents water/lava from working in own territory.
    *
    * @param worldName the world name
    * @param x         the block X coordinate
@@ -1235,8 +1237,17 @@ public class ProtectionChecker {
    * @return true if fluid spread should be BLOCKED
    */
   public boolean shouldBlockFluidSpread(@NotNull String worldName, int x, int y, int z) {
-    // Reuse fire spread logic — same environmental protection rules apply
-    return shouldBlockFireSpread(worldName, x, y, z);
+    int chunkX = ChunkUtil.toChunkCoord(x);
+    int chunkZ = ChunkUtil.toChunkCoord(z);
+
+    // Check zone flag — zones can explicitly block fluid spread
+    Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
+    if (zone != null) {
+      return !zone.getEffectiveFlag(ZoneFlags.FIRE_SPREAD);
+    }
+
+    // Faction claims — always allow fluid spread (players place water/lava intentionally)
+    return false;
   }
 
   // === Player-Level Mixin Checks (boolean return) ===
