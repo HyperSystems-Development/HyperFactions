@@ -5,6 +5,7 @@ import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.importer.ElbaphFactionsImporter;
 import com.hyperfactions.importer.HyFactionsImporter;
 import com.hyperfactions.importer.ImportResult;
+import com.hyperfactions.importer.SimpleClaimsImporter;
 import com.hyperfactions.util.CommandHelp;
 import com.hyperfactions.util.HelpFormatter;
 import com.hypixel.hytale.server.core.Message;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * Handles /f admin import commands (hyfactions, elbaphfactions).
+ * Handles /f admin import commands (hyfactions, elbaphfactions, simpleclaims).
  */
 public class AdminImportHandler {
 
@@ -59,6 +60,7 @@ public class AdminImportHandler {
     switch (subCmd) {
       case "hyfactions" -> handleImportHyFactions(ctx, subArgs);
       case "elbaphfactions" -> handleImportElbaphFactions(ctx, subArgs);
+      case "simpleclaims" -> handleImportSimpleClaims(ctx, subArgs);
       case "help", "?" -> showImportHelp(ctx);
       default -> {
         ctx.sendMessage(prefix().insert(msg("Unknown import source: " + subCmd, COLOR_RED)));
@@ -73,6 +75,8 @@ public class AdminImportHandler {
     commands.add(new CommandHelp("  Default path: mods/Kaws_Hyfaction", ""));
     commands.add(new CommandHelp("/f admin import elbaphfactions [path] [flags]", "Import from ElbaphFactions mod"));
     commands.add(new CommandHelp("  Default path: mods/ElbaphFactions", ""));
+    commands.add(new CommandHelp("/f admin import simpleclaims [path] [flags]", "Import from SimpleClaims mod"));
+    commands.add(new CommandHelp("  Default path: Server/universe/SimpleClaims", ""));
     commands.add(new CommandHelp("  Flags:", ""));
     commands.add(new CommandHelp("    --dry-run / -n", "Simulate without changes"));
     commands.add(new CommandHelp("    --overwrite", "Replace existing factions"));
@@ -185,6 +189,56 @@ public class AdminImportHandler {
     final boolean finalDryRun = dryRun;
     CompletableFuture.supplyAsync(() -> importer.importFrom(dataPath))
       .thenAccept(result -> reportImportResult(ctx, result, finalDryRun, "ElbaphFactions"));
+  }
+
+  /** Handles import simple claims. */
+  public void handleImportSimpleClaims(CommandContext ctx, String[] args) {
+    // Parse path (optional - default to Server/universe/SimpleClaims)
+    String pathStr = "Server/universe/SimpleClaims";
+    int flagStartIndex = 0;
+
+    if (args.length > 0 && !args[0].startsWith("-")) {
+      pathStr = args[0];
+      flagStartIndex = 1;
+    }
+
+    Path dataPath = Paths.get(pathStr);
+
+    boolean dryRun = false;
+    boolean overwrite = false;
+    boolean skipPower = false;
+
+    for (int i = flagStartIndex; i < args.length; i++) {
+      String flag = args[i].toLowerCase();
+      switch (flag) {
+        case "--dry-run", "-n" -> dryRun = true;
+        case "--overwrite" -> overwrite = true;
+        case "--no-power" -> skipPower = true;
+        default -> throw new IllegalStateException("Unexpected value");
+      }
+    }
+
+    ctx.sendMessage(prefix().insert(msg("Importing from SimpleClaims...", COLOR_YELLOW)));
+    ctx.sendMessage(msg("  Path: " + dataPath, COLOR_GRAY));
+    if (dryRun) {
+      ctx.sendMessage(msg("  (Dry run - no changes will be made)", COLOR_GRAY));
+    }
+
+    SimpleClaimsImporter importer = new SimpleClaimsImporter(
+      hyperFactions.getFactionManager(),
+      hyperFactions.getClaimManager(),
+      hyperFactions.getZoneManager(),
+      hyperFactions.getPowerManager(),
+      hyperFactions.getBackupManager()
+    );
+
+    importer.setDryRun(dryRun);
+    importer.setOverwrite(overwrite);
+    importer.setSkipPower(skipPower);
+
+    final boolean finalDryRun = dryRun;
+    CompletableFuture.supplyAsync(() -> importer.importFrom(dataPath))
+      .thenAccept(result -> reportImportResult(ctx, result, finalDryRun, "SimpleClaims"));
   }
 
   private void reportImportResult(CommandContext ctx, ImportResult result, boolean dryRun, String sourceName) {
