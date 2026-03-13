@@ -1,0 +1,453 @@
+# HyperFactions - Russian Translations
+# Format: key = value (or key = "quoted value")
+# Note: Keys are auto-prefixed with "hyperfactions." by Hytale's I18nModule
+# Placeholders: {0}, {1}, etc.
+
+# ========== Общее ==========
+common.no_permission = У вас нет прав на это действие.
+common.not_in_faction = Вы не состоите во фракции.
+common.already_in_faction = Вы уже состоите во фракции.
+common.player_not_found = Игрок не найден.
+common.faction_not_found = Фракция не найдена.
+common.player_not_online = Этот игрок не в сети.
+common.must_be_leader = Только Лидер фракции может это сделать.
+common.must_be_officer = Вы должны быть Офицером или Лидером для этого действия.
+common.combat_tagged = Вы не можете сделать это во время боя.
+common.cancel = Отмена
+common.confirm = Подтвердить
+common.save = Сохранить
+common.close = Закрыть
+common.clear = Очистить
+common.back = Назад
+common.leave = Покинуть
+common.transfer = Передать
+common.disband = Распустить
+common.world_fallback = мир
+common.yes = Да
+common.no = Нет
+common.loading = Загрузка...
+common.online = В сети
+common.offline = Не в сети
+common.enabled = Включено
+common.disabled = Отключено
+common.none = Нет
+common.page = Страница {0} из {1}
+common.unknown = Неизвестно
+common.error_generic = Произошла ошибка. Пожалуйста, попробуйте ещё раз.
+common.gui_fallback = Не удалось открыть интерфейс. Используйте /f help для списка команд.
+common.admin_prefix = [Admin]
+common.location_error = Не удалось определить ваше местоположение.
+common.world_error = Не удалось определить ваш мир.
+common.invalid_id = Недопустимый ID фракции.
+common.na = Н/Д
+
+# ========== Команды - Создание ==========
+cmd.create.no_permission = У вас нет прав на создание фракций.
+cmd.create.usage = Использование: /f create <название>
+cmd.create.success = Фракция '{0}' создана!
+cmd.create.already_in_named = Вы уже состоите в {0}.
+cmd.create.use_leave_first = Сначала используйте /f leave, если хотите создать новую фракцию.
+cmd.create.name_taken = Это название фракции уже занято.
+cmd.create.name_too_short = Название фракции слишком короткое.
+cmd.create.name_too_long = Название фракции слишком длинное.
+cmd.create.failed = Не удалось создать фракцию.
+
+# ========== Команды - Роспуск ==========
+cmd.disband.no_permission = У вас нет прав на роспуск фракций.
+cmd.disband.not_leader = Только Лидер фракции может её распустить.
+cmd.disband.confirm_prompt = Вы уверены, что хотите распустить свою фракцию?
+cmd.disband.confirm_instruction = Введите /f disband --text ещё раз в течение {0} секунд для подтверждения.
+cmd.disband.success = Ваша фракция была распущена.
+cmd.disband.failed = Не удалось распустить фракцию.
+cmd.disband.cancelled = Предыдущее подтверждение отменено. Введите снова для подтверждения роспуска.
+
+# ========== Команды - Переименование ==========
+cmd.rename.no_permission = У вас нет прав.
+cmd.rename.not_leader = Только Лидер может переименовать фракцию.
+cmd.rename.usage = Использование: /f rename <название>
+cmd.rename.too_short = Название слишком короткое (мин. {0} символов).
+cmd.rename.too_long = Название слишком длинное (макс. {0} символов).
+cmd.rename.name_taken = Это название уже занято.
+cmd.rename.success = Фракция переименована в {0}!
+cmd.rename.broadcast = {0} переименовал(а) фракцию в {1}
+
+# ========== Команды - Описание ==========
+cmd.desc.no_permission = У вас нет прав.
+cmd.desc.not_officer = Вы должны быть Офицером, чтобы задать описание.
+cmd.desc.set = Описание фракции установлено!
+cmd.desc.cleared = Описание фракции очищено.
+
+# ========== Команды - Открыть / Закрыть ==========
+cmd.open.no_permission = У вас нет прав.
+cmd.open.not_leader = Только Лидер может изменить эту настройку.
+cmd.open.already_open = Ваша фракция уже открыта.
+cmd.open.success = Ваша фракция теперь открыта! Любой может вступить командой /f join.
+cmd.open.broadcast = {0} открыл(а) фракцию для свободного вступления.
+cmd.close.no_permission = У вас нет прав.
+cmd.close.not_leader = Только Лидер может изменить эту настройку.
+cmd.close.already_closed = Ваша фракция уже закрыта.
+cmd.close.success = Ваша фракция теперь доступна только по приглашению.
+cmd.close.broadcast = {0} закрыл(а) фракцию (только по приглашению).
+
+# ========== Команды - Цвет ==========
+cmd.color.no_permission = У вас нет прав.
+cmd.color.not_officer = Вы должны быть Офицером, чтобы изменить цвет.
+cmd.color.colors_disabled = Цвета фракций отключены.
+cmd.color.usage = Использование: /f color <код|#hex>
+cmd.color.usage_hint = Допустимые коды: 0-9, a-f или #RRGGBB hex
+cmd.color.invalid = Недопустимый цвет. Используйте 0-9, a-f или #RRGGBB.
+cmd.color.success = Цвет фракции обновлён!
+
+# ========== Команды - Захват территории ==========
+cmd.claim.no_permission = У вас нет прав на захват территории.
+cmd.claim.already_yours = Ваша фракция уже владеет этим чанком.
+cmd.claim.cannot_claim_ally = Вы не можете захватить территорию союзника.
+cmd.claim.already_claimed_hint = Этот чанк захвачен. Используйте /f overclaim, если фракция уязвима для рейда.
+cmd.claim.success = Чанк захвачен в {0}, {1}!
+cmd.claim.not_officer = Вы должны быть Офицером, чтобы захватывать территорию.
+cmd.claim.already_claimed = Этот чанк уже захвачен.
+cmd.claim.max_claims = Ваша фракция достигла предела территорий. Получите больше Силы!
+cmd.claim.not_adjacent = Вы можете захватывать только территории, смежные с вашими.
+cmd.claim.world_not_allowed = Захват территории в этом мире запрещён.
+cmd.claim.orbisguard = Эта область защищена OrbisGuard.
+cmd.claim.zone_protected = Этот чанк находится в SafeZone или WarZone.
+cmd.claim.insufficient_power = У вашей фракции недостаточно Силы для захвата новых территорий.
+cmd.claim.failed = Не удалось захватить чанк.
+
+# ========== Команды - Приглашение ==========
+cmd.invite.no_permission = У вас нет прав приглашать игроков.
+cmd.invite.not_officer = Вы должны быть Офицером, чтобы приглашать игроков.
+cmd.invite.usage = Использование: /f invite <игрок>
+cmd.invite.player_not_found = Игрок '{0}' не найден или не в сети.
+cmd.invite.target_in_faction = Этот игрок уже состоит во фракции.
+cmd.invite.sent = Приглашение отправлено {0} в вашу фракцию.
+cmd.invite.received = Вы получили приглашение вступить в {0}!
+cmd.invite.accept_hint = Введите /f accept {0}, чтобы вступить.
+
+# ========== Команды - Принять / Вступить ==========
+cmd.join.no_permission = У вас нет прав на вступление во фракции.
+cmd.join.already_in_named = Вы уже состоите в {0}.
+cmd.join.use_leave_hint = Сначала используйте /f leave, если хотите вступить в другую фракцию.
+cmd.join.no_invites = У вас нет ожидающих приглашений.
+cmd.join.faction_not_found = Фракция '{0}' не найдена.
+cmd.join.not_invited = У вас нет приглашения от этой фракции.
+cmd.join.faction_gone = Эта фракция больше не существует.
+cmd.join.success = Вы вступили в {0}!
+cmd.join.broadcast = {0} вступил(а) во фракцию!
+cmd.join.faction_full = Эта фракция заполнена.
+cmd.join.failed = Не удалось вступить во фракцию.
+
+# ========== Команды - Исключение ==========
+cmd.kick.no_permission = У вас нет прав исключать участников.
+cmd.kick.usage = Использование: /f kick <игрок>
+cmd.kick.not_in_your_faction = Игрок '{0}' не состоит в вашей фракции.
+cmd.kick.success = {0} исключён(а) из фракции.
+cmd.kick.broadcast = {0} был(а) исключён(а) из фракции.
+cmd.kick.kicked = Вы были исключены из фракции.
+cmd.kick.cannot_kick_higher = У вас нет прав исключить этого игрока.
+cmd.kick.cannot_kick_leader = Вы не можете исключить Лидера фракции.
+cmd.kick.failed = Не удалось исключить игрока.
+
+# ========== Команды - Покинуть ==========
+cmd.leave.no_permission = У вас нет прав покидать фракции.
+cmd.leave.confirm_prompt = Вы уверены, что хотите покинуть свою фракцию?
+cmd.leave.confirm_instruction = Введите /f leave --text ещё раз в течение {0} секунд для подтверждения.
+cmd.leave.success = Вы покинули свою фракцию.
+cmd.leave.broadcast = {0} покинул(а) фракцию.
+cmd.leave.failed = Не удалось покинуть фракцию.
+cmd.leave.cancelled = Предыдущее подтверждение отменено. Введите снова для подтверждения выхода.
+
+# ========== Команды - Повышение / Понижение / Передача ==========
+cmd.rank.promote_no_permission = У вас нет прав повышать участников.
+cmd.rank.promote_usage = Использование: /f promote <игрок>
+cmd.rank.promoted = {0} повышен(а) до {1}!
+cmd.rank.promote_broadcast = {0} повышен(а) до {1}!
+cmd.rank.already_highest = Дальнейшее повышение невозможно. Используйте /f transfer для смены Лидера.
+cmd.rank.promote_failed = Не удалось повысить игрока.
+cmd.rank.demote_no_permission = У вас нет прав понижать участников.
+cmd.rank.demote_usage = Использование: /f demote <игрок>
+cmd.rank.demoted = {0} понижен(а) до {1}.
+cmd.rank.demote_broadcast = {0} понижен(а) до {1}.
+cmd.rank.already_lowest = Этот игрок уже является Участником.
+cmd.rank.demote_failed = Не удалось понизить игрока.
+cmd.rank.transfer_no_permission = У вас нет прав на передачу лидерства.
+cmd.rank.transfer_usage = Использование: /f transfer <игрок>
+cmd.rank.player_not_in_faction = Игрок не найден в вашей фракции.
+cmd.rank.transfer_confirm = Вы уверены, что хотите передать лидерство {0}?
+cmd.rank.transfer_confirm_instruction = Введите /f transfer {0} --text ещё раз в течение {1} секунд для подтверждения.
+cmd.rank.transferred = Лидерство передано {0}!
+cmd.rank.transfer_broadcast = {0} теперь Лидер фракции!
+cmd.rank.transfer_failed = Не удалось передать лидерство.
+cmd.rank.transfer_cancelled = Предыдущее подтверждение отменено. Введите снова для подтверждения передачи.
+
+# ========== Команды - Отказ от территории ==========
+cmd.unclaim.no_permission = У вас нет прав на отказ от территории.
+cmd.unclaim.success = Чанк освобождён в {0}, {1}.
+cmd.unclaim.not_officer = Вы должны быть Офицером, чтобы освобождать территорию.
+cmd.unclaim.chunk_not_claimed = Этот чанк не захвачен.
+cmd.unclaim.not_your_claim = Ваша фракция не владеет этим чанком.
+cmd.unclaim.cannot_unclaim_home = Нельзя освободить чанк с домом фракции.
+cmd.unclaim.would_disconnect = Нельзя освободить — это разъединит вашу территорию.
+cmd.unclaim.failed = Не удалось освободить чанк.
+
+# ========== Команды - Перезахват ==========
+cmd.overclaim.no_permission = У вас нет прав на перезахват территории.
+cmd.overclaim.success = Вражеская территория перезахвачена!
+cmd.overclaim.not_officer = Вы должны быть Офицером для перезахвата.
+cmd.overclaim.not_claimed = Этот чанк не захвачен. Используйте /f claim.
+cmd.overclaim.own_chunk = Ваша фракция уже владеет этим чанком.
+cmd.overclaim.ally = Вы не можете перезахватить территорию союзника.
+cmd.overclaim.target_has_power = У этой фракции ещё достаточно Силы.
+cmd.overclaim.failed = Не удалось выполнить перезахват.
+
+# ========== Команды - Застрял ==========
+cmd.stuck.no_permission = У вас нет прав использовать /f stuck.
+cmd.stuck.not_stuck = Вы не застряли — это дикая местность.
+cmd.stuck.combat_tagged = Вы не можете использовать /f stuck во время боя!
+cmd.stuck.no_safe = Не удалось найти безопасное место.
+cmd.stuck.teleporting = Телепортация в безопасное место через {0} секунд. Не двигайтесь!
+
+# ========== Команды - Дом ==========
+cmd.home.no_permission = У вас нет прав на телепортацию к дому фракции.
+cmd.home.no_home = У вашей фракции не установлен дом.
+cmd.home.combat_tagged = Вы не можете телепортироваться во время боя!
+cmd.home.teleported = Телепортация к дому фракции выполнена!
+
+# ========== Команды - Установить дом ==========
+cmd.sethome.no_permission = У вас нет прав на установку дома фракции.
+cmd.sethome.world_not_allowed = Нельзя установить дом в этом мире.
+cmd.sethome.not_in_territory = Вы можете установить дом только на территории вашей фракции.
+cmd.sethome.set = Дом фракции установлен!
+cmd.sethome.broadcast = {0} установил(а) дом фракции.
+cmd.sethome.not_officer = Вы должны быть Офицером, чтобы установить дом.
+cmd.sethome.failed = Не удалось установить дом.
+
+# ========== Команды - Удалить дом ==========
+cmd.delhome.no_permission = У вас нет прав на удаление дома фракции.
+cmd.delhome.no_home = У вашей фракции не установлен дом.
+cmd.delhome.deleted = Дом фракции удалён!
+cmd.delhome.broadcast = {0} удалил(а) дом фракции.
+cmd.delhome.not_officer = Вы должны быть Офицером, чтобы удалить дом.
+cmd.delhome.failed = Не удалось удалить дом.
+
+# ========== Команды - Отношения (Союзник/Враг/Нейтралитет/Отношения) ==========
+cmd.relation.ally_no_permission = У вас нет прав на управление союзами.
+cmd.relation.ally_usage = Использование: /f ally <фракция>
+cmd.relation.ally_sent = Запрос на союз отправлен {0}!
+cmd.relation.ally_formed = Вы теперь союзники с {0}!
+cmd.relation.already_ally = Вы уже в союзе с этой фракцией.
+cmd.relation.ally_failed = Не удалось отправить запрос на союз.
+cmd.relation.enemy_no_permission = У вас нет прав объявлять врагов.
+cmd.relation.enemy_usage = Использование: /f enemy <фракция>
+cmd.relation.enemy_declared = {0} теперь ваш Враг!
+cmd.relation.already_enemy = Вы уже враждуете с этой фракцией.
+cmd.relation.max_enemies = Вы достигли максимального числа врагов.
+cmd.relation.enemy_failed = Не удалось установить вражду.
+cmd.relation.neutral_no_permission = У вас нет прав на установку нейтральных отношений.
+cmd.relation.neutral_usage = Использование: /f neutral <фракция>
+cmd.relation.neutral_set = Ваша фракция теперь нейтральна с {0}.
+cmd.relation.already_neutral = Вы уже нейтральны с этой фракцией.
+cmd.relation.neutral_failed = Не удалось установить нейтралитет.
+cmd.relation.cannot_self = Вы не можете заключить союз с самим собой.
+cmd.relation.max_allies = Вы достигли максимального числа союзников.
+cmd.relation.view_no_permission = У вас нет прав на просмотр отношений.
+cmd.relation.header = === Отношения фракции ===
+cmd.relation.allies_count = Союзники ({0}):
+cmd.relation.enemies_count = Враги ({0}):
+cmd.relation.list_entry = - {0}
+
+# ========== Команды - Чат ==========
+cmd.chat.usage = Использование: /f c [f|a|off]
+cmd.chat.no_permission = У вас нет прав на этот режим чата.
+cmd.chat.mode_set = Режим чата установлен: {0}
+
+# ========== Команды - Приглашения ==========
+cmd.invites.not_officer = Вы должны быть Офицером для управления приглашениями.
+cmd.invites.header = === Приглашения фракции ===
+cmd.invites.no_pending = Нет ожидающих приглашений или заявок.
+cmd.invites.outgoing = Исходящие приглашения:
+cmd.invites.outgoing_entry = {0} (приглашён(а) {1})
+cmd.invites.requests = Заявки на вступление:
+cmd.invites.request_entry = {0}{1}
+cmd.invites.your_invites_header = === Ваши приглашения ===
+cmd.invites.no_invites = У вас нет ожидающих приглашений.
+cmd.invites.invite_entry = {0} - Используйте /f accept {1}
+
+# ========== Команды - Заявка ==========
+cmd.request.no_permission = У вас нет прав на подачу заявки во фракцию.
+cmd.request.already_in_named = Вы уже состоите в {0}.
+cmd.request.use_leave_hint = Сначала используйте /f leave, если хотите вступить в другую фракцию.
+cmd.request.usage = Использование: /f request <фракция> [сообщение]
+cmd.request.faction_open = Эта фракция открыта! Используйте /f accept {0}, чтобы вступить напрямую.
+cmd.request.already_requested = Вы уже подали заявку в эту фракцию.
+cmd.request.has_invite = Вы приглашены в эту фракцию! Используйте /f accept {0}, чтобы вступить.
+cmd.request.sent = Заявка на вступление отправлена в {0}!
+cmd.request.your_message = Ваше сообщение: "{0}"
+cmd.request.officer_review = Офицер рассмотрит вашу заявку.
+cmd.request.officer_notify = {0} подал(а) заявку на вступление в вашу фракцию!
+cmd.request.officer_review_hint = Используйте /f gui > Приглашения для просмотра.
+
+# ========== Команды - Информация ==========
+cmd.info.faction_header = === {0} ===
+cmd.info.player_header = === {0} ===
+cmd.info.no_permission = У вас нет прав на просмотр информации о фракции.
+cmd.info.faction_not_found = Фракция '{0}' не найдена.
+cmd.info.not_in_faction_hint = Вы не состоите во фракции. Используйте /f info <фракция>
+cmd.info.leader = Лидер: {0}
+cmd.info.members = Участники: {0}/{1}
+cmd.info.power = Сила: {0}
+cmd.info.claims = Территории: {0}
+cmd.info.raidable = УЯЗВИМА ДЛЯ РЕЙДА!
+cmd.info.allies = Союзники: {0}
+cmd.info.enemies = Враги: {0}
+cmd.info.they_consider = Они считают вас: {0}
+cmd.info.you_consider = Вы считаете их: {0}
+cmd.info.members_no_permission = У вас нет прав на просмотр участников фракции.
+cmd.info.members_header = === Участники {0} ({1}) ===
+cmd.info.member_online = [Online]
+cmd.info.list_no_permission = У вас нет прав на просмотр списка фракций.
+cmd.info.list_empty = Фракций нет.
+cmd.info.list_header = === Фракции ({0}) ===
+cmd.info.list_entry = {0} - {1} участников, {2} Силы
+cmd.info.list_entry_raidable = {0} - {1} участников, {2} Силы [УЯЗВИМА]
+cmd.info.help_no_permission = У вас нет прав на просмотр справки.
+cmd.info.who_no_permission = У вас нет прав на просмотр информации об игроке.
+cmd.info.who_faction = Фракция: {0}
+cmd.info.who_role = Роль: {0}
+cmd.info.who_joined = Вступил(а): {0}
+cmd.info.who_faction_none = Фракция: Нет
+cmd.info.who_power = Сила: {0}
+cmd.info.who_status = Статус: {0}
+cmd.info.who_last_seen = Последний вход: {0}
+cmd.info.map_no_permission = У вас нет прав на просмотр карты.
+cmd.info.map_header = === Карта территорий ===
+cmd.info.map_legend = Обозначения: +Вы /Свои /Союзник /Враг -Дикие
+cmd.info.map_gui_hint = Используйте /f gui для интерактивной карты
+
+# ========== Команды - Сила ==========
+cmd.power.personal = Личная Сила: {0}/{1}
+cmd.power.faction = Сила фракции: {0}/{1}
+cmd.power.death_loss = Потеря при смерти: {0}
+cmd.power.regen = Скорость восстановления: {0}/час
+cmd.power.no_permission = У вас нет прав на просмотр информации о Силе.
+cmd.power.header = Сила {0}:
+cmd.power.current = Текущая: {0}
+
+# ========== Команды - Экономика ==========
+cmd.economy.balance = Баланс: {0}
+cmd.economy.deposited = Внесено {0} в Казну фракции.
+cmd.economy.withdrawn = Выведено {0} из Казны фракции.
+cmd.economy.transferred = Переведено {0} в {1}.
+cmd.economy.insufficient = Недостаточно средств в Казне фракции.
+cmd.economy.invalid_amount = Недопустимая сумма: {0}
+cmd.economy.economy_disabled = Экономика отключена.
+cmd.economy.balance_no_permission = У вас нет прав на просмотр баланса.
+cmd.economy.treasury_unavailable = Казна недоступна.
+cmd.economy.balance_display = Казна {0}: {1}
+cmd.economy.deposit_no_permission = У вас нет прав на внесение средств.
+cmd.economy.deposit_faction_denied = У вас нет прав фракции на внесение средств.
+cmd.economy.deposit_usage = Использование: /f deposit <сумма>
+cmd.economy.amount_positive = Сумма должна быть положительной.
+cmd.economy.wallet_insufficient = У вас недостаточно средств. Кошелёк: {0}
+cmd.economy.wallet_withdraw_failed = Не удалось списать средства из вашего кошелька.
+cmd.economy.deposit_failed = Не удалось внести средства в Казну фракции. Деньги возвращены.
+cmd.economy.withdraw_no_permission = У вас нет прав на вывод средств.
+cmd.economy.withdraw_faction_denied = У вас нет прав фракции на вывод средств.
+cmd.economy.withdraw_usage = Использование: /f withdraw <сумма>
+cmd.economy.withdraw_limit_denied = Вывод отклонён: {0}
+cmd.economy.wallet_deposit_failed = Внимание: Не удалось зачислить средства в ваш кошелёк. Обратитесь к администратору.
+cmd.economy.withdraw_limit_exceeded = Вывод отклонён: превышен лимит.
+cmd.economy.withdraw_failed = Ошибка вывода: {0}
+cmd.economy.transfer_no_permission = У вас нет прав на перевод.
+cmd.economy.transfer_faction_denied = У вас нет прав фракции на перевод.
+cmd.economy.transfer_usage = Использование: /f money transfer <фракция> <сумма>
+cmd.economy.transfer_self = Нельзя перевести средства своей фракции.
+cmd.economy.transfer_limit_denied = Перевод отклонён: {0}
+cmd.economy.transfer_limit_exceeded = Перевод отклонён: превышен лимит.
+cmd.economy.transfer_failed = Ошибка перевода: {0}
+cmd.economy.log_no_permission = У вас нет прав на просмотр журнала транзакций.
+cmd.economy.log_header = Журнал транзакций (страница {0}/{1})
+cmd.economy.log_empty = Транзакции не найдены.
+cmd.economy.money_help_header = Команды Казны:
+cmd.economy.money_help_balance = /f money balance [фракция] - Просмотр баланса
+cmd.economy.money_help_deposit = /f money deposit <сумма> - Внести в Казну
+cmd.economy.money_help_withdraw = /f money withdraw <сумма> - Вывести из Казны
+cmd.economy.money_help_transfer = /f money transfer <фракция> <сумма> - Перевод между фракциями
+cmd.economy.money_help_log = /f money log [страница] [тип] - Просмотр истории транзакций
+
+# ========== Защита - Описания действий ==========
+protection.action.generic = Вы не можете этого сделать
+protection.action.build = Вы не можете строить или разрушать блоки
+protection.action.interact = Вы не можете взаимодействовать с этим
+protection.action.door = Вы не можете использовать двери
+protection.action.container = Вы не можете открывать контейнеры
+protection.action.bench = Вы не можете использовать верстаки
+protection.action.processing = Вы не можете использовать перерабатывающие станции
+protection.action.seat = Вы не можете использовать сиденья
+protection.action.light = Вы не можете переключать свет
+protection.action.teleporter = Вы не можете использовать телепортеры
+protection.action.crate = Вы не можете использовать ящики
+protection.action.tame = Вы не можете приручать существ
+protection.action.npc = Вы не можете взаимодействовать с NPC
+protection.action.mount = Вы не можете оседлать существ
+protection.action.pve = Вы не можете наносить урон существам
+protection.action.item_drop = Вы не можете выбрасывать предметы
+protection.action.item_pickup = Вы не можете подбирать предметы
+
+# ========== Защита - Причины отказа ==========
+protection.denied.safezone = {0} в SafeZone.
+protection.denied.warzone = {0} в WarZone.
+protection.denied.enemy_claim = {0} на вражеской территории.
+protection.denied.claimed = {0} на захваченной территории.
+protection.denied.here = {0} здесь.
+protection.denied.zone = {0} в этой зоне.
+protection.denied.faction_perm = {0} здесь. (Право фракции: {1})
+protection.denied.ally_territory = {0} здесь. (Территория союзника)
+protection.denied.error = Ошибка защиты — действие заблокировано в целях безопасности.
+
+# ========== Защита - PvP ==========
+protection.pvp.safezone = PvP отключено в SafeZone.
+protection.pvp.same_faction = Вы не можете атаковать членов своей фракции.
+protection.pvp.ally = Вы не можете атаковать союзников.
+protection.pvp.spawn_protected = У этого игрока защита после возрождения.
+protection.pvp.territory_disabled = PvP отключено на этой территории.
+protection.pvp.generic = Вы не можете атаковать этого игрока.
+
+# ========== Защита - Урон от существ ==========
+protection.mob_damage_disabled = Урон от мобов отключён в этой зоне.
+protection.pve_damage_disabled = PvE-урон отключён в этой зоне.
+protection.pve_territory_denied = Вы не можете наносить урон мобам на этой территории.
+
+# ========== Защита - Боевая метка ==========
+protection.combat_tag_command = Вы не можете использовать эту команду во время боя.
+
+# ========== Серверные объявления ==========
+# Транслируются всем онлайн-игрокам при значимых событиях фракций.
+# {0}, {1} = динамические значения (названия фракций, имена игроков)
+server_announce.faction_created = {0} основал(а) фракцию {1}!
+server_announce.faction_disbanded = Фракция {0} была распущена!
+server_announce.leadership_transfer = {0} теперь Лидер фракции {1}!
+server_announce.overclaim = {0} перезахватил(а) территорию у {1}!
+server_announce.war_declared = {0} объявил(а) войну {1}!
+server_announce.alliance_formed = {0} и {1} теперь союзники!
+server_announce.alliance_broken = {0} и {1} больше не союзники!
+
+# ========== Система телепортации ==========
+teleport.cooldown_wait = Подождите {0} перед следующей телепортацией.
+teleport.warmup_start = Телепортация к дому фракции через {0} секунд...
+teleport.combat_cancelled = Телепортация отменена — вы в бою!
+teleport.success_default = Телепортация к дому фракции выполнена!
+teleport.no_home = У вашей фракции не установлен дом.
+teleport.world_not_found = Мир не найден.
+teleport.failed = Телепортация не удалась.
+teleport.countdown = Телепортация через {0} секунд...
+teleport.countdown_one = Телепортация через 1 секунду...
+teleport.moved_cancelled = Телепортация отменена — вы двинулись!
+teleport.damage_cancelled = Телепортация отменена — вы получили урон!
+teleport.mount_teleport_blocked = Вы не можете телепортироваться в эту зону верхом.
+teleport.mount_entry_blocked = Вы не можете войти в эту зону верхом.
+
+# ========== Отображение чата ==========
+chat.display.public = Общий
+chat.display.faction = Фракция
+chat.display.ally = Союзник
