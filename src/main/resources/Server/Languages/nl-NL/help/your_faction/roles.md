@@ -1,44 +1,44 @@
 ---
 id: faction_roles
 ---
-# Roles and Ranks
+# Rollen en Rangen
 
-Every faction has three roles in a strict hierarchy. Higher roles inherit all capabilities of the roles below them.
-
----
-
-## Permission Breakdown
-
-| Action | Leader | Officer | Member |
-|--------|--------|---------|--------|
-| Build in territory | Yes | Yes | Yes |
-| Use faction home | Yes | Yes | Yes |
-| Faction and ally chat | Yes | Yes | Yes |
-| Invite players | Yes | Yes | No |
-| Kick members | Yes | Yes (Members only) | No |
-| Claim / unclaim land | Yes | Yes | No |
-| Overclaim enemy territory | Yes | Yes | No |
-| Set faction home | Yes | Yes | No |
-| Delete faction home | Yes | Yes | No |
-| Manage relations (ally/enemy) | Yes | Yes | No |
-| View faction logs | Yes | Yes | No |
-| Promote to Officer | Yes | No | No |
-| Demote from Officer | Yes | No | No |
-| Rename faction | Yes | No | No |
-| Set description / tag / color | Yes | No | No |
-| Open / close faction | Yes | No | No |
-| Access faction settings | Yes | No | No |
-| Transfer leadership | Yes | No | No |
-| Disband faction | Yes | No | No |
-
->[!NOTE] Officers can kick Members but cannot kick other Officers. Only the Leader can remove Officers.
+Elke factie heeft drie rollen in een strikte hiërarchie. Hogere rollen erven alle bevoegdheden van de onderliggende rollen.
 
 ---
 
-## Role Details
+## Overzicht van Bevoegdheden
 
-- Leader -- One per faction. Has full control over all settings, members, and territory. Can transfer ownership to another member.
-- Officer -- Trusted members who help manage the faction. Can invite, kick members, claim land, and handle diplomacy.
-- Member -- The default role when joining. Can build in territory, use the faction home, and participate in faction chat.
+| Actie | Leider | Officer | Lid |
+|-------|--------|---------|-----|
+| Bouwen in grondgebied | Ja | Ja | Ja |
+| Factiehuis gebruiken | Ja | Ja | Ja |
+| Factie- en bondgenotenchat | Ja | Ja | Ja |
+| Spelers uitnodigen | Ja | Ja | Nee |
+| Leden kicken | Ja | Ja (alleen Leden) | Nee |
+| Land claimen / unclaimen | Ja | Ja | Nee |
+| Vijandelijk grondgebied overclaimen | Ja | Ja | Nee |
+| Factiehuis instellen | Ja | Ja | Nee |
+| Factiehuis verwijderen | Ja | Ja | Nee |
+| Relaties beheren (bondgenoot/vijand) | Ja | Ja | Nee |
+| Factielogs bekijken | Ja | Ja | Nee |
+| Promoveren tot Officer | Ja | Nee | Nee |
+| Degraderen van Officer | Ja | Nee | Nee |
+| Factie hernoemen | Ja | Nee | Nee |
+| Beschrijving / tag / kleur instellen | Ja | Nee | Nee |
+| Factie openen / sluiten | Ja | Nee | Nee |
+| Factie-instellingen openen | Ja | Nee | Nee |
+| Leiderschap overdragen | Ja | Nee | Nee |
+| Factie ontbinden | Ja | Nee | Nee |
 
->[!TIP] Promote your most active and trusted members to Officer so they can help manage territory and recruit new players.
+>[!NOTE] Officers kunnen Leden kicken maar geen andere Officers. Alleen de Leider kan Officers verwijderen.
+
+---
+
+## Roldetails
+
+- Leider -- Eén per factie. Heeft volledige controle over alle instellingen, leden en grondgebied. Kan eigendom overdragen aan een ander lid.
+- Officer -- Vertrouwde leden die helpen de factie te beheren. Kunnen uitnodigen, leden kicken, land claimen en diplomatie afhandelen.
+- Lid -- De standaardrol bij toetreding. Kan bouwen in grondgebied, het factiehuis gebruiken en deelnemen aan factiechat.
+
+>[!TIP] Promoveer je meest actieve en vertrouwde leden tot Officer zodat ze kunnen helpen met gebiedsbeheer en het werven van nieuwe spelers.

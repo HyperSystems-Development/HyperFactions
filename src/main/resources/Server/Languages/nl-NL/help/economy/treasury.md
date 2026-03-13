@@ -2,25 +2,25 @@
 id: economy_treasury
 commands: balance
 ---
-# Faction Treasury
+# Factieschatkist
 
-Every faction has a shared treasury that serves as the faction's bank. Funds are used for upkeep costs, territory maintenance, and faction operations.
+Elke factie heeft een gedeelde schatkist die dient als de bank van de factie. Geld wordt gebruikt voor onderhoudskosten, gebiedsbeheer en factieoperaties.
 
-## Starting Balance
+## Startsaldo
 
-New factions start with 0 in their treasury. Members must deposit funds to build up reserves.
+Nieuwe facties beginnen met 0 in hun schatkist. Leden moeten geld storten om reserves op te bouwen.
 
-## Who Can Manage
+## Wie Kan Beheren
 
-- Any member can deposit funds
-- Officers and Leader can withdraw and transfer
-- Leader has full treasury control
+- Elk lid kan geld storten
+- Officers en Leider kunnen opnemen en overboeken
+- Leider heeft volledige schatkistcontrole
 
 ---
 
 `/f balance`
-Check your faction's current treasury balance. Also available as /f bal.
+Controleer het huidige schatkistsaldo van je factie. Ook beschikbaar als /f bal.
 
->[!TIP] Contribute regularly to keep your faction funded. Territory upkeep costs can drain an empty treasury quickly.
+>[!TIP] Draag regelmatig bij om je factie gefinancierd te houden. Gebiedsonderhoudskosten kunnen een lege schatkist snel leegtrekken.
 
->[!INFO] All treasury transactions are logged and can be reviewed by officers.
+>[!INFO] Alle schatkisttransacties worden gelogd en kunnen door officers worden bekeken.

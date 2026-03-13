@@ -1,37 +1,37 @@
 ---
 id: economy_upkeep
 ---
-# Territory Upkeep
+# Gebiedsonderhoud
 
-Factions must pay ongoing upkeep to maintain their claimed territory. This prevents land hoarding and keeps the map dynamic.
+Facties moeten doorlopend onderhoud betalen om hun geclaimd grondgebied te behouden. Dit voorkomt landhamsteren en houdt de kaart dynamisch.
 
-## Upkeep Costs
+## Onderhoudskosten
 
-| Setting | Default |
-|---------|---------|
-| Cost per chunk | 2.0 per cycle |
-| Payment interval | Every 24 hours |
-| Free chunks | 3 (no cost) |
-| Scaling mode | Flat rate |
+| Instelling | Standaard |
+|------------|-----------|
+| Kosten per chunk | 2.0 per cyclus |
+| Betalingsinterval | Elke 24 uur |
+| Gratis chunks | 3 (geen kosten) |
+| Schaalmodus | Vast tarief |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Dit zijn standaardwaarden. Je serverbeheerder kan andere instellingen hebben geconfigureerd.
 
-Your first 3 chunks are free. Beyond that, each additional claimed chunk costs 2.0 per payment cycle.
+Je eerste 3 chunks zijn gratis. Daarna kost elke extra geclaimde chunk 2.0 per betalingscyclus.
 
-## Auto-Pay
+## Automatisch Betalen
 
-Auto-pay is enabled by default. The system automatically deducts upkeep from your treasury at each interval. No manual action needed.
+Automatisch betalen is standaard ingeschakeld. Het systeem trekt automatisch onderhoud af van je schatkist bij elk interval. Geen handmatige actie nodig.
 
 ---
 
-## Grace Period
+## Respijtperiode
 
-If your treasury cannot cover upkeep, a 48-hour grace period begins. A warning is sent 6 hours before claims start being lost.
+Als je schatkist het onderhoud niet kan dekken, begint een respijtperiode van 48 uur. Een waarschuwing wordt 6 uur voor het verlies van claims verstuurd.
 
->[!WARNING] If upkeep remains unpaid after the grace period, your faction loses 1 claim per cycle until costs are covered or all extra claims are gone.
+>[!WARNING] Als onderhoud onbetaald blijft na de respijtperiode, verliest je factie 1 claim per cyclus totdat de kosten gedekt zijn of alle extra claims weg zijn.
 
-## Example
+## Voorbeeld
 
-*A faction with 8 claims pays for 5 chunks (8 minus 3 free). At 2.0 per chunk, that is 10.0 per cycle.*
+*Een factie met 8 claims betaalt voor 5 chunks (8 min 3 gratis). Tegen 2.0 per chunk is dat 10.0 per cyclus.*
 
->[!TIP] Keep your treasury funded above your upkeep cost. Use /f balance to check your reserves.
+>[!TIP] Houd je schatkist boven je onderhoudskosten gevuld. Gebruik /f balance om je reserves te controleren.

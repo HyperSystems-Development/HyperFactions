@@ -2,43 +2,43 @@
 id: faction_managing
 commands: invite, kick, promote, demote, transfer
 ---
-# Managing Members
+# Leden Beheren
 
-Officers and Leaders share responsibility for managing the faction roster. Here are the key commands and who can use them.
-
----
-
-## Commands
-
-| Command | What It Does | Required Role |
-|---------|-------------|---------------|
-| `/f invite <player>` | Sends a join invitation (expires in 5 min) | Officer+ |
-| `/f kick <player>` | Removes a member from the faction | Officer+ (see note) |
-| `/f promote <player>` | Promotes a Member to Officer | Leader only |
-| `/f demote <player>` | Demotes an Officer to Member | Leader only |
-| `/f transfer <player>` | Transfers faction ownership | Leader only |
-
->[!NOTE] Officers can only kick Members. To remove another Officer, the Leader must either demote them first or kick them directly.
+Officers en Leiders delen de verantwoordelijkheid voor het beheren van de factieledenlijst. Hier zijn de belangrijkste commando's en wie ze kan gebruiken.
 
 ---
 
-## Invitations
+## Commando's
 
-- Invitations expire after 5 minutes if not accepted
-- The invited player sees it in their Invites tab when they open /f
-- There is no limit to how many invitations you can send at once
-- Your faction can hold up to 50 members total
+| Commando | Wat het doet | Vereiste Rol |
+|----------|-------------|--------------|
+| `/f invite <player>` | Stuurt een uitnodiging (verloopt na 5 min) | Officer+ |
+| `/f kick <player>` | Verwijdert een lid uit de factie | Officer+ (zie opmerking) |
+| `/f promote <player>` | Promoveert een Lid tot Officer | Alleen Leider |
+| `/f demote <player>` | Degradeert een Officer tot Lid | Alleen Leider |
+| `/f transfer <player>` | Draagt het leiderschap over | Alleen Leider |
 
-## Promotions and Demotions
+>[!NOTE] Officers kunnen alleen Leden kicken. Om een andere Officer te verwijderen, moet de Leider ze eerst degraderen of direct kicken.
 
-- Only the Leader can promote or demote
-- /f promote raises a Member to Officer
-- /f demote lowers an Officer back to Member
+---
 
-## Transferring Leadership
+## Uitnodigingen
 
->[!WARNING] Transferring leadership is irreversible. You will be demoted to Officer and the target player becomes the new Leader. Make sure you trust them completely.
+- Uitnodigingen verlopen na 5 minuten als ze niet worden geaccepteerd
+- De uitgenodigde speler ziet het in het tabblad Uitnodigingen wanneer ze /f openen
+- Er is geen limiet op het aantal uitnodigingen dat je tegelijk kunt versturen
+- Je factie kan maximaal 50 leden bevatten
+
+## Promoties en Degradaties
+
+- Alleen de Leider kan promoveren of degraderen
+- /f promote verhoogt een Lid tot Officer
+- /f demote verlaagt een Officer terug naar Lid
+
+## Leiderschap Overdragen
+
+>[!WARNING] Het overdragen van leiderschap is onomkeerbaar. Je wordt gedegradeerd tot Officer en de doelspeler wordt de nieuwe Leider. Zorg dat je ze volledig vertrouwt.
 
 `/f transfer <player>`
 
-The target must be a current member of your faction.
+Het doelwit moet een huidig lid van je factie zijn.

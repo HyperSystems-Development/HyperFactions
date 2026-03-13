@@ -1,48 +1,48 @@
 ---
 id: admin_imports
 ---
-# Data Import
+# Data Importeren
 
-Import faction data from other plugins to migrate your server to HyperFactions.
+Importeer factiedata van andere plugins om je server te migreren naar HyperFactions.
 
-## Import Command
+## Importcommando
 
 `/f admin import <source> [path] [flags]`
 
-**Permission**: `hyperfactions.admin.use`
+**Permissie**: `hyperfactions.admin.use`
 
-## Supported Sources
+## Ondersteunde Bronnen
 
-| Source | Description |
-|--------|-------------|
-| `elbaphfactions` | Import from ElbaphFactions data |
-| `hyfactions` | Import from HyFactions v1 data |
-
-## Import Flags
-
-| Flag | Description |
+| Bron | Beschrijving |
 |------|-------------|
-| `--dry-run` | Validate data without importing anything |
-| `--overwrite` | Overwrite existing factions with same name |
-| `--no-zones` | Skip zone data during import |
-| `--no-power` | Skip power data during import |
+| `elbaphfactions` | Importeer vanuit ElbaphFactions-data |
+| `hyfactions` | Importeer vanuit HyFactions v1-data |
 
->[!TIP] Always run with `--dry-run` first to preview what will be imported and catch any data issues before committing changes.
+## Importvlaggen
 
-## Import Process
+| Vlag | Beschrijving |
+|------|-------------|
+| `--dry-run` | Valideer data zonder iets te importeren |
+| `--overwrite` | Overschrijf bestaande facties met dezelfde naam |
+| `--no-zones` | Sla zonedata over tijdens import |
+| `--no-power` | Sla powerdata over tijdens import |
 
-1. A pre-import backup is created automatically
-2. Player name mappings are loaded
-3. Factions, claims, and zones are converted
-4. Data is validated and saved
+>[!TIP] Voer altijd eerst uit met `--dry-run` om te bekijken wat er geïmporteerd wordt en dataproblemen te ontdekken voordat je wijzigingen doorvoert.
 
-## Examples
+## Importproces
+
+1. Er wordt automatisch een pre-import backup gemaakt
+2. Spelernaam-koppelingen worden geladen
+3. Facties, claims en zones worden geconverteerd
+4. Data wordt gevalideerd en opgeslagen
+
+## Voorbeelden
 
 - `/f admin import elbaphfactions --dry-run`
 - `/f admin import elbaphfactions --overwrite`
 - `/f admin import hyfactions --no-zones --no-power`
 - `/f admin import elbaphfactions /custom/path`
 
->[!WARNING] Using `--overwrite` will **replace** any existing faction that shares a name with an imported faction. Member data and claims will be overwritten. Run with `--dry-run` first to identify conflicts.
+>[!WARNING] Het gebruik van `--overwrite` zal elke bestaande factie die dezelfde naam deelt met een geïmporteerde factie **vervangen**. Ledendata en claims worden overschreven. Voer eerst `--dry-run` uit om conflicten te identificeren.
 
->[!NOTE] Some source-specific data (e.g., worker plots, farm plots) has no equivalent in HyperFactions and will be logged as warnings during import.
+>[!NOTE] Sommige bronspecifieke data (bijv. werkpercelen, boerderijpercelen) heeft geen equivalent in HyperFactions en wordt als waarschuwingen gelogd tijdens de import.

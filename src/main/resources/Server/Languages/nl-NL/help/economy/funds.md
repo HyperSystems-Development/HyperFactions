@@ -2,41 +2,41 @@
 id: economy_funds
 commands: deposit, withdraw
 ---
-# Managing Funds
+# Geld Beheren
 
-Faction members work together to keep the treasury funded through deposits, withdrawals, and transfers.
+Factieleden werken samen om de schatkist gevuld te houden door stortingen, opnames en overboekingen.
 
-## Depositing
+## Storten
 
-Any member can deposit personal funds into the faction treasury.
+Elk lid kan persoonlijke fondsen storten in de factieschatkist.
 
 `/f deposit <amount>`
-Deposit from your personal balance into the treasury.
+Stort van je persoonlijke saldo in de schatkist.
 
-## Withdrawing
+## Opnemen
 
-Officers and the Leader can withdraw funds back to their personal balance.
+Officers en de Leider kunnen geld opnemen terug naar hun persoonlijke saldo.
 
 `/f withdraw <amount>`
-Withdraw from the treasury to your balance. (Officer+)
+Neem op uit de schatkist naar je saldo. (Officer+)
 
-## Transferring
+## Overboeken
 
-Officers can transfer funds directly between faction treasuries for trade deals or diplomacy.
+Officers kunnen geld direct overboeken tussen factieschatkisten voor handelsdeals of diplomatie.
 
 `/f money transfer <faction> <amount>`
-Send funds to another faction's treasury. (Officer+)
+Stuur geld naar de schatkist van een andere factie. (Officer+)
 
 ---
 
-## Fees
+## Kosten
 
-| Transaction | Fee |
-|------------|-----|
-| Deposit | 0% |
-| Withdraw | 0% |
-| Transfer | 0% |
+| Transactie | Kosten |
+|------------|--------|
+| Storting | 0% |
+| Opname | 0% |
+| Overboeking | 0% |
 
->[!INFO] Fee rates are configurable by the server and may differ from defaults shown above.
+>[!INFO] Kostentarieven zijn configureerbaar door de server en kunnen afwijken van de hierboven getoonde standaardwaarden.
 
->[!TIP] All transactions are logged. Use /f money log to review recent activity.
+>[!TIP] Alle transacties worden gelogd. Gebruik /f money log om recente activiteit te bekijken.

@@ -2,44 +2,44 @@
 id: power_understanding
 commands: power
 ---
-# Understanding Power
+# Power Begrijpen
 
-Power is the core resource that determines how much territory your faction can hold. Every player has personal power that contributes to the faction total.
-
----
-
-## Default Power Values
-
-| Setting | Value |
-|---------|-------|
-| Maximum power per player | 20 |
-| Starting power | 10 |
-| Death penalty | -1.0 per death |
-| Kill reward | 0.0 |
-| Regen rate | +0.1 per minute (while online) |
-| Power cost per claim | 2.0 |
-| Logout while tagged | -1.0 additional |
-
->[!NOTE] These are default values. Your server administrator may have configured different settings.
-
-## How It Works
-
-Your faction's total power is the sum of every member's personal power. Your required power is the number of claims multiplied by 2.0. As long as total power stays above required power, your territory is safe.
-
->[!INFO] Power regenerates passively at 0.1 per minute while you are online. At that rate, recovering 1.0 power takes about 10 minutes.
+Power is de kernresource die bepaalt hoeveel grondgebied je factie kan vasthouden. Elke speler heeft persoonlijke power die bijdraagt aan het factietotaal.
 
 ---
 
-## Checking Your Power
+## Standaard Powerwaarden
+
+| Instelling | Waarde |
+|------------|--------|
+| Maximale power per speler | 20 |
+| Startpower | 10 |
+| Sterfstraf | -1.0 per sterfgeval |
+| Killbeloning | 0.0 |
+| Regeneratiesnelheid | +0.1 per minuut (terwijl online) |
+| Powerkosten per claim | 2.0 |
+| Uitloggen terwijl getagd | -1.0 extra |
+
+>[!NOTE] Dit zijn standaardwaarden. Je serverbeheerder kan andere instellingen hebben geconfigureerd.
+
+## Hoe het Werkt
+
+De totale power van je factie is de som van de persoonlijke power van elk lid. Je vereiste power is het aantal claims vermenigvuldigd met 2.0. Zolang de totale power boven de vereiste power blijft, is je grondgebied veilig.
+
+>[!INFO] Power regenereert passief met 0.1 per minuut terwijl je online bent. Met die snelheid duurt het herstellen van 1.0 power ongeveer 10 minuten.
+
+---
+
+## Je Power Controleren
 
 `/f power`
 
-Shows your personal power, your faction's total power, and how much is needed to maintain current claims.
+Toont je persoonlijke power, de totale power van je factie en hoeveel er nodig is om de huidige claims te onderhouden.
 
-## The Danger Zone
+## De Gevarenzone
 
-If total power falls below the required amount for your claims, your faction becomes vulnerable. Enemies can overclaim your chunks.
+Als de totale power onder het vereiste bedrag voor je claims zakt, wordt je factie kwetsbaar. Vijanden kunnen je chunks overclaimen.
 
->[!WARNING] Multiple deaths in a short period can cascade quickly. If you have 5 members each at 10 power (50 total) and 20 claims (40 needed), just 5 deaths across your team drops you to 45 -- still safe. But 11 deaths puts you at 39, below the 40 threshold.
+>[!WARNING] Meerdere sterfgevallen in korte tijd kunnen snel escaleren. Als je 5 leden hebt elk op 10 power (50 totaal) en 20 claims (40 nodig), dan brengen slechts 5 sterfgevallen in je team je naar 45 -- nog veilig. Maar 11 sterfgevallen brengt je op 39, onder de drempel van 40.
 
->[!TIP] Keep a power buffer. Do not claim every chunk you can afford -- leave room for a few deaths without becoming raidable.
+>[!TIP] Houd een powerbuffer aan. Claim niet elke chunk die je kunt betalen -- laat ruimte voor een paar sterfgevallen zonder raidbaar te worden.

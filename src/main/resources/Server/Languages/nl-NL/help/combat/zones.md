@@ -1,29 +1,29 @@
 ---
 id: combat_zones
 ---
-# Special Zones
+# Speciale Zones
 
-Admins can designate areas with special rules that override normal faction territory protection.
+Admins kunnen gebieden aanwijzen met speciale regels die de normale factiegebiedsbescherming overschrijven.
 
 ## SafeZone
 
-No PvP damage, no block breaking by non-admins. Ideal for spawn areas, trading hubs, and event staging areas. Players cannot be harmed here.
+Geen PvP-schade, geen blokken breken door niet-admins. Ideaal voor spawngebieden, handelscentra en evenementlocaties. Spelers kunnen hier niet verwond worden.
 
 ## WarZone
 
-PvP is always enabled. No block protection applies. Open battle areas where anything goes. You receive no territory protection benefits in a WarZone.
+PvP is altijd ingeschakeld. Geen blokbescherming van toepassing. Open gevechtsgebieden waar alles mag. Je ontvangt geen gebiedsbeschermingsvoordelen in een WarZone.
 
 ---
 
-## Zone Comparison
+## Zonevergelijking
 
-| Feature | SafeZone | WarZone | Faction Land |
-|---------|----------|---------|--------------|
-| PvP | Disabled | Always On | Relation-based |
-| Block Break | Disabled | Allowed | Members Only |
-| Containers | Protected | Open | Members Only |
-| Best For | Spawn/Trade | Arenas | Bases |
+| Kenmerk | SafeZone | WarZone | Factieland |
+|---------|----------|---------|------------|
+| PvP | Uitgeschakeld | Altijd Aan | Relatiegebaseerd |
+| Blokken Breken | Uitgeschakeld | Toegestaan | Alleen Leden |
+| Containers | Beschermd | Open | Alleen Leden |
+| Ideaal Voor | Spawn/Handel | Arena's | Bases |
 
->[!NOTE] Zone rules always override faction territory rules. A claimed chunk inside a WarZone follows WarZone rules.
+>[!NOTE] Zoneregels overschrijven altijd factiegebiedsregels. Een geclaimde chunk binnen een WarZone volgt WarZone-regels.
 
->[!TIP] Check your territory map with /f map to see zone boundaries.
+>[!TIP] Controleer je gebiedskaart met /f map om zonegrenzen te bekijken.

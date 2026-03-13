@@ -1,27 +1,27 @@
 ---
 id: economy_commands
 ---
-# Economy Commands
+# Economiecommando's
 
-Quick reference for all faction economy commands.
+Snelle referentie voor alle factie-economiecommando's.
 
-| Command | Description | Role |
-|---------|-------------|------|
-| /f balance | View treasury balance | Any |
-| /f deposit (amount) | Deposit into treasury | Any |
-| /f withdraw (amount) | Withdraw from treasury | Officer+ |
-| /f money transfer (faction) (amount) | Transfer to another faction | Officer+ |
-| /f money log [page] | View transaction history | Officer+ |
+| Commando | Beschrijving | Rol |
+|----------|-------------|-----|
+| /f balance | Bekijk schatkistsaldo | Iedereen |
+| /f deposit (amount) | Storten in schatkist | Iedereen |
+| /f withdraw (amount) | Opnemen uit schatkist | Officer+ |
+| /f money transfer (faction) (amount) | Overmaken naar andere factie | Officer+ |
+| /f money log [page] | Bekijk transactiegeschiedenis | Officer+ |
 
 ---
 
-## Command Aliases
+## Commandoaliassen
 
-- /f balance can also be used as /f bal
-- /f deposit and /f withdraw accept decimal amounts
+- /f balance kan ook gebruikt worden als /f bal
+- /f deposit en /f withdraw accepteren decimale bedragen
 
-## Role Requirements
+## Rolvereisten
 
-Withdraw and transfer commands are restricted to Officers and Leaders. All other economy commands are available to any faction member.
+Opname- en overboekingscommando's zijn beperkt tot Officers en Leiders. Alle andere economiecommando's zijn beschikbaar voor elk factielid.
 
->[!TIP] Use /f money log to review recent deposits, withdrawals, and transfers with timestamps.
+>[!TIP] Gebruik /f money log om recente stortingen, opnames en overboekingen met tijdstempels te bekijken.

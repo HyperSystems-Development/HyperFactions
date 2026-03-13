@@ -1,37 +1,37 @@
 ---
 id: admin_disbanding
 ---
-# Force Disbanding
+# Geforceerd Ontbinden
 
-Admins can forcefully disband any faction, regardless of the leader's wishes.
+Admins kunnen elke factie geforceerd ontbinden, ongeacht de wensen van de leider.
 
-## Command
+## Commando
 
 `/f admin disband <faction>`
-Force-disband the named faction. A confirmation prompt will appear before the action is executed.
+Ontbindt de genoemde factie geforceerd. Er verschijnt een bevestigingsvraag voordat de actie wordt uitgevoerd.
 
-**Permission**: `hyperfactions.admin.disband`
+**Permissie**: `hyperfactions.admin.disband`
 
->[!WARNING] Disbanding a faction is **irreversible**. All claims are released, all members are removed, and the faction ceases to exist. Create a backup first.
+>[!WARNING] Het ontbinden van een factie is **onomkeerbaar**. Alle claims worden vrijgegeven, alle leden worden verwijderd en de factie houdt op te bestaan. Maak eerst een backup.
 
-## Consequences
+## Gevolgen
 
-When a faction is disbanded:
+Wanneer een factie wordt ontbonden:
 
-| Effect | Description |
+| Effect | Beschrijving |
 |--------|-------------|
-| **Claims** | All territory is released immediately |
-| **Members** | All players are removed from the roster |
-| **Relations** | All alliances and enemies are cleared |
-| **Treasury** | Handled per economy config settings |
-| **Home** | Faction home is deleted |
-| **Chat** | Faction chat history is removed |
+| **Claims** | Al het grondgebied wordt direct vrijgegeven |
+| **Leden** | Alle spelers worden van de ledenlijst verwijderd |
+| **Relaties** | Alle bondgenootschappen en vijandschappen worden gewist |
+| **Schatkist** | Afgehandeld volgens economie-configuratie |
+| **Thuis** | Factiehuis wordt verwijderd |
+| **Chat** | Factiechatgeschiedenis wordt verwijderd |
 
 ## Best Practices
 
-1. Always run `/f admin backup create` before disbanding
-2. Notify faction members when possible
-3. Document the reason for server records
-4. Check `/f admin info <faction>` to review before acting
+1. Voer altijd `/f admin backup create` uit voor het ontbinden
+2. Informeer factieleden wanneer mogelijk
+3. Documenteer de reden voor serveradministratie
+4. Controleer `/f admin info <faction>` om te beoordelen voor actie
 
->[!TIP] If the issue is with a specific member, consider using the admin factions GUI to transfer leadership rather than disbanding the entire faction.
+>[!TIP] Als het probleem bij een specifiek lid ligt, overweeg dan om via de admin-facties-GUI het leiderschap over te dragen in plaats van de hele factie te ontbinden.

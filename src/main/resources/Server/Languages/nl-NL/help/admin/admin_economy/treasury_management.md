@@ -1,39 +1,39 @@
 ---
 id: admin_treasury_management
 ---
-# Treasury Management
+# Schatkistbeheer
 
-Admin commands for managing faction treasuries. Requires `hyperfactions.admin.economy` permission.
+Admincommando's voor het beheren van factieschatkisten. Vereist de `hyperfactions.admin.economy` permissie.
 
-## Treasury Commands
+## Schatkistcommando's
 
-| Command | Description |
-|---------|-------------|
-| `/f admin economy balance <faction>` | View faction treasury balance |
-| `/f admin economy set <faction> <amount>` | Set exact balance |
-| `/f admin economy add <faction> <amount>` | Add funds to treasury |
-| `/f admin economy take <faction> <amount>` | Remove funds from treasury |
-| `/f admin economy reset <faction>` | Reset treasury to zero |
+| Commando | Beschrijving |
+|----------|-------------|
+| `/f admin economy balance <faction>` | Bekijk factieschatkistsaldo |
+| `/f admin economy set <faction> <amount>` | Stel exact saldo in |
+| `/f admin economy add <faction> <amount>` | Voeg geld toe aan schatkist |
+| `/f admin economy take <faction> <amount>` | Verwijder geld uit schatkist |
+| `/f admin economy reset <faction>` | Reset schatkist naar nul |
 
-## Examples
+## Voorbeelden
 
-- `/f admin economy balance Vikings` -- check balance
-- `/f admin economy set Vikings 5000` -- set to 5000
-- `/f admin economy add Vikings 1000` -- deposit 1000
-- `/f admin economy take Vikings 500` -- withdraw 500
-- `/f admin economy reset Vikings` -- zero out balance
+- `/f admin economy balance Vikings` -- controleer saldo
+- `/f admin economy set Vikings 5000` -- stel in op 5000
+- `/f admin economy add Vikings 1000` -- stort 1000
+- `/f admin economy take Vikings 500` -- neem 500 op
+- `/f admin economy reset Vikings` -- zet saldo op nul
 
->[!TIP] Use `/f admin info <faction>` to see the full economy overview including transaction history alongside the treasury balance.
+>[!TIP] Gebruik `/f admin info <faction>` om het volledige economie-overzicht te bekijken, inclusief transactiegeschiedenis naast het schatkistsaldo.
 
-## Use Cases
+## Gebruiksscenario's
 
-| Scenario | Command |
+| Scenario | Commando |
 |----------|---------|
-| Event prize distribution | `economy add <faction> <prize>` |
-| Penalty for rule violation | `economy take <faction> <fine>` |
-| Economy reset after wipe | `economy reset <faction>` |
-| Compensation for bugs | `economy add <faction> <amount>` |
+| Evenementprijzenverdeling | `economy add <faction> <prize>` |
+| Straf voor regelovertreding | `economy take <faction> <fine>` |
+| Economie-reset na wipe | `economy reset <faction>` |
+| Compensatie voor bugs | `economy add <faction> <amount>` |
 
->[!WARNING] Treasury changes are logged in the faction's transaction history. Admin modifications are recorded with the admin's name for accountability.
+>[!WARNING] Schatkistwijzigingen worden gelogd in de transactiegeschiedenis van de factie. Adminwijzigingen worden vastgelegd met de naam van de admin voor verantwoording.
 
->[!NOTE] All economy admin commands work even when the economy module is disabled in config. The data is stored regardless of module status.
+>[!NOTE] Alle economie-admincommando's werken zelfs wanneer de economiemodule is uitgeschakeld in de configuratie. De data wordt opgeslagen ongeacht de modulestatus.

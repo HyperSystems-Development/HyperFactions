@@ -2,44 +2,44 @@
 id: diplomacy_alliances
 commands: ally
 ---
-# Forming Alliances
+# Bondgenootschappen Sluiten
 
-Alliances are mutual agreements between two factions that provide protection and cooperation benefits.
+Bondgenootschappen zijn wederzijdse overeenkomsten tussen twee facties die bescherming en samenwerkingsvoordelen bieden.
 
 ---
 
-## How to Form an Alliance
+## Hoe je een Bondgenootschap Sluit
 
 `/f ally <faction>`
 
-Sends an alliance request to the target faction. The alliance only takes effect once both sides agree. An Officer or Leader from the other faction must also run the same command targeting your faction to confirm.
+Stuurt een bondgenootschapsverzoek naar de doelfactie. Het bondgenootschap gaat pas in als beide partijen akkoord gaan. Een Officer of Leider van de andere factie moet ook hetzelfde commando uitvoeren gericht op jouw factie om te bevestigen.
 
-## How to Break an Alliance
+## Hoe je een Bondgenootschap Verbreekt
 
 `/f neutral <faction>`
 
-Either side can unilaterally end an alliance by resetting the relation to neutral.
+Beide partijen kunnen eenzijdig een bondgenootschap beëindigen door de relatie naar neutraal te resetten.
 
 ---
 
-## Alliance Benefits
+## Voordelen van een Bondgenootschap
 
-| Benefit | Details |
-|---------|---------|
-| No friendly fire | Allied players cannot damage each other |
-| Shared map visibility | Allied territory shows in blue on the territory map |
-| Territory interaction | Allies can use doors, seats, and transport in your territory |
-| Ally chat | Cycle to ally chat mode for cross-faction communication |
-| Overclaim protection | Allies cannot overclaim each other's territory |
+| Voordeel | Details |
+|----------|---------|
+| Geen friendly fire | Bondgenootspelers kunnen elkaar geen schade toebrengen |
+| Gedeelde kaartzichtbaarheid | Bondgenootgebied wordt blauw weergegeven op de gebiedskaart |
+| Gebiedsinteractie | Bondgenoten kunnen deuren, stoelen en transport gebruiken in je grondgebied |
+| Bondgenotenchat | Wissel naar bondgenotenchat voor communicatie tussen facties |
+| Overclaimbescherming | Bondgenoten kunnen elkaars grondgebied niet overclaimen |
 
->[!NOTE] Your faction can have up to 10 alliances at a time. Choose your allies wisely.
+>[!NOTE] Je factie kan maximaal 10 bondgenootschappen tegelijk hebben. Kies je bondgenoten verstandig.
 
 ---
 
-## Alliance Etiquette
+## Bondgenootschapsetiquette
 
->[!TIP] Communication is key. Before sending an alliance request, consider reaching out to the other faction's leader to discuss terms. A strong alliance is built on mutual benefit, not just convenience.
+>[!TIP] Communicatie is essentieel. Overweeg voordat je een bondgenootschapsverzoek stuurt om contact op te nemen met de leider van de andere factie om voorwaarden te bespreken. Een sterk bondgenootschap is gebouwd op wederzijds voordeel, niet alleen gemak.
 
-- Alliances work both ways -- if you benefit from protection, your allies expect the same
-- Breaking an alliance during wartime may damage your faction's reputation
-- Allied factions can coordinate territory claims to create defensible borders
+- Bondgenootschappen werken beide kanten op -- als je profiteert van bescherming, verwachten je bondgenoten hetzelfde
+- Een bondgenootschap verbreken tijdens oorlogstijd kan de reputatie van je factie schaden
+- Bondgenootfacties kunnen gebiedsclaims coördineren om verdedigbare grenzen te creëren

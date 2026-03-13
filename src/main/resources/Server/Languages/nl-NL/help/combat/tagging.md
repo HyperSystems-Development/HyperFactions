@@ -3,27 +3,27 @@ id: combat_tagging
 ---
 # Combat Tagging
 
-When you attack or are attacked by another player, you become combat tagged for 15 seconds.
+Wanneer je een andere speler aanvalt of wordt aangevallen, word je combat-getagd voor 15 seconden.
 
-## While Tagged
+## Terwijl je Getagd Bent
 
-- No /f home or /f stuck teleports
-- No server teleport commands
-- Tag resets with each new combat action
-- A timer displays your remaining tag duration
+- Geen /f home of /f stuck teleports
+- Geen server-teleportcommando's
+- Tag reset bij elke nieuwe gevechtsactie
+- Een timer toont je resterende tagduur
 
 ---
 
-## Logout Penalty
+## Uitlogstraf
 
->[!WARNING] Logging out while combat tagged kills your character and you lose 1.0 power.
+>[!WARNING] Uitloggen terwijl je combat-getagd bent doodt je personage en je verliest 1.0 power.
 
-Your items drop where you disconnected and enemies can loot them. Always wait for the tag to expire.
+Je items vallen waar je de verbinding hebt verbroken en vijanden kunnen ze plunderen. Wacht altijd tot de tag verloopt.
 
-## How the Timer Works
+## Hoe de Timer Werkt
 
-The combat tag timer appears on screen when you enter combat. Every new hit resets it to 15 seconds. Once it reaches zero, all restrictions are lifted.
+De combat-tagtimer verschijnt op het scherm wanneer je in gevecht gaat. Elke nieuwe klap reset deze naar 15 seconden. Zodra deze nul bereikt, worden alle restricties opgeheven.
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Dit zijn standaardwaarden. Je serverbeheerder kan andere instellingen hebben geconfigureerd.
 
->[!TIP] Disengage and wait out the timer if you need to teleport.
+>[!TIP] Trek je terug en wacht de timer af als je moet teleporteren.

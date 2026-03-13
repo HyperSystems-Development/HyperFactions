@@ -1,41 +1,41 @@
 ---
 id: admin_getting_started
 ---
-# Getting Started as Admin
+# Aan de Slag als Admin
 
-Welcome to HyperFactions administration. This guide covers your first steps after installing the plugin.
+Welkom bij HyperFactions administratie. Deze gids behandelt je eerste stappen na het installeren van de plugin.
 
-## Opening the Admin Dashboard
+## Het Admin Dashboard Openen
 
 `/f admin`
-Opens the admin dashboard GUI with access to all management tools, zone editors, and server settings.
+Opent de admin-dashboard-GUI met toegang tot alle beheertools, zone-editors en serverinstellingen.
 
->[!INFO] You need **hyperfactions.admin.use** permission or OP status to access admin commands.
+>[!INFO] Je hebt de **hyperfactions.admin.use** permissie of OP-status nodig om admincommando's te gebruiken.
 
-## Requirements
+## Vereisten
 
-- **With a permission plugin**: Grant `hyperfactions.admin.use`
-- **Without a permission plugin**: The player must be a
-server operator (`adminRequiresOp=true` by default)
+- **Met een permissieplugin**: Ken `hyperfactions.admin.use` toe
+- **Zonder een permissieplugin**: De speler moet een
+serveroperator zijn (`adminRequiresOp=true` standaard)
 
-## First Steps After Install
+## Eerste Stappen na Installatie
 
-1. Run `/f admin` to verify your access
-2. Open **Config** to review default faction settings
-3. Create a **SafeZone** at spawn with `/f admin safezone Spawn`
-4. Optionally create **WarZones** for PvP arenas
-5. Review **Backup** settings to ensure data safety
+1. Voer `/f admin` uit om je toegang te verifiëren
+2. Open **Config** om de standaard factie-instellingen te bekijken
+3. Maak een **SafeZone** bij de spawn met `/f admin safezone Spawn`
+4. Maak optioneel **WarZones** aan voor PvP-arena's
+5. Bekijk **Backup**-instellingen om dataveiligheid te waarborgen
 
-## Admin Capabilities
+## Admin Mogelijkheden
 
-| Area | What You Can Do |
-|------|----------------|
-| Factions | Inspect, modify, or force-disband any faction |
-| Zones | Create SafeZones and WarZones with custom flags |
-| Power | Override player/faction power values |
-| Economy | Manage faction treasuries and upkeep |
-| Config | Edit settings live via GUI or reload from disk |
-| Backups | Create, restore, and manage data backups |
-| Imports | Migrate data from other faction plugins |
+| Gebied | Wat je kunt doen |
+|--------|-----------------|
+| Facties | Inspecteer, wijzig of ontbind elke factie geforceerd |
+| Zones | Maak SafeZones en WarZones aan met aangepaste vlaggen |
+| Power | Overschrijf speler/factie-powerwaarden |
+| Economie | Beheer factieschatkisten en onderhoud |
+| Config | Bewerk instellingen live via GUI of herlaad van schijf |
+| Backups | Maak backups, herstel en beheer ze |
+| Imports | Migreer data van andere factieplugins |
 
->[!TIP] Use `/f admin --text` to get chat-based output instead of the GUI, useful for console or automation.
+>[!TIP] Gebruik `/f admin --text` om chatgebaseerde uitvoer te krijgen in plaats van de GUI, handig voor console of automatisering.

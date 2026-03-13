@@ -1,42 +1,42 @@
 ---
 id: admin_upkeep_management
 ---
-# Upkeep Management
+# Onderhoudsbeheer
 
-Faction upkeep charges factions periodically based on their territory and member count.
+Factieonderhoud brengt facties periodiek kosten in rekening op basis van hun grondgebied en ledenaantal.
 
-## Admin Controls
+## Admin Besturingselementen
 
-Upkeep settings are managed through the economy config file or the admin config GUI.
+Onderhoudsinstellingen worden beheerd via het economie-configuratiebestand of de admin-config-GUI.
 
 `/f admin config`
-Open the config editor and navigate to economy settings to adjust upkeep values.
+Open de config-editor en navigeer naar economie-instellingen om onderhoudswaarden aan te passen.
 
-## Default Upkeep Settings
+## Standaard Onderhoudsinstellingen
 
-| Setting | Default | Description |
-|---------|---------|-------------|
-| Upkeep enabled | false | Master toggle for the system |
-| Upkeep interval | 24h | How often upkeep is charged |
-| Per-claim cost | 5.0 | Cost per claimed chunk per cycle |
-| Per-member cost | 0.0 | Cost per member per cycle |
-| Grace period | 72h | New factions are exempt |
-| Disband on bankrupt | false | Auto-disband if cannot pay |
+| Instelling | Standaard | Beschrijving |
+|------------|-----------|-------------|
+| Onderhoud ingeschakeld | false | Hoofdschakelaar voor het systeem |
+| Onderhoudsinterval | 24u | Hoe vaak onderhoud wordt geheven |
+| Per-claim kosten | 5.0 | Kosten per geclaimde chunk per cyclus |
+| Per-lid kosten | 0.0 | Kosten per lid per cyclus |
+| Respijtperiode | 72u | Nieuwe facties zijn vrijgesteld |
+| Ontbinden bij faillissement | false | Automatisch ontbinden als niet kan betalen |
 
-## Monitoring Upkeep
+## Onderhoud Monitoren
 
-Use `/f admin info <faction>` to see:
-- Current treasury balance
-- Estimated upkeep cost per cycle
-- Time until next upkeep charge
-- Whether the faction can afford upkeep
+Gebruik `/f admin info <faction>` om te zien:
+- Huidig schatkistsaldo
+- Geschatte onderhoudskosten per cyclus
+- Tijd tot volgende onderhoudsheffing
+- Of de factie onderhoud kan betalen
 
->[!TIP] Review economy statistics across all factions from the admin dashboard to identify factions at risk of bankruptcy before upkeep triggers.
+>[!TIP] Bekijk economiestatistieken van alle facties vanuit het admin-dashboard om facties met faillissementsrisico te identificeren voordat onderhoud in werking treedt.
 
->[!INFO] Upkeep configuration is stored in `economy.json`. Changes made via the config GUI take effect after reload with `/f admin reload`.
+>[!INFO] Onderhoudsconfiguratie is opgeslagen in `economy.json`. Wijzigingen via de config-GUI worden van kracht na herladen met `/f admin reload`.
 
-## Upkeep Formula
+## Onderhoudsformule
 
-**Total upkeep** = (claimed chunks x per-claim cost) + (member count x per-member cost)
+**Totaal onderhoud** = (geclaimde chunks x per-claim kosten) + (ledenaantal x per-lid kosten)
 
->[!WARNING] Enabling upkeep on a server with existing factions may cause unexpected bankruptcies. Consider setting a grace period or announcing the change in advance.
+>[!WARNING] Het inschakelen van onderhoud op een server met bestaande facties kan onverwachte faillissementen veroorzaken. Overweeg een respijtperiode in te stellen of de wijziging van tevoren aan te kondigen.

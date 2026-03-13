@@ -2,37 +2,37 @@
 id: welcome_started
 commands: gui, menu
 ---
-# Getting Started
+# Aan de Slag
 
-Welcome to HyperFactions! Here is how to get up and running in just a few steps.
-
----
-
-## Step 1: Open the Faction Menu
-
-Type /f to open the main faction GUI. This is your hub for everything -- browsing factions, creating your own, and managing invitations.
-
-## Step 2: Choose Your Path
-
-| Option | How |
-|--------|-----|
-| Browse open factions | Click Browse in the menu and hit Join on any open faction. |
-| Accept an invitation | Check the Invites tab. If someone invited you, click Accept. |
-| Create your own | Click Create Faction, pick a name, and you are the Leader. |
-
-## Step 3: Explore Your Faction
-
-Once you are in a faction, you will see the Faction Dashboard with your roster, territory map, relations, and settings.
-
->[!TIP] If you are brand new, try joining an existing faction first. You will learn the ropes faster with experienced members around you.
+Welkom bij HyperFactions! Hier lees je hoe je in een paar stappen kunt beginnen.
 
 ---
 
-## Essential First Commands
+## Stap 1: Open het Factiemenu
 
-- /f -- Opens the faction GUI
-- /f home -- Teleport to your faction's home base
-- /f c -- Cycle chat mode between Normal, Faction, and Ally
-- /f map -- View the territory map around you
+Typ /f om het hoofdmenu van je factie te openen. Dit is je centrale punt voor alles -- facties bekijken, je eigen factie aanmaken en uitnodigingen beheren.
 
->[!TIP] You can also type /f help in chat for a quick command reference anytime.
+## Stap 2: Kies je Pad
+
+| Optie | Hoe |
+|-------|-----|
+| Open facties bekijken | Klik op Bladeren in het menu en klik op Toetreden bij een open factie. |
+| Een uitnodiging accepteren | Bekijk het tabblad Uitnodigingen. Als iemand je heeft uitgenodigd, klik je op Accepteren. |
+| Zelf een factie aanmaken | Klik op Factie Aanmaken, kies een naam en je bent de Leider. |
+
+## Stap 3: Verken je Factie
+
+Zodra je in een factie zit, zie je het Factie Dashboard met je ledenlijst, gebiedskaart, relaties en instellingen.
+
+>[!TIP] Als je helemaal nieuw bent, probeer dan eerst een bestaande factie te joinen. Je leert de kneepjes sneller met ervaren leden om je heen.
+
+---
+
+## Essentiële Eerste Commando's
+
+- /f -- Opent de factie-GUI
+- /f home -- Teleporteer naar de thuisbasis van je factie
+- /f c -- Wissel chatmodus tussen Normaal, Factie en Bondgenoot
+- /f map -- Bekijk de gebiedskaart om je heen
+
+>[!TIP] Je kunt ook /f help typen in de chat voor een snelle commandoreferentie op elk moment.

@@ -2,49 +2,49 @@
 id: power_losing
 commands: overclaim
 ---
-# Losing Territory
+# Grondgebied Verliezen
 
-When a faction's total power drops below the cost of its claims, it becomes raidable. Enemies can overclaim chunks right out from under you.
+Wanneer de totale power van een factie onder de kosten van de claims zakt, wordt deze raidbaar. Vijanden kunnen chunks direct onder je vandaan overclaimen.
 
 ---
 
-## How Overclaiming Works
+## Hoe Overclaiming Werkt
 
 `/f overclaim`
 
-An Officer or Leader from an enemy faction stands in your claimed chunk and runs this command. If your faction is in a power deficit, the chunk transfers to their faction.
+Een Officer of Leider van een vijandige factie gaat in jouw geclaimde chunk staan en voert dit commando uit. Als je factie een powertekort heeft, gaat de chunk over naar hun factie.
 
-## The Math
+## De Berekening
 
-Each claim costs 2.0 power to maintain. If your total power falls below that threshold, the deficit chunks are vulnerable.
+Elke claim kost 2.0 power om te onderhouden. Als je totale power onder die drempel zakt, zijn de tekortchunks kwetsbaar.
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Dit zijn standaardwaarden. Je serverbeheerder kan andere instellingen hebben geconfigureerd.
 
->[!WARNING] Overclaiming is permanent. Once an enemy takes a chunk, you must reclaim it (or overclaim it back if they weaken).
+>[!WARNING] Overclaiming is permanent. Zodra een vijand een chunk overneemt, moet je het terugclaimen (of het overclaimen als zij verzwakken).
 
 ---
 
-## Example Scenario
+## Voorbeeldscenario
 
-| Factor | Value |
-|--------|-------|
-| Members | 5 players |
-| Power per member | 10 each (starting) |
-| Total power | 50 |
+| Factor | Waarde |
+|--------|--------|
+| Leden | 5 spelers |
+| Power per lid | 10 elk (start) |
+| Totale power | 50 |
 | Claims | 30 chunks |
-| Power needed (30 x 2.0) | 60 |
-| Deficit | 10 power short |
+| Benodigde power (30 x 2.0) | 60 |
+| Tekort | 10 power te kort |
 
-In this example, the faction is already raidable from the start. Enemies could overclaim up to 5 chunks (10 deficit / 2.0 per claim) before the faction reaches equilibrium.
+In dit voorbeeld is de factie al raidbaar vanaf het begin. Vijanden kunnen tot 5 chunks overclaimen (10 tekort / 2.0 per claim) voordat de factie evenwicht bereikt.
 
 ---
 
-## How to Prevent Overclaiming
+## Hoe je Overclaiming Voorkomt
 
-- Do not over-expand -- always keep total power above your claim cost with a buffer
-- Stay active -- power only regenerates while online (+0.1/min)
-- Avoid unnecessary deaths -- each death costs 1.0 power
-- Recruit more members -- more players means more total power
-- Unclaim unused chunks -- free up power with /f unclaim
+- Breid niet te veel uit -- houd de totale power altijd boven je claimkosten met een buffer
+- Blijf actief -- power regenereert alleen terwijl je online bent (+0.1/min)
+- Vermijd onnodige sterfgevallen -- elk sterfgeval kost 1.0 power
+- Werf meer leden -- meer spelers betekent meer totale power
+- Unclaim ongebruikte chunks -- maak power vrij met /f unclaim
 
->[!TIP] Check your power status regularly with /f power. If your total power is close to your claim cost, consider unclaiming less important chunks before a war.
+>[!TIP] Controleer je powerstatus regelmatig met /f power. Als je totale power dicht bij je claimkosten ligt, overweeg dan om minder belangrijke chunks te unclaimen voor een oorlog.

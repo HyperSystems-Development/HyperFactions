@@ -1,38 +1,38 @@
 ---
 id: admin_power_commands
 ---
-# Power Admin Commands
+# Power Admincommando's
 
-Override player and faction power values. All commands require `hyperfactions.admin.power` permission.
+Overschrijf speler- en factie-powerwaarden. Alle commando's vereisen de `hyperfactions.admin.power` permissie.
 
-## Player Power Commands
+## Speler-powercommando's
 
-| Command | Description |
-|---------|-------------|
-| `/f admin power set <player> <amount>` | Set exact power value |
-| `/f admin power add <player> <amount>` | Add power to player |
-| `/f admin power remove <player> <amount>` | Remove power from player |
-| `/f admin power reset <player>` | Reset to default starting power |
-| `/f admin power info <player>` | View detailed power breakdown |
+| Commando | Beschrijving |
+|----------|-------------|
+| `/f admin power set <player> <amount>` | Stel exacte powerwaarde in |
+| `/f admin power add <player> <amount>` | Voeg power toe aan speler |
+| `/f admin power remove <player> <amount>` | Verwijder power van speler |
+| `/f admin power reset <player>` | Reset naar standaard startpower |
+| `/f admin power info <player>` | Bekijk gedetailleerd power-overzicht |
 
-## How Power Affects Factions
+## Hoe Power Facties Beïnvloedt
 
-A faction's total power is the sum of all its members' individual power. Territory claims require sufficient total power to maintain.
+De totale power van een factie is de som van de individuele power van alle leden. Gebiedsclaims vereisen voldoende totale power om te onderhouden.
 
 | Scenario | Effect |
 |----------|--------|
-| Power set higher | Faction can claim more territory |
-| Power set lower | Faction may become vulnerable to overclaim |
-| Power reset | Returns player to default starting value |
+| Power hoger ingesteld | Factie kan meer grondgebied claimen |
+| Power lager ingesteld | Factie kan kwetsbaar worden voor overclaim |
+| Power gereset | Speler keert terug naar standaard startwaarde |
 
->[!WARNING] Lowering a player's power may cause their faction to lose territory if total power drops below the number of claimed chunks.
+>[!WARNING] Het verlagen van de power van een speler kan ertoe leiden dat hun factie grondgebied verliest als de totale power onder het aantal geclaimde chunks zakt.
 
-## Examples
+## Voorbeelden
 
-- `/f admin power set Steve 50` -- set to exactly 50
-- `/f admin power add Steve 10` -- increase by 10
-- `/f admin power remove Steve 5` -- decrease by 5
-- `/f admin power reset Steve` -- back to default
-- `/f admin power info Steve` -- show full breakdown
+- `/f admin power set Steve 50` -- instellen op exact 50
+- `/f admin power add Steve 10` -- verhogen met 10
+- `/f admin power remove Steve 5` -- verlagen met 5
+- `/f admin power reset Steve` -- terug naar standaard
+- `/f admin power info Steve` -- toon volledig overzicht
 
->[!TIP] Use `/f admin power info <player>` to see current power, max power, and any active overrides before making changes.
+>[!TIP] Gebruik `/f admin power info <player>` om huidige power, max power en eventuele actieve overschrijvingen te bekijken voordat je wijzigingen aanbrengt.

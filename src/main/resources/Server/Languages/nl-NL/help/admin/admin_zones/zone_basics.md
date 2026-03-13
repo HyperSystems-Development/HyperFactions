@@ -1,43 +1,43 @@
 ---
 id: admin_zone_basics
 ---
-# Zone Basics
+# Zone Basis
 
-Zones are admin-controlled territories with custom rules that override normal faction protection.
+Zones zijn door admins beheerde gebieden met aangepaste regels die de normale factiegebiedsbescherming overschrijven.
 
-## Zone Types
+## Zonetypes
 
-- **SafeZone** -- No PvP, no building, no damage.
-Ideal for spawn areas and trading hubs.
-- **WarZone** -- PvP always enabled, no building.
-Ideal for arenas and contested battle areas.
+- **SafeZone** -- Geen PvP, geen bouwen, geen schade.
+Ideaal voor spawngebieden en handelscentra.
+- **WarZone** -- PvP altijd ingeschakeld, geen bouwen.
+Ideaal voor arena's en betwiste gevechtsgebieden.
 
-## Creating Zones
+## Zones Aanmaken
 
 `/f admin safezone <name>`
-Creates a SafeZone and claims your current chunk.
+Maakt een SafeZone aan en claimt je huidige chunk.
 
 `/f admin warzone <name>`
-Creates a WarZone and claims your current chunk.
+Maakt een WarZone aan en claimt je huidige chunk.
 
-After creation, stand in additional chunks and use `/f admin zone claim <zone>` to expand the zone.
+Ga na het aanmaken in extra chunks staan en gebruik `/f admin zone claim <zone>` om de zone uit te breiden.
 
-## Managing Zone Chunks
+## Zonechunks Beheren
 
 `/f admin zone claim <zone>`
-Add the current chunk to the named zone.
+Voeg de huidige chunk toe aan de genoemde zone.
 
 `/f admin zone unclaim <zone>`
-Remove the current chunk from the named zone.
+Verwijder de huidige chunk uit de genoemde zone.
 
 `/f admin zone radius <zone> <radius>`
-Claim a square of chunks around your position.
+Claim een vierkant van chunks rondom je positie.
 
-## Deleting Zones
+## Zones Verwijderen
 
 `/f admin removezone <name>`
-Permanently deletes the zone and releases all its claimed chunks.
+Verwijdert de zone permanent en geeft al haar geclaimde chunks vrij.
 
->[!WARNING] Deleting a zone releases all its chunks instantly. This cannot be undone without a backup restore.
+>[!WARNING] Het verwijderen van een zone geeft al haar chunks direct vrij. Dit kan niet ongedaan worden gemaakt zonder een backup-herstel.
 
->[!INFO] Zone rules **always override** faction territory rules. A SafeZone inside enemy land is still safe.
+>[!INFO] Zoneregels **overschrijven altijd** factiegebiedsregels. Een SafeZone in vijandelijk land is nog steeds veilig.

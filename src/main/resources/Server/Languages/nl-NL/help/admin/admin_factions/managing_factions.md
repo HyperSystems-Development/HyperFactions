@@ -1,38 +1,38 @@
 ---
 id: admin_managing_factions
 ---
-# Managing Factions
+# Facties Beheren
 
-Admins can inspect and modify any faction on the server through the dashboard or commands.
+Admins kunnen elke factie op de server inspecteren en wijzigen via het dashboard of commando's.
 
-## Browsing Factions
+## Facties Bekijken
 
 `/f admin factions`
-Opens the admin faction browser. View all factions with member counts, power levels, and territory.
+Opent de admin-factiebrowser. Bekijk alle facties met ledenaantallen, powerniveaus en grondgebied.
 
 `/f admin info <faction>`
-Opens the admin info panel for a specific faction with full details and management options.
+Opent het admin-infopaneel voor een specifieke factie met volledige details en beheeropties.
 
-## Modifying Faction Settings
+## Factie-instellingen Wijzigen
 
-With `hyperfactions.admin.modify` permission, you can:
+Met de `hyperfactions.admin.modify` permissie kun je:
 
-- **Rename** a faction to resolve conflicts
-- **Set color** to fix display issues
-- **Toggle open/close** to override join policy
-- **Edit description** for moderation purposes
+- **Hernoemen** van een factie om conflicten op te lossen
+- **Kleur instellen** om weergaveproblemen te verhelpen
+- **Open/gesloten schakelen** om het toetredingsbeleid te overschrijven
+- **Beschrijving bewerken** voor moderatiedoeleinden
 
->[!TIP] Use `/f admin who <player>` to look up which faction a specific player belongs to and view their details.
+>[!TIP] Gebruik `/f admin who <player>` om op te zoeken bij welke factie een specifieke speler hoort en hun details te bekijken.
 
-## Viewing Members and Relations
+## Leden en Relaties Bekijken
 
-The admin info panel shows:
+Het admin-infopaneel toont:
 
-| Section | Details |
-|---------|---------|
-| **Members** | Full roster with roles and last seen |
-| **Relations** | All ally, enemy, and neutral standings |
-| **Territory** | Claimed chunks and power balance |
-| **Economy** | Treasury balance and transaction log |
+| Sectie | Details |
+|--------|---------|
+| **Leden** | Volledige ledenlijst met rollen en laatst gezien |
+| **Relaties** | Alle bondgenoot-, vijand- en neutrale verhoudingen |
+| **Grondgebied** | Geclaimde chunks en powerbalans |
+| **Economie** | Schatkistsaldo en transactielog |
 
->[!NOTE] Admin inspection commands do not notify the faction being viewed. Only modifications trigger alerts.
+>[!NOTE] Admin-inspectiecommando's melden de bekeken factie niet. Alleen wijzigingen activeren meldingen.

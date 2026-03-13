@@ -1,28 +1,28 @@
 ---
 id: combat_protection
 ---
-# Territory Protection
+# Gebiedsbescherming
 
-Claimed territory provides several layers of defense for your faction's builds and resources.
+Geclaimed grondgebied biedt meerdere lagen van verdediging voor de bouwwerken en grondstoffen van je factie.
 
-## Block Protection
+## Blokbescherming
 
-Only faction members can place or break blocks in your territory. Enemies and neutrals are blocked from modifying anything.
+Alleen factieleden kunnen blokken plaatsen of breken in je grondgebied. Vijanden en neutralen worden geblokkeerd van het aanpassen van wat dan ook.
 
-## Container Protection
+## Containerbescherming
 
-Chests, barrels, and other containers are secured. Only your faction members can open or interact with storage in claimed chunks.
+Kisten, vaten en andere containers zijn beveiligd. Alleen je factieleden kunnen opslag openen of ermee interacteren in geclaimde chunks.
 
-## Entry Alerts
+## Betreedmeldingen
 
-When a non-member enters your claimed territory, online faction members receive a notification with the intruder's name and location.
+Wanneer een niet-lid je geclaimde grondgebied betreedt, ontvangen online factieleden een melding met de naam en locatie van de indringer.
 
 ---
 
-## Ally Access
+## Bondgenoottoegang
 
-Allies cannot build or break blocks in your territory by default. Ally damage is also disabled, so allied players cannot harm each other.
+Bondgenoten kunnen standaard geen blokken bouwen of breken in je grondgebied. Bondgenootschade is ook uitgeschakeld, zodat bondgenootspelers elkaar niet kunnen verwonden.
 
->[!INFO] Territory protects blocks, not players. PvP in your own territory depends on the attacker's relation to your faction.
+>[!INFO] Grondgebied beschermt blokken, geen spelers. PvP in je eigen grondgebied hangt af van de relatie van de aanvaller met je factie.
 
->[!TIP] Keep your claims connected and avoid isolated chunks that are harder to defend.
+>[!TIP] Houd je claims verbonden en vermijd geïsoleerde chunks die moeilijker te verdedigen zijn.

@@ -2,37 +2,37 @@
 id: diplomacy_relations
 commands: relations
 ---
-# Faction Relations
+# Factierelaties
 
-Every pair of factions has a diplomatic relation that determines how they interact. There are three states: Ally, Enemy, and Neutral.
-
----
-
-## Relation Comparison
-
-| Effect | Ally | Neutral | Enemy |
-|--------|------|---------|-------|
-| PvP in territory | Disabled | Standard rules | Enabled |
-| Territory protection | Mutual protection | Standard protection | Can overclaim if weakened |
-| Friendly fire | Disabled | N/A | Enabled everywhere |
-| Map color | Blue | Gray | Red |
-| How to set | Mutual agreement | Default state | One-way declaration |
-| Chat access | Ally chat channel | None | None |
+Elk paar facties heeft een diplomatieke relatie die bepaalt hoe ze met elkaar omgaan. Er zijn drie statussen: Bondgenoot, Vijand en Neutraal.
 
 ---
 
-## Viewing Relations
+## Relatievergelijking
+
+| Effect | Bondgenoot | Neutraal | Vijand |
+|--------|-----------|----------|--------|
+| PvP in grondgebied | Uitgeschakeld | Standaardregels | Ingeschakeld |
+| Gebiedsbescherming | Wederzijdse bescherming | Standaardbescherming | Kan overclaimen indien verzwakt |
+| Friendly fire | Uitgeschakeld | N.v.t. | Overal ingeschakeld |
+| Kaartkleur | Blauw | Grijs | Rood |
+| Hoe in te stellen | Wederzijdse overeenkomst | Standaardstatus | Eenzijdige verklaring |
+| Chattoegang | Bondgenotenchatkanaal | Geen | Geen |
+
+---
+
+## Relaties Bekijken
 
 `/f relations`
 
-Shows all your current alliances, enemies, and any pending alliance requests.
+Toont al je huidige bondgenootschappen, vijanden en openstaande bondgenootschapsverzoeken.
 
-## How Relations Work
+## Hoe Relaties Werken
 
-- Neutral is the default state between all factions. Standard server rules apply.
-- Alliance requires both factions to agree. Either side can break it unilaterally.
-- Enemy is declared one-way. No agreement needed -- the other faction is immediately marked as your enemy.
+- Neutraal is de standaardstatus tussen alle facties. Standaard serverregels zijn van toepassing.
+- Een bondgenootschap vereist dat beide facties akkoord gaan. Beide partijen kunnen het eenzijdig verbreken.
+- Vijand wordt eenzijdig verklaard. Geen overeenkomst nodig -- de andere factie wordt direct als vijand gemarkeerd.
 
->[!INFO] Relations are managed by Officers and Leaders. Members can view relations but cannot change them.
+>[!INFO] Relaties worden beheerd door Officers en Leiders. Leden kunnen relaties bekijken maar niet wijzigen.
 
->[!TIP] Use /f relations regularly to keep track of the diplomatic landscape. Knowing who your enemies are helps you prepare for territorial conflicts.
+>[!TIP] Gebruik /f relations regelmatig om het diplomatieke landschap bij te houden. Weten wie je vijanden zijn helpt je voor te bereiden op territoriale conflicten.

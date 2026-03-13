@@ -2,37 +2,37 @@
 id: faction_creating
 commands: create
 ---
-# Creating a Faction
+# Een Factie Aanmaken
 
-Starting your own faction makes you the Leader with full control over settings, members, and territory.
+Je eigen factie starten maakt je de Leider met volledige controle over instellingen, leden en grondgebied.
 
 ---
 
-## How to Create
+## Hoe je een Factie Aanmaakt
 
 `/f create <name>`
 
-This creates your faction and immediately opens the Faction Dashboard where you can begin inviting members, claiming land, and configuring settings.
+Dit maakt je factie aan en opent direct het Factie Dashboard waar je leden kunt uitnodigen, land claimen en instellingen configureren.
 
-## Name Rules
+## Naamregels
 
-| Rule | Requirement |
-|------|------------|
-| Length | Between 3 and 24 characters |
-| Characters | Letters, numbers, and spaces only |
-| Uniqueness | No two factions can share the same name |
+| Regel | Vereiste |
+|-------|---------|
+| Lengte | Tussen 3 en 24 tekens |
+| Tekens | Alleen letters, cijfers en spaties |
+| Uniekheid | Geen twee facties kunnen dezelfde naam hebben |
 
->[!WARNING] Choose your name carefully. Renaming later requires Leader permissions and may have a cooldown.
+>[!WARNING] Kies je naam zorgvuldig. Later hernoemen vereist Leider-rechten en kan een cooldown hebben.
 
 ---
 
-## What Happens on Creation
+## Wat er Gebeurt bij Aanmaak
 
-- You become the Leader (highest rank)
-- Your faction starts with 0 claims and your personal power (10 by default)
-- The faction dashboard opens automatically
-- You can immediately invite players, claim territory, and set a faction home
+- Je wordt de Leider (hoogste rang)
+- Je factie begint met 0 claims en jouw persoonlijke power (standaard 10)
+- Het factie-dashboard opent automatisch
+- Je kunt direct spelers uitnodigen, grondgebied claimen en een factiehuis instellen
 
->[!INFO] If the server has economy integration enabled, creating a faction may cost money. The creation cost is set by the server administrator.
+>[!INFO] Als de server economie-integratie heeft ingeschakeld, kan het aanmaken van een factie geld kosten. De aanmaakkosten worden ingesteld door de serverbeheerder.
 
->[!TIP] After creating, your first priorities should be: invite friends, find a base location, and claim it.
+>[!TIP] Na het aanmaken zijn je eerste prioriteiten: vrienden uitnodigen, een basislocatie vinden en deze claimen.

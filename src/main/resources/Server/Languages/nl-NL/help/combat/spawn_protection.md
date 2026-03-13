@@ -1,27 +1,27 @@
 ---
 id: combat_spawn_protection
 ---
-# Spawn Protection
+# Spawnbescherming
 
-After respawning from death, you receive temporary protection to prevent spawn camping.
+Na het respawnen van de dood ontvang je tijdelijke bescherming om spawncamping te voorkomen.
 
-## How It Works
+## Hoe het Werkt
 
-- Protection lasts 5 seconds after respawn
-- You cannot take damage during this period
-- A visual indicator shows your protected status
+- Bescherming duurt 5 seconden na respawn
+- Je kunt geen schade oplopen gedurende deze periode
+- Een visuele indicator toont je beschermde status
 
-## Protection Breaks
+## Bescherming Stopt
 
-Spawn protection ends early if you:
+Spawnbescherming eindigt vroegtijdig als je:
 
-- Attack another player or entity
-- Move from your spawn position
+- Een andere speler of entiteit aanvalt
+- Van je spawnpositie beweegt
 
-This prevents abuse. You cannot attack others while invulnerable. Once you take any action, protection drops and normal combat rules apply.
+Dit voorkomt misbruik. Je kunt anderen niet aanvallen terwijl je onkwetsbaar bent. Zodra je een actie onderneemt, stopt de bescherming en gelden normale gevechtsregels.
 
 ---
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Dit zijn standaardwaarden. Je serverbeheerder kan andere instellingen hebben geconfigureerd.
 
->[!TIP] Use your protection time to assess the situation before moving.
+>[!TIP] Gebruik je beschermingstijd om de situatie te beoordelen voordat je beweegt.

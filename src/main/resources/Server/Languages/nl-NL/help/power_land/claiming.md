@@ -2,49 +2,49 @@
 id: power_claiming
 commands: claim, unclaim
 ---
-# Claiming Territory
+# Grondgebied Claimen
 
-Claiming a chunk protects it under your faction's control. Only faction members can build, break, or access containers inside claimed territory.
+Een chunk claimen beschermt het onder de controle van je factie. Alleen factieleden kunnen bouwen, breken of containers openen in geclaimed grondgebied.
 
 ---
 
-## How to Claim
+## Hoe je Claimt
 
 `/f claim`
 
-Stand in the chunk you want to claim and run this command. The chunk is immediately protected. Requires Officer rank or higher.
+Ga in de chunk staan die je wilt claimen en voer dit commando uit. De chunk is direct beschermd. Vereist Officer-rang of hoger.
 
-## How to Unclaim
+## Hoe je Unclaimt
 
 `/f unclaim`
 
-Releases the chunk you are standing in back to wilderness. Also requires Officer+.
+Geeft de chunk waar je in staat terug aan de wildernis. Vereist ook Officer+.
 
 ---
 
-## Claim Rules
+## Claimregels
 
-| Rule | Default |
-|------|---------|
-| Power cost per claim | 2.0 power |
-| Maximum claims | 100 per faction |
-| Adjacent only | No (you can claim anywhere) |
+| Regel | Standaard |
+|-------|-----------|
+| Powerkosten per claim | 2.0 power |
+| Maximaal aantal claims | 100 per factie |
+| Alleen aangrenzend | Nee (je kunt overal claimen) |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Dit zijn standaardwaarden. Je serverbeheerder kan andere instellingen hebben geconfigureerd.
 
->[!INFO] Each claim costs 2.0 power to maintain. A faction with 50 total power can hold up to 25 claims safely.
+>[!INFO] Elke claim kost 2.0 power om te onderhouden. Een factie met 50 totale power kan veilig maximaal 25 claims vasthouden.
 
 ---
 
-## What Protection Provides
+## Wat Bescherming Biedt
 
-Inside claimed territory, the following is enforced by default:
+Binnen geclaimed grondgebied wordt standaard het volgende afgedwongen:
 
-- Outsiders cannot break, place, or interact with blocks
-- Allies can use doors, seats, and transport but cannot break or place blocks
-- Members and Officers have full access to build, break, and use everything
-- Container access (chests, crates) is restricted to members only
+- Buitenstaanders kunnen geen blokken breken, plaatsen of interacteren
+- Bondgenoten kunnen deuren, stoelen en transport gebruiken maar geen blokken breken of plaatsen
+- Leden en Officers hebben volledige toegang om te bouwen, breken en alles te gebruiken
+- Containertoegang (kisten, kratten) is beperkt tot alleen leden
 
->[!TIP] You can also claim directly from the territory map. Open /f map and click on unclaimed chunks to claim them.
+>[!TIP] Je kunt ook direct claimen vanaf de gebiedskaart. Open /f map en klik op ongeclaimde chunks om ze te claimen.
 
->[!WARNING] Do not over-expand. If your faction loses power through deaths, claims beyond your power budget become vulnerable to overclaiming.
+>[!WARNING] Breid niet te veel uit. Als je factie power verliest door sterfgevallen, worden claims buiten je powerbudget kwetsbaar voor overclaiming.

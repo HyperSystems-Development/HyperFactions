@@ -1,44 +1,44 @@
 ---
 id: welcome_tips
 ---
-# Quick Tips
+# Snelle Tips
 
-Handy advice organized by category to help you thrive.
+Handig advies per categorie om je te helpen slagen.
 
 ---
 
-## Territory
+## Grondgebied
 
-- Claim land around your base early with `/f claim` -- unclaimed builds have **no protection**
-- Each claim costs **2.0 power** to maintain, so do not over-expand beyond what your members can support
-- Use `/f map` to scout nearby claims and find safe spots to build
-- Unclaim chunks you no longer need with `/f unclaim` to free up power
+- Claim vroeg land rondom je basis met `/f claim` -- onbeschermde bouwwerken hebben **geen bescherming**
+- Elke claim kost **2.0 power** om te onderhouden, dus breid niet verder uit dan je leden kunnen dragen
+- Gebruik `/f map` om nabije claims te verkennen en veilige plekken te vinden om te bouwen
+- Unclaim chunks die je niet meer nodig hebt met `/f unclaim` om power vrij te maken
 
-## Combat
+## Gevecht
 
-- Dying costs **1.0 power** -- avoid unnecessary fights when your faction is near its claim limit
-- You have **5 seconds of spawn protection** after respawning
-- Combat tagging lasts **15 seconds** -- logging out while tagged costs extra power
-- Friendly fire is **disabled** between faction members and allies by default
+- Doodgaan kost **1.0 power** -- vermijd onnodige gevechten als je factie bijna aan de claimlimiet zit
+- Je hebt **5 seconden spawnbescherming** na het respawnen
+- Combat tagging duurt **15 seconden** -- uitloggen terwijl je getagd bent kost extra power
+- Friendly fire is standaard **uitgeschakeld** tussen factieleden en bondgenoten
 
->[!WARNING] Logging out while combat tagged causes additional power loss (1.0 per logout). Stay and fight or escape first.
+>[!WARNING] Uitloggen terwijl je combat-getagd bent veroorzaakt extra powerverlies (1.0 per uitlog). Blijf en vecht of ontvlucht eerst.
 
-## Social
+## Sociaal
 
-- Use `/f c` to cycle through chat modes so faction talk stays private
-- Invite trusted players with `/f invite <player>` -- invitations expire after **5 minutes**
-- Form alliances with `/f ally <faction>` for mutual protection and shared map visibility
-- Check `/f relations` to see your full diplomatic status
+- Gebruik `/f c` om tussen chatmodi te wisselen zodat factiegesprekken privé blijven
+- Nodig vertrouwde spelers uit met `/f invite <player>` -- uitnodigingen verlopen na **5 minuten**
+- Sluit bondgenootschappen met `/f ally <faction>` voor wederzijdse bescherming en gedeelde kaartzichtbaarheid
+- Bekijk `/f relations` om je volledige diplomatieke status te zien
 
-## Economy
+## Economie
 
->[!TIP] If the server has economy enabled, your faction can accumulate a treasury. Members can deposit, but only Officers and Leaders can withdraw or transfer funds.
+>[!TIP] Als de server economie heeft ingeschakeld, kan je factie een schatkist opbouwen. Leden kunnen storten, maar alleen Officers en Leiders kunnen opnemen of geld overmaken.
 
-- Deposit funds with the treasury GUI to strengthen your faction
-- A wealthier faction can afford more claims and recover from setbacks faster
+- Stort geld via de schatkist-GUI om je factie te versterken
+- Een rijkere factie kan meer claims betalen en sneller herstellen van tegenslagen
 
-## General
+## Algemeen
 
-- Type `/f` anytime to open your faction dashboard -- everything is accessible from there
-- Promote active members to Officer so they can help claim and manage territory
-- Keep your faction active -- power only regenerates while players are **online**
+- Typ `/f` op elk moment om je factie-dashboard te openen -- alles is van daaruit bereikbaar
+- Promoveer actieve leden tot Officer zodat ze kunnen helpen met claimen en gebiedsbeheer
+- Houd je factie actief -- power regenereert alleen terwijl spelers **online** zijn

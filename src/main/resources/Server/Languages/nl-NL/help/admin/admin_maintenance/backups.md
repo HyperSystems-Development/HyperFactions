@@ -1,48 +1,48 @@
 ---
 id: admin_backups
 ---
-# Backup System
+# Backupsysteem
 
-HyperFactions includes automatic and manual backups with GFS (Grandfather-Father-Son) rotation.
+HyperFactions bevat automatische en handmatige backups met GFS (Grandfather-Father-Son) rotatie.
 
-## Backup Commands
+## Backupcommando's
 
-| Command | Description |
-|---------|-------------|
-| `/f admin backup create` | Create a manual backup now |
-| `/f admin backup list` | List all available backups |
-| `/f admin backup restore <name>` | Restore from a backup |
-| `/f admin backup delete <name>` | Delete a specific backup |
+| Commando | Beschrijving |
+|----------|-------------|
+| `/f admin backup create` | Maak nu een handmatige backup |
+| `/f admin backup list` | Toon alle beschikbare backups |
+| `/f admin backup restore <name>` | Herstel vanuit een backup |
+| `/f admin backup delete <name>` | Verwijder een specifieke backup |
 
-**Permission**: `hyperfactions.admin.backup`
+**Permissie**: `hyperfactions.admin.backup`
 
-## GFS Rotation Defaults
+## GFS Rotatiestandaarden
 
-| Type | Retention | Description |
-|------|-----------|-------------|
-| Hourly | 24 | Last 24 hourly snapshots |
-| Daily | 7 | Last 7 daily snapshots |
-| Weekly | 4 | Last 4 weekly snapshots |
-| Manual | 10 | Manually created backups |
-| Shutdown | 5 | Created on server stop |
+| Type | Bewaarperiode | Beschrijving |
+|------|---------------|-------------|
+| Per uur | 24 | Laatste 24 uurlijkse snapshots |
+| Dagelijks | 7 | Laatste 7 dagelijkse snapshots |
+| Wekelijks | 4 | Laatste 4 wekelijkse snapshots |
+| Handmatig | 10 | Handmatig gemaakte backups |
+| Afsluiting | 5 | Gemaakt bij serverstop |
 
->[!INFO] Shutdown backups are enabled by default (`onShutdown=true`). They capture the latest state before the server stops.
+>[!INFO] Afsluitingsbackups zijn standaard ingeschakeld (`onShutdown=true`). Ze leggen de laatste staat vast voordat de server stopt.
 
-## Backup Contents
+## Backupinhoud
 
-Each backup ZIP archive contains:
-- All faction data files
-- Player power data
-- Zone definitions
-- Chat history and economy data
-- Invite and join request data
-- Configuration files
+Elk backup-ZIP-archief bevat:
+- Alle factiedatabestanden
+- Speler-powerdata
+- Zonedefinities
+- Chatgeschiedenis en economiedata
+- Uitnodigings- en toetredingsverzoekdata
+- Configuratiebestanden
 
->[!WARNING] **Restoring a backup is destructive.** It replaces all current data with the backup's contents. Any changes made after the backup was created will be lost. Always create a fresh backup before restoring.
+>[!WARNING] **Het herstellen van een backup is destructief.** Het vervangt alle huidige data door de inhoud van de backup. Alle wijzigingen na het maken van de backup gaan verloren. Maak altijd een verse backup voordat je herstelt.
 
 ## Best Practices
 
-1. Create a manual backup before major admin actions
-2. Review backup retention in `backup.json`
-3. Test restore on a staging server first
-4. Keep shutdown backups enabled for crash recovery
+1. Maak een handmatige backup voor belangrijke adminacties
+2. Bekijk backup-bewaarinstellingen in `backup.json`
+3. Test eerst herstel op een testserver
+4. Houd afsluitingsbackups ingeschakeld voor crashherstel
