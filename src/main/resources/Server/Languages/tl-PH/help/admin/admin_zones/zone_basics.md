@@ -1,43 +1,43 @@
 ---
 id: admin_zone_basics
 ---
-# Zone Basics
+# Mga Pangunahing Kaalaman sa Zone
 
-Zones are admin-controlled territories with custom rules that override normal faction protection.
+Ang mga zone ay admin-controlled na teritoryo na may custom rules na nag-o-override ng normal na faction protection.
 
-## Zone Types
+## Mga Uri ng Zone
 
-- **SafeZone** -- No PvP, no building, no damage.
-Ideal for spawn areas and trading hubs.
-- **WarZone** -- PvP always enabled, no building.
-Ideal for arenas and contested battle areas.
+- **SafeZone** -- Walang PvP, walang building, walang damage.
+Ideal para sa mga spawn area at trading hub.
+- **WarZone** -- Palaging naka-enable ang PvP, walang building.
+Ideal para sa mga arena at contested battle area.
 
-## Creating Zones
+## Paggawa ng mga Zone
 
 `/f admin safezone <name>`
-Creates a SafeZone and claims your current chunk.
+Gumagawa ng SafeZone at kini-claim ang kasalukuyan mong chunk.
 
 `/f admin warzone <name>`
-Creates a WarZone and claims your current chunk.
+Gumagawa ng WarZone at kini-claim ang kasalukuyan mong chunk.
 
-After creation, stand in additional chunks and use `/f admin zone claim <zone>` to expand the zone.
+Pagkatapos gumawa, tumayo sa mga karagdagang chunk at gamitin ang `/f admin zone claim <zone>` para palawakin ang zone.
 
-## Managing Zone Chunks
+## Pamamahala ng mga Zone Chunk
 
 `/f admin zone claim <zone>`
-Add the current chunk to the named zone.
+Idagdag ang kasalukuyang chunk sa pinangalanang zone.
 
 `/f admin zone unclaim <zone>`
-Remove the current chunk from the named zone.
+Tanggalin ang kasalukuyang chunk mula sa pinangalanang zone.
 
 `/f admin zone radius <zone> <radius>`
-Claim a square of chunks around your position.
+Mag-claim ng parisukat na mga chunk sa paligid ng posisyon mo.
 
-## Deleting Zones
+## Pag-delete ng mga Zone
 
 `/f admin removezone <name>`
-Permanently deletes the zone and releases all its claimed chunks.
+Permanenteng dine-delete ang zone at binibitawan ang lahat ng na-claim na chunk nito.
 
->[!WARNING] Deleting a zone releases all its chunks instantly. This cannot be undone without a backup restore.
+>[!WARNING] Ang pag-delete ng zone ay agad na nagbibigyang-laya sa lahat ng chunk nito. Hindi ito pwedeng i-undo nang walang backup restore.
 
->[!INFO] Zone rules **always override** faction territory rules. A SafeZone inside enemy land is still safe.
+>[!INFO] Ang mga zone rule ay **palaging nag-o-override** ng faction territory rules. Ang SafeZone sa loob ng enemy land ay ligtas pa rin.

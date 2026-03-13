@@ -1,29 +1,29 @@
 ---
 id: combat_zones
 ---
-# Special Zones
+# Mga Espesyal na Zone
 
-Admins can designate areas with special rules that override normal faction territory protection.
+Ang mga admin ay pwedeng mag-designate ng mga lugar na may espesyal na rules na nag-o-override ng normal na faction territory protection.
 
 ## SafeZone
 
-No PvP damage, no block breaking by non-admins. Ideal for spawn areas, trading hubs, and event staging areas. Players cannot be harmed here.
+Walang PvP damage, walang block breaking ng mga non-admin. Ideal para sa mga spawn area, trading hub, at event staging area. Hindi pwedeng masaktan ang mga manlalaro dito.
 
 ## WarZone
 
-PvP is always enabled. No block protection applies. Open battle areas where anything goes. You receive no territory protection benefits in a WarZone.
+Palaging naka-enable ang PvP. Walang block protection. Bukas na lugar ng labanan kung saan pwede ang lahat. Walang territory protection benefit na matatanggap mo sa isang WarZone.
 
 ---
 
-## Zone Comparison
+## Paghahambing ng mga Zone
 
 | Feature | SafeZone | WarZone | Faction Land |
 |---------|----------|---------|--------------|
-| PvP | Disabled | Always On | Relation-based |
-| Block Break | Disabled | Allowed | Members Only |
-| Containers | Protected | Open | Members Only |
-| Best For | Spawn/Trade | Arenas | Bases |
+| PvP | Naka-disable | Palaging Naka-on | Batay sa relasyon |
+| Block Break | Naka-disable | Pwede | Mga Miyembro Lamang |
+| Mga Container | Protektado | Bukas | Mga Miyembro Lamang |
+| Pinakamainam Para Sa | Spawn/Trade | Arena | Mga Base |
 
->[!NOTE] Zone rules always override faction territory rules. A claimed chunk inside a WarZone follows WarZone rules.
+>[!NOTE] Palaging nag-o-override ang zone rules sa faction territory rules. Ang isang na-claim na chunk sa loob ng WarZone ay sumusunod sa WarZone rules.
 
->[!TIP] Check your territory map with /f map to see zone boundaries.
+>[!TIP] Suriin ang territory map mo gamit ang /f map para makita ang mga hangganan ng zone.

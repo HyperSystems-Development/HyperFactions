@@ -1,28 +1,28 @@
 ---
 id: combat_protection
 ---
-# Territory Protection
+# Proteksyon ng Teritoryo
 
-Claimed territory provides several layers of defense for your faction's builds and resources.
+Ang na-claim na teritoryo ay nagbibigay ng ilang layer ng depensa para sa mga build at resource ng faction mo.
 
-## Block Protection
+## Proteksyon ng Block
 
-Only faction members can place or break blocks in your territory. Enemies and neutrals are blocked from modifying anything.
+Tanging mga faction member lamang ang pwedeng mag-place o mag-break ng mga block sa iyong teritoryo. Ang mga kaaway at neutral ay naka-block mula sa pag-modify ng kahit ano.
 
-## Container Protection
+## Proteksyon ng Container
 
-Chests, barrels, and other containers are secured. Only your faction members can open or interact with storage in claimed chunks.
+Ang mga chest, barrel, at ibang container ay secured. Tanging mga faction member mo lamang ang pwedeng mag-bukas o mag-interact sa storage sa mga na-claim na chunk.
 
-## Entry Alerts
+## Mga Alerto sa Pagpasok
 
-When a non-member enters your claimed territory, online faction members receive a notification with the intruder's name and location.
+Kapag may non-member na pumasok sa iyong na-claim na teritoryo, ang mga online faction member ay makakatanggap ng notification na may pangalan at lokasyon ng intruder.
 
 ---
 
 ## Ally Access
 
-Allies cannot build or break blocks in your territory by default. Ally damage is also disabled, so allied players cannot harm each other.
+Ang mga ally ay hindi pwedeng mag-build o mag-break ng mga block sa iyong teritoryo bilang default. Ang ally damage ay naka-disable din, kaya hindi pwedeng magkasaktan ang mga allied manlalaro.
 
->[!INFO] Territory protects blocks, not players. PvP in your own territory depends on the attacker's relation to your faction.
+>[!INFO] Ang teritoryo ay nagpoprotekta ng mga block, hindi ng mga manlalaro. Ang PvP sa sarili mong teritoryo ay depende sa relasyon ng attacker sa faction mo.
 
->[!TIP] Keep your claims connected and avoid isolated chunks that are harder to defend.
+>[!TIP] Panatilihing konektado ang mga claim mo at iwasan ang mga isoladong chunk na mas mahirap depensahan.

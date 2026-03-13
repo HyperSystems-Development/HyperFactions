@@ -2,44 +2,44 @@
 id: diplomacy_alliances
 commands: ally
 ---
-# Forming Alliances
+# Pagbuo ng mga Alyansa
 
-Alliances are mutual agreements between two factions that provide protection and cooperation benefits.
+Ang mga alyansa ay mutual agreement sa pagitan ng dalawang faction na nagbibigay ng proteksyon at mga benepisyo ng kooperasyon.
 
 ---
 
-## How to Form an Alliance
+## Paano Bumuo ng Alyansa
 
 `/f ally <faction>`
 
-Sends an alliance request to the target faction. The alliance only takes effect once both sides agree. An Officer or Leader from the other faction must also run the same command targeting your faction to confirm.
+Nagpapadala ng alliance request sa target na faction. Ang alyansa ay magkakabisa lamang kapag sumang-ayon ang dalawang panig. Ang isang Officer o Leader mula sa kabilang faction ay kailangan ding mag-run ng parehong command na naka-target sa iyong faction para ma-confirm.
 
-## How to Break an Alliance
+## Paano Sirain ang Alyansa
 
 `/f neutral <faction>`
 
-Either side can unilaterally end an alliance by resetting the relation to neutral.
+Kahit sinong panig ay pwedeng unilateral na tapusin ang alyansa sa pamamagitan ng pag-reset ng relasyon sa neutral.
 
 ---
 
-## Alliance Benefits
+## Mga Benepisyo ng Alyansa
 
-| Benefit | Details |
-|---------|---------|
-| No friendly fire | Allied players cannot damage each other |
-| Shared map visibility | Allied territory shows in blue on the territory map |
-| Territory interaction | Allies can use doors, seats, and transport in your territory |
-| Ally chat | Cycle to ally chat mode for cross-faction communication |
-| Overclaim protection | Allies cannot overclaim each other's territory |
+| Benepisyo | Mga Detalye |
+|-----------|-------------|
+| Walang friendly fire | Hindi pwedeng magkasaktan ang mga allied manlalaro |
+| Shared map visibility | Ang allied territory ay lumalabas na asul sa territory map |
+| Territory interaction | Ang mga ally ay pwedeng gumamit ng mga pinto, upuan, at transport sa iyong teritoryo |
+| Ally chat | Mag-cycle sa ally chat mode para sa cross-faction na komunikasyon |
+| Overclaim protection | Hindi pwedeng mag-overclaim ng teritoryo ng isa't isa ang mga ally |
 
->[!NOTE] Your faction can have up to 10 alliances at a time. Choose your allies wisely.
+>[!NOTE] Ang faction mo ay pwedeng magkaroon ng hanggang 10 alyansa sa isang pagkakataon. Piliin nang mabuti ang mga ally mo.
 
 ---
 
-## Alliance Etiquette
+## Etiketa sa Alyansa
 
->[!TIP] Communication is key. Before sending an alliance request, consider reaching out to the other faction's leader to discuss terms. A strong alliance is built on mutual benefit, not just convenience.
+>[!TIP] Mahalaga ang komunikasyon. Bago magpadala ng alliance request, pag-isipang makipag-ugnayan sa leader ng kabilang faction para mag-usap tungkol sa mga tuntunin. Ang matibay na alyansa ay natatayo sa mutual benefit, hindi lang sa convenience.
 
-- Alliances work both ways -- if you benefit from protection, your allies expect the same
-- Breaking an alliance during wartime may damage your faction's reputation
-- Allied factions can coordinate territory claims to create defensible borders
+- Ang mga alyansa ay gumagana sa dalawang daan -- kung nakikinabang ka sa proteksyon, inaasahan ng mga ally mo ang pareho
+- Ang pagsira ng alyansa habang may giyera ay pwedeng makasira sa reputasyon ng faction mo
+- Ang mga allied faction ay pwedeng mag-coordinate ng mga territory claim para gumawa ng depensible na mga hangganan

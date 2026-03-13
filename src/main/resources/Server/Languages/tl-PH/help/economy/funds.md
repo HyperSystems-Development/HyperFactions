@@ -2,41 +2,41 @@
 id: economy_funds
 commands: deposit, withdraw
 ---
-# Managing Funds
+# Pamamahala ng Pondo
 
-Faction members work together to keep the treasury funded through deposits, withdrawals, and transfers.
+Ang mga faction member ay nagtutulungan para mapanatiling may pondo ang treasury sa pamamagitan ng mga deposit, withdrawal, at transfer.
 
-## Depositing
+## Pagde-deposit
 
-Any member can deposit personal funds into the faction treasury.
+Kahit sinong miyembro ay pwedeng mag-deposit ng personal na pondo sa faction treasury.
 
 `/f deposit <amount>`
-Deposit from your personal balance into the treasury.
+Mag-deposit mula sa personal balance mo papunta sa treasury.
 
-## Withdrawing
+## Pag-withdraw
 
-Officers and the Leader can withdraw funds back to their personal balance.
+Ang mga Officer at ang Leader ay pwedeng mag-withdraw ng pondo pabalik sa kanilang personal na balance.
 
 `/f withdraw <amount>`
-Withdraw from the treasury to your balance. (Officer+)
+Mag-withdraw mula sa treasury papunta sa balance mo. (Officer+)
 
-## Transferring
+## Pag-transfer
 
-Officers can transfer funds directly between faction treasuries for trade deals or diplomacy.
+Ang mga Officer ay pwedeng mag-transfer ng pondo nang direkta sa pagitan ng mga faction treasury para sa mga trade deal o diplomasya.
 
 `/f money transfer <faction> <amount>`
-Send funds to another faction's treasury. (Officer+)
+Magpadala ng pondo sa treasury ng ibang faction. (Officer+)
 
 ---
 
-## Fees
+## Mga Bayarin
 
-| Transaction | Fee |
-|------------|-----|
+| Transaksyon | Bayarin |
+|------------|---------|
 | Deposit | 0% |
 | Withdraw | 0% |
 | Transfer | 0% |
 
->[!INFO] Fee rates are configurable by the server and may differ from defaults shown above.
+>[!INFO] Ang mga rate ng bayarin ay configurable ng server at maaaring magkaiba sa mga default na ipinapakita sa itaas.
 
->[!TIP] All transactions are logged. Use /f money log to review recent activity.
+>[!TIP] Lahat ng transaksyon ay naka-log. Gamitin ang /f money log para i-review ang kamakailang aktibidad.

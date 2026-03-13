@@ -1,38 +1,38 @@
 ---
 id: admin_managing_factions
 ---
-# Managing Factions
+# Pamamahala ng mga Faction
 
-Admins can inspect and modify any faction on the server through the dashboard or commands.
+Ang mga admin ay pwedeng mag-inspect at mag-modify ng kahit anong faction sa server sa pamamagitan ng dashboard o mga command.
 
-## Browsing Factions
+## Pag-browse ng mga Faction
 
 `/f admin factions`
-Opens the admin faction browser. View all factions with member counts, power levels, and territory.
+Binubuksan ang admin faction browser. Tingnan ang lahat ng faction na may bilang ng miyembro, power level, at teritoryo.
 
 `/f admin info <faction>`
-Opens the admin info panel for a specific faction with full details and management options.
+Binubuksan ang admin info panel para sa isang partikular na faction na may buong detalye at management options.
 
-## Modifying Faction Settings
+## Pag-modify ng Faction Settings
 
-With `hyperfactions.admin.modify` permission, you can:
+Gamit ang `hyperfactions.admin.modify` permission, pwede mong:
 
-- **Rename** a faction to resolve conflicts
-- **Set color** to fix display issues
-- **Toggle open/close** to override join policy
-- **Edit description** for moderation purposes
+- **I-rename** ang isang faction para malutas ang mga conflict
+- **I-set ang kulay** para ayusin ang mga display issue
+- **I-toggle ang open/close** para i-override ang join policy
+- **I-edit ang description** para sa mga moderation purpose
 
->[!TIP] Use `/f admin who <player>` to look up which faction a specific player belongs to and view their details.
+>[!TIP] Gamitin ang `/f admin who <player>` para alamin kung saang faction kabilang ang isang partikular na manlalaro at tingnan ang mga detalye nila.
 
-## Viewing Members and Relations
+## Pagtingin ng mga Miyembro at Relasyon
 
-The admin info panel shows:
+Ipinapakita ng admin info panel ang:
 
-| Section | Details |
-|---------|---------|
-| **Members** | Full roster with roles and last seen |
-| **Relations** | All ally, enemy, and neutral standings |
-| **Territory** | Claimed chunks and power balance |
-| **Economy** | Treasury balance and transaction log |
+| Seksyon | Mga Detalye |
+|---------|-------------|
+| **Members** | Buong roster na may mga role at huling nakita |
+| **Relations** | Lahat ng ally, enemy, at neutral standing |
+| **Territory** | Mga na-claim na chunk at power balance |
+| **Economy** | Treasury balance at transaction log |
 
->[!NOTE] Admin inspection commands do not notify the faction being viewed. Only modifications trigger alerts.
+>[!NOTE] Ang mga admin inspection command ay hindi nag-notify sa faction na tinitingnan. Ang mga modification lang ang nagti-trigger ng mga alerto.

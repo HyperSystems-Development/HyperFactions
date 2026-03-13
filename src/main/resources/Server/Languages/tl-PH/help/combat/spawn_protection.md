@@ -3,25 +3,25 @@ id: combat_spawn_protection
 ---
 # Spawn Protection
 
-After respawning from death, you receive temporary protection to prevent spawn camping.
+Pagkatapos mag-respawn mula sa pagkamatay, makakatanggap ka ng pansamantalang proteksyon para mapigilan ang spawn camping.
 
-## How It Works
+## Paano Ito Gumagana
 
-- Protection lasts 5 seconds after respawn
-- You cannot take damage during this period
-- A visual indicator shows your protected status
+- Ang proteksyon ay tumatagal ng 5 segundo pagkatapos mag-respawn
+- Hindi ka pwedeng masugatan sa panahong ito
+- May visual indicator na nagpapakita ng protected status mo
 
-## Protection Breaks
+## Nawawala ang Proteksyon
 
-Spawn protection ends early if you:
+Magtatapos nang maaga ang spawn protection kung:
 
-- Attack another player or entity
-- Move from your spawn position
+- Umatake ka sa ibang manlalaro o entity
+- Umalis ka sa iyong spawn position
 
-This prevents abuse. You cannot attack others while invulnerable. Once you take any action, protection drops and normal combat rules apply.
+Pinipigilan nito ang pang-aabuso. Hindi ka pwedeng umatake ng iba habang invulnerable ka. Kapag gumawa ka ng kahit anong aksyon, mawawala ang proteksyon at ang normal na combat rules ang susundin.
 
 ---
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Ito ay mga default na halaga. Maaaring iba ang na-configure ng server administrator mo.
 
->[!TIP] Use your protection time to assess the situation before moving.
+>[!TIP] Gamitin ang protection time mo para suriin ang sitwasyon bago gumalaw.

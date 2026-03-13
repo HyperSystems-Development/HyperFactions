@@ -1,38 +1,38 @@
 ---
 id: admin_power_commands
 ---
-# Power Admin Commands
+# Mga Power Admin Command
 
-Override player and faction power values. All commands require `hyperfactions.admin.power` permission.
+I-override ang player at faction power values. Lahat ng command ay nangangailangan ng `hyperfactions.admin.power` permission.
 
-## Player Power Commands
+## Mga Player Power Command
 
-| Command | Description |
+| Command | Paglalarawan |
 |---------|-------------|
-| `/f admin power set <player> <amount>` | Set exact power value |
-| `/f admin power add <player> <amount>` | Add power to player |
-| `/f admin power remove <player> <amount>` | Remove power from player |
-| `/f admin power reset <player>` | Reset to default starting power |
-| `/f admin power info <player>` | View detailed power breakdown |
+| `/f admin power set <player> <amount>` | I-set ang eksaktong power value |
+| `/f admin power add <player> <amount>` | Magdagdag ng power sa manlalaro |
+| `/f admin power remove <player> <amount>` | Magtanggal ng power mula sa manlalaro |
+| `/f admin power reset <player>` | I-reset sa default na starting power |
+| `/f admin power info <player>` | Tingnan ang detalyadong power breakdown |
 
-## How Power Affects Factions
+## Paano Naaapektuhan ng Power ang mga Faction
 
-A faction's total power is the sum of all its members' individual power. Territory claims require sufficient total power to maintain.
+Ang kabuuang power ng faction ay ang suma ng individual power ng lahat ng miyembro nito. Ang mga territory claim ay nangangailangan ng sapat na kabuuang power para ma-maintain.
 
-| Scenario | Effect |
-|----------|--------|
-| Power set higher | Faction can claim more territory |
-| Power set lower | Faction may become vulnerable to overclaim |
-| Power reset | Returns player to default starting value |
+| Senaryo | Epekto |
+|---------|--------|
+| Power na-set na mas mataas | Ang faction ay pwedeng mag-claim ng mas maraming teritoryo |
+| Power na-set na mas mababa | Ang faction ay pwedeng maging vulnerable sa overclaim |
+| Power na-reset | Binalik ang manlalaro sa default na starting value |
 
->[!WARNING] Lowering a player's power may cause their faction to lose territory if total power drops below the number of claimed chunks.
+>[!WARNING] Ang pagbaba ng power ng isang manlalaro ay pwedeng maging sanhi ng pagkawala ng teritoryo ng kanilang faction kung bumaba ang kabuuang power sa ibaba ng bilang ng mga na-claim na chunk.
 
-## Examples
+## Mga Halimbawa
 
-- `/f admin power set Steve 50` -- set to exactly 50
-- `/f admin power add Steve 10` -- increase by 10
-- `/f admin power remove Steve 5` -- decrease by 5
-- `/f admin power reset Steve` -- back to default
-- `/f admin power info Steve` -- show full breakdown
+- `/f admin power set Steve 50` -- i-set sa eksaktong 50
+- `/f admin power add Steve 10` -- dagdagan ng 10
+- `/f admin power remove Steve 5` -- bawasan ng 5
+- `/f admin power reset Steve` -- ibalik sa default
+- `/f admin power info Steve` -- ipakita ang buong breakdown
 
->[!TIP] Use `/f admin power info <player>` to see current power, max power, and any active overrides before making changes.
+>[!TIP] Gamitin ang `/f admin power info <player>` para makita ang kasalukuyang power, max power, at anumang aktibong override bago gumawa ng mga pagbabago.

@@ -1,45 +1,45 @@
 ---
 id: admin_updates
 ---
-# Update Checking
+# Pagsuri ng Update
 
-HyperFactions can check for new versions and manage the HyperProtect-Mixin dependency.
+Ang HyperFactions ay pwedeng magsuri ng mga bagong bersyon at pamahalaan ang HyperProtect-Mixin dependency.
 
-## Update Commands
+## Mga Update Command
 
-| Command | Description |
+| Command | Paglalarawan |
 |---------|-------------|
-| `/f admin update` | Check for HyperFactions updates |
-| `/f admin update mixin` | Check/download HyperProtect-Mixin |
-| `/f admin update toggle-mixin-download` | Toggle auto-download |
-| `/f admin version` | Show current version and build info |
+| `/f admin update` | Magsuri ng mga HyperFactions update |
+| `/f admin update mixin` | Magsuri/mag-download ng HyperProtect-Mixin |
+| `/f admin update toggle-mixin-download` | I-toggle ang auto-download |
+| `/f admin version` | Ipakita ang kasalukuyang bersyon at build info |
 
-## Release Channels
+## Mga Release Channel
 
-| Channel | Description |
+| Channel | Paglalarawan |
 |---------|-------------|
-| **Stable** | Recommended for production servers |
-| **Pre-release** | Early access to upcoming features |
+| **Stable** | Inirerekomenda para sa mga production server |
+| **Pre-release** | Maagang access sa mga paparating na feature |
 
->[!INFO] The update checker only notifies about new versions. It does **not** automatically install updates to HyperFactions itself.
+>[!INFO] Ang update checker ay nag-notify lang tungkol sa mga bagong bersyon. **Hindi** ito awtomatikong nag-i-install ng mga update sa HyperFactions mismo.
 
 ## HyperProtect-Mixin
 
-HyperProtect-Mixin is the recommended protection mixin that enables advanced zone flags (explosions, fire spread, keep inventory, etc.).
+Ang HyperProtect-Mixin ang inirerekomendang protection mixin na nag-e-enable ng mga advanced zone flag (explosions, fire spread, keep inventory, atbp.).
 
-- `/f admin update mixin` checks for the latest version
-and downloads it if a newer version is available
-- Auto-download can be toggled on or off per server
+- Sinusuri ng `/f admin update mixin` ang pinakabagong bersyon
+at dini-download ito kung may mas bagong bersyon na available
+- Ang auto-download ay pwedeng i-toggle on o off bawat server
 
->[!TIP] After downloading a new mixin version, a server restart is required for the changes to take effect.
+>[!TIP] Pagkatapos mag-download ng bagong mixin version, kailangang mag-restart ng server para magkabisa ang mga pagbabago.
 
-## Rollback Procedure
+## Proseso ng Rollback
 
-If an update causes issues:
+Kung may problema ang isang update:
 
-1. Stop the server
-2. Replace the plugin JAR with the previous version
-3. Start the server
-4. Verify functionality with `/f admin version`
+1. I-stop ang server
+2. Palitan ang plugin JAR ng nakaraang bersyon
+3. I-start ang server
+4. I-verify ang functionality gamit ang `/f admin version`
 
->[!WARNING] Downgrading may require a config migration reset. Always keep backups before updating.
+>[!WARNING] Ang pag-downgrade ay maaaring mangailangan ng config migration reset. Palaging panatilihin ang mga backup bago mag-update.

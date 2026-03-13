@@ -4,23 +4,23 @@ commands: balance
 ---
 # Faction Treasury
 
-Every faction has a shared treasury that serves as the faction's bank. Funds are used for upkeep costs, territory maintenance, and faction operations.
+Bawat faction ay may shared treasury na nagsisilbing bangko ng faction. Ang mga pondo ay ginagamit para sa mga upkeep cost, territory maintenance, at faction operations.
 
 ## Starting Balance
 
-New factions start with 0 in their treasury. Members must deposit funds to build up reserves.
+Ang mga bagong faction ay nagsisimula sa 0 sa kanilang treasury. Kailangan ng mga miyembro na mag-deposit ng pondo para bumuo ng mga reserba.
 
-## Who Can Manage
+## Sino ang Pwedeng Mamahala
 
-- Any member can deposit funds
-- Officers and Leader can withdraw and transfer
-- Leader has full treasury control
+- Kahit sinong miyembro ay pwedeng mag-deposit ng pondo
+- Ang mga Officer at Leader ay pwedeng mag-withdraw at mag-transfer
+- Ang Leader ay may buong kontrol sa treasury
 
 ---
 
 `/f balance`
-Check your faction's current treasury balance. Also available as /f bal.
+Suriin ang kasalukuyang treasury balance ng faction mo. Available din bilang /f bal.
 
->[!TIP] Contribute regularly to keep your faction funded. Territory upkeep costs can drain an empty treasury quickly.
+>[!TIP] Mag-ambag nang regular para mapanatiling may pondo ang faction mo. Ang mga territory upkeep cost ay pwedeng mabilis na maubos ang walang laman na treasury.
 
->[!INFO] All treasury transactions are logged and can be reviewed by officers.
+>[!INFO] Lahat ng treasury transaction ay naka-log at pwedeng i-review ng mga officer.

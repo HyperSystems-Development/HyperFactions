@@ -3,27 +3,27 @@ id: combat_tagging
 ---
 # Combat Tagging
 
-When you attack or are attacked by another player, you become combat tagged for 15 seconds.
+Kapag umatake ka o inaatake ka ng ibang manlalaro, nagiging combat tagged ka ng 15 segundo.
 
-## While Tagged
+## Habang Naka-tag
 
-- No /f home or /f stuck teleports
-- No server teleport commands
-- Tag resets with each new combat action
-- A timer displays your remaining tag duration
+- Walang /f home o /f stuck teleport
+- Walang server teleport command
+- Nagre-reset ang tag sa bawat bagong combat action
+- Ipinapakita ng timer ang natitirang tag duration mo
 
 ---
 
-## Logout Penalty
+## Parusa sa Logout
 
->[!WARNING] Logging out while combat tagged kills your character and you lose 1.0 power.
+>[!WARNING] Ang pag-logout habang naka-combat tag ay papatay sa character mo at mawawalan ka ng 1.0 power.
 
-Your items drop where you disconnected and enemies can loot them. Always wait for the tag to expire.
+Mahuhulog ang mga item mo kung saan ka nagdisconnect at pwedeng looting ng mga kaaway. Palaging hintaying mag-expire ang tag.
 
-## How the Timer Works
+## Paano Gumagana ang Timer
 
-The combat tag timer appears on screen when you enter combat. Every new hit resets it to 15 seconds. Once it reaches zero, all restrictions are lifted.
+Lumilitaw ang combat tag timer sa screen kapag pumasok ka sa labanan. Bawat bagong hit ay nagre-reset nito sa 15 segundo. Kapag naabot ang zero, matatanggal ang lahat ng restriction.
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Ito ay mga default na halaga. Maaaring iba ang na-configure ng server administrator mo.
 
->[!TIP] Disengage and wait out the timer if you need to teleport.
+>[!TIP] Mag-disengage at hintayin ang timer kung kailangan mong mag-teleport.

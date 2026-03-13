@@ -2,43 +2,43 @@
 id: faction_managing
 commands: invite, kick, promote, demote, transfer
 ---
-# Managing Members
+# Pamamahala ng mga Miyembro
 
-Officers and Leaders share responsibility for managing the faction roster. Here are the key commands and who can use them.
-
----
-
-## Commands
-
-| Command | What It Does | Required Role |
-|---------|-------------|---------------|
-| `/f invite <player>` | Sends a join invitation (expires in 5 min) | Officer+ |
-| `/f kick <player>` | Removes a member from the faction | Officer+ (see note) |
-| `/f promote <player>` | Promotes a Member to Officer | Leader only |
-| `/f demote <player>` | Demotes an Officer to Member | Leader only |
-| `/f transfer <player>` | Transfers faction ownership | Leader only |
-
->[!NOTE] Officers can only kick Members. To remove another Officer, the Leader must either demote them first or kick them directly.
+Ang mga Officer at Leader ay magkasamang responsable sa pamamahala ng faction roster. Narito ang mga pangunahing command at kung sino ang pwedeng gumamit.
 
 ---
 
-## Invitations
+## Mga Command
 
-- Invitations expire after 5 minutes if not accepted
-- The invited player sees it in their Invites tab when they open /f
-- There is no limit to how many invitations you can send at once
-- Your faction can hold up to 50 members total
+| Command | Ano ang Ginagawa | Kinakailangang Role |
+|---------|-----------------|---------------------|
+| `/f invite <player>` | Nagpapadala ng join invitation (nag-e-expire sa 5 min) | Officer+ |
+| `/f kick <player>` | Tinatanggal ang isang miyembro mula sa faction | Officer+ (tingnan ang note) |
+| `/f promote <player>` | Pino-promote ang isang Member sa Officer | Leader lamang |
+| `/f demote <player>` | Dine-demote ang isang Officer sa Member | Leader lamang |
+| `/f transfer <player>` | Inilipat ang faction ownership | Leader lamang |
 
-## Promotions and Demotions
+>[!NOTE] Ang mga Officer ay pwede lang mag-kick ng mga Member. Para tanggalin ang ibang Officer, kailangang i-demote muna sila ng Leader o direktang i-kick.
 
-- Only the Leader can promote or demote
-- /f promote raises a Member to Officer
-- /f demote lowers an Officer back to Member
+---
 
-## Transferring Leadership
+## Mga Imbitasyon
 
->[!WARNING] Transferring leadership is irreversible. You will be demoted to Officer and the target player becomes the new Leader. Make sure you trust them completely.
+- Nag-e-expire ang mga imbitasyon pagkalipas ng 5 minuto kung hindi tanggapin
+- Makikita ng inimbitahang manlalaro ito sa kanilang Invites tab kapag binuksan ang /f
+- Walang limitasyon sa kung ilang imbitasyon ang pwede mong ipadala nang sabay-sabay
+- Ang faction mo ay pwedeng magkaroon ng hanggang 50 miyembro sa kabuuan
+
+## Mga Promotion at Demotion
+
+- Tanging ang Leader lang ang pwedeng mag-promote o mag-demote
+- Ang /f promote ay itinaas ang isang Member sa Officer
+- Ang /f demote ay ibinababa ang isang Officer pabalik sa Member
+
+## Paglipat ng Leadership
+
+>[!WARNING] Ang paglipat ng leadership ay hindi na pwedeng i-undo. Ide-demote ka sa Officer at ang target na manlalaro ang magiging bagong Leader. Siguraduhing lubos kang nagtitiwala sa kanya.
 
 `/f transfer <player>`
 
-The target must be a current member of your faction.
+Ang target ay kailangang kasalukuyang miyembro ng faction mo.

@@ -2,37 +2,37 @@
 id: diplomacy_relations
 commands: relations
 ---
-# Faction Relations
+# Mga Relasyon ng Faction
 
-Every pair of factions has a diplomatic relation that determines how they interact. There are three states: Ally, Enemy, and Neutral.
+Bawat pares ng faction ay may diplomatic relation na nagdedetermina kung paano sila mag-interact. May tatlong estado: Ally, Enemy, at Neutral.
 
 ---
 
-## Relation Comparison
+## Paghahambing ng mga Relasyon
 
-| Effect | Ally | Neutral | Enemy |
+| Epekto | Ally | Neutral | Enemy |
 |--------|------|---------|-------|
-| PvP in territory | Disabled | Standard rules | Enabled |
-| Territory protection | Mutual protection | Standard protection | Can overclaim if weakened |
-| Friendly fire | Disabled | N/A | Enabled everywhere |
-| Map color | Blue | Gray | Red |
-| How to set | Mutual agreement | Default state | One-way declaration |
-| Chat access | Ally chat channel | None | None |
+| PvP sa teritoryo | Naka-disable | Standard rules | Naka-enable |
+| Territory protection | Mutual protection | Standard protection | Pwedeng mag-overclaim kung humina |
+| Friendly fire | Naka-disable | N/A | Naka-enable kahit saan |
+| Kulay sa map | Asul | Kulay-abo | Pula |
+| Paano i-set | Mutual agreement | Default na estado | One-way na deklarasyon |
+| Chat access | Ally chat channel | Wala | Wala |
 
 ---
 
-## Viewing Relations
+## Pagtingin ng mga Relasyon
 
 `/f relations`
 
-Shows all your current alliances, enemies, and any pending alliance requests.
+Ipinapakita ang lahat ng kasalukuyan mong mga alyansa, kaaway, at anumang pending alliance request.
 
-## How Relations Work
+## Paano Gumagana ang mga Relasyon
 
-- Neutral is the default state between all factions. Standard server rules apply.
-- Alliance requires both factions to agree. Either side can break it unilaterally.
-- Enemy is declared one-way. No agreement needed -- the other faction is immediately marked as your enemy.
+- Ang Neutral ang default na estado sa pagitan ng lahat ng faction. Standard server rules ang inaapply.
+- Ang Alliance ay nangangailangan na sumang-ayon ang dalawang faction. Kahit sinong panig ay pwedeng sirain ito nang unilateral.
+- Ang Enemy ay idedeklara nang one-way. Hindi kailangan ng kasunduan -- agad na mina-mark ang kabilang faction bilang iyong kaaway.
 
->[!INFO] Relations are managed by Officers and Leaders. Members can view relations but cannot change them.
+>[!INFO] Ang mga relasyon ay pinapamahalaan ng mga Officer at Leader. Ang mga Member ay pwedeng tumingin ng mga relasyon pero hindi ito pwedeng baguhin.
 
->[!TIP] Use /f relations regularly to keep track of the diplomatic landscape. Knowing who your enemies are helps you prepare for territorial conflicts.
+>[!TIP] Regular na gamitin ang /f relations para masubaybayan ang diplomatic landscape. Ang pag-alam kung sino ang mga kaaway mo ay tumutulong sa iyo na maghanda para sa mga territorial conflict.

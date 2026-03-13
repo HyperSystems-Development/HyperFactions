@@ -2,37 +2,37 @@
 id: faction_creating
 commands: create
 ---
-# Creating a Faction
+# Paglikha ng Faction
 
-Starting your own faction makes you the Leader with full control over settings, members, and territory.
+Ang paggawa ng sarili mong faction ay ginagawa kang Leader na may buong kontrol sa settings, mga miyembro, at teritoryo.
 
 ---
 
-## How to Create
+## Paano Gumawa
 
 `/f create <name>`
 
-This creates your faction and immediately opens the Faction Dashboard where you can begin inviting members, claiming land, and configuring settings.
+Gagawa ito ng faction mo at agad na magbubukas ng Faction Dashboard kung saan pwede kang magsimulang mag-invite ng mga miyembro, mag-claim ng lupa, at mag-configure ng settings.
 
-## Name Rules
+## Mga Patakaran sa Pangalan
 
-| Rule | Requirement |
-|------|------------|
-| Length | Between 3 and 24 characters |
-| Characters | Letters, numbers, and spaces only |
-| Uniqueness | No two factions can share the same name |
+| Patakaran | Kinakailangan |
+|-----------|--------------|
+| Haba | Sa pagitan ng 3 at 24 na character |
+| Mga Character | Mga letra, numero, at espasyo lamang |
+| Natatangi | Walang dalawang faction ang pwedeng magkapareho ng pangalan |
 
->[!WARNING] Choose your name carefully. Renaming later requires Leader permissions and may have a cooldown.
+>[!WARNING] Piliin nang mabuti ang pangalan mo. Ang pag-rename sa ibang pagkakataon ay nangangailangan ng Leader permissions at maaaring may cooldown.
 
 ---
 
-## What Happens on Creation
+## Ano ang Mangyayari sa Paglikha
 
-- You become the Leader (highest rank)
-- Your faction starts with 0 claims and your personal power (10 by default)
-- The faction dashboard opens automatically
-- You can immediately invite players, claim territory, and set a faction home
+- Magiging Leader ka (pinakamataas na ranggo)
+- Ang faction mo ay magsisimula sa 0 claim at ang personal power mo (10 bilang default)
+- Awtomatikong magbubukas ang faction dashboard
+- Pwede kang agad mag-invite ng mga manlalaro, mag-claim ng teritoryo, at mag-set ng faction home
 
->[!INFO] If the server has economy integration enabled, creating a faction may cost money. The creation cost is set by the server administrator.
+>[!INFO] Kung naka-enable ang economy integration sa server, ang paggawa ng faction ay maaaring may bayad. Ang creation cost ay itinatakda ng server administrator.
 
->[!TIP] After creating, your first priorities should be: invite friends, find a base location, and claim it.
+>[!TIP] Pagkatapos gumawa, ang mga unang priority mo ay: mag-invite ng mga kaibigan, humanap ng lokasyon para sa base, at i-claim ito.

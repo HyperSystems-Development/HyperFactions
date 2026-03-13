@@ -3,35 +3,35 @@ id: economy_upkeep
 ---
 # Territory Upkeep
 
-Factions must pay ongoing upkeep to maintain their claimed territory. This prevents land hoarding and keeps the map dynamic.
+Kailangang magbayad ng patuloy na upkeep ang mga faction para ma-maintain ang kanilang na-claim na teritoryo. Pinipigilan nito ang land hoarding at pinapanatiling dynamic ang map.
 
-## Upkeep Costs
+## Mga Gastos sa Upkeep
 
 | Setting | Default |
 |---------|---------|
-| Cost per chunk | 2.0 per cycle |
-| Payment interval | Every 24 hours |
-| Free chunks | 3 (no cost) |
+| Gastos bawat chunk | 2.0 bawat cycle |
+| Pagitan ng bayad | Bawat 24 oras |
+| Libreng chunk | 3 (walang gastos) |
 | Scaling mode | Flat rate |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Ito ay mga default na halaga. Maaaring iba ang na-configure ng server administrator mo.
 
-Your first 3 chunks are free. Beyond that, each additional claimed chunk costs 2.0 per payment cycle.
+Ang unang 3 chunk mo ay libre. Lagpas doon, bawat karagdagang na-claim na chunk ay nagkakahalaga ng 2.0 bawat payment cycle.
 
 ## Auto-Pay
 
-Auto-pay is enabled by default. The system automatically deducts upkeep from your treasury at each interval. No manual action needed.
+Naka-enable ang auto-pay bilang default. Awtomatikong ibinabawas ng sistema ang upkeep mula sa treasury mo sa bawat interval. Walang manual na aksyon ang kailangan.
 
 ---
 
 ## Grace Period
 
-If your treasury cannot cover upkeep, a 48-hour grace period begins. A warning is sent 6 hours before claims start being lost.
+Kung hindi kayang bayaran ng treasury mo ang upkeep, magsisimula ang 48-oras na grace period. May ipapadala na babala 6 oras bago magsimulang mawala ang mga claim.
 
->[!WARNING] If upkeep remains unpaid after the grace period, your faction loses 1 claim per cycle until costs are covered or all extra claims are gone.
+>[!WARNING] Kung hindi pa rin nababayaran ang upkeep pagkatapos ng grace period, mawawalan ang faction mo ng 1 claim bawat cycle hanggang sa mabayaran ang mga gastos o mawala ang lahat ng extra claim.
 
-## Example
+## Halimbawa
 
-*A faction with 8 claims pays for 5 chunks (8 minus 3 free). At 2.0 per chunk, that is 10.0 per cycle.*
+*Ang faction na may 8 claim ay nagbabayad para sa 5 chunk (8 minus 3 libre). Sa 2.0 bawat chunk, iyon ay 10.0 bawat cycle.*
 
->[!TIP] Keep your treasury funded above your upkeep cost. Use /f balance to check your reserves.
+>[!TIP] Panatilihing may pondo ang treasury mo na mas mataas sa upkeep cost mo. Gamitin ang /f balance para suriin ang mga reserba mo.

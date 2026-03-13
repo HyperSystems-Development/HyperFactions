@@ -2,49 +2,49 @@
 id: power_claiming
 commands: claim, unclaim
 ---
-# Claiming Territory
+# Pag-claim ng Teritoryo
 
-Claiming a chunk protects it under your faction's control. Only faction members can build, break, or access containers inside claimed territory.
+Ang pag-claim ng chunk ay pinoprotektahan ito sa ilalim ng kontrol ng faction mo. Tanging mga faction member lamang ang pwedeng mag-build, mag-break, o mag-access ng mga container sa loob ng na-claim na teritoryo.
 
 ---
 
-## How to Claim
+## Paano Mag-claim
 
 `/f claim`
 
-Stand in the chunk you want to claim and run this command. The chunk is immediately protected. Requires Officer rank or higher.
+Tumayo sa chunk na gusto mong i-claim at patakbuhin ang command na ito. Agad na mapoprotektahan ang chunk. Kailangan ng Officer rank o mas mataas pa.
 
-## How to Unclaim
+## Paano Mag-unclaim
 
 `/f unclaim`
 
-Releases the chunk you are standing in back to wilderness. Also requires Officer+.
+Binibitawan ang chunk kung saan ka nakatayo pabalik sa wilderness. Kailangan din ng Officer+.
 
 ---
 
-## Claim Rules
+## Mga Patakaran sa Pag-claim
 
-| Rule | Default |
-|------|---------|
-| Power cost per claim | 2.0 power |
-| Maximum claims | 100 per faction |
-| Adjacent only | No (you can claim anywhere) |
+| Patakaran | Default |
+|-----------|---------|
+| Power cost bawat claim | 2.0 power |
+| Maximum claims | 100 bawat faction |
+| Katabing chunk lang | Hindi (pwede kang mag-claim kahit saan) |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Ito ay mga default na halaga. Maaaring iba ang na-configure ng server administrator mo.
 
->[!INFO] Each claim costs 2.0 power to maintain. A faction with 50 total power can hold up to 25 claims safely.
+>[!INFO] Bawat claim ay nagkakahalaga ng 2.0 power para ma-maintain. Ang faction na may 50 kabuuang power ay pwedeng humawak ng hanggang 25 claim nang ligtas.
 
 ---
 
-## What Protection Provides
+## Ano ang Proteksyon na Ibinibigay
 
-Inside claimed territory, the following is enforced by default:
+Sa loob ng na-claim na teritoryo, ang sumusunod ay ipinapatupad bilang default:
 
-- Outsiders cannot break, place, or interact with blocks
-- Allies can use doors, seats, and transport but cannot break or place blocks
-- Members and Officers have full access to build, break, and use everything
-- Container access (chests, crates) is restricted to members only
+- Hindi pwedeng mag-break, mag-place, o mag-interact sa mga block ang mga outsider
+- Ang mga ally ay pwedeng gumamit ng mga pinto, upuan, at transport pero hindi pwedeng mag-break o mag-place ng mga block
+- Ang mga Member at Officer ay may buong access para mag-build, mag-break, at gumamit ng lahat
+- Ang container access (mga chest, crate) ay limitado sa mga miyembro lamang
 
->[!TIP] You can also claim directly from the territory map. Open /f map and click on unclaimed chunks to claim them.
+>[!TIP] Pwede ka ring mag-claim nang direkta mula sa territory map. Buksan ang /f map at i-click ang mga unclaimed chunk para i-claim sila.
 
->[!WARNING] Do not over-expand. If your faction loses power through deaths, claims beyond your power budget become vulnerable to overclaiming.
+>[!WARNING] Huwag mag-over-expand. Kung mawalan ng power ang faction mo dahil sa mga pagkamatay, ang mga claim na lagpas sa power budget mo ay magiging vulnerable sa overclaiming.

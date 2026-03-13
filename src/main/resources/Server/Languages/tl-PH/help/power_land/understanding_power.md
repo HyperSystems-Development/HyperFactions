@@ -2,44 +2,44 @@
 id: power_understanding
 commands: power
 ---
-# Understanding Power
+# Pag-unawa sa Power
 
-Power is the core resource that determines how much territory your faction can hold. Every player has personal power that contributes to the faction total.
+Ang power ang pangunahing resource na nagdedetermina kung gaano karaming teritoryo ang kayang hawakan ng faction mo. Bawat manlalaro ay may personal power na nag-aambag sa kabuuang power ng faction.
 
 ---
 
-## Default Power Values
+## Mga Default na Halaga ng Power
 
-| Setting | Value |
-|---------|-------|
-| Maximum power per player | 20 |
+| Setting | Halaga |
+|---------|--------|
+| Maximum power bawat manlalaro | 20 |
 | Starting power | 10 |
-| Death penalty | -1.0 per death |
-| Kill reward | 0.0 |
-| Regen rate | +0.1 per minute (while online) |
-| Power cost per claim | 2.0 |
-| Logout while tagged | -1.0 additional |
+| Parusa sa pagkamatay | -1.0 bawat pagkamatay |
+| Reward sa pag-patay | 0.0 |
+| Regen rate | +0.1 bawat minuto (habang online) |
+| Power cost bawat claim | 2.0 |
+| Logout habang naka-tag | -1.0 karagdagan |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Ito ay mga default na halaga. Maaaring iba ang na-configure ng server administrator mo.
 
-## How It Works
+## Paano Ito Gumagana
 
-Your faction's total power is the sum of every member's personal power. Your required power is the number of claims multiplied by 2.0. As long as total power stays above required power, your territory is safe.
+Ang kabuuang power ng faction mo ay ang suma ng personal power ng bawat miyembro. Ang kinakailangang power ay ang bilang ng mga claim na pinarami ng 2.0. Hangga't nananatiling mas mataas ang kabuuang power kaysa sa kinakailangang power, ligtas ang teritoryo mo.
 
->[!INFO] Power regenerates passively at 0.1 per minute while you are online. At that rate, recovering 1.0 power takes about 10 minutes.
+>[!INFO] Ang power ay pasibong nagre-regenerate sa 0.1 bawat minuto habang online ka. Sa rate na iyon, ang pagre-recover ng 1.0 power ay tumatagal ng mga 10 minuto.
 
 ---
 
-## Checking Your Power
+## Pagsuri ng Power Mo
 
 `/f power`
 
-Shows your personal power, your faction's total power, and how much is needed to maintain current claims.
+Ipinapakita ang personal power mo, ang kabuuang power ng faction mo, at kung magkano ang kailangan para ma-maintain ang kasalukuyang mga claim.
 
-## The Danger Zone
+## Ang Danger Zone
 
-If total power falls below the required amount for your claims, your faction becomes vulnerable. Enemies can overclaim your chunks.
+Kung bumaba ang kabuuang power sa ibaba ng kinakailangang halaga para sa mga claim mo, nagiging vulnerable ang faction mo. Pwedeng mag-overclaim ng mga chunk ang mga kaaway.
 
->[!WARNING] Multiple deaths in a short period can cascade quickly. If you have 5 members each at 10 power (50 total) and 20 claims (40 needed), just 5 deaths across your team drops you to 45 -- still safe. But 11 deaths puts you at 39, below the 40 threshold.
+>[!WARNING] Ang sunud-sunod na pagkamatay sa maikling panahon ay pwedeng mabilis na bumigat. Kung mayroon kang 5 miyembro na may 10 power bawat isa (50 kabuuan) at 20 claim (40 kailangan), 5 pagkamatay lang sa team mo ay bumababa sa 45 -- ligtas pa. Pero 11 pagkamatay ay naglalagay sa iyo sa 39, mas mababa sa 40 threshold.
 
->[!TIP] Keep a power buffer. Do not claim every chunk you can afford -- leave room for a few deaths without becoming raidable.
+>[!TIP] Panatilihin ang power buffer. Huwag i-claim ang lahat ng chunk na kaya mong bayaran -- mag-iwan ng puwang para sa ilang pagkamatay nang hindi nagiging raidable.

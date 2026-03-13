@@ -2,49 +2,49 @@
 id: power_losing
 commands: overclaim
 ---
-# Losing Territory
+# Pagkawala ng Teritoryo
 
-When a faction's total power drops below the cost of its claims, it becomes raidable. Enemies can overclaim chunks right out from under you.
+Kapag ang kabuuang power ng faction ay bumaba sa ibaba ng halaga ng mga claim nito, nagiging raidable ito. Pwedeng mag-overclaim ng mga chunk ang mga kaaway nang direkta mula sa ilalim mo.
 
 ---
 
-## How Overclaiming Works
+## Paano Gumagana ang Overclaiming
 
 `/f overclaim`
 
-An Officer or Leader from an enemy faction stands in your claimed chunk and runs this command. If your faction is in a power deficit, the chunk transfers to their faction.
+Ang isang Officer o Leader mula sa isang enemy faction ay tumatayo sa iyong na-claim na chunk at pinapatakbo ang command na ito. Kung ang faction mo ay nasa power deficit, ililipat ang chunk sa kanilang faction.
 
-## The Math
+## Ang Pagkalkula
 
-Each claim costs 2.0 power to maintain. If your total power falls below that threshold, the deficit chunks are vulnerable.
+Bawat claim ay nagkakahalaga ng 2.0 power para ma-maintain. Kung ang kabuuang power mo ay bumaba sa ibaba ng threshold na iyon, ang mga deficit chunk ay vulnerable.
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Ito ay mga default na halaga. Maaaring iba ang na-configure ng server administrator mo.
 
->[!WARNING] Overclaiming is permanent. Once an enemy takes a chunk, you must reclaim it (or overclaim it back if they weaken).
-
----
-
-## Example Scenario
-
-| Factor | Value |
-|--------|-------|
-| Members | 5 players |
-| Power per member | 10 each (starting) |
-| Total power | 50 |
-| Claims | 30 chunks |
-| Power needed (30 x 2.0) | 60 |
-| Deficit | 10 power short |
-
-In this example, the faction is already raidable from the start. Enemies could overclaim up to 5 chunks (10 deficit / 2.0 per claim) before the faction reaches equilibrium.
+>[!WARNING] Ang overclaiming ay permanente. Kapag nakuha na ng kaaway ang isang chunk, kailangan mong i-reclaim ito (o i-overclaim pabalik kung humina sila).
 
 ---
 
-## How to Prevent Overclaiming
+## Halimbawang Senaryo
 
-- Do not over-expand -- always keep total power above your claim cost with a buffer
-- Stay active -- power only regenerates while online (+0.1/min)
-- Avoid unnecessary deaths -- each death costs 1.0 power
-- Recruit more members -- more players means more total power
-- Unclaim unused chunks -- free up power with /f unclaim
+| Salik | Halaga |
+|-------|--------|
+| Mga Miyembro | 5 manlalaro |
+| Power bawat miyembro | 10 bawat isa (simula) |
+| Kabuuang power | 50 |
+| Mga Claim | 30 chunk |
+| Power na kailangan (30 x 2.0) | 60 |
+| Deficit | Kulang ng 10 power |
 
->[!TIP] Check your power status regularly with /f power. If your total power is close to your claim cost, consider unclaiming less important chunks before a war.
+Sa halimbawang ito, raidable na ang faction sa simula pa lang. Pwedeng mag-overclaim ang mga kaaway ng hanggang 5 chunk (10 deficit / 2.0 bawat claim) bago maabot ng faction ang equilibrium.
+
+---
+
+## Paano Mapigilan ang Overclaiming
+
+- Huwag mag-over-expand -- palaging panatilihing mas mataas ang kabuuang power sa halaga ng claim mo na may buffer
+- Manatiling aktibo -- ang power ay nagre-regenerate lang habang online (+0.1/min)
+- Iwasan ang mga hindi kinakailangang pagkamatay -- bawat pagkamatay ay nagkakahalaga ng 1.0 power
+- Mag-recruit ng mas maraming miyembro -- mas maraming manlalaro ay mas maraming kabuuang power
+- I-unclaim ang mga hindi ginagamit na chunk -- i-free up ang power gamit ang /f unclaim
+
+>[!TIP] Regular na suriin ang power status mo gamit ang /f power. Kung malapit na ang kabuuang power mo sa halaga ng claim, pag-isipang i-unclaim ang mga hindi gaanong mahalagang chunk bago mag-giyera.

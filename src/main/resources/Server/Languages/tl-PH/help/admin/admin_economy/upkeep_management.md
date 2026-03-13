@@ -1,42 +1,42 @@
 ---
 id: admin_upkeep_management
 ---
-# Upkeep Management
+# Pamamahala ng Upkeep
 
-Faction upkeep charges factions periodically based on their territory and member count.
+Ang faction upkeep ay nagsisingil sa mga faction nang pana-panahon batay sa kanilang teritoryo at bilang ng miyembro.
 
-## Admin Controls
+## Mga Admin Control
 
-Upkeep settings are managed through the economy config file or the admin config GUI.
+Ang mga upkeep setting ay pinamamahalaan sa pamamagitan ng economy config file o ng admin config GUI.
 
 `/f admin config`
-Open the config editor and navigate to economy settings to adjust upkeep values.
+Buksan ang config editor at mag-navigate sa economy settings para ayusin ang mga upkeep value.
 
-## Default Upkeep Settings
+## Mga Default na Upkeep Setting
 
-| Setting | Default | Description |
+| Setting | Default | Paglalarawan |
 |---------|---------|-------------|
-| Upkeep enabled | false | Master toggle for the system |
-| Upkeep interval | 24h | How often upkeep is charged |
-| Per-claim cost | 5.0 | Cost per claimed chunk per cycle |
-| Per-member cost | 0.0 | Cost per member per cycle |
-| Grace period | 72h | New factions are exempt |
-| Disband on bankrupt | false | Auto-disband if cannot pay |
+| Upkeep enabled | false | Master toggle para sa sistema |
+| Upkeep interval | 24h | Gaano kadalas sisingilin ang upkeep |
+| Per-claim cost | 5.0 | Gastos bawat na-claim na chunk bawat cycle |
+| Per-member cost | 0.0 | Gastos bawat miyembro bawat cycle |
+| Grace period | 72h | Ang mga bagong faction ay exempt |
+| Disband on bankrupt | false | Auto-disband kung hindi makabayad |
 
-## Monitoring Upkeep
+## Pag-monitor ng Upkeep
 
-Use `/f admin info <faction>` to see:
-- Current treasury balance
-- Estimated upkeep cost per cycle
-- Time until next upkeep charge
-- Whether the faction can afford upkeep
+Gamitin ang `/f admin info <faction>` para makita ang:
+- Kasalukuyang treasury balance
+- Tinatantiyang upkeep cost bawat cycle
+- Oras bago ang susunod na upkeep charge
+- Kung kaya bang bayaran ng faction ang upkeep
 
->[!TIP] Review economy statistics across all factions from the admin dashboard to identify factions at risk of bankruptcy before upkeep triggers.
+>[!TIP] I-review ang economy statistics sa lahat ng faction mula sa admin dashboard para matukoy ang mga faction na malapit nang ma-bankrupt bago mag-trigger ang upkeep.
 
->[!INFO] Upkeep configuration is stored in `economy.json`. Changes made via the config GUI take effect after reload with `/f admin reload`.
+>[!INFO] Ang upkeep configuration ay naka-store sa `economy.json`. Ang mga pagbabagong ginawa sa config GUI ay magkakabisa pagkatapos mag-reload gamit ang `/f admin reload`.
 
-## Upkeep Formula
+## Formula ng Upkeep
 
-**Total upkeep** = (claimed chunks x per-claim cost) + (member count x per-member cost)
+**Kabuuang upkeep** = (na-claim na chunk x per-claim cost) + (bilang ng miyembro x per-member cost)
 
->[!WARNING] Enabling upkeep on a server with existing factions may cause unexpected bankruptcies. Consider setting a grace period or announcing the change in advance.
+>[!WARNING] Ang pag-enable ng upkeep sa isang server na may existing faction ay pwedeng magdulot ng mga hindi inaasahang pagkabangkarote. Pag-isipang mag-set ng grace period o mag-anunsyo ng pagbabago nang maaga.

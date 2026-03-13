@@ -1,41 +1,40 @@
 ---
 id: admin_getting_started
 ---
-# Getting Started as Admin
+# Pagsisimula bilang Admin
 
-Welcome to HyperFactions administration. This guide covers your first steps after installing the plugin.
+Maligayang pagdating sa administrasyon ng HyperFactions. Sinasaklaw ng gabay na ito ang mga unang hakbang mo pagkatapos i-install ang plugin.
 
-## Opening the Admin Dashboard
+## Pagbukas ng Admin Dashboard
 
 `/f admin`
-Opens the admin dashboard GUI with access to all management tools, zone editors, and server settings.
+Binubuksan ang admin dashboard GUI na may access sa lahat ng management tool, zone editor, at server settings.
 
->[!INFO] You need **hyperfactions.admin.use** permission or OP status to access admin commands.
+>[!INFO] Kailangan mo ng **hyperfactions.admin.use** permission o OP status para ma-access ang mga admin command.
 
-## Requirements
+## Mga Kinakailangan
 
-- **With a permission plugin**: Grant `hyperfactions.admin.use`
-- **Without a permission plugin**: The player must be a
-server operator (`adminRequiresOp=true` by default)
+- **May permission plugin**: Ibigay ang `hyperfactions.admin.use`
+- **Walang permission plugin**: Kailangang server operator ang manlalaro (`adminRequiresOp=true` bilang default)
 
-## First Steps After Install
+## Mga Unang Hakbang Pagkatapos Mag-install
 
-1. Run `/f admin` to verify your access
-2. Open **Config** to review default faction settings
-3. Create a **SafeZone** at spawn with `/f admin safezone Spawn`
-4. Optionally create **WarZones** for PvP arenas
-5. Review **Backup** settings to ensure data safety
+1. Patakbuhin ang `/f admin` para i-verify ang access mo
+2. Buksan ang **Config** para i-review ang default na faction settings
+3. Gumawa ng **SafeZone** sa spawn gamit ang `/f admin safezone Spawn`
+4. Opsyonal na gumawa ng mga **WarZone** para sa mga PvP arena
+5. I-review ang mga **Backup** setting para masiguro ang kaligtasan ng data
 
-## Admin Capabilities
+## Mga Kakayahan ng Admin
 
-| Area | What You Can Do |
-|------|----------------|
-| Factions | Inspect, modify, or force-disband any faction |
-| Zones | Create SafeZones and WarZones with custom flags |
-| Power | Override player/faction power values |
-| Economy | Manage faction treasuries and upkeep |
-| Config | Edit settings live via GUI or reload from disk |
-| Backups | Create, restore, and manage data backups |
-| Imports | Migrate data from other faction plugins |
+| Lugar | Ano ang Pwede Mong Gawin |
+|-------|-------------------------|
+| Factions | Mag-inspect, mag-modify, o mag-force-disband ng kahit anong faction |
+| Zones | Gumawa ng mga SafeZone at WarZone na may custom flags |
+| Power | I-override ang player/faction power values |
+| Economy | Pamahalaan ang mga faction treasury at upkeep |
+| Config | Mag-edit ng settings nang live sa GUI o mag-reload mula sa disk |
+| Backups | Gumawa, mag-restore, at mamahala ng mga data backup |
+| Imports | Mag-migrate ng data mula sa ibang faction plugin |
 
->[!TIP] Use `/f admin --text` to get chat-based output instead of the GUI, useful for console or automation.
+>[!TIP] Gamitin ang `/f admin --text` para makakuha ng chat-based output sa halip na GUI, kapaki-pakinabang para sa console o automation.

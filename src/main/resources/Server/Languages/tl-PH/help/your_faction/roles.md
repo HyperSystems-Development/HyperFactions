@@ -1,44 +1,44 @@
 ---
 id: faction_roles
 ---
-# Roles and Ranks
+# Mga Role at Ranggo
 
-Every faction has three roles in a strict hierarchy. Higher roles inherit all capabilities of the roles below them.
+Bawat faction ay may tatlong role sa mahigpit na hierarchy. Ang mas mataas na role ay nag-inherit ng lahat ng kakayahan ng mga role sa ibaba nila.
 
 ---
 
-## Permission Breakdown
+## Breakdown ng mga Permiso
 
-| Action | Leader | Officer | Member |
+| Aksyon | Leader | Officer | Member |
 |--------|--------|---------|--------|
-| Build in territory | Yes | Yes | Yes |
-| Use faction home | Yes | Yes | Yes |
-| Faction and ally chat | Yes | Yes | Yes |
-| Invite players | Yes | Yes | No |
-| Kick members | Yes | Yes (Members only) | No |
-| Claim / unclaim land | Yes | Yes | No |
-| Overclaim enemy territory | Yes | Yes | No |
-| Set faction home | Yes | Yes | No |
-| Delete faction home | Yes | Yes | No |
-| Manage relations (ally/enemy) | Yes | Yes | No |
-| View faction logs | Yes | Yes | No |
-| Promote to Officer | Yes | No | No |
-| Demote from Officer | Yes | No | No |
-| Rename faction | Yes | No | No |
-| Set description / tag / color | Yes | No | No |
-| Open / close faction | Yes | No | No |
-| Access faction settings | Yes | No | No |
-| Transfer leadership | Yes | No | No |
-| Disband faction | Yes | No | No |
+| Mag-build sa teritoryo | Oo | Oo | Oo |
+| Gamitin ang faction home | Oo | Oo | Oo |
+| Faction at ally chat | Oo | Oo | Oo |
+| Mag-invite ng mga manlalaro | Oo | Oo | Hindi |
+| Mag-kick ng mga miyembro | Oo | Oo (Members lamang) | Hindi |
+| Mag-claim / mag-unclaim ng lupa | Oo | Oo | Hindi |
+| Mag-overclaim ng enemy territory | Oo | Oo | Hindi |
+| Mag-set ng faction home | Oo | Oo | Hindi |
+| Mag-delete ng faction home | Oo | Oo | Hindi |
+| Mamahala ng relations (ally/enemy) | Oo | Oo | Hindi |
+| Tingnan ang faction logs | Oo | Oo | Hindi |
+| Mag-promote sa Officer | Oo | Hindi | Hindi |
+| Mag-demote mula sa Officer | Oo | Hindi | Hindi |
+| Palitan ang pangalan ng faction | Oo | Hindi | Hindi |
+| Mag-set ng description / tag / color | Oo | Hindi | Hindi |
+| Buksan / isara ang faction | Oo | Hindi | Hindi |
+| I-access ang faction settings | Oo | Hindi | Hindi |
+| Ilipat ang leadership | Oo | Hindi | Hindi |
+| I-disband ang faction | Oo | Hindi | Hindi |
 
->[!NOTE] Officers can kick Members but cannot kick other Officers. Only the Leader can remove Officers.
+>[!NOTE] Ang mga Officer ay pwedeng mag-kick ng mga Member pero hindi pwedeng mag-kick ng ibang Officer. Tanging ang Leader lamang ang pwedeng magtanggal ng mga Officer.
 
 ---
 
-## Role Details
+## Mga Detalye ng Role
 
-- Leader -- One per faction. Has full control over all settings, members, and territory. Can transfer ownership to another member.
-- Officer -- Trusted members who help manage the faction. Can invite, kick members, claim land, and handle diplomacy.
-- Member -- The default role when joining. Can build in territory, use the faction home, and participate in faction chat.
+- Leader -- Isa lang bawat faction. May buong kontrol sa lahat ng settings, miyembro, at teritoryo. Pwedeng ilipat ang ownership sa ibang miyembro.
+- Officer -- Mga pinagkakatiwalaang miyembro na tumutulong sa pamamahala ng faction. Pwedeng mag-invite, mag-kick ng miyembro, mag-claim ng lupa, at humawak ng diplomasya.
+- Member -- Ang default na role kapag sumali. Pwedeng mag-build sa teritoryo, gamitin ang faction home, at sumali sa faction chat.
 
->[!TIP] Promote your most active and trusted members to Officer so they can help manage territory and recruit new players.
+>[!TIP] I-promote ang pinaka-aktibo at pinagkakatiwalaang miyembro mo sa Officer para makatulong sila sa pamamahala ng teritoryo at pag-recruit ng bagong mga manlalaro.

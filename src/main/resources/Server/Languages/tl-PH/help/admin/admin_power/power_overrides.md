@@ -1,54 +1,54 @@
 ---
 id: admin_power_overrides
 ---
-# Power Overrides
+# Mga Power Override
 
-Special power commands that change how power behaves for specific players or factions.
+Mga espesyal na power command na nagbabago kung paano gumagana ang power para sa mga partikular na manlalaro o faction.
 
-## Override Commands
+## Mga Override Command
 
-| Command | Description |
+| Command | Paglalarawan |
 |---------|-------------|
-| `/f admin power setmax <player> <amount>` | Set custom max power cap |
-| `/f admin power noloss <player>` | Toggle death power penalty immunity |
-| `/f admin power nodecay <player>` | Toggle offline power decay immunity |
-| `/f admin power info <player>` | View all overrides and power details |
+| `/f admin power setmax <player> <amount>` | I-set ang custom max power cap |
+| `/f admin power noloss <player>` | I-toggle ang death power penalty immunity |
+| `/f admin power nodecay <player>` | I-toggle ang offline power decay immunity |
+| `/f admin power info <player>` | Tingnan ang lahat ng override at power details |
 
 ## Custom Max Power
 
 `/f admin power setmax <player> <amount>`
-Sets a personal maximum power cap for the player, overriding the server default.
+Nagse-set ng personal na maximum power cap para sa manlalaro, na nag-o-override ng server default.
 
->[!INFO] Setting a custom max does **not** change current power. It only changes the ceiling. The player must still earn power up to the new limit.
+>[!INFO] Ang pagse-set ng custom max ay **hindi** nagbabago ng kasalukuyang power. Binabago lang nito ang ceiling. Kailangan pa ring kumita ng power ang manlalaro hanggang sa bagong limit.
 
 ## No-Loss Mode
 
 `/f admin power noloss <player>`
-Toggles death power loss immunity. When enabled, the player will **not** lose power on death.
+Tino-toggle ang death power loss immunity. Kapag naka-enable, ang manlalaro ay **hindi** mawawalan ng power sa pagkamatay.
 
-Useful for:
-- New player protection periods
-- Event participants
-- Staff members
+Kapaki-pakinabang para sa:
+- Mga panahon ng proteksyon ng bagong manlalaro
+- Mga kalahok sa event
+- Mga staff member
 
 ## No-Decay Mode
 
 `/f admin power nodecay <player>`
-Toggles offline power decay immunity. When enabled, the player's power will **not** decrease while offline.
+Tino-toggle ang offline power decay immunity. Kapag naka-enable, ang power ng manlalaro ay **hindi** bababa habang offline.
 
-Useful for:
-- Players on extended leave
-- VIP members
+Kapaki-pakinabang para sa:
+- Mga manlalarong matagal na hindi makakapaglaro
+- Mga VIP member
 - Seasonal protection
 
 ## Power Info
 
 `/f admin power info <player>`
-Shows a complete breakdown:
+Nagpapakita ng kumpletong breakdown:
 
-- Current power and max power
-- Active overrides (noloss, nodecay, custom max)
-- Last death time and power lost
-- Faction contribution percentage
+- Kasalukuyang power at max power
+- Mga aktibong override (noloss, nodecay, custom max)
+- Huling oras ng pagkamatay at power na nawala
+- Porsyento ng faction contribution
 
->[!TIP] All power overrides persist across server restarts and are stored in the player's data file.
+>[!TIP] Lahat ng power override ay nananatili kahit mag-restart ang server at naka-store sa data file ng manlalaro.

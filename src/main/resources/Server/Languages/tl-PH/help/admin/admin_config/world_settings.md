@@ -1,45 +1,45 @@
 ---
 id: admin_world_settings
 ---
-# Per-World Settings
+# Mga Per-World Setting
 
-HyperFactions supports per-world configuration for claiming, PvP, and protection behavior.
+Ang HyperFactions ay sumusuporta ng per-world configuration para sa claiming, PvP, at protection behavior.
 
-## World Commands
+## Mga World Command
 
-| Command | Description |
+| Command | Paglalarawan |
 |---------|-------------|
-| `/f admin world list` | List all world overrides |
-| `/f admin world info <world>` | Show settings for a world |
-| `/f admin world set <world> <key> <value>` | Set a setting |
-| `/f admin world reset <world>` | Reset world to defaults |
+| `/f admin world list` | Ilista ang lahat ng world override |
+| `/f admin world info <world>` | Ipakita ang mga setting para sa isang mundo |
+| `/f admin world set <world> <key> <value>` | Mag-set ng setting |
+| `/f admin world reset <world>` | I-reset ang mundo sa mga default |
 
-## Available Settings
+## Mga Available na Setting
 
-| Setting | Type | Description |
-|---------|------|-------------|
-| claiming_enabled | boolean | Allow faction claims in this world |
-| pvp_enabled | boolean | Allow PvP combat in this world |
-| power_loss | boolean | Apply power loss on death |
-| build_protection | boolean | Enforce claim build protection |
-| explosion_protection | boolean | Protect claims from explosions |
+| Setting | Uri | Paglalarawan |
+|---------|-----|-------------|
+| claiming_enabled | boolean | Payagan ang faction claims sa mundong ito |
+| pvp_enabled | boolean | Payagan ang PvP combat sa mundong ito |
+| power_loss | boolean | I-apply ang power loss sa pagkamatay |
+| build_protection | boolean | Ipatupad ang claim build protection |
+| explosion_protection | boolean | Protektahan ang mga claim mula sa mga pagsabog |
 
 ## World Whitelist / Blacklist
 
-Control which worlds allow faction features through the `worlds.json` config file:
+Kontrolin kung aling mga mundo ang nagpapahintulot ng faction features sa pamamagitan ng `worlds.json` config file:
 
-- **Whitelist mode**: Only listed worlds allow claiming
-- **Blacklist mode**: All worlds allow claiming except listed
+- **Whitelist mode**: Tanging ang mga naka-listang mundo lang ang pwedeng mag-claim
+- **Blacklist mode**: Lahat ng mundo ay pwedeng mag-claim maliban sa mga nakalista
 
->[!INFO] World settings are stored in `worlds.json` and override the global defaults from `factions.json`.
+>[!INFO] Ang mga world setting ay naka-store sa `worlds.json` at nag-o-override ng mga global default mula sa `factions.json`.
 
-## Examples
+## Mga Halimbawa
 
 - `/f admin world set survival claiming_enabled true`
 - `/f admin world set creative claiming_enabled false`
 - `/f admin world set pvp_arena pvp_enabled true`
-- `/f admin world reset lobby` -- restore all defaults
+- `/f admin world reset lobby` -- ibalik ang lahat ng default
 
->[!TIP] Disable claiming in creative or lobby worlds to keep the faction system focused on survival gameplay.
+>[!TIP] I-disable ang claiming sa mga creative o lobby world para mapanatiling nakapokus ang faction system sa survival gameplay.
 
->[!NOTE] Per-world settings take priority over global config but are overridden by zone flags within that world.
+>[!NOTE] Ang mga per-world setting ay mas mataas ang priority kaysa sa global config pero nao-override ng mga zone flag sa loob ng mundong iyon.

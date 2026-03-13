@@ -2,43 +2,43 @@
 id: power_map
 commands: map
 ---
-# The Territory Map
+# Ang Territory Map
 
-The territory map gives you a bird's-eye view of claimed chunks in your area, showing which factions control the land around you.
+Ang territory map ay nagbibigay sa iyo ng bird's-eye view ng mga na-claim na chunk sa iyong lugar, na nagpapakita kung aling mga faction ang nagkokontrol ng lupa sa paligid mo.
 
 ---
 
-## Opening the Map
+## Pagbukas ng Map
 
 `/f map`
 
-Opens the territory map GUI centered on your current location.
+Binubuksan ang territory map GUI na naka-sentro sa kasalukuyan mong lokasyon.
 
 ---
 
-## Color Legend
+## Gabay sa Kulay
 
-| Color | Meaning |
-|-------|---------|
-| [#55FF55] Your faction's color | Territory claimed by your faction |
-| [#5555FF] Blue | Allied faction territory |
-| [#FF5555] Red | Enemy faction territory |
-| [#AAAAAA] Gray | Neutral faction territory |
-| [#333333] Dark | Wilderness (unclaimed land) |
-| [#FFAA00] Gold | Special zones (safezone, warzone) |
+| Kulay | Kahulugan |
+|-------|-----------|
+| [#55FF55] Kulay ng faction mo | Teritoryong na-claim ng faction mo |
+| [#5555FF] Asul | Teritoryo ng allied faction |
+| [#FF5555] Pula | Teritoryo ng enemy faction |
+| [#AAAAAA] Kulay-abo | Teritoryo ng neutral faction |
+| [#333333] Madilim | Wilderness (hindi na-claim na lupa) |
+| [#FFAA00] Ginto | Mga espesyal na zone (safezone, warzone) |
 
->[!INFO] Your faction's color on the map matches the color you set with the faction color setting. Allies and enemies use fixed colors for easy identification.
+>[!INFO] Ang kulay ng faction mo sa map ay tumutugma sa kulay na na-set mo sa faction color setting. Ang mga ally at enemy ay gumagamit ng mga fixed na kulay para madaling makilala.
 
 ---
 
-## Click to Claim
+## I-click para Mag-claim
 
-The map is not just for viewing -- you can interact with it directly.
+Ang map ay hindi lang para sa pagtingin -- pwede kang direktang mag-interact dito.
 
-- Click an unclaimed chunk to claim it (requires Officer+ rank and sufficient power)
-- Click a claimed chunk to see which faction owns it
-- Scroll or pan to explore the area around you
+- I-click ang isang unclaimed chunk para i-claim ito (kailangan ng Officer+ rank at sapat na power)
+- I-click ang isang na-claim na chunk para makita kung aling faction ang nagmamay-ari nito
+- Mag-scroll o mag-pan para i-explore ang lugar sa paligid mo
 
->[!TIP] The map is the easiest way to plan your territory expansion. Look for unclaimed areas near your base and claim strategically to create a contiguous border.
+>[!TIP] Ang map ang pinakamadaling paraan para planuhin ang pagpapalawak ng teritoryo mo. Maghanap ng mga unclaimed na lugar malapit sa base mo at mag-claim nang estratehiko para gumawa ng magkakasunod na hangganan.
 
->[!NOTE] The map shows a fixed area around your position. Move to a different location and reopen it to see other parts of the world.
+>[!NOTE] Ang map ay nagpapakita ng isang fixed na lugar sa paligid ng posisyon mo. Lumipat sa ibang lokasyon at buksan ulit ito para makita ang ibang parte ng mundo.

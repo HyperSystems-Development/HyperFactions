@@ -2,38 +2,38 @@
 id: combat_death
 commands: home, sethome, stuck
 ---
-# Death and Recovery
+# Pagkamatay at Pagre-recover
 
-Death carries real consequences in factions. Every death costs you personal power, weakening your faction's ability to hold territory.
+Ang pagkamatay ay may totoong mga konsekwensya sa factions. Bawat pagkamatay ay nagpapalugi sa iyo ng personal power, na nagpapahina sa kakayahan ng faction mong hawakan ang teritoryo.
 
-## Power Loss
+## Pagkawala ng Power
 
-Each death costs -1.0 power from your personal total. This lowers the faction's combined power.
+Bawat pagkamatay ay nagkakahalaga ng -1.0 power mula sa iyong personal na kabuuan. Binabawasan nito ang combined power ng faction.
 
-| Event | Power Change |
-|-------|-------------|
-| Death (any cause) | -1.0 |
-| Online regen | +0.1 per minute |
-| Combat logout | -1.0 (killed) |
+| Pangyayari | Pagbabago ng Power |
+|-----------|-------------------|
+| Pagkamatay (kahit anong dahilan) | -1.0 |
+| Online regen | +0.1 bawat minuto |
+| Combat logout | -1.0 (pinatay) |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Ito ay mga default na halaga. Maaaring iba ang na-configure ng server administrator mo.
 
-## Example Scenarios
+## Mga Halimbawang Senaryo
 
-*5 members at 10.0 power each = 50 total, 20 claims.*
-*One member dies twice: 8.0 power, faction total 48.*
-*Three members die once each: total drops to 47.*
+*5 miyembro na may 10.0 power bawat isa = 50 kabuuan, 20 claim.*
+*Isang miyembro ay namatay ng dalawang beses: 8.0 power, faction total 48.*
+*Tatlong miyembro ay namatay nang tig-iisa: bumaba ang kabuuan sa 47.*
 
->[!WARNING] If your faction power drops below your claim count, enemies can overclaim your territory.
+>[!WARNING] Kung bumaba ang faction power mo sa ibaba ng claim count mo, pwedeng mag-overclaim ng teritoryo mo ang mga kaaway.
 
-## Recovery
+## Pagre-recover
 
-Power regenerates at 0.1 per minute while online. Recovering 1.0 lost power takes about 10 minutes. Multiple deaths stack, so avoid repeated fights.
+Ang power ay nagre-regenerate sa 0.1 bawat minuto habang online. Ang pagre-recover ng 1.0 na nawala ay tumatagal ng mga 10 minuto. Nagsasama-sama ang mga sunud-sunod na pagkamatay, kaya iwasan ang paulit-ulit na away.
 
 ---
 
-## All Death Types
+## Lahat ng Uri ng Pagkamatay
 
-Power loss applies to all deaths: PvP, mob kills, fall damage, drowning, and any other cause. There is no safe way to die.
+Ang power loss ay umaaplay sa lahat ng pagkamatay: PvP, napatay ng mob, pagbagsak, pagkalunod, at kahit anong ibang dahilan. Walang ligtas na paraan para mamatay.
 
->[!TIP] Set a faction home with /f sethome so members can regroup quickly after dying.
+>[!TIP] Mag-set ng faction home gamit ang /f sethome para mabilis na magsama-sama ulit ang mga miyembro pagkatapos mamatay.

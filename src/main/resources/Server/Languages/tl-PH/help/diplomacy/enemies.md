@@ -2,46 +2,46 @@
 id: diplomacy_enemies
 commands: enemy, neutral
 ---
-# Enemy Factions
+# Mga Enemy Faction
 
-Declaring an enemy is a one-way action that immediately enables PvP and territorial aggression against the target faction. No agreement is required.
+Ang pagdedeklara ng kaaway ay isang one-way na aksyon na agad na nag-e-enable ng PvP at territorial aggression laban sa target na faction. Hindi kailangan ng kasunduan.
 
 ---
 
-## Declaring an Enemy
+## Pagdedeklara ng Kaaway
 
 `/f enemy <faction>`
 
-Instantly marks the target faction as your enemy. This takes effect immediately -- no confirmation from the other side is needed. Requires Officer rank or higher.
+Agad na mina-mark ang target na faction bilang iyong kaaway. Agad itong magkakabisa -- hindi kailangan ng confirmation mula sa kabilang panig. Kailangan ng Officer rank o mas mataas pa.
 
-## Resetting to Neutral
+## Pag-reset sa Neutral
 
 `/f neutral <faction>`
 
-Ends the enemy status and resets the relation to neutral. This also requires Officer+ and takes effect immediately.
+Tinatapos ang enemy status at nire-reset ang relasyon sa neutral. Kailangan din ito ng Officer+ at agad na magkakabisa.
 
 ---
 
-## What Enemy Status Enables
+## Ano ang Na-enable ng Enemy Status
 
-| Effect | Details |
-|--------|---------|
-| PvP in territory | Full PvP is enabled in both factions' territory |
-| Overclaiming | You can overclaim their chunks if they are in a power deficit |
-| Map marking | Enemy territory shows in red on the territory map |
-| No protection | Standard territory protection does not prevent enemy PvP |
+| Epekto | Mga Detalye |
+|--------|-------------|
+| PvP sa teritoryo | Buong PvP ang naka-enable sa teritoryo ng parehong faction |
+| Overclaiming | Pwede mong i-overclaim ang mga chunk nila kung nasa power deficit sila |
+| Map marking | Ang enemy territory ay lumalabas na pula sa territory map |
+| Walang proteksyon | Hindi pinipigilan ng standard territory protection ang enemy PvP |
 
->[!WARNING] Declaring an enemy is a serious decision. Their members can also fight you in your own territory once you declare.
+>[!WARNING] Ang pagdedeklara ng kaaway ay isang seryosong desisyon. Ang mga miyembro nila ay pwede ring lumaban sa iyo sa sarili mong teritoryo kapag nagdeklara ka.
 
 ---
 
-## Strategic Considerations
+## Mga Estratehikong Pagsasaalang-alang
 
-- Enemy declarations are one-way -- you can declare without their consent, but they also see you as hostile
-- Before declaring, check the target's power with /f info. If they are strong, you may lose territory instead
-- Weaken enemies through repeated combat to drain their power, then overclaim their land
-- There is no limit to how many enemies you can have, but fighting on multiple fronts is risky
+- Ang mga deklarasyon ng kaaway ay one-way -- pwede kang magdeklara nang walang pahintulot nila, pero nakikita ka rin nilang hostile
+- Bago magdeklara, suriin ang power ng target gamit ang /f info. Kung malakas sila, baka ikaw ang mawalan ng teritoryo
+- Pahinain ang mga kaaway sa pamamagitan ng paulit-ulit na labanan para maubos ang power nila, pagkatapos ay i-overclaim ang lupa nila
+- Walang limitasyon sa kung ilang kaaway ang pwede mong gawin, pero mapanganib ang paglaban sa maraming prente
 
->[!TIP] Use /f neutral to de-escalate conflicts. Sometimes a strategic peace is more valuable than continued war.
+>[!TIP] Gamitin ang /f neutral para mag-de-escalate ng mga gulo. Minsan mas mahalaga ang estratehikong kapayapaan kaysa sa patuloy na giyera.
 
->[!NOTE] If you are allied with a faction and declare them as an enemy, the alliance is broken first.
+>[!NOTE] Kung ikaw ay allied sa isang faction at idedeklara mo sila bilang kaaway, masisira muna ang alyansa.

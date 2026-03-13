@@ -1,41 +1,41 @@
 ---
 id: admin_configuration
 ---
-# Configuration System
+# Sistema ng Configuration
 
-HyperFactions uses a modular JSON config system with 11 configuration files.
+Ang HyperFactions ay gumagamit ng modular na JSON config system na may 11 configuration file.
 
-## Admin Config Commands
+## Mga Admin Config Command
 
-| Command | Description |
+| Command | Paglalarawan |
 |---------|-------------|
-| `/f admin config` | Open the visual config editor GUI |
-| `/f admin reload` | Reload all config files from disk |
-| `/f admin sync` | Synchronize faction data to storage |
+| `/f admin config` | Buksan ang visual config editor GUI |
+| `/f admin reload` | Mag-reload ng lahat ng config file mula sa disk |
+| `/f admin sync` | I-synchronize ang faction data sa storage |
 
-## Configuration Files
+## Mga Configuration File
 
-| File | Contents |
+| File | Nilalaman |
 |------|----------|
 | `factions.json` | Roles, power, claims, combat, relations |
 | `server.json` | Teleport, auto-save, messages, GUI, permissions |
 | `economy.json` | Treasury, upkeep, transaction settings |
-| `backup.json` | Backup rotation and retention settings |
-| `chat.json` | Faction and ally chat formatting |
+| `backup.json` | Backup rotation at retention settings |
+| `chat.json` | Faction at ally chat formatting |
 | `debug.json` | Debug logging categories |
 | `faction-permissions.json` | Per-role permission defaults |
-| `announcements.json` | Event broadcast and territory notifications |
+| `announcements.json` | Event broadcast at territory notifications |
 | `gravestones.json` | Gravestone integration settings |
 | `worldmap.json` | World map refresh modes |
 | `worlds.json` | Per-world behavior overrides |
 
->[!TIP] The config GUI provides a visual editor with descriptions for every setting. Changes are saved immediately but some require `/f admin reload` to take full effect.
+>[!TIP] Ang config GUI ay nagbibigay ng visual editor na may mga paglalarawan para sa bawat setting. Agad na nase-save ang mga pagbabago pero ang ilan ay nangangailangan ng `/f admin reload` para lubos na magkabisa.
 
-## Config Location
+## Lokasyon ng Config
 
-All files are stored in:
+Lahat ng file ay naka-store sa:
 `mods/com.hyperfactions_HyperFactions/config/`
 
->[!WARNING] Manual JSON edits require `/f admin reload` to apply. Invalid JSON will cause the file to be skipped with a warning in the server log.
+>[!WARNING] Ang mga manual na JSON edit ay nangangailangan ng `/f admin reload` para ma-apply. Ang invalid na JSON ay magdudulot na ma-skip ang file na may babala sa server log.
 
->[!NOTE] Config version is tracked in `server.json`. The plugin auto-migrates older configs on startup.
+>[!NOTE] Ang config version ay naka-track sa `server.json`. Awtomatikong nag-migrate ang plugin ng mga lumang config sa startup.

@@ -2,37 +2,37 @@
 id: welcome_started
 commands: gui, menu
 ---
-# Getting Started
+# Pagsisimula
 
-Welcome to HyperFactions! Here is how to get up and running in just a few steps.
-
----
-
-## Step 1: Open the Faction Menu
-
-Type /f to open the main faction GUI. This is your hub for everything -- browsing factions, creating your own, and managing invitations.
-
-## Step 2: Choose Your Path
-
-| Option | How |
-|--------|-----|
-| Browse open factions | Click Browse in the menu and hit Join on any open faction. |
-| Accept an invitation | Check the Invites tab. If someone invited you, click Accept. |
-| Create your own | Click Create Faction, pick a name, and you are the Leader. |
-
-## Step 3: Explore Your Faction
-
-Once you are in a faction, you will see the Faction Dashboard with your roster, territory map, relations, and settings.
-
->[!TIP] If you are brand new, try joining an existing faction first. You will learn the ropes faster with experienced members around you.
+Maligayang pagdating sa HyperFactions! Narito kung paano makakapagsimula ka sa ilang hakbang lang.
 
 ---
 
-## Essential First Commands
+## Hakbang 1: Buksan ang Faction Menu
 
-- /f -- Opens the faction GUI
-- /f home -- Teleport to your faction's home base
-- /f c -- Cycle chat mode between Normal, Faction, and Ally
-- /f map -- View the territory map around you
+I-type ang /f para buksan ang pangunahing faction GUI. Ito ang sentro ng lahat -- pag-browse ng mga faction, paglikha ng sarili mo, at pamamahala ng mga imbitasyon.
 
->[!TIP] You can also type /f help in chat for a quick command reference anytime.
+## Hakbang 2: Pumili ng Landas
+
+| Opsyon | Paano |
+|--------|-------|
+| Mag-browse ng bukas na faction | I-click ang Browse sa menu at pindutin ang Join sa kahit anong bukas na faction. |
+| Tanggapin ang imbitasyon | Tingnan ang Invites tab. Kung may nag-invite sa iyo, i-click ang Accept. |
+| Gumawa ng sarili | I-click ang Create Faction, pumili ng pangalan, at ikaw ang magiging Leader. |
+
+## Hakbang 3: I-explore ang Faction Mo
+
+Kapag nasa loob ka na ng faction, makikita mo ang Faction Dashboard na may roster, territory map, relations, at settings.
+
+>[!TIP] Kung bago ka pa lang, subukan munang sumali sa isang existing faction. Mas mabilis kang matututo kung may kasamang experienced members.
+
+---
+
+## Mga Pangunahing Unang Command
+
+- /f -- Binubuksan ang faction GUI
+- /f home -- Mag-teleport sa home base ng faction mo
+- /f c -- I-cycle ang chat mode sa pagitan ng Normal, Faction, at Ally
+- /f map -- Tingnan ang territory map sa paligid mo
+
+>[!TIP] Pwede ka ring mag-type ng /f help sa chat para sa mabilis na command reference kahit kailan.

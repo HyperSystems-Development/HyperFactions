@@ -1,14 +1,14 @@
 ---
 id: admin_zone_flags
 ---
-# Zone Flags
+# Mga Zone Flag
 
-Zones support **47 boolean flags** across 10 categories. Each flag controls a specific behavior within the zone.
+Ang mga zone ay sumusuporta sa **47 boolean flag** sa 10 kategorya. Bawat flag ay nagkokontrol ng partikular na gawi sa loob ng zone.
 
-## Flag Categories Overview
+## Pangkalahatang-tanaw ng mga Flag Category
 
-| Category | Count | Key Flags |
-|----------|-------|-----------|
+| Kategorya | Bilang | Mga Pangunahing Flag |
+|-----------|--------|---------------------|
 | Combat | 7 | pvp_enabled, friendly_fire, mob_damage, pve_damage |
 | Damage | 4 | fall_damage, explosion_damage, fire_spread |
 | Death | 2 | keep_inventory, power_loss |
@@ -20,7 +20,7 @@ Zones support **47 boolean flags** across 10 categories. Each flag controls a sp
 | Mob Clearing | 4 | mob_clear, hostile/passive/neutral clear |
 | Integration | 5 | gravestone_access, show_on_map, essentials_homes |
 
-## Default Values (SafeZone vs WarZone)
+## Mga Default na Halaga (SafeZone vs WarZone)
 
 | Flag | SafeZone | WarZone |
 |------|----------|---------|
@@ -34,10 +34,10 @@ Zones support **47 boolean flags** across 10 categories. Each flag controls a sp
 | door_use | **true** | **true** |
 | container_use | false | **true** |
 
->[!NOTE] Some flags require **HyperProtect-Mixin** to function (e.g., keep_inventory, explosion_damage, fire_spread, block_place, npc_tame). Without the mixin, these flags have no effect even when enabled.
+>[!NOTE] Ang ilang flag ay nangangailangan ng **HyperProtect-Mixin** para gumana (hal., keep_inventory, explosion_damage, fire_spread, block_place, npc_tame). Kung wala ang mixin, ang mga flag na ito ay walang epekto kahit naka-enable.
 
-## Setting Flags
+## Pagse-set ng mga Flag
 
 `/f admin zoneflag <zone> <flag> <true/false>`
 
->[!TIP] Use `/f admin zone properties <zone>` for a visual toggle editor grouped by category.
+>[!TIP] Gamitin ang `/f admin zone properties <zone>` para sa visual toggle editor na naka-grupo ayon sa kategorya.

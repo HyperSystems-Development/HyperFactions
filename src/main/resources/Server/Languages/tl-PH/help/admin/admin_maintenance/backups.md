@@ -1,48 +1,48 @@
 ---
 id: admin_backups
 ---
-# Backup System
+# Sistema ng Backup
 
-HyperFactions includes automatic and manual backups with GFS (Grandfather-Father-Son) rotation.
+Ang HyperFactions ay may kasamang automatic at manual backup na may GFS (Grandfather-Father-Son) rotation.
 
-## Backup Commands
+## Mga Backup Command
 
-| Command | Description |
+| Command | Paglalarawan |
 |---------|-------------|
-| `/f admin backup create` | Create a manual backup now |
-| `/f admin backup list` | List all available backups |
-| `/f admin backup restore <name>` | Restore from a backup |
-| `/f admin backup delete <name>` | Delete a specific backup |
+| `/f admin backup create` | Gumawa ng manual backup ngayon |
+| `/f admin backup list` | Ilista ang lahat ng available na backup |
+| `/f admin backup restore <name>` | Mag-restore mula sa backup |
+| `/f admin backup delete <name>` | Mag-delete ng partikular na backup |
 
 **Permission**: `hyperfactions.admin.backup`
 
-## GFS Rotation Defaults
+## Mga Default ng GFS Rotation
 
-| Type | Retention | Description |
-|------|-----------|-------------|
-| Hourly | 24 | Last 24 hourly snapshots |
-| Daily | 7 | Last 7 daily snapshots |
-| Weekly | 4 | Last 4 weekly snapshots |
-| Manual | 10 | Manually created backups |
-| Shutdown | 5 | Created on server stop |
+| Uri | Retention | Paglalarawan |
+|-----|-----------|-------------|
+| Hourly | 24 | Huling 24 hourly snapshot |
+| Daily | 7 | Huling 7 daily snapshot |
+| Weekly | 4 | Huling 4 weekly snapshot |
+| Manual | 10 | Mga mano-manong ginawang backup |
+| Shutdown | 5 | Ginawa sa pag-stop ng server |
 
->[!INFO] Shutdown backups are enabled by default (`onShutdown=true`). They capture the latest state before the server stops.
+>[!INFO] Ang shutdown backup ay naka-enable bilang default (`onShutdown=true`). Kinukuha nito ang pinakabagong estado bago mag-stop ang server.
 
-## Backup Contents
+## Nilalaman ng Backup
 
-Each backup ZIP archive contains:
-- All faction data files
+Bawat backup ZIP archive ay naglalaman ng:
+- Lahat ng faction data file
 - Player power data
-- Zone definitions
-- Chat history and economy data
-- Invite and join request data
-- Configuration files
+- Mga zone definition
+- Chat history at economy data
+- Mga invite at join request data
+- Mga configuration file
 
->[!WARNING] **Restoring a backup is destructive.** It replaces all current data with the backup's contents. Any changes made after the backup was created will be lost. Always create a fresh backup before restoring.
+>[!WARNING] **Ang pag-restore ng backup ay destructive.** Pinapalitan nito ang lahat ng kasalukuyang data ng nilalaman ng backup. Mawawala ang anumang pagbabago na ginawa pagkatapos gumawa ng backup. Palaging gumawa muna ng sariwang backup bago mag-restore.
 
-## Best Practices
+## Mga Best Practice
 
-1. Create a manual backup before major admin actions
-2. Review backup retention in `backup.json`
-3. Test restore on a staging server first
-4. Keep shutdown backups enabled for crash recovery
+1. Gumawa ng manual backup bago ang mga malalaking admin action
+2. I-review ang backup retention sa `backup.json`
+3. Subukan ang restore sa staging server muna
+4. Panatilihing naka-enable ang shutdown backup para sa crash recovery

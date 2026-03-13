@@ -2,35 +2,35 @@
 id: faction_joining
 commands: accept, join, request
 ---
-# Joining a Faction
+# Pagsali sa Faction
 
-There are three ways to join an existing faction, depending on how the faction is configured.
-
----
-
-## Methods Compared
-
-| Method | How | Requires |
-|--------|-----|----------|
-| Browse and Join | Open /f, click Browse, click Join | Faction is set to open |
-| Accept Invite | Check Invites tab in /f menu | Active invitation |
-| Request to Join | Use /f request, wait for approval | Officer or Leader approves |
+May tatlong paraan para sumali sa isang existing faction, depende sa kung paano naka-configure ang faction.
 
 ---
 
-## Invite Details
+## Paghahambing ng mga Paraan
 
-- Invitations are sent by Officers or Leaders
-- Invitations expire after 5 minutes -- accept promptly
-- View your pending invites in the Invites tab of the faction menu
-- Accept with the GUI or /f accept
+| Paraan | Paano | Kinakailangan |
+|--------|-------|---------------|
+| Browse at Join | Buksan ang /f, i-click ang Browse, i-click ang Join | Ang faction ay naka-set sa open |
+| Tanggapin ang Invite | Tingnan ang Invites tab sa /f menu | Aktibong imbitasyon |
+| Mag-request na Sumali | Gamitin ang /f request, maghintay ng approval | Kailangang mag-approve ang Officer o Leader |
 
-## Join Requests
+---
 
-- Use /f request to request membership in a closed faction
-- Requests expire after 24 hours if not acted on
-- Officers and Leaders can approve or deny requests from the faction dashboard
+## Mga Detalye ng Invite
 
->[!TIP] Not sure which faction to join? Use the Browse tab in /f to see faction descriptions, member counts, and whether they are open or invite-only.
+- Ang mga imbitasyon ay ipinapadala ng mga Officer o Leader
+- Nag-e-expire ang mga imbitasyon pagkalipas ng 5 minuto -- tanggapin agad
+- Tingnan ang mga pending invite mo sa Invites tab ng faction menu
+- Tanggapin gamit ang GUI o /f accept
 
->[!NOTE] Each faction can hold up to 50 members by default. If a faction is full, you will need to wait for a spot to open up.
+## Mga Join Request
+
+- Gamitin ang /f request para mag-request ng membership sa isang closed faction
+- Nag-e-expire ang mga request pagkalipas ng 24 oras kung walang aksyon
+- Ang mga Officer at Leader ay pwedeng mag-approve o mag-deny ng mga request mula sa faction dashboard
+
+>[!TIP] Hindi sigurado kung saan sasali? Gamitin ang Browse tab sa /f para makita ang mga faction description, bilang ng miyembro, at kung open sila o invite-only.
+
+>[!NOTE] Bawat faction ay pwedeng magkaroon ng hanggang 50 miyembro bilang default. Kung puno na ang faction, kailangan mong maghintay ng bakanteng slot.

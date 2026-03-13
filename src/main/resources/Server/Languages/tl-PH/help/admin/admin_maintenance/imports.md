@@ -1,9 +1,9 @@
 ---
 id: admin_imports
 ---
-# Data Import
+# Pag-import ng Data
 
-Import faction data from other plugins to migrate your server to HyperFactions.
+Mag-import ng faction data mula sa ibang plugin para i-migrate ang server mo sa HyperFactions.
 
 ## Import Command
 
@@ -11,38 +11,38 @@ Import faction data from other plugins to migrate your server to HyperFactions.
 
 **Permission**: `hyperfactions.admin.use`
 
-## Supported Sources
+## Mga Supported na Source
 
-| Source | Description |
+| Source | Paglalarawan |
 |--------|-------------|
-| `elbaphfactions` | Import from ElbaphFactions data |
-| `hyfactions` | Import from HyFactions v1 data |
+| `elbaphfactions` | Mag-import mula sa ElbaphFactions data |
+| `hyfactions` | Mag-import mula sa HyFactions v1 data |
 
-## Import Flags
+## Mga Import Flag
 
-| Flag | Description |
+| Flag | Paglalarawan |
 |------|-------------|
-| `--dry-run` | Validate data without importing anything |
-| `--overwrite` | Overwrite existing factions with same name |
-| `--no-zones` | Skip zone data during import |
-| `--no-power` | Skip power data during import |
+| `--dry-run` | I-validate ang data nang hindi nag-i-import ng kahit ano |
+| `--overwrite` | I-overwrite ang mga existing faction na may parehong pangalan |
+| `--no-zones` | Laktawan ang zone data sa pag-import |
+| `--no-power` | Laktawan ang power data sa pag-import |
 
->[!TIP] Always run with `--dry-run` first to preview what will be imported and catch any data issues before committing changes.
+>[!TIP] Palaging patakbuhin muna gamit ang `--dry-run` para ma-preview kung ano ang ii-import at mahuli ang mga data issue bago mag-commit ng mga pagbabago.
 
-## Import Process
+## Proseso ng Import
 
-1. A pre-import backup is created automatically
-2. Player name mappings are loaded
-3. Factions, claims, and zones are converted
-4. Data is validated and saved
+1. Awtomatikong gumagawa ng pre-import backup
+2. Lino-load ang mga player name mapping
+3. Kino-convert ang mga faction, claim, at zone
+4. Vine-validate at sine-save ang data
 
-## Examples
+## Mga Halimbawa
 
 - `/f admin import elbaphfactions --dry-run`
 - `/f admin import elbaphfactions --overwrite`
 - `/f admin import hyfactions --no-zones --no-power`
 - `/f admin import elbaphfactions /custom/path`
 
->[!WARNING] Using `--overwrite` will **replace** any existing faction that shares a name with an imported faction. Member data and claims will be overwritten. Run with `--dry-run` first to identify conflicts.
+>[!WARNING] Ang paggamit ng `--overwrite` ay **magpapalit** ng kahit anong existing faction na may parehong pangalan ng na-import na faction. Mao-overwrite ang member data at mga claim. Patakbuhin muna gamit ang `--dry-run` para matukoy ang mga conflict.
 
->[!NOTE] Some source-specific data (e.g., worker plots, farm plots) has no equivalent in HyperFactions and will be logged as warnings during import.
+>[!NOTE] Ang ilang source-specific na data (hal., worker plots, farm plots) ay walang katumbas sa HyperFactions at ilo-log bilang mga babala sa pag-import.

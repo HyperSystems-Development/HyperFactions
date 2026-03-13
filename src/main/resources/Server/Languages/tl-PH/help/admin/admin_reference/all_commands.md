@@ -1,11 +1,11 @@
 ---
 id: admin_quickref_commands
 ---
-# Admin Command Reference
+# Reference ng Admin Command
 
-Complete list of all `/f admin` subcommands with syntax and required permissions.
+Kumpletong listahan ng lahat ng `/f admin` subcommand na may syntax at kinakailangang permission.
 
-## Dashboard and General
+## Dashboard at Pangkalahatan
 
 | Command | Permission |
 |---------|-----------|
@@ -15,7 +15,7 @@ Complete list of all `/f admin` subcommands with syntax and required permissions
 | `/f admin sync` | admin.use |
 | `/f admin sentry` | admin.use |
 
-## Faction Management
+## Pamamahala ng Faction
 
 | Command | Permission |
 |---------|-----------|
@@ -25,7 +25,7 @@ Complete list of all `/f admin` subcommands with syntax and required permissions
 | `/f admin disband <faction>` | admin.disband |
 | `/f admin log` | admin.use |
 
-## Zone Management
+## Pamamahala ng Zone
 
 | Command | Permission |
 |---------|-----------|
@@ -40,7 +40,7 @@ Complete list of all `/f admin` subcommands with syntax and required permissions
 | `/f admin zone properties <zone>` | admin.zones |
 | `/f admin zoneflag <zone> <flag> <bool>` | admin.zones |
 
-## Power and Economy
+## Power at Ekonomiya
 
 | Command | Permission |
 |---------|-----------|
@@ -62,4 +62,4 @@ Complete list of all `/f admin` subcommands with syntax and required permissions
 | `/f admin debug toggle <category>` | admin.debug |
 | `/f admin integration` | admin.use |
 
->[!NOTE] All permission nodes are prefixed with `hyperfactions.` (e.g., `hyperfactions.admin.use`).
+>[!NOTE] Lahat ng permission node ay may prefix na `hyperfactions.` (hal., `hyperfactions.admin.use`).

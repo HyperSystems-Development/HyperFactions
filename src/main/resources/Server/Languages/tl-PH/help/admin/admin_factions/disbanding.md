@@ -3,35 +3,35 @@ id: admin_disbanding
 ---
 # Force Disbanding
 
-Admins can forcefully disband any faction, regardless of the leader's wishes.
+Pwedeng puwersahang i-disband ng mga admin ang kahit anong faction, anuman ang gusto ng leader.
 
 ## Command
 
 `/f admin disband <faction>`
-Force-disband the named faction. A confirmation prompt will appear before the action is executed.
+Puwersahang i-disband ang pinangalanang faction. May lalabas na confirmation prompt bago isagawa ang aksyon.
 
 **Permission**: `hyperfactions.admin.disband`
 
->[!WARNING] Disbanding a faction is **irreversible**. All claims are released, all members are removed, and the faction ceases to exist. Create a backup first.
+>[!WARNING] Ang pag-disband ng faction ay **hindi na pwedeng i-undo**. Lahat ng claim ay mabibigyang-laya, lahat ng miyembro ay tatanggalin, at matitigil ang pag-iral ng faction. Gumawa muna ng backup.
 
-## Consequences
+## Mga Konsekwensya
 
-When a faction is disbanded:
+Kapag na-disband ang isang faction:
 
-| Effect | Description |
+| Epekto | Paglalarawan |
 |--------|-------------|
-| **Claims** | All territory is released immediately |
-| **Members** | All players are removed from the roster |
-| **Relations** | All alliances and enemies are cleared |
-| **Treasury** | Handled per economy config settings |
-| **Home** | Faction home is deleted |
-| **Chat** | Faction chat history is removed |
+| **Claims** | Lahat ng teritoryo ay agad na ire-release |
+| **Members** | Lahat ng manlalaro ay tatanggalin mula sa roster |
+| **Relations** | Lahat ng alyansa at kaaway ay maki-clear |
+| **Treasury** | Hahawakan ayon sa economy config settings |
+| **Home** | Madi-delete ang faction home |
+| **Chat** | Matatanggal ang faction chat history |
 
-## Best Practices
+## Mga Best Practice
 
-1. Always run `/f admin backup create` before disbanding
-2. Notify faction members when possible
-3. Document the reason for server records
-4. Check `/f admin info <faction>` to review before acting
+1. Palaging patakbuhin ang `/f admin backup create` bago mag-disband
+2. I-notify ang mga faction member kung posible
+3. I-document ang dahilan para sa server records
+4. Suriin ang `/f admin info <faction>` para mag-review bago kumilos
 
->[!TIP] If the issue is with a specific member, consider using the admin factions GUI to transfer leadership rather than disbanding the entire faction.
+>[!TIP] Kung ang problema ay sa isang partikular na miyembro, pag-isipang gamitin ang admin factions GUI para ilipat ang leadership sa halip na i-disband ang buong faction.
