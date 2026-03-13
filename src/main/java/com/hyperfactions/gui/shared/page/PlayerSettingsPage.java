@@ -41,7 +41,15 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
   /** Available locale codes. New locales are added here as translations are completed. */
   private static final List<String> AVAILABLE_LOCALES = List.of(
       "en-US",
-      "es-ES"
+      "es-ES",
+      "de-DE",
+      "fr-FR",
+      "pt-BR",
+      "ru-RU",
+      "pl-PL",
+      "it-IT",
+      "nl-NL",
+      "tl-PH"
   );
 
   /**

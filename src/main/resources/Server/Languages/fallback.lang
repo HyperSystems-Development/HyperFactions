@@ -16,14 +16,19 @@
 #
 # Supported locales (directories under Server/Languages/):
 #   en-US  — English (United States) [base language, complete]
-#   de-DE  — German (Germany) [stub — untranslated]
-#   es-ES  — Spanish (Spain) [stub — untranslated]
-#   fr-FR  — French (France) [stub — untranslated]
-#   ja-JP  — Japanese (Japan) [stub — untranslated]
-#   pt-BR  — Portuguese (Brazil) [stub — untranslated]
-#   ru-RU  — Russian (Russia) [stub — untranslated]
-#   tr-TR  — Turkish (Turkey) [stub — untranslated]
-#   zh-CN  — Chinese Simplified (China) [stub — untranslated]
+#   es-ES  — Spanish (Spain) [complete]
+#   de-DE  — German (Germany) [complete]
+#   fr-FR  — French (France) [complete]
+#   pt-BR  — Portuguese (Brazil) [complete]
+#   ru-RU  — Russian (Russia) [complete]
+#   pl-PL  — Polish (Poland) [complete]
+#   it-IT  — Italian (Italy) [complete]
+#   nl-NL  — Dutch (Netherlands) [complete]
+#   tl-PH  — Filipino/Tagalog (Philippines) [complete]
+#
+# Note: tl-PH is not natively supported by the Hytale client. Players must
+# select it manually via /f settings > Language. HFMessages falls back to
+# en-US automatically for any locale not loaded by I18nModule.
 #
 # To add a new locale:
 #   ./scripts/new-translation.sh <locale-code>

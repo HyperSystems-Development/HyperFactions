@@ -1,0 +1,453 @@
+# HyperFactions - Filipino (Tagalog) na mga Salin
+# Format: key = value (o key = "quoted value")
+# Note: Ang mga key ay awtomatikong may prefix na "hyperfactions." mula sa I18nModule ng Hytale
+# Mga Placeholder: {0}, {1}, atbp.
+
+# ========== Karaniwan ==========
+common.no_permission = Wala kang pahintulot na gawin iyan.
+common.not_in_faction = Wala ka sa isang paksyon.
+common.already_in_faction = Kasapi ka na ng isang paksyon.
+common.player_not_found = Hindi nahanap ang manlalaro.
+common.faction_not_found = Hindi nahanap ang paksyon.
+common.player_not_online = Ang manlalaro ay hindi online.
+common.must_be_leader = Tanging ang pinuno ng paksyon lamang ang makakagawa niyan.
+common.must_be_officer = Dapat ikaw ay isang Opisyal o Pinuno upang gawin iyan.
+common.combat_tagged = Hindi mo magagawa iyan habang may combat tag.
+common.cancel = Kanselahin
+common.confirm = Kumpirmahin
+common.save = I-save
+common.close = Isara
+common.clear = I-clear
+common.back = Bumalik
+common.leave = Umalis
+common.transfer = Ilipat
+common.disband = Buwagin
+common.world_fallback = mundo
+common.yes = Oo
+common.no = Hindi
+common.loading = Naglo-load...
+common.online = Online
+common.offline = Offline
+common.enabled = Naka-enable
+common.disabled = Naka-disable
+common.none = Wala
+common.page = Pahina {0} ng {1}
+common.unknown = Hindi alam
+common.error_generic = May nangyaring mali. Pakisubukan muli.
+common.gui_fallback = Hindi ma-access ang GUI. Gamitin ang /f help para sa mga utos.
+common.admin_prefix = [Admin]
+common.location_error = Hindi matukoy ang iyong lokasyon.
+common.world_error = Hindi matukoy ang iyong mundo.
+common.invalid_id = Hindi wastong faction ID.
+common.na = N/A
+
+# ========== Mga Utos - Gumawa ==========
+cmd.create.no_permission = Wala kang pahintulot na gumawa ng mga paksyon.
+cmd.create.usage = Paggamit: /f create <pangalan>
+cmd.create.success = Nalikha ang paksyon na '{0}'!
+cmd.create.already_in_named = Kasapi ka na ng {0}.
+cmd.create.use_leave_first = Gamitin muna ang /f leave kung gusto mong gumawa ng bagong paksyon.
+cmd.create.name_taken = Ang pangalan ng paksyon na iyon ay nakuha na.
+cmd.create.name_too_short = Masyadong maikli ang pangalan ng paksyon.
+cmd.create.name_too_long = Masyadong mahaba ang pangalan ng paksyon.
+cmd.create.failed = Nabigo ang paggawa ng paksyon.
+
+# ========== Mga Utos - Buwagin ==========
+cmd.disband.no_permission = Wala kang pahintulot na buwagin ang mga paksyon.
+cmd.disband.not_leader = Tanging ang pinuno ng paksyon lamang ang maaaring bumuag.
+cmd.disband.confirm_prompt = Sigurado ka bang gusto mong buwagin ang iyong paksyon?
+cmd.disband.confirm_instruction = I-type ang /f disband --text muli sa loob ng {0} segundo upang kumpirmahin.
+cmd.disband.success = Ang iyong paksyon ay nabuag na.
+cmd.disband.failed = Nabigo ang pagbuag ng paksyon.
+cmd.disband.cancelled = Kinansela ang nakaraang kumpirmasyon. I-type muli upang kumpirmahin ang pagbuag.
+
+# ========== Mga Utos - Palitan ang Pangalan ==========
+cmd.rename.no_permission = Wala kang pahintulot.
+cmd.rename.not_leader = Tanging ang pinuno lamang ang maaaring magpalit ng pangalan ng paksyon.
+cmd.rename.usage = Paggamit: /f rename <pangalan>
+cmd.rename.too_short = Masyadong maikli ang pangalan (minimum {0} karakter).
+cmd.rename.too_long = Masyadong mahaba ang pangalan (maximum {0} karakter).
+cmd.rename.name_taken = Ang pangalan na iyon ay nakuha na.
+cmd.rename.success = Ang paksyon ay pinalitan ng pangalan sa {0}!
+cmd.rename.broadcast = Pinalitan ni {0} ang pangalan ng paksyon sa {1}
+
+# ========== Mga Utos - Deskripsyon ==========
+cmd.desc.no_permission = Wala kang pahintulot.
+cmd.desc.not_officer = Dapat ikaw ay isang opisyal upang magtakda ng deskripsyon.
+cmd.desc.set = Naitakda na ang deskripsyon ng paksyon!
+cmd.desc.cleared = Na-clear na ang deskripsyon ng paksyon.
+
+# ========== Mga Utos - Buksan / Isara ==========
+cmd.open.no_permission = Wala kang pahintulot.
+cmd.open.not_leader = Tanging ang pinuno lamang ang maaaring magbago ng setting na ito.
+cmd.open.already_open = Bukas na ang iyong paksyon.
+cmd.open.success = Bukas na ang iyong paksyon! Kahit sino ay maaaring sumali gamit ang /f join.
+cmd.open.broadcast = Binuksan ni {0} ang paksyon para sa malayang pagsali.
+cmd.close.no_permission = Wala kang pahintulot.
+cmd.close.not_leader = Tanging ang pinuno lamang ang maaaring magbago ng setting na ito.
+cmd.close.already_closed = Sarado na ang iyong paksyon.
+cmd.close.success = Ang iyong paksyon ay sa pamamagitan na lamang ng imbitasyon.
+cmd.close.broadcast = Isinara ni {0} ang paksyon sa pamamagitan lamang ng imbitasyon.
+
+# ========== Mga Utos - Kulay ==========
+cmd.color.no_permission = Wala kang pahintulot.
+cmd.color.not_officer = Dapat ikaw ay isang opisyal upang magpalit ng kulay.
+cmd.color.colors_disabled = Ang mga kulay ng paksyon ay naka-disable.
+cmd.color.usage = Paggamit: /f color <code|#hex>
+cmd.color.usage_hint = Mga wastong code: 0-9, a-f o #RRGGBB hex
+cmd.color.invalid = Hindi wastong kulay. Gamitin ang 0-9, a-f, o #RRGGBB.
+cmd.color.success = Na-update na ang kulay ng paksyon!
+
+# ========== Mga Utos - Claim ==========
+cmd.claim.no_permission = Wala kang pahintulot na mag-claim ng teritoryo.
+cmd.claim.already_yours = Pagmamay-ari na ng iyong paksyon ang chunk na ito.
+cmd.claim.cannot_claim_ally = Hindi mo maaaring i-claim ang teritoryo ng kakampi.
+cmd.claim.already_claimed_hint = Ang chunk na ito ay naka-claim na. Gamitin ang /f overclaim kung sila ay raidable.
+cmd.claim.success = Na-claim ang chunk sa {0}, {1}!
+cmd.claim.not_officer = Dapat ikaw ay isang opisyal upang mag-claim ng lupa.
+cmd.claim.already_claimed = Ang chunk na ito ay naka-claim na.
+cmd.claim.max_claims = Naabot na ng iyong paksyon ang maximum na claim. Kumuha ng higit pang kapangyarihan!
+cmd.claim.not_adjacent = Dapat kang mag-claim na katabi ng umiiral na teritoryo.
+cmd.claim.world_not_allowed = Hindi pinapayagan ang pag-claim sa mundong ito.
+cmd.claim.orbisguard = Ang lugar na ito ay protektado ng OrbisGuard.
+cmd.claim.zone_protected = Ang chunk na ito ay nasa safezone o warzone.
+cmd.claim.insufficient_power = Kulang ang kapangyarihan ng iyong paksyon upang mag-claim ng higit pang lupa.
+cmd.claim.failed = Nabigo ang pag-claim ng chunk.
+
+# ========== Mga Utos - Imbitahan ==========
+cmd.invite.no_permission = Wala kang pahintulot na mag-imbita ng mga manlalaro.
+cmd.invite.not_officer = Dapat ikaw ay isang opisyal upang mag-imbita ng mga manlalaro.
+cmd.invite.usage = Paggamit: /f invite <manlalaro>
+cmd.invite.player_not_found = Hindi nahanap o offline ang manlalaro na si '{0}'.
+cmd.invite.target_in_faction = Ang manlalarong iyon ay kasapi na ng isang paksyon.
+cmd.invite.sent = Inimbitahan si {0} sa iyong paksyon.
+cmd.invite.received = Inimbitahan ka na sumali sa {0}!
+cmd.invite.accept_hint = I-type ang /f accept {0} upang sumali.
+
+# ========== Mga Utos - Tanggapin / Sumali ==========
+cmd.join.no_permission = Wala kang pahintulot na sumali sa mga paksyon.
+cmd.join.already_in_named = Kasapi ka na ng {0}.
+cmd.join.use_leave_hint = Gamitin muna ang /f leave kung gusto mong sumali sa ibang paksyon.
+cmd.join.no_invites = Wala kang mga nakabinbing imbitasyon.
+cmd.join.faction_not_found = Hindi nahanap ang paksyon na '{0}'.
+cmd.join.not_invited = Wala kang imbitasyon mula sa paksyon na iyon.
+cmd.join.faction_gone = Ang paksyon na iyon ay wala na.
+cmd.join.success = Sumali ka na sa {0}!
+cmd.join.broadcast = Sumali na si {0} sa paksyon!
+cmd.join.faction_full = Puno na ang paksyon na iyon.
+cmd.join.failed = Nabigo ang pagsali sa paksyon.
+
+# ========== Mga Utos - Paalisin ==========
+cmd.kick.no_permission = Wala kang pahintulot na magpaalis ng mga kasapi.
+cmd.kick.usage = Paggamit: /f kick <manlalaro>
+cmd.kick.not_in_your_faction = Ang manlalaro na si '{0}' ay wala sa iyong paksyon.
+cmd.kick.success = Pinalayas si {0} mula sa paksyon.
+cmd.kick.broadcast = Pinalayas si {0} mula sa paksyon.
+cmd.kick.kicked = Pinalayas ka mula sa paksyon.
+cmd.kick.cannot_kick_higher = Wala kang pahintulot na paalisin ang manlalarong iyon.
+cmd.kick.cannot_kick_leader = Hindi mo maaaring paalisin ang pinuno ng paksyon.
+cmd.kick.failed = Nabigo ang pagpaalis ng manlalaro.
+
+# ========== Mga Utos - Umalis ==========
+cmd.leave.no_permission = Wala kang pahintulot na umalis sa mga paksyon.
+cmd.leave.confirm_prompt = Sigurado ka bang gusto mong umalis sa iyong paksyon?
+cmd.leave.confirm_instruction = I-type ang /f leave --text muli sa loob ng {0} segundo upang kumpirmahin.
+cmd.leave.success = Umalis ka na sa iyong paksyon.
+cmd.leave.broadcast = Umalis na si {0} sa paksyon.
+cmd.leave.failed = Nabigo ang pag-alis sa paksyon.
+cmd.leave.cancelled = Kinansela ang nakaraang kumpirmasyon. I-type muli upang kumpirmahin ang pag-alis.
+
+# ========== Mga Utos - I-promote / I-demote / Ilipat ==========
+cmd.rank.promote_no_permission = Wala kang pahintulot na mag-promote ng mga kasapi.
+cmd.rank.promote_usage = Paggamit: /f promote <manlalaro>
+cmd.rank.promoted = Na-promote si {0} sa {1}!
+cmd.rank.promote_broadcast = Na-promote si {0} sa {1}!
+cmd.rank.already_highest = Hindi na maaaring mag-promote pa. Gamitin ang /f transfer upang palitan ang pinuno.
+cmd.rank.promote_failed = Nabigo ang pag-promote ng manlalaro.
+cmd.rank.demote_no_permission = Wala kang pahintulot na mag-demote ng mga kasapi.
+cmd.rank.demote_usage = Paggamit: /f demote <manlalaro>
+cmd.rank.demoted = Na-demote si {0} sa {1}.
+cmd.rank.demote_broadcast = Na-demote si {0} sa {1}.
+cmd.rank.already_lowest = Ang manlalarong iyon ay kasapi na sa pinakamababang ranggo.
+cmd.rank.demote_failed = Nabigo ang pag-demote ng manlalaro.
+cmd.rank.transfer_no_permission = Wala kang pahintulot na ilipat ang pamumuno.
+cmd.rank.transfer_usage = Paggamit: /f transfer <manlalaro>
+cmd.rank.player_not_in_faction = Hindi nahanap ang manlalaro sa iyong paksyon.
+cmd.rank.transfer_confirm = Sigurado ka bang gusto mong ilipat ang pamumuno kay {0}?
+cmd.rank.transfer_confirm_instruction = I-type ang /f transfer {0} --text muli sa loob ng {1} segundo upang kumpirmahin.
+cmd.rank.transferred = Nailipat na ang pamumuno kay {0}!
+cmd.rank.transfer_broadcast = Si {0} na ang pinuno ng paksyon!
+cmd.rank.transfer_failed = Nabigo ang paglipat ng pamumuno.
+cmd.rank.transfer_cancelled = Kinansela ang nakaraang kumpirmasyon. I-type muli upang kumpirmahin ang paglipat.
+
+# ========== Mga Utos - I-unclaim ==========
+cmd.unclaim.no_permission = Wala kang pahintulot na mag-unclaim ng teritoryo.
+cmd.unclaim.success = Na-unclaim ang chunk sa {0}, {1}.
+cmd.unclaim.not_officer = Dapat ikaw ay isang opisyal upang mag-unclaim ng lupa.
+cmd.unclaim.chunk_not_claimed = Ang chunk na ito ay hindi naka-claim.
+cmd.unclaim.not_your_claim = Ang iyong paksyon ay hindi nagmamay-ari ng chunk na ito.
+cmd.unclaim.cannot_unclaim_home = Hindi maaaring i-unclaim ang chunk na may faction home.
+cmd.unclaim.would_disconnect = Hindi maaaring i-unclaim — maaari nitong ihiwalay ang iyong teritoryo.
+cmd.unclaim.failed = Nabigo ang pag-unclaim ng chunk.
+
+# ========== Mga Utos - Overclaim ==========
+cmd.overclaim.no_permission = Wala kang pahintulot na mag-overclaim ng teritoryo.
+cmd.overclaim.success = Na-overclaim ang teritoryo ng kalaban!
+cmd.overclaim.not_officer = Dapat ikaw ay isang opisyal upang mag-overclaim.
+cmd.overclaim.not_claimed = Ang chunk na ito ay hindi naka-claim. Gamitin ang /f claim.
+cmd.overclaim.own_chunk = Pagmamay-ari na ng iyong paksyon ang chunk na ito.
+cmd.overclaim.ally = Hindi mo maaaring i-overclaim ang teritoryo ng kakampi.
+cmd.overclaim.target_has_power = Ang paksyon na ito ay may sapat pa rin na kapangyarihan.
+cmd.overclaim.failed = Nabigo ang pag-overclaim.
+
+# ========== Mga Utos - Stuck ==========
+cmd.stuck.no_permission = Wala kang pahintulot na gamitin ang /f stuck.
+cmd.stuck.not_stuck = Hindi ka na-stuck - ito ay ilang.
+cmd.stuck.combat_tagged = Hindi mo magagamit ang /f stuck habang nasa labanan!
+cmd.stuck.no_safe = Hindi mahanap ang ligtas na lokasyon.
+cmd.stuck.teleporting = Magta-teleport sa ligtas na lugar sa loob ng {0} segundo. Huwag gumalaw!
+
+# ========== Mga Utos - Home ==========
+cmd.home.no_permission = Wala kang pahintulot na mag-teleport sa faction home.
+cmd.home.no_home = Walang home ang iyong paksyon.
+cmd.home.combat_tagged = Hindi ka maaaring mag-teleport habang nasa labanan!
+cmd.home.teleported = Na-teleport sa faction home!
+
+# ========== Mga Utos - SetHome ==========
+cmd.sethome.no_permission = Wala kang pahintulot na magtakda ng faction home.
+cmd.sethome.world_not_allowed = Hindi maaaring magtakda ng home sa mundong ito.
+cmd.sethome.not_in_territory = Maaari ka lamang magtakda ng home sa teritoryo ng iyong paksyon.
+cmd.sethome.set = Naitakda na ang faction home!
+cmd.sethome.broadcast = Itinakda ni {0} ang faction home.
+cmd.sethome.not_officer = Dapat ikaw ay isang opisyal upang magtakda ng home.
+cmd.sethome.failed = Nabigo ang pagtakda ng home.
+
+# ========== Mga Utos - DelHome ==========
+cmd.delhome.no_permission = Wala kang pahintulot na magtanggal ng faction home.
+cmd.delhome.no_home = Walang itinakdang home ang iyong paksyon.
+cmd.delhome.deleted = Natanggal na ang faction home!
+cmd.delhome.broadcast = Tinanggal ni {0} ang faction home.
+cmd.delhome.not_officer = Dapat ikaw ay isang opisyal upang magtanggal ng home.
+cmd.delhome.failed = Nabigo ang pagtanggal ng home.
+
+# ========== Mga Utos - Relasyon (Kakampi/Kalaban/Neutral/Mga Relasyon) ==========
+cmd.relation.ally_no_permission = Wala kang pahintulot na mamahala ng mga alyansa.
+cmd.relation.ally_usage = Paggamit: /f ally <paksyon>
+cmd.relation.ally_sent = Naipadala ang kahilingan ng alyansa sa {0}!
+cmd.relation.ally_formed = Kakampi ka na ng {0}!
+cmd.relation.already_ally = Kakampi mo na ang paksyon na iyon.
+cmd.relation.ally_failed = Nabigo ang pagpapadala ng kahilingan ng alyansa.
+cmd.relation.enemy_no_permission = Wala kang pahintulot na magdeklara ng mga kalaban.
+cmd.relation.enemy_usage = Paggamit: /f enemy <paksyon>
+cmd.relation.enemy_declared = Kalaban mo na ang {0}!
+cmd.relation.already_enemy = Kalaban mo na ang paksyon na iyon.
+cmd.relation.max_enemies = Naabot mo na ang maximum na bilang ng mga kalaban.
+cmd.relation.enemy_failed = Nabigo ang pagtakda ng kalaban.
+cmd.relation.neutral_no_permission = Wala kang pahintulot na magtakda ng neutral na relasyon.
+cmd.relation.neutral_usage = Paggamit: /f neutral <paksyon>
+cmd.relation.neutral_set = Ang iyong paksyon ay neutral na sa {0}.
+cmd.relation.already_neutral = Neutral ka na sa paksyon na iyon.
+cmd.relation.neutral_failed = Nabigo ang pagtakda ng neutral.
+cmd.relation.cannot_self = Hindi mo maaaring makipag-alyansa sa iyong sarili.
+cmd.relation.max_allies = Naabot mo na ang maximum na bilang ng mga kakampi.
+cmd.relation.view_no_permission = Wala kang pahintulot na tingnan ang mga relasyon.
+cmd.relation.header = === Mga Relasyon ng Paksyon ===
+cmd.relation.allies_count = Mga Kakampi ({0}):
+cmd.relation.enemies_count = Mga Kalaban ({0}):
+cmd.relation.list_entry = - {0}
+
+# ========== Mga Utos - Chat ==========
+cmd.chat.usage = Paggamit: /f c [f|a|off]
+cmd.chat.no_permission = Wala kang pahintulot para sa chat mode na iyon.
+cmd.chat.mode_set = Ang chat mode ay naitakda sa {0}
+
+# ========== Mga Utos - Mga Imbitasyon ==========
+cmd.invites.not_officer = Dapat ikaw ay isang opisyal upang mamahala ng mga imbitasyon.
+cmd.invites.header = === Mga Imbitasyon ng Paksyon ===
+cmd.invites.no_pending = Walang nakabinbing imbitasyon o kahilingan.
+cmd.invites.outgoing = Mga Papalabas na Imbitasyon:
+cmd.invites.outgoing_entry = {0} (inimbitahan ni {1})
+cmd.invites.requests = Mga Kahilingan na Sumali:
+cmd.invites.request_entry = {0}{1}
+cmd.invites.your_invites_header = === Ang Iyong mga Imbitasyon ===
+cmd.invites.no_invites = Wala kang mga nakabinbing imbitasyon.
+cmd.invites.invite_entry = {0} - Gamitin ang /f accept {1}
+
+# ========== Mga Utos - Kahilingan ==========
+cmd.request.no_permission = Wala kang pahintulot na humiling ng pagsapi sa paksyon.
+cmd.request.already_in_named = Kasapi ka na ng {0}.
+cmd.request.use_leave_hint = Gamitin muna ang /f leave kung gusto mong sumali sa ibang paksyon.
+cmd.request.usage = Paggamit: /f request <paksyon> [mensahe]
+cmd.request.faction_open = Bukas ang paksyon na iyon! Gamitin ang /f accept {0} upang direktang sumali.
+cmd.request.already_requested = Mayroon ka nang nakabinbing kahilingan sa paksyon na iyon.
+cmd.request.has_invite = Inimbitahan ka na ng paksyon na iyon! Gamitin ang /f accept {0} upang sumali.
+cmd.request.sent = Naipadala ang kahilingan na sumali sa {0}!
+cmd.request.your_message = Ang iyong mensahe: "{0}"
+cmd.request.officer_review = Susuriin ng isang opisyal ang iyong kahilingan.
+cmd.request.officer_notify = Humiling si {0} na sumali sa iyong paksyon!
+cmd.request.officer_review_hint = Gamitin ang /f gui > Invites upang suriin.
+
+# ========== Mga Utos - Impormasyon ==========
+cmd.info.faction_header = === {0} ===
+cmd.info.player_header = === {0} ===
+cmd.info.no_permission = Wala kang pahintulot na tingnan ang impormasyon ng paksyon.
+cmd.info.faction_not_found = Hindi nahanap ang paksyon na '{0}'.
+cmd.info.not_in_faction_hint = Wala ka sa isang paksyon. Gamitin ang /f info <paksyon>
+cmd.info.leader = Pinuno: {0}
+cmd.info.members = Mga Kasapi: {0}/{1}
+cmd.info.power = Kapangyarihan: {0}
+cmd.info.claims = Mga Claim: {0}
+cmd.info.raidable = RAIDABLE!
+cmd.info.allies = Mga Kakampi: {0}
+cmd.info.enemies = Mga Kalaban: {0}
+cmd.info.they_consider = Itinuturing ka nila bilang: {0}
+cmd.info.you_consider = Itinuturing mo sila bilang: {0}
+cmd.info.members_no_permission = Wala kang pahintulot na tingnan ang mga kasapi ng paksyon.
+cmd.info.members_header = === Mga Kasapi ng {0} ({1}) ===
+cmd.info.member_online = [Online]
+cmd.info.list_no_permission = Wala kang pahintulot na tingnan ang listahan ng mga paksyon.
+cmd.info.list_empty = Walang mga paksyon.
+cmd.info.list_header = === Mga Paksyon ({0}) ===
+cmd.info.list_entry = {0} - {1} kasapi, {2} kapangyarihan
+cmd.info.list_entry_raidable = {0} - {1} kasapi, {2} kapangyarihan [RAIDABLE]
+cmd.info.help_no_permission = Wala kang pahintulot na tingnan ang tulong.
+cmd.info.who_no_permission = Wala kang pahintulot na tingnan ang impormasyon ng manlalaro.
+cmd.info.who_faction = Paksyon: {0}
+cmd.info.who_role = Tungkulin: {0}
+cmd.info.who_joined = Sumali: {0}
+cmd.info.who_faction_none = Paksyon: Wala
+cmd.info.who_power = Kapangyarihan: {0}
+cmd.info.who_status = Katayuan: {0}
+cmd.info.who_last_seen = Huling nakita: {0}
+cmd.info.map_no_permission = Wala kang pahintulot na tingnan ang mapa.
+cmd.info.map_header = === Mapa ng Teritoryo ===
+cmd.info.map_legend = Alamat: +Ikaw /Sarili /Kakampi /Kalaban -Ilang
+cmd.info.map_gui_hint = Gamitin ang /f gui para sa interactive na mapa
+
+# ========== Mga Utos - Kapangyarihan ==========
+cmd.power.personal = Personal na Kapangyarihan: {0}/{1}
+cmd.power.faction = Kapangyarihan ng Paksyon: {0}/{1}
+cmd.power.death_loss = Pagkawala sa Kamatayan: {0}
+cmd.power.regen = Bilis ng Pagbawi: {0}/oras
+cmd.power.no_permission = Wala kang pahintulot na tingnan ang impormasyon ng kapangyarihan.
+cmd.power.header = Kapangyarihan ni {0}:
+cmd.power.current = Kasalukuyan: {0}
+
+# ========== Mga Utos - Ekonomiya ==========
+cmd.economy.balance = Balanse: {0}
+cmd.economy.deposited = Nagdeposito ng {0} sa kaban ng yaman ng paksyon.
+cmd.economy.withdrawn = Nag-withdraw ng {0} mula sa kaban ng yaman ng paksyon.
+cmd.economy.transferred = Naglipat ng {0} sa {1}.
+cmd.economy.insufficient = Kulang ang pondo sa kaban ng yaman ng paksyon.
+cmd.economy.invalid_amount = Hindi wastong halaga: {0}
+cmd.economy.economy_disabled = Ang ekonomiya ay naka-disable.
+cmd.economy.balance_no_permission = Wala kang pahintulot na tingnan ang mga balanse.
+cmd.economy.treasury_unavailable = Hindi magagamit ang kaban ng yaman.
+cmd.economy.balance_display = Kaban ng yaman ng {0}: {1}
+cmd.economy.deposit_no_permission = Wala kang pahintulot na magdeposito.
+cmd.economy.deposit_faction_denied = Wala kang pahintulot sa paksyon upang magdeposito.
+cmd.economy.deposit_usage = Paggamit: /f deposit <halaga>
+cmd.economy.amount_positive = Ang halaga ay dapat positibo.
+cmd.economy.wallet_insufficient = Kulang ang iyong pera. Wallet: {0}
+cmd.economy.wallet_withdraw_failed = Nabigo ang pag-withdraw mula sa iyong wallet.
+cmd.economy.deposit_failed = Nabigo ang pagdeposito sa kaban ng yaman ng paksyon. Ibinalik ang pera.
+cmd.economy.withdraw_no_permission = Wala kang pahintulot na mag-withdraw.
+cmd.economy.withdraw_faction_denied = Wala kang pahintulot sa paksyon upang mag-withdraw.
+cmd.economy.withdraw_usage = Paggamit: /f withdraw <halaga>
+cmd.economy.withdraw_limit_denied = Tinanggihan ang pag-withdraw: {0}
+cmd.economy.wallet_deposit_failed = Babala: Nabigo ang pagdeposito sa iyong wallet. Kontakin ang admin.
+cmd.economy.withdraw_limit_exceeded = Tinanggihan ang pag-withdraw: lumampas sa limitasyon.
+cmd.economy.withdraw_failed = Nabigo ang pag-withdraw: {0}
+cmd.economy.transfer_no_permission = Wala kang pahintulot na maglipat.
+cmd.economy.transfer_faction_denied = Wala kang pahintulot sa paksyon upang maglipat.
+cmd.economy.transfer_usage = Paggamit: /f money transfer <paksyon> <halaga>
+cmd.economy.transfer_self = Hindi maaaring maglipat sa sarili mong paksyon.
+cmd.economy.transfer_limit_denied = Tinanggihan ang paglipat: {0}
+cmd.economy.transfer_limit_exceeded = Tinanggihan ang paglipat: lumampas sa limitasyon.
+cmd.economy.transfer_failed = Nabigo ang paglipat: {0}
+cmd.economy.log_no_permission = Wala kang pahintulot na tingnan ang talaan ng mga transaksyon.
+cmd.economy.log_header = Talaan ng mga Transaksyon (pahina {0}/{1})
+cmd.economy.log_empty = Walang nahanap na mga transaksyon.
+cmd.economy.money_help_header = Mga Utos sa Kaban ng Yaman:
+cmd.economy.money_help_balance = /f money balance [paksyon] - Tingnan ang balanse
+cmd.economy.money_help_deposit = /f money deposit <halaga> - Magdeposito sa kaban ng yaman
+cmd.economy.money_help_withdraw = /f money withdraw <halaga> - Mag-withdraw mula sa kaban ng yaman
+cmd.economy.money_help_transfer = /f money transfer <paksyon> <halaga> - Maglipat sa pagitan ng mga paksyon
+cmd.economy.money_help_log = /f money log [pahina] [uri] - Tingnan ang kasaysayan ng transaksyon
+
+# ========== Proteksyon - Mga Parirala ng Aksyon ==========
+protection.action.generic = Hindi mo magagawa iyan
+protection.action.build = Hindi ka maaaring magtayo o magsira ng mga bloke
+protection.action.interact = Hindi mo magagamit iyan
+protection.action.door = Hindi mo magagamit ang mga pinto
+protection.action.container = Hindi mo mabubuksan ang mga lalagyan
+protection.action.bench = Hindi mo magagamit ang mga crafting station
+protection.action.processing = Hindi mo magagamit ang mga processing station
+protection.action.seat = Hindi mo magagamit ang mga upuan
+protection.action.light = Hindi mo maaaring i-toggle ang mga ilaw
+protection.action.teleporter = Hindi mo magagamit ang mga teleporter
+protection.action.crate = Hindi mo magagamit ang mga crate
+protection.action.tame = Hindi mo maaaring i-tame ang mga nilalang
+protection.action.npc = Hindi ka maaaring makipag-ugnayan sa mga NPC
+protection.action.mount = Hindi mo maaaring sakyan ang mga nilalang
+protection.action.pve = Hindi mo maaaring saktan ang mga nilalang
+protection.action.item_drop = Hindi ka maaaring mag-drop ng mga bagay
+protection.action.item_pickup = Hindi ka maaaring pumili ng mga bagay
+
+# ========== Proteksyon - Mga Dahilan ng Pagtanggi ==========
+protection.denied.safezone = {0} sa isang SafeZone.
+protection.denied.warzone = {0} sa isang WarZone.
+protection.denied.enemy_claim = {0} sa teritoryo ng kalaban.
+protection.denied.claimed = {0} sa naka-claim na teritoryo.
+protection.denied.here = {0} dito.
+protection.denied.zone = {0} sa zone na ito.
+protection.denied.faction_perm = {0} dito. (Pahintulot ng paksyon: {1})
+protection.denied.ally_territory = {0} dito. (Teritoryo ng kakampi)
+protection.denied.error = Error sa proteksyon — na-block ang aksyon para sa kaligtasan.
+
+# ========== Proteksyon - PvP ==========
+protection.pvp.safezone = Ang PvP ay naka-disable sa mga SafeZone.
+protection.pvp.same_faction = Hindi mo maaaring atakehin ang mga kasapi ng paksyon.
+protection.pvp.ally = Hindi mo maaaring atakehin ang mga kakampi.
+protection.pvp.spawn_protected = Ang manlalarong iyon ay may spawn protection.
+protection.pvp.territory_disabled = Ang PvP ay naka-disable sa teritoryong ito.
+protection.pvp.generic = Hindi mo maaaring atakehin ang manlalarong ito.
+
+# ========== Proteksyon - Pinsala sa Entity ==========
+protection.mob_damage_disabled = Ang pinsala mula sa mga mob ay naka-disable sa zone na ito.
+protection.pve_damage_disabled = Ang PvE na pinsala ay naka-disable sa zone na ito.
+protection.pve_territory_denied = Hindi mo maaaring saktan ang mga mob sa teritoryong ito.
+
+# ========== Proteksyon - Combat Tag ==========
+protection.combat_tag_command = Hindi mo magagamit ang utos na iyon habang may combat tag.
+
+# ========== Mga Anunsyo sa Server ==========
+# Ito ay ibinabalita sa lahat ng mga online na manlalaro para sa mga makabuluhang pangyayari sa paksyon.
+# {0}, {1} = mga dynamic na halaga (mga pangalan ng paksyon, mga pangalan ng manlalaro)
+server_announce.faction_created = Itinatag ni {0} ang paksyon na {1}!
+server_announce.faction_disbanded = Ang paksyon na {0} ay nabuag na!
+server_announce.leadership_transfer = Si {0} na ang pinuno ng {1}!
+server_announce.overclaim = Na-overclaim ni {0} ang teritoryo mula sa {1}!
+server_announce.war_declared = Nagdeklara ng digmaan ang {0} laban sa {1}!
+server_announce.alliance_formed = Ang {0} at {1} ay mga kakampi na!
+server_announce.alliance_broken = Ang {0} at {1} ay hindi na mga kakampi!
+
+# ========== Sistema ng Teleport ==========
+teleport.cooldown_wait = Kailangan mong maghintay ng {0} bago mag-teleport muli.
+teleport.warmup_start = Magta-teleport sa faction home sa loob ng {0} segundo...
+teleport.combat_cancelled = Kinansela ang teleportation - ikaw ay nasa labanan!
+teleport.success_default = Na-teleport sa faction home!
+teleport.no_home = Walang home ang iyong paksyon.
+teleport.world_not_found = Hindi nahanap ang mundo.
+teleport.failed = Nabigo ang teleportation.
+teleport.countdown = Magta-teleport sa loob ng {0} segundo...
+teleport.countdown_one = Magta-teleport sa loob ng 1 segundo...
+teleport.moved_cancelled = Kinansela ang teleportation - gumalaw ka!
+teleport.damage_cancelled = Kinansela ang teleportation - tinamaan ka!
+teleport.mount_teleport_blocked = Hindi ka maaaring mag-teleport sa zone na iyon habang nakasakay.
+teleport.mount_entry_blocked = Hindi ka maaaring pumasok sa zone na ito habang nakasakay.
+
+# ========== Pagpapakita ng Chat ==========
+chat.display.public = Publiko
+chat.display.faction = Paksyon
+chat.display.ally = Kakampi

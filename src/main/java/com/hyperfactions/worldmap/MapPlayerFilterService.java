@@ -8,6 +8,7 @@ import com.hyperfactions.data.RelationType;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.RelationManager;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -183,23 +184,30 @@ public class MapPlayerFilterService {
         if (world == null) {
           continue;
         }
-        world.execute(() -> {
-          try {
-            @SuppressWarnings("unchecked")
-            List<Player> players = world.getPlayers();
-            Logger.debugWorldMap("[MapFilter] applyToAll: world=%s players=%d",
-                world.getName(), players.size());
-            for (Player player : players) {
-              applyFilter(player);
+        try {
+          world.execute(() -> {
+            try {
+              @SuppressWarnings("unchecked")
+              List<Player> players = world.getPlayers();
+              Logger.debugWorldMap("[MapFilter] applyToAll: world=%s players=%d",
+                  world.getName(), players.size());
+              for (Player player : players) {
+                applyFilter(player);
+              }
+            } catch (Exception e) {
+              Logger.warn("Error applying map filters in world %s: %s",
+                  world.getName(), e.getMessage());
+              ErrorHandler.report("[MapFilter] Error applying filters in world " + world.getName(), e);
             }
-          } catch (Exception e) {
-            Logger.warn("Error applying map filters in world %s: %s",
-                world.getName(), e.getMessage());
-          }
-        });
+          });
+        } catch (Exception e) {
+          // World thread not accepting tasks (e.g., dungeon instances shutting down) — safe to skip
+          Logger.debugWorldMap("[MapFilter] Skipping world '%s': %s", world.getName(), e.getMessage());
+        }
       }
     } catch (Exception e) {
       Logger.warn("Error applying map filters to all worlds: %s", e.getMessage());
+      ErrorHandler.report("[MapFilter] Error applying filters to all worlds", e);
     }
   }
 
@@ -238,25 +246,32 @@ public class MapPlayerFilterService {
         if (world == null) {
           continue;
         }
-        world.execute(() -> {
-          try {
-            @SuppressWarnings("unchecked")
-            List<Player> players = world.getPlayers();
-            for (Player player : players) {
-              WorldMapTracker tracker = player.getWorldMapTracker();
-              if (tracker != null) {
-                tracker.setPlayerMapFilter(null);
+        try {
+          world.execute(() -> {
+            try {
+              @SuppressWarnings("unchecked")
+              List<Player> players = world.getPlayers();
+              for (Player player : players) {
+                WorldMapTracker tracker = player.getWorldMapTracker();
+                if (tracker != null) {
+                  tracker.setPlayerMapFilter(null);
+                }
               }
+              Logger.debugWorldMap("[MapFilter] resetAll: cleared filters for %d players in %s",
+                  players.size(), world.getName());
+            } catch (Exception e) {
+              Logger.warn("Error resetting map filters in world: %s", e.getMessage());
+              ErrorHandler.report("[MapFilter] Error resetting filters in world " + world.getName(), e);
             }
-            Logger.debugWorldMap("[MapFilter] resetAll: cleared filters for %d players in %s",
-                players.size(), world.getName());
-          } catch (Exception e) {
-            Logger.warn("Error resetting map filters in world: %s", e.getMessage());
-          }
-        });
+          });
+        } catch (Exception e) {
+          // World thread not accepting tasks (e.g., dungeon instances shutting down) — safe to skip
+          Logger.debugWorldMap("[MapFilter] Skipping world '%s' during reset: %s", world.getName(), e.getMessage());
+        }
       }
     } catch (Exception e) {
       Logger.warn("Error resetting map filters: %s", e.getMessage());
+      ErrorHandler.report("[MapFilter] Error resetting filters across all worlds", e);
     }
   }
 }

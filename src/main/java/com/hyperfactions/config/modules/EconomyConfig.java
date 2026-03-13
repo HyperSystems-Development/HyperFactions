@@ -26,6 +26,8 @@ public class EconomyConfig extends ModuleConfig {
 
   private String currencySymbol = "$";
 
+  private String currencySymbolPosition = "left";
+
   private BigDecimal startingBalance = BigDecimal.ZERO;
 
   private boolean disbandRefundToLeader = true;
@@ -106,6 +108,7 @@ public class EconomyConfig extends ModuleConfig {
     currencyName = "dollar";
     currencyNamePlural = "dollars";
     currencySymbol = "$";
+    currencySymbolPosition = "left";
     startingBalance = BigDecimal.ZERO;
     disbandRefundToLeader = true;
     defaultMaxWithdrawAmount = BigDecimal.ZERO;
@@ -141,6 +144,7 @@ public class EconomyConfig extends ModuleConfig {
     currencyName = getString(currency, "name", getString(root, "currencyName", currencyName));
     currencyNamePlural = getString(currency, "namePlural", getString(root, "currencyNamePlural", currencyNamePlural));
     currencySymbol = getString(currency, "symbol", getString(root, "currencySymbol", currencySymbol));
+    currencySymbolPosition = getString(currency, "symbolPosition", getString(root, "currencySymbolPosition", currencySymbolPosition));
 
     // Treasury section
     JsonObject treasury = getSection(root, "treasury");
@@ -196,6 +200,7 @@ public class EconomyConfig extends ModuleConfig {
     currency.addProperty("name", currencyName);
     currency.addProperty("namePlural", currencyNamePlural);
     currency.addProperty("symbol", currencySymbol);
+    currency.addProperty("symbolPosition", currencySymbolPosition);
     root.add("currency", currency);
 
     // Treasury section
@@ -287,6 +292,25 @@ public class EconomyConfig extends ModuleConfig {
   @NotNull
   public String getCurrencySymbol() {
     return currencySymbol;
+  }
+
+  /**
+   * Gets the currency symbol position ("left" or "right").
+   *
+   * @return currency symbol position
+   */
+  @NotNull
+  public String getCurrencySymbolPosition() {
+    return currencySymbolPosition;
+  }
+
+  /**
+   * Checks if the currency symbol should be placed on the right side.
+   *
+   * @return true if symbol position is "right"
+   */
+  public boolean isSymbolRight() {
+    return "right".equalsIgnoreCase(currencySymbolPosition);
   }
 
   /**
@@ -459,7 +483,8 @@ public class EconomyConfig extends ModuleConfig {
    */
   @NotNull
   public String format(@NotNull BigDecimal amount) {
-    return currencySymbol + amount.setScale(2, RoundingMode.HALF_UP).toPlainString();
+    String formatted = amount.setScale(2, RoundingMode.HALF_UP).toPlainString();
+    return isSymbolRight() ? formatted + currencySymbol : currencySymbol + formatted;
   }
 
   /**
@@ -501,6 +526,14 @@ public class EconomyConfig extends ModuleConfig {
       result.addWarning(getConfigName(), "currencyNamePlural",
           "Currency name plural should not be empty", currencyNamePlural, "dollars");
       currencyNamePlural = "dollars";
+      needsSave = true;
+    }
+
+    // Currency symbol position must be "left" or "right"
+    if (!"left".equalsIgnoreCase(currencySymbolPosition) && !"right".equalsIgnoreCase(currencySymbolPosition)) {
+      result.addWarning(getConfigName(), "currencySymbolPosition",
+          "Must be 'left' or 'right'", currencySymbolPosition, "left");
+      currencySymbolPosition = "left";
       needsSave = true;
     }
 
