@@ -12,7 +12,7 @@ $C.@PageOverlay {
     Anchor: (Width: 700, Height: 500);
 
     #Title {
-      $C.@Title {
+      $C.@Title #LeaderboardTitle {
         @Text = "Faction Leaderboard";
       }
     }
@@ -34,7 +34,7 @@ $C.@PageOverlay {
 
         Group { FlexWeight: 1; }
 
-        Label {
+        Label #RankByLabel {
           Text: "Rank by:";
           Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
           Anchor: (Width: 55);
@@ -51,12 +51,12 @@ $C.@PageOverlay {
         LayoutMode: Left;
         Padding: (Left: 12, Right: 12);
 
-        Label {
+        Label #ColRankLabel {
           Text: "#";
           Style: (FontSize: 10, TextColor: #666666, RenderBold: true, VerticalAlignment: Center, HorizontalAlignment: Center);
           Anchor: (Width: 35);
         }
-        Label {
+        Label #ColFactionLabel {
           Text: "Faction";
           Style: (FontSize: 10, TextColor: #666666, RenderBold: true, VerticalAlignment: Center);
           Anchor: (Width: 200);
@@ -66,12 +66,12 @@ $C.@PageOverlay {
           Style: (FontSize: 10, TextColor: #666666, RenderBold: true, VerticalAlignment: Center, HorizontalAlignment: Center);
           Anchor: (Width: 100);
         }
-        Label {
+        Label #ColClaimsLabel {
           Text: "Claims";
           Style: (FontSize: 10, TextColor: #666666, RenderBold: true, VerticalAlignment: Center, HorizontalAlignment: Center);
           Anchor: (Width: 70);
         }
-        Label {
+        Label #ColMembersLabel {
           Text: "Members";
           Style: (FontSize: 10, TextColor: #666666, RenderBold: true, VerticalAlignment: Center, HorizontalAlignment: Center);
           Anchor: (Width: 70);

@@ -10,6 +10,8 @@ import com.hyperfactions.gui.admin.data.AdminZoneSettingsData;
 import com.hyperfactions.integration.protection.GravestoneIntegration;
 import com.hyperfactions.manager.ZoneManager;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -66,10 +68,21 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
     // Setup admin nav bar
     AdminNavBarHelper.setupBar(playerRef, "zones", cmd, events);
 
+    // Localize labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ZONE_SETTINGS));
+    cmd.set("#CatGravestones.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZINT_CAT_GRAVESTONES));
+    cmd.set("#GravestonesDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZINT_GRAVESTONES_DESC));
+    cmd.set("#CatWorldMap.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZINT_CAT_WORLD_MAP));
+    cmd.set("#WorldMapDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZINT_WORLD_MAP_DESC));
+    cmd.set("#MapVisibilityLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZINT_VISIBILITY_LABEL));
+    cmd.set("#CatEssentials.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZINT_CAT_ESSENTIALS));
+    cmd.set("#ResetBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZINT_RESET_DEFAULTS));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZINT_BACK_TO_FLAGS));
+
     // Get the zone
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      cmd.set("#ZoneName.Text", "Zone Not Found");
+      cmd.set("#ZoneName.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ZINT_ZONE_NOT_FOUND));
       cmd.set("#FlagsContainer.Visible", false);
       return;
     }
@@ -130,9 +143,8 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
     // Check if the integration for this flag is available
     boolean integrationUnavailable = !isIntegrationAvailable(flagName);
 
-    // Flag name (display name from ZoneFlags)
-    String displayName = ZoneFlags.getDisplayName(flagName);
-    cmd.set(idx + "Name.Text", displayName);
+    // Flag name (localized display name)
+    cmd.set(idx + "Name.Text", HFMessages.get(playerRef, ZoneFlags.getDisplayNameKey(flagName)));
 
     // Set checkbox value via child selector
     // When integration is unavailable, show as unchecked
@@ -142,13 +154,13 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
 
     // Default indicator (shows "(default)", "(custom)", or "(no plugin)")
     if (integrationUnavailable) {
-      cmd.set(idx + "Default.Text", "(no plugin)");
+      cmd.set(idx + "Default.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ZINT_NO_PLUGIN));
       cmd.set(idx + "Default.Style.TextColor", "#FF5555");
     } else if (isDefault) {
-      cmd.set(idx + "Default.Text", "(default)");
+      cmd.set(idx + "Default.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ZINT_DEFAULT));
       cmd.set(idx + "Default.Style.TextColor", "#555555");
     } else {
-      cmd.set(idx + "Default.Text", "(custom)");
+      cmd.set(idx + "Default.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ZINT_CUSTOM));
       cmd.set(idx + "Default.Style.TextColor", "#FFAA00");
     }
 
@@ -172,16 +184,21 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
     cmd.set("#MapVisibilityRow.Visible", showOnMapEnabled);
 
     if (showOnMapEnabled) {
-      // Set button text to current selection
-      String displayText = ZoneFlags.getSettingValueDisplay(ZoneFlags.MAP_VISIBILITY, visibility);
-      cmd.set("#MapVisibilityBtn.Text", displayText);
+      // Set button text to current selection (localized)
+      String visKey = switch (visibility) {
+        case ZoneFlags.MAP_VISIBILITY_FACTION -> MessageKeys.AdminGui.GUI_ZINT_MAP_VIS_FACTION;
+        case ZoneFlags.MAP_VISIBILITY_ALLY -> MessageKeys.AdminGui.GUI_ZINT_MAP_VIS_ALLY;
+        case ZoneFlags.MAP_VISIBILITY_ALL -> MessageKeys.AdminGui.GUI_ZINT_MAP_VIS_ALL;
+        default -> MessageKeys.AdminGui.GUI_ZINT_MAP_VIS_FACTION;
+      };
+      cmd.set("#MapVisibilityBtn.Text", HFMessages.get(playerRef, visKey));
 
       // Default indicator
       if (isDefault) {
-        cmd.set("#MapVisibilityDefault.Text", "(default)");
+        cmd.set("#MapVisibilityDefault.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ZINT_DEFAULT));
         cmd.set("#MapVisibilityDefault.Style.TextColor", "#555555");
       } else {
-        cmd.set("#MapVisibilityDefault.Text", "(custom)");
+        cmd.set("#MapVisibilityDefault.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ZINT_CUSTOM));
         cmd.set("#MapVisibilityDefault.Style.TextColor", "#FFAA00");
       }
 
@@ -259,14 +276,14 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
   private void handleToggleFlag(Player player, AdminZoneSettingsData data) {
     String flagName = data.flag;
     if (flagName == null || !ZoneFlags.isValidFlag(flagName)) {
-      player.sendMessage(MessageUtil.adminError("Invalid flag."));
+      player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.ZFLAGS_INVALID_FLAG));
       sendUpdate();
       return;
     }
 
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.adminError("Zone not found."));
+      player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.ZFLAGS_ZONE_NOT_FOUND));
       sendUpdate();
       return;
     }
@@ -290,7 +307,7 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
   private void handleCycleMapVisibility(Player player) {
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.adminError("Zone not found."));
+      player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.ZFLAGS_ZONE_NOT_FOUND));
       sendUpdate();
       return;
     }
@@ -322,7 +339,7 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
     // Clear only integration flags and settings, not all zone flags
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.adminError("Zone not found."));
+      player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.ZFLAGS_ZONE_NOT_FOUND));
       sendUpdate();
       return;
     }
@@ -338,7 +355,7 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
       }
     }
 
-    player.sendMessage(MessageUtil.adminSuccess("Reset integration flags to defaults."));
+    player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.ZFLAGS_RESET_INT));
     rebuildPage();
   }
 

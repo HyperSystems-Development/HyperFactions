@@ -1230,6 +1230,17 @@ public class ConfigManager {
     return chatConfig.getHistoryCleanupIntervalMinutes();
   }
 
+  // Language / i18n (from server config)
+  /** Returns the default server language code (e.g. "en-US"). */
+  @NotNull public String getDefaultLanguage() {
+    return serverConfig.getDefaultLanguage();
+  }
+
+  /** Whether to respect each player's client language for translations. */
+  public boolean isUsePlayerLanguage() {
+    return serverConfig.isUsePlayerLanguage();
+  }
+
   // Permissions (from server config)
   public boolean isAdminRequiresOp() {
     return serverConfig.isAdminRequiresOp();

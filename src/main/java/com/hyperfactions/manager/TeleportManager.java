@@ -4,10 +4,13 @@ import com.hyperfactions.Permissions;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.integration.PermissionManager;
+import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.MessageKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.TimeUtil;
 import com.hypixel.hytale.server.core.Message;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -301,8 +304,8 @@ public class TeleportManager {
     if (!PermissionManager.get().hasPermission(playerUuid, Permissions.BYPASS_COOLDOWN)) {
       if (isOnCooldown(playerUuid)) {
         int remaining = getCooldownRemaining(playerUuid);
-        sendMessage.accept(MessageUtil.error("You must wait "
-          + TimeUtil.formatDurationSeconds(remaining) + " before teleporting again."));
+        sendMessage.accept(MessageUtil.error(
+          HFMessages.get((PlayerRef) null, MessageKeys.Teleport.COOLDOWN_WAIT, TimeUtil.formatDurationSeconds(remaining))));
         return TeleportResult.ON_COOLDOWN;
       }
     }
@@ -334,7 +337,8 @@ public class TeleportManager {
     pendingTeleports.put(playerUuid, pending);
 
     // Send warmup message
-    sendMessage.accept(MessageUtil.info("Teleporting to faction home in " + warmup + " seconds...", MessageUtil.COLOR_YELLOW));
+    sendMessage.accept(MessageUtil.info(
+      HFMessages.get((PlayerRef) null, MessageKeys.Teleport.WARMUP_START, warmup), MessageUtil.COLOR_YELLOW));
 
     Logger.debug("Scheduled teleport for %s, will execute at %d", playerUuid, executeAt);
     return TeleportResult.SUCCESS_WARMUP;
@@ -411,7 +415,7 @@ public class TeleportManager {
 
     // Check combat tag
     if (pending.isTagged().get()) {
-      sendMessage.accept(MessageUtil.error("Teleportation cancelled - you are in combat!"));
+      sendMessage.accept(MessageUtil.error(HFMessages.get((PlayerRef) null, MessageKeys.Teleport.COMBAT_CANCELLED)));
       return null;
     }
 
@@ -426,7 +430,7 @@ public class TeleportManager {
    */
   public void onTeleportSuccess(@NotNull UUID playerUuid, @Nullable String customMessage, @NotNull Consumer<Message> sendMessage) {
     applyCooldown(playerUuid);
-    String msg = customMessage != null ? customMessage : "Teleported to faction home!";
+    String msg = customMessage != null ? customMessage : HFMessages.get((PlayerRef) null, MessageKeys.Teleport.SUCCESS_DEFAULT);
     sendMessage.accept(MessageUtil.success(msg));
   }
 
@@ -438,9 +442,9 @@ public class TeleportManager {
    */
   public void onTeleportFailed(@NotNull TeleportResult result, @NotNull Consumer<Message> sendMessage) {
     switch (result) {
-      case NO_HOME -> sendMessage.accept(MessageUtil.error("Your faction has no home set."));
-      case WORLD_NOT_FOUND -> sendMessage.accept(MessageUtil.error("World not found."));
-      default -> sendMessage.accept(MessageUtil.error("Teleportation failed."));
+      case NO_HOME -> sendMessage.accept(MessageUtil.error(HFMessages.get((PlayerRef) null, MessageKeys.Teleport.NO_HOME)));
+      case WORLD_NOT_FOUND -> sendMessage.accept(MessageUtil.error(HFMessages.get((PlayerRef) null, MessageKeys.Teleport.WORLD_NOT_FOUND)));
+      default -> sendMessage.accept(MessageUtil.error(HFMessages.get((PlayerRef) null, MessageKeys.Teleport.FAILED)));
     }
   }
 
@@ -453,8 +457,10 @@ public class TeleportManager {
   public void sendCountdownMessage(@NotNull PendingTeleport pending, @NotNull Consumer<Message> sendMessage) {
     int secondsToAnnounce = pending.checkCountdown();
     if (secondsToAnnounce > 0) {
-      String timeText = secondsToAnnounce == 1 ? "1 second" : secondsToAnnounce + " seconds";
-      sendMessage.accept(MessageUtil.info("Teleporting in " + timeText + "...", MessageUtil.COLOR_YELLOW));
+      String timeText = secondsToAnnounce == 1
+        ? HFMessages.get((PlayerRef) null, MessageKeys.Teleport.COUNTDOWN_ONE)
+        : HFMessages.get((PlayerRef) null, MessageKeys.Teleport.COUNTDOWN, secondsToAnnounce);
+      sendMessage.accept(MessageUtil.info(timeText, MessageUtil.COLOR_YELLOW));
     }
   }
 
@@ -490,7 +496,7 @@ public class TeleportManager {
 
     if (distSq > 0.25) { // 0.5 blocks
       removePending(playerUuid);
-      sendMessage.accept(MessageUtil.error("Teleportation cancelled - you moved!"));
+      sendMessage.accept(MessageUtil.error(HFMessages.get((PlayerRef) null, MessageKeys.Teleport.MOVED_CANCELLED)));
       return true;
     }
 
@@ -514,7 +520,7 @@ public class TeleportManager {
 
     if (pendingTeleports.containsKey(playerUuid)) {
       removePending(playerUuid);
-      sendMessage.accept(MessageUtil.error("Teleportation cancelled - you took damage!"));
+      sendMessage.accept(MessageUtil.error(HFMessages.get((PlayerRef) null, MessageKeys.Teleport.DAMAGE_CANCELLED)));
       return true;
     }
 

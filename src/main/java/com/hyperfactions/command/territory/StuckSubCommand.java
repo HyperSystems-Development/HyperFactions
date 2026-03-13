@@ -5,6 +5,8 @@ import com.hyperfactions.Permissions;
 import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
+import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.manager.TeleportManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.ChunkUtil;
@@ -47,7 +49,7 @@ public class StuckSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.STUCK)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to use /f stuck.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.STUCK_NO_PERMISSION));
       return;
     }
 
@@ -67,20 +69,20 @@ public class StuckSubCommand extends FactionSubCommand {
     Faction playerFaction = hyperFactions.getFactionManager().getPlayerFaction(playerUuid);
 
     if (claimOwner == null) {
-      ctx.sendMessage(prefix().insert(msg("You're not stuck - this is wilderness.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.STUCK_NOT_STUCK));
       return;
     }
 
     // Combat check
     if (hyperFactions.getCombatTagManager().isTagged(playerUuid)) {
-      ctx.sendMessage(prefix().insert(msg("You cannot use /f stuck while in combat!", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.STUCK_COMBAT_TAGGED));
       return;
     }
 
     // Find nearest safe chunk
     int[] safeChunk = findNearestSafeChunk(currentWorld.getName(), chunkX, chunkZ);
     if (safeChunk == null) {
-      ctx.sendMessage(prefix().insert(msg("Could not find a safe location.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.STUCK_NO_SAFE));
       return;
     }
 
@@ -112,7 +114,7 @@ public class StuckSubCommand extends FactionSubCommand {
       "Teleported to safety!"
     );
 
-    ctx.sendMessage(prefix().insert(msg("Teleporting to safety in " + warmupSeconds + " seconds. Don't move!", COLOR_YELLOW)));
+    ctx.sendMessage(MessageUtil.info(player, MessageKeys.Home.STUCK_TELEPORTING, COLOR_YELLOW, warmupSeconds));
   }
 
   /**

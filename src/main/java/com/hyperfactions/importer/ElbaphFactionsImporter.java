@@ -13,6 +13,7 @@ import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.manager.ZoneManager;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.MessageKeys;
 import java.io.File;
 import java.io.FileReader;
 import java.lang.reflect.Type;
@@ -736,7 +737,8 @@ public class ElbaphFactionsImporter {
           .withLog(FactionLog.create(
             FactionLog.LogType.MEMBER_LEAVE,
             playerName + " left (imported to another faction)",
-            null
+            null,
+            MessageKeys.LogsGui.MSG_LEFT_IMPORT, playerName
           ));
 
         factionManager.removePlayerFromIndex(memberUuid);
@@ -754,7 +756,8 @@ public class ElbaphFactionsImporter {
                 .withLog(FactionLog.create(
                   FactionLog.LogType.LEADER_TRANSFER,
                   promoted.username() + " became leader (previous leader imported to another faction)",
-                  null
+                  null,
+                  MessageKeys.LogsGui.MSG_LEADER_IMPORT_TRANSFER, promoted.username()
                 ));
               progress("    - %s promoted to leader of '%s'",
                 promoted.username(), existingFaction.name());
@@ -871,7 +874,8 @@ public class ElbaphFactionsImporter {
     // Create import log entry
     List<FactionLog> logs = new ArrayList<>();
     logs.add(FactionLog.system(FactionLog.LogType.MEMBER_JOIN,
-      "Faction imported from ElbaphFactions"));
+      "Faction imported from ElbaphFactions",
+      MessageKeys.LogsGui.MSG_IMPORTED_FROM, "ElbaphFactions"));
 
     // Warn about faction points
     if (elbaphFaction.factionPoints() > 0) {

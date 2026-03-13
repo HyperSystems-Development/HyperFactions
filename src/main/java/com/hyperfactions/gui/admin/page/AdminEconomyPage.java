@@ -1,5 +1,8 @@
 package com.hyperfactions.gui.admin.page;
 
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
+
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionEconomy;
 import com.hyperfactions.data.FactionMember;
@@ -77,6 +80,33 @@ public class AdminEconomyPage extends InteractiveCustomUIPage<AdminEconomyData> 
     // Setup admin nav bar
     AdminNavBarHelper.setupBar(playerRef, "economy", cmd, events);
 
+    // Localize page title
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ECONOMY));
+
+    // Localize stat card labels
+    cmd.set("#TotalBalanceLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECON_TOTAL_BALANCE));
+    cmd.set("#FactionsLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECON_FACTIONS));
+    cmd.set("#AvgBalanceLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECON_AVG_BALANCE));
+
+    // Localize upkeep stat labels
+    cmd.set("#InGraceLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECON_IN_GRACE));
+    cmd.set("#CollectedLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECON_COLLECTED));
+    cmd.set("#NextCollectionLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECON_NEXT_COLLECTION));
+
+    // Localize search/sort labels
+    cmd.set("#SearchLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SEARCH));
+    cmd.set("#SortLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SORT));
+
+    // Localize column headers
+    cmd.set("#ColFaction.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_COL_FACTION));
+    cmd.set("#ColBalance.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_COL_BALANCE));
+    cmd.set("#ColMembers.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_COL_MEMBERS));
+    cmd.set("#ColActions.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_COL_ACTIONS));
+
+    // Localize pagination buttons
+    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PREV));
+    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_NEXT));
+
     // === Server Economy Stats ===
     buildServerStats(cmd);
 
@@ -151,7 +181,7 @@ public class AdminEconomyPage extends InteractiveCustomUIPage<AdminEconomyData> 
     // Get sorted/filtered factions
     List<FactionEntry> factions = getSortedFactions();
 
-    cmd.set("#FactionCount.Text", factions.size() + " factions");
+    cmd.set("#FactionCount.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.FACTIONS_SUFFIX, factions.size()));
 
     // Search input
     if (!searchQuery.isEmpty()) {
@@ -166,9 +196,9 @@ public class AdminEconomyPage extends InteractiveCustomUIPage<AdminEconomyData> 
 
     // Sort dropdown
     cmd.set("#SortDropdown.Entries", List.of(
-        new DropdownEntryInfo(LocalizableString.fromString("Balance"), "BALANCE"),
-        new DropdownEntryInfo(LocalizableString.fromString("Name"), "NAME"),
-        new DropdownEntryInfo(LocalizableString.fromString("Members"), "MEMBERS")
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.SORT_BALANCE)), "BALANCE"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.SORT_NAME)), "NAME"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.SORT_MEMBERS)), "MEMBERS")
     ));
     cmd.set("#SortDropdown.Value", sortMode.name());
     events.addEventBinding(
@@ -196,6 +226,10 @@ public class AdminEconomyPage extends InteractiveCustomUIPage<AdminEconomyData> 
       cmd.set(sel + " #FactionName.Text", entry.faction.name());
       cmd.set(sel + " #Balance.Text", economyManager.formatCurrencyCompact(entry.economy.balance()));
       cmd.set(sel + " #MemberCount.Text", String.valueOf(entry.faction.getMemberCount()));
+
+      // Localize entry buttons
+      cmd.set(sel + " #AdjustBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECON_BTN_ADJUST));
+      cmd.set(sel + " #ViewBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECON_BTN_INFO));
 
       // Upkeep status indicator
       if (com.hyperfactions.config.ConfigManager.get().isUpkeepEnabled()) {
@@ -237,12 +271,12 @@ public class AdminEconomyPage extends InteractiveCustomUIPage<AdminEconomyData> 
     // Empty state
     if (index == 0) {
       cmd.appendInline("#FactionList",
-          "Label { Text: \"No factions with economy data.\"; "
+          "Label { Text: \"" + HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECON_NO_DATA) + "\"; "
           + "Style: (FontSize: 11, TextColor: #555555); Anchor: (Height: 30); }");
     }
 
     // Pagination
-    cmd.set("#PageInfo.Text", (currentPage + 1) + "/" + totalPages);
+    cmd.set("#PageInfo.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.PAGE_FORMAT, currentPage + 1, totalPages));
 
     if (currentPage > 0) {
       events.addEventBinding(

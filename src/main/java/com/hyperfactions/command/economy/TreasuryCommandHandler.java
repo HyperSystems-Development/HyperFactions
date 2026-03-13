@@ -10,6 +10,9 @@ import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.data.FactionPermissions;
 import com.hyperfactions.integration.economy.VaultEconomyProvider;
 import com.hyperfactions.manager.EconomyManager;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -38,15 +41,13 @@ public final class TreasuryCommandHandler {
   public static void handleBalance(@NotNull CommandContext ctx, @NotNull PlayerRef player,
                    @NotNull HyperFactions hf, String[] args) {
     if (!CommandUtil.hasPermission(player, Permissions.ECONOMY_BALANCE)) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "You don't have permission to view balances.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.BALANCE_NO_PERMISSION));
       return;
     }
 
     EconomyManager econ = hf.getEconomyManager();
     if (econ == null) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Treasury is not available.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.TREASURY_UNAVAILABLE));
       return;
     }
 
@@ -54,23 +55,20 @@ public final class TreasuryCommandHandler {
     if (args.length > 0) {
       faction = hf.getFactionManager().getFactionByName(args[0]);
       if (faction == null) {
-        ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-            "Faction '" + args[0] + "' not found.", CommandUtil.COLOR_RED)));
+        ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.FACTION_NOT_FOUND));
         return;
       }
     } else {
       faction = hf.getFactionManager().getPlayerFaction(player.getUuid());
       if (faction == null) {
-        ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-            "You are not in a faction.", CommandUtil.COLOR_RED)));
+        ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.NOT_IN_FACTION));
         return;
       }
     }
 
     BigDecimal balance = econ.getFactionBalance(faction.id());
-    ctx.sendMessage(CommandUtil.prefix()
-        .insert(CommandUtil.msg(faction.name() + "'s treasury: ", CommandUtil.COLOR_CYAN))
-        .insert(CommandUtil.msg(econ.formatCurrency(balance), CommandUtil.COLOR_GREEN)));
+    ctx.sendMessage(MessageUtil.success(player, MessageKeys.Economy.BALANCE_DISPLAY,
+        faction.name(), econ.formatCurrency(balance)));
   }
 
   /**
@@ -79,23 +77,20 @@ public final class TreasuryCommandHandler {
   public static void handleDeposit(@NotNull CommandContext ctx, @NotNull PlayerRef player,
                    @NotNull HyperFactions hf, String[] args) {
     if (!CommandUtil.hasPermission(player, Permissions.ECONOMY_DEPOSIT)) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "You don't have permission to deposit.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.DEPOSIT_NO_PERMISSION));
       return;
     }
 
     EconomyManager econ = hf.getEconomyManager();
     VaultEconomyProvider vault = econ != null ? econ.getVaultProvider() : null;
     if (econ == null || vault == null) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Treasury is not available.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.TREASURY_UNAVAILABLE));
       return;
     }
 
     Faction faction = hf.getFactionManager().getPlayerFaction(player.getUuid());
     if (faction == null) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "You are not in a faction.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.NOT_IN_FACTION));
       return;
     }
 
@@ -103,14 +98,12 @@ public final class TreasuryCommandHandler {
     FactionMember member = faction.getMember(player.getUuid());
     if (member != null && !faction.getEffectivePermissions().get(FactionPermissions.TREASURY_DEPOSIT)
         && !member.isOfficerOrHigher()) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "You don't have faction permission to deposit.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.DEPOSIT_FACTION_DENIED));
       return;
     }
 
     if (args.length < 1) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Usage: /f deposit <amount>", CommandUtil.COLOR_YELLOW)));
+      ctx.sendMessage(MessageUtil.info(player, MessageKeys.Economy.DEPOSIT_USAGE, MessageUtil.COLOR_YELLOW));
       return;
     }
 
@@ -118,29 +111,25 @@ public final class TreasuryCommandHandler {
     try {
       amount = new BigDecimal(args[0]);
     } catch (NumberFormatException e) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Invalid amount: " + args[0], CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.INVALID_AMOUNT, args[0]));
       return;
     }
 
     if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Amount must be positive.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.AMOUNT_POSITIVE));
       return;
     }
 
     // Check player has enough in wallet
     if (!vault.has(player.getUuid(), amount)) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "You don't have enough money. Wallet: " + econ.formatCurrency(vault.getBalanceBigDecimal(player.getUuid())),
-          CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.WALLET_INSUFFICIENT,
+          econ.formatCurrency(vault.getBalanceBigDecimal(player.getUuid()))));
       return;
     }
 
     // Withdraw from player wallet
     if (!vault.withdraw(player.getUuid(), amount)) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Failed to withdraw from your wallet.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.WALLET_WITHDRAW_FAILED));
       return;
     }
 
@@ -151,15 +140,11 @@ public final class TreasuryCommandHandler {
     if (result != EconomyAPI.TransactionResult.SUCCESS) {
       // Rollback: return money to player
       vault.deposit(player.getUuid(), amount);
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Failed to deposit to faction treasury. Money returned.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.DEPOSIT_FAILED));
       return;
     }
 
-    ctx.sendMessage(CommandUtil.prefix()
-        .insert(CommandUtil.msg("Deposited ", CommandUtil.COLOR_GREEN))
-        .insert(CommandUtil.msg(econ.formatCurrency(amount), CommandUtil.COLOR_CYAN))
-        .insert(CommandUtil.msg(" into the faction treasury.", CommandUtil.COLOR_GREEN)));
+    ctx.sendMessage(MessageUtil.success(player, MessageKeys.Economy.DEPOSITED, econ.formatCurrency(amount)));
   }
 
   /**
@@ -168,23 +153,20 @@ public final class TreasuryCommandHandler {
   public static void handleWithdraw(@NotNull CommandContext ctx, @NotNull PlayerRef player,
                    @NotNull HyperFactions hf, String[] args) {
     if (!CommandUtil.hasPermission(player, Permissions.ECONOMY_WITHDRAW)) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "You don't have permission to withdraw.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.WITHDRAW_NO_PERMISSION));
       return;
     }
 
     EconomyManager econ = hf.getEconomyManager();
     VaultEconomyProvider vault = econ != null ? econ.getVaultProvider() : null;
     if (econ == null || vault == null) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Treasury is not available.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.TREASURY_UNAVAILABLE));
       return;
     }
 
     Faction faction = hf.getFactionManager().getPlayerFaction(player.getUuid());
     if (faction == null) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "You are not in a faction.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.NOT_IN_FACTION));
       return;
     }
 
@@ -192,14 +174,12 @@ public final class TreasuryCommandHandler {
     FactionMember member = faction.getMember(player.getUuid());
     if (member != null && !faction.getEffectivePermissions().get(FactionPermissions.TREASURY_WITHDRAW)
         && !member.isLeader()) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "You don't have faction permission to withdraw.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.WITHDRAW_FACTION_DENIED));
       return;
     }
 
     if (args.length < 1) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Usage: /f withdraw <amount>", CommandUtil.COLOR_YELLOW)));
+      ctx.sendMessage(MessageUtil.info(player, MessageKeys.Economy.WITHDRAW_USAGE, MessageUtil.COLOR_YELLOW));
       return;
     }
 
@@ -207,22 +187,19 @@ public final class TreasuryCommandHandler {
     try {
       amount = new BigDecimal(args[0]);
     } catch (NumberFormatException e) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Invalid amount: " + args[0], CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.INVALID_AMOUNT, args[0]));
       return;
     }
 
     if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Amount must be positive.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.AMOUNT_POSITIVE));
       return;
     }
 
     // Check limits before attempting
     String limitReason = econ.checkWithdrawLimits(faction.id(), amount);
     if (limitReason != null) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Withdrawal denied: " + limitReason, CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.WITHDRAW_LIMIT_DENIED, limitReason));
       return;
     }
 
@@ -235,22 +212,14 @@ public final class TreasuryCommandHandler {
         // Deposit to player wallet
         if (!vault.deposit(player.getUuid(), amount)) {
           // Rollback is complex — log the error
-          ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-              "Warning: Failed to deposit to your wallet. Contact an admin.",
-              CommandUtil.COLOR_RED)));
+          ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.WALLET_DEPOSIT_FAILED));
           return;
         }
-        ctx.sendMessage(CommandUtil.prefix()
-            .insert(CommandUtil.msg("Withdrew ", CommandUtil.COLOR_GREEN))
-            .insert(CommandUtil.msg(econ.formatCurrency(amount), CommandUtil.COLOR_CYAN))
-            .insert(CommandUtil.msg(" from the faction treasury.", CommandUtil.COLOR_GREEN)));
+        ctx.sendMessage(MessageUtil.success(player, MessageKeys.Economy.WITHDRAWN, econ.formatCurrency(amount)));
       }
-      case INSUFFICIENT_FUNDS -> ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Insufficient funds in faction treasury.", CommandUtil.COLOR_RED)));
-      case LIMIT_EXCEEDED -> ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Withdrawal denied: limit exceeded.", CommandUtil.COLOR_RED)));
-      default -> ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Withdrawal failed: " + result, CommandUtil.COLOR_RED)));
+      case INSUFFICIENT_FUNDS -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.INSUFFICIENT));
+      case LIMIT_EXCEEDED -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.WITHDRAW_LIMIT_EXCEEDED));
+      default -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.WITHDRAW_FAILED, result));
     }
   }
 
@@ -260,22 +229,19 @@ public final class TreasuryCommandHandler {
   public static void handleTransfer(@NotNull CommandContext ctx, @NotNull PlayerRef player,
                    @NotNull HyperFactions hf, String[] args) {
     if (!CommandUtil.hasPermission(player, Permissions.ECONOMY_TRANSFER)) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "You don't have permission to transfer.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.TRANSFER_NO_PERMISSION));
       return;
     }
 
     EconomyManager econ = hf.getEconomyManager();
     if (econ == null) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Treasury is not available.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.TREASURY_UNAVAILABLE));
       return;
     }
 
     Faction faction = hf.getFactionManager().getPlayerFaction(player.getUuid());
     if (faction == null) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "You are not in a faction.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.NOT_IN_FACTION));
       return;
     }
 
@@ -283,27 +249,23 @@ public final class TreasuryCommandHandler {
     FactionMember member = faction.getMember(player.getUuid());
     if (member != null && !faction.getEffectivePermissions().get(FactionPermissions.TREASURY_TRANSFER)
         && !member.isLeader()) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "You don't have faction permission to transfer.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.TRANSFER_FACTION_DENIED));
       return;
     }
 
     if (args.length < 2) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Usage: /f money transfer <faction> <amount>", CommandUtil.COLOR_YELLOW)));
+      ctx.sendMessage(MessageUtil.info(player, MessageKeys.Economy.TRANSFER_USAGE, MessageUtil.COLOR_YELLOW));
       return;
     }
 
     Faction target = hf.getFactionManager().getFactionByName(args[0]);
     if (target == null) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Faction '" + args[0] + "' not found.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.FACTION_NOT_FOUND));
       return;
     }
 
     if (target.id().equals(faction.id())) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Cannot transfer to your own faction.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.TRANSFER_SELF));
       return;
     }
 
@@ -311,22 +273,19 @@ public final class TreasuryCommandHandler {
     try {
       amount = new BigDecimal(args[1]);
     } catch (NumberFormatException e) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Invalid amount: " + args[1], CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.INVALID_AMOUNT, args[1]));
       return;
     }
 
     if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Amount must be positive.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.AMOUNT_POSITIVE));
       return;
     }
 
     // Check limits
     String limitReason = econ.checkTransferLimits(faction.id(), amount);
     if (limitReason != null) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Transfer denied: " + limitReason, CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.TRANSFER_LIMIT_DENIED, limitReason));
       return;
     }
 
@@ -334,16 +293,11 @@ public final class TreasuryCommandHandler {
         faction.id(), target.id(), amount, player.getUuid(), "Player transfer").join();
 
     switch (result) {
-      case SUCCESS -> ctx.sendMessage(CommandUtil.prefix()
-          .insert(CommandUtil.msg("Transferred ", CommandUtil.COLOR_GREEN))
-          .insert(CommandUtil.msg(econ.formatCurrency(amount), CommandUtil.COLOR_CYAN))
-          .insert(CommandUtil.msg(" to " + target.name() + ".", CommandUtil.COLOR_GREEN)));
-      case INSUFFICIENT_FUNDS -> ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Insufficient funds in faction treasury.", CommandUtil.COLOR_RED)));
-      case LIMIT_EXCEEDED -> ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Transfer denied: limit exceeded.", CommandUtil.COLOR_RED)));
-      default -> ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Transfer failed: " + result, CommandUtil.COLOR_RED)));
+      case SUCCESS -> ctx.sendMessage(MessageUtil.success(player, MessageKeys.Economy.TRANSFERRED,
+          econ.formatCurrency(amount), target.name()));
+      case INSUFFICIENT_FUNDS -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.INSUFFICIENT));
+      case LIMIT_EXCEEDED -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.TRANSFER_LIMIT_EXCEEDED));
+      default -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.TRANSFER_FAILED, result));
     }
   }
 
@@ -353,22 +307,19 @@ public final class TreasuryCommandHandler {
   public static void handleLog(@NotNull CommandContext ctx, @NotNull PlayerRef player,
                  @NotNull HyperFactions hf, String[] args) {
     if (!CommandUtil.hasPermission(player, Permissions.ECONOMY_LOG)) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "You don't have permission to view the transaction log.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.LOG_NO_PERMISSION));
       return;
     }
 
     EconomyManager econ = hf.getEconomyManager();
     if (econ == null) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "Treasury is not available.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Economy.TREASURY_UNAVAILABLE));
       return;
     }
 
     Faction faction = hf.getFactionManager().getPlayerFaction(player.getUuid());
     if (faction == null) {
-      ctx.sendMessage(CommandUtil.prefix().insert(CommandUtil.msg(
-          "You are not in a faction.", CommandUtil.COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.NOT_IN_FACTION));
       return;
     }
 
@@ -395,8 +346,7 @@ public final class TreasuryCommandHandler {
     int totalPages = Math.max(1, (all.size() + perPage - 1) / perPage);
     page = Math.max(1, Math.min(page, totalPages));
 
-    ctx.sendMessage(CommandUtil.prefix()
-        .insert(CommandUtil.msg("Transaction Log (page " + page + "/" + totalPages + ")", CommandUtil.COLOR_CYAN)));
+    ctx.sendMessage(MessageUtil.info(player, MessageKeys.Economy.LOG_HEADER, MessageUtil.COLOR_CYAN, page, totalPages));
 
     int start = (page - 1) * perPage;
     int end = Math.min(start + perPage, all.size());
@@ -422,7 +372,7 @@ public final class TreasuryCommandHandler {
     }
 
     if (all.isEmpty()) {
-      ctx.sendMessage(CommandUtil.msg("  No transactions found.", CommandUtil.COLOR_GRAY));
+      ctx.sendMessage(CommandUtil.msg("  " + HFMessages.get(player, MessageKeys.Economy.LOG_EMPTY), CommandUtil.COLOR_GRAY));
     }
   }
 }

@@ -76,6 +76,11 @@ public class ServerConfig extends ModuleConfig {
 
   private int mobClearIntervalSeconds = 10;
 
+  // Language / i18n settings
+  private String defaultLanguage = "en-US";
+
+  private boolean usePlayerLanguage = true;
+
   // HyperProtect-Mixin management
   private boolean hyperProtectAutoDownload = false;
 
@@ -165,6 +170,13 @@ public class ServerConfig extends ModuleConfig {
       allowWithoutPermissionMod = getBool(permissions, "allowWithoutPermissionMod", allowWithoutPermissionMod);
     }
 
+    // Language / i18n settings
+    if (hasSection(root, "language")) {
+      JsonObject language = root.getAsJsonObject("language");
+      defaultLanguage = getString(language, "default", defaultLanguage);
+      usePlayerLanguage = getBool(language, "usePlayerLanguage", usePlayerLanguage);
+    }
+
     // Mob clearing settings
     if (hasSection(root, "mobClearing")) {
       JsonObject mobClearing = root.getAsJsonObject("mobClearing");
@@ -243,6 +255,12 @@ public class ServerConfig extends ModuleConfig {
     permissions.addProperty("adminRequiresOp", adminRequiresOp);
     permissions.addProperty("allowWithoutPermissionMod", allowWithoutPermissionMod);
     root.add("permissions", permissions);
+
+    // Language / i18n settings
+    JsonObject language = new JsonObject();
+    language.addProperty("default", defaultLanguage);
+    language.addProperty("usePlayerLanguage", usePlayerLanguage);
+    root.add("language", language);
 
     // Mob clearing settings
     JsonObject mobClearing = new JsonObject();
@@ -375,6 +393,17 @@ public class ServerConfig extends ModuleConfig {
   /** Returns the mob clear sweep interval in seconds. */
   public int getMobClearIntervalSeconds() {
     return mobClearIntervalSeconds;
+  }
+
+  // Language / i18n
+  /** Returns the default server language code (e.g. "en-US"). */
+  @NotNull public String getDefaultLanguage() {
+    return defaultLanguage;
+  }
+
+  /** Whether to respect each player's client language for translations. */
+  public boolean isUsePlayerLanguage() {
+    return usePlayerLanguage;
   }
 
   // HyperProtect-Mixin

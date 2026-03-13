@@ -9,6 +9,7 @@ import com.hyperfactions.data.FactionLog;
 import com.hyperfactions.integration.economy.VaultEconomyProvider;
 import com.hyperfactions.storage.JsonEconomyStorage;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.MessageKeys;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
@@ -340,7 +341,8 @@ public class EconomyManager implements EconomyAPI {
       String logMessage = String.format("Deposit: %s (+%s)",
         formatCurrency(newBalance), formatCurrency(amount));
       Faction updatedFaction = faction.withLog(
-        FactionLog.create(FactionLog.LogType.ECONOMY, logMessage, actorId)
+        FactionLog.create(FactionLog.LogType.ECONOMY, logMessage, actorId,
+            MessageKeys.LogsGui.MSG_DEPOSIT, formatCurrency(newBalance), formatCurrency(amount))
       );
       factionManager.updateFaction(updatedFaction);
 
@@ -417,7 +419,8 @@ public class EconomyManager implements EconomyAPI {
       String logMessage = String.format("Withdrawal: %s (-%s)",
         formatCurrency(newBalance), formatCurrency(amount));
       Faction updatedFaction = faction.withLog(
-        FactionLog.create(FactionLog.LogType.ECONOMY, logMessage, actorId)
+        FactionLog.create(FactionLog.LogType.ECONOMY, logMessage, actorId,
+            MessageKeys.LogsGui.MSG_WITHDRAWAL, formatCurrency(newBalance), formatCurrency(amount))
       );
       factionManager.updateFaction(updatedFaction);
 
@@ -636,8 +639,11 @@ public class EconomyManager implements EconomyAPI {
       String logMessage = String.format("Admin %s: %s (balance: %s)",
           amount.compareTo(BigDecimal.ZERO) >= 0 ? "added" : "deducted",
           formatCurrency(amount.abs()), formatCurrency(newBalance));
+      String msgKey = amount.compareTo(BigDecimal.ZERO) >= 0
+          ? MessageKeys.LogsGui.MSG_ADMIN_ECON_ADDED : MessageKeys.LogsGui.MSG_ADMIN_ECON_DEDUCTED;
       Faction updatedFaction = faction.withLog(
-          FactionLog.create(FactionLog.LogType.ECONOMY, logMessage, adminId)
+          FactionLog.create(FactionLog.LogType.ECONOMY, logMessage, adminId,
+              msgKey, formatCurrency(amount.abs()), formatCurrency(newBalance))
       );
       factionManager.updateFaction(updatedFaction);
 
@@ -692,7 +698,8 @@ public class EconomyManager implements EconomyAPI {
       String logMessage = String.format("Admin set balance to %s (was %s)",
           formatCurrency(newBalance), formatCurrency(oldBalance));
       Faction updatedFaction = faction.withLog(
-          FactionLog.create(FactionLog.LogType.ECONOMY, logMessage, adminId)
+          FactionLog.create(FactionLog.LogType.ECONOMY, logMessage, adminId,
+              MessageKeys.LogsGui.MSG_ADMIN_ECON_SET, formatCurrency(newBalance), formatCurrency(oldBalance))
       );
       factionManager.updateFaction(updatedFaction);
 

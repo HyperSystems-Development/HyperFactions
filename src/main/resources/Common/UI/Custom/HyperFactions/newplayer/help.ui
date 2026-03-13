@@ -13,7 +13,7 @@ $C.@PageOverlay {
 
     #Title {
       Group {
-        $C.@Title {
+        $C.@Title #PageTitle {
           @Text = "Getting Started";
         }
       }
@@ -29,37 +29,37 @@ $C.@PageOverlay {
         LayoutMode: Top;
         Anchor: (Height: 120, Bottom: 20);
 
-        Label {
+        Label #WhatTitle {
           Text: "What Are Factions?";
           Style: (FontSize: 13, TextColor: #00FFFF, RenderBold: true);
           Anchor: (Height: 22);
         }
 
-        Label {
+        Label #WhatDesc1 {
           Text: "Factions are player-created groups that work together";
           Style: (FontSize: 12, TextColor: #CCCCCC);
           Anchor: (Height: 18);
         }
 
-        Label {
+        Label #WhatDesc2 {
           Text: "to claim territory, build bases, and compete.";
           Style: (FontSize: 12, TextColor: #CCCCCC);
           Anchor: (Height: 18);
         }
 
-        Label {
+        Label #WhatBullet1 {
           Text: "- Protected territory for building";
           Style: (FontSize: 11, TextColor: #AAAAAA);
           Anchor: (Height: 16);
         }
 
-        Label {
+        Label #WhatBullet2 {
           Text: "- Teammates to play with";
           Style: (FontSize: 11, TextColor: #AAAAAA);
           Anchor: (Height: 16);
         }
 
-        Label {
+        Label #WhatBullet3 {
           Text: "- Access to faction chat and features";
           Style: (FontSize: 11, TextColor: #AAAAAA);
           Anchor: (Height: 16);
@@ -71,31 +71,31 @@ $C.@PageOverlay {
         LayoutMode: Top;
         Anchor: (Height: 95, Bottom: 20);
 
-        Label {
+        Label #JoinTitle {
           Text: "Joining a Faction";
           Style: (FontSize: 13, TextColor: #00FFFF, RenderBold: true);
           Anchor: (Height: 22);
         }
 
-        Label {
+        Label #JoinDesc {
           Text: "There are several ways to join a faction:";
           Style: (FontSize: 12, TextColor: #CCCCCC);
           Anchor: (Height: 20);
         }
 
-        Label {
+        Label #JoinBullet1 {
           Text: "- Browse - Find open factions and click JOIN";
           Style: (FontSize: 11, TextColor: #AAAAAA);
           Anchor: (Height: 16);
         }
 
-        Label {
+        Label #JoinBullet2 {
           Text: "- Invites - Accept invitations from officers";
           Style: (FontSize: 11, TextColor: #AAAAAA);
           Anchor: (Height: 16);
         }
 
-        Label {
+        Label #JoinBullet3 {
           Text: "- Request - Ask to join invite-only factions";
           Style: (FontSize: 11, TextColor: #AAAAAA);
           Anchor: (Height: 16);
@@ -107,25 +107,25 @@ $C.@PageOverlay {
         LayoutMode: Top;
         Anchor: (Height: 80, Bottom: 20);
 
-        Label {
+        Label #CreateTitle {
           Text: "Creating a Faction";
           Style: (FontSize: 13, TextColor: #00FFFF, RenderBold: true);
           Anchor: (Height: 22);
         }
 
-        Label {
+        Label #CreateDesc {
           Text: "Go to the Create tab to start your own faction.";
           Style: (FontSize: 12, TextColor: #CCCCCC);
           Anchor: (Height: 20);
         }
 
-        Label {
+        Label #CreateBullet1 {
           Text: "- Invite and manage members";
           Style: (FontSize: 11, TextColor: #AAAAAA);
           Anchor: (Height: 16);
         }
 
-        Label {
+        Label #CreateBullet2 {
           Text: "- Claim and protect territory";
           Style: (FontSize: 11, TextColor: #AAAAAA);
           Anchor: (Height: 16);
@@ -137,37 +137,37 @@ $C.@PageOverlay {
         LayoutMode: Top;
         Anchor: (Height: 130, Bottom: 10);
 
-        Label {
+        Label #CmdTitle {
           Text: "Quick Commands";
           Style: (FontSize: 13, TextColor: #00FFFF, RenderBold: true);
           Anchor: (Height: 22);
         }
 
-        Label {
+        Label #CmdF {
           Text: "/f - Open faction menu";
           Style: (FontSize: 11, TextColor: #FFFF55);
           Anchor: (Height: 16);
         }
 
-        Label {
+        Label #CmdFList {
           Text: "/f list - List all factions";
           Style: (FontSize: 11, TextColor: #FFFF55);
           Anchor: (Height: 16);
         }
 
-        Label {
+        Label #CmdFJoin {
           Text: "/f join <name> - Join an open faction";
           Style: (FontSize: 11, TextColor: #FFFF55);
           Anchor: (Height: 16);
         }
 
-        Label {
+        Label #CmdFCreate {
           Text: "/f create <name> - Create a new faction";
           Style: (FontSize: 11, TextColor: #FFFF55);
           Anchor: (Height: 16);
         }
 
-        Label {
+        Label #CmdFHelp {
           Text: "/f help - Full command list";
           Style: (FontSize: 11, TextColor: #FFFF55);
           Anchor: (Height: 16);
@@ -180,7 +180,7 @@ $C.@PageOverlay {
         Background: (Color: #1a2a3a);
         Padding: (Left: 10, Right: 10, Top: 10, Bottom: 10);
 
-        Label {
+        Label #TipText {
           Text: "Tip: Browse factions to find a group that matches you!";
           Style: (FontSize: 12, TextColor: #55FF55);
         }

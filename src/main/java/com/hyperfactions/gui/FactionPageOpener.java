@@ -2,6 +2,7 @@ package com.hyperfactions.gui;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
+import com.hyperfactions.util.MessageKeys;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.data.FactionRole;
@@ -13,6 +14,7 @@ import com.hyperfactions.gui.help.page.HelpMainPage;
 import com.hyperfactions.gui.newplayer.page.*;
 import com.hyperfactions.gui.shared.page.*;
 import com.hyperfactions.gui.test.ButtonTestPage;
+import com.hyperfactions.gui.test.MarkdownTestPage;
 import com.hyperfactions.manager.*;
 import com.hyperfactions.storage.PlayerStorage;
 import com.hyperfactions.util.ErrorHandler;
@@ -104,6 +106,27 @@ class FactionPageOpener {
       Logger.debug("[GUI] Player %s has no faction, redirecting to NewPlayerBrowsePage",
           playerRef.getUsername());
       guiManager.openNewPlayerBrowse(player, ref, store, playerRef);
+    }
+  }
+
+  /**
+   * Opens the Player Settings page.
+   */
+  public void openPlayerSettings(Player player, Ref<EntityStore> ref,
+                  Store<EntityStore> store, PlayerRef playerRef) {
+    Logger.debug("[GUI] Opening PlayerSettingsPage for %s", playerRef.getUsername());
+    try {
+      PageManager pageManager = player.getPageManager();
+      PlayerSettingsPage page = new PlayerSettingsPage(
+        playerRef,
+        guiManager.getFactionManager().get(),
+        guiManager.getPlugin().get().getPlayerStorage(),
+        guiManager
+      );
+      pageManager.openCustomPage(ref, store, page);
+      Logger.debug("[GUI] PlayerSettingsPage opened successfully");
+    } catch (Exception e) {
+      ErrorHandler.report("[GUI] Failed to open PlayerSettingsPage", e);
     }
   }
 
@@ -708,7 +731,7 @@ class FactionPageOpener {
     try {
       EconomyManager econ = guiManager.getPlugin().get().getEconomyManager();
       if (econ == null) {
-        player.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Treasury is not available."));
+        player.sendMessage(com.hyperfactions.util.MessageUtil.errorText(playerRef, MessageKeys.GuiCommon.TREASURY_NOT_AVAILABLE));
         return;
       }
       PageManager pageManager = player.getPageManager();
@@ -744,7 +767,7 @@ class FactionPageOpener {
     try {
       EconomyManager econ = guiManager.getPlugin().get().getEconomyManager();
       if (econ == null) {
-        player.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Treasury is not available."));
+        player.sendMessage(com.hyperfactions.util.MessageUtil.errorText(playerRef, MessageKeys.GuiCommon.TREASURY_NOT_AVAILABLE));
         return;
       }
       var page = new TreasuryDepositModalPage(playerRef, guiManager.getFactionManager().get(), econ,
@@ -765,7 +788,7 @@ class FactionPageOpener {
     try {
       EconomyManager econ = guiManager.getPlugin().get().getEconomyManager();
       if (econ == null) {
-        player.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Treasury is not available."));
+        player.sendMessage(com.hyperfactions.util.MessageUtil.errorText(playerRef, MessageKeys.GuiCommon.TREASURY_NOT_AVAILABLE));
         return;
       }
       var page = new TreasuryTransferSearchPage(playerRef, guiManager.getFactionManager().get(), econ,
@@ -787,7 +810,7 @@ class FactionPageOpener {
     try {
       EconomyManager econ = guiManager.getPlugin().get().getEconomyManager();
       if (econ == null) {
-        player.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Treasury is not available."));
+        player.sendMessage(com.hyperfactions.util.MessageUtil.errorText(playerRef, MessageKeys.GuiCommon.TREASURY_NOT_AVAILABLE));
         return;
       }
       var page = new TreasuryTransferConfirmPage(playerRef, guiManager.getFactionManager().get(), econ,
@@ -808,7 +831,7 @@ class FactionPageOpener {
     try {
       EconomyManager econ = guiManager.getPlugin().get().getEconomyManager();
       if (econ == null) {
-        player.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Treasury is not available."));
+        player.sendMessage(com.hyperfactions.util.MessageUtil.errorText(playerRef, MessageKeys.GuiCommon.TREASURY_NOT_AVAILABLE));
         return;
       }
       var page = new TreasurySettingsPage(playerRef, guiManager.getFactionManager().get(), econ, guiManager, faction);
@@ -991,7 +1014,6 @@ class FactionPageOpener {
 
   /**
    * Opens the button style test page.
-   * Temporary — DELETE after testing is complete.
    */
   public void openButtonTestPage(Player player, Ref<EntityStore> ref,
                  Store<EntityStore> store, PlayerRef playerRef) {
@@ -1002,6 +1024,21 @@ class FactionPageOpener {
       pageManager.openCustomPage(ref, store, page);
     } catch (Exception e) {
       ErrorHandler.report("[GUI] Failed to open ButtonTestPage", e);
+    }
+  }
+
+  /**
+   * Opens the markdown rendering test page.
+   */
+  public void openMarkdownTestPage(Player player, Ref<EntityStore> ref,
+                   Store<EntityStore> store, PlayerRef playerRef) {
+    Logger.info("[GUI] Opening MarkdownTestPage for %s", playerRef.getUsername());
+    try {
+      PageManager pageManager = player.getPageManager();
+      MarkdownTestPage page = new MarkdownTestPage(playerRef);
+      pageManager.openCustomPage(ref, store, page);
+    } catch (Exception e) {
+      ErrorHandler.report("[GUI] Failed to open MarkdownTestPage", e);
     }
   }
 

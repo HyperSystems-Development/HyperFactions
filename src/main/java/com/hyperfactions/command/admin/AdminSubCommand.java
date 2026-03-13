@@ -11,6 +11,7 @@ import com.hyperfactions.command.admin.handler.AdminImportHandler;
 import com.hyperfactions.command.admin.handler.AdminIntegrationHandler;
 import com.hyperfactions.command.admin.handler.AdminMapDecayHandler;
 import com.hyperfactions.command.admin.handler.AdminPowerHandler;
+import com.hyperfactions.command.admin.handler.AdminTestHandler;
 import com.hyperfactions.command.admin.handler.AdminUpdateHandler;
 import com.hyperfactions.command.admin.handler.AdminWorldHandler;
 import com.hyperfactions.command.admin.handler.AdminZoneHandler;
@@ -73,6 +74,8 @@ public class AdminSubCommand extends AbstractAsyncCommand {
 
   private final AdminMapDecayHandler mapDecayHandler;
 
+  private final AdminTestHandler testHandler;
+
   private final AdminWorldHandler worldHandler;
 
   /** Creates a new AdminSubCommand. */
@@ -92,6 +95,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
     this.powerHandler = new AdminPowerHandler(hyperFactions, plugin);
     this.economyHandler = new AdminEconomyHandler(hyperFactions);
     this.mapDecayHandler = new AdminMapDecayHandler(hyperFactions);
+    this.testHandler = new AdminTestHandler(hyperFactions);
     this.worldHandler = new AdminWorldHandler(hyperFactions);
   }
 
@@ -268,15 +272,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
           hyperFactions.getGuiManager().openAdminBackups(playerEntity, ref, store, player);
         }
       }
-      case "testgui" -> {
-        if (!requirePlayer(ctx, isPlayer)) {
-          break;
-        }
-        Player playerEntity = store.getComponent(ref, Player.getComponentType());
-        if (playerEntity != null) {
-          hyperFactions.getGuiManager().openButtonTestPage(playerEntity, ref, store, player);
-        }
-      }
+      case "test" -> testHandler.handleTest(ctx, store, ref, player, subArgs, isPlayer);
       case "safezone" -> { if (requirePlayer(ctx, isPlayer)) zoneHandler.handleSafezone(ctx, player, currentWorld, chunkX, chunkZ, args); }
       case "warzone" -> { if (requirePlayer(ctx, isPlayer)) zoneHandler.handleWarzone(ctx, player, currentWorld, chunkX, chunkZ, args); }
       case "removezone" -> { if (requirePlayer(ctx, isPlayer)) zoneHandler.handleRemovezone(ctx, currentWorld, chunkX, chunkZ); }
@@ -287,7 +283,6 @@ public class AdminSubCommand extends AbstractAsyncCommand {
       case "world", "worlds" -> worldHandler.handleAdminWorld(ctx, player, subArgs);
       case "version" -> handleVersion(ctx, store, ref, player, isPlayer);
       case "sentry" -> handleSentry(ctx, subArgs);
-      case "sentrytest" -> handleSentryTest(ctx);
       case "log", "logs", "activitylog" -> {
         if (!requirePlayer(ctx, isPlayer)) {
           break;
@@ -383,7 +378,9 @@ public class AdminSubCommand extends AbstractAsyncCommand {
     commands.add(new CommandHelp("/f admin sentry", "View Sentry status"));
     commands.add(new CommandHelp("/f admin sentry disable", "Opt out of Sentry error reporting"));
     commands.add(new CommandHelp("/f admin sentry enable", "Opt in to Sentry error reporting"));
-    commands.add(new CommandHelp("/f admin sentrytest", "Send a test error to Sentry"));
+    commands.add(new CommandHelp("/f admin test gui", "Open UI element test page"));
+    commands.add(new CommandHelp("/f admin test sentry", "Send a test error to Sentry"));
+    commands.add(new CommandHelp("/f admin test md", "Open markdown rendering test page"));
     ctx.sendMessage(HelpFormatter.buildHelp("Admin Commands", "Server administration", commands, null));
   }
 
@@ -454,21 +451,6 @@ public class AdminSubCommand extends AbstractAsyncCommand {
         ctx.sendMessage(prefix().insert(msg("Sentry enabled and config saved. Error reporting is now on.", COLOR_GREEN)));
       }
       default -> ctx.sendMessage(prefix().insert(msg("Usage: /f admin sentry [disable|enable]", COLOR_RED)));
-    }
-  }
-
-  // === Sentry Test ===
-  private void handleSentryTest(CommandContext ctx) {
-    if (!SentryIntegration.isInitialized()) {
-      ctx.sendMessage(prefix().insert(msg("Sentry is not initialized. Check config/debug.json", COLOR_RED)));
-      return;
-    }
-
-    boolean sent = SentryIntegration.sendTestEvent();
-    if (sent) {
-      ctx.sendMessage(prefix().insert(msg("Test error sent to Sentry. Check your Sentry dashboard.", COLOR_GREEN)));
-    } else {
-      ctx.sendMessage(prefix().insert(msg("Failed to send test event.", COLOR_RED)));
     }
   }
 

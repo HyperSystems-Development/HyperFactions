@@ -2,6 +2,7 @@ package com.hyperfactions.util;
 
 import com.hyperfactions.config.ConfigManager;
 import com.hypixel.hytale.server.core.Message;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -66,6 +67,84 @@ public final class MessageUtil {
     return Message.raw("[").color(bracketColor)
       .insert(Message.raw("Admin").color(COLOR_GOLD))
       .insert(Message.raw("] ").color(bracketColor));
+  }
+
+  // ==================== i18n-aware (PlayerRef + key) ====================
+
+  /**
+   * Creates a prefixed red error message using i18n key resolution.
+   *
+   * @param player The player (for language resolution)
+   * @param key    The message key
+   * @param args   Replacement arguments for {0}, {1}, etc.
+   */
+  @NotNull
+  public static Message error(@NotNull PlayerRef player, @NotNull String key, Object... args) {
+    return prefix().insert(Message.raw(HFMessages.get(player, key, args)).color(COLOR_RED));
+  }
+
+  /**
+   * Creates a prefixed green success message using i18n key resolution.
+   */
+  @NotNull
+  public static Message success(@NotNull PlayerRef player, @NotNull String key, Object... args) {
+    return prefix().insert(Message.raw(HFMessages.get(player, key, args)).color(COLOR_GREEN));
+  }
+
+  /**
+   * Creates a prefixed info message with custom color using i18n key resolution.
+   */
+  @NotNull
+  public static Message info(@NotNull PlayerRef player, @NotNull String key, @NotNull String color, Object... args) {
+    return prefix().insert(Message.raw(HFMessages.get(player, key, args)).color(color));
+  }
+
+  /**
+   * Creates a red error message (no prefix) using i18n key resolution.
+   */
+  @NotNull
+  public static Message errorText(@NotNull PlayerRef player, @NotNull String key, Object... args) {
+    return Message.raw(HFMessages.get(player, key, args)).color(COLOR_RED);
+  }
+
+  /**
+   * Creates a green success message (no prefix) using i18n key resolution.
+   */
+  @NotNull
+  public static Message successText(@NotNull PlayerRef player, @NotNull String key, Object... args) {
+    return Message.raw(HFMessages.get(player, key, args)).color(COLOR_GREEN);
+  }
+
+  /**
+   * Creates an admin-prefixed red error message using i18n key resolution.
+   */
+  @NotNull
+  public static Message adminError(@NotNull PlayerRef player, @NotNull String key, Object... args) {
+    return adminPrefix().insert(Message.raw(HFMessages.get(player, key, args)).color(COLOR_RED));
+  }
+
+  /**
+   * Creates an admin-prefixed green success message using i18n key resolution.
+   */
+  @NotNull
+  public static Message adminSuccess(@NotNull PlayerRef player, @NotNull String key, Object... args) {
+    return adminPrefix().insert(Message.raw(HFMessages.get(player, key, args)).color(COLOR_GREEN));
+  }
+
+  /**
+   * Creates an admin-prefixed gray info message using i18n key resolution.
+   */
+  @NotNull
+  public static Message adminInfo(@NotNull PlayerRef player, @NotNull String key, Object... args) {
+    return adminPrefix().insert(Message.raw(HFMessages.get(player, key, args)).color(COLOR_GRAY));
+  }
+
+  /**
+   * Creates a colored message with no prefix using i18n key resolution.
+   */
+  @NotNull
+  public static Message text(@NotNull PlayerRef player, @NotNull String key, @NotNull String color, Object... args) {
+    return Message.raw(HFMessages.get(player, key, args)).color(color);
   }
 
   // ==================== Unprefixed (GUI pages) ====================

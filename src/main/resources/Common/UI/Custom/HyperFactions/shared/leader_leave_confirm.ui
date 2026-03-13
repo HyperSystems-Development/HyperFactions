@@ -10,7 +10,7 @@ $C.@PageOverlay {
 
     #Title {
       Group {
-        $C.@Title {
+        $C.@Title #PageTitle {
           @Text = "Leave as Leader";
         }
       }
@@ -20,7 +20,7 @@ $C.@PageOverlay {
       LayoutMode: Top;
       Padding: (Left: 20, Right: 20, Top: 15, Bottom: 15);
 
-      Label {
+      Label #ConfirmText {
         Text: "You are leaving";
         Style: (FontSize: 13, TextColor: #AAAAAA, HorizontalAlignment: Center);
         Anchor: (Height: 22);

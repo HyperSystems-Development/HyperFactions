@@ -8,11 +8,12 @@ import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.faction.data.LeaderLeaveConfirmData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
@@ -61,12 +62,19 @@ public class LeaderLeaveConfirmPage extends InteractiveCustomUIPage<LeaderLeaveC
     // Load the leader leave confirmation template
     cmd.append(UIPaths.LEADER_LEAVE_CONFIRM);
 
+    // Static labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.LEADER_LEAVE_TITLE));
+    cmd.set("#ConfirmText.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.LEADER_LEAVE_PROMPT));
+    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.CANCEL));
+    cmd.set("#LeaveBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.LEAVE));
+    cmd.set("#DisbandBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.DISBAND));
+
     // Set faction name
     cmd.set("#FactionName.Text", faction.name());
 
     // Show succession information
     if (successor != null) {
-      cmd.set("#SuccessionTitle.Text", "Leadership will transfer to:");
+      cmd.set("#SuccessionTitle.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.SUCCESSION_TITLE));
       cmd.set("#SuccessorName.Text", successor.username());
       cmd.set("#SuccessorRole.Text", successor.role().getDisplayName());
       cmd.set("#WarningText.Text", "");
@@ -84,10 +92,10 @@ public class LeaderLeaveConfirmPage extends InteractiveCustomUIPage<LeaderLeaveC
       cmd.set("#DisbandBtn.Visible", false);
     } else {
       // No successor - faction will disband
-      cmd.set("#SuccessionTitle.Text", "WARNING: No other members!");
+      cmd.set("#SuccessionTitle.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.NO_MEMBERS_WARNING));
       cmd.set("#SuccessorName.Text", "");
       cmd.set("#SuccessorRole.Text", "");
-      cmd.set("#WarningText.Text", "Leaving will disband the faction permanently.");
+      cmd.set("#WarningText.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.WILL_DISBAND));
 
       // Hide Leave button, show Disband button
       cmd.set("#LeaveBtn.Visible", false);
@@ -127,13 +135,13 @@ public class LeaderLeaveConfirmPage extends InteractiveCustomUIPage<LeaderLeaveC
 
     // Verify still in faction and still leader
     if (member == null) {
-      player.sendMessage(MessageUtil.errorText("You are not in this faction."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.ConfirmGui.NOT_IN_FACTION));
       guiManager.openFactionMain(player, ref, store, playerRef);
       return;
     }
 
     if (member.role() != FactionRole.LEADER) {
-      player.sendMessage(MessageUtil.errorText("You are no longer the leader."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.ConfirmGui.NOT_LEADER_ANYMORE));
       Faction fresh = factionManager.getFaction(faction.id());
       if (fresh != null) {
         guiManager.openFactionDashboard(player, ref, store, playerRef, fresh);
@@ -157,7 +165,7 @@ public class LeaderLeaveConfirmPage extends InteractiveCustomUIPage<LeaderLeaveC
       case "Leave" -> {
         // Transfer leadership to successor and leave
         if (successor == null) {
-          player.sendMessage(MessageUtil.errorText("No successor available. Use disband instead."));
+          player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.ConfirmGui.NO_SUCCESSOR));
           return;
         }
 
@@ -168,7 +176,7 @@ public class LeaderLeaveConfirmPage extends InteractiveCustomUIPage<LeaderLeaveC
             faction.id(), successor.uuid(), uuid);
 
         if (transferResult != FactionManager.FactionResult.SUCCESS) {
-          player.sendMessage(Message.raw("Failed to transfer leadership: " + transferResult).color("#FF5555"));
+          player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.ConfirmGui.TRANSFER_FAILED, transferResult));
           return;
         }
 
@@ -177,16 +185,10 @@ public class LeaderLeaveConfirmPage extends InteractiveCustomUIPage<LeaderLeaveC
             faction.id(), uuid, uuid, false);
 
         if (leaveResult == FactionManager.FactionResult.SUCCESS) {
-          player.sendMessage(
-              Message.raw("Leadership transferred to ").color("#55FF55")
-                  .insert(Message.raw(successor.username()).color("#00FFFF"))
-                  .insert(Message.raw(". You have left ").color("#55FF55"))
-                  .insert(Message.raw(factionName).color("#00FFFF"))
-                  .insert(Message.raw(".").color("#55FF55"))
-          );
+          player.sendMessage(MessageUtil.successText(playerRef, MessageKeys.ConfirmGui.LEADER_LEFT, successor.username(), factionName));
           guiManager.openFactionMain(player, ref, store, playerRef);
         } else {
-          player.sendMessage(Message.raw("Failed to leave faction: " + leaveResult).color("#FF5555"));
+          player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.ConfirmGui.LEAVE_FAILED, leaveResult));
           Faction fresh = factionManager.getFaction(faction.id());
           if (fresh != null) {
             guiManager.openFactionDashboard(player, ref, store, playerRef, fresh);

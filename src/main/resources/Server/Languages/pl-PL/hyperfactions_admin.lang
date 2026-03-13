@@ -1,0 +1,801 @@
+# HyperFactions Admin GUI - Polskie tłumaczenie
+# Format: key = value
+# Note: Keys are auto-prefixed with "hyperfactions_admin." by Hytale's I18nModule
+
+# ========== Pasek nawigacji admina ==========
+nav.dashboard = Pulpit
+nav.actions = Akcje
+nav.factions = Frakcje
+nav.players = Gracze
+nav.economy = Ekonomia
+nav.zones = Strefy
+nav.config = Konfiguracja
+nav.backups = Kopie zapasowe
+nav.log = Dziennik
+nav.updates = Aktualizacje
+nav.help = Pomoc
+nav.version = Wersja
+
+# ========== Wspólne etykiety admina ==========
+common.faction_not_found = Nie znaleziono frakcji
+common.no_faction = Brak frakcji
+common.not_set = Nie ustawiono
+common.on = Wł.
+common.off = Wył.
+common.enable = Włącz
+common.disable = Wyłącz
+common.none_paren = (Brak)
+common.invalid_faction = Nieprawidłowa frakcja.
+common.leader_prefix = Przywódca: {0}
+common.members_suffix = {0} członków
+common.claims_suffix = {0} terenów
+common.factions_suffix = {0} frakcji
+common.players_suffix = {0} graczy
+common.chunks_suffix = {0} chunków
+common.entries_suffix = {0} wpisów
+common.found_suffix = {0} znaleziono
+common.power_format = {0}/{1} mocy
+common.raidable = Podatna na najazd
+common.protected = Chroniona
+common.no_description = Brak opisu.
+common.officers_more = +{0} więcej
+common.custom_max = (niestandardowe maks.)
+common.default_max = (domyślne maks.)
+common.now = Teraz
+common.ago_suffix = {0} temu
+common.just_now = przed chwilą
+common.no_membership_history = Brak historii członkostwa
+
+# ========== Pulpit admina ==========
+dashboard.factions_prefix = Frakcje: {0}
+dashboard.members_prefix = Łączna liczba członków: {0}
+dashboard.claims_prefix = Łączna liczba terenów: {0}
+
+# ========== Akcje admina ==========
+actions.confirm_reset = Potwierdzić reset?
+actions.confirm_trigger = Potwierdzić uruchomienie?
+actions.kd_reset = Zresetowano Z/Ś dla {0} graczy.
+actions.kd_reset_failed = Nie udało się zresetować Z/Ś: {0}
+actions.upkeep_unavailable = Procesor utrzymania jest niedostępny.
+actions.upkeep_triggered = Pobór utrzymania uruchomiony.
+actions.upkeep_failed = Utrzymanie nieudane: {0}
+
+# ========== Rozwiązywanie przez admina ==========
+disband.faction_gone = Frakcja już nie istnieje.
+disband.success = Frakcja '{0}' została rozwiązana.
+disband.failed = Nie udało się rozwiązać: {0}
+disband.no_leader = Frakcja nie ma przywódcy, nie można rozwiązać.
+
+# ========== Usuwanie wszystkich terenów przez admina ==========
+unclaim.removed = [Admin] Usunięto {0} terenów z {1}.
+unclaim.no_claims = {0} nie miała terenów do usunięcia.
+
+# ========== Lista frakcji admina ==========
+factions.home_not_set = Nie ustawiony
+factions.teleported = Przeteleportowano do domu {0}.
+factions.no_home = Frakcja nie ma ustawionego domu.
+factions.world_not_found = Nie znaleziono docelowego świata.
+
+# ========== Informacje o frakcji admina ==========
+info.faction_gone = Ta frakcja już nie istnieje.
+
+# ========== Członkowie frakcji admina ==========
+members.sort_role = Ranga
+members.sort_online = Online
+members.sort_name = Nazwa
+members.sort_power = Moc
+members.promoted = [Admin] Awansowano {0} na {1}.
+members.demoted = [Admin] Zdegradowano {0} do {1}.
+members.kicked = [Admin] Wyrzucono {0} z frakcji.
+
+# ========== Relacje frakcji admina ==========
+relations.allies_header = SOJUSZNICY ({0})
+relations.enemies_header = WROGOWIE ({0})
+relations.no_allies = Brak sojuszników.
+relations.no_enemies = Brak wrogów.
+relations.neutral_count = {0} neutralnych frakcji
+relations.since_today = Od: dzisiaj
+relations.since_one_day = Od: 1 dzień temu
+relations.since_days = Od: {0} dni temu
+relations.set_ally = [Admin] Ustawiono wzajemny sojusz z {0}.
+relations.set_enemy = Ustawiono wzajemną wrogość z {0}.
+relations.set_neutral = [Admin] Ustawiono wzajemną neutralność z {0}.
+
+# ========== Ustawienia frakcji admina ==========
+settings.locked = To ustawienie jest zablokowane przez konfigurację serwera.
+settings.perm_toggled = Ustawiono {0} na {1}.
+settings.color_changed = Ustawiono kolor frakcji na {0}.
+settings.recruitment_set = Ustawiono rekrutację na {0}.
+settings.no_home = [Admin] Ta frakcja nie ma ustawionego domu.
+settings.home_cleared = Usunięto dom frakcji {0}.
+
+# ========== Etykiety sortowania ==========
+sort.power = Moc
+sort.name = Nazwa
+sort.members = Członkowie
+sort.balance = Saldo
+
+# ========== Gracze admina ==========
+players.sort_last_online = Ostatnio online
+players.sort_faction = Frakcja
+players.sort_online = Online
+players.not_online = Gracz nie jest online.
+players.world_not_found = Nie znaleziono docelowego świata.
+players.teleported = [Admin] Przeteleportowano do {0}.
+
+# ========== Informacje o graczu admina ==========
+playerinfo.disband_faction = Rozwiąż frakcję
+playerinfo.kick_leader = Wyrzuć przywódcę
+playerinfo.enter_valid_number = Wprowadź prawidłową liczbę.
+playerinfo.enter_valid_positive = Wprowadź prawidłową dodatnią liczbę.
+playerinfo.faction_gone = Frakcja już nie istnieje.
+playerinfo.kd_reset = Zresetowano Z/Ś dla {0}.
+playerinfo.kicked_success = Wyrzucono {0} z {1}.
+playerinfo.kicked_leader = Wyrzucono przywódcę {0}. Przywództwo przekazane graczowi {1}.
+playerinfo.disbanded_kick = [Admin] Frakcja '{0}' rozwiązana (wyrzucono ostatniego członka).
+
+# ========== Ekonomia admina ==========
+economy.no_data = Brak frakcji z danymi ekonomicznymi.
+economy.amount_zero = Kwota nie może wynosić zero.
+economy.enter_amount = Wprowadź kwotę.
+economy.invalid_number = Nieprawidłowa liczba: {0}
+economy.error = Wystąpił błąd.
+economy.balance_negative = Saldo nie może być ujemne.
+economy.failed = Niepowodzenie: {0}
+economy.bulk_complete = Zbiorcza korekta zakończona: {0} {1} dla {2} frakcji.
+economy.bulk_failures = ({0} nieudanych)
+
+# ========== Strefy admina ==========
+zones.not_found = Nie znaleziono strefy.
+zones.invalid_id = Nieprawidłowy identyfikator strefy.
+zones.deleted = Strefa {0} usunięta.
+zones.delete_failed = Nie udało się usunąć strefy: {0}
+zones.no_chunks = Brak chunków
+zones.chunks_suffix = {0} ({1} chunków)
+
+# ========== Kreator tworzenia stref ==========
+wizard.enter_name = Wprowadź nazwę strefy.
+wizard.name_too_short = Nazwa strefy musi mieć co najmniej {0} znaków.
+wizard.name_too_long = Nazwa strefy nie może przekraczać {0} znaków.
+wizard.name_taken = Strefa o tej nazwie już istnieje.
+wizard.radius_range = Promień musi być między 1 a {0}.
+wizard.create_failed = Nie udało się utworzyć strefy: {0}
+wizard.created_not_found = Strefa utworzona, ale nie udało się jej znaleźć.
+wizard.created = Utworzono {0} '{1}'!
+wizard.chunk_claimed = Zajęto chunk ({0}, {1}).
+wizard.chunk_failed = Nie udało się zająć bieżącego chunka: {0}
+wizard.radius_claimed = Zajęto {0} chunków w promieniu {1} od {2}.
+wizard.radius_no_claims = Nie udało się zająć żadnych chunków (obszar może być zajęty).
+wizard.no_claims = Strefa utworzona bez terenów.
+wizard.chunks_preview = ~{0} chunków
+
+# ========== Zmiana nazwy strefy ==========
+zone_rename.zone_gone = Strefa już nie istnieje.
+zone_rename.enter_name = Wprowadź nazwę strefy.
+zone_rename.too_short = Nazwa strefy musi mieć co najmniej {0} znak.
+zone_rename.too_long = Nazwa strefy nie może przekraczać {0} znaków.
+zone_rename.same_name = To już jest nazwa tej strefy.
+zone_rename.renamed = [Admin] Zmieniono nazwę strefy z {0} na {1}!
+zone_rename.name_taken = Strefa o tej nazwie już istnieje.
+zone_rename.invalid_name = Nieprawidłowa nazwa strefy.
+zone_rename.rename_failed = Nie udało się zmienić nazwy strefy: {0}
+
+# ========== Zmiana typu strefy ==========
+zone_type.zone_gone = Strefa już nie istnieje.
+zone_type.changed = [Admin] Zmieniono {0} z {1} na {2} ({3}).
+zone_type.failed = Nie udało się zmienić typu strefy: {0}
+zone_type.flags_reset = flagi zresetowane
+zone_type.flags_kept = flagi zachowane
+
+# ========== Flagi integracji stref ==========
+zone_int.zone_not_found = Nie znaleziono strefy
+zone_int.no_plugin = (brak wtyczki)
+zone_int.default = (domyślne)
+zone_int.custom = (niestandardowe)
+
+# Etykiety interfejsu flag integracji
+gui.zint_cat_gravestones = Nagrobki
+gui.zint_gravestones_desc = Gdy WŁ., nie-właściciele mogą plądrować groby. Właściciele zawsze mogą.
+gui.zint_cat_world_map = Mapa świata
+gui.zint_world_map_desc = Nadpisz ukrywanie na mapie dla graczy w tej strefie. Gdy włączone, wybierz kto widzi graczy w tej strefie.
+gui.zint_visibility_label = Poziom widoczności:
+gui.zint_cat_essentials = HyperEssentials
+gui.zint_reset_defaults = Przywróć domyślne
+gui.zint_back_to_flags = Powrót do flag
+gui.zint_map_vis_faction = Tylko frakcja
+gui.zint_map_vis_ally = Frakcja + Sojusznicy
+gui.zint_map_vis_all = Wszyscy gracze
+
+# ========== Dziennik aktywności ==========
+log.all_types = Wszystkie typy
+log.no_logs = Brak logów aktywności pasujących do filtrów.
+
+# ========== Strona wersji ==========
+version.active = Aktywny
+version.not_found = Nie znaleziono
+version.not_detected = Nie wykryto
+version.not_installed = Nie zainstalowano
+version.active_version = Aktywny (v{0})
+version.active_compatible = Aktywny (kompatybilny)
+version.active_claims_only = Aktywny (tylko tereny)
+version.installed_no_perm = Zainstalowany (brak dostawcy uprawnień)
+version.active_provider = Aktywny ({0})
+
+# ========== Strona główna admina ==========
+main.reload_hint = Użyj /f reload, aby przeładować konfigurację.
+main.unclaim_hint = Użyj /f admin unclaim {0}, aby usunąć wszystkie {1} chunków.
+
+# ========== Flagi/Ustawienia stref ==========
+zflags.invalid_flag = Nieprawidłowa flaga.
+zflags.zone_not_found = Nie znaleziono strefy.
+zflags.conflict = (konflikt)
+zflags.mixin = (mixin)
+zflags.reset_int = Przywróć flagi integracji do domyślnych.
+zflags.reset_all = Przywróć wszystkie flagi do domyślnych.
+zflags.reset_failed = Nie udało się zresetować flag: {0}
+zflags.back_to_settings = Powrót do ustawień
+
+# Etykiety interfejsu ustawień stref
+gui.zset_cat_combat = Walka
+gui.zset_cat_damage = Obrażenia
+gui.zset_cat_death = Śmierć
+gui.zset_cat_building = Budowanie
+gui.zset_cat_interaction = Interakcja
+gui.zset_cat_transport = Transport
+gui.zset_cat_items = Przedmioty
+gui.zset_cat_spawning = Pojawianie się mobów
+gui.zset_cat_mob_clear = Czyszczenie mobów
+gui.zset_children_hint = (podrzędne obowiązują tylko gdy nadrzędne jest WŁ.)
+gui.zset_reset_defaults = Przywróć domyślne
+gui.zset_integration_flags = Flagi integracji
+gui.zset_back_to_zones = Powrót do stref
+gui.zset_chunks = {0} chunków
+
+# Nazwy wyświetlane flag stref
+gui.zflag_pvp_enabled = PvP włączone
+gui.zflag_friendly_fire = Ogień przyjacielski
+gui.zflag_friendly_fire_faction = Obrażenia frakcji
+gui.zflag_friendly_fire_ally = Obrażenia sojusznika
+gui.zflag_projectile_damage = Obrażenia od pocisków
+gui.zflag_mob_damage = Obrażenia od mobów
+gui.zflag_pve_damage = Obrażenia mobom
+gui.zflag_fall_damage = Obrażenia od upadku
+gui.zflag_environmental_damage = Obrażenia środowiskowe
+gui.zflag_explosion_damage = Obrażenia od eksplozji
+gui.zflag_fire_spread = Rozprzestrzenianie ognia
+gui.zflag_keep_inventory = Zachowaj ekwipunek
+gui.zflag_power_loss = Utrata mocy
+gui.zflag_build_allowed = Budowanie dozwolone
+gui.zflag_block_place = Stawianie bloków
+gui.zflag_hammer_use = Użycie młotka
+gui.zflag_builder_tools_use = Narzędzia budowniczego
+gui.zflag_block_interact = Interakcja z blokami
+gui.zflag_door_use = Użycie drzwi
+gui.zflag_container_use = Użycie pojemników
+gui.zflag_bench_use = Użycie stacji
+gui.zflag_processing_use = Użycie przetwórni
+gui.zflag_seat_use = Użycie siedzeń
+gui.zflag_mount_use = Użycie wierzchowców
+gui.zflag_light_use = Użycie świateł
+gui.zflag_npc_use = Interakcja z NPC
+gui.zflag_crate_pickup = Podnoszenie skrzyń
+gui.zflag_crate_place = Stawianie skrzyń
+gui.zflag_npc_tame = Oswajanie NPC
+gui.zflag_npc_interact = Interakcja z NPC
+gui.zflag_teleporter_use = Użycie teleporterów
+gui.zflag_portal_use = Użycie portali
+gui.zflag_mount_entry = Wejście na wierzchowca
+gui.zflag_item_drop = Upuszczanie przedmiotów
+gui.zflag_item_pickup = Automatyczne podnoszenie
+gui.zflag_item_pickup_manual = Podnoszenie klawiszem F
+gui.zflag_invincible_items = Niezniszczalne przedmioty
+gui.zflag_mob_spawning = Pojawianie się mobów
+gui.zflag_hostile_mob_spawning = Wrogie moby
+gui.zflag_passive_mob_spawning = Przyjazne moby
+gui.zflag_neutral_mob_spawning = Neutralne moby
+gui.zflag_npc_spawning = Pojawianie się NPC
+gui.zflag_mob_clear = Czyszczenie mobów
+gui.zflag_hostile_mob_clear = Czyszczenie wrogich mobów
+gui.zflag_passive_mob_clear = Czyszczenie przyjaznych mobów
+gui.zflag_neutral_mob_clear = Czyszczenie neutralnych mobów
+gui.zflag_gravestone_access = Plądrowanie grobów
+gui.zflag_show_on_map = Pokaż na mapie
+gui.zflag_essentials_homes = Użycie domów
+gui.zflag_essentials_warps = Użycie warpów
+gui.zflag_essentials_kits = Odbieranie zestawów
+
+# ========== Właściwości stref ==========
+zprop.current_custom = Aktualna: "{0}" (niestandardowa)
+zprop.current_default = Aktualna: "{0}" (domyślna)
+zprop.pvp_disabled = PvP wyłączone
+zprop.pvp_enabled = PvP włączone
+zprop.name_empty = Nazwa nie może być pusta.
+zprop.renamed = Zmieniono nazwę strefy na "{0}".
+zprop.name_taken = Strefa o tej nazwie już istnieje.
+zprop.name_invalid = Nieprawidłowa nazwa (maks. 32 znaki).
+zprop.rename_failed = Nie udało się zmienić nazwy: {0}
+zprop.upper_empty = Górny tytuł nie może być pusty. Użyj Wyczyść, aby zresetować.
+zprop.upper_set = Górny tytuł ustawiony.
+zprop.upper_reset = Górny tytuł przywrócony do domyślnego.
+zprop.lower_empty = Dolny tytuł nie może być pusty. Użyj Wyczyść, aby zresetować.
+zprop.lower_set = Dolny tytuł ustawiony.
+zprop.lower_reset = Dolny tytuł przywrócony do domyślnego.
+
+# ========== Relacje - dodatkowe ==========
+relations.failed = Niepowodzenie: {0}
+
+# ========== Członkowie - dodatkowe ==========
+members.never = Nigdy
+members.teleported = [Admin] Przeteleportowano do {0}.
+
+# ========== Informacje o graczu - dodatkowe ==========
+playerinfo.records = {0} wpisów
+playerinfo.joined_date = Dołączył: {0}
+playerinfo.current = Aktualna
+playerinfo.left_date = Odszedł: {0}
+
+# ========== Mapa stref ==========
+map.world_warning = UWAGA: Jesteś w '{0}' — strefa jest w '{1}'
+map.position = Twoja pozycja: Chunk ({0}, {1})
+map.zone_gone = Strefa już nie istnieje.
+map.claimed = Zajęto chunk ({0}, {1}) dla {2}.
+map.claim_failed = Nie udało się zająć chunka: {0}
+map.unclaimed = Zrzeczono się chunka ({0}, {1}) z {2}.
+map.unclaim_failed = Nie udało się zrzec chunka: {0}
+map.chunk_belongs = Ten chunk należy do {0}.
+map.chunk_faction = Ten chunk jest zajęty przez frakcję.
+map.chunk_protected = Ten chunk jest w chronionym regionie.
+map.another_zone = inna strefa
+
+# ========== Klucze etykiet GUI (lokalizacja tekstu .ui) ==========
+
+# Tytuły stron
+gui.title_dashboard = Pulpit admina
+gui.title_main = Admin frakcji
+gui.title_actions = Admin: Akcje serwera
+gui.title_factions = Zarządzanie frakcjami
+gui.title_players = Zarządzanie graczami
+gui.title_economy = Admin: Ekonomia serwera
+gui.title_zones = Zarządzanie strefami
+gui.title_backups = Kopie zapasowe
+gui.title_config = Konfiguracja
+gui.title_help = Pomoc admina
+gui.title_updates = Aktualizacje
+gui.title_version = Wersja i integracje
+gui.title_activity_log = Admin: Dziennik aktywności
+gui.title_player_info = Admin: Informacje o graczu
+gui.title_faction_info = Admin: Informacje o frakcji
+gui.title_faction_settings = Admin: Ustawienia frakcji
+gui.title_faction_members = Admin: Członkowie
+gui.title_faction_relations = Admin: Relacje
+gui.title_zone_map = Edytor mapy stref
+gui.title_zone_settings = Admin: Ustawienia strefy
+gui.title_zone_properties = Admin: Właściwości strefy
+gui.title_bulk_economy = Zbiorcza korekta skarbca
+gui.title_economy_adjust = Admin: Ekonomia
+
+# Etykiety pulpitu
+gui.dash_server_stats = Statystyki serwera
+gui.dash_factions = Frakcje
+gui.dash_total_members = Łącznie członków
+gui.dash_total_claims = Łącznie terenów
+gui.dash_zones = Strefy
+gui.dash_safe_war = bezpieczne / wojenne
+gui.dash_total_power = Łączna moc
+gui.dash_avg_power = Średnia moc/frakcja
+gui.dash_total_economy = Łączna ekonomia
+gui.dash_wealthiest = Najbogatsza
+gui.dash_avg_balance = Średnie saldo
+gui.dash_protection_bypass = Ominięcie ochrony:
+
+# Wspólne przyciski i etykiety
+gui.search = Szukaj:
+gui.sort = Sortuj:
+gui.prev = < Poprz.
+gui.next = Nast. >
+gui.back = Wstecz
+gui.done = Gotowe
+gui.cancel = Anuluj
+gui.apply = Zastosuj
+gui.set = Ustaw
+gui.reset = Resetuj
+gui.coming_soon = Wkrótce
+gui.zones_btn = Strefy
+gui.reload_btn = Przeładuj
+gui.all = Wszystko
+gui.safe = Bezpieczna
+gui.war = Wojenna
+gui.create_zone = + Utwórz
+
+# Etykiety strony akcji
+gui.act_combat_stats = Statystyki walki
+gui.act_combat_desc = Zresetuj zabójstwa i śmierci dla WSZYSTKICH graczy na serwerze. Ta akcja nie może być cofnięta.
+gui.act_reset_kd = Resetuj wszystkie Z/Ś
+gui.act_economy = Ekonomia
+gui.act_economy_desc = Dodaj lub usuń pieniądze ze WSZYSTKICH skarbców frakcji naraz.
+gui.act_bulk_adjust = Zbiorcze dodawanie/usuwanie
+gui.act_upkeep_collection = Pobór utrzymania
+gui.act_upkeep_desc = Ręcznie uruchom pobór utrzymania dla wszystkich frakcji natychmiast, niezależnie od zaplanowanego harmonogramu.
+gui.act_trigger_upkeep = Uruchom utrzymanie
+
+# Etykiety stron zastępczych
+gui.backup_heading = Zarządzanie kopiami zapasowymi
+gui.backup_desc1 = Tworzenie, przywracanie i zarządzanie kopiami danych frakcji.
+gui.backup_desc2 = Automatyczne kopie zapasowe zapisywane są w folderze data/backups.
+gui.config_heading = Edytor konfiguracji
+gui.config_desc1 = Konfiguruj ustawienia HyperFactions bezpośrednio z GUI.
+gui.config_desc2 = Na razie użyj /f reload, aby przeładować zmiany konfiguracji.
+gui.help_heading = Dokumentacja admina
+gui.help_desc1 = Przeglądaj dokumentację admina i opis komend.
+gui.help_desc2 = Po pomoc odwiedź wiki HyperFactions.
+gui.updates_heading = Centrum aktualizacji
+gui.updates_desc1 = Sprawdzaj nowe wersje i przeglądaj dzienniki zmian.
+gui.updates_desc2 = Odwiedź stronę HyperFactions, aby uzyskać najnowsze aktualizacje.
+
+# Etykiety strony wersji
+gui.ver_hyperfactions = HyperFactions
+gui.ver_hytale_server = Serwer Hytale
+gui.ver_java = Java
+gui.ver_permissions = UPRAWNIENIA
+gui.ver_placeholders = ZMIENNE
+gui.ver_economy_section = EKONOMIA
+gui.ver_protection = OCHRONA
+gui.ver_disabled = Wyłączone
+
+# Nagłówki kolumn (wspólne dla stron)
+gui.col_faction = Frakcja
+gui.col_balance = Saldo
+gui.col_members = Członkowie
+gui.col_actions = Akcje
+gui.col_time = Czas
+gui.col_type = Typ
+gui.col_message = Wiadomość
+
+# Etykiety strony ekonomii
+gui.econ_total_balance = Łączne saldo
+gui.econ_factions = Frakcje
+gui.econ_avg_balance = Średnie saldo
+gui.econ_in_grace = W karencji
+gui.econ_collected = Pobrane (24h)
+gui.econ_next_collection = Następny pobór
+gui.econ_no_data = Brak frakcji z danymi ekonomicznymi.
+
+# Etykiety dziennika aktywności
+gui.log_type = Typ:
+gui.log_time = Czas:
+gui.log_player = Gracz:
+gui.log_no_logs = Brak logów aktywności pasujących do filtrów.
+
+# Etykiety informacji o graczu
+gui.plr_first_joined = Pierwszy raz dołączył:
+gui.plr_last_online = Ostatnio online:
+gui.plr_uuid = UUID:
+gui.plr_faction = Frakcja:
+gui.plr_role = Ranga:
+gui.plr_view_faction = Pokaż frakcję
+gui.plr_power = Moc
+gui.plr_max_power = Maks. moc
+gui.plr_set_power = Ustaw
+gui.plr_reset_power = Resetuj
+gui.plr_set_max = Ustaw
+gui.plr_reset_max = Resetuj
+gui.plr_no_power_loss = Bez utraty mocy
+gui.plr_no_claim_decay = Bez rozpadu terenów
+gui.plr_kills = Zabójstwa
+gui.plr_deaths = Śmierci
+gui.plr_kdr = Współczynnik Z/Ś
+gui.plr_reset_kd = Resetuj Z/Ś
+gui.plr_kick = Wyrzuć
+gui.plr_membership_history = Historia członkostwa
+gui.plr_no_faction_label = Nie należy do frakcji
+gui.plr_power_management = Zarządzanie mocą
+gui.plr_combat_stats = Statystyki walki
+gui.plr_bypass_flags = Flagi ominięcia
+gui.plr_admin_controls = Kontrolki admina
+gui.plr_kd_subtitle = Z / Ś
+gui.plr_max_prefix = Maks.:
+gui.plr_view = Pokaż
+gui.plr_kick_from_faction = Wyrzuć z frakcji
+gui.plr_set_max_btn = Ustaw maks.
+gui.plr_combat = Walka
+gui.plr_reason_active = AKTYWNY
+gui.plr_reason_left = ODSZEDŁ
+gui.plr_reason_kicked = WYRZUCONY
+gui.plr_reason_disbanded = ROZWIĄZANA
+
+# Etykiety wpisów członków
+gui.mem_label_power = Moc:
+gui.mem_label_joined = Dołączył:
+gui.mem_label_last_death = Ostatnia śmierć:
+gui.mem_label_uuid = UUID:
+gui.mem_btn_info = Informacje
+gui.mem_btn_teleport = Teleportuj
+gui.mem_btn_promote = Awansuj
+gui.mem_btn_demote = Degraduj
+gui.mem_btn_kick = Wyrzuć
+gui.econ_not_enabled = System ekonomiczny nie jest włączony.
+gui.info_more = +{0} więcej
+gui.log_time_1h = 1h
+gui.log_time_24h = 24h
+gui.log_time_7d = 7d
+gui.log_time_all = Wszystko
+gui.shape_circular = kołowy
+gui.shape_square = kwadratowy
+gui.nav_title = Panel admina
+gui.econ_btn_adjust = Korekta
+gui.econ_btn_info = Informacje
+
+# Etykiety informacji o frakcji
+gui.fac_description = Opis
+gui.fac_power = Moc
+gui.fac_claims = Tereny
+gui.fac_members = Członkowie
+gui.fac_recruitment = Rekrutacja
+gui.fac_founded = Założona
+gui.fac_allies = Sojusznicy
+gui.fac_enemies = Wrogowie
+gui.fac_raidable = Status podatności na najazd
+gui.fac_treasury = Skarbiec
+gui.fac_leader = Przywódca
+gui.fac_officers = Oficerowie
+gui.fac_view_members = Pokaż członków
+gui.fac_view_relations = Pokaż relacje
+gui.fac_view_settings = Ustawienia
+gui.fac_disband = Rozwiąż frakcję
+gui.fac_power_management = Zarządzanie mocą
+gui.fac_reset_all_power = Resetuj całą moc
+gui.fac_econ_adjust = Korekta salda
+gui.fac_econ_view_log = Pokaż dziennik transakcji
+gui.fac_current_max = aktualna / maks.
+gui.fac_claimed_max = zajęte / maks.
+gui.fac_relations = Relacje
+gui.fac_ally_enemy = sojusznik / wróg
+gui.fac_status = Status
+gui.fac_info = Informacje
+gui.fac_treasury_balance = saldo skarbca
+gui.fac_leadership = Przywództwo
+gui.fac_leader_label = Przywódca:
+gui.fac_officers_label = Oficerowie:
+gui.fac_econ_mgmt = Zarządzanie ekonomią
+gui.fac_danger_zone = Strefa zagrożenia
+gui.fac_view_treasury = Pokaż skarbiec
+
+# Etykiety ustawień frakcji
+gui.set_editing = Edycja:
+gui.set_general = Ustawienia ogólne
+gui.set_name = Nazwa
+gui.set_tag = Tag
+gui.set_description = Opis
+gui.set_recruitment = Rekrutacja
+gui.set_home = Lokalizacja domu
+gui.set_clear_home = Wyczyść dom
+gui.set_disband_faction = Rozwiąż frakcję
+gui.set_faction_color = Kolor frakcji
+gui.set_admin_override = [Nadpisanie admina]
+gui.set_territory_perms = Uprawnienia terytorialne
+gui.set_mob_spawning = Pojawianie się mobów
+gui.set_faction_settings = Ustawienia frakcji
+gui.set_name_label = Nazwa:
+gui.set_tag_label = Tag:
+gui.set_desc_label = Opis:
+gui.set_edit = Edytuj
+gui.set_status_label = Status:
+gui.set_location_label = Lokalizacja:
+gui.set_danger_zone = Strefa zagrożenia
+gui.set_irreversible = Ta akcja jest nieodwracalna.
+gui.set_lock_hint = Niektóre opcje mogą być zablokowane przez serwer i nie przyjmą zmian.
+gui.set_appearance = Wygląd
+gui.set_color_label = Kolor:
+gui.set_mob_sub = (podrzędne wyłączone gdy główne jest wyłączone)
+gui.set_back_to_info = Powrót do informacji
+gui.set_col_out = Obcy
+gui.set_col_ally = Sojusz.
+gui.set_col_mem = Człon.
+gui.set_col_off = Ofi.
+gui.set_cat_building = BUDOWANIE
+gui.set_cat_interaction = INTERAKCJA
+gui.set_cat_interact_sub = (podrzędne wyłączone gdy Wszystko jest wyłączone)
+gui.set_cat_other = INNE
+gui.set_perm_break = Niszczenie
+gui.set_perm_place = Stawianie
+gui.set_perm_all = Wszystko
+gui.set_perm_door = Drzwi
+gui.set_perm_chest = Skrzynia
+gui.set_perm_bench = Stacja
+gui.set_perm_processing = Przetwarzanie
+gui.set_perm_seat = Siedzenie
+gui.set_perm_transport = Transport
+gui.set_perm_crate_use = Skrzynie
+gui.set_perm_npc_tame = Oswajanie NPC
+gui.set_perm_pve_damage = Obrażenia PvE
+gui.set_perm_mob_spawning = Pojawianie się mobów
+gui.set_perm_hostile = Wrogie moby
+gui.set_perm_passive = Przyjazne moby
+gui.set_perm_neutral = Neutralne moby
+gui.set_perm_pvp = PvP na terytorium
+gui.set_perm_officers_edit = Oficerowie mogą edytować
+
+# Etykiety relacji frakcji
+gui.rel_subtitle = Zarządzaj relacjami frakcji (pomija zatwierdzanie)
+gui.rel_set_new = Ustaw nową relację
+gui.rel_btn_ally = Sojusznik
+gui.rel_btn_neutral = Neutralny
+gui.rel_btn_enemy = Wróg
+
+# Etykiety strony stref
+gui.zone_sort_name = Nazwa
+gui.zone_sort_type = Typ
+gui.zone_sort_chunks = Chunki
+gui.zone_sort_world = Świat
+gui.zone_count_format = {0} {1}stref ({2} chunków)
+
+# Etykiety mapy stref
+gui.map_zone_chunk = Chunk strefy
+gui.map_empty = Pusty
+gui.map_other_zone = Inna strefa
+gui.map_faction_claim = Teren frakcji
+gui.map_protected = Chroniony
+gui.map_your_pos = Twoja pozycja
+gui.map_click_hint = Kliknij, aby zajmować/zrzekać się chunków
+gui.map_legend_zone_safe = Ta strefa (Bezpieczna)
+gui.map_legend_zone_war = Ta strefa (Wojenna)
+gui.map_legend_other_safe = Inna SafeZone
+gui.map_legend_other_war = Inna WarZone
+gui.map_legend_faction = Teren frakcji
+gui.map_legend_unclaimed = Niezajęty
+gui.map_legend_you_here = Jesteś tutaj
+gui.map_action_hint = Lewy klik: Zajmij dla strefy  |  Prawy klik: Zrzecz się ze strefy
+gui.map_done = Gotowe
+
+# Etykiety właściwości stref
+gui.zprop_general = Ogólne
+gui.zprop_zone_name = Nazwa strefy
+gui.zprop_zone_type = Typ strefy
+gui.zprop_change_type = Zmień typ
+gui.zprop_notifications = Powiadomienia
+gui.zprop_show_entry = Pokaż powiadomienie o wejściu
+gui.zprop_upper_title = Górny tytuł
+gui.zprop_upper_desc = Górny tytuł (mały tekst nad nazwą strefy)
+gui.zprop_lower_title = Dolny tytuł
+gui.zprop_lower_desc = Dolny tytuł (duży tekst nazwy strefy)
+gui.zprop_edit_flags = Edytuj flagi
+gui.zprop_back_to_zones = Powrót do stref
+gui.save = Zapisz
+gui.clear = Wyczyść
+
+# Etykiety zbiorczej ekonomii
+gui.bulk_header = Korekta wszystkich skarbców frakcji
+gui.bulk_factions_label = Frakcje:
+gui.bulk_total_label = Łączne saldo:
+gui.bulk_amount_hint = Kwota (dodatnia, aby dodać; ujemna, aby usunąć):
+gui.bulk_hint = Zostanie zastosowane do każdej frakcji ze skarbcem
+gui.bulk_warning_msg = Uwaga: Ta akcja dotyczy WSZYSTKICH frakcji i nie może być cofnięta.
+gui.bulk_apply_all = Zastosuj do wszystkich
+gui.bulk_operation = Operacja
+gui.bulk_add = Dodaj
+gui.bulk_remove = Usuń
+gui.bulk_amount = Kwota
+gui.bulk_warning = Dotyczy WSZYSTKICH skarbców frakcji.
+gui.bulk_preview = Podgląd
+
+# Etykiety korekty ekonomii
+gui.ecadj_header = Korekta salda skarbca
+gui.ecadj_faction_label = Frakcja:
+gui.ecadj_current_balance = Aktualne saldo:
+gui.ecadj_amount_hint = Kwota (dodatnia, aby dodać; ujemna, aby odjąć):
+gui.ecadj_preview_hint = Wprowadź liczbę, aby zobaczyć podgląd zmiany
+gui.ecadj_adjustment = Korekta:
+gui.ecadj_set_balance = Ustaw saldo
+gui.ecadj_confirm = Potwierdź +/-
+gui.ecadj_operation = Operacja
+gui.ecadj_add = Dodaj
+gui.ecadj_remove = Usuń
+gui.ecadj_set_to = Ustaw na
+gui.ecadj_amount = Kwota
+gui.ecadj_new_balance = Nowe saldo:
+
+# Etykiety integracji strony wersji
+gui.ver_hyperperms = HyperPerms
+gui.ver_luckperms = LuckPerms
+gui.ver_vault = VaultUnlocked
+gui.ver_native = Hytale natywne
+gui.ver_hyperprotect = HyperProtect
+gui.ver_orbisguard_mixins = OrbisGuard Mixins
+gui.ver_orbisguard_api = OrbisGuard API
+gui.ver_mixin_hooks = Hooki mixinów
+gui.ver_gravestones = Nagrobki
+gui.ver_kyuubisoft = KyuubiSoft
+gui.ver_placeholder_api = PlaceholderAPI
+gui.ver_wiflow_papi = WiFlow PAPI
+gui.ver_treasury = Skarbiec
+
+# Etykiety okna potwierdzenia usuwania terenów
+gui.unclaim_title = Usuń wszystkie tereny
+gui.unclaim_confirm_msg1 = Czy na pewno chcesz usunąć wszystkie
+gui.unclaim_confirm_msg2 = z
+gui.unclaim_warning = Ta akcja nie może być cofnięta!
+gui.unclaim_all = Usuń wszystkie
+
+# Etykiety okna zmiany nazwy strefy
+gui.zren_title = Zmień nazwę strefy
+gui.zren_current = Aktualna:
+gui.zren_new_name = Nowa nazwa:
+
+# Etykiety okna zmiany typu strefy
+gui.ztype_title = Zmień typ strefy
+gui.ztype_zone_label = Strefa:
+gui.ztype_current = Aktualny:
+gui.ztype_will_become = zmieni się na
+gui.ztype_new = Nowy:
+gui.ztype_warning1 = Różne typy stref mają różne domyślne wartości flag.
+gui.ztype_warning2 = Wybierz sposób obsługi istniejących ustawień flag:
+gui.ztype_keep_desc = Zachowaj niestandardowe nadpisania
+gui.ztype_keep_flags = Zachowaj flagi
+gui.ztype_reset_desc = Użyj domyślnych nowego typu
+gui.ztype_reset_flags = Resetuj flagi
+
+# Etykiety kreatora tworzenia stref
+gui.czw_title = Utwórz strefę
+gui.czw_back = < Wstecz
+gui.czw_create = Utwórz strefę
+gui.czw_zone_type = Typ strefy
+gui.czw_safe_desc = Chroniona, bez PvP
+gui.czw_war_desc = Bojowa, PvP włączone
+gui.czw_zone_name = Nazwa strefy
+gui.czw_name_desc = Wprowadź unikalną nazwę strefy
+gui.czw_claim_method = Metoda zajmowania
+gui.czw_method_none_desc = Utwórz pustą strefę
+gui.czw_method_none = Bez terenów
+gui.czw_method_single_desc = Twój aktualny chunk
+gui.czw_method_single = Pojedynczy chunk
+gui.czw_method_circle_desc = Okrągły obszar
+gui.czw_method_circle = Promień koła
+gui.czw_method_square_desc = Kwadratowy obszar
+gui.czw_method_square = Promień kwadratu
+gui.czw_method_map_desc = Interaktywny edytor chunków
+gui.czw_method_map = Użyj mapy terenów
+gui.czw_radius = Promień
+gui.czw_custom_radius = Niestandardowy (1-50):
+gui.czw_flags = Flagi
+gui.czw_flags_defaults_desc = Na podstawie typu strefy
+gui.czw_flags_defaults = Użyj domyślnych
+gui.czw_flags_customize_desc = Otwórz ustawienia po
+gui.czw_flags_customize = Dostosuj
+
+# ========== Etykiety wpisów (wpisy list frakcji/graczy/stref) ==========
+
+# Etykiety wpisów frakcji
+gui.fac_entry_power = moc
+gui.fac_entry_claims = tereny
+gui.fac_entry_members = członkowie
+gui.fac_entry_created = Utworzona:
+gui.fac_entry_home = Dom:
+gui.fac_entry_tp_home = Teleportuj do domu
+gui.fac_entry_view_info = Informacje
+gui.fac_entry_members_btn = Członkowie
+gui.fac_entry_settings = Ustawienia
+gui.fac_entry_unclaim_all = Usuń wszystkie tereny
+gui.fac_entry_disband = Rozwiąż
+
+# Etykiety wpisów graczy
+gui.plr_entry_role = Ranga:
+gui.plr_entry_joined = Dołączył:
+gui.plr_entry_last_online = Ostatnio online:
+gui.plr_entry_kdr = Z/Ś/W:
+gui.plr_entry_power = Moc:
+gui.plr_entry_uuid = UUID:
+gui.plr_entry_info = Informacje
+gui.plr_entry_teleport = Teleportuj
+gui.plr_entry_na = N/D
+gui.plr_entry_unknown = Nieznane
+gui.plr_entry_ago = {0} temu
+
+# Etykiety wpisów stref
+gui.zone_entry_world = Świat:
+gui.zone_entry_chunks = Chunki:
+gui.zone_entry_bounds = Granice:
+gui.zone_entry_created = Utworzona:
+gui.zone_entry_edit_map = Edytuj mapę
+gui.zone_entry_flags = Flagi
+gui.zone_entry_settings = Ustawienia
+gui.zone_entry_delete = Usuń

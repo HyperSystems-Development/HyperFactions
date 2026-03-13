@@ -47,7 +47,7 @@ Group {
         Anchor: (Width: 140);
         LayoutMode: Left;
 
-        Label {
+        Label #WorldLabel {
           Text: "World:";
           Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
           Anchor: (Width: 40);
@@ -64,7 +64,7 @@ Group {
         Anchor: (Width: 80);
         LayoutMode: Left;
 
-        Label {
+        Label #InlineChunksLabel {
           Text: "Chunks:";
           Style: (FontSize: 10, TextColor: #555555, VerticalAlignment: Center);
           Anchor: (Width: 45);
@@ -111,7 +111,7 @@ Group {
       LayoutMode: Left;
       Anchor: (Height: 22, Bottom: 6);
 
-      Label {
+      Label #ChunksLabel {
         Text: "Chunks:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
         Anchor: (Width: 50);
@@ -122,7 +122,7 @@ Group {
         Anchor: (Width: 50);
       }
 
-      Label {
+      Label #BoundsLabel {
         Text: "Bounds:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
         Anchor: (Width: 50);
@@ -133,7 +133,7 @@ Group {
         Anchor: (Width: 150);
       }
 
-      Label {
+      Label #CreatedLabel {
         Text: "Created:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
         Anchor: (Width: 52);

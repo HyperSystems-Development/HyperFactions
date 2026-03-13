@@ -41,6 +41,7 @@
   }
 
   Group #NavBarButtons {
+    FlexWeight: 1;
     LayoutMode: Left;
   }
 };

@@ -6,6 +6,7 @@ import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.TeleportManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.MessageKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -41,7 +42,7 @@ public class HomeSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.HOME)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to teleport to faction home.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.NO_PERMISSION));
       return;
     }
 
@@ -79,11 +80,11 @@ public class HomeSubCommand extends FactionSubCommand {
 
     // Handle immediate results (warmup teleports are handled by TerritoryTickingSystem)
     switch (result) {
-      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error("You are not in a faction."));
-      case NO_HOME -> ctx.sendMessage(prefix().insert(msg("Your faction has no home set.", COLOR_RED)));
-      case COMBAT_TAGGED -> ctx.sendMessage(prefix().insert(msg("You cannot teleport while in combat!", COLOR_RED)));
+      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.NOT_IN_FACTION));
+      case NO_HOME -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.NO_HOME));
+      case COMBAT_TAGGED -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.COMBAT_TAGGED));
       case ON_COOLDOWN -> {} // Message sent by TeleportManager
-      case SUCCESS_INSTANT -> ctx.sendMessage(prefix().insert(msg("Teleported to faction home!", COLOR_GREEN)));
+      case SUCCESS_INSTANT -> ctx.sendMessage(MessageUtil.success(player, MessageKeys.Home.TELEPORTED));
       case SUCCESS_WARMUP -> {} // Message sent by TeleportManager, teleport executed by TerritoryTickingSystem
       default -> {}
     }

@@ -1,11 +1,11 @@
-// Help content line - tip callout (green)
+// Help content line - tip callout (green, wrapping)
 
 Group {
-  Anchor: (Height: 16);
+  Padding: (Top: 1, Bottom: 1);
 
   Label #Text {
     Text: "";
-    Style: (FontSize: 11, TextColor: #55FF55);
-    Anchor: (Left: 0, Right: 0, Top: 0, Bottom: 0);
+    Style: (FontSize: 11, TextColor: #55FF55, Wrap: true, VerticalAlignment: Center);
+    Anchor: (Left: 0, Right: 0);
   }
 }

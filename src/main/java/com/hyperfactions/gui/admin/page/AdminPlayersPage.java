@@ -11,6 +11,8 @@ import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.storage.PlayerStorage;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hyperfactions.util.TimeUtil;
 import com.hyperfactions.util.UuidUtil;
 import com.hypixel.hytale.component.Ref;
@@ -113,6 +115,13 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
     // Setup admin nav bar
     AdminNavBarHelper.setupBar(playerRef, "players", cmd, events);
 
+    // Localize page title and common labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_PLAYERS));
+    cmd.set("#SearchLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SEARCH));
+    cmd.set("#SortLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SORT));
+    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PREV));
+    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_NEXT));
+
     // Load player data (synchronous for initial build)
     loadPlayerCache();
 
@@ -214,18 +223,18 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
 
     // Count display
     if (searchQuery.isEmpty()) {
-      cmd.set("#PlayerCount.Text", filtered.size() + " players");
+      cmd.set("#PlayerCount.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.PLAYERS_SUFFIX, filtered.size()));
     } else {
-      cmd.set("#PlayerCount.Text", filtered.size() + " found");
+      cmd.set("#PlayerCount.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.FOUND_SUFFIX, filtered.size()));
     }
 
     // Sort dropdown
     cmd.set("#SortDropdown.Entries", List.of(
-        new DropdownEntryInfo(LocalizableString.fromString("Name"), "NAME"),
-        new DropdownEntryInfo(LocalizableString.fromString("Power"), "POWER"),
-        new DropdownEntryInfo(LocalizableString.fromString("Last Online"), "LAST_ONLINE"),
-        new DropdownEntryInfo(LocalizableString.fromString("Faction"), "FACTION"),
-        new DropdownEntryInfo(LocalizableString.fromString("Online"), "ONLINE")
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.SORT_NAME)), "NAME"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.SORT_POWER)), "POWER"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.PLR_SORT_LAST_ONLINE)), "LAST_ONLINE"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.PLR_SORT_FACTION)), "FACTION"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.PLR_SORT_ONLINE)), "ONLINE")
     ));
     cmd.set("#SortDropdown.Value", sortMode.name());
     events.addEventBinding(
@@ -262,7 +271,7 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
     }
 
     // Pagination
-    cmd.set("#PageInfo.Text", (currentPage + 1) + "/" + totalPages);
+    cmd.set("#PageInfo.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.PAGE_FORMAT, currentPage + 1, totalPages));
 
     if (currentPage > 0) {
       events.addEventBinding(
@@ -301,7 +310,7 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
     cmd.set(idx + " #PlayerName.Style.TextColor", info.isOnline() ? "#00FFFF" : "#CCCCCC");
 
     // Online status
-    cmd.set(idx + " #OnlineStatus.Text", info.isOnline() ? "Online" : "Offline");
+    cmd.set(idx + " #OnlineStatus.Text", info.isOnline() ? HFMessages.get(playerRef, MessageKeys.Common.ONLINE) : HFMessages.get(playerRef, MessageKeys.Common.OFFLINE));
     cmd.set(idx + " #OnlineStatus.Style.TextColor", GuiColors.forOnlineStatus(info.isOnline()));
 
     // Faction name
@@ -309,7 +318,7 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
       cmd.set(idx + " #FactionName.Text", info.factionName());
       cmd.set(idx + " #FactionName.Style.TextColor", "#AAAAAA");
     } else {
-      cmd.set(idx + " #FactionName.Text", "No Faction");
+      cmd.set(idx + " #FactionName.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.NO_FACTION));
       cmd.set(idx + " #FactionName.Style.TextColor", "#666666");
     }
 
@@ -335,23 +344,35 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
 
     // Extended info
     if (isExpanded) {
+      // Localize expanded labels
+      cmd.set(idx + " #RoleLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_ROLE));
+      cmd.set(idx + " #JoinedLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_JOINED));
+      cmd.set(idx + " #LastOnlineLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_LAST_ONLINE));
+      cmd.set(idx + " #KdrLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_KDR));
+      cmd.set(idx + " #PowerLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_POWER));
+      cmd.set(idx + " #UuidLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_UUID));
+
+      // Localize button texts
+      cmd.set(idx + " #ViewInfoBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_INFO));
+      cmd.set(idx + " #TeleportBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_TELEPORT));
+
       // Role
-      cmd.set(idx + " #RoleValue.Text", info.factionRole() != null ? info.factionRole() : "N/A");
+      cmd.set(idx + " #RoleValue.Text", info.factionRole() != null ? info.factionRole() : HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_NA));
 
       // First joined
       String joinedDate = info.firstJoined() > 0
           ? DATE_FORMAT.format(Instant.ofEpochMilli(info.firstJoined()))
-          : "Unknown";
+          : HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_UNKNOWN);
       cmd.set(idx + " #JoinedDate.Text", joinedDate);
 
       // Last online
       String lastOnlineText;
       if (info.isOnline()) {
-        lastOnlineText = "Now";
+        lastOnlineText = HFMessages.get(playerRef, MessageKeys.AdminGui.NOW);
       } else if (info.lastOnline() > 0) {
-        lastOnlineText = TimeUtil.formatDuration(System.currentTimeMillis() - info.lastOnline()) + " ago";
+        lastOnlineText = HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ENTRY_AGO, TimeUtil.formatDuration(System.currentTimeMillis() - info.lastOnline()));
       } else {
-        lastOnlineText = "Unknown";
+        lastOnlineText = HFMessages.get(playerRef, MessageKeys.Common.UNKNOWN);
       }
       cmd.set(idx + " #LastOnline.Text", lastOnlineText);
 
@@ -507,7 +528,7 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
             sendUpdate();
             return;
           }
-          String targetName = data.playerName != null ? data.playerName : "Unknown";
+          String targetName = data.playerName != null ? data.playerName : HFMessages.get(playerRef, MessageKeys.Common.UNKNOWN);
           // Find the player's faction for context
           UUID factionId = null;
           for (Faction faction : factionManager.getAllFactions()) {
@@ -532,7 +553,7 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
             guiManager.closePage(player, ref, store);
             var targetWorld = Universe.get().getWorld(targetPlayer.getWorldUuid());
             if (targetWorld == null) {
-              player.sendMessage(MessageUtil.errorText("Target world not found."));
+              player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.PLR_WORLD_NOT_FOUND));
               return;
             }
             var targetTransform = targetPlayer.getTransform();
@@ -543,11 +564,9 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
                   targetWorld, targetPos, targetRot);
               store.addComponent(ref, Teleport.getComponentType(), teleport);
             });
-            player.sendMessage(Message.raw("[Admin] Teleported to ").color("#55FF55")
-                .insert(Message.raw(data.playerName != null ? data.playerName : "player").color("#00FFFF"))
-                .insert(Message.raw(".").color("#55FF55")));
+            player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.PLR_TELEPORTED, "#55FF55", data.playerName != null ? data.playerName : "player"));
           } else {
-            player.sendMessage(MessageUtil.errorText("Player is not online."));
+            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.PLR_NOT_ONLINE));
             sendUpdate();
           }
         }

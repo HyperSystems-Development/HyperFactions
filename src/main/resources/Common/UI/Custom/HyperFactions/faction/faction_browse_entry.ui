@@ -61,7 +61,7 @@ Group {
           Style: (FontSize: 12, TextColor: #44CC44, VerticalAlignment: Center, HorizontalAlignment: Center);
           Anchor: (Height: 18);
         }
-        Label {
+        Label #PowerLabel {
           Text: "power";
           Style: (FontSize: 9, TextColor: #666666, VerticalAlignment: Center, HorizontalAlignment: Center);
           Anchor: (Height: 14);
@@ -78,7 +78,7 @@ Group {
           Style: (FontSize: 12, TextColor: #FFAA00, VerticalAlignment: Center, HorizontalAlignment: Center);
           Anchor: (Height: 18);
         }
-        Label {
+        Label #ClaimsLabel {
           Text: "claims";
           Style: (FontSize: 9, TextColor: #666666, VerticalAlignment: Center, HorizontalAlignment: Center);
           Anchor: (Height: 14);
@@ -95,7 +95,7 @@ Group {
           Style: (FontSize: 12, TextColor: #888888, VerticalAlignment: Center, HorizontalAlignment: Center);
           Anchor: (Height: 18);
         }
-        Label {
+        Label #MemberLabel {
           Text: "members";
           Style: (FontSize: 9, TextColor: #666666, VerticalAlignment: Center, HorizontalAlignment: Center);
           Anchor: (Height: 14);
@@ -136,18 +136,18 @@ Group {
       LayoutMode: Left;
       Anchor: (Height: 20, Bottom: 4);
 
-      Label {
+      Label #RecruitmentLabel {
         Text: "Recruitment:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
-        Anchor: (Width: 75);
+        Anchor: (Width: 95);
       }
       Label #RecruitmentStatus {
         Text: "Unknown";
         Style: (FontSize: 10, TextColor: #888888, VerticalAlignment: Center);
-        Anchor: (Width: 100);
+        Anchor: (Width: 90);
       }
 
-      Label {
+      Label #CreatedLabel {
         Text: "Created:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
         Anchor: (Width: 55);
@@ -164,10 +164,10 @@ Group {
       LayoutMode: Left;
       Anchor: (Height: 18, Bottom: 6);
 
-      Label {
+      Label #DescriptionLabel {
         Text: "Description:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
-        Anchor: (Width: 75);
+        Anchor: (Width: 85);
       }
       Label #Description {
         Text: "No description set";

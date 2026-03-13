@@ -1,0 +1,10 @@
+// Help separator - visible horizontal rule
+
+Group {
+  Anchor: (Height: 10);
+
+  Group {
+    Anchor: (Height: 1, Left: 4, Right: 4, Top: 4);
+    Background: (Color: #2a3a4a);
+  }
+}

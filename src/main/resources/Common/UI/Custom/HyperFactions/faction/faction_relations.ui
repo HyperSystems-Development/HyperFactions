@@ -13,7 +13,7 @@ $C.@PageOverlay {
     Anchor: (Width: 550, Height: 500);
 
     #Title {
-      $C.@Title {
+      $C.@Title #RelationsTitle {
         @Text = "Relations";
       }
     }

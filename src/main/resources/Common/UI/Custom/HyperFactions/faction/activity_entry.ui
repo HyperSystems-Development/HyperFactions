@@ -1,29 +1,27 @@
 // Activity Entry Template
+// Matches log_entry.ui style: date first, type, then description
 
 Group {
-  Anchor: (Height: 24);
-  LayoutMode: Top;
+  Anchor: (Height: 30, Bottom: 2);
+  Background: (Color: #0d1520);
+  Padding: (Left: 10, Right: 10, Top: 4, Bottom: 4);
+  LayoutMode: Left;
 
-  Group {
-    LayoutMode: Left;
-    Anchor: (Height: 24);
+  Label #ActivityTime {
+    Text: "5m ago";
+    Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
+    Anchor: (Width: 70);
+  }
 
-    Label #ActivityType {
-      Text: "Type";
-      Style: (FontSize: 10, TextColor: #00AAAA, RenderBold: true, VerticalAlignment: Center);
-      Anchor: (Width: 65);
-    }
+  Label #ActivityType {
+    Text: "Type";
+    Style: (FontSize: 10, TextColor: #00AAAA, RenderBold: true, VerticalAlignment: Center);
+    Anchor: (Width: 70);
+  }
 
-    Label #ActivityMessage {
-      Text: "Activity description";
-      Style: (FontSize: 11, TextColor: #AAAAAA, VerticalAlignment: Center);
-      Anchor: (Width: 220);
-    }
-
-    Label #ActivityTime {
-      Text: "5m ago";
-      Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
-      Anchor: (Width: 60);
-    }
+  Label #ActivityMessage {
+    Text: "Activity description";
+    Style: (FontSize: 11, TextColor: #AAAAAA, VerticalAlignment: Center);
+    FlexWeight: 1;
   }
 }

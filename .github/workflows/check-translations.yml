@@ -1,0 +1,171 @@
+name: Check Translations
+
+on:
+  pull_request:
+    paths:
+      - 'src/main/resources/Server/Languages/**'
+
+jobs:
+  check-lang-keys:
+    name: Verify .lang keys
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for missing translation keys
+        run: |
+          LANG_DIR="src/main/resources/Server/Languages"
+          EN_DIR="$LANG_DIR/en-US"
+          EXIT_CODE=0
+          TOTAL_MISSING=0
+
+          if [ ! -d "$EN_DIR" ]; then
+            echo "::error::No en-US directory found at $EN_DIR"
+            exit 1
+          fi
+
+          # Collect en-US keys per file
+          for en_file in "$EN_DIR"/*.lang; do
+            [ -f "$en_file" ] || continue
+            filename=$(basename "$en_file")
+
+            # Extract keys (non-blank, non-comment lines before '=')
+            en_keys=$(grep -v '^\s*#' "$en_file" | grep -v '^\s*$' | sed 's/=.*//' | sed 's/\s*$//' | sort)
+            en_count=$(echo "$en_keys" | wc -l)
+
+            # Check each locale
+            for locale_dir in "$LANG_DIR"/*/; do
+              locale=$(basename "$locale_dir")
+              [ "$locale" = "en-US" ] && continue
+
+              locale_file="$locale_dir/$filename"
+
+              if [ ! -f "$locale_file" ]; then
+                echo "::error file=$locale_file::[$locale] MISSING FILE: $filename ($en_count keys)"
+                TOTAL_MISSING=$((TOTAL_MISSING + en_count))
+                EXIT_CODE=1
+                continue
+              fi
+
+              # Extract locale keys
+              locale_keys=$(grep -v '^\s*#' "$locale_file" | grep -v '^\s*$' | sed 's/=.*//' | sed 's/\s*$//' | sort)
+
+              # Find missing keys
+              missing=$(comm -23 <(echo "$en_keys") <(echo "$locale_keys"))
+
+              if [ -n "$missing" ]; then
+                count=$(echo "$missing" | wc -l)
+                echo "::warning file=$locale_file::[$locale] $filename: $count missing key(s)"
+                echo "$missing" | while read -r key; do
+                  echo "  - $key"
+                done
+                TOTAL_MISSING=$((TOTAL_MISSING + count))
+                EXIT_CODE=1
+              fi
+
+              # Find extra keys (in locale but not in en-US)
+              extra=$(comm -13 <(echo "$en_keys") <(echo "$locale_keys"))
+              if [ -n "$extra" ]; then
+                extra_count=$(echo "$extra" | wc -l)
+                echo "::notice file=$locale_file::[$locale] $filename: $extra_count extra key(s) not in en-US"
+              fi
+            done
+          done
+
+          echo ""
+          if [ $TOTAL_MISSING -gt 0 ]; then
+            echo "::error::Total missing keys across all locales: $TOTAL_MISSING"
+          else
+            echo "All locales have complete .lang key coverage."
+          fi
+
+          exit $EXIT_CODE
+
+  check-help-files:
+    name: Verify help files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for missing help files
+        run: |
+          LANG_DIR="src/main/resources/Server/Languages"
+          EN_HELP="$LANG_DIR/en-US/help"
+          EXIT_CODE=0
+          TOTAL_MISSING=0
+
+          if [ ! -d "$EN_HELP" ]; then
+            echo "::error::No en-US/help directory found at $EN_HELP"
+            exit 1
+          fi
+
+          # Collect all en-US help file relative paths
+          en_files=$(cd "$EN_HELP" && find . -name "*.md" -type f | sort)
+          en_count=$(echo "$en_files" | wc -l)
+          echo "Found $en_count help files in en-US"
+
+          # Check each locale
+          for locale_dir in "$LANG_DIR"/*/; do
+            locale=$(basename "$locale_dir")
+            [ "$locale" = "en-US" ] && continue
+
+            locale_help="$locale_dir/help"
+
+            if [ ! -d "$locale_help" ]; then
+              echo "::error file=$locale_help::[$locale] MISSING help/ directory ($en_count files)"
+              TOTAL_MISSING=$((TOTAL_MISSING + en_count))
+              EXIT_CODE=1
+              continue
+            fi
+
+            # Check each en-US help file exists in locale
+            missing_files=""
+            missing_count=0
+            while IFS= read -r relpath; do
+              locale_file="$locale_help/$relpath"
+              if [ ! -f "$locale_file" ]; then
+                missing_files="$missing_files  - $relpath"$'\n'
+                missing_count=$((missing_count + 1))
+              fi
+            done <<< "$en_files"
+
+            if [ $missing_count -gt 0 ]; then
+              echo "::error file=$locale_help::[$locale] $missing_count missing help file(s)"
+              echo "$missing_files"
+              TOTAL_MISSING=$((TOTAL_MISSING + missing_count))
+              EXIT_CODE=1
+            fi
+
+            # Check for untranslated files (identical to en-US)
+            untranslated=0
+            while IFS= read -r relpath; do
+              locale_file="$locale_help/$relpath"
+              en_file="$EN_HELP/$relpath"
+              if [ -f "$locale_file" ] && cmp -s "$en_file" "$locale_file"; then
+                untranslated=$((untranslated + 1))
+              fi
+            done <<< "$en_files"
+
+            if [ $untranslated -gt 0 ]; then
+              echo "::warning file=$locale_help::[$locale] $untranslated help file(s) identical to en-US (possibly untranslated)"
+            fi
+
+            # Check for extra files not in en-US
+            if [ -d "$locale_help" ]; then
+              locale_files=$(cd "$locale_help" && find . -name "*.md" -type f | sort)
+              extra=$(comm -13 <(echo "$en_files") <(echo "$locale_files"))
+              if [ -n "$extra" ]; then
+                extra_count=$(echo "$extra" | wc -l)
+                echo "::notice file=$locale_help::[$locale] $extra_count extra help file(s) not in en-US"
+              fi
+            fi
+          done
+
+          echo ""
+          if [ $TOTAL_MISSING -gt 0 ]; then
+            echo "::error::Total missing help files across all locales: $TOTAL_MISSING"
+          else
+            echo "All locales have complete help file coverage."
+          fi
+
+          exit $EXIT_CODE

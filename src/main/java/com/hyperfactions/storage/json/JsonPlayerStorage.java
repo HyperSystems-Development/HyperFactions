@@ -323,6 +323,20 @@ public class JsonPlayerStorage implements PlayerStorage {
       obj.addProperty("adminBypassEnabled", true);
     }
 
+    // Player preferences (i18n + notifications)
+    if (data.getLanguagePreference() != null) {
+      obj.addProperty("languagePreference", data.getLanguagePreference());
+    }
+    if (!data.isTerritoryAlertsEnabled()) {
+      obj.addProperty("territoryAlertsEnabled", false);
+    }
+    if (!data.isDeathAnnouncementsEnabled()) {
+      obj.addProperty("deathAnnouncementsEnabled", false);
+    }
+    if (!data.isPowerNotificationsEnabled()) {
+      obj.addProperty("powerNotificationsEnabled", false);
+    }
+
     // Membership history
     if (!data.getMembershipHistory().isEmpty()) {
       JsonArray historyArr = new JsonArray();
@@ -383,6 +397,20 @@ public class JsonPlayerStorage implements PlayerStorage {
     }
     if (obj.has("adminBypassEnabled")) {
       data.setAdminBypassEnabled(obj.get("adminBypassEnabled").getAsBoolean());
+    }
+
+    // Player preferences (i18n + notifications)
+    if (obj.has("languagePreference") && !obj.get("languagePreference").isJsonNull()) {
+      data.setLanguagePreference(obj.get("languagePreference").getAsString());
+    }
+    if (obj.has("territoryAlertsEnabled")) {
+      data.setTerritoryAlertsEnabled(obj.get("territoryAlertsEnabled").getAsBoolean());
+    }
+    if (obj.has("deathAnnouncementsEnabled")) {
+      data.setDeathAnnouncementsEnabled(obj.get("deathAnnouncementsEnabled").getAsBoolean());
+    }
+    if (obj.has("powerNotificationsEnabled")) {
+      data.setPowerNotificationsEnabled(obj.get("powerNotificationsEnabled").getAsBoolean());
     }
 
     // Membership history

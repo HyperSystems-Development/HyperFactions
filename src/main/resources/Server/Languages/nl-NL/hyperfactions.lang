@@ -1,0 +1,453 @@
+# HyperFactions - Nederlandse Vertalingen
+# Formaat: sleutel = waarde (of sleutel = "waarde met aanhalingstekens")
+# Opmerking: Sleutels krijgen automatisch het voorvoegsel "hyperfactions." door Hytale's I18nModule
+# Plaatshouders: {0}, {1}, enz.
+
+# ========== Algemeen ==========
+common.no_permission = Je hebt geen toestemming om dat te doen.
+common.not_in_faction = Je zit niet in een factie.
+common.already_in_faction = Je zit al in een factie.
+common.player_not_found = Speler niet gevonden.
+common.faction_not_found = Factie niet gevonden.
+common.player_not_online = Die speler is niet online.
+common.must_be_leader = Alleen de factieleider kan dat doen.
+common.must_be_officer = Je moet een Officier of Leider zijn om dat te doen.
+common.combat_tagged = Je kunt dat niet doen terwijl je in gevecht bent.
+common.cancel = Annuleren
+common.confirm = Bevestigen
+common.save = Opslaan
+common.close = Sluiten
+common.clear = Wissen
+common.back = Terug
+common.leave = Verlaten
+common.transfer = Overdragen
+common.disband = Ontbinden
+common.world_fallback = wereld
+common.yes = Ja
+common.no = Nee
+common.loading = Laden...
+common.online = Online
+common.offline = Offline
+common.enabled = Ingeschakeld
+common.disabled = Uitgeschakeld
+common.none = Geen
+common.page = Pagina {0} van {1}
+common.unknown = Onbekend
+common.error_generic = Er is iets misgegaan. Probeer het opnieuw.
+common.gui_fallback = Kon GUI niet openen. Gebruik /f help voor commando's.
+common.admin_prefix = [Admin]
+common.location_error = Kon je locatie niet bepalen.
+common.world_error = Kon je wereld niet bepalen.
+common.invalid_id = Ongeldig factie-ID.
+common.na = N.v.t.
+
+# ========== Commando's - Aanmaken ==========
+cmd.create.no_permission = Je hebt geen toestemming om facties aan te maken.
+cmd.create.usage = Gebruik: /f create <naam>
+cmd.create.success = Factie '{0}' aangemaakt!
+cmd.create.already_in_named = Je zit al in {0}.
+cmd.create.use_leave_first = Gebruik eerst /f leave als je een nieuwe factie wilt aanmaken.
+cmd.create.name_taken = Die factienaam is al in gebruik.
+cmd.create.name_too_short = Factienaam is te kort.
+cmd.create.name_too_long = Factienaam is te lang.
+cmd.create.failed = Factie aanmaken mislukt.
+
+# ========== Commando's - Ontbinden ==========
+cmd.disband.no_permission = Je hebt geen toestemming om facties te ontbinden.
+cmd.disband.not_leader = Alleen de factieleider kan ontbinden.
+cmd.disband.confirm_prompt = Weet je zeker dat je je factie wilt ontbinden?
+cmd.disband.confirm_instruction = Typ /f disband --text opnieuw binnen {0} seconden om te bevestigen.
+cmd.disband.success = Je factie is ontbonden.
+cmd.disband.failed = Factie ontbinden mislukt.
+cmd.disband.cancelled = Vorige bevestiging geannuleerd. Typ opnieuw om ontbinding te bevestigen.
+
+# ========== Commando's - Hernoemen ==========
+cmd.rename.no_permission = Je hebt geen toestemming.
+cmd.rename.not_leader = Alleen de leider kan de factie hernoemen.
+cmd.rename.usage = Gebruik: /f rename <naam>
+cmd.rename.too_short = Naam is te kort (min {0} tekens).
+cmd.rename.too_long = Naam is te lang (max {0} tekens).
+cmd.rename.name_taken = Die naam is al in gebruik.
+cmd.rename.success = Factie hernoemd naar {0}!
+cmd.rename.broadcast = {0} heeft de factie hernoemd naar {1}
+
+# ========== Commando's - Beschrijving ==========
+cmd.desc.no_permission = Je hebt geen toestemming.
+cmd.desc.not_officer = Je moet een officier zijn om de beschrijving in te stellen.
+cmd.desc.set = Factiebeschrijving ingesteld!
+cmd.desc.cleared = Factiebeschrijving gewist.
+
+# ========== Commando's - Open / Gesloten ==========
+cmd.open.no_permission = Je hebt geen toestemming.
+cmd.open.not_leader = Alleen de leider kan deze instelling wijzigen.
+cmd.open.already_open = Je factie is al open.
+cmd.open.success = Je factie is nu open! Iedereen kan toetreden met /f join.
+cmd.open.broadcast = {0} heeft de factie opengesteld voor iedereen.
+cmd.close.no_permission = Je hebt geen toestemming.
+cmd.close.not_leader = Alleen de leider kan deze instelling wijzigen.
+cmd.close.already_closed = Je factie is al gesloten.
+cmd.close.success = Je factie is nu alleen op uitnodiging.
+cmd.close.broadcast = {0} heeft de factie gesloten voor alleen uitnodigingen.
+
+# ========== Commando's - Kleur ==========
+cmd.color.no_permission = Je hebt geen toestemming.
+cmd.color.not_officer = Je moet een officier zijn om de kleur te wijzigen.
+cmd.color.colors_disabled = Factiekleuren zijn uitgeschakeld.
+cmd.color.usage = Gebruik: /f color <code|#hex>
+cmd.color.usage_hint = Geldige codes: 0-9, a-f of #RRGGBB hex
+cmd.color.invalid = Ongeldige kleur. Gebruik 0-9, a-f, of #RRGGBB.
+cmd.color.success = Factiekleur bijgewerkt!
+
+# ========== Commando's - Claimen ==========
+cmd.claim.no_permission = Je hebt geen toestemming om gebieden te claimen.
+cmd.claim.already_yours = Je factie bezit dit gebied al.
+cmd.claim.cannot_claim_ally = Je kunt bondgenootterritorium niet claimen.
+cmd.claim.already_claimed_hint = Dit gebied is al geclaimd. Gebruik /f overclaim als ze plunderbaar zijn.
+cmd.claim.success = Gebied geclaimd op {0}, {1}!
+cmd.claim.not_officer = Je moet een officier zijn om land te claimen.
+cmd.claim.already_claimed = Dit gebied is al geclaimd.
+cmd.claim.max_claims = Je factie heeft het maximum aantal gebieden bereikt. Krijg meer kracht!
+cmd.claim.not_adjacent = Je moet aangrenzend aan bestaand territorium claimen.
+cmd.claim.world_not_allowed = Claimen is niet toegestaan in deze wereld.
+cmd.claim.orbisguard = Dit gebied wordt beschermd door OrbisGuard.
+cmd.claim.zone_protected = Dit gebied bevindt zich in een SafeZone of WarZone.
+cmd.claim.insufficient_power = Je factie heeft niet genoeg kracht om meer land te claimen.
+cmd.claim.failed = Gebied claimen mislukt.
+
+# ========== Commando's - Uitnodigen ==========
+cmd.invite.no_permission = Je hebt geen toestemming om spelers uit te nodigen.
+cmd.invite.not_officer = Je moet een officier zijn om spelers uit te nodigen.
+cmd.invite.usage = Gebruik: /f invite <speler>
+cmd.invite.player_not_found = Speler '{0}' niet gevonden of offline.
+cmd.invite.target_in_faction = Die speler zit al in een factie.
+cmd.invite.sent = {0} uitgenodigd voor je factie.
+cmd.invite.received = Je bent uitgenodigd om lid te worden van {0}!
+cmd.invite.accept_hint = Typ /f accept {0} om toe te treden.
+
+# ========== Commando's - Accepteren / Toetreden ==========
+cmd.join.no_permission = Je hebt geen toestemming om bij facties aan te sluiten.
+cmd.join.already_in_named = Je zit al in {0}.
+cmd.join.use_leave_hint = Gebruik eerst /f leave als je bij een andere factie wilt aansluiten.
+cmd.join.no_invites = Je hebt geen openstaande uitnodigingen.
+cmd.join.faction_not_found = Factie '{0}' niet gevonden.
+cmd.join.not_invited = Je hebt geen uitnodiging van die factie.
+cmd.join.faction_gone = Die factie bestaat niet meer.
+cmd.join.success = Je bent toegetreden tot {0}!
+cmd.join.broadcast = {0} is toegetreden tot de factie!
+cmd.join.faction_full = Die factie is vol.
+cmd.join.failed = Toetreden tot factie mislukt.
+
+# ========== Commando's - Schoppen ==========
+cmd.kick.no_permission = Je hebt geen toestemming om leden te schoppen.
+cmd.kick.usage = Gebruik: /f kick <speler>
+cmd.kick.not_in_your_faction = Speler '{0}' zit niet in jouw factie.
+cmd.kick.success = {0} uit de factie geschopt.
+cmd.kick.broadcast = {0} is uit de factie geschopt.
+cmd.kick.kicked = Je bent uit de factie geschopt.
+cmd.kick.cannot_kick_higher = Je hebt geen toestemming om die speler te schoppen.
+cmd.kick.cannot_kick_leader = Je kunt de factieleider niet schoppen.
+cmd.kick.failed = Speler schoppen mislukt.
+
+# ========== Commando's - Verlaten ==========
+cmd.leave.no_permission = Je hebt geen toestemming om facties te verlaten.
+cmd.leave.confirm_prompt = Weet je zeker dat je je factie wilt verlaten?
+cmd.leave.confirm_instruction = Typ /f leave --text opnieuw binnen {0} seconden om te bevestigen.
+cmd.leave.success = Je hebt je factie verlaten.
+cmd.leave.broadcast = {0} heeft de factie verlaten.
+cmd.leave.failed = Factie verlaten mislukt.
+cmd.leave.cancelled = Vorige bevestiging geannuleerd. Typ opnieuw om vertrek te bevestigen.
+
+# ========== Commando's - Promoveren / Degraderen / Overdragen ==========
+cmd.rank.promote_no_permission = Je hebt geen toestemming om leden te promoveren.
+cmd.rank.promote_usage = Gebruik: /f promote <speler>
+cmd.rank.promoted = {0} gepromoveerd tot {1}!
+cmd.rank.promote_broadcast = {0} is gepromoveerd tot {1}!
+cmd.rank.already_highest = Kan niet verder promoveren. Gebruik /f transfer om de leider te wijzigen.
+cmd.rank.promote_failed = Speler promoveren mislukt.
+cmd.rank.demote_no_permission = Je hebt geen toestemming om leden te degraderen.
+cmd.rank.demote_usage = Gebruik: /f demote <speler>
+cmd.rank.demoted = {0} gedegradeerd naar {1}.
+cmd.rank.demote_broadcast = {0} is gedegradeerd naar {1}.
+cmd.rank.already_lowest = Die speler is al een Lid.
+cmd.rank.demote_failed = Speler degraderen mislukt.
+cmd.rank.transfer_no_permission = Je hebt geen toestemming om het leiderschap over te dragen.
+cmd.rank.transfer_usage = Gebruik: /f transfer <speler>
+cmd.rank.player_not_in_faction = Speler niet gevonden in je factie.
+cmd.rank.transfer_confirm = Weet je zeker dat je het leiderschap wilt overdragen aan {0}?
+cmd.rank.transfer_confirm_instruction = Typ /f transfer {0} --text opnieuw binnen {1} seconden om te bevestigen.
+cmd.rank.transferred = Leiderschap overgedragen aan {0}!
+cmd.rank.transfer_broadcast = {0} is nu de factieleider!
+cmd.rank.transfer_failed = Leiderschap overdragen mislukt.
+cmd.rank.transfer_cancelled = Vorige bevestiging geannuleerd. Typ opnieuw om overdracht te bevestigen.
+
+# ========== Commando's - Unclaimen ==========
+cmd.unclaim.no_permission = Je hebt geen toestemming om gebieden vrij te geven.
+cmd.unclaim.success = Gebied vrijgegeven op {0}, {1}.
+cmd.unclaim.not_officer = Je moet een officier zijn om land vrij te geven.
+cmd.unclaim.chunk_not_claimed = Dit gebied is niet geclaimd.
+cmd.unclaim.not_your_claim = Je factie bezit dit gebied niet.
+cmd.unclaim.cannot_unclaim_home = Kan het gebied met de factiebasis niet vrijgeven.
+cmd.unclaim.would_disconnect = Kan niet vrijgeven — het zou je territorium loskoppelen.
+cmd.unclaim.failed = Gebied vrijgeven mislukt.
+
+# ========== Commando's - Overclaimen ==========
+cmd.overclaim.no_permission = Je hebt geen toestemming om gebieden over te nemen.
+cmd.overclaim.success = Vijandelijk territorium overgenomen!
+cmd.overclaim.not_officer = Je moet een officier zijn om gebieden over te nemen.
+cmd.overclaim.not_claimed = Dit gebied is niet geclaimd. Gebruik /f claim.
+cmd.overclaim.own_chunk = Je factie bezit dit gebied al.
+cmd.overclaim.ally = Je kunt bondgenootterritorium niet overnemen.
+cmd.overclaim.target_has_power = Deze factie heeft nog genoeg kracht.
+cmd.overclaim.failed = Overnemen mislukt.
+
+# ========== Commando's - Vastgelopen ==========
+cmd.stuck.no_permission = Je hebt geen toestemming om /f stuck te gebruiken.
+cmd.stuck.not_stuck = Je zit niet vast — dit is wildernis.
+cmd.stuck.combat_tagged = Je kunt /f stuck niet gebruiken tijdens gevecht!
+cmd.stuck.no_safe = Kon geen veilige locatie vinden.
+cmd.stuck.teleporting = Je wordt over {0} seconden naar veiligheid geteleporteerd. Niet bewegen!
+
+# ========== Commando's - Thuis ==========
+cmd.home.no_permission = Je hebt geen toestemming om naar de factiebasis te teleporteren.
+cmd.home.no_home = Je factie heeft geen basis ingesteld.
+cmd.home.combat_tagged = Je kunt niet teleporteren tijdens gevecht!
+cmd.home.teleported = Geteleporteerd naar de factiebasis!
+
+# ========== Commando's - Basis Instellen ==========
+cmd.sethome.no_permission = Je hebt geen toestemming om de factiebasis in te stellen.
+cmd.sethome.world_not_allowed = Kan geen basis instellen in deze wereld.
+cmd.sethome.not_in_territory = Je kunt de basis alleen instellen in het territorium van je factie.
+cmd.sethome.set = Factiebasis ingesteld!
+cmd.sethome.broadcast = {0} heeft de factiebasis ingesteld.
+cmd.sethome.not_officer = Je moet een officier zijn om de basis in te stellen.
+cmd.sethome.failed = Basis instellen mislukt.
+
+# ========== Commando's - Basis Verwijderen ==========
+cmd.delhome.no_permission = Je hebt geen toestemming om de factiebasis te verwijderen.
+cmd.delhome.no_home = Je factie heeft geen basis ingesteld.
+cmd.delhome.deleted = Factiebasis verwijderd!
+cmd.delhome.broadcast = {0} heeft de factiebasis verwijderd.
+cmd.delhome.not_officer = Je moet een officier zijn om de basis te verwijderen.
+cmd.delhome.failed = Basis verwijderen mislukt.
+
+# ========== Commando's - Relatie (Bondgenoot/Vijand/Neutraal/Relaties) ==========
+cmd.relation.ally_no_permission = Je hebt geen toestemming om bondgenootschappen te beheren.
+cmd.relation.ally_usage = Gebruik: /f ally <factie>
+cmd.relation.ally_sent = Bondgenootschapsverzoek verstuurd naar {0}!
+cmd.relation.ally_formed = Je bent nu bondgenoten met {0}!
+cmd.relation.already_ally = Je bent al bondgenoten met die factie.
+cmd.relation.ally_failed = Bondgenootschapsverzoek versturen mislukt.
+cmd.relation.enemy_no_permission = Je hebt geen toestemming om vijanden te verklaren.
+cmd.relation.enemy_usage = Gebruik: /f enemy <factie>
+cmd.relation.enemy_declared = {0} is nu je vijand!
+cmd.relation.already_enemy = Je bent al vijanden met die factie.
+cmd.relation.max_enemies = Je hebt het maximale aantal vijanden bereikt.
+cmd.relation.enemy_failed = Vijand instellen mislukt.
+cmd.relation.neutral_no_permission = Je hebt geen toestemming om neutrale relaties in te stellen.
+cmd.relation.neutral_usage = Gebruik: /f neutral <factie>
+cmd.relation.neutral_set = Je factie is nu neutraal met {0}.
+cmd.relation.already_neutral = Je bent al neutraal met die factie.
+cmd.relation.neutral_failed = Neutraal instellen mislukt.
+cmd.relation.cannot_self = Je kunt geen bondgenootschap sluiten met jezelf.
+cmd.relation.max_allies = Je hebt het maximale aantal bondgenoten bereikt.
+cmd.relation.view_no_permission = Je hebt geen toestemming om relaties te bekijken.
+cmd.relation.header = === Factierelaties ===
+cmd.relation.allies_count = Bondgenoten ({0}):
+cmd.relation.enemies_count = Vijanden ({0}):
+cmd.relation.list_entry = - {0}
+
+# ========== Commando's - Chat ==========
+cmd.chat.usage = Gebruik: /f c [f|a|off]
+cmd.chat.no_permission = Je hebt geen toestemming voor die chatmodus.
+cmd.chat.mode_set = Chatmodus ingesteld op {0}
+
+# ========== Commando's - Uitnodigingen ==========
+cmd.invites.not_officer = Je moet een officier zijn om uitnodigingen te beheren.
+cmd.invites.header = === Factie-uitnodigingen ===
+cmd.invites.no_pending = Geen openstaande uitnodigingen of verzoeken.
+cmd.invites.outgoing = Uitgaande Uitnodigingen:
+cmd.invites.outgoing_entry = {0} (uitgenodigd door {1})
+cmd.invites.requests = Toetredingsverzoeken:
+cmd.invites.request_entry = {0}{1}
+cmd.invites.your_invites_header = === Jouw Uitnodigingen ===
+cmd.invites.no_invites = Je hebt geen openstaande uitnodigingen.
+cmd.invites.invite_entry = {0} - Gebruik /f accept {1}
+
+# ========== Commando's - Verzoek ==========
+cmd.request.no_permission = Je hebt geen toestemming om lidmaatschap aan te vragen.
+cmd.request.already_in_named = Je zit al in {0}.
+cmd.request.use_leave_hint = Gebruik eerst /f leave als je bij een andere factie wilt aansluiten.
+cmd.request.usage = Gebruik: /f request <factie> [bericht]
+cmd.request.faction_open = Die factie is open! Gebruik /f accept {0} om direct toe te treden.
+cmd.request.already_requested = Je hebt al een openstaand verzoek bij die factie.
+cmd.request.has_invite = Je bent al uitgenodigd voor die factie! Gebruik /f accept {0} om toe te treden.
+cmd.request.sent = Toetredingsverzoek verstuurd naar {0}!
+cmd.request.your_message = Je bericht: "{0}"
+cmd.request.officer_review = Een officier zal je verzoek beoordelen.
+cmd.request.officer_notify = {0} heeft verzocht om lid te worden van je factie!
+cmd.request.officer_review_hint = Gebruik /f gui > Uitnodigingen om te beoordelen.
+
+# ========== Commando's - Info ==========
+cmd.info.faction_header = === {0} ===
+cmd.info.player_header = === {0} ===
+cmd.info.no_permission = Je hebt geen toestemming om factie-info te bekijken.
+cmd.info.faction_not_found = Factie '{0}' niet gevonden.
+cmd.info.not_in_faction_hint = Je zit niet in een factie. Gebruik /f info <factie>
+cmd.info.leader = Leider: {0}
+cmd.info.members = Leden: {0}/{1}
+cmd.info.power = Kracht: {0}
+cmd.info.claims = Gebieden: {0}
+cmd.info.raidable = PLUNDERBAAR!
+cmd.info.allies = Bondgenoten: {0}
+cmd.info.enemies = Vijanden: {0}
+cmd.info.they_consider = Zij beschouwen jou als: {0}
+cmd.info.you_consider = Jij beschouwt hen als: {0}
+cmd.info.members_no_permission = Je hebt geen toestemming om factieleden te bekijken.
+cmd.info.members_header = === {0} Leden ({1}) ===
+cmd.info.member_online = [Online]
+cmd.info.list_no_permission = Je hebt geen toestemming om de factielijst te bekijken.
+cmd.info.list_empty = Er zijn geen facties.
+cmd.info.list_header = === Facties ({0}) ===
+cmd.info.list_entry = {0} - {1} leden, {2} kracht
+cmd.info.list_entry_raidable = {0} - {1} leden, {2} kracht [PLUNDERBAAR]
+cmd.info.help_no_permission = Je hebt geen toestemming om de hulp te bekijken.
+cmd.info.who_no_permission = Je hebt geen toestemming om spelerinfo te bekijken.
+cmd.info.who_faction = Factie: {0}
+cmd.info.who_role = Rol: {0}
+cmd.info.who_joined = Toegetreden: {0}
+cmd.info.who_faction_none = Factie: Geen
+cmd.info.who_power = Kracht: {0}
+cmd.info.who_status = Status: {0}
+cmd.info.who_last_seen = Laatst gezien: {0}
+cmd.info.map_no_permission = Je hebt geen toestemming om de kaart te bekijken.
+cmd.info.map_header = === Gebiedskaart ===
+cmd.info.map_legend = Legenda: +Jij /Eigen /Bondgenoot /Vijand -Wildernis
+cmd.info.map_gui_hint = Gebruik /f gui voor een interactieve kaart
+
+# ========== Commando's - Kracht ==========
+cmd.power.personal = Persoonlijke Kracht: {0}/{1}
+cmd.power.faction = Factiekracht: {0}/{1}
+cmd.power.death_loss = Verlies bij Dood: {0}
+cmd.power.regen = Herstelsnelheid: {0}/uur
+cmd.power.no_permission = Je hebt geen toestemming om kracht-info te bekijken.
+cmd.power.header = Kracht van {0}:
+cmd.power.current = Huidig: {0}
+
+# ========== Commando's - Economie ==========
+cmd.economy.balance = Saldo: {0}
+cmd.economy.deposited = {0} gestort in de factieschatkist.
+cmd.economy.withdrawn = {0} opgenomen uit de factieschatkist.
+cmd.economy.transferred = {0} overgemaakt naar {1}.
+cmd.economy.insufficient = Onvoldoende saldo in de factieschatkist.
+cmd.economy.invalid_amount = Ongeldig bedrag: {0}
+cmd.economy.economy_disabled = Economie is uitgeschakeld.
+cmd.economy.balance_no_permission = Je hebt geen toestemming om saldo's te bekijken.
+cmd.economy.treasury_unavailable = Schatkist is niet beschikbaar.
+cmd.economy.balance_display = Schatkist van {0}: {1}
+cmd.economy.deposit_no_permission = Je hebt geen toestemming om te storten.
+cmd.economy.deposit_faction_denied = Je hebt geen factietoestemming om te storten.
+cmd.economy.deposit_usage = Gebruik: /f deposit <bedrag>
+cmd.economy.amount_positive = Bedrag moet positief zijn.
+cmd.economy.wallet_insufficient = Je hebt niet genoeg geld. Portemonnee: {0}
+cmd.economy.wallet_withdraw_failed = Opname uit je portemonnee mislukt.
+cmd.economy.deposit_failed = Storten in factieschatkist mislukt. Geld teruggestort.
+cmd.economy.withdraw_no_permission = Je hebt geen toestemming om op te nemen.
+cmd.economy.withdraw_faction_denied = Je hebt geen factietoestemming om op te nemen.
+cmd.economy.withdraw_usage = Gebruik: /f withdraw <bedrag>
+cmd.economy.withdraw_limit_denied = Opname geweigerd: {0}
+cmd.economy.wallet_deposit_failed = Waarschuwing: Storten naar je portemonnee mislukt. Neem contact op met een admin.
+cmd.economy.withdraw_limit_exceeded = Opname geweigerd: limiet overschreden.
+cmd.economy.withdraw_failed = Opname mislukt: {0}
+cmd.economy.transfer_no_permission = Je hebt geen toestemming om over te maken.
+cmd.economy.transfer_faction_denied = Je hebt geen factietoestemming om over te maken.
+cmd.economy.transfer_usage = Gebruik: /f money transfer <factie> <bedrag>
+cmd.economy.transfer_self = Kan niet overmaken naar je eigen factie.
+cmd.economy.transfer_limit_denied = Overboeking geweigerd: {0}
+cmd.economy.transfer_limit_exceeded = Overboeking geweigerd: limiet overschreden.
+cmd.economy.transfer_failed = Overboeking mislukt: {0}
+cmd.economy.log_no_permission = Je hebt geen toestemming om het transactielog te bekijken.
+cmd.economy.log_header = Transactielog (pagina {0}/{1})
+cmd.economy.log_empty = Geen transacties gevonden.
+cmd.economy.money_help_header = Schatkistcommando's:
+cmd.economy.money_help_balance = /f money balance [factie] - Saldo bekijken
+cmd.economy.money_help_deposit = /f money deposit <bedrag> - Storten in schatkist
+cmd.economy.money_help_withdraw = /f money withdraw <bedrag> - Opnemen uit schatkist
+cmd.economy.money_help_transfer = /f money transfer <factie> <bedrag> - Overmaken tussen facties
+cmd.economy.money_help_log = /f money log [pagina] [type] - Transactiegeschiedenis bekijken
+
+# ========== Bescherming - Actie-omschrijvingen ==========
+protection.action.generic = Je kunt dat hier niet doen
+protection.action.build = Je kunt hier niet bouwen of blokken breken
+protection.action.interact = Je kunt daar niet mee interacteren
+protection.action.door = Je kunt geen deuren gebruiken
+protection.action.container = Je kunt geen opbergvakken openen
+protection.action.bench = Je kunt geen werkstations gebruiken
+protection.action.processing = Je kunt geen verwerkingsstations gebruiken
+protection.action.seat = Je kunt geen zitplaatsen gebruiken
+protection.action.light = Je kunt geen verlichting aan/uitzetten
+protection.action.teleporter = Je kunt geen teleporters gebruiken
+protection.action.crate = Je kunt geen kratten gebruiken
+protection.action.tame = Je kunt geen wezens temmen
+protection.action.npc = Je kunt niet interacteren met NPC's
+protection.action.mount = Je kunt geen wezens berijden
+protection.action.pve = Je kunt geen wezens verwonden
+protection.action.item_drop = Je kunt geen items laten vallen
+protection.action.item_pickup = Je kunt geen items oprapen
+
+# ========== Bescherming - Weigeringsredenen ==========
+protection.denied.safezone = {0} in een SafeZone.
+protection.denied.warzone = {0} in een WarZone.
+protection.denied.enemy_claim = {0} in vijandelijk territorium.
+protection.denied.claimed = {0} in geclaimd territorium.
+protection.denied.here = {0} hier.
+protection.denied.zone = {0} in deze zone.
+protection.denied.faction_perm = {0} hier. (Factietoestemming: {1})
+protection.denied.ally_territory = {0} hier. (Bondgenootterritorium)
+protection.denied.error = Beschermingsfout — actie geblokkeerd voor de veiligheid.
+
+# ========== Bescherming - PvP ==========
+protection.pvp.safezone = PvP is uitgeschakeld in SafeZones.
+protection.pvp.same_faction = Je kunt factieleden niet aanvallen.
+protection.pvp.ally = Je kunt bondgenoten niet aanvallen.
+protection.pvp.spawn_protected = Die speler heeft spawnbescherming.
+protection.pvp.territory_disabled = PvP is uitgeschakeld in dit territorium.
+protection.pvp.generic = Je kunt deze speler niet aanvallen.
+
+# ========== Bescherming - Schade aan Entiteiten ==========
+protection.mob_damage_disabled = Mobschade is uitgeschakeld in deze zone.
+protection.pve_damage_disabled = PvE-schade is uitgeschakeld in deze zone.
+protection.pve_territory_denied = Je kunt geen mobs verwonden in dit territorium.
+
+# ========== Bescherming - Gevechtstag ==========
+protection.combat_tag_command = Je kunt dat commando niet gebruiken terwijl je in gevecht bent.
+
+# ========== Serveraankondigingen ==========
+# Deze worden uitgezonden naar alle online spelers bij belangrijke factie-evenementen.
+# {0}, {1} = dynamische waarden (factienamen, spelernamen)
+server_announce.faction_created = {0} heeft de factie {1} opgericht!
+server_announce.faction_disbanded = De factie {0} is ontbonden!
+server_announce.leadership_transfer = {0} is nu de leider van {1}!
+server_announce.overclaim = {0} heeft territorium overgenomen van {1}!
+server_announce.war_declared = {0} heeft de oorlog verklaard aan {1}!
+server_announce.alliance_formed = {0} en {1} zijn nu bondgenoten!
+server_announce.alliance_broken = {0} en {1} zijn geen bondgenoten meer!
+
+# ========== Teleportsysteem ==========
+teleport.cooldown_wait = Je moet {0} wachten voordat je opnieuw kunt teleporteren.
+teleport.warmup_start = Teleporteren naar factiebasis over {0} seconden...
+teleport.combat_cancelled = Teleportatie geannuleerd - je bent in gevecht!
+teleport.success_default = Geteleporteerd naar de factiebasis!
+teleport.no_home = Je factie heeft geen basis ingesteld.
+teleport.world_not_found = Wereld niet gevonden.
+teleport.failed = Teleportatie mislukt.
+teleport.countdown = Teleporteren over {0} seconden...
+teleport.countdown_one = Teleporteren over 1 seconde...
+teleport.moved_cancelled = Teleportatie geannuleerd - je hebt bewogen!
+teleport.damage_cancelled = Teleportatie geannuleerd - je hebt schade ontvangen!
+teleport.mount_teleport_blocked = Je kunt niet naar die zone teleporteren terwijl je een mount berijdt.
+teleport.mount_entry_blocked = Je kunt deze zone niet betreden terwijl je een mount berijdt.
+
+# ========== Chatweergave ==========
+chat.display.public = Openbaar
+chat.display.faction = Factie
+chat.display.ally = Bondgenoot

@@ -4,6 +4,7 @@ import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.util.ErrorHandler;
+import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerConnectEvent;
@@ -44,7 +45,7 @@ public class PlayerConnectionHandler {
     Logger.debug("Tracked players after connect: %d (contains %s=%s)",
         trackedPlayers.size(), uuid, trackedPlayers.containsKey(uuid));
 
-    // Cache username, track first join and last online
+    // Cache username, track first join and last online, load preferences
     ErrorHandler.guard("Player connect: load/save player data for " + username,
       hyperFactions.getPlayerStorage().loadPlayerData(uuid).thenAccept(opt -> {
         com.hyperfactions.data.PlayerData data = opt.orElseGet(() -> new com.hyperfactions.data.PlayerData(uuid));
@@ -55,6 +56,11 @@ public class PlayerConnectionHandler {
         }
         data.setLastOnline(now);
         hyperFactions.getPlayerStorage().savePlayerData(data);
+
+        // Cache language preference for i18n resolution
+        if (data.getLanguagePreference() != null) {
+          HFMessages.setLanguageOverride(uuid, data.getLanguagePreference());
+        }
       }));
 
     // Load player power
@@ -162,6 +168,9 @@ public class PlayerConnectionHandler {
 
     // Clean up territory tracking
     hyperFactions.getTerritoryNotifier().onPlayerDisconnect(uuid);
+
+    // Clear cached language preference
+    HFMessages.clearLanguageOverride(uuid);
 
     // Unregister from active page tracker (GUI real-time updates)
     if (hyperFactions.getActivePageTracker() != null) {

@@ -1,5 +1,5 @@
 // Element & Style Test Page — Permanent debug/research page
-// Open via: /f admin testgui
+// Open via: /f admin test gui
 
 $C = "../../Common.ui";
 $S = "../shared/styles.ui";
@@ -249,7 +249,38 @@ $C.@PageOverlay {
           ColorPicker #TestColorPicker {
             DisplayTextField: true;
             Style: $C.@DefaultColorPickerStyle;
-            Anchor: (Height: 180, Bottom: 4);
+            Anchor: (Height: 180, Bottom: 8);
+          }
+
+          Label {
+            Text: "TAB NAVIGATION";
+            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
+            Anchor: (Height: 20, Bottom: 4);
+          }
+
+          TabNavigation #TestTabNav {
+            Style: $C.@HeaderTabsStyle;
+            Anchor: (Height: 34, Bottom: 8);
+          }
+
+          Label {
+            Text: "HEADER SEARCH";
+            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
+            Anchor: (Height: 20, Bottom: 4);
+          }
+
+          $C.@HeaderSearch #TestHeaderSearch {
+            Anchor: (Height: 36, Bottom: 8);
+          }
+
+          Label {
+            Text: "PROGRESS BAR TEMPLATE";
+            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
+            Anchor: (Height: 20, Bottom: 4);
+          }
+
+          $C.@ProgressBar #TestProgressBarTpl {
+            Anchor: (Height: 16, Bottom: 8);
           }
         }
 
@@ -365,6 +396,75 @@ $C.@PageOverlay {
                 Style: (FontSize: 11, TextColor: #aaaaaa);
                 Anchor: (Height: 18);
               }
+            }
+          }
+
+          Label {
+            Text: "TOOLTIP DEMO";
+            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
+            Anchor: (Height: 20, Bottom: 4);
+          }
+
+          TextButton #TestTooltipBtn {
+            Text: "HOVER FOR TOOLTIP";
+            Anchor: (Height: 36, Bottom: 8);
+            Style: $C.@DefaultTextButtonStyle;
+            TooltipText: "This is a tooltip! Tooltips can show contextual information.";
+            TextTooltipStyle: $C.@DefaultTextTooltipStyle;
+          }
+
+          Label {
+            Text: "CONTENT SEPARATOR";
+            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
+            Anchor: (Height: 20, Bottom: 4);
+          }
+
+          $C.@ContentSeparator {
+            Anchor: (Bottom: 4);
+          }
+
+          $C.@PanelSeparatorFancy {
+            Anchor: (Bottom: 8);
+          }
+
+          Label {
+            Text: "MULTILINE TEXT FIELD";
+            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
+            Anchor: (Height: 20, Bottom: 4);
+          }
+
+          $C.@MultilineTextField #TestMultilineField {
+            Anchor: (Height: 80, Bottom: 8);
+          }
+
+          Label {
+            Text: "PANEL / SIMPLE CONTAINER";
+            Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
+            Anchor: (Height: 20, Bottom: 4);
+          }
+
+          $C.@SimpleContainer #TestSimpleContainer {
+            Anchor: (Height: 60, Bottom: 4);
+            Padding: (Full: 10);
+            LayoutMode: Top;
+            Label {
+              Text: "Inside SimpleContainer";
+              Style: (FontSize: 11, TextColor: #aaaaaa);
+              Anchor: (Height: 18);
+            }
+          }
+
+          $C.@Panel #TestPanel {
+            Anchor: (Height: 80, Bottom: 8);
+            Padding: (Full: 10);
+            LayoutMode: Top;
+            $C.@PanelTitle {
+              @Text = "Panel Title";
+            }
+            Label {
+              Text: "Content inside Panel template";
+              Style: (FontSize: 11, TextColor: #aaaaaa);
+              Anchor: (Height: 18);
             }
           }
 

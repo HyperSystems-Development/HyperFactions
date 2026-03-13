@@ -6,7 +6,7 @@ import com.hypixel.hytale.codec.builder.BuilderCodec;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Event data for the Admin Help page (placeholder).
+ * Event data for the Admin Help page.
  */
 public class AdminHelpData implements AdminNavAwareData {
 
@@ -15,6 +15,9 @@ public class AdminHelpData implements AdminNavAwareData {
 
   /** Admin nav bar target (for navigation). */
   public String adminNavBar;
+
+  /** Selected category ID (for category switching). */
+  public String category;
 
   /** Codec for serialization/deserialization. */
   public static final BuilderCodec<AdminHelpData> CODEC = BuilderCodec
@@ -28,6 +31,11 @@ public class AdminHelpData implements AdminNavAwareData {
           new KeyedCodec<>("AdminNavBar", Codec.STRING),
           (data, value) -> data.adminNavBar = value,
           data -> data.adminNavBar
+      )
+      .addField(
+          new KeyedCodec<>("Category", Codec.STRING),
+          (data, value) -> data.category = value,
+          data -> data.category
       )
       .build();
 

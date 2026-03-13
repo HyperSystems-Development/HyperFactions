@@ -4,6 +4,7 @@ import com.hyperfactions.HyperFactions;
 import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.MessageKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -109,7 +110,7 @@ public abstract class FactionSubCommand extends AbstractPlayerCommand {
   protected Faction requireFaction(@NotNull CommandContext ctx, @NotNull PlayerRef player) {
     Faction faction = hyperFactions.getFactionManager().getPlayerFaction(player.getUuid());
     if (faction == null) {
-      ctx.sendMessage(MessageUtil.error("You are not in a faction."));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.NOT_IN_FACTION));
       return null;
     }
     return faction;

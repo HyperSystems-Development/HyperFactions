@@ -7,6 +7,8 @@ import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.admin.data.ZoneChangeTypeModalData;
 import com.hyperfactions.manager.ZoneManager;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -82,6 +84,20 @@ public class ZoneChangeTypeModalPage extends InteractiveCustomUIPage<ZoneChangeT
     // Load the modal template
     cmd.append(UIPaths.ZONE_CHANGE_TYPE_MODAL);
 
+    // Localize labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_TITLE));
+    cmd.set("#ZoneLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_ZONE_LABEL));
+    cmd.set("#CurrentLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_CURRENT));
+    cmd.set("#WillBecomeLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_WILL_BECOME));
+    cmd.set("#NewLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_NEW));
+    cmd.set("#WarningLine1.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_WARNING1));
+    cmd.set("#WarningLine2.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_WARNING2));
+    cmd.set("#KeepFlagsDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_KEEP_DESC));
+    cmd.set("#KeepFlagsBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_KEEP_FLAGS));
+    cmd.set("#ResetFlagsDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_RESET_DESC));
+    cmd.set("#ResetFlagsBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_RESET_FLAGS));
+    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CANCEL));
+
     // Zone name
     cmd.set("#ZoneName.Text", zone.name());
 
@@ -137,7 +153,7 @@ public class ZoneChangeTypeModalPage extends InteractiveCustomUIPage<ZoneChangeT
 
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.errorText("Zone no longer exists."));
+      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.ZTYPE_ZONE_GONE));
       navigateBack(player, ref, store, playerRef);
       return;
     }
@@ -170,17 +186,11 @@ public class ZoneChangeTypeModalPage extends InteractiveCustomUIPage<ZoneChangeT
       String oldColor = oldType == ZoneType.SAFE ? "#55FF55" : "#FF5555";
       String newColor = newType == ZoneType.SAFE ? "#55FF55" : "#FF5555";
 
-      player.sendMessage(
-          Message.raw("[Admin] Changed ").color("#AAAAAA")
-              .insert(Message.raw(zone.name()).color("#00FFFF"))
-              .insert(Message.raw(" from ").color("#AAAAAA"))
-              .insert(Message.raw(oldType.getDisplayName()).color(oldColor))
-              .insert(Message.raw(" to ").color("#AAAAAA"))
-              .insert(Message.raw(newType.getDisplayName()).color(newColor))
-              .insert(Message.raw(resetFlags ? " (flags reset)" : " (flags kept)").color("#888888"))
-      );
+      player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.ZTYPE_CHANGED, "#AAAAAA",
+          zone.name(), oldType.getDisplayName(), newType.getDisplayName(),
+          HFMessages.get(playerRef, resetFlags ? MessageKeys.AdminGui.ZTYPE_FLAGS_RESET : MessageKeys.AdminGui.ZTYPE_FLAGS_KEPT)));
     } else {
-      player.sendMessage(MessageUtil.adminError("Failed to change zone type: " + result));
+      player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.ZTYPE_FAILED, result));
     }
 
     navigateBack(player, ref, store, playerRef);

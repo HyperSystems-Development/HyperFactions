@@ -760,6 +760,18 @@ public final class ZoneFlags {
   }
 
   /**
+   * Gets the i18n lang key for a flag's display name.
+   * Maps flag names like "pvp_enabled" to keys like "hyperfactions_admin.gui.zflag_pvp_enabled".
+   *
+   * @param flagName the flag name
+   * @return the lang key for the display name
+   */
+  @NotNull
+  public static String getDisplayNameKey(String flagName) {
+    return "hyperfactions_admin.gui.zflag_" + flagName;
+  }
+
+  /**
    * Gets a short description for a flag.
    *
    * @param flagName the flag name

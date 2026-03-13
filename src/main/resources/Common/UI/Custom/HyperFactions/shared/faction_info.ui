@@ -10,7 +10,7 @@ $C.@PageOverlay {
     Anchor: (Width: 560, Height: 520);
 
     #Title {
-      $C.@Title {
+      $C.@Title #PageTitle {
         @Text = "Faction Info";
       }
     }
@@ -69,7 +69,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Right: 4);
 
-          Label {
+          Label #PowerHeader {
             Text: "Power";
             Style: (FontSize: 9, TextColor: #666666);
             Anchor: (Height: 14);
@@ -79,7 +79,7 @@ $C.@PageOverlay {
             Style: (FontSize: 20, TextColor: #44CC44, RenderBold: true);
             FlexWeight: 1;
           }
-          Label {
+          Label #PowerSubtitle {
             Text: "current / max";
             Style: (FontSize: 9, TextColor: #444444);
             Anchor: (Height: 14);
@@ -94,7 +94,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 4, Right: 4);
 
-          Label {
+          Label #ClaimsHeader {
             Text: "Claims";
             Style: (FontSize: 9, TextColor: #666666);
             Anchor: (Height: 14);
@@ -104,7 +104,7 @@ $C.@PageOverlay {
             Style: (FontSize: 20, TextColor: #FFAA00, RenderBold: true);
             FlexWeight: 1;
           }
-          Label {
+          Label #ClaimsSubtitle {
             Text: "claimed / max";
             Style: (FontSize: 9, TextColor: #444444);
             Anchor: (Height: 14);
@@ -119,7 +119,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 4);
 
-          Label {
+          Label #MembersHeader {
             Text: "Members";
             Style: (FontSize: 9, TextColor: #666666);
             Anchor: (Height: 14);
@@ -150,7 +150,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Right: 4);
 
-          Label {
+          Label #RelationsHeader {
             Text: "Relations";
             Style: (FontSize: 9, TextColor: #666666);
             Anchor: (Height: 14);
@@ -175,7 +175,7 @@ $C.@PageOverlay {
               FlexWeight: 1;
             }
           }
-          Label {
+          Label #RelationsSubtitle {
             Text: "ally / enemy";
             Style: (FontSize: 9, TextColor: #444444);
             Anchor: (Height: 14);
@@ -190,7 +190,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 4, Right: 4);
 
-          Label {
+          Label #StatusHeader {
             Text: "Status";
             Style: (FontSize: 9, TextColor: #666666);
             Anchor: (Height: 14);
@@ -216,7 +216,7 @@ $C.@PageOverlay {
           Anchor: (Left: 4);
           Visible: false;
 
-          Label {
+          Label #TreasuryHeader {
             Text: "Treasury";
             Style: (FontSize: 9, TextColor: #666666);
             Anchor: (Height: 14);
@@ -226,7 +226,7 @@ $C.@PageOverlay {
             Style: (FontSize: 18, TextColor: #FFD700, RenderBold: true);
             FlexWeight: 1;
           }
-          Label {
+          Label #TreasurySubtitle {
             Text: "faction balance";
             Style: (FontSize: 9, TextColor: #444444);
             Anchor: (Height: 14);
@@ -247,7 +247,7 @@ $C.@PageOverlay {
         Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
         LayoutMode: Left;
 
-        Label {
+        Label #LeaderLabel {
           Text: "Leader:";
           Style: (FontSize: 12, TextColor: #FFD700, RenderBold: true, VerticalAlignment: Center);
           Anchor: (Width: 65);
@@ -260,7 +260,7 @@ $C.@PageOverlay {
 
         Label { Anchor: (Width: 30); }
 
-        Label {
+        Label #OfficersLabel {
           Text: "Officers:";
           Style: (FontSize: 12, TextColor: #87CEEB, RenderBold: true, VerticalAlignment: Center);
           Anchor: (Width: 70);

@@ -1,5 +1,8 @@
 package com.hyperfactions.gui.admin.page;
 
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
+
 import com.hyperfactions.api.EconomyAPI;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionEconomy;
@@ -66,11 +69,24 @@ public class AdminEconomyAdjustPage extends InteractiveCustomUIPage<AdminEconomy
     // Setup admin nav bar
     AdminNavBarHelper.setupBar(playerRef, "economy", cmd, events);
 
+    // Localize labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ECONOMY_ADJUST));
+    cmd.set("#SectionHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECADJ_HEADER));
+    cmd.set("#FactionLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECADJ_FACTION_LABEL));
+    cmd.set("#CurrentBalanceLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECADJ_CURRENT_BALANCE));
+    cmd.set("#AmountLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECADJ_AMOUNT_HINT));
+    cmd.set("#HintText.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECADJ_PREVIEW_HINT));
+    cmd.set("#AdjustmentLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECADJ_ADJUSTMENT));
+    cmd.set("#NewBalanceLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECADJ_NEW_BALANCE));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_BACK));
+    cmd.set("#SetBalanceBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECADJ_SET_BALANCE));
+    cmd.set("#ConfirmBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ECADJ_CONFIRM));
+
     // Get faction info
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {
-      cmd.set("#TargetFactionName.Text", "Faction Not Found");
-      cmd.set("#CurrentBalance.Text", "N/A");
+      cmd.set("#TargetFactionName.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.FACTION_NOT_FOUND_LABEL));
+      cmd.set("#CurrentBalance.Text", HFMessages.get(playerRef, MessageKeys.Common.NA));
       return;
     }
 
@@ -136,7 +152,7 @@ public class AdminEconomyAdjustPage extends InteractiveCustomUIPage<AdminEconomy
         }
 
         if (amount.compareTo(BigDecimal.ZERO) == 0) {
-          showError("Amount cannot be zero.");
+          showError(HFMessages.get(playerRef, MessageKeys.AdminGui.ECON_AMOUNT_ZERO));
           return;
         }
 
@@ -151,7 +167,7 @@ public class AdminEconomyAdjustPage extends InteractiveCustomUIPage<AdminEconomy
             .thenAccept(result -> handleResult(result, player, ref, store, playerRef))
             .exceptionally(ex -> {
               ErrorHandler.report(String.format("Admin economy adjust failed for faction %s", factionId), ex);
-              showError("An error occurred.");
+              showError(HFMessages.get(playerRef, MessageKeys.AdminGui.ECON_ERROR));
               return null;
             });
       }
@@ -163,7 +179,7 @@ public class AdminEconomyAdjustPage extends InteractiveCustomUIPage<AdminEconomy
         }
 
         if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
-          showError("Balance cannot be negative.");
+          showError(HFMessages.get(playerRef, MessageKeys.AdminGui.ECON_BALANCE_NEGATIVE));
           return;
         }
 
@@ -174,7 +190,7 @@ public class AdminEconomyAdjustPage extends InteractiveCustomUIPage<AdminEconomy
             .thenAccept(result -> handleResult(result, player, ref, store, playerRef))
             .exceptionally(ex -> {
               ErrorHandler.report(String.format("Admin economy set balance failed for faction %s", factionId), ex);
-              showError("An error occurred.");
+              showError(HFMessages.get(playerRef, MessageKeys.AdminGui.ECON_ERROR));
               return null;
             });
       }
@@ -190,13 +206,13 @@ public class AdminEconomyAdjustPage extends InteractiveCustomUIPage<AdminEconomy
    */
   private @Nullable BigDecimal parseAmountOrError(@Nullable String amount) {
     if (amount == null || amount.isBlank()) {
-      showError("Please enter an amount.");
+      showError(HFMessages.get(playerRef, MessageKeys.AdminGui.ECON_ENTER_AMOUNT));
       return null;
     }
     try {
       return new BigDecimal(amount.trim());
     } catch (NumberFormatException e) {
-      showError("Invalid number: " + amount);
+      showError(HFMessages.get(playerRef, MessageKeys.AdminGui.ECON_INVALID_NUMBER, amount));
       return null;
     }
   }
@@ -209,7 +225,7 @@ public class AdminEconomyAdjustPage extends InteractiveCustomUIPage<AdminEconomy
       guiManager.openAdminEconomy(player, ref, store, playerRef);
     } else {
       Logger.debugEconomy("Admin economy operation failed for faction %s: %s", factionId, result.name());
-      showError("Failed: " + result.name());
+      showError(HFMessages.get(playerRef, MessageKeys.AdminGui.ECON_FAILED, result.name()));
     }
   }
 

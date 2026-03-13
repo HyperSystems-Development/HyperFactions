@@ -310,6 +310,16 @@ public class JsonFactionStorage implements FactionStorage {
     if (log.actorUuid() != null) {
       obj.addProperty("actorUuid", log.actorUuid().toString());
     }
+    if (log.messageKey() != null) {
+      obj.addProperty("messageKey", log.messageKey());
+    }
+    if (log.messageArgs() != null && !log.messageArgs().isEmpty()) {
+      JsonArray argsArray = new JsonArray();
+      for (String arg : log.messageArgs()) {
+        argsArray.add(arg);
+      }
+      obj.add("messageArgs", argsArray);
+    }
     return obj;
   }
 
@@ -490,11 +500,21 @@ public class JsonFactionStorage implements FactionStorage {
 
   private FactionLog deserializeLog(JsonObject obj) {
     UUID actorUuid = obj.has("actorUuid") ? UUID.fromString(obj.get("actorUuid").getAsString()) : null;
+    String messageKey = obj.has("messageKey") ? obj.get("messageKey").getAsString() : null;
+    List<String> messageArgs = null;
+    if (obj.has("messageArgs") && obj.get("messageArgs").isJsonArray()) {
+      messageArgs = new ArrayList<>();
+      for (JsonElement el : obj.getAsJsonArray("messageArgs")) {
+        messageArgs.add(el.getAsString());
+      }
+    }
     return new FactionLog(
       FactionLog.LogType.valueOf(obj.get("type").getAsString()),
       obj.get("message").getAsString(),
       obj.get("timestamp").getAsLong(),
-      actorUuid
+      actorUuid,
+      messageKey,
+      messageArgs
     );
   }
 }

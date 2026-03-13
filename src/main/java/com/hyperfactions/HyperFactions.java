@@ -389,7 +389,7 @@ public class HyperFactions {
 
     // Initialize territory notifier (for entry/exit notifications)
     territoryNotifier = new TerritoryNotifier(
-      factionManager, claimManager, zoneManager, relationManager
+      factionManager, claimManager, zoneManager, relationManager, playerStorage
     );
 
     // Initialize world map service (for claim markers on map)

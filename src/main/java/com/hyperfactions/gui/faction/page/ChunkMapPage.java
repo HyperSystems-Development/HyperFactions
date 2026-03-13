@@ -15,6 +15,9 @@ import com.hyperfactions.gui.faction.data.ChunkMapData;
 import com.hyperfactions.gui.newplayer.NewPlayerNavBarHelper;
 import com.hyperfactions.integration.protection.OrbisGuardIntegration;
 import com.hyperfactions.manager.*;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.Ref;
@@ -119,7 +122,7 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
     Player player = store.getComponent(ref, Player.getComponentType());
     TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
     World world = player != null ? player.getWorld() : null;
-    String worldName = world != null ? world.getName() : "world";
+    String worldName = world != null ? world.getName() : HFMessages.get(playerRef, MessageKeys.Common.WORLD_FALLBACK);
 
     int playerChunkX = 0;
     int playerChunkZ = 0;
@@ -138,6 +141,21 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
       cmd.append(UIPaths.CHUNK_MAP);
     }
 
+    // Localize static labels
+    cmd.set("#MapTitle.Text", HFMessages.get(playerRef, MessageKeys.MapGui.TITLE));
+    cmd.set("#ActionHint.Text", HFMessages.get(playerRef, MessageKeys.MapGui.ACTION_HINT));
+    cmd.set("#LegendYourLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_YOUR));
+    cmd.set("#LegendAllyLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_ALLY));
+    cmd.set("#LegendEnemyLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_ENEMY));
+    cmd.set("#LegendOtherLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_OTHER));
+    if (!terrainEnabled) {
+      // Flat mode has additional legend entries
+      cmd.set("#LegendWildernessLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_WILDERNESS));
+    }
+    cmd.set("#LegendSafeLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_SAFE));
+    cmd.set("#LegendWarLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_WAR));
+    cmd.set("#LegendYouLabel.Text", HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_YOU));
+
     // Setup navigation bar - use new player nav when no faction
     if (viewerFaction != null) {
       NavBarHelper.setupBar(playerRef, viewerFaction, PAGE_ID, cmd, events);
@@ -146,7 +164,7 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
     }
 
     // Current position info
-    cmd.set("#PositionInfo.Text", String.format("Your Position: Chunk (%d, %d)", playerChunkX, playerChunkZ));
+    cmd.set("#PositionInfo.Text", HFMessages.get(playerRef, MessageKeys.MapGui.POSITION, playerChunkX, playerChunkZ));
 
     // Dynamic legend: add OrbisGuard protected region entry when OG is available
     if (OrbisGuardIntegration.isAvailable()) {
@@ -155,13 +173,13 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
         cmd.appendInline("#LegendContainer[1]",
             "Group { LayoutMode: Left; Anchor: (Width: 110); "
             + "Group { Anchor: (Width: 10, Height: 10); Background: (Color: " + COLOR_OG_PROTECTED + "); } "
-            + "Label { Text: \" Protected\"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); } }");
+            + "Label { Text: \" " + HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_PROTECTED) + "\"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); } }");
       } else {
         // Flat mode: append to column 3 (#LegendContainer[2])
         cmd.appendInline("#LegendContainer[2]",
             "Group { LayoutMode: Left; Anchor: (Height: 16); "
             + "Group { Anchor: (Width: 12, Height: 12); Background: (Color: " + COLOR_OG_PROTECTED + "); } "
-            + "Label { Text: \" Protected\"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); } }");
+            + "Label { Text: \" " + HFMessages.get(playerRef, MessageKeys.MapGui.LEGEND_PROTECTED) + "\"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); } }");
       }
     }
 
@@ -180,7 +198,7 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
       int available = Math.max(0, maxClaims - currentClaims);
 
       // Claim stats: "Claims: 23/78 (55 Available)"
-      cmd.set("#ClaimStats.Text", String.format("Claims: %d/%d (%d Available)", currentClaims, maxClaims, available));
+      cmd.set("#ClaimStats.Text", HFMessages.get(playerRef, MessageKeys.MapGui.CLAIM_STATS, currentClaims, maxClaims, available));
 
       // Power status with overclaim warning
       double currentPower = stats.currentPower();
@@ -190,13 +208,13 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
       if (isOverclaimed) {
         // Show overclaim warning in red
         int overclaimAmount = currentClaims - (int) currentPower;
-        cmd.set("#PowerStatus.Text", String.format("OVERCLAIMED by %d!", overclaimAmount));
+        cmd.set("#PowerStatus.Text", HFMessages.get(playerRef, MessageKeys.MapGui.OVERCLAIMED, overclaimAmount));
       } else {
         // Normal power display
-        cmd.set("#PowerStatus.Text", String.format("Power: %.0f/%.0f", currentPower, maxPower));
+        cmd.set("#PowerStatus.Text", HFMessages.get(playerRef, MessageKeys.MapGui.POWER_DISPLAY, (int) currentPower, (int) maxPower));
       }
     } else {
-      cmd.set("#ClaimStats.Text", "Join a faction to claim");
+      cmd.set("#ClaimStats.Text", HFMessages.get(playerRef, MessageKeys.MapGui.JOIN_TO_CLAIM));
       cmd.set("#PowerStatus.Text", "");
     }
 
@@ -527,7 +545,7 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
 
     Faction viewerFaction = factionManager.getPlayerFaction(playerRef.getUuid());
     World world = player.getWorld();
-    String worldName = world != null ? world.getName() : "world";
+    String worldName = world != null ? world.getName() : HFMessages.get(playerRef, MessageKeys.Common.WORLD_FALLBACK);
 
     // Handle navigation - use new player nav when no faction
     if (viewerFaction != null) {
@@ -553,16 +571,16 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
     ClaimManager.ClaimResult result = claimManager.claim(playerRef.getUuid(), worldName, chunkX, chunkZ);
 
     Message message = switch (result) {
-      case SUCCESS -> CommandUtil.prefix().insert(Message.raw("Claimed chunk at (" + chunkX + ", " + chunkZ + ")!").color("#55FF55"));
-      case NOT_IN_FACTION -> CommandUtil.prefix().insert(Message.raw("You must be in a faction to claim territory.").color("#FF5555"));
-      case NOT_OFFICER -> CommandUtil.prefix().insert(Message.raw("Only officers and leaders can claim territory.").color("#FF5555"));
-      case ALREADY_CLAIMED_SELF -> CommandUtil.prefix().insert(Message.raw("You already own this chunk.").color("#FFAA00"));
-      case ALREADY_CLAIMED_OTHER -> CommandUtil.prefix().insert(Message.raw("This chunk is already claimed by another faction.").color("#FF5555"));
-      case NOT_ADJACENT -> CommandUtil.prefix().insert(Message.raw("You can only claim chunks adjacent to your territory.").color("#FF5555"));
-      case MAX_CLAIMS_REACHED -> CommandUtil.prefix().insert(Message.raw("You have reached your maximum claim limit.").color("#FF5555"));
-      case WORLD_NOT_ALLOWED -> CommandUtil.prefix().insert(Message.raw("Claiming is not allowed in this world.").color("#FF5555"));
-      case ORBISGUARD_PROTECTED -> CommandUtil.prefix().insert(Message.raw("This area is protected by OrbisGuard.").color("#FF5555"));
-      default -> CommandUtil.prefix().insert(Message.raw("Failed to claim chunk.").color("#FF5555"));
+      case SUCCESS -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.CLAIM_SUCCESS, chunkX, chunkZ)).color("#55FF55"));
+      case NOT_IN_FACTION -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.CLAIM_NOT_IN_FACTION)).color("#FF5555"));
+      case NOT_OFFICER -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.CLAIM_NOT_OFFICER)).color("#FF5555"));
+      case ALREADY_CLAIMED_SELF -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.CLAIM_ALREADY_YOURS)).color("#FFAA00"));
+      case ALREADY_CLAIMED_OTHER -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.CLAIM_ALREADY_CLAIMED)).color("#FF5555"));
+      case NOT_ADJACENT -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.CLAIM_NOT_ADJACENT)).color("#FF5555"));
+      case MAX_CLAIMS_REACHED -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.CLAIM_MAX)).color("#FF5555"));
+      case WORLD_NOT_ALLOWED -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.CLAIM_WORLD_NOT_ALLOWED)).color("#FF5555"));
+      case ORBISGUARD_PROTECTED -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.CLAIM_ORBISGUARD)).color("#FF5555"));
+      default -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.CLAIM_FAILED)).color("#FF5555"));
     };
 
     player.sendMessage(message);
@@ -577,13 +595,13 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
     ClaimManager.ClaimResult result = claimManager.unclaim(playerRef.getUuid(), worldName, chunkX, chunkZ);
 
     Message message = switch (result) {
-      case SUCCESS -> CommandUtil.prefix().insert(Message.raw("Unclaimed chunk at (" + chunkX + ", " + chunkZ + ").").color("#55FF55"));
-      case NOT_IN_FACTION -> CommandUtil.prefix().insert(Message.raw("You must be in a faction.").color("#FF5555"));
-      case NOT_OFFICER -> CommandUtil.prefix().insert(Message.raw("Only officers and leaders can unclaim territory.").color("#FF5555"));
-      case CHUNK_NOT_CLAIMED -> CommandUtil.prefix().insert(Message.raw("This chunk is not claimed.").color("#FFAA00"));
-      case NOT_YOUR_CLAIM -> CommandUtil.prefix().insert(Message.raw("This chunk belongs to another faction.").color("#FF5555"));
-      case CANNOT_UNCLAIM_HOME -> CommandUtil.prefix().insert(Message.raw("Cannot unclaim the chunk containing your faction home.").color("#FF5555"));
-      default -> CommandUtil.prefix().insert(Message.raw("Failed to unclaim chunk.").color("#FF5555"));
+      case SUCCESS -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.UNCLAIM_SUCCESS, chunkX, chunkZ)).color("#55FF55"));
+      case NOT_IN_FACTION -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.UNCLAIM_NOT_IN_FACTION)).color("#FF5555"));
+      case NOT_OFFICER -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.UNCLAIM_NOT_OFFICER)).color("#FF5555"));
+      case CHUNK_NOT_CLAIMED -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.UNCLAIM_NOT_CLAIMED)).color("#FFAA00"));
+      case NOT_YOUR_CLAIM -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.UNCLAIM_NOT_YOURS)).color("#FF5555"));
+      case CANNOT_UNCLAIM_HOME -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.UNCLAIM_HOME)).color("#FF5555"));
+      default -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.UNCLAIM_FAILED)).color("#FF5555"));
     };
 
     player.sendMessage(message);
@@ -598,14 +616,14 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
     ClaimManager.ClaimResult result = claimManager.overclaim(playerRef.getUuid(), worldName, chunkX, chunkZ);
 
     Message message = switch (result) {
-      case SUCCESS -> CommandUtil.prefix().insert(Message.raw("Overclaimed enemy chunk at (" + chunkX + ", " + chunkZ + ")!").color("#55FF55"));
-      case NOT_IN_FACTION -> CommandUtil.prefix().insert(Message.raw("You must be in a faction.").color("#FF5555"));
-      case NOT_OFFICER -> CommandUtil.prefix().insert(Message.raw("Only officers and leaders can overclaim territory.").color("#FF5555"));
-      case ALREADY_CLAIMED_SELF -> CommandUtil.prefix().insert(Message.raw("You already own this chunk.").color("#FFAA00"));
-      case ALREADY_CLAIMED_ALLY -> CommandUtil.prefix().insert(Message.raw("You cannot overclaim allied territory.").color("#FF5555"));
-      case TARGET_HAS_POWER -> CommandUtil.prefix().insert(Message.raw("This faction has enough power to defend their territory.").color("#FF5555"));
-      case MAX_CLAIMS_REACHED -> CommandUtil.prefix().insert(Message.raw("You have reached your maximum claim limit.").color("#FF5555"));
-      default -> CommandUtil.prefix().insert(Message.raw("Failed to overclaim chunk.").color("#FF5555"));
+      case SUCCESS -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.OVERCLAIM_SUCCESS, chunkX, chunkZ)).color("#55FF55"));
+      case NOT_IN_FACTION -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.OVERCLAIM_NOT_IN_FACTION)).color("#FF5555"));
+      case NOT_OFFICER -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.OVERCLAIM_NOT_OFFICER)).color("#FF5555"));
+      case ALREADY_CLAIMED_SELF -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.OVERCLAIM_ALREADY_YOURS)).color("#FFAA00"));
+      case ALREADY_CLAIMED_ALLY -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.OVERCLAIM_ALLY)).color("#FF5555"));
+      case TARGET_HAS_POWER -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.OVERCLAIM_HAS_POWER)).color("#FF5555"));
+      case MAX_CLAIMS_REACHED -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.OVERCLAIM_MAX)).color("#FF5555"));
+      default -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, MessageKeys.MapGui.OVERCLAIM_FAILED)).color("#FF5555"));
     };
 
     player.sendMessage(message);

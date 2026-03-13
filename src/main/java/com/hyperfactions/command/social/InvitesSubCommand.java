@@ -9,6 +9,9 @@ import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.data.JoinRequest;
 import com.hyperfactions.data.PendingInvite;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -47,7 +50,7 @@ public class InvitesSubCommand extends FactionSubCommand {
     if (faction != null) {
       FactionMember member = faction.getMember(player.getUuid());
       if (member == null || !member.isOfficerOrHigher()) {
-        ctx.sendMessage(prefix().insert(msg("You must be an officer to manage invites.", COLOR_RED)));
+        ctx.sendMessage(MessageUtil.error(player, MessageKeys.Invites.NOT_OFFICER));
         return;
       }
 
@@ -64,32 +67,32 @@ public class InvitesSubCommand extends FactionSubCommand {
       List<PendingInvite> invites = hyperFactions.getInviteManager().getFactionInvitesList(faction.id());
       List<JoinRequest> requests = hyperFactions.getJoinRequestManager().getFactionRequests(faction.id());
 
-      ctx.sendMessage(msg("=== Faction Invites ===", COLOR_CYAN).bold(true));
+      ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Invites.HEADER), COLOR_CYAN).bold(true));
 
       if (invites.isEmpty() && requests.isEmpty()) {
-        ctx.sendMessage(msg("No pending invites or requests.", COLOR_GRAY));
+        ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Invites.NO_PENDING), COLOR_GRAY));
         return;
       }
 
       if (!invites.isEmpty()) {
-        ctx.sendMessage(msg("Outgoing Invites:", COLOR_YELLOW));
+        ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Invites.OUTGOING), COLOR_YELLOW));
         for (PendingInvite invite : invites) {
           String inviterName = plugin.getTrackedPlayer(invite.invitedBy()) != null
             ? plugin.getTrackedPlayer(invite.invitedBy()).getUsername()
-            : "Unknown";
-          ctx.sendMessage(msg("  - ", COLOR_GRAY)
-            .insert(msg(invite.playerUuid().toString().substring(0, 8), COLOR_WHITE))
-            .insert(msg(" (invited by " + inviterName + ")", COLOR_GRAY)));
+            : HFMessages.get(player, MessageKeys.Common.UNKNOWN);
+          ctx.sendMessage(msg("  ", COLOR_GRAY)
+            .insert(msg(HFMessages.get(player, MessageKeys.Invites.OUTGOING_ENTRY,
+              invite.playerUuid().toString().substring(0, 8), inviterName), COLOR_WHITE)));
         }
       }
 
       if (!requests.isEmpty()) {
-        ctx.sendMessage(msg("Join Requests:", COLOR_GREEN));
+        ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Invites.REQUESTS), COLOR_GREEN));
         for (JoinRequest request : requests) {
           String message = request.message() != null ? " \"" + request.message() + "\"" : "";
-          ctx.sendMessage(msg("  - ", COLOR_GRAY)
-            .insert(msg(request.playerName(), COLOR_WHITE))
-            .insert(msg(message, COLOR_GRAY)));
+          ctx.sendMessage(msg("  ", COLOR_GRAY)
+            .insert(msg(HFMessages.get(player, MessageKeys.Invites.REQUEST_ENTRY,
+              request.playerName(), message), COLOR_WHITE)));
         }
       }
     } else {
@@ -106,19 +109,19 @@ public class InvitesSubCommand extends FactionSubCommand {
       // Text mode: show incoming invites
       List<PendingInvite> invites = hyperFactions.getInviteManager().getPlayerInvites(player.getUuid());
 
-      ctx.sendMessage(msg("=== Your Invites ===", COLOR_CYAN).bold(true));
+      ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Invites.YOUR_INVITES_HEADER), COLOR_CYAN).bold(true));
 
       if (invites.isEmpty()) {
-        ctx.sendMessage(msg("You have no pending invites.", COLOR_GRAY));
+        ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Invites.NO_INVITES), COLOR_GRAY));
         return;
       }
 
       for (PendingInvite invite : invites) {
         Faction invitingFaction = hyperFactions.getFactionManager().getFaction(invite.factionId());
         if (invitingFaction != null) {
-          ctx.sendMessage(msg("  - ", COLOR_GRAY)
-            .insert(msg(invitingFaction.name(), COLOR_YELLOW))
-            .insert(msg(" - Use /f accept " + invitingFaction.name(), COLOR_GRAY)));
+          ctx.sendMessage(msg("  ", COLOR_GRAY)
+            .insert(msg(HFMessages.get(player, MessageKeys.Invites.INVITE_ENTRY,
+              invitingFaction.name(), invitingFaction.name()), COLOR_YELLOW)));
         }
       }
     }

@@ -10,6 +10,9 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.data.PlayerPower;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.PlayerResolver;
 import com.hyperfactions.util.TimeUtil;
 import com.hypixel.hytale.component.Ref;
@@ -42,7 +45,7 @@ public class WhoSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.WHO)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to view player info.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Info.WHO_NO_PERMISSION));
       return;
     }
 
@@ -60,7 +63,7 @@ public class WhoSubCommand extends FactionSubCommand {
       // Look up target player using centralized resolver
       var resolved = PlayerResolver.resolve(hyperFactions, fctx.getArg(0));
       if (resolved == null) {
-        ctx.sendMessage(prefix().insert(msg("Player not found.", COLOR_RED)));
+        ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.PLAYER_NOT_FOUND));
         return;
       }
       targetUuid = resolved.uuid();
@@ -85,14 +88,14 @@ public class WhoSubCommand extends FactionSubCommand {
     boolean isOnline = plugin.getTrackedPlayer(targetUuid) != null;
 
     // Display info
-    ctx.sendMessage(msg("=== " + targetName + " ===", COLOR_CYAN));
+    ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Info.PLAYER_HEADER, targetName), COLOR_CYAN));
 
     if (faction != null && member != null) {
-      ctx.sendMessage(msg("Faction: ", COLOR_GRAY).insert(msg(faction.name(), COLOR_WHITE)));
-      ctx.sendMessage(msg("Role: ", COLOR_GRAY).insert(msg(ConfigManager.get().getRoleDisplayName(member.role()), COLOR_WHITE)));
-      ctx.sendMessage(msg("Joined: ", COLOR_GRAY).insert(msg(TimeUtil.formatRelative(member.joinedAt()), COLOR_WHITE)));
+      ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Info.WHO_FACTION, faction.name()), COLOR_GRAY));
+      ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Info.WHO_ROLE, ConfigManager.get().getRoleDisplayName(member.role())), COLOR_GRAY));
+      ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Info.WHO_JOINED, TimeUtil.formatRelative(member.joinedAt())), COLOR_GRAY));
     } else {
-      ctx.sendMessage(msg("Faction: ", COLOR_GRAY).insert(msg("None", COLOR_WHITE)));
+      ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Info.WHO_FACTION_NONE), COLOR_GRAY));
     }
 
     // Power display — hardcore mode shows faction power, normal mode shows player power
@@ -109,11 +112,12 @@ public class WhoSubCommand extends FactionSubCommand {
       PlayerPower power = hyperFactions.getPowerManager().getPlayerPower(targetUuid);
       powerText = String.format("%.1f/%.1f", power.power(), power.getEffectiveMaxPower());
     }
-    ctx.sendMessage(msg("Power: ", COLOR_GRAY).insert(msg(powerText, COLOR_WHITE)));
-    ctx.sendMessage(msg("Status: ", COLOR_GRAY).insert(msg(isOnline ? "Online" : "Offline", isOnline ? COLOR_GREEN : COLOR_RED)));
+    ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Info.WHO_POWER, powerText), COLOR_GRAY));
+    String statusText = isOnline ? HFMessages.get(player, MessageKeys.Common.ONLINE) : HFMessages.get(player, MessageKeys.Common.OFFLINE);
+    ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Info.WHO_STATUS, statusText), COLOR_GRAY));
 
     if (!isOnline && member != null) {
-      ctx.sendMessage(msg("Last seen: ", COLOR_GRAY).insert(msg(TimeUtil.formatRelative(member.lastOnline()), COLOR_WHITE)));
+      ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Info.WHO_LAST_SEEN, TimeUtil.formatRelative(member.lastOnline())), COLOR_GRAY));
     }
   }
 }

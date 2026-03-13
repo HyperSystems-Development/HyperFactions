@@ -1,5 +1,8 @@
 package com.hyperfactions.gui.admin.page;
 
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.MessageKeys;
+
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.data.*;
 import com.hyperfactions.gui.GuiManager;
@@ -67,6 +70,21 @@ public class AdminDashboardPage extends InteractiveCustomUIPage<AdminDashboardDa
     // Setup admin nav bar
     AdminNavBarHelper.setupBar(playerRef, "dashboard", cmd, events);
 
+    // Localize page title and stat labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_DASHBOARD));
+    cmd.set("#ServerStatsLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_SERVER_STATS));
+    cmd.set("#FactionsLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_FACTIONS));
+    cmd.set("#TotalMembersLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_TOTAL_MEMBERS));
+    cmd.set("#TotalClaimsLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_TOTAL_CLAIMS));
+    cmd.set("#ZonesLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_ZONES));
+    cmd.set("#SafeWarLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_SAFE_WAR));
+    cmd.set("#TotalPowerLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_TOTAL_POWER));
+    cmd.set("#AvgPowerLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_AVG_POWER));
+    cmd.set("#TotalEconomyLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_TOTAL_ECONOMY));
+    cmd.set("#WealthiestLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_WEALTHIEST));
+    cmd.set("#AvgBalanceLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_AVG_BALANCE));
+    cmd.set("#BypassLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_DASH_PROTECTION_BYPASS));
+
     // Calculate server-wide statistics
     Collection<Faction> allFactions = factionManager.getAllFactions();
     int totalFactions = allFactions.size();
@@ -112,7 +130,7 @@ public class AdminDashboardPage extends InteractiveCustomUIPage<AdminDashboardDa
       cmd.set("#TotalEconomy.Text", econ.formatCurrencyCompact(total));
 
       // Find wealthiest faction
-      String wealthiestName = "None";
+      String wealthiestName = HFMessages.get(playerRef, MessageKeys.Common.NONE);
       java.math.BigDecimal wealthiestBalance = java.math.BigDecimal.ZERO;
       for (Faction f : allFactions) {
         java.math.BigDecimal balance = econ.getFactionBalance(f.id());
@@ -127,9 +145,9 @@ public class AdminDashboardPage extends InteractiveCustomUIPage<AdminDashboardDa
 
     // Setup bypass toggle
     boolean bypassEnabled = plugin.isAdminBypassEnabled(playerRef.getUuid());
-    cmd.set("#BypassState.Text", bypassEnabled ? "On" : "Off");
+    cmd.set("#BypassState.Text", bypassEnabled ? HFMessages.get(playerRef, MessageKeys.AdminGui.ON) : HFMessages.get(playerRef, MessageKeys.AdminGui.OFF));
     cmd.set("#BypassState.Style.TextColor", bypassEnabled ? "#55FF55" : "#FF5555");
-    cmd.set("#ToggleBypassBtn.Text", bypassEnabled ? "Disable" : "Enable");
+    cmd.set("#ToggleBypassBtn.Text", bypassEnabled ? HFMessages.get(playerRef, MessageKeys.AdminGui.DISABLE_BTN) : HFMessages.get(playerRef, MessageKeys.AdminGui.ENABLE_BTN));
 
     events.addEventBinding(
         CustomUIEventBindingType.Activating,
@@ -173,9 +191,9 @@ public class AdminDashboardPage extends InteractiveCustomUIPage<AdminDashboardDa
     UIEventBuilder events = new UIEventBuilder();
 
     // Update bypass state display
-    cmd.set("#BypassState.Text", bypassEnabled ? "On" : "Off");
+    cmd.set("#BypassState.Text", bypassEnabled ? HFMessages.get(playerRef, MessageKeys.AdminGui.ON) : HFMessages.get(playerRef, MessageKeys.AdminGui.OFF));
     cmd.set("#BypassState.Style.TextColor", bypassEnabled ? "#55FF55" : "#FF5555");
-    cmd.set("#ToggleBypassBtn.Text", bypassEnabled ? "Disable" : "Enable");
+    cmd.set("#ToggleBypassBtn.Text", bypassEnabled ? HFMessages.get(playerRef, MessageKeys.AdminGui.DISABLE_BTN) : HFMessages.get(playerRef, MessageKeys.AdminGui.ENABLE_BTN));
 
     // Re-bind the toggle button event
     events.addEventBinding(

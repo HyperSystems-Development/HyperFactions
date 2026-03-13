@@ -10,7 +10,7 @@ $C.@PageOverlay {
     Anchor: (Width: 560, Height: 580);
 
     #Title {
-      $C.@Title {
+      $C.@Title #PageTitle {
         @Text = "Player Info";
       }
     }
@@ -47,21 +47,21 @@ $C.@PageOverlay {
           LayoutMode: Left;
           Anchor: (Height: 18);
 
-          Label {
+          Label #FirstJoinedLabel {
             Text: "First joined:";
             Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
-            Anchor: (Width: 75);
+            Anchor: (Width: 110);
           }
           Label #FirstJoinedValue {
             Text: "";
             Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
-            Anchor: (Width: 130);
+            Anchor: (Width: 110);
           }
 
-          Label {
+          Label #LastOnlineLabel {
             Text: "Last online:";
             Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
-            Anchor: (Width: 70);
+            Anchor: (Width: 100);
           }
           Label #LastOnlineValue {
             Text: "";
@@ -82,7 +82,7 @@ $C.@PageOverlay {
           Anchor: (Height: 22);
           LayoutMode: Left;
 
-          Label {
+          Label #FactionLabel {
             Text: "Faction:";
             Style: (FontSize: 12, TextColor: #666666, VerticalAlignment: Center);
             Anchor: (Width: 60);
@@ -99,7 +99,7 @@ $C.@PageOverlay {
           Anchor: (Height: 22);
           LayoutMode: Left;
 
-          Label {
+          Label #RoleLabel {
             Text: "Role:";
             Style: (FontSize: 12, TextColor: #666666, VerticalAlignment: Center);
             Anchor: (Width: 60);
@@ -116,7 +116,7 @@ $C.@PageOverlay {
           Anchor: (Height: 26);
           LayoutMode: Left;
 
-          Label {
+          Label #JoinedLabel {
             Text: "Joined:";
             Style: (FontSize: 12, TextColor: #666666, VerticalAlignment: Center);
             Anchor: (Width: 60);
@@ -158,7 +158,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Right: 4);
 
-          Label {
+          Label #PowerHeader {
             Text: "Power";
             Style: (FontSize: 9, TextColor: #666666);
             Anchor: (Height: 14);
@@ -168,7 +168,7 @@ $C.@PageOverlay {
             Style: (FontSize: 20, TextColor: #FFFFFF, RenderBold: true);
             FlexWeight: 1;
           }
-          Label {
+          Label #PowerSubtitle {
             Text: "current / max";
             Style: (FontSize: 9, TextColor: #444444);
             Anchor: (Height: 14);
@@ -183,7 +183,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 4, Right: 4);
 
-          Label {
+          Label #CombatHeader {
             Text: "Combat";
             Style: (FontSize: 9, TextColor: #666666);
             Anchor: (Height: 14);
@@ -208,7 +208,7 @@ $C.@PageOverlay {
               FlexWeight: 1;
             }
           }
-          Label {
+          Label #CombatSubtitle {
             Text: "kills / deaths";
             Style: (FontSize: 9, TextColor: #444444);
             Anchor: (Height: 14);
@@ -223,7 +223,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 4);
 
-          Label {
+          Label #KDRHeader {
             Text: "K/D Ratio";
             Style: (FontSize: 9, TextColor: #666666);
             Anchor: (Height: 14);
@@ -259,7 +259,7 @@ $C.@PageOverlay {
         Anchor: (Height: 20, Bottom: 4);
         LayoutMode: Left;
 
-        Label {
+        Label #MembershipHistoryLabel {
           Text: "Membership History";
           Style: (FontSize: 11, TextColor: #666666, RenderBold: true);
         }

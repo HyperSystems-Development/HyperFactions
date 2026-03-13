@@ -45,6 +45,8 @@ public final class UIPaths {
 
   public static final String ERROR_PAGE = BASE + "shared/error_page.ui";
 
+  public static final String PLAYER_SETTINGS = BASE + "shared/player_settings.ui";
+
   public static final String INVITE_NOTIFICATION = BASE + "shared/invite_notification.ui";
 
   public static final String DISBAND_CONFIRM = BASE + "shared/disband_confirm.ui";
@@ -172,6 +174,24 @@ public final class UIPaths {
 
   public static final String HELP_SPACER = BASE + "help/help_spacer.ui";
 
+  public static final String HELP_LINE_BOLD = BASE + "help/help_line_bold.ui";
+
+  public static final String HELP_LINE_ITALIC = BASE + "help/help_line_italic.ui";
+
+  public static final String HELP_LINE_LIST = BASE + "help/help_line_list.ui";
+
+  public static final String HELP_SEPARATOR = BASE + "help/help_separator.ui";
+
+  public static final String HELP_LINE_CALLOUT = BASE + "help/help_line_callout.ui";
+
+  public static final String HELP_TABLE_HEADER = BASE + "help/help_table_header.ui";
+
+  public static final String HELP_TABLE_ROW = BASE + "help/help_table_row.ui";
+
+  public static final String HELP_TABLE_CELL = BASE + "help/help_table_cell.ui";
+
+  public static final String HELP_TABLE_HEADER_CELL = BASE + "help/help_table_header_cell.ui";
+
   // ── Admin pages ─────────────────────────────────────────────────────────
   public static final String ADMIN_MAIN = BASE + "admin/admin_main.ui";
 
@@ -253,4 +273,6 @@ public final class UIPaths {
 
   // ── Test ────────────────────────────────────────────────────────────────
   public static final String BUTTON_TEST = BASE + "test/button_test.ui";
+
+  public static final String MARKDOWN_TEST = BASE + "test/markdown_test.ui";
 }
