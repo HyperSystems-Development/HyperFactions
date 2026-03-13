@@ -2,49 +2,49 @@
 id: power_claiming
 commands: claim, unclaim
 ---
-# Claiming Territory
+# Revendiquer un territoire
 
-Claiming a chunk protects it under your faction's control. Only faction members can build, break, or access containers inside claimed territory.
+Revendiquer un chunk le place sous le controle de votre faction. Seuls les membres de la faction peuvent construire, casser ou acceder aux conteneurs dans un territoire revendique.
 
 ---
 
-## How to Claim
+## Comment revendiquer
 
 `/f claim`
 
-Stand in the chunk you want to claim and run this command. The chunk is immediately protected. Requires Officer rank or higher.
+Placez-vous dans le chunk que vous souhaitez revendiquer et executez cette commande. Le chunk est immediatement protege. Necessite le rang d'Officier ou superieur.
 
-## How to Unclaim
+## Comment annuler une revendication
 
 `/f unclaim`
 
-Releases the chunk you are standing in back to wilderness. Also requires Officer+.
+Libere le chunk dans lequel vous vous trouvez et le remet a l'etat sauvage. Necessite egalement Officier+.
 
 ---
 
-## Claim Rules
+## Regles de revendication
 
-| Rule | Default |
-|------|---------|
-| Power cost per claim | 2.0 power |
-| Maximum claims | 100 per faction |
-| Adjacent only | No (you can claim anywhere) |
+| Regle | Valeur par defaut |
+|-------|-------------------|
+| Cout en puissance par revendication | 2.0 de puissance |
+| Maximum de revendications | 100 par faction |
+| Adjacence obligatoire | Non (vous pouvez revendiquer n'importe ou) |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Ce sont les valeurs par defaut. L'administrateur de votre serveur peut avoir configure des parametres differents.
 
->[!INFO] Each claim costs 2.0 power to maintain. A faction with 50 total power can hold up to 25 claims safely.
+>[!INFO] Chaque revendication coute 2.0 de puissance a maintenir. Une faction avec 50 de puissance totale peut detenir en securite jusqu'a 25 revendications.
 
 ---
 
-## What Protection Provides
+## Ce que la protection offre
 
-Inside claimed territory, the following is enforced by default:
+Dans un territoire revendique, les regles suivantes s'appliquent par defaut :
 
-- Outsiders cannot break, place, or interact with blocks
-- Allies can use doors, seats, and transport but cannot break or place blocks
-- Members and Officers have full access to build, break, and use everything
-- Container access (chests, crates) is restricted to members only
+- Les etrangers ne peuvent ni casser, ni placer, ni interagir avec les blocs
+- Les allies peuvent utiliser les portes, les sieges et les transports, mais ne peuvent ni casser ni placer de blocs
+- Les Membres et Officiers ont un acces complet pour construire, casser et tout utiliser
+- L'acces aux conteneurs (coffres, caisses) est reserve aux membres uniquement
 
->[!TIP] You can also claim directly from the territory map. Open /f map and click on unclaimed chunks to claim them.
+>[!TIP] Vous pouvez aussi revendiquer directement depuis la carte du territoire. Ouvrez /f map et cliquez sur les chunks non revendiques pour les revendiquer.
 
->[!WARNING] Do not over-expand. If your faction loses power through deaths, claims beyond your power budget become vulnerable to overclaiming.
+>[!WARNING] Ne vous etendez pas trop. Si votre faction perd de la puissance a cause des morts, les revendications au-dela de votre budget de puissance deviennent vulnerables a la sur-revendication.

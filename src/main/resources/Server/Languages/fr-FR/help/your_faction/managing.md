@@ -2,43 +2,43 @@
 id: faction_managing
 commands: invite, kick, promote, demote, transfer
 ---
-# Managing Members
+# Gerer les membres
 
-Officers and Leaders share responsibility for managing the faction roster. Here are the key commands and who can use them.
+Les Officiers et le Chef partagent la responsabilite de gerer la liste des membres de la faction. Voici les commandes cles et qui peut les utiliser.
 
 ---
 
-## Commands
+## Commandes
 
-| Command | What It Does | Required Role |
-|---------|-------------|---------------|
-| `/f invite <player>` | Sends a join invitation (expires in 5 min) | Officer+ |
-| `/f kick <player>` | Removes a member from the faction | Officer+ (see note) |
-| `/f promote <player>` | Promotes a Member to Officer | Leader only |
-| `/f demote <player>` | Demotes an Officer to Member | Leader only |
-| `/f transfer <player>` | Transfers faction ownership | Leader only |
+| Commande | Ce qu'elle fait | Role requis |
+|----------|----------------|-------------|
+| `/f invite <player>` | Envoie une invitation (expire dans 5 min) | Officier+ |
+| `/f kick <player>` | Retire un membre de la faction | Officier+ (voir note) |
+| `/f promote <player>` | Promeut un Membre en Officier | Chef uniquement |
+| `/f demote <player>` | Retrograde un Officier en Membre | Chef uniquement |
+| `/f transfer <player>` | Transfere la propriete de la faction | Chef uniquement |
 
->[!NOTE] Officers can only kick Members. To remove another Officer, the Leader must either demote them first or kick them directly.
+>[!NOTE] Les Officiers ne peuvent expulser que des Membres. Pour retirer un autre Officier, le Chef doit d'abord le retrograder ou l'expulser directement.
 
 ---
 
 ## Invitations
 
-- Invitations expire after 5 minutes if not accepted
-- The invited player sees it in their Invites tab when they open /f
-- There is no limit to how many invitations you can send at once
-- Your faction can hold up to 50 members total
+- Les invitations expirent apres 5 minutes si elles ne sont pas acceptees
+- Le joueur invite les voit dans son onglet Invitations en ouvrant /f
+- Il n'y a pas de limite au nombre d'invitations que vous pouvez envoyer a la fois
+- Votre faction peut accueillir jusqu'a 50 membres au total
 
-## Promotions and Demotions
+## Promotions et retrogradations
 
-- Only the Leader can promote or demote
-- /f promote raises a Member to Officer
-- /f demote lowers an Officer back to Member
+- Seul le Chef peut promouvoir ou retrograder
+- /f promote eleve un Membre au rang d'Officier
+- /f demote rabaisse un Officier au rang de Membre
 
-## Transferring Leadership
+## Transfert de leadership
 
->[!WARNING] Transferring leadership is irreversible. You will be demoted to Officer and the target player becomes the new Leader. Make sure you trust them completely.
+>[!WARNING] Le transfert de leadership est irreversible. Vous serez retrograde au rang d'Officier et le joueur cible deviendra le nouveau Chef. Assurez-vous de lui faire entierement confiance.
 
 `/f transfer <player>`
 
-The target must be a current member of your faction.
+La cible doit etre un membre actuel de votre faction.

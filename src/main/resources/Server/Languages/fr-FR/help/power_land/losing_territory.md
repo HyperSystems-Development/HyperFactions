@@ -2,49 +2,49 @@
 id: power_losing
 commands: overclaim
 ---
-# Losing Territory
+# Perte de territoire
 
-When a faction's total power drops below the cost of its claims, it becomes raidable. Enemies can overclaim chunks right out from under you.
+Lorsque la puissance totale d'une faction tombe en dessous du cout de ses revendications, elle devient pillable. Les ennemis peuvent sur-revendiquer des chunks directement sous vos pieds.
 
 ---
 
-## How Overclaiming Works
+## Comment fonctionne la sur-revendication
 
 `/f overclaim`
 
-An Officer or Leader from an enemy faction stands in your claimed chunk and runs this command. If your faction is in a power deficit, the chunk transfers to their faction.
+Un Officier ou Chef d'une faction ennemie se place dans votre chunk revendique et execute cette commande. Si votre faction est en deficit de puissance, le chunk est transfere a leur faction.
 
-## The Math
+## Le calcul
 
-Each claim costs 2.0 power to maintain. If your total power falls below that threshold, the deficit chunks are vulnerable.
+Chaque revendication coute 2.0 de puissance a maintenir. Si votre puissance totale tombe en dessous de ce seuil, les chunks en deficit sont vulnerables.
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Ce sont les valeurs par defaut. L'administrateur de votre serveur peut avoir configure des parametres differents.
 
->[!WARNING] Overclaiming is permanent. Once an enemy takes a chunk, you must reclaim it (or overclaim it back if they weaken).
-
----
-
-## Example Scenario
-
-| Factor | Value |
-|--------|-------|
-| Members | 5 players |
-| Power per member | 10 each (starting) |
-| Total power | 50 |
-| Claims | 30 chunks |
-| Power needed (30 x 2.0) | 60 |
-| Deficit | 10 power short |
-
-In this example, the faction is already raidable from the start. Enemies could overclaim up to 5 chunks (10 deficit / 2.0 per claim) before the faction reaches equilibrium.
+>[!WARNING] La sur-revendication est permanente. Une fois qu'un ennemi prend un chunk, vous devez le re-revendiquer (ou le sur-revendiquer en retour s'il s'affaiblit).
 
 ---
 
-## How to Prevent Overclaiming
+## Exemple de scenario
 
-- Do not over-expand -- always keep total power above your claim cost with a buffer
-- Stay active -- power only regenerates while online (+0.1/min)
-- Avoid unnecessary deaths -- each death costs 1.0 power
-- Recruit more members -- more players means more total power
-- Unclaim unused chunks -- free up power with /f unclaim
+| Facteur | Valeur |
+|---------|--------|
+| Membres | 5 joueurs |
+| Puissance par membre | 10 chacun (initiale) |
+| Puissance totale | 50 |
+| Revendications | 30 chunks |
+| Puissance requise (30 x 2.0) | 60 |
+| Deficit | 10 de puissance en moins |
 
->[!TIP] Check your power status regularly with /f power. If your total power is close to your claim cost, consider unclaiming less important chunks before a war.
+Dans cet exemple, la faction est deja pillable des le depart. Les ennemis pourraient sur-revendiquer jusqu'a 5 chunks (deficit de 10 / 2.0 par revendication) avant que la faction n'atteigne l'equilibre.
+
+---
+
+## Comment prevenir la sur-revendication
+
+- Ne vous etendez pas trop -- gardez toujours la puissance totale au-dessus du cout de vos revendications avec une marge
+- Restez actifs -- la puissance ne se regenere qu'en ligne (+0.1/min)
+- Evitez les morts inutiles -- chaque mort coute 1.0 de puissance
+- Recrutez plus de membres -- plus de joueurs signifie plus de puissance totale
+- Annulez la revendication des chunks inutilises -- liberez de la puissance avec /f unclaim
+
+>[!TIP] Verifiez regulierement votre statut de puissance avec /f power. Si votre puissance totale est proche du cout de vos revendications, envisagez d'annuler la revendication de chunks moins importants avant une guerre.

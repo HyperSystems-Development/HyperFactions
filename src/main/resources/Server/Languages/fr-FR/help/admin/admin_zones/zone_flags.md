@@ -1,29 +1,29 @@
 ---
 id: admin_zone_flags
 ---
-# Zone Flags
+# Drapeaux de zone
 
-Zones support **47 boolean flags** across 10 categories. Each flag controls a specific behavior within the zone.
+Les zones supportent **47 drapeaux booleens** repartis en 10 categories. Chaque drapeau controle un comportement specifique dans la zone.
 
-## Flag Categories Overview
+## Apercu des categories de drapeaux
 
-| Category | Count | Key Flags |
-|----------|-------|-----------|
+| Categorie | Nombre | Drapeaux cles |
+|-----------|--------|---------------|
 | Combat | 7 | pvp_enabled, friendly_fire, mob_damage, pve_damage |
-| Damage | 4 | fall_damage, explosion_damage, fire_spread |
-| Death | 2 | keep_inventory, power_loss |
-| Building | 4 | build_allowed, block_place, hammer_use |
+| Degats | 4 | fall_damage, explosion_damage, fire_spread |
+| Mort | 2 | keep_inventory, power_loss |
+| Construction | 4 | build_allowed, block_place, hammer_use |
 | Interaction | 13 | door_use, container_use, bench_use, npc_tame |
 | Transport | 3 | teleporter_use, portal_use, mount_entry |
-| Items | 4 | item_drop, item_pickup, invincible_items |
-| Mob Spawning | 5 | mob_spawning, hostile/passive/neutral |
-| Mob Clearing | 4 | mob_clear, hostile/passive/neutral clear |
+| Objets | 4 | item_drop, item_pickup, invincible_items |
+| Apparition de mobs | 5 | mob_spawning, hostile/passive/neutral |
+| Nettoyage de mobs | 4 | mob_clear, hostile/passive/neutral clear |
 | Integration | 5 | gravestone_access, show_on_map, essentials_homes |
 
-## Default Values (SafeZone vs WarZone)
+## Valeurs par defaut (SafeZone vs WarZone)
 
-| Flag | SafeZone | WarZone |
-|------|----------|---------|
+| Drapeau | SafeZone | WarZone |
+|---------|----------|---------|
 | pvp_enabled | false | **true** |
 | build_allowed | false | false |
 | fall_damage | false | **true** |
@@ -34,10 +34,10 @@ Zones support **47 boolean flags** across 10 categories. Each flag controls a sp
 | door_use | **true** | **true** |
 | container_use | false | **true** |
 
->[!NOTE] Some flags require **HyperProtect-Mixin** to function (e.g., keep_inventory, explosion_damage, fire_spread, block_place, npc_tame). Without the mixin, these flags have no effect even when enabled.
+>[!NOTE] Certains drapeaux necessitent **HyperProtect-Mixin** pour fonctionner (ex. : keep_inventory, explosion_damage, fire_spread, block_place, npc_tame). Sans le mixin, ces drapeaux n'ont aucun effet meme lorsqu'ils sont actives.
 
-## Setting Flags
+## Definir des drapeaux
 
 `/f admin zoneflag <zone> <flag> <true/false>`
 
->[!TIP] Use `/f admin zone properties <zone>` for a visual toggle editor grouped by category.
+>[!TIP] Utilisez `/f admin zone properties <zone>` pour un editeur visuel avec bascules groupees par categorie.

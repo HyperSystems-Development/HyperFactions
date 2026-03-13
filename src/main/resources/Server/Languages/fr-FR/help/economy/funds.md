@@ -2,41 +2,41 @@
 id: economy_funds
 commands: deposit, withdraw
 ---
-# Managing Funds
+# Gerer les fonds
 
-Faction members work together to keep the treasury funded through deposits, withdrawals, and transfers.
+Les membres de la faction travaillent ensemble pour alimenter le tresor par des depots, retraits et transferts.
 
-## Depositing
+## Deposer
 
-Any member can deposit personal funds into the faction treasury.
+N'importe quel membre peut deposer des fonds personnels dans le tresor de la faction.
 
 `/f deposit <amount>`
-Deposit from your personal balance into the treasury.
+Deposer de votre solde personnel dans le tresor.
 
-## Withdrawing
+## Retirer
 
-Officers and the Leader can withdraw funds back to their personal balance.
+Les Officiers et le Chef peuvent retirer des fonds vers leur solde personnel.
 
 `/f withdraw <amount>`
-Withdraw from the treasury to your balance. (Officer+)
+Retirer du tresor vers votre solde. (Officier+)
 
-## Transferring
+## Transferer
 
-Officers can transfer funds directly between faction treasuries for trade deals or diplomacy.
+Les Officiers peuvent transferer des fonds directement entre les tresors de factions pour des accords commerciaux ou de la diplomatie.
 
 `/f money transfer <faction> <amount>`
-Send funds to another faction's treasury. (Officer+)
+Envoyer des fonds au tresor d'une autre faction. (Officier+)
 
 ---
 
-## Fees
+## Frais
 
-| Transaction | Fee |
-|------------|-----|
-| Deposit | 0% |
-| Withdraw | 0% |
-| Transfer | 0% |
+| Transaction | Frais |
+|-------------|-------|
+| Depot | 0% |
+| Retrait | 0% |
+| Transfert | 0% |
 
->[!INFO] Fee rates are configurable by the server and may differ from defaults shown above.
+>[!INFO] Les taux de frais sont configurables par le serveur et peuvent differer des valeurs par defaut indiquees ci-dessus.
 
->[!TIP] All transactions are logged. Use /f money log to review recent activity.
+>[!TIP] Toutes les transactions sont enregistrees. Utilisez /f money log pour consulter l'activite recente.

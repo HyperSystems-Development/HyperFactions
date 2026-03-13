@@ -1,37 +1,37 @@
 ---
 id: economy_upkeep
 ---
-# Territory Upkeep
+# Entretien du territoire
 
-Factions must pay ongoing upkeep to maintain their claimed territory. This prevents land hoarding and keeps the map dynamic.
+Les factions doivent payer un entretien continu pour maintenir leur territoire revendique. Cela empeche l'accumulation de terres et maintient la carte dynamique.
 
-## Upkeep Costs
+## Couts d'entretien
 
-| Setting | Default |
-|---------|---------|
-| Cost per chunk | 2.0 per cycle |
-| Payment interval | Every 24 hours |
-| Free chunks | 3 (no cost) |
-| Scaling mode | Flat rate |
+| Parametre | Valeur par defaut |
+|-----------|-------------------|
+| Cout par chunk | 2.0 par cycle |
+| Intervalle de paiement | Toutes les 24 heures |
+| Chunks gratuits | 3 (sans cout) |
+| Mode de calcul | Taux fixe |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Ce sont les valeurs par defaut. L'administrateur de votre serveur peut avoir configure des parametres differents.
 
-Your first 3 chunks are free. Beyond that, each additional claimed chunk costs 2.0 per payment cycle.
+Vos 3 premiers chunks sont gratuits. Au-dela, chaque chunk revendique supplementaire coute 2.0 par cycle de paiement.
 
-## Auto-Pay
+## Paiement automatique
 
-Auto-pay is enabled by default. The system automatically deducts upkeep from your treasury at each interval. No manual action needed.
+Le paiement automatique est active par defaut. Le systeme deduit automatiquement l'entretien de votre tresor a chaque intervalle. Aucune action manuelle n'est necessaire.
 
 ---
 
-## Grace Period
+## Periode de grace
 
-If your treasury cannot cover upkeep, a 48-hour grace period begins. A warning is sent 6 hours before claims start being lost.
+Si votre tresor ne peut pas couvrir l'entretien, une periode de grace de 48 heures commence. Un avertissement est envoye 6 heures avant que les revendications ne commencent a etre perdues.
 
->[!WARNING] If upkeep remains unpaid after the grace period, your faction loses 1 claim per cycle until costs are covered or all extra claims are gone.
+>[!WARNING] Si l'entretien reste impaye apres la periode de grace, votre faction perd 1 revendication par cycle jusqu'a ce que les couts soient couverts ou que toutes les revendications supplementaires soient perdues.
 
-## Example
+## Exemple
 
-*A faction with 8 claims pays for 5 chunks (8 minus 3 free). At 2.0 per chunk, that is 10.0 per cycle.*
+*Une faction avec 8 revendications paie pour 5 chunks (8 moins 3 gratuits). A 2.0 par chunk, cela fait 10.0 par cycle.*
 
->[!TIP] Keep your treasury funded above your upkeep cost. Use /f balance to check your reserves.
+>[!TIP] Gardez votre tresor approvisionne au-dessus de votre cout d'entretien. Utilisez /f balance pour verifier vos reserves.

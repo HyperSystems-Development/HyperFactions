@@ -2,37 +2,37 @@
 id: welcome_started
 commands: gui, menu
 ---
-# Getting Started
+# Premiers pas
 
-Welcome to HyperFactions! Here is how to get up and running in just a few steps.
-
----
-
-## Step 1: Open the Faction Menu
-
-Type /f to open the main faction GUI. This is your hub for everything -- browsing factions, creating your own, and managing invitations.
-
-## Step 2: Choose Your Path
-
-| Option | How |
-|--------|-----|
-| Browse open factions | Click Browse in the menu and hit Join on any open faction. |
-| Accept an invitation | Check the Invites tab. If someone invited you, click Accept. |
-| Create your own | Click Create Faction, pick a name, and you are the Leader. |
-
-## Step 3: Explore Your Faction
-
-Once you are in a faction, you will see the Faction Dashboard with your roster, territory map, relations, and settings.
-
->[!TIP] If you are brand new, try joining an existing faction first. You will learn the ropes faster with experienced members around you.
+Bienvenue sur HyperFactions ! Voici comment vous lancer en quelques etapes.
 
 ---
 
-## Essential First Commands
+## Etape 1 : Ouvrir le menu de faction
 
-- /f -- Opens the faction GUI
-- /f home -- Teleport to your faction's home base
-- /f c -- Cycle chat mode between Normal, Faction, and Ally
-- /f map -- View the territory map around you
+Tapez /f pour ouvrir l'interface principale des factions. C'est votre point central pour tout -- parcourir les factions, creer la votre et gerer les invitations.
 
->[!TIP] You can also type /f help in chat for a quick command reference anytime.
+## Etape 2 : Choisissez votre voie
+
+| Option | Comment |
+|--------|---------|
+| Parcourir les factions ouvertes | Cliquez sur Parcourir dans le menu, puis sur Rejoindre pour toute faction ouverte. |
+| Accepter une invitation | Consultez l'onglet Invitations. Si quelqu'un vous a invite, cliquez sur Accepter. |
+| Creer la votre | Cliquez sur Creer une faction, choisissez un nom, et vous devenez le Chef. |
+
+## Etape 3 : Explorez votre faction
+
+Une fois dans une faction, vous verrez le Tableau de bord de faction avec votre liste de membres, la carte du territoire, les relations et les parametres.
+
+>[!TIP] Si vous debutez, essayez d'abord de rejoindre une faction existante. Vous apprendrez plus vite avec des membres experimentes a vos cotes.
+
+---
+
+## Commandes essentielles pour commencer
+
+- /f -- Ouvre l'interface de faction
+- /f home -- Se teleporter a la base de votre faction
+- /f c -- Alterner le mode de discussion entre Normal, Faction et Allie
+- /f map -- Afficher la carte du territoire autour de vous
+
+>[!TIP] Vous pouvez aussi taper /f help dans le chat pour obtenir un aide-memoire des commandes a tout moment.

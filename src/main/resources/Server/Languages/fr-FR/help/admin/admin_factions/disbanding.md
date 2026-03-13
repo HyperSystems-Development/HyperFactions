@@ -1,37 +1,37 @@
 ---
 id: admin_disbanding
 ---
-# Force Disbanding
+# Dissolution forcee
 
-Admins can forcefully disband any faction, regardless of the leader's wishes.
+Les administrateurs peuvent dissoudre de force n'importe quelle faction, independamment des souhaits du chef.
 
-## Command
+## Commande
 
 `/f admin disband <faction>`
-Force-disband the named faction. A confirmation prompt will appear before the action is executed.
+Dissout de force la faction nommee. Une invite de confirmation apparaitra avant l'execution de l'action.
 
-**Permission**: `hyperfactions.admin.disband`
+**Permission** : `hyperfactions.admin.disband`
 
->[!WARNING] Disbanding a faction is **irreversible**. All claims are released, all members are removed, and the faction ceases to exist. Create a backup first.
+>[!WARNING] Dissoudre une faction est **irreversible**. Toutes les revendications sont liberees, tous les membres sont retires et la faction cesse d'exister. Creez d'abord une sauvegarde.
 
 ## Consequences
 
-When a faction is disbanded:
+Lorsqu'une faction est dissoute :
 
-| Effect | Description |
-|--------|-------------|
-| **Claims** | All territory is released immediately |
-| **Members** | All players are removed from the roster |
-| **Relations** | All alliances and enemies are cleared |
-| **Treasury** | Handled per economy config settings |
-| **Home** | Faction home is deleted |
-| **Chat** | Faction chat history is removed |
+| Effet | Description |
+|-------|-------------|
+| **Revendications** | Tout le territoire est libere immediatement |
+| **Membres** | Tous les joueurs sont retires de la liste |
+| **Relations** | Toutes les alliances et inimities sont effacees |
+| **Tresor** | Gere selon les parametres de configuration de l'economie |
+| **Foyer** | Le foyer de faction est supprime |
+| **Discussion** | L'historique de discussion de faction est supprime |
 
-## Best Practices
+## Bonnes pratiques
 
-1. Always run `/f admin backup create` before disbanding
-2. Notify faction members when possible
-3. Document the reason for server records
-4. Check `/f admin info <faction>` to review before acting
+1. Executez toujours `/f admin backup create` avant de dissoudre
+2. Notifiez les membres de la faction si possible
+3. Documentez la raison pour les archives du serveur
+4. Verifiez avec `/f admin info <faction>` avant d'agir
 
->[!TIP] If the issue is with a specific member, consider using the admin factions GUI to transfer leadership rather than disbanding the entire faction.
+>[!TIP] Si le probleme concerne un membre specifique, envisagez d'utiliser l'interface admin des factions pour transferer le leadership plutot que de dissoudre la faction entiere.

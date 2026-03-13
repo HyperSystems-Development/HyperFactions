@@ -2,43 +2,43 @@
 id: power_map
 commands: map
 ---
-# The Territory Map
+# La carte du territoire
 
-The territory map gives you a bird's-eye view of claimed chunks in your area, showing which factions control the land around you.
+La carte du territoire vous offre une vue aerienne des chunks revendiques dans votre zone, montrant quelles factions controlent les terres autour de vous.
 
 ---
 
-## Opening the Map
+## Ouvrir la carte
 
 `/f map`
 
-Opens the territory map GUI centered on your current location.
+Ouvre l'interface de la carte du territoire centree sur votre position actuelle.
 
 ---
 
-## Color Legend
+## Legende des couleurs
 
-| Color | Meaning |
-|-------|---------|
-| [#55FF55] Your faction's color | Territory claimed by your faction |
-| [#5555FF] Blue | Allied faction territory |
-| [#FF5555] Red | Enemy faction territory |
-| [#AAAAAA] Gray | Neutral faction territory |
-| [#333333] Dark | Wilderness (unclaimed land) |
-| [#FFAA00] Gold | Special zones (safezone, warzone) |
+| Couleur | Signification |
+|---------|---------------|
+| [#55FF55] Couleur de votre faction | Territoire revendique par votre faction |
+| [#5555FF] Bleu | Territoire d'une faction alliee |
+| [#FF5555] Rouge | Territoire d'une faction ennemie |
+| [#AAAAAA] Gris | Territoire d'une faction neutre |
+| [#333333] Sombre | Terres sauvages (non revendiquees) |
+| [#FFAA00] Or | Zones speciales (SafeZone, WarZone) |
 
->[!INFO] Your faction's color on the map matches the color you set with the faction color setting. Allies and enemies use fixed colors for easy identification.
+>[!INFO] La couleur de votre faction sur la carte correspond a celle que vous avez definie dans les parametres de couleur de la faction. Les allies et ennemis utilisent des couleurs fixes pour une identification facile.
 
 ---
 
-## Click to Claim
+## Cliquer pour revendiquer
 
-The map is not just for viewing -- you can interact with it directly.
+La carte ne sert pas seulement a regarder -- vous pouvez interagir avec elle directement.
 
-- Click an unclaimed chunk to claim it (requires Officer+ rank and sufficient power)
-- Click a claimed chunk to see which faction owns it
-- Scroll or pan to explore the area around you
+- Cliquez sur un chunk non revendique pour le revendiquer (necessite le rang Officier+ et suffisamment de puissance)
+- Cliquez sur un chunk revendique pour voir quelle faction le possede
+- Faites defiler ou deplacez la vue pour explorer les environs
 
->[!TIP] The map is the easiest way to plan your territory expansion. Look for unclaimed areas near your base and claim strategically to create a contiguous border.
+>[!TIP] La carte est le moyen le plus simple de planifier l'expansion de votre territoire. Cherchez des zones non revendiquees pres de votre base et revendiquez strategiquement pour creer une frontiere continue.
 
->[!NOTE] The map shows a fixed area around your position. Move to a different location and reopen it to see other parts of the world.
+>[!NOTE] La carte affiche une zone fixe autour de votre position. Deplacez-vous et rouvrez-la pour voir d'autres parties du monde.

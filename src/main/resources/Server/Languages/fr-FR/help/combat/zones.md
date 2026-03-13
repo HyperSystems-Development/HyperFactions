@@ -1,29 +1,29 @@
 ---
 id: combat_zones
 ---
-# Special Zones
+# Zones speciales
 
-Admins can designate areas with special rules that override normal faction territory protection.
+Les administrateurs peuvent designer des zones avec des regles speciales qui remplacent la protection territoriale normale des factions.
 
 ## SafeZone
 
-No PvP damage, no block breaking by non-admins. Ideal for spawn areas, trading hubs, and event staging areas. Players cannot be harmed here.
+Pas de degats JcJ, pas de destruction de blocs par les non-administrateurs. Ideal pour les zones de reapparition, les centres commerciaux et les zones d'evenements. Les joueurs ne peuvent pas etre blesses ici.
 
 ## WarZone
 
-PvP is always enabled. No block protection applies. Open battle areas where anything goes. You receive no territory protection benefits in a WarZone.
+Le JcJ est toujours active. Aucune protection des blocs ne s'applique. Des zones de combat ouvertes ou tout est permis. Vous ne beneficiez d'aucun avantage de protection territoriale dans une WarZone.
 
 ---
 
-## Zone Comparison
+## Comparaison des zones
 
-| Feature | SafeZone | WarZone | Faction Land |
-|---------|----------|---------|--------------|
-| PvP | Disabled | Always On | Relation-based |
-| Block Break | Disabled | Allowed | Members Only |
-| Containers | Protected | Open | Members Only |
-| Best For | Spawn/Trade | Arenas | Bases |
+| Caracteristique | SafeZone | WarZone | Territoire de faction |
+|-----------------|----------|---------|----------------------|
+| JcJ | Desactive | Toujours actif | Selon les relations |
+| Destruction de blocs | Desactivee | Autorisee | Membres uniquement |
+| Conteneurs | Proteges | Ouverts | Membres uniquement |
+| Ideal pour | Spawn/Commerce | Arenes | Bases |
 
->[!NOTE] Zone rules always override faction territory rules. A claimed chunk inside a WarZone follows WarZone rules.
+>[!NOTE] Les regles de zone remplacent toujours les regles de territoire de faction. Un chunk revendique dans une WarZone suit les regles de la WarZone.
 
->[!TIP] Check your territory map with /f map to see zone boundaries.
+>[!TIP] Consultez votre carte du territoire avec /f map pour voir les limites des zones.

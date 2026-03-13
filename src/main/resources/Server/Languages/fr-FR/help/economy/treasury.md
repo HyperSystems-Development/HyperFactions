@@ -2,25 +2,25 @@
 id: economy_treasury
 commands: balance
 ---
-# Faction Treasury
+# Tresor de faction
 
-Every faction has a shared treasury that serves as the faction's bank. Funds are used for upkeep costs, territory maintenance, and faction operations.
+Chaque faction possede un tresor partage qui sert de banque a la faction. Les fonds sont utilises pour les couts d'entretien, la maintenance du territoire et les operations de la faction.
 
-## Starting Balance
+## Solde de depart
 
-New factions start with 0 in their treasury. Members must deposit funds to build up reserves.
+Les nouvelles factions commencent avec 0 dans leur tresor. Les membres doivent deposer des fonds pour constituer des reserves.
 
-## Who Can Manage
+## Qui peut gerer
 
-- Any member can deposit funds
-- Officers and Leader can withdraw and transfer
-- Leader has full treasury control
+- N'importe quel membre peut deposer des fonds
+- Les Officiers et le Chef peuvent retirer et transferer
+- Le Chef a le controle total du tresor
 
 ---
 
 `/f balance`
-Check your faction's current treasury balance. Also available as /f bal.
+Verifier le solde actuel du tresor de votre faction. Egalement disponible via /f bal.
 
->[!TIP] Contribute regularly to keep your faction funded. Territory upkeep costs can drain an empty treasury quickly.
+>[!TIP] Contribuez regulierement pour garder votre faction financee. Les couts d'entretien du territoire peuvent vider un tresor vide rapidement.
 
->[!INFO] All treasury transactions are logged and can be reviewed by officers.
+>[!INFO] Toutes les transactions du tresor sont enregistrees et peuvent etre consultees par les officiers.

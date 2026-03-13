@@ -1,45 +1,45 @@
 ---
 id: admin_world_settings
 ---
-# Per-World Settings
+# Parametres par monde
 
-HyperFactions supports per-world configuration for claiming, PvP, and protection behavior.
+HyperFactions supporte une configuration par monde pour les revendications, le JcJ et le comportement de protection.
 
-## World Commands
+## Commandes de monde
 
-| Command | Description |
-|---------|-------------|
-| `/f admin world list` | List all world overrides |
-| `/f admin world info <world>` | Show settings for a world |
-| `/f admin world set <world> <key> <value>` | Set a setting |
-| `/f admin world reset <world>` | Reset world to defaults |
+| Commande | Description |
+|----------|-------------|
+| `/f admin world list` | Lister tous les remplacements de monde |
+| `/f admin world info <world>` | Afficher les parametres d'un monde |
+| `/f admin world set <world> <key> <value>` | Definir un parametre |
+| `/f admin world reset <world>` | Reinitialiser le monde aux valeurs par defaut |
 
-## Available Settings
+## Parametres disponibles
 
-| Setting | Type | Description |
-|---------|------|-------------|
-| claiming_enabled | boolean | Allow faction claims in this world |
-| pvp_enabled | boolean | Allow PvP combat in this world |
-| power_loss | boolean | Apply power loss on death |
-| build_protection | boolean | Enforce claim build protection |
-| explosion_protection | boolean | Protect claims from explosions |
+| Parametre | Type | Description |
+|-----------|------|-------------|
+| claiming_enabled | boolean | Autoriser les revendications de faction dans ce monde |
+| pvp_enabled | boolean | Autoriser le combat JcJ dans ce monde |
+| power_loss | boolean | Appliquer la perte de puissance a la mort |
+| build_protection | boolean | Appliquer la protection de construction des revendications |
+| explosion_protection | boolean | Proteger les revendications des explosions |
 
-## World Whitelist / Blacklist
+## Liste blanche / Liste noire de mondes
 
-Control which worlds allow faction features through the `worlds.json` config file:
+Controlez quels mondes autorisent les fonctionnalites de faction via le fichier de configuration `worlds.json` :
 
-- **Whitelist mode**: Only listed worlds allow claiming
-- **Blacklist mode**: All worlds allow claiming except listed
+- **Mode liste blanche** : Seuls les mondes listes autorisent les revendications
+- **Mode liste noire** : Tous les mondes autorisent les revendications sauf ceux listes
 
->[!INFO] World settings are stored in `worlds.json` and override the global defaults from `factions.json`.
+>[!INFO] Les parametres de monde sont stockes dans `worlds.json` et remplacent les valeurs par defaut globales de `factions.json`.
 
-## Examples
+## Exemples
 
 - `/f admin world set survival claiming_enabled true`
 - `/f admin world set creative claiming_enabled false`
 - `/f admin world set pvp_arena pvp_enabled true`
-- `/f admin world reset lobby` -- restore all defaults
+- `/f admin world reset lobby` -- restaurer toutes les valeurs par defaut
 
->[!TIP] Disable claiming in creative or lobby worlds to keep the faction system focused on survival gameplay.
+>[!TIP] Desactivez les revendications dans les mondes creatif ou lobby pour garder le systeme de factions concentre sur le gameplay de survie.
 
->[!NOTE] Per-world settings take priority over global config but are overridden by zone flags within that world.
+>[!NOTE] Les parametres par monde ont la priorite sur la configuration globale mais sont remplaces par les drapeaux de zone dans ce monde.

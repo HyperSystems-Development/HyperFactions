@@ -1,94 +1,94 @@
 ---
 id: quickref_commands
 ---
-# All Commands
+# Toutes les commandes
 
-## Core
+## Base
 
-| Command | Description | Role |
-|---------|-------------|------|
-| /f | Open faction menu | Any |
-| /f help | Open help center | Any |
-| /f create (name) | Create a faction | Any |
-| /f disband | Delete your faction | Leader |
-| /f leave | Leave your faction | Any |
+| Commande | Description | Role |
+|----------|-------------|------|
+| /f | Ouvrir le menu de faction | Tous |
+| /f help | Ouvrir le centre d'aide | Tous |
+| /f create (nom) | Creer une faction | Tous |
+| /f disband | Supprimer votre faction | Chef |
+| /f leave | Quitter votre faction | Tous |
 
-## Membership
+## Adhesion
 
-| Command | Description | Role |
-|---------|-------------|------|
-| /f invite (player) | Invite a player | Officer+ |
-| /f accept [faction] | Accept an invite | Any |
-| /f request (faction) | Request to join | Any |
-| /f kick (player) | Remove a member | Officer+ |
-| /f promote (player) | Promote to Officer | Leader |
-| /f demote (player) | Demote to Member | Leader |
-| /f transfer (player) | Transfer leadership | Leader |
+| Commande | Description | Role |
+|----------|-------------|------|
+| /f invite (joueur) | Inviter un joueur | Officier+ |
+| /f accept [faction] | Accepter une invitation | Tous |
+| /f request (faction) | Demander a rejoindre | Tous |
+| /f kick (joueur) | Retirer un membre | Officier+ |
+| /f promote (joueur) | Promouvoir en Officier | Chef |
+| /f demote (joueur) | Retrograder en Membre | Chef |
+| /f transfer (joueur) | Transferer le leadership | Chef |
 
-## Territory
+## Territoire
 
-| Command | Description | Role |
-|---------|-------------|------|
-| /f claim | Claim current chunk | Officer+ |
-| /f unclaim | Release current chunk | Officer+ |
-| /f overclaim | Take weakened chunk | Officer+ |
-| /f map | Open territory map | Any |
+| Commande | Description | Role |
+|----------|-------------|------|
+| /f claim | Revendiquer le chunk actuel | Officier+ |
+| /f unclaim | Liberer le chunk actuel | Officier+ |
+| /f overclaim | Prendre un chunk affaibli | Officier+ |
+| /f map | Ouvrir la carte du territoire | Tous |
 
-## Teleport
+## Teleportation
 
-| Command | Description | Role |
-|---------|-------------|------|
-| /f home | Teleport to faction home | Any |
-| /f sethome | Set faction home | Officer+ |
-| /f delhome | Delete faction home | Officer+ |
-| /f stuck | Escape enemy territory | Any |
+| Commande | Description | Role |
+|----------|-------------|------|
+| /f home | Se teleporter au foyer de faction | Tous |
+| /f sethome | Definir le foyer de faction | Officier+ |
+| /f delhome | Supprimer le foyer de faction | Officier+ |
+| /f stuck | Echapper au territoire ennemi | Tous |
 
-## Information
+## Informations
 
-| Command | Description | Role |
-|---------|-------------|------|
-| /f info [faction] | View faction details | Any |
-| /f list | Browse all factions | Any |
-| /f members | View roster | Any |
-| /f who [player] | View player info | Any |
-| /f power [player] | Check power levels | Any |
-| /f invites | Manage invites/requests | Any |
-| /f relations | View diplomatic relations | Any |
+| Commande | Description | Role |
+|----------|-------------|------|
+| /f info [faction] | Voir les details de la faction | Tous |
+| /f list | Parcourir toutes les factions | Tous |
+| /f members | Voir la liste des membres | Tous |
+| /f who [joueur] | Voir les infos d'un joueur | Tous |
+| /f power [joueur] | Verifier les niveaux de puissance | Tous |
+| /f invites | Gerer les invitations/demandes | Tous |
+| /f relations | Voir les relations diplomatiques | Tous |
 
-## Diplomacy
+## Diplomatie
 
-| Command | Description | Role |
-|---------|-------------|------|
-| /f ally (faction) | Request alliance | Officer+ |
-| /f enemy (faction) | Declare enemy | Officer+ |
-| /f neutral (faction) | Reset to neutral | Officer+ |
+| Commande | Description | Role |
+|----------|-------------|------|
+| /f ally (faction) | Demander une alliance | Officier+ |
+| /f enemy (faction) | Declarer un ennemi | Officier+ |
+| /f neutral (faction) | Reinitialiser a neutre | Officier+ |
 
-## Settings
+## Parametres
 
-| Command | Description | Role |
-|---------|-------------|------|
-| /f settings | Open settings GUI | Officer+ |
-| /f rename (name) | Rename faction | Leader |
-| /f desc [text] | Set description | Officer+ |
-| /f color (code) | Set faction color | Officer+ |
-| /f open | Allow anyone to join | Leader |
-| /f close | Require invitation | Leader |
+| Commande | Description | Role |
+|----------|-------------|------|
+| /f settings | Ouvrir l'interface des parametres | Officier+ |
+| /f rename (nom) | Renommer la faction | Chef |
+| /f desc [texte] | Definir la description | Officier+ |
+| /f color (code) | Definir la couleur de la faction | Officier+ |
+| /f open | Autoriser tout le monde a rejoindre | Chef |
+| /f close | Exiger une invitation | Chef |
 
-## Economy
+## Economie
 
-| Command | Description | Role |
-|---------|-------------|------|
-| /f balance | View treasury | Any |
-| /f deposit (amount) | Deposit funds | Any |
-| /f withdraw (amount) | Withdraw funds | Officer+ |
-| /f money transfer (faction) (amt) | Transfer funds | Officer+ |
-| /f money log [page] | Transaction history | Officer+ |
+| Commande | Description | Role |
+|----------|-------------|------|
+| /f balance | Voir le tresor | Tous |
+| /f deposit (montant) | Deposer des fonds | Tous |
+| /f withdraw (montant) | Retirer des fonds | Officier+ |
+| /f money transfer (faction) (mnt) | Transferer des fonds | Officier+ |
+| /f money log [page] | Historique des transactions | Officier+ |
 
-## Chat
+## Discussion
 
-| Command | Description | Role |
-|---------|-------------|------|
-| /f c | Cycle chat mode | Any |
-| /f c f | Set faction chat | Any |
-| /f c a | Set ally chat | Any |
-| /f c off | Set public chat | Any |
+| Commande | Description | Role |
+|----------|-------------|------|
+| /f c | Alterner le mode de discussion | Tous |
+| /f c f | Activer la discussion de faction | Tous |
+| /f c a | Activer la discussion d'allies | Tous |
+| /f c off | Activer la discussion publique | Tous |
