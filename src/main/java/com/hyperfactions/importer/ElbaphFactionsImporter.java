@@ -420,9 +420,13 @@ public class ElbaphFactionsImporter {
   public ImportResult importFrom(@NotNull Path sourcePath) {
     ImportResult.Builder result = ImportResult.builder().dryRun(dryRun);
 
-    // Check HyFactions importer isn't running
+    // Check other importers aren't running
     if (HyFactionsImporter.isImportInProgress()) {
       result.error("A HyFactions import is already in progress. Please wait for it to complete.");
+      return result.build();
+    }
+    if (FactionsXImporter.isImportInProgress()) {
+      result.error("A FactionsX import is already in progress. Please wait for it to complete.");
       return result.build();
     }
 
