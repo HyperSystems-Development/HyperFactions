@@ -1,0 +1,801 @@
+# HyperFactions Admin GUI - Traduções para Português Brasileiro
+# Formato: chave = valor
+# Nota: As chaves são automaticamente prefixadas com "hyperfactions_admin." pelo I18nModule do Hytale
+
+# ========== Barra de Navegação Admin ==========
+nav.dashboard = Painel
+nav.actions = Ações
+nav.factions = Facções
+nav.players = Jogadores
+nav.economy = Economia
+nav.zones = Zonas
+nav.config = Config
+nav.backups = Backups
+nav.log = Registro
+nav.updates = Atualizações
+nav.help = Ajuda
+nav.version = Versão
+
+# ========== Rótulos Comuns Admin ==========
+common.faction_not_found = Facção Não Encontrada
+common.no_faction = Sem Facção
+common.not_set = Não definido
+common.on = Ligado
+common.off = Desligado
+common.enable = Ativar
+common.disable = Desativar
+common.none_paren = (Nenhum)
+common.invalid_faction = Facção inválida.
+common.leader_prefix = Líder: {0}
+common.members_suffix = {0} membros
+common.claims_suffix = {0} reivindicações
+common.factions_suffix = {0} facções
+common.players_suffix = {0} jogadores
+common.chunks_suffix = {0} chunks
+common.entries_suffix = {0} entradas
+common.found_suffix = {0} encontrados
+common.power_format = {0}/{1} poder
+common.raidable = Vulnerável
+common.protected = Protegida
+common.no_description = Sem descrição definida.
+common.officers_more = +{0} mais
+common.custom_max = (máx personalizado)
+common.default_max = (máx padrão)
+common.now = Agora
+common.ago_suffix = {0} atrás
+common.just_now = agora mesmo
+common.no_membership_history = Sem histórico de filiação
+
+# ========== Painel Admin ==========
+dashboard.factions_prefix = Facções: {0}
+dashboard.members_prefix = Total de Membros: {0}
+dashboard.claims_prefix = Total de Reivindicações: {0}
+
+# ========== Ações Admin ==========
+actions.confirm_reset = Confirmar Reset?
+actions.confirm_trigger = Confirmar Execução?
+actions.kd_reset = K/D resetado para {0} jogadores.
+actions.kd_reset_failed = Falha ao resetar K/D: {0}
+actions.upkeep_unavailable = O processador de manutenção não está disponível.
+actions.upkeep_triggered = Cobrança de manutenção executada.
+actions.upkeep_failed = Manutenção falhou: {0}
+
+# ========== Dissolver Admin ==========
+disband.faction_gone = A facção não existe mais.
+disband.success = Facção '{0}' foi dissolvida.
+disband.failed = Falha ao dissolver: {0}
+disband.no_leader = A facção não tem líder, não é possível dissolver.
+
+# ========== Desreivindicar Tudo Admin ==========
+unclaim.removed = [Admin] Removidas {0} reivindicações de {1}.
+unclaim.no_claims = {0} não tinha reivindicações para remover.
+
+# ========== Lista de Facções Admin ==========
+factions.home_not_set = Não definida
+factions.teleported = Teleportado para a base de {0}.
+factions.no_home = A facção não tem base definida.
+factions.world_not_found = Mundo alvo não encontrado.
+
+# ========== Info da Facção Admin ==========
+info.faction_gone = Esta facção não existe mais.
+
+# ========== Membros da Facção Admin ==========
+members.sort_role = Cargo
+members.sort_online = Online
+members.sort_name = Nome
+members.sort_power = Poder
+members.promoted = [Admin] {0} promovido a {1}.
+members.demoted = [Admin] {0} rebaixado a {1}.
+members.kicked = [Admin] {0} expulso da facção.
+
+# ========== Relações da Facção Admin ==========
+relations.allies_header = ALIADOS ({0})
+relations.enemies_header = INIMIGOS ({0})
+relations.no_allies = Sem aliados.
+relations.no_enemies = Sem inimigos.
+relations.neutral_count = {0} facções neutras
+relations.since_today = Desde: hoje
+relations.since_one_day = Desde: 1 dia atrás
+relations.since_days = Desde: {0} dias atrás
+relations.set_ally = [Admin] Status de aliança mútua definido com {0}.
+relations.set_enemy = Status de inimizade mútua definido com {0}.
+relations.set_neutral = [Admin] Status neutro mútuo definido com {0}.
+
+# ========== Configurações da Facção Admin ==========
+settings.locked = Esta configuração está bloqueada pela configuração do servidor.
+settings.perm_toggled = {0} definido como {1}.
+settings.color_changed = Cor da facção definida como {0}.
+settings.recruitment_set = Recrutamento definido como {0}.
+settings.no_home = [Admin] Esta facção não tem base definida.
+settings.home_cleared = Base da facção removida para {0}.
+
+# ========== Rótulos do Menu de Ordenação ==========
+sort.power = Poder
+sort.name = Nome
+sort.members = Membros
+sort.balance = Saldo
+
+# ========== Jogadores Admin ==========
+players.sort_last_online = Último Online
+players.sort_faction = Facção
+players.sort_online = Online
+players.not_online = O jogador não está online.
+players.world_not_found = Mundo alvo não encontrado.
+players.teleported = [Admin] Teleportado para {0}.
+
+# ========== Info do Jogador Admin ==========
+playerinfo.disband_faction = Dissolver Facção
+playerinfo.kick_leader = Expulsar Líder
+playerinfo.enter_valid_number = Insira um número válido.
+playerinfo.enter_valid_positive = Insira um número positivo válido.
+playerinfo.faction_gone = A facção não existe mais.
+playerinfo.kd_reset = K/D resetado para {0}.
+playerinfo.kicked_success = {0} expulso de {1}.
+playerinfo.kicked_leader = Líder {0} expulso. Liderança transferida para {1}.
+playerinfo.disbanded_kick = [Admin] Facção '{0}' dissolvida (último membro expulso).
+
+# ========== Economia Admin ==========
+economy.no_data = Nenhuma facção com dados de economia.
+economy.amount_zero = O valor não pode ser zero.
+economy.enter_amount = Por favor, insira um valor.
+economy.invalid_number = Número inválido: {0}
+economy.error = Ocorreu um erro.
+economy.balance_negative = O saldo não pode ser negativo.
+economy.failed = Falhou: {0}
+economy.bulk_complete = Ajuste em massa concluído: {0} {1} para {2} facções.
+economy.bulk_failures = ({0} falharam)
+
+# ========== Zonas Admin ==========
+zones.not_found = Zona não encontrada.
+zones.invalid_id = ID de zona inválido.
+zones.deleted = Zona {0} excluída.
+zones.delete_failed = Falha ao excluir zona: {0}
+zones.no_chunks = Sem chunks
+zones.chunks_suffix = {0} ({1} chunks)
+
+# ========== Assistente de Criação de Zona ==========
+wizard.enter_name = Por favor, insira um nome para a zona.
+wizard.name_too_short = O nome da zona deve ter pelo menos {0} caracteres.
+wizard.name_too_long = O nome da zona não pode exceder {0} caracteres.
+wizard.name_taken = Uma zona com este nome já existe.
+wizard.radius_range = O raio deve estar entre 1 e {0}.
+wizard.create_failed = Não foi possível criar a zona: {0}
+wizard.created_not_found = Zona criada mas não pôde ser encontrada.
+wizard.created = {0} '{1}' criada!
+wizard.chunk_claimed = Chunk reivindicado ({0}, {1}).
+wizard.chunk_failed = Não foi possível reivindicar o chunk atual: {0}
+wizard.radius_claimed = {0} chunks reivindicados em um raio de {1} de {2}.
+wizard.radius_no_claims = Nenhum chunk pôde ser reivindicado (área pode estar ocupada).
+wizard.no_claims = Zona criada sem reivindicações.
+wizard.chunks_preview = ~{0} chunks
+
+# ========== Renomear Zona ==========
+zone_rename.zone_gone = A zona não existe mais.
+zone_rename.enter_name = Por favor, insira um nome para a zona.
+zone_rename.too_short = O nome da zona deve ter pelo menos {0} caractere.
+zone_rename.too_long = O nome da zona não pode exceder {0} caracteres.
+zone_rename.same_name = Esse já é o nome desta zona.
+zone_rename.renamed = [Admin] Zona renomeada de {0} para {1}!
+zone_rename.name_taken = Uma zona com esse nome já existe.
+zone_rename.invalid_name = Nome de zona inválido.
+zone_rename.rename_failed = Falha ao renomear zona: {0}
+
+# ========== Alterar Tipo de Zona ==========
+zone_type.zone_gone = A zona não existe mais.
+zone_type.changed = [Admin] {0} alterada de {1} para {2} ({3}).
+zone_type.failed = Falha ao alterar tipo da zona: {0}
+zone_type.flags_reset = flags resetadas
+zone_type.flags_kept = flags mantidas
+
+# ========== Flags de Integração de Zona ==========
+zone_int.zone_not_found = Zona Não Encontrada
+zone_int.no_plugin = (sem plugin)
+zone_int.default = (padrão)
+zone_int.custom = (personalizado)
+
+# Rótulos de interface das flags de integração
+gui.zint_cat_gravestones = Lápides
+gui.zint_gravestones_desc = Quando LIGADO, não-donos podem saquear lápides. Donos sempre podem.
+gui.zint_cat_world_map = Mapa do Mundo
+gui.zint_world_map_desc = Sobrescrever ocultação do mapa para jogadores nesta zona. Quando ativado, selecione quem pode ver jogadores nesta zona.
+gui.zint_visibility_label = Nível de Visibilidade:
+gui.zint_cat_essentials = HyperEssentials
+gui.zint_reset_defaults = Restaurar Padrões
+gui.zint_back_to_flags = Voltar às Flags
+gui.zint_map_vis_faction = Apenas Facção
+gui.zint_map_vis_ally = Facção + Aliados
+gui.zint_map_vis_all = Todos os Jogadores
+
+# ========== Registro de Atividades ==========
+log.all_types = Todos os Tipos
+log.no_logs = Nenhum registro de atividade corresponde aos filtros.
+
+# ========== Página de Versão ==========
+version.active = Ativo
+version.not_found = Não Encontrado
+version.not_detected = Não Detectado
+version.not_installed = Não Instalado
+version.active_version = Ativo (v{0})
+version.active_compatible = Ativo (compatível)
+version.active_claims_only = Ativo (apenas reivindicações)
+version.installed_no_perm = Instalado (sem provedor de permissão)
+version.active_provider = Ativo ({0})
+
+# ========== Página Principal Admin ==========
+main.reload_hint = Use /f reload para recarregar a configuração.
+main.unclaim_hint = Use /f admin unclaim {0} para desreivindicar todos os {1} chunks.
+
+# ========== Flags/Configurações de Zona ==========
+zflags.invalid_flag = Flag inválida.
+zflags.zone_not_found = Zona não encontrada.
+zflags.conflict = (conflito)
+zflags.mixin = (mixin)
+zflags.reset_int = Restaurar flags de integração para os padrões.
+zflags.reset_all = Restaurar todas as flags para os padrões.
+zflags.reset_failed = Falha ao restaurar flags: {0}
+zflags.back_to_settings = Voltar às Configurações
+
+# Rótulos de interface das configurações de zona
+gui.zset_cat_combat = Combate
+gui.zset_cat_damage = Dano
+gui.zset_cat_death = Morte
+gui.zset_cat_building = Construção
+gui.zset_cat_interaction = Interação
+gui.zset_cat_transport = Transporte
+gui.zset_cat_items = Itens
+gui.zset_cat_spawning = Geração de Mobs
+gui.zset_cat_mob_clear = Limpeza de Mobs
+gui.zset_children_hint = (filhos só se aplicam quando o pai está LIGADO)
+gui.zset_reset_defaults = Restaurar Padrões
+gui.zset_integration_flags = Flags de Integração
+gui.zset_back_to_zones = Voltar às Zonas
+gui.zset_chunks = {0} chunks
+
+# Nomes de Exibição das Flags de Zona
+gui.zflag_pvp_enabled = PvP Ativado
+gui.zflag_friendly_fire = Fogo Amigo
+gui.zflag_friendly_fire_faction = Dano de Facção
+gui.zflag_friendly_fire_ally = Dano de Aliado
+gui.zflag_projectile_damage = Dano de Projétil
+gui.zflag_mob_damage = Receber Dano de Mob
+gui.zflag_pve_damage = Causar Dano a Mob
+gui.zflag_fall_damage = Dano de Queda
+gui.zflag_environmental_damage = Dano Amb.
+gui.zflag_explosion_damage = Dano de Explosão
+gui.zflag_fire_spread = Propagação de Fogo
+gui.zflag_keep_inventory = Manter Inventário
+gui.zflag_power_loss = Perda de Poder
+gui.zflag_build_allowed = Construção Permitida
+gui.zflag_block_place = Colocação de Blocos
+gui.zflag_hammer_use = Uso de Martelo
+gui.zflag_builder_tools_use = Ferramentas de Construção
+gui.zflag_block_interact = Interação com Blocos
+gui.zflag_door_use = Uso de Portas
+gui.zflag_container_use = Uso de Contêineres
+gui.zflag_bench_use = Uso de Bancadas
+gui.zflag_processing_use = Uso de Processamento
+gui.zflag_seat_use = Uso de Assentos
+gui.zflag_mount_use = Uso de Montarias
+gui.zflag_light_use = Uso de Luzes
+gui.zflag_npc_use = Interação com NPCs
+gui.zflag_crate_pickup = Pegar Caixote
+gui.zflag_crate_place = Colocar Caixote
+gui.zflag_npc_tame = Domesticar NPC
+gui.zflag_npc_interact = Interagir com NPC
+gui.zflag_teleporter_use = Uso de Teletransportador
+gui.zflag_portal_use = Uso de Portal
+gui.zflag_mount_entry = Entrada de Montaria
+gui.zflag_item_drop = Largar Item
+gui.zflag_item_pickup = Coleta Automática
+gui.zflag_item_pickup_manual = Coleta por Tecla F
+gui.zflag_invincible_items = Itens Invencíveis
+gui.zflag_mob_spawning = Geração de Mobs
+gui.zflag_hostile_mob_spawning = Mobs Hostis
+gui.zflag_passive_mob_spawning = Mobs Passivos
+gui.zflag_neutral_mob_spawning = Mobs Neutros
+gui.zflag_npc_spawning = Geração de NPCs
+gui.zflag_mob_clear = Limpeza de Mobs
+gui.zflag_hostile_mob_clear = Limpar Mobs Hostis
+gui.zflag_passive_mob_clear = Limpar Mobs Passivos
+gui.zflag_neutral_mob_clear = Limpar Mobs Neutros
+gui.zflag_gravestone_access = Outros Saqueiam Lápides
+gui.zflag_show_on_map = Mostrar no Mapa
+gui.zflag_essentials_homes = Uso de Base
+gui.zflag_essentials_warps = Uso de Warp
+gui.zflag_essentials_kits = Resgatar Kit
+
+# ========== Propriedades da Zona ==========
+zprop.current_custom = Atual: "{0}" (personalizado)
+zprop.current_default = Atual: "{0}" (padrão)
+zprop.pvp_disabled = PvP Desativado
+zprop.pvp_enabled = PvP Ativado
+zprop.name_empty = O nome não pode estar vazio.
+zprop.renamed = Zona renomeada para "{0}".
+zprop.name_taken = Uma zona com esse nome já existe.
+zprop.name_invalid = Nome inválido (máx 32 caracteres).
+zprop.rename_failed = Falha ao renomear: {0}
+zprop.upper_empty = O título superior não pode estar vazio. Use Limpar para restaurar.
+zprop.upper_set = Título superior definido.
+zprop.upper_reset = Título superior restaurado ao padrão.
+zprop.lower_empty = O título inferior não pode estar vazio. Use Limpar para restaurar.
+zprop.lower_set = Título inferior definido.
+zprop.lower_reset = Título inferior restaurado ao padrão.
+
+# ========== Relações Adicional ==========
+relations.failed = Falhou: {0}
+
+# ========== Membros Adicional ==========
+members.never = Nunca
+members.teleported = [Admin] Teleportado para {0}.
+
+# ========== Info do Jogador Adicional ==========
+playerinfo.records = {0} registros
+playerinfo.joined_date = Entrou: {0}
+playerinfo.current = Atual
+playerinfo.left_date = Saiu: {0}
+
+# ========== Mapa da Zona ==========
+map.world_warning = AVISO: Você está em '{0}' - a zona está em '{1}'
+map.position = Sua Posição: Chunk ({0}, {1})
+map.zone_gone = A zona não existe mais.
+map.claimed = Chunk reivindicado ({0}, {1}) para {2}.
+map.claim_failed = Falha ao reivindicar chunk: {0}
+map.unclaimed = Chunk desreivindicado ({0}, {1}) de {2}.
+map.unclaim_failed = Falha ao desreivindicar chunk: {0}
+map.chunk_belongs = Este chunk pertence a {0}.
+map.chunk_faction = Este chunk está reivindicado por uma facção.
+map.chunk_protected = Este chunk está em uma região protegida.
+map.another_zone = outra zona
+
+# ========== Chaves de Rótulos da Interface (para localização de texto fixo em .ui) ==========
+
+# Títulos de Páginas
+gui.title_dashboard = Painel Admin
+gui.title_main = Admin de Facções
+gui.title_actions = Admin: Ações do Servidor
+gui.title_factions = Gerenciamento de Facções
+gui.title_players = Gerenciamento de Jogadores
+gui.title_economy = Admin: Economia do Servidor
+gui.title_zones = Gerenciamento de Zonas
+gui.title_backups = Backups
+gui.title_config = Configuração
+gui.title_help = Ajuda Admin
+gui.title_updates = Atualizações
+gui.title_version = Versão e Integrações
+gui.title_activity_log = Admin: Registro de Atividades
+gui.title_player_info = Admin: Info do Jogador
+gui.title_faction_info = Admin: Info da Facção
+gui.title_faction_settings = Admin: Config da Facção
+gui.title_faction_members = Admin: Membros
+gui.title_faction_relations = Admin: Relações
+gui.title_zone_map = Editor de Mapa de Zona
+gui.title_zone_settings = Admin: Config da Zona
+gui.title_zone_properties = Admin: Propriedades da Zona
+gui.title_bulk_economy = Ajuste em Massa da Tesouraria
+gui.title_economy_adjust = Admin: Economia
+
+# Rótulos do painel
+gui.dash_server_stats = Estatísticas do Servidor
+gui.dash_factions = Facções
+gui.dash_total_members = Total de Membros
+gui.dash_total_claims = Total de Reivindicações
+gui.dash_zones = Zonas
+gui.dash_safe_war = segura / guerra
+gui.dash_total_power = Poder Total
+gui.dash_avg_power = Poder Médio/Facção
+gui.dash_total_economy = Economia Total
+gui.dash_wealthiest = Mais Rica
+gui.dash_avg_balance = Saldo Médio
+gui.dash_protection_bypass = Ignorar Proteção:
+
+# Botões e rótulos comuns
+gui.search = Buscar:
+gui.sort = Ordenar:
+gui.prev = < Anterior
+gui.next = Próximo >
+gui.back = Voltar
+gui.done = Concluído
+gui.cancel = Cancelar
+gui.apply = Aplicar
+gui.set = Definir
+gui.reset = Resetar
+gui.coming_soon = Em Breve
+gui.zones_btn = Zonas
+gui.reload_btn = Recarregar
+gui.all = Todos
+gui.safe = Segura
+gui.war = Guerra
+gui.create_zone = + Criar
+
+# Rótulos da página de ações
+gui.act_combat_stats = Estatísticas de Combate
+gui.act_combat_desc = Resetar abates e mortes de TODOS os jogadores no servidor. Esta ação não pode ser desfeita.
+gui.act_reset_kd = Resetar Todos os K/D
+gui.act_economy = Economia
+gui.act_economy_desc = Adicionar ou remover dinheiro de TODAS as tesourarias de facção de uma vez.
+gui.act_bulk_adjust = Ajuste em Massa
+gui.act_upkeep_collection = Cobrança de Manutenção
+gui.act_upkeep_desc = Executar manualmente a cobrança de manutenção para todas as facções agora, independente do temporizador agendado.
+gui.act_trigger_upkeep = Executar Manutenção
+
+# Rótulos de páginas de marcação
+gui.backup_heading = Gerenciamento de Backups
+gui.backup_desc1 = Criar, restaurar e gerenciar backups de dados de facção.
+gui.backup_desc2 = Backups automáticos são salvos na pasta data/backups.
+gui.config_heading = Editor de Configuração
+gui.config_desc1 = Configurar o HyperFactions diretamente pela interface.
+gui.config_desc2 = Por enquanto, use /f reload para recarregar alterações de configuração.
+gui.help_heading = Documentação Admin
+gui.help_desc1 = Ver documentação admin e referência de comandos.
+gui.help_desc2 = Para ajuda, visite a wiki do HyperFactions.
+gui.updates_heading = Central de Atualizações
+gui.updates_desc1 = Verificar novas versões e ver changelogs.
+gui.updates_desc2 = Visite a página do HyperFactions para as últimas atualizações.
+
+# Rótulos da página de versão
+gui.ver_hyperfactions = HyperFactions
+gui.ver_hytale_server = Hytale Server
+gui.ver_java = Java
+gui.ver_permissions = PERMISSÕES
+gui.ver_placeholders = PLACEHOLDERS
+gui.ver_economy_section = ECONOMIA
+gui.ver_protection = PROTEÇÃO
+gui.ver_disabled = Desativado
+
+# Cabeçalhos de colunas (compartilhados entre páginas)
+gui.col_faction = Facção
+gui.col_balance = Saldo
+gui.col_members = Membros
+gui.col_actions = Ações
+gui.col_time = Hora
+gui.col_type = Tipo
+gui.col_message = Mensagem
+
+# Rótulos da página de economia
+gui.econ_total_balance = Saldo Total
+gui.econ_factions = Facções
+gui.econ_avg_balance = Saldo Médio
+gui.econ_in_grace = Em Carência
+gui.econ_collected = Coletado (24h)
+gui.econ_next_collection = Próxima Cobrança
+gui.econ_no_data = Nenhuma facção com dados de economia.
+
+# Rótulos do registro de atividades
+gui.log_type = Tipo:
+gui.log_time = Hora:
+gui.log_player = Jogador:
+gui.log_no_logs = Nenhum registro de atividade corresponde aos filtros.
+
+# Rótulos de info do jogador
+gui.plr_first_joined = Primeiro acesso:
+gui.plr_last_online = Último online:
+gui.plr_uuid = UUID:
+gui.plr_faction = Facção:
+gui.plr_role = Cargo:
+gui.plr_view_faction = Ver Facção
+gui.plr_power = Poder
+gui.plr_max_power = Poder Máximo
+gui.plr_set_power = Definir
+gui.plr_reset_power = Resetar
+gui.plr_set_max = Definir
+gui.plr_reset_max = Resetar
+gui.plr_no_power_loss = Sem Perda de Poder
+gui.plr_no_claim_decay = Sem Decaimento de Reivindicação
+gui.plr_kills = Abates
+gui.plr_deaths = Mortes
+gui.plr_kdr = Razão K/D
+gui.plr_reset_kd = Resetar K/D
+gui.plr_kick = Expulsar
+gui.plr_membership_history = Histórico de Filiação
+gui.plr_no_faction_label = Não está em uma facção
+gui.plr_power_management = Gerenciamento de Poder
+gui.plr_combat_stats = Estatísticas de Combate
+gui.plr_bypass_flags = Flags de Bypass
+gui.plr_admin_controls = Controles Admin
+gui.plr_kd_subtitle = K / D
+gui.plr_max_prefix = Máx:
+gui.plr_view = Ver
+gui.plr_kick_from_faction = Expulsar da Facção
+gui.plr_set_max_btn = Definir Máx
+gui.plr_combat = Combate
+gui.plr_reason_active = ATIVO
+gui.plr_reason_left = SAIU
+gui.plr_reason_kicked = EXPULSO
+gui.plr_reason_disbanded = DISSOLVIDA
+
+# Rótulos de entrada de membro
+gui.mem_label_power = Poder:
+gui.mem_label_joined = Entrou:
+gui.mem_label_last_death = Última Morte:
+gui.mem_label_uuid = UUID:
+gui.mem_btn_info = Info
+gui.mem_btn_teleport = Teleportar
+gui.mem_btn_promote = Promover
+gui.mem_btn_demote = Rebaixar
+gui.mem_btn_kick = Expulsar
+gui.econ_not_enabled = O sistema de economia não está ativado.
+gui.info_more = +{0} mais
+gui.log_time_1h = 1h
+gui.log_time_24h = 24h
+gui.log_time_7d = 7d
+gui.log_time_all = Todos
+gui.shape_circular = circular
+gui.shape_square = quadrado
+gui.nav_title = Painel Admin
+gui.econ_btn_adjust = Ajustar
+gui.econ_btn_info = Info
+
+# Rótulos de info da facção
+gui.fac_description = Descrição
+gui.fac_power = Poder
+gui.fac_claims = Reivindicações
+gui.fac_members = Membros
+gui.fac_recruitment = Recrutamento
+gui.fac_founded = Fundada
+gui.fac_allies = Aliados
+gui.fac_enemies = Inimigos
+gui.fac_raidable = Status de Vulnerabilidade
+gui.fac_treasury = Tesouraria
+gui.fac_leader = Líder
+gui.fac_officers = Oficiais
+gui.fac_view_members = Ver Membros
+gui.fac_view_relations = Ver Relações
+gui.fac_view_settings = Configurações
+gui.fac_disband = Dissolver Facção
+gui.fac_power_management = Gerenciamento de Poder
+gui.fac_reset_all_power = Resetar Todo o Poder
+gui.fac_econ_adjust = Ajustar Saldo
+gui.fac_econ_view_log = Ver Histórico de Transações
+gui.fac_current_max = atual / máx
+gui.fac_claimed_max = reivindicado / máx
+gui.fac_relations = Relações
+gui.fac_ally_enemy = aliado / inimigo
+gui.fac_status = Status
+gui.fac_info = Info
+gui.fac_treasury_balance = saldo da tesouraria
+gui.fac_leadership = Liderança
+gui.fac_leader_label = Líder:
+gui.fac_officers_label = Oficiais:
+gui.fac_econ_mgmt = Gerenciamento Econômico
+gui.fac_danger_zone = Zona de Perigo
+gui.fac_view_treasury = Ver Tesouraria
+
+# Rótulos de configurações da facção
+gui.set_editing = Editando:
+gui.set_general = Configurações Gerais
+gui.set_name = Nome
+gui.set_tag = Tag
+gui.set_description = Descrição
+gui.set_recruitment = Recrutamento
+gui.set_home = Localização da Base
+gui.set_clear_home = Limpar Base
+gui.set_disband_faction = Dissolver Facção
+gui.set_faction_color = Cor da Facção
+gui.set_admin_override = [Admin Override]
+gui.set_territory_perms = Permissões de Território
+gui.set_mob_spawning = Geração de Mobs
+gui.set_faction_settings = Configurações da Facção
+gui.set_name_label = Nome:
+gui.set_tag_label = Tag:
+gui.set_desc_label = Desc:
+gui.set_edit = Editar
+gui.set_status_label = Status:
+gui.set_location_label = Localização:
+gui.set_danger_zone = Zona de Perigo
+gui.set_irreversible = Esta ação é irreversível.
+gui.set_lock_hint = Algumas opções podem estar bloqueadas pelo servidor e não aceitarão alterações.
+gui.set_appearance = Aparência
+gui.set_color_label = Cor:
+gui.set_mob_sub = (filhos desativados quando o principal está desligado)
+gui.set_back_to_info = Voltar à Info
+gui.set_col_out = Ext
+gui.set_col_ally = Ali
+gui.set_col_mem = Mem
+gui.set_col_off = Ofi
+gui.set_cat_building = CONSTRUÇÃO
+gui.set_cat_interaction = INTERAÇÃO
+gui.set_cat_interact_sub = (filhos desativados quando Todos está desligado)
+gui.set_cat_other = OUTROS
+gui.set_perm_break = Destruir
+gui.set_perm_place = Colocar
+gui.set_perm_all = Todos
+gui.set_perm_door = Porta
+gui.set_perm_chest = Baú
+gui.set_perm_bench = Bancada
+gui.set_perm_processing = Processamento
+gui.set_perm_seat = Assento
+gui.set_perm_transport = Transporte
+gui.set_perm_crate_use = Uso de Caixote
+gui.set_perm_npc_tame = Domesticar NPC
+gui.set_perm_pve_damage = Dano PvE
+gui.set_perm_mob_spawning = Geração de Mobs
+gui.set_perm_hostile = Mobs Hostis
+gui.set_perm_passive = Mobs Passivos
+gui.set_perm_neutral = Mobs Neutros
+gui.set_perm_pvp = PvP no Território
+gui.set_perm_officers_edit = Oficiais podem editar
+
+# Rótulos de relações da facção
+gui.rel_subtitle = Gerenciar relações da facção (ignora aprovação)
+gui.rel_set_new = Definir Nova Relação
+gui.rel_btn_ally = Aliado
+gui.rel_btn_neutral = Neutro
+gui.rel_btn_enemy = Inimigo
+
+# Rótulos da página de zonas
+gui.zone_sort_name = Nome
+gui.zone_sort_type = Tipo
+gui.zone_sort_chunks = Chunks
+gui.zone_sort_world = Mundo
+gui.zone_count_format = {0} {1}zonas ({2} chunks)
+
+# Rótulos do mapa de zona
+gui.map_zone_chunk = Chunk da Zona
+gui.map_empty = Vazio
+gui.map_other_zone = Outra Zona
+gui.map_faction_claim = Reivindicação de Facção
+gui.map_protected = Protegido
+gui.map_your_pos = Sua Posição
+gui.map_click_hint = Clique para reivindicar/desreivindicar chunks
+gui.map_legend_zone_safe = Esta Zona (Segura)
+gui.map_legend_zone_war = Esta Zona (Guerra)
+gui.map_legend_other_safe = Outra SafeZone
+gui.map_legend_other_war = Outra WarZone
+gui.map_legend_faction = Reivindicação de Facção
+gui.map_legend_unclaimed = Não Reivindicado
+gui.map_legend_you_here = Você está aqui
+gui.map_action_hint = Clique esquerdo: Reivindicar para zona  |  Clique direito: Desreivindicar da zona
+gui.map_done = Concluído
+
+# Rótulos de propriedades da zona
+gui.zprop_general = Geral
+gui.zprop_zone_name = Nome da Zona
+gui.zprop_zone_type = Tipo da Zona
+gui.zprop_change_type = Alterar Tipo
+gui.zprop_notifications = Notificações
+gui.zprop_show_entry = Mostrar Notificação de Entrada
+gui.zprop_upper_title = Título Superior
+gui.zprop_upper_desc = Título Superior (texto pequeno acima do nome da zona)
+gui.zprop_lower_title = Título Inferior
+gui.zprop_lower_desc = Título Inferior (texto grande do nome da zona)
+gui.zprop_edit_flags = Editar Flags
+gui.zprop_back_to_zones = Voltar às Zonas
+gui.save = Salvar
+gui.clear = Limpar
+
+# Rótulos de economia em massa
+gui.bulk_header = Ajustar Todas as Tesourarias de Facção
+gui.bulk_factions_label = Facções:
+gui.bulk_total_label = Saldo Total:
+gui.bulk_amount_hint = Valor (positivo para adicionar, negativo para remover):
+gui.bulk_hint = Isso será aplicado a cada facção com tesouraria
+gui.bulk_warning_msg = Aviso: Esta ação afeta TODAS as facções e não pode ser desfeita.
+gui.bulk_apply_all = Aplicar a Todas
+gui.bulk_operation = Operação
+gui.bulk_add = Adicionar
+gui.bulk_remove = Remover
+gui.bulk_amount = Valor
+gui.bulk_warning = Isso afetará TODAS as tesourarias de facção.
+gui.bulk_preview = Prévia
+
+# Rótulos de ajuste econômico
+gui.ecadj_header = Ajustar Saldo da Tesouraria
+gui.ecadj_faction_label = Facção:
+gui.ecadj_current_balance = Saldo Atual:
+gui.ecadj_amount_hint = Valor (positivo para adicionar, negativo para deduzir):
+gui.ecadj_preview_hint = Insira um número para ver a prévia da alteração
+gui.ecadj_adjustment = Ajuste:
+gui.ecadj_set_balance = Definir Saldo
+gui.ecadj_confirm = Confirmar +/-
+gui.ecadj_operation = Operação
+gui.ecadj_add = Adicionar
+gui.ecadj_remove = Remover
+gui.ecadj_set_to = Definir Como
+gui.ecadj_amount = Valor
+gui.ecadj_new_balance = Novo Saldo:
+
+# Rótulos de integração da página de versão
+gui.ver_hyperperms = HyperPerms
+gui.ver_luckperms = LuckPerms
+gui.ver_vault = VaultUnlocked
+gui.ver_native = Hytale Nativo
+gui.ver_hyperprotect = HyperProtect
+gui.ver_orbisguard_mixins = OrbisGuard Mixins
+gui.ver_orbisguard_api = OrbisGuard API
+gui.ver_mixin_hooks = Mixin Hooks
+gui.ver_gravestones = Lápides
+gui.ver_kyuubisoft = KyuubiSoft
+gui.ver_placeholder_api = PlaceholderAPI
+gui.ver_wiflow_papi = WiFlow PAPI
+gui.ver_treasury = Tesouraria
+
+# Rótulos do modal de desreivindicar tudo
+gui.unclaim_title = Desreivindicar Todo o Território
+gui.unclaim_confirm_msg1 = Tem certeza de que deseja desreivindicar todo
+gui.unclaim_confirm_msg2 = de
+gui.unclaim_warning = Esta ação não pode ser desfeita!
+gui.unclaim_all = Desreivindicar Tudo
+
+# Rótulos do modal de renomear zona
+gui.zren_title = Renomear Zona
+gui.zren_current = Atual:
+gui.zren_new_name = Novo Nome:
+
+# Rótulos do modal de alterar tipo de zona
+gui.ztype_title = Alterar Tipo de Zona
+gui.ztype_zone_label = Zona:
+gui.ztype_current = Atual:
+gui.ztype_will_become = se tornará
+gui.ztype_new = Novo:
+gui.ztype_warning1 = Diferentes tipos de zona têm diferentes valores padrão de flags.
+gui.ztype_warning2 = Escolha como lidar com as configurações de flags existentes:
+gui.ztype_keep_desc = Manter personalizações
+gui.ztype_keep_flags = Manter Flags
+gui.ztype_reset_desc = Usar padrões do novo tipo
+gui.ztype_reset_flags = Resetar Flags
+
+# Rótulos do assistente de criação de zona
+gui.czw_title = Criar Zona
+gui.czw_back = < Voltar
+gui.czw_create = Criar Zona
+gui.czw_zone_type = Tipo de Zona
+gui.czw_safe_desc = Protegida, sem PvP
+gui.czw_war_desc = Combate, PvP ativado
+gui.czw_zone_name = Nome da Zona
+gui.czw_name_desc = Insira um nome único para a zona
+gui.czw_claim_method = Método de Reivindicação
+gui.czw_method_none_desc = Criar zona vazia
+gui.czw_method_none = Sem reivindicações
+gui.czw_method_single_desc = Seu chunk atual
+gui.czw_method_single = Chunk único
+gui.czw_method_circle_desc = Área circular
+gui.czw_method_circle = Raio circular
+gui.czw_method_square_desc = Área quadrada
+gui.czw_method_square = Raio quadrado
+gui.czw_method_map_desc = Editor interativo de chunks
+gui.czw_method_map = Usar mapa de reivindicação
+gui.czw_radius = Raio
+gui.czw_custom_radius = Personalizado (1-50):
+gui.czw_flags = Flags
+gui.czw_flags_defaults_desc = Baseado no tipo de zona
+gui.czw_flags_defaults = Usar padrões
+gui.czw_flags_customize_desc = Abrir configurações depois
+gui.czw_flags_customize = Personalizar
+
+# ========== Rótulos de Entrada (Entradas de lista de Facção/Jogador/Zona) ==========
+
+# Rótulos de entrada de facção
+gui.fac_entry_power = poder
+gui.fac_entry_claims = reivindicações
+gui.fac_entry_members = membros
+gui.fac_entry_created = Criada:
+gui.fac_entry_home = Base:
+gui.fac_entry_tp_home = TP Base
+gui.fac_entry_view_info = Ver Info
+gui.fac_entry_members_btn = Membros
+gui.fac_entry_settings = Configurações
+gui.fac_entry_unclaim_all = Desreivindicar Tudo
+gui.fac_entry_disband = Dissolver
+
+# Rótulos de entrada de jogador
+gui.plr_entry_role = Cargo:
+gui.plr_entry_joined = Entrou:
+gui.plr_entry_last_online = Último Online:
+gui.plr_entry_kdr = K/D/R:
+gui.plr_entry_power = Poder:
+gui.plr_entry_uuid = UUID:
+gui.plr_entry_info = Info
+gui.plr_entry_teleport = Teleportar
+gui.plr_entry_na = N/D
+gui.plr_entry_unknown = Desconhecido
+gui.plr_entry_ago = {0} atrás
+
+# Rótulos de entrada de zona
+gui.zone_entry_world = Mundo:
+gui.zone_entry_chunks = Chunks:
+gui.zone_entry_bounds = Limites:
+gui.zone_entry_created = Criada:
+gui.zone_entry_edit_map = Editar Mapa
+gui.zone_entry_flags = Flags
+gui.zone_entry_settings = Configurações
+gui.zone_entry_delete = Excluir
