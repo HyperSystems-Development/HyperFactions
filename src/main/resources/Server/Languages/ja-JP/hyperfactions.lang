@@ -1,0 +1,453 @@
+# HyperFactions - 日本語翻訳
+# Format: key = value (or key = "quoted value")
+# Note: Keys are auto-prefixed with "hyperfactions." by Hytale's I18nModule
+# Placeholders: {0}, {1}, etc.
+
+# ========== 共通 ==========
+common.no_permission = その操作を行う権限がありません。
+common.not_in_faction = 派閥に所属していません。
+common.already_in_faction = すでに派閥に所属しています。
+common.player_not_found = プレイヤーが見つかりません。
+common.faction_not_found = 派閥が見つかりません。
+common.player_not_online = そのプレイヤーはオンラインではありません。
+common.must_be_leader = リーダーのみがその操作を行えます。
+common.must_be_officer = 幹部またはリーダーのみがその操作を行えます。
+common.combat_tagged = 戦闘中はその操作を行えません。
+common.cancel = キャンセル
+common.confirm = 確認
+common.save = 保存
+common.close = 閉じる
+common.clear = クリア
+common.back = 戻る
+common.leave = 脱退
+common.transfer = 譲渡
+common.disband = 解散
+common.world_fallback = ワールド
+common.yes = はい
+common.no = いいえ
+common.loading = 読み込み中...
+common.online = オンライン
+common.offline = オフライン
+common.enabled = 有効
+common.disabled = 無効
+common.none = なし
+common.page = ページ {0} / {1}
+common.unknown = 不明
+common.error_generic = エラーが発生しました。もう一度お試しください。
+common.gui_fallback = GUIにアクセスできませんでした。コマンドは /f help をご利用ください。
+common.admin_prefix = [Admin]
+common.location_error = 現在地を特定できませんでした。
+common.world_error = ワールドを特定できませんでした。
+common.invalid_id = 無効な派閥IDです。
+common.na = N/A
+
+# ========== コマンド - 作成 ==========
+cmd.create.no_permission = 派閥を作成する権限がありません。
+cmd.create.usage = 使い方: /f create <名前>
+cmd.create.success = 派閥「{0}」を作成しました！
+cmd.create.already_in_named = すでに {0} に所属しています。
+cmd.create.use_leave_first = 新しい派閥を作成するには、まず /f leave で脱退してください。
+cmd.create.name_taken = その派閥名はすでに使用されています。
+cmd.create.name_too_short = 派閥名が短すぎます。
+cmd.create.name_too_long = 派閥名が長すぎます。
+cmd.create.failed = 派閥の作成に失敗しました。
+
+# ========== コマンド - 解散 ==========
+cmd.disband.no_permission = 派閥を解散する権限がありません。
+cmd.disband.not_leader = リーダーのみが派閥を解散できます。
+cmd.disband.confirm_prompt = 本当に派閥を解散しますか？
+cmd.disband.confirm_instruction = {0}秒以内に /f disband --text をもう一度入力して確認してください。
+cmd.disband.success = 派閥が解散されました。
+cmd.disband.failed = 派閥の解散に失敗しました。
+cmd.disband.cancelled = 前回の確認がキャンセルされました。もう一度入力して解散を確認してください。
+
+# ========== コマンド - 名前変更 ==========
+cmd.rename.no_permission = 権限がありません。
+cmd.rename.not_leader = リーダーのみが派閥名を変更できます。
+cmd.rename.usage = 使い方: /f rename <名前>
+cmd.rename.too_short = 名前が短すぎます（最小{0}文字）。
+cmd.rename.too_long = 名前が長すぎます（最大{0}文字）。
+cmd.rename.name_taken = その名前はすでに使用されています。
+cmd.rename.success = 派閥名を {0} に変更しました！
+cmd.rename.broadcast = {0} が派閥名を {1} に変更しました
+
+# ========== コマンド - 説明 ==========
+cmd.desc.no_permission = 権限がありません。
+cmd.desc.not_officer = 説明を設定するには幹部である必要があります。
+cmd.desc.set = 派閥の説明を設定しました！
+cmd.desc.cleared = 派閥の説明をクリアしました。
+
+# ========== コマンド - 公開 / 非公開 ==========
+cmd.open.no_permission = 権限がありません。
+cmd.open.not_leader = リーダーのみがこの設定を変更できます。
+cmd.open.already_open = 派閥はすでに公開されています。
+cmd.open.success = 派閥が公開されました！誰でも /f join で参加できます。
+cmd.open.broadcast = {0} が派閥を公開参加に変更しました。
+cmd.close.no_permission = 権限がありません。
+cmd.close.not_leader = リーダーのみがこの設定を変更できます。
+cmd.close.already_closed = 派閥はすでに招待制です。
+cmd.close.success = 派閥が招待制になりました。
+cmd.close.broadcast = {0} が派閥を招待制に変更しました。
+
+# ========== コマンド - カラー ==========
+cmd.color.no_permission = 権限がありません。
+cmd.color.not_officer = カラーを変更するには幹部である必要があります。
+cmd.color.colors_disabled = 派閥カラーは無効になっています。
+cmd.color.usage = 使い方: /f color <コード|#hex>
+cmd.color.usage_hint = 有効なコード: 0-9, a-f または #RRGGBB hex
+cmd.color.invalid = 無効なカラーです。0-9, a-f, または #RRGGBB を使用してください。
+cmd.color.success = 派閥カラーを更新しました！
+
+# ========== コマンド - 領地確保 ==========
+cmd.claim.no_permission = テリトリーを確保する権限がありません。
+cmd.claim.already_yours = このチャンクはすでに派閥の領地です。
+cmd.claim.cannot_claim_ally = 同盟のテリトリーは確保できません。
+cmd.claim.already_claimed_hint = このチャンクは確保済みです。相手が略奪可能な場合は /f overclaim を使用してください。
+cmd.claim.success = チャンク {0}, {1} を確保しました！
+cmd.claim.not_officer = 領地を確保するには幹部である必要があります。
+cmd.claim.already_claimed = このチャンクはすでに確保されています。
+cmd.claim.max_claims = 派閥の最大領地数に達しました。パワーを増やしましょう！
+cmd.claim.not_adjacent = 既存のテリトリーに隣接するチャンクのみ確保できます。
+cmd.claim.world_not_allowed = このワールドでは領地確保が許可されていません。
+cmd.claim.orbisguard = このエリアは OrbisGuard によって保護されています。
+cmd.claim.zone_protected = このチャンクは SafeZone または WarZone 内にあります。
+cmd.claim.insufficient_power = 派閥のパワーが不足しており、これ以上領地を確保できません。
+cmd.claim.failed = チャンクの確保に失敗しました。
+
+# ========== コマンド - 招待 ==========
+cmd.invite.no_permission = プレイヤーを招待する権限がありません。
+cmd.invite.not_officer = プレイヤーを招待するには幹部である必要があります。
+cmd.invite.usage = 使い方: /f invite <プレイヤー>
+cmd.invite.player_not_found = プレイヤー「{0}」が見つからないかオフラインです。
+cmd.invite.target_in_faction = そのプレイヤーはすでに派閥に所属しています。
+cmd.invite.sent = {0} を派閥に招待しました。
+cmd.invite.received = {0} への参加招待を受け取りました！
+cmd.invite.accept_hint = /f accept {0} と入力して参加してください。
+
+# ========== コマンド - 承諾 / 参加 ==========
+cmd.join.no_permission = 派閥に参加する権限がありません。
+cmd.join.already_in_named = すでに {0} に所属しています。
+cmd.join.use_leave_hint = 別の派閥に参加するには、まず /f leave で脱退してください。
+cmd.join.no_invites = 保留中の招待はありません。
+cmd.join.faction_not_found = 派閥「{0}」が見つかりません。
+cmd.join.not_invited = その派閥からの招待はありません。
+cmd.join.faction_gone = その派閥はもう存在しません。
+cmd.join.success = {0} に参加しました！
+cmd.join.broadcast = {0} が派閥に参加しました！
+cmd.join.faction_full = その派閥は満員です。
+cmd.join.failed = 派閥への参加に失敗しました。
+
+# ========== コマンド - キック ==========
+cmd.kick.no_permission = メンバーをキックする権限がありません。
+cmd.kick.usage = 使い方: /f kick <プレイヤー>
+cmd.kick.not_in_your_faction = プレイヤー「{0}」はあなたの派閥のメンバーではありません。
+cmd.kick.success = {0} を派閥からキックしました。
+cmd.kick.broadcast = {0} が派閥からキックされました。
+cmd.kick.kicked = 派閥からキックされました。
+cmd.kick.cannot_kick_higher = そのプレイヤーをキックする権限がありません。
+cmd.kick.cannot_kick_leader = 派閥のリーダーをキックすることはできません。
+cmd.kick.failed = プレイヤーのキックに失敗しました。
+
+# ========== コマンド - 脱退 ==========
+cmd.leave.no_permission = 派閥を脱退する権限がありません。
+cmd.leave.confirm_prompt = 本当に派閥を脱退しますか？
+cmd.leave.confirm_instruction = {0}秒以内に /f leave --text をもう一度入力して確認してください。
+cmd.leave.success = 派閥を脱退しました。
+cmd.leave.broadcast = {0} が派閥を脱退しました。
+cmd.leave.failed = 派閥の脱退に失敗しました。
+cmd.leave.cancelled = 前回の確認がキャンセルされました。もう一度入力して脱退を確認してください。
+
+# ========== コマンド - 昇格 / 降格 / 譲渡 ==========
+cmd.rank.promote_no_permission = メンバーを昇格する権限がありません。
+cmd.rank.promote_usage = 使い方: /f promote <プレイヤー>
+cmd.rank.promoted = {0} を {1} に昇格しました！
+cmd.rank.promote_broadcast = {0} が {1} に昇格しました！
+cmd.rank.already_highest = これ以上昇格できません。リーダーを変更するには /f transfer を使用してください。
+cmd.rank.promote_failed = プレイヤーの昇格に失敗しました。
+cmd.rank.demote_no_permission = メンバーを降格する権限がありません。
+cmd.rank.demote_usage = 使い方: /f demote <プレイヤー>
+cmd.rank.demoted = {0} を {1} に降格しました。
+cmd.rank.demote_broadcast = {0} が {1} に降格されました。
+cmd.rank.already_lowest = そのプレイヤーはすでにメンバーです。
+cmd.rank.demote_failed = プレイヤーの降格に失敗しました。
+cmd.rank.transfer_no_permission = リーダーシップを譲渡する権限がありません。
+cmd.rank.transfer_usage = 使い方: /f transfer <プレイヤー>
+cmd.rank.player_not_in_faction = 派閥内にそのプレイヤーが見つかりません。
+cmd.rank.transfer_confirm = 本当に {0} にリーダーシップを譲渡しますか？
+cmd.rank.transfer_confirm_instruction = {1}秒以内に /f transfer {0} --text をもう一度入力して確認してください。
+cmd.rank.transferred = {0} にリーダーシップを譲渡しました！
+cmd.rank.transfer_broadcast = {0} が新しい派閥リーダーになりました！
+cmd.rank.transfer_failed = リーダーシップの譲渡に失敗しました。
+cmd.rank.transfer_cancelled = 前回の確認がキャンセルされました。もう一度入力して譲渡を確認してください。
+
+# ========== コマンド - 領地放棄 ==========
+cmd.unclaim.no_permission = テリトリーを放棄する権限がありません。
+cmd.unclaim.success = チャンク {0}, {1} を放棄しました。
+cmd.unclaim.not_officer = 領地を放棄するには幹部である必要があります。
+cmd.unclaim.chunk_not_claimed = このチャンクは確保されていません。
+cmd.unclaim.not_your_claim = このチャンクは派閥の領地ではありません。
+cmd.unclaim.cannot_unclaim_home = 派閥ホームのあるチャンクは放棄できません。
+cmd.unclaim.would_disconnect = 放棄できません — テリトリーが分断されます。
+cmd.unclaim.failed = チャンクの放棄に失敗しました。
+
+# ========== コマンド - 強制確保 ==========
+cmd.overclaim.no_permission = テリトリーを強制確保する権限がありません。
+cmd.overclaim.success = 敵のテリトリーを強制確保しました！
+cmd.overclaim.not_officer = 強制確保するには幹部である必要があります。
+cmd.overclaim.not_claimed = このチャンクは確保されていません。/f claim を使用してください。
+cmd.overclaim.own_chunk = このチャンクはすでに派閥の領地です。
+cmd.overclaim.ally = 同盟のテリトリーは強制確保できません。
+cmd.overclaim.target_has_power = この派閥はまだ十分なパワーを持っています。
+cmd.overclaim.failed = 強制確保に失敗しました。
+
+# ========== コマンド - スタック ==========
+cmd.stuck.no_permission = /f stuck を使用する権限がありません。
+cmd.stuck.not_stuck = スタックしていません - ここは荒野です。
+cmd.stuck.combat_tagged = 戦闘中は /f stuck を使用できません！
+cmd.stuck.no_safe = 安全な場所が見つかりませんでした。
+cmd.stuck.teleporting = {0}秒後に安全な場所にテレポートします。動かないでください！
+
+# ========== コマンド - ホーム ==========
+cmd.home.no_permission = 派閥ホームにテレポートする権限がありません。
+cmd.home.no_home = 派閥ホームが設定されていません。
+cmd.home.combat_tagged = 戦闘中はテレポートできません！
+cmd.home.teleported = 派閥ホームにテレポートしました！
+
+# ========== コマンド - ホーム設定 ==========
+cmd.sethome.no_permission = 派閥ホームを設定する権限がありません。
+cmd.sethome.world_not_allowed = このワールドではホームを設定できません。
+cmd.sethome.not_in_territory = 派閥のテリトリー内でのみホームを設定できます。
+cmd.sethome.set = 派閥ホームを設定しました！
+cmd.sethome.broadcast = {0} が派閥ホームを設定しました。
+cmd.sethome.not_officer = ホームを設定するには幹部である必要があります。
+cmd.sethome.failed = ホームの設定に失敗しました。
+
+# ========== コマンド - ホーム削除 ==========
+cmd.delhome.no_permission = 派閥ホームを削除する権限がありません。
+cmd.delhome.no_home = 派閥ホームが設定されていません。
+cmd.delhome.deleted = 派閥ホームを削除しました！
+cmd.delhome.broadcast = {0} が派閥ホームを削除しました。
+cmd.delhome.not_officer = ホームを削除するには幹部である必要があります。
+cmd.delhome.failed = ホームの削除に失敗しました。
+
+# ========== コマンド - 関係（同盟/敵/中立/関係一覧） ==========
+cmd.relation.ally_no_permission = 同盟を管理する権限がありません。
+cmd.relation.ally_usage = 使い方: /f ally <派閥>
+cmd.relation.ally_sent = {0} に同盟リクエストを送信しました！
+cmd.relation.ally_formed = {0} と同盟を結びました！
+cmd.relation.already_ally = すでにその派閥と同盟を結んでいます。
+cmd.relation.ally_failed = 同盟リクエストの送信に失敗しました。
+cmd.relation.enemy_no_permission = 敵対宣言を行う権限がありません。
+cmd.relation.enemy_usage = 使い方: /f enemy <派閥>
+cmd.relation.enemy_declared = {0} が敵になりました！
+cmd.relation.already_enemy = すでにその派閥と敵対しています。
+cmd.relation.max_enemies = 敵の最大数に達しました。
+cmd.relation.enemy_failed = 敵対の設定に失敗しました。
+cmd.relation.neutral_no_permission = 中立関係を設定する権限がありません。
+cmd.relation.neutral_usage = 使い方: /f neutral <派閥>
+cmd.relation.neutral_set = {0} と中立になりました。
+cmd.relation.already_neutral = すでにその派閥と中立です。
+cmd.relation.neutral_failed = 中立の設定に失敗しました。
+cmd.relation.cannot_self = 自分の派閥と同盟を結ぶことはできません。
+cmd.relation.max_allies = 同盟の最大数に達しました。
+cmd.relation.view_no_permission = 関係を表示する権限がありません。
+cmd.relation.header = === 派閥関係 ===
+cmd.relation.allies_count = 同盟 ({0}):
+cmd.relation.enemies_count = 敵 ({0}):
+cmd.relation.list_entry = - {0}
+
+# ========== コマンド - チャット ==========
+cmd.chat.usage = 使い方: /f c [f|a|off]
+cmd.chat.no_permission = そのチャットモードの権限がありません。
+cmd.chat.mode_set = チャットモードを {0} に設定しました
+
+# ========== コマンド - 招待管理 ==========
+cmd.invites.not_officer = 招待を管理するには幹部である必要があります。
+cmd.invites.header = === 派閥招待 ===
+cmd.invites.no_pending = 保留中の招待やリクエストはありません。
+cmd.invites.outgoing = 送信済み招待:
+cmd.invites.outgoing_entry = {0} ({1} が招待)
+cmd.invites.requests = 参加リクエスト:
+cmd.invites.request_entry = {0}{1}
+cmd.invites.your_invites_header = === あなたの招待 ===
+cmd.invites.no_invites = 保留中の招待はありません。
+cmd.invites.invite_entry = {0} - /f accept {1} で参加
+
+# ========== コマンド - リクエスト ==========
+cmd.request.no_permission = 派閥への参加リクエストを送信する権限がありません。
+cmd.request.already_in_named = すでに {0} に所属しています。
+cmd.request.use_leave_hint = 別の派閥に参加するには、まず /f leave で脱退してください。
+cmd.request.usage = 使い方: /f request <派閥> [メッセージ]
+cmd.request.faction_open = その派閥は公開されています！ /f accept {0} で直接参加できます。
+cmd.request.already_requested = すでにその派閥にリクエストを送信済みです。
+cmd.request.has_invite = その派閥から招待されています！ /f accept {0} で参加してください。
+cmd.request.sent = {0} に参加リクエストを送信しました！
+cmd.request.your_message = メッセージ: 「{0}」
+cmd.request.officer_review = 幹部がリクエストを確認します。
+cmd.request.officer_notify = {0} が派閥への参加をリクエストしました！
+cmd.request.officer_review_hint = /f gui > 招待 で確認してください。
+
+# ========== コマンド - 情報 ==========
+cmd.info.faction_header = === {0} ===
+cmd.info.player_header = === {0} ===
+cmd.info.no_permission = 派閥情報を表示する権限がありません。
+cmd.info.faction_not_found = 派閥「{0}」が見つかりません。
+cmd.info.not_in_faction_hint = 派閥に所属していません。/f info <派閥> を使用してください
+cmd.info.leader = リーダー: {0}
+cmd.info.members = メンバー: {0}/{1}
+cmd.info.power = パワー: {0}
+cmd.info.claims = 領地: {0}
+cmd.info.raidable = 略奪可能！
+cmd.info.allies = 同盟: {0}
+cmd.info.enemies = 敵: {0}
+cmd.info.they_consider = 相手からの評価: {0}
+cmd.info.you_consider = こちらからの評価: {0}
+cmd.info.members_no_permission = 派閥メンバーを表示する権限がありません。
+cmd.info.members_header = === {0} メンバー ({1}) ===
+cmd.info.member_online = [オンライン]
+cmd.info.list_no_permission = 派閥一覧を表示する権限がありません。
+cmd.info.list_empty = 派閥はありません。
+cmd.info.list_header = === 派閥一覧 ({0}) ===
+cmd.info.list_entry = {0} - {1} メンバー, {2} パワー
+cmd.info.list_entry_raidable = {0} - {1} メンバー, {2} パワー [略奪可能]
+cmd.info.help_no_permission = ヘルプを表示する権限がありません。
+cmd.info.who_no_permission = プレイヤー情報を表示する権限がありません。
+cmd.info.who_faction = 派閥: {0}
+cmd.info.who_role = 役職: {0}
+cmd.info.who_joined = 参加日: {0}
+cmd.info.who_faction_none = 派閥: なし
+cmd.info.who_power = パワー: {0}
+cmd.info.who_status = 状態: {0}
+cmd.info.who_last_seen = 最終ログイン: {0}
+cmd.info.map_no_permission = マップを表示する権限がありません。
+cmd.info.map_header = === テリトリーマップ ===
+cmd.info.map_legend = 凡例: +自分 /所有 /同盟 /敵 -荒野
+cmd.info.map_gui_hint = インタラクティブマップは /f gui をご利用ください
+
+# ========== コマンド - パワー ==========
+cmd.power.personal = 個人パワー: {0}/{1}
+cmd.power.faction = 派閥パワー: {0}/{1}
+cmd.power.death_loss = 死亡時パワー減少: {0}
+cmd.power.regen = 回復速度: {0}/時間
+cmd.power.no_permission = パワー情報を表示する権限がありません。
+cmd.power.header = {0} のパワー:
+cmd.power.current = 現在: {0}
+
+# ========== コマンド - 経済 ==========
+cmd.economy.balance = 残高: {0}
+cmd.economy.deposited = {0} を派閥の資金庫に入金しました。
+cmd.economy.withdrawn = {0} を派閥の資金庫から出金しました。
+cmd.economy.transferred = {0} を {1} に送金しました。
+cmd.economy.insufficient = 派閥の資金庫に十分な資金がありません。
+cmd.economy.invalid_amount = 無効な金額: {0}
+cmd.economy.economy_disabled = 経済機能は無効になっています。
+cmd.economy.balance_no_permission = 残高を表示する権限がありません。
+cmd.economy.treasury_unavailable = 資金庫は利用できません。
+cmd.economy.balance_display = {0} の資金庫: {1}
+cmd.economy.deposit_no_permission = 入金する権限がありません。
+cmd.economy.deposit_faction_denied = 入金する派閥権限がありません。
+cmd.economy.deposit_usage = 使い方: /f deposit <金額>
+cmd.economy.amount_positive = 金額は正の値である必要があります。
+cmd.economy.wallet_insufficient = 所持金が不足しています。ウォレット: {0}
+cmd.economy.wallet_withdraw_failed = ウォレットからの引き出しに失敗しました。
+cmd.economy.deposit_failed = 派閥資金庫への入金に失敗しました。資金は返還されました。
+cmd.economy.withdraw_no_permission = 出金する権限がありません。
+cmd.economy.withdraw_faction_denied = 出金する派閥権限がありません。
+cmd.economy.withdraw_usage = 使い方: /f withdraw <金額>
+cmd.economy.withdraw_limit_denied = 出金が拒否されました: {0}
+cmd.economy.wallet_deposit_failed = 警告: ウォレットへの入金に失敗しました。管理者にお問い合わせください。
+cmd.economy.withdraw_limit_exceeded = 出金が拒否されました: 上限を超過しています。
+cmd.economy.withdraw_failed = 出金に失敗しました: {0}
+cmd.economy.transfer_no_permission = 送金する権限がありません。
+cmd.economy.transfer_faction_denied = 送金する派閥権限がありません。
+cmd.economy.transfer_usage = 使い方: /f money transfer <派閥> <金額>
+cmd.economy.transfer_self = 自分の派閥には送金できません。
+cmd.economy.transfer_limit_denied = 送金が拒否されました: {0}
+cmd.economy.transfer_limit_exceeded = 送金が拒否されました: 上限を超過しています。
+cmd.economy.transfer_failed = 送金に失敗しました: {0}
+cmd.economy.log_no_permission = 取引履歴を表示する権限がありません。
+cmd.economy.log_header = 取引履歴 (ページ {0}/{1})
+cmd.economy.log_empty = 取引が見つかりません。
+cmd.economy.money_help_header = 資金庫コマンド:
+cmd.economy.money_help_balance = /f money balance [派閥] - 残高を確認
+cmd.economy.money_help_deposit = /f money deposit <金額> - 資金庫に入金
+cmd.economy.money_help_withdraw = /f money withdraw <金額> - 資金庫から出金
+cmd.economy.money_help_transfer = /f money transfer <派閥> <金額> - 派閥間で送金
+cmd.economy.money_help_log = /f money log [ページ] [種類] - 取引履歴を表示
+
+# ========== 保護 - アクションフレーズ ==========
+protection.action.generic = その操作はできません
+protection.action.build = ブロックの設置や破壊はできません
+protection.action.interact = それとインタラクトできません
+protection.action.door = ドアを使用できません
+protection.action.container = コンテナを開けません
+protection.action.bench = 作業台を使用できません
+protection.action.processing = 加工台を使用できません
+protection.action.seat = 座席を使用できません
+protection.action.light = 照明を切り替えできません
+protection.action.teleporter = テレポーターを使用できません
+protection.action.crate = クレートを使用できません
+protection.action.tame = クリーチャーをテイムできません
+protection.action.npc = NPCとインタラクトできません
+protection.action.mount = クリーチャーに騎乗できません
+protection.action.pve = クリーチャーにダメージを与えられません
+protection.action.item_drop = アイテムをドロップできません
+protection.action.item_pickup = アイテムを拾えません
+
+# ========== 保護 - 拒否理由 ==========
+protection.denied.safezone = SafeZone では{0}。
+protection.denied.warzone = WarZone では{0}。
+protection.denied.enemy_claim = 敵のテリトリーでは{0}。
+protection.denied.claimed = 確保済みテリトリーでは{0}。
+protection.denied.here = ここでは{0}。
+protection.denied.zone = このゾーンでは{0}。
+protection.denied.faction_perm = ここでは{0}。（派閥権限: {1}）
+protection.denied.ally_territory = ここでは{0}。（同盟テリトリー）
+protection.denied.error = 保護エラー — 安全のため操作がブロックされました。
+
+# ========== 保護 - PvP ==========
+protection.pvp.safezone = SafeZone では PvP が無効です。
+protection.pvp.same_faction = 派閥メンバーを攻撃することはできません。
+protection.pvp.ally = 同盟を攻撃することはできません。
+protection.pvp.spawn_protected = そのプレイヤーはスポーン保護中です。
+protection.pvp.territory_disabled = このテリトリーでは PvP が無効です。
+protection.pvp.generic = このプレイヤーを攻撃することはできません。
+
+# ========== 保護 - エンティティダメージ ==========
+protection.mob_damage_disabled = このゾーンではモブダメージが無効です。
+protection.pve_damage_disabled = このゾーンでは PvE ダメージが無効です。
+protection.pve_territory_denied = このテリトリーではモブにダメージを与えられません。
+
+# ========== 保護 - 戦闘タグ ==========
+protection.combat_tag_command = 戦闘タグ中はそのコマンドを使用できません。
+
+# ========== サーバーアナウンス ==========
+# 重要な派閥イベント時にオンラインの全プレイヤーに配信されます。
+# {0}, {1} = 動的な値（派閥名、プレイヤー名）
+server_announce.faction_created = {0} が派閥 {1} を設立しました！
+server_announce.faction_disbanded = 派閥 {0} が解散しました！
+server_announce.leadership_transfer = {0} が {1} の新しいリーダーになりました！
+server_announce.overclaim = {0} が {1} のテリトリーを強制確保しました！
+server_announce.war_declared = {0} が {1} に宣戦布告しました！
+server_announce.alliance_formed = {0} と {1} が同盟を結びました！
+server_announce.alliance_broken = {0} と {1} の同盟が解消されました！
+
+# ========== テレポートシステム ==========
+teleport.cooldown_wait = テレポートするには {0} 待つ必要があります。
+teleport.warmup_start = {0}秒後に派閥ホームにテレポートします...
+teleport.combat_cancelled = テレポートがキャンセルされました - 戦闘中です！
+teleport.success_default = 派閥ホームにテレポートしました！
+teleport.no_home = 派閥ホームが設定されていません。
+teleport.world_not_found = ワールドが見つかりません。
+teleport.failed = テレポートに失敗しました。
+teleport.countdown = {0}秒後にテレポートします...
+teleport.countdown_one = 1秒後にテレポートします...
+teleport.moved_cancelled = テレポートがキャンセルされました - 移動しました！
+teleport.damage_cancelled = テレポートがキャンセルされました - ダメージを受けました！
+teleport.mount_teleport_blocked = 騎乗中はそのゾーンにテレポートできません。
+teleport.mount_entry_blocked = 騎乗中はこのゾーンに入れません。
+
+# ========== チャット表示 ==========
+chat.display.public = 公開
+chat.display.faction = 派閥
+chat.display.ally = 同盟
