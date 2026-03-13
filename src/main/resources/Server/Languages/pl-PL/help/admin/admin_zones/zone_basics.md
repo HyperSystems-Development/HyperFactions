@@ -1,43 +1,43 @@
 ---
 id: admin_zone_basics
 ---
-# Zone Basics
+# Podstawy stref
 
-Zones are admin-controlled territories with custom rules that override normal faction protection.
+Strefy to kontrolowane przez administratorów terytoria z niestandardowymi zasadami, które nadpisują normalną ochronę terytorialną frakcji.
 
-## Zone Types
+## Typy stref
 
-- **SafeZone** -- No PvP, no building, no damage.
-Ideal for spawn areas and trading hubs.
-- **WarZone** -- PvP always enabled, no building.
-Ideal for arenas and contested battle areas.
+- **SafeZone** -- Brak PvP, brak budowania, brak obrażeń.
+Idealne dla stref odrodzenia i hubów handlowych.
+- **WarZone** -- PvP zawsze włączone, brak budowania.
+Idealne dla aren i spornych stref walki.
 
-## Creating Zones
+## Tworzenie stref
 
 `/f admin safezone <name>`
-Creates a SafeZone and claims your current chunk.
+Tworzy SafeZone i zajmuje twój obecny chunk.
 
 `/f admin warzone <name>`
-Creates a WarZone and claims your current chunk.
+Tworzy WarZone i zajmuje twój obecny chunk.
 
-After creation, stand in additional chunks and use `/f admin zone claim <zone>` to expand the zone.
+Po utworzeniu stań na dodatkowych chunkach i użyj `/f admin zone claim <zone>`, aby rozszerzyć strefę.
 
-## Managing Zone Chunks
+## Zarządzanie chunkami stref
 
 `/f admin zone claim <zone>`
-Add the current chunk to the named zone.
+Dodaj obecny chunk do nazwanej strefy.
 
 `/f admin zone unclaim <zone>`
-Remove the current chunk from the named zone.
+Usuń obecny chunk ze strefy.
 
 `/f admin zone radius <zone> <radius>`
-Claim a square of chunks around your position.
+Zajmij kwadrat chunków wokół twojej pozycji.
 
-## Deleting Zones
+## Usuwanie stref
 
 `/f admin removezone <name>`
-Permanently deletes the zone and releases all its claimed chunks.
+Trwale usuwa strefę i zwalnia wszystkie jej zajęte chunki.
 
->[!WARNING] Deleting a zone releases all its chunks instantly. This cannot be undone without a backup restore.
+>[!WARNING] Usunięcie strefy natychmiast zwalnia wszystkie jej chunki. Nie można tego cofnąć bez przywrócenia kopii zapasowej.
 
->[!INFO] Zone rules **always override** faction territory rules. A SafeZone inside enemy land is still safe.
+>[!INFO] Zasady stref **zawsze nadpisują** zasady terytoriów frakcji. SafeZone na wrogim terenie wciąż jest bezpieczna.

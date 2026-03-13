@@ -2,35 +2,35 @@
 id: faction_joining
 commands: accept, join, request
 ---
-# Joining a Faction
+# Dołączanie do frakcji
 
-There are three ways to join an existing faction, depending on how the faction is configured.
+Istnieją trzy sposoby dołączenia do istniejącej frakcji, w zależności od jej konfiguracji.
 
 ---
 
-## Methods Compared
+## Porównanie metod
 
-| Method | How | Requires |
+| Metoda | Jak to zrobić | Wymagane |
 |--------|-----|----------|
-| Browse and Join | Open /f, click Browse, click Join | Faction is set to open |
-| Accept Invite | Check Invites tab in /f menu | Active invitation |
-| Request to Join | Use /f request, wait for approval | Officer or Leader approves |
+| Przeglądaj i dołącz | Otwórz /f, kliknij Przeglądaj, kliknij Dołącz | Frakcja ustawiona jako otwarta |
+| Przyjmij zaproszenie | Sprawdź zakładkę Zaproszenia w menu /f | Aktywne zaproszenie |
+| Poproś o dołączenie | Użyj /f request, czekaj na zatwierdzenie | Zatwierdzenie przez Oficera lub Lidera |
 
 ---
 
-## Invite Details
+## Szczegóły zaproszeń
 
-- Invitations are sent by Officers or Leaders
-- Invitations expire after 5 minutes -- accept promptly
-- View your pending invites in the Invites tab of the faction menu
-- Accept with the GUI or /f accept
+- Zaproszenia są wysyłane przez Oficerów lub Liderów
+- Zaproszenia wygasają po 5 minutach -- akceptuj szybko
+- Sprawdzaj oczekujące zaproszenia w zakładce Zaproszenia w menu frakcji
+- Akceptuj przez GUI lub /f accept
 
-## Join Requests
+## Prośby o dołączenie
 
-- Use /f request to request membership in a closed faction
-- Requests expire after 24 hours if not acted on
-- Officers and Leaders can approve or deny requests from the faction dashboard
+- Użyj /f request, aby poprosić o członkostwo w zamkniętej frakcji
+- Prośby wygasają po 24 godzinach, jeśli nie zostaną rozpatrzone
+- Oficerowie i Liderzy mogą zatwierdzać lub odrzucać prośby z panelu frakcji
 
->[!TIP] Not sure which faction to join? Use the Browse tab in /f to see faction descriptions, member counts, and whether they are open or invite-only.
+>[!TIP] Nie wiesz, do której frakcji dołączyć? Użyj zakładki Przeglądaj w /f, aby zobaczyć opisy frakcji, liczbę członków i czy są otwarte czy tylko na zaproszenie.
 
->[!NOTE] Each faction can hold up to 50 members by default. If a faction is full, you will need to wait for a spot to open up.
+>[!NOTE] Każda frakcja może mieć domyślnie do 50 członków. Jeśli frakcja jest pełna, musisz poczekać na zwolnienie miejsca.

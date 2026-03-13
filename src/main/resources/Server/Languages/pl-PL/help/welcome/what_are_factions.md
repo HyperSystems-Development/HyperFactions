@@ -1,37 +1,37 @@
 ---
 id: welcome_what
 ---
-# What Are Factions?
+# Czym są frakcje?
 
-Factions are player-run teams that claim territory, build bases, and compete for dominance. When you join or create a faction, you gain access to protected land, a shared home, private chat, and diplomatic tools.
+Frakcje to prowadzone przez graczy drużyny, które zajmują terytorium, budują bazy i rywalizują o dominację. Gdy dołączysz do frakcji lub ją utworzysz, zyskujesz dostęp do chronionego terenu, wspólnej bazy, prywatnego czatu i narzędzi dyplomatycznych.
 
->[!TIP] Factions is all about teamwork. The more active members you have, the stronger your faction becomes.
+>[!TIP] We frakcjach chodzi o pracę zespołową. Im więcej aktywnych członków masz, tym silniejsza staje się twoja frakcja.
 
 ---
 
-## Core Mechanics
+## Podstawowe mechaniki
 
-| Mechanic | What It Does |
+| Mechanika | Opis |
 |----------|-------------|
-| Power | Each player generates power over time (max 20). Your faction's total power determines how much land you can hold. |
-| Claims | Claimed chunks are protected -- only members can build, break, or open containers inside them. Each claim costs 2.0 power to maintain. |
-| Relations | Factions can form alliances for mutual protection or declare enemies to enable PvP and territorial aggression. |
-| Roles | Three ranks -- Leader, Officer, Member -- each with different capabilities. |
+| Moc | Każdy gracz generuje moc z czasem (maks. 20). Łączna moc twojej frakcji określa, ile terenu możesz utrzymać. |
+| Zajęcia | Zajęte chunki są chronione -- tylko członkowie mogą budować, niszczyć i otwierać pojemniki na ich terenie. Każde zajęcie kosztuje 2.0 mocy w utrzymaniu. |
+| Relacje | Frakcje mogą tworzyć sojusze dla wzajemnej ochrony lub ogłaszać wrogów, aby umożliwić PvP i agresję terytorialną. |
+| Role | Trzy rangi -- Lider, Oficer, Członek -- każda z innymi uprawnieniami. |
 
 ---
 
-## How Strength Works
+## Jak działa siła
 
-Your faction's strength comes from its members. Every player starts with 10 power and regenerates up to 20 while online. Dying costs power. If your total faction power drops below the cost of your claims, enemies can overclaim your territory.
+Siła twojej frakcji pochodzi od jej członków. Każdy gracz zaczyna z 10 mocy i regeneruje do 20 będąc online. Śmierć kosztuje moc. Jeśli łączna moc frakcji spadnie poniżej kosztu zajęć, wrogowie mogą przejąć twoje terytorium.
 
->[!WARNING] A single death costs 1.0 power. Multiple deaths in a short time can leave your faction vulnerable to overclaiming.
+>[!WARNING] Pojedyncza śmierć kosztuje 1.0 mocy. Wiele śmierci w krótkim czasie może sprawić, że twoja frakcja stanie się podatna na przejęcie terenu.
 
 ---
 
-## Diplomacy at a Glance
+## Dyplomacja w skrócie
 
-- **Allies** -- Mutual agreements that prevent friendly fire and protect each other's territory
-- **Enemies** -- One-way declarations that enable PvP in each other's land and allow overclaiming
-- **Neutral** -- The default state between all factions with standard rules
+- **Sojusznicy** -- Wzajemne porozumienia, które zapobiegają ogniowi przyjacielskiemu i chronią wzajemne terytorium
+- **Wrogowie** -- Jednostronne deklaracje, które włączają PvP na terenie drugiej frakcji i pozwalają na przejmowanie terenu
+- **Neutralni** -- Domyślny stan między wszystkimi frakcjami ze standardowymi zasadami
 
->[!INFO] You can manage all of this through the in-game GUI by typing `/f` or through chat commands.
+>[!INFO] Wszystkim tym możesz zarządzać przez GUI w grze, wpisując `/f`, lub przez komendy czatu.

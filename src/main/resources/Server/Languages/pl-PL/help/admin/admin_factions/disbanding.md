@@ -1,37 +1,37 @@
 ---
 id: admin_disbanding
 ---
-# Force Disbanding
+# Wymuszone rozwiązanie
 
-Admins can forcefully disband any faction, regardless of the leader's wishes.
+Administratorzy mogą wymusić rozwiązanie dowolnej frakcji, niezależnie od woli lidera.
 
-## Command
+## Komenda
 
 `/f admin disband <faction>`
-Force-disband the named faction. A confirmation prompt will appear before the action is executed.
+Wymusza rozwiązanie nazwanej frakcji. Przed wykonaniem akcji pojawi się monit o potwierdzenie.
 
-**Permission**: `hyperfactions.admin.disband`
+**Uprawnienie**: `hyperfactions.admin.disband`
 
->[!WARNING] Disbanding a faction is **irreversible**. All claims are released, all members are removed, and the faction ceases to exist. Create a backup first.
+>[!WARNING] Rozwiązanie frakcji jest **nieodwracalne**. Wszystkie zajęcia są zwalniane, wszyscy członkowie są usuwani, a frakcja przestaje istnieć. Najpierw utwórz kopię zapasową.
 
-## Consequences
+## Konsekwencje
 
-When a faction is disbanded:
+Gdy frakcja zostaje rozwiązana:
 
-| Effect | Description |
+| Efekt | Opis |
 |--------|-------------|
-| **Claims** | All territory is released immediately |
-| **Members** | All players are removed from the roster |
-| **Relations** | All alliances and enemies are cleared |
-| **Treasury** | Handled per economy config settings |
-| **Home** | Faction home is deleted |
-| **Chat** | Faction chat history is removed |
+| **Zajęcia** | Całe terytorium jest natychmiast zwalniane |
+| **Członkowie** | Wszyscy gracze są usuwani ze składu |
+| **Relacje** | Wszystkie sojusze i wrogości są czyszczone |
+| **Skarbiec** | Obsługiwany zgodnie z ustawieniami konfiguracji ekonomii |
+| **Baza** | Baza frakcji jest usuwana |
+| **Czat** | Historia czatu frakcji jest usuwana |
 
-## Best Practices
+## Najlepsze praktyki
 
-1. Always run `/f admin backup create` before disbanding
-2. Notify faction members when possible
-3. Document the reason for server records
-4. Check `/f admin info <faction>` to review before acting
+1. Zawsze wpisz `/f admin backup create` przed rozwiązaniem
+2. Powiadom członków frakcji, gdy to możliwe
+3. Udokumentuj powód dla rejestrów serwera
+4. Sprawdź `/f admin info <faction>`, aby przejrzeć przed podjęciem akcji
 
->[!TIP] If the issue is with a specific member, consider using the admin factions GUI to transfer leadership rather than disbanding the entire faction.
+>[!TIP] Jeśli problem dotyczy konkretnego członka, rozważ użycie GUI administracyjnego frakcji do przekazania przywództwa zamiast rozwiązywania całej frakcji.

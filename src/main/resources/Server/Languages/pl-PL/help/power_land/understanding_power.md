@@ -2,44 +2,44 @@
 id: power_understanding
 commands: power
 ---
-# Understanding Power
+# Zrozumienie mocy
 
-Power is the core resource that determines how much territory your faction can hold. Every player has personal power that contributes to the faction total.
+Moc to podstawowy zasób, który określa, ile terytorium może utrzymać twoja frakcja. Każdy gracz ma osobistą moc, która wlicza się do łącznej mocy frakcji.
 
 ---
 
-## Default Power Values
+## Domyślne wartości mocy
 
-| Setting | Value |
+| Ustawienie | Wartość |
 |---------|-------|
-| Maximum power per player | 20 |
-| Starting power | 10 |
-| Death penalty | -1.0 per death |
-| Kill reward | 0.0 |
-| Regen rate | +0.1 per minute (while online) |
-| Power cost per claim | 2.0 |
-| Logout while tagged | -1.0 additional |
+| Maksymalna moc na gracza | 20 |
+| Moc startowa | 10 |
+| Kara za śmierć | -1.0 za śmierć |
+| Nagroda za zabójstwo | 0.0 |
+| Tempo regeneracji | +0.1 na minutę (będąc online) |
+| Koszt mocy na zajęcie | 2.0 |
+| Wylogowanie podczas oznaczenia | -1.0 dodatkowo |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] To są wartości domyślne. Administrator serwera mógł skonfigurować inne ustawienia.
 
-## How It Works
+## Jak to działa
 
-Your faction's total power is the sum of every member's personal power. Your required power is the number of claims multiplied by 2.0. As long as total power stays above required power, your territory is safe.
+Łączna moc twojej frakcji to suma osobistej mocy wszystkich członków. Wymagana moc to liczba zajęć pomnożona przez 2.0. Dopóki łączna moc pozostaje powyżej wymaganej mocy, twoje terytorium jest bezpieczne.
 
->[!INFO] Power regenerates passively at 0.1 per minute while you are online. At that rate, recovering 1.0 power takes about 10 minutes.
+>[!INFO] Moc regeneruje się pasywnie z prędkością 0.1 na minutę, gdy jesteś online. W tym tempie odzyskanie 1.0 mocy zajmuje około 10 minut.
 
 ---
 
-## Checking Your Power
+## Sprawdzanie mocy
 
 `/f power`
 
-Shows your personal power, your faction's total power, and how much is needed to maintain current claims.
+Pokazuje twoją osobistą moc, łączną moc frakcji i ile jest potrzebne do utrzymania obecnych zajęć.
 
-## The Danger Zone
+## Strefa zagrożenia
 
-If total power falls below the required amount for your claims, your faction becomes vulnerable. Enemies can overclaim your chunks.
+Jeśli łączna moc spadnie poniżej wymaganej ilości dla twoich zajęć, twoja frakcja staje się podatna. Wrogowie mogą przejąć twoje chunki.
 
->[!WARNING] Multiple deaths in a short period can cascade quickly. If you have 5 members each at 10 power (50 total) and 20 claims (40 needed), just 5 deaths across your team drops you to 45 -- still safe. But 11 deaths puts you at 39, below the 40 threshold.
+>[!WARNING] Wiele śmierci w krótkim okresie może szybko się nawarstwiać. Jeśli masz 5 członków po 10 mocy każdy (50 łącznie) i 20 zajęć (40 potrzebne), zaledwie 5 śmierci w twoim zespole obniży moc do 45 -- wciąż bezpiecznie. Ale 11 śmierci da wam 39, poniżej progu 40.
 
->[!TIP] Keep a power buffer. Do not claim every chunk you can afford -- leave room for a few deaths without becoming raidable.
+>[!TIP] Utrzymuj zapas mocy. Nie zajmuj każdego chunka, na jaki cię stać -- zostaw margines na kilka śmierci bez stawania się podatnym na rajdy.

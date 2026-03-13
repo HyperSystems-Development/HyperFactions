@@ -2,41 +2,41 @@
 id: economy_funds
 commands: deposit, withdraw
 ---
-# Managing Funds
+# Zarządzanie funduszami
 
-Faction members work together to keep the treasury funded through deposits, withdrawals, and transfers.
+Członkowie frakcji współpracują, aby utrzymać skarbiec zasilony poprzez wpłaty, wypłaty i przelewy.
 
-## Depositing
+## Wpłacanie
 
-Any member can deposit personal funds into the faction treasury.
+Każdy członek może wpłacić osobiste fundusze do skarbca frakcji.
 
 `/f deposit <amount>`
-Deposit from your personal balance into the treasury.
+Wpłać ze swojego osobistego salda do skarbca.
 
-## Withdrawing
+## Wypłacanie
 
-Officers and the Leader can withdraw funds back to their personal balance.
+Oficerowie i Lider mogą wypłacać fundusze z powrotem na swoje osobiste saldo.
 
 `/f withdraw <amount>`
-Withdraw from the treasury to your balance. (Officer+)
+Wypłać ze skarbca na swoje saldo. (Oficer+)
 
-## Transferring
+## Przelewanie
 
-Officers can transfer funds directly between faction treasuries for trade deals or diplomacy.
+Oficerowie mogą przelewać fundusze bezpośrednio między skarbcami frakcji w ramach umów handlowych lub dyplomacji.
 
 `/f money transfer <faction> <amount>`
-Send funds to another faction's treasury. (Officer+)
+Wyślij fundusze do skarbca innej frakcji. (Oficer+)
 
 ---
 
-## Fees
+## Opłaty
 
-| Transaction | Fee |
+| Transakcja | Opłata |
 |------------|-----|
-| Deposit | 0% |
-| Withdraw | 0% |
-| Transfer | 0% |
+| Wpłata | 0% |
+| Wypłata | 0% |
+| Przelew | 0% |
 
->[!INFO] Fee rates are configurable by the server and may differ from defaults shown above.
+>[!INFO] Stawki opłat są konfigurowalne przez serwer i mogą różnić się od domyślnych wartości pokazanych powyżej.
 
->[!TIP] All transactions are logged. Use /f money log to review recent activity.
+>[!TIP] Wszystkie transakcje są rejestrowane. Używaj /f money log do przeglądania ostatniej aktywności.

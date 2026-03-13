@@ -1,29 +1,29 @@
 ---
 id: combat_zones
 ---
-# Special Zones
+# Strefy specjalne
 
-Admins can designate areas with special rules that override normal faction territory protection.
+Administratorzy mogą wyznaczać obszary ze specjalnymi zasadami, które nadpisują normalną ochronę terytorialną frakcji.
 
 ## SafeZone
 
-No PvP damage, no block breaking by non-admins. Ideal for spawn areas, trading hubs, and event staging areas. Players cannot be harmed here.
+Brak obrażeń PvP, brak niszczenia bloków przez nie-administratorów. Idealne dla stref odrodzenia, hubów handlowych i miejsc wydarzeń. Gracze nie mogą tu zostać skrzywdzeni.
 
 ## WarZone
 
-PvP is always enabled. No block protection applies. Open battle areas where anything goes. You receive no territory protection benefits in a WarZone.
+PvP jest zawsze włączone. Brak ochrony bloków. Otwarte strefy walki, gdzie wszystko jest dozwolone. Nie otrzymujesz korzyści z ochrony terytorialnej w WarZone.
 
 ---
 
-## Zone Comparison
+## Porównanie stref
 
-| Feature | SafeZone | WarZone | Faction Land |
+| Cecha | SafeZone | WarZone | Teren frakcji |
 |---------|----------|---------|--------------|
-| PvP | Disabled | Always On | Relation-based |
-| Block Break | Disabled | Allowed | Members Only |
-| Containers | Protected | Open | Members Only |
-| Best For | Spawn/Trade | Arenas | Bases |
+| PvP | Wyłączone | Zawsze włączone | Zależne od relacji |
+| Niszczenie bloków | Wyłączone | Dozwolone | Tylko członkowie |
+| Pojemniki | Chronione | Otwarte | Tylko członkowie |
+| Idealne do | Spawn/Handel | Areny | Bazy |
 
->[!NOTE] Zone rules always override faction territory rules. A claimed chunk inside a WarZone follows WarZone rules.
+>[!NOTE] Zasady stref zawsze nadpisują zasady terytoriów frakcji. Zajęty chunk wewnątrz WarZone podlega zasadom WarZone.
 
->[!TIP] Check your territory map with /f map to see zone boundaries.
+>[!TIP] Sprawdź mapę terytoriów komendą /f map, aby zobaczyć granice stref.

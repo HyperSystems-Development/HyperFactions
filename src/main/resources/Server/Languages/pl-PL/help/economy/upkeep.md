@@ -1,37 +1,37 @@
 ---
 id: economy_upkeep
 ---
-# Territory Upkeep
+# Utrzymanie terytorium
 
-Factions must pay ongoing upkeep to maintain their claimed territory. This prevents land hoarding and keeps the map dynamic.
+Frakcje muszą płacić bieżące koszty utrzymania swoich zajętych terytoriów. Zapobiega to gromadzeniu ziem i utrzymuje mapę dynamiczną.
 
-## Upkeep Costs
+## Koszty utrzymania
 
-| Setting | Default |
+| Ustawienie | Domyślnie |
 |---------|---------|
-| Cost per chunk | 2.0 per cycle |
-| Payment interval | Every 24 hours |
-| Free chunks | 3 (no cost) |
-| Scaling mode | Flat rate |
+| Koszt za chunk | 2.0 za cykl |
+| Interwał płatności | Co 24 godziny |
+| Darmowe chunki | 3 (bez kosztu) |
+| Tryb skalowania | Stawka stała |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] To są wartości domyślne. Administrator serwera mógł skonfigurować inne ustawienia.
 
-Your first 3 chunks are free. Beyond that, each additional claimed chunk costs 2.0 per payment cycle.
+Twoje pierwsze 3 chunki są darmowe. Powyżej tego, każdy dodatkowy zajęty chunk kosztuje 2.0 za cykl płatności.
 
-## Auto-Pay
+## Automatyczna płatność
 
-Auto-pay is enabled by default. The system automatically deducts upkeep from your treasury at each interval. No manual action needed.
+Automatyczna płatność jest domyślnie włączona. System automatycznie potrąca koszty utrzymania ze skarbca w każdym interwale. Nie wymaga ręcznej akcji.
 
 ---
 
-## Grace Period
+## Okres karencji
 
-If your treasury cannot cover upkeep, a 48-hour grace period begins. A warning is sent 6 hours before claims start being lost.
+Jeśli twój skarbiec nie pokrywa kosztów utrzymania, rozpoczyna się 48-godzinny okres karencji. Ostrzeżenie jest wysyłane 6 godzin przed rozpoczęciem utraty zajęć.
 
->[!WARNING] If upkeep remains unpaid after the grace period, your faction loses 1 claim per cycle until costs are covered or all extra claims are gone.
+>[!WARNING] Jeśli koszty utrzymania pozostaną nieopłacone po okresie karencji, twoja frakcja traci 1 zajęcie na cykl, dopóki koszty nie zostaną pokryte lub wszystkie dodatkowe zajęcia nie zostaną utracone.
 
-## Example
+## Przykład
 
-*A faction with 8 claims pays for 5 chunks (8 minus 3 free). At 2.0 per chunk, that is 10.0 per cycle.*
+*Frakcja z 8 zajęciami płaci za 5 chunków (8 minus 3 darmowe). Przy 2.0 za chunk, to 10.0 za cykl.*
 
->[!TIP] Keep your treasury funded above your upkeep cost. Use /f balance to check your reserves.
+>[!TIP] Utrzymuj skarbiec zasilony powyżej kosztu utrzymania. Używaj /f balance, aby sprawdzić rezerwy.

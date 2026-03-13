@@ -1,28 +1,28 @@
 ---
 id: combat_protection
 ---
-# Territory Protection
+# Ochrona terytorialna
 
-Claimed territory provides several layers of defense for your faction's builds and resources.
+Zajęte terytorium zapewnia kilka warstw obrony dla budowli i zasobów twojej frakcji.
 
-## Block Protection
+## Ochrona bloków
 
-Only faction members can place or break blocks in your territory. Enemies and neutrals are blocked from modifying anything.
+Tylko członkowie frakcji mogą stawiać lub niszczyć bloki na twoim terytorium. Wrogowie i neutralni nie mogą modyfikować niczego.
 
-## Container Protection
+## Ochrona pojemników
 
-Chests, barrels, and other containers are secured. Only your faction members can open or interact with storage in claimed chunks.
+Skrzynie, beczki i inne pojemniki są zabezpieczone. Tylko członkowie twojej frakcji mogą otwierać lub wchodzić w interakcje z magazynami na zajętych chunkach.
 
-## Entry Alerts
+## Alerty wejścia
 
-When a non-member enters your claimed territory, online faction members receive a notification with the intruder's name and location.
+Gdy nie-członek wejdzie na twoje zajęte terytorium, online'owi członkowie frakcji otrzymują powiadomienie z nazwą i lokalizacją intruza.
 
 ---
 
-## Ally Access
+## Dostęp sojuszników
 
-Allies cannot build or break blocks in your territory by default. Ally damage is also disabled, so allied players cannot harm each other.
+Sojusznicy domyślnie nie mogą budować ani niszczyć bloków na twoim terytorium. Obrażenia sojusznicze są również wyłączone, więc sojuszniczy gracze nie mogą się nawzajem ranić.
 
->[!INFO] Territory protects blocks, not players. PvP in your own territory depends on the attacker's relation to your faction.
+>[!INFO] Terytorium chroni bloki, nie graczy. PvP na twoim własnym terytorium zależy od relacji atakującego z twoją frakcją.
 
->[!TIP] Keep your claims connected and avoid isolated chunks that are harder to defend.
+>[!TIP] Utrzymuj swoje zajęcia połączone i unikaj izolowanych chunków, które trudniej bronić.

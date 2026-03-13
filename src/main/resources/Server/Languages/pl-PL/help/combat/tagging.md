@@ -1,29 +1,29 @@
 ---
 id: combat_tagging
 ---
-# Combat Tagging
+# Oznaczenie bojowe
 
-When you attack or are attacked by another player, you become combat tagged for 15 seconds.
+Gdy atakujesz lub zostajesz zaatakowany przez innego gracza, otrzymujesz oznaczenie bojowe na 15 sekund.
 
-## While Tagged
+## Podczas oznaczenia
 
-- No /f home or /f stuck teleports
-- No server teleport commands
-- Tag resets with each new combat action
-- A timer displays your remaining tag duration
+- Brak teleportacji /f home lub /f stuck
+- Brak serwerowych komend teleportacji
+- Oznaczenie resetuje się z każdą nową akcją bojową
+- Timer wyświetla pozostały czas oznaczenia
 
 ---
 
-## Logout Penalty
+## Kara za wylogowanie
 
->[!WARNING] Logging out while combat tagged kills your character and you lose 1.0 power.
+>[!WARNING] Wylogowanie się podczas oznaczenia bojowego zabija twoją postać i tracisz 1.0 mocy.
 
-Your items drop where you disconnected and enemies can loot them. Always wait for the tag to expire.
+Twoje przedmioty wypadają w miejscu rozłączenia i wrogowie mogą je zebrać. Zawsze czekaj na wygaśnięcie oznaczenia.
 
-## How the Timer Works
+## Jak działa timer
 
-The combat tag timer appears on screen when you enter combat. Every new hit resets it to 15 seconds. Once it reaches zero, all restrictions are lifted.
+Timer oznaczenia bojowego pojawia się na ekranie, gdy wejdziesz w walkę. Każde nowe trafienie resetuje go do 15 sekund. Gdy osiągnie zero, wszystkie ograniczenia zostają zniesione.
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] To są wartości domyślne. Administrator serwera mógł skonfigurować inne ustawienia.
 
->[!TIP] Disengage and wait out the timer if you need to teleport.
+>[!TIP] Wycofaj się i przeczekaj timer, jeśli potrzebujesz się teleportować.

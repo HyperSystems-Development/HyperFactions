@@ -1,44 +1,44 @@
 ---
 id: faction_roles
 ---
-# Roles and Ranks
+# Role i rangi
 
-Every faction has three roles in a strict hierarchy. Higher roles inherit all capabilities of the roles below them.
+Każda frakcja ma trzy role w ścisłej hierarchii. Wyższe role dziedziczą wszystkie uprawnienia ról niższych.
 
 ---
 
-## Permission Breakdown
+## Podział uprawnień
 
-| Action | Leader | Officer | Member |
+| Akcja | Lider | Oficer | Członek |
 |--------|--------|---------|--------|
-| Build in territory | Yes | Yes | Yes |
-| Use faction home | Yes | Yes | Yes |
-| Faction and ally chat | Yes | Yes | Yes |
-| Invite players | Yes | Yes | No |
-| Kick members | Yes | Yes (Members only) | No |
-| Claim / unclaim land | Yes | Yes | No |
-| Overclaim enemy territory | Yes | Yes | No |
-| Set faction home | Yes | Yes | No |
-| Delete faction home | Yes | Yes | No |
-| Manage relations (ally/enemy) | Yes | Yes | No |
-| View faction logs | Yes | Yes | No |
-| Promote to Officer | Yes | No | No |
-| Demote from Officer | Yes | No | No |
-| Rename faction | Yes | No | No |
-| Set description / tag / color | Yes | No | No |
-| Open / close faction | Yes | No | No |
-| Access faction settings | Yes | No | No |
-| Transfer leadership | Yes | No | No |
-| Disband faction | Yes | No | No |
+| Budowanie na terytorium | Tak | Tak | Tak |
+| Korzystanie z bazy frakcji | Tak | Tak | Tak |
+| Czat frakcyjny i sojuszniczy | Tak | Tak | Tak |
+| Zapraszanie graczy | Tak | Tak | Nie |
+| Wyrzucanie członków | Tak | Tak (tylko Członków) | Nie |
+| Zajmowanie / oddawanie terenu | Tak | Tak | Nie |
+| Przejmowanie wrogiego terytorium | Tak | Tak | Nie |
+| Ustawianie bazy frakcji | Tak | Tak | Nie |
+| Usuwanie bazy frakcji | Tak | Tak | Nie |
+| Zarządzanie relacjami (sojusz/wrogość) | Tak | Tak | Nie |
+| Przeglądanie logów frakcji | Tak | Tak | Nie |
+| Awansowanie do Oficera | Tak | Nie | Nie |
+| Degradowanie Oficera | Tak | Nie | Nie |
+| Zmiana nazwy frakcji | Tak | Nie | Nie |
+| Ustawianie opisu / tagu / koloru | Tak | Nie | Nie |
+| Otwieranie / zamykanie frakcji | Tak | Nie | Nie |
+| Dostęp do ustawień frakcji | Tak | Nie | Nie |
+| Przekazywanie przywództwa | Tak | Nie | Nie |
+| Rozwiązywanie frakcji | Tak | Nie | Nie |
 
->[!NOTE] Officers can kick Members but cannot kick other Officers. Only the Leader can remove Officers.
+>[!NOTE] Oficerowie mogą wyrzucać Członków, ale nie mogą wyrzucać innych Oficerów. Tylko Lider może usuwać Oficerów.
 
 ---
 
-## Role Details
+## Szczegóły ról
 
-- Leader -- One per faction. Has full control over all settings, members, and territory. Can transfer ownership to another member.
-- Officer -- Trusted members who help manage the faction. Can invite, kick members, claim land, and handle diplomacy.
-- Member -- The default role when joining. Can build in territory, use the faction home, and participate in faction chat.
+- Lider -- Jeden na frakcję. Ma pełną kontrolę nad wszystkimi ustawieniami, członkami i terytorium. Może przekazać własność innemu członkowi.
+- Oficer -- Zaufani członkowie pomagający zarządzać frakcją. Mogą zapraszać, wyrzucać członków, zajmować teren i prowadzić dyplomację.
+- Członek -- Domyślna rola po dołączeniu. Może budować na terytorium, korzystać z bazy frakcji i uczestniczyć w czacie frakcyjnym.
 
->[!TIP] Promote your most active and trusted members to Officer so they can help manage territory and recruit new players.
+>[!TIP] Awansuj swoich najbardziej aktywnych i zaufanych członków na Oficerów, aby pomagali zarządzać terytorium i rekrutować nowych graczy.

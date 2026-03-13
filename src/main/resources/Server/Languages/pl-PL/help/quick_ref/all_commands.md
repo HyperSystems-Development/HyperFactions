@@ -1,94 +1,94 @@
 ---
 id: quickref_commands
 ---
-# All Commands
+# Wszystkie komendy
 
-## Core
+## Podstawowe
 
-| Command | Description | Role |
+| Komenda | Opis | Rola |
 |---------|-------------|------|
-| /f | Open faction menu | Any |
-| /f help | Open help center | Any |
-| /f create (name) | Create a faction | Any |
-| /f disband | Delete your faction | Leader |
-| /f leave | Leave your faction | Any |
+| /f | Otwórz menu frakcji | Każdy |
+| /f help | Otwórz centrum pomocy | Każdy |
+| /f create (nazwa) | Utwórz frakcję | Każdy |
+| /f disband | Usuń swoją frakcję | Lider |
+| /f leave | Opuść swoją frakcję | Każdy |
 
-## Membership
+## Członkostwo
 
-| Command | Description | Role |
+| Komenda | Opis | Rola |
 |---------|-------------|------|
-| /f invite (player) | Invite a player | Officer+ |
-| /f accept [faction] | Accept an invite | Any |
-| /f request (faction) | Request to join | Any |
-| /f kick (player) | Remove a member | Officer+ |
-| /f promote (player) | Promote to Officer | Leader |
-| /f demote (player) | Demote to Member | Leader |
-| /f transfer (player) | Transfer leadership | Leader |
+| /f invite (gracz) | Zaproś gracza | Oficer+ |
+| /f accept [frakcja] | Przyjmij zaproszenie | Każdy |
+| /f request (frakcja) | Poproś o dołączenie | Każdy |
+| /f kick (gracz) | Usuń członka | Oficer+ |
+| /f promote (gracz) | Awansuj na Oficera | Lider |
+| /f demote (gracz) | Degraduj na Członka | Lider |
+| /f transfer (gracz) | Przekaż przywództwo | Lider |
 
-## Territory
+## Terytorium
 
-| Command | Description | Role |
+| Komenda | Opis | Rola |
 |---------|-------------|------|
-| /f claim | Claim current chunk | Officer+ |
-| /f unclaim | Release current chunk | Officer+ |
-| /f overclaim | Take weakened chunk | Officer+ |
-| /f map | Open territory map | Any |
+| /f claim | Zajmij obecny chunk | Oficer+ |
+| /f unclaim | Oddaj obecny chunk | Oficer+ |
+| /f overclaim | Przejmij osłabiony chunk | Oficer+ |
+| /f map | Otwórz mapę terytoriów | Każdy |
 
-## Teleport
+## Teleportacja
 
-| Command | Description | Role |
+| Komenda | Opis | Rola |
 |---------|-------------|------|
-| /f home | Teleport to faction home | Any |
-| /f sethome | Set faction home | Officer+ |
-| /f delhome | Delete faction home | Officer+ |
-| /f stuck | Escape enemy territory | Any |
+| /f home | Teleportuj do bazy frakcji | Każdy |
+| /f sethome | Ustaw bazę frakcji | Oficer+ |
+| /f delhome | Usuń bazę frakcji | Oficer+ |
+| /f stuck | Ucieknij z wrogiego terytorium | Każdy |
 
-## Information
+## Informacje
 
-| Command | Description | Role |
+| Komenda | Opis | Rola |
 |---------|-------------|------|
-| /f info [faction] | View faction details | Any |
-| /f list | Browse all factions | Any |
-| /f members | View roster | Any |
-| /f who [player] | View player info | Any |
-| /f power [player] | Check power levels | Any |
-| /f invites | Manage invites/requests | Any |
-| /f relations | View diplomatic relations | Any |
+| /f info [frakcja] | Szczegóły frakcji | Każdy |
+| /f list | Przeglądaj wszystkie frakcje | Każdy |
+| /f members | Wyświetl skład | Każdy |
+| /f who [gracz] | Info o graczu | Każdy |
+| /f power [gracz] | Sprawdź poziomy mocy | Każdy |
+| /f invites | Zarządzaj zaproszeniami/prośbami | Każdy |
+| /f relations | Wyświetl relacje dyplomatyczne | Każdy |
 
-## Diplomacy
+## Dyplomacja
 
-| Command | Description | Role |
+| Komenda | Opis | Rola |
 |---------|-------------|------|
-| /f ally (faction) | Request alliance | Officer+ |
-| /f enemy (faction) | Declare enemy | Officer+ |
-| /f neutral (faction) | Reset to neutral | Officer+ |
+| /f ally (frakcja) | Zaproponuj sojusz | Oficer+ |
+| /f enemy (frakcja) | Ogłoś wroga | Oficer+ |
+| /f neutral (frakcja) | Resetuj do neutralnego | Oficer+ |
 
-## Settings
+## Ustawienia
 
-| Command | Description | Role |
+| Komenda | Opis | Rola |
 |---------|-------------|------|
-| /f settings | Open settings GUI | Officer+ |
-| /f rename (name) | Rename faction | Leader |
-| /f desc [text] | Set description | Officer+ |
-| /f color (code) | Set faction color | Officer+ |
-| /f open | Allow anyone to join | Leader |
-| /f close | Require invitation | Leader |
+| /f settings | Otwórz GUI ustawień | Oficer+ |
+| /f rename (nazwa) | Zmień nazwę frakcji | Lider |
+| /f desc [tekst] | Ustaw opis | Oficer+ |
+| /f color (kod) | Ustaw kolor frakcji | Oficer+ |
+| /f open | Zezwól każdemu na dołączenie | Lider |
+| /f close | Wymagaj zaproszenia | Lider |
 
-## Economy
+## Ekonomia
 
-| Command | Description | Role |
+| Komenda | Opis | Rola |
 |---------|-------------|------|
-| /f balance | View treasury | Any |
-| /f deposit (amount) | Deposit funds | Any |
-| /f withdraw (amount) | Withdraw funds | Officer+ |
-| /f money transfer (faction) (amt) | Transfer funds | Officer+ |
-| /f money log [page] | Transaction history | Officer+ |
+| /f balance | Sprawdź skarbiec | Każdy |
+| /f deposit (kwota) | Wpłać fundusze | Każdy |
+| /f withdraw (kwota) | Wypłać fundusze | Oficer+ |
+| /f money transfer (frakcja) (kwota) | Przelej fundusze | Oficer+ |
+| /f money log [strona] | Historia transakcji | Oficer+ |
 
-## Chat
+## Czat
 
-| Command | Description | Role |
+| Komenda | Opis | Rola |
 |---------|-------------|------|
-| /f c | Cycle chat mode | Any |
-| /f c f | Set faction chat | Any |
-| /f c a | Set ally chat | Any |
-| /f c off | Set public chat | Any |
+| /f c | Przełącz tryb czatu | Każdy |
+| /f c f | Ustaw czat frakcyjny | Każdy |
+| /f c a | Ustaw czat sojuszniczy | Każdy |
+| /f c off | Ustaw czat publiczny | Każdy |

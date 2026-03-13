@@ -2,43 +2,43 @@
 id: power_map
 commands: map
 ---
-# The Territory Map
+# Mapa terytoriów
 
-The territory map gives you a bird's-eye view of claimed chunks in your area, showing which factions control the land around you.
+Mapa terytoriów daje ci widok z lotu ptaka na zajęte chunki w twojej okolicy, pokazując które frakcje kontrolują teren wokół ciebie.
 
 ---
 
-## Opening the Map
+## Otwieranie mapy
 
 `/f map`
 
-Opens the territory map GUI centered on your current location.
+Otwiera GUI mapy terytoriów wycentrowane na twojej aktualnej lokalizacji.
 
 ---
 
-## Color Legend
+## Legenda kolorów
 
-| Color | Meaning |
+| Kolor | Znaczenie |
 |-------|---------|
-| [#55FF55] Your faction's color | Territory claimed by your faction |
-| [#5555FF] Blue | Allied faction territory |
-| [#FF5555] Red | Enemy faction territory |
-| [#AAAAAA] Gray | Neutral faction territory |
-| [#333333] Dark | Wilderness (unclaimed land) |
-| [#FFAA00] Gold | Special zones (safezone, warzone) |
+| [#55FF55] Kolor twojej frakcji | Terytorium zajęte przez twoją frakcję |
+| [#5555FF] Niebieski | Terytorium sojuszniczej frakcji |
+| [#FF5555] Czerwony | Terytorium wrogiej frakcji |
+| [#AAAAAA] Szary | Terytorium neutralnej frakcji |
+| [#333333] Ciemny | Pustkowia (niezajęty teren) |
+| [#FFAA00] Złoty | Strefy specjalne (SafeZone, WarZone) |
 
->[!INFO] Your faction's color on the map matches the color you set with the faction color setting. Allies and enemies use fixed colors for easy identification.
+>[!INFO] Kolor twojej frakcji na mapie odpowiada kolorowi ustawionemu w ustawieniach frakcji. Sojusznicy i wrogowie używają stałych kolorów dla łatwej identyfikacji.
 
 ---
 
-## Click to Claim
+## Kliknij, aby zająć
 
-The map is not just for viewing -- you can interact with it directly.
+Mapa służy nie tylko do oglądania -- możesz z nią wchodzić w interakcje.
 
-- Click an unclaimed chunk to claim it (requires Officer+ rank and sufficient power)
-- Click a claimed chunk to see which faction owns it
-- Scroll or pan to explore the area around you
+- Kliknij niezajęty chunk, aby go zająć (wymaga rangi Oficer+ i wystarczającej mocy)
+- Kliknij zajęty chunk, aby zobaczyć, która frakcja jest jego właścicielem
+- Przewijaj lub przesuwaj, aby eksplorować okolicę
 
->[!TIP] The map is the easiest way to plan your territory expansion. Look for unclaimed areas near your base and claim strategically to create a contiguous border.
+>[!TIP] Mapa to najłatwiejszy sposób na planowanie rozszerzania terytorium. Szukaj niezajętych obszarów blisko twojej bazy i zajmuj strategicznie, aby stworzyć ciągłą granicę.
 
->[!NOTE] The map shows a fixed area around your position. Move to a different location and reopen it to see other parts of the world.
+>[!NOTE] Mapa pokazuje stały obszar wokół twojej pozycji. Przesuń się w inne miejsce i otwórz ją ponownie, aby zobaczyć inne części świata.

@@ -1,37 +1,37 @@
 ---
 id: admin_permissions
 ---
-# Admin Permissions
+# Uprawnienia administracyjne
 
-All admin features are gated behind permission nodes in the `hyperfactions.admin` namespace.
+Wszystkie funkcje administracyjne są chronione węzłami uprawnień w przestrzeni nazw `hyperfactions.admin`.
 
-## Permission Nodes
+## Węzły uprawnień
 
-| Permission | Description |
+| Uprawnienie | Opis |
 |-----------|-------------|
-| `hyperfactions.admin.*` | Grants **all** admin permissions |
-| `hyperfactions.admin.use` | Access `/f admin` dashboard |
-| `hyperfactions.admin.reload` | Reload configuration files |
-| `hyperfactions.admin.debug` | Toggle debug logging categories |
-| `hyperfactions.admin.zones` | Create, edit, and delete zones |
-| `hyperfactions.admin.disband` | Force-disband any faction |
-| `hyperfactions.admin.modify` | Modify any faction's settings |
-| `hyperfactions.admin.bypass.limits` | Bypass claim and power limits |
-| `hyperfactions.admin.backup` | Create and restore backups |
-| `hyperfactions.admin.power` | Override player power values |
-| `hyperfactions.admin.economy` | Manage faction treasuries |
+| `hyperfactions.admin.*` | Nadaje **wszystkie** uprawnienia administracyjne |
+| `hyperfactions.admin.use` | Dostęp do panelu `/f admin` |
+| `hyperfactions.admin.reload` | Przeładowanie plików konfiguracyjnych |
+| `hyperfactions.admin.debug` | Przełączanie kategorii logowania debugowego |
+| `hyperfactions.admin.zones` | Tworzenie, edycja i usuwanie stref |
+| `hyperfactions.admin.disband` | Wymuszone rozwiązanie dowolnej frakcji |
+| `hyperfactions.admin.modify` | Modyfikacja ustawień dowolnej frakcji |
+| `hyperfactions.admin.bypass.limits` | Pomijanie limitów zajęć i mocy |
+| `hyperfactions.admin.backup` | Tworzenie i przywracanie kopii zapasowych |
+| `hyperfactions.admin.power` | Nadpisywanie wartości mocy graczy |
+| `hyperfactions.admin.economy` | Zarządzanie skarbcami frakcji |
 
-## Fallback Behavior
+## Zachowanie awaryjne
 
-When **no permission plugin** is installed, admin permissions fall back to server operator (OP) status. This is controlled by `adminRequiresOp` in the server config (default: `true`).
+Gdy **nie jest zainstalowany żaden plugin uprawnień**, uprawnienia administracyjne przechodzą na status operatora serwera (OP). Kontroluje to `adminRequiresOp` w konfiguracji serwera (domyślnie: `true`).
 
->[!NOTE] The `hyperfactions.admin.*` wildcard grants every admin permission. Use individual nodes for granular control over your staff team.
+>[!NOTE] Wieloznacznik `hyperfactions.admin.*` nadaje każde uprawnienie administracyjne. Używaj indywidualnych węzłów dla szczegółowej kontroli nad swoim zespołem.
 
-## Permission Resolution Order
+## Kolejność rozwiązywania uprawnień
 
-1. **VaultUnlocked** provider (if available)
-2. **HyperPerms** provider (if available)
-3. **LuckPerms** provider (if available)
-4. **OP check** for admin nodes (fallback)
+1. **VaultUnlocked** (najwyższy priorytet)
+2. **HyperPerms** (jeśli dostępny)
+3. **LuckPerms** (jeśli dostępny)
+4. **Sprawdzenie OP** dla węzłów administracyjnych (awaryjnie)
 
->[!WARNING] Without a permission plugin and with `adminRequiresOp` disabled, admin commands are **open to all players**. Always use a permission plugin in production.
+>[!WARNING] Bez pluginu uprawnień i z wyłączonym `adminRequiresOp`, komendy administracyjne są **otwarte dla wszystkich graczy**. Zawsze używaj pluginu uprawnień na serwerze produkcyjnym.

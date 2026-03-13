@@ -2,46 +2,46 @@
 id: diplomacy_enemies
 commands: enemy, neutral
 ---
-# Enemy Factions
+# Wrogie frakcje
 
-Declaring an enemy is a one-way action that immediately enables PvP and territorial aggression against the target faction. No agreement is required.
+Ogłoszenie wroga to jednostronna akcja, która natychmiast włącza PvP i agresję terytorialną wobec docelowej frakcji. Nie wymaga zgody drugiej strony.
 
 ---
 
-## Declaring an Enemy
+## Ogłaszanie wroga
 
 `/f enemy <faction>`
 
-Instantly marks the target faction as your enemy. This takes effect immediately -- no confirmation from the other side is needed. Requires Officer rank or higher.
+Natychmiast oznacza docelową frakcję jako twojego wroga. Działa od razu -- potwierdzenie z drugiej strony nie jest potrzebne. Wymaga rangi Oficera lub wyższej.
 
-## Resetting to Neutral
+## Resetowanie do neutralnego
 
 `/f neutral <faction>`
 
-Ends the enemy status and resets the relation to neutral. This also requires Officer+ and takes effect immediately.
+Kończy status wroga i resetuje relację do neutralnej. Również wymaga Oficera+ i działa natychmiast.
 
 ---
 
-## What Enemy Status Enables
+## Co włącza status wroga
 
-| Effect | Details |
+| Efekt | Szczegóły |
 |--------|---------|
-| PvP in territory | Full PvP is enabled in both factions' territory |
-| Overclaiming | You can overclaim their chunks if they are in a power deficit |
-| Map marking | Enemy territory shows in red on the territory map |
-| No protection | Standard territory protection does not prevent enemy PvP |
+| PvP na terytorium | Pełne PvP jest włączone na terytoriach obu frakcji |
+| Przejmowanie | Możesz przejmować ich chunki, jeśli mają deficyt mocy |
+| Oznaczenie na mapie | Wrogie terytorium wyświetla się na czerwono na mapie |
+| Brak ochrony | Standardowa ochrona terytorialna nie zapobiega wrogim walkom PvP |
 
->[!WARNING] Declaring an enemy is a serious decision. Their members can also fight you in your own territory once you declare.
+>[!WARNING] Ogłoszenie wroga to poważna decyzja. Ich członkowie mogą również walczyć z tobą na twoim własnym terytorium po ogłoszeniu.
 
 ---
 
-## Strategic Considerations
+## Rozważania strategiczne
 
-- Enemy declarations are one-way -- you can declare without their consent, but they also see you as hostile
-- Before declaring, check the target's power with /f info. If they are strong, you may lose territory instead
-- Weaken enemies through repeated combat to drain their power, then overclaim their land
-- There is no limit to how many enemies you can have, but fighting on multiple fronts is risky
+- Deklaracje wrogości są jednostronne -- możesz ogłosić bez ich zgody, ale oni również widzą cię jako wrogiego
+- Przed ogłoszeniem sprawdź moc celu komendą /f info. Jeśli są silni, to ty możesz stracić terytorium
+- Osłabiaj wrogów powtarzanymi walkami, aby wyczerpać ich moc, a potem przejmuj ich teren
+- Nie ma limitu na liczbę wrogów, ale walka na wielu frontach jest ryzykowna
 
->[!TIP] Use /f neutral to de-escalate conflicts. Sometimes a strategic peace is more valuable than continued war.
+>[!TIP] Użyj /f neutral, aby deeskalować konflikty. Czasem strategiczny pokój jest cenniejszy niż kontynuowanie wojny.
 
->[!NOTE] If you are allied with a faction and declare them as an enemy, the alliance is broken first.
+>[!NOTE] Jeśli jesteś w sojuszu z frakcją i ogłosisz ją wrogiem, sojusz zostanie najpierw zerwany.

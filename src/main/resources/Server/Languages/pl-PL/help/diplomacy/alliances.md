@@ -2,44 +2,44 @@
 id: diplomacy_alliances
 commands: ally
 ---
-# Forming Alliances
+# Zawieranie sojuszy
 
-Alliances are mutual agreements between two factions that provide protection and cooperation benefits.
+Sojusze to wzajemne porozumienia między dwoma frakcjami, które zapewniają ochronę i korzyści ze współpracy.
 
 ---
 
-## How to Form an Alliance
+## Jak zawrzeć sojusz
 
 `/f ally <faction>`
 
-Sends an alliance request to the target faction. The alliance only takes effect once both sides agree. An Officer or Leader from the other faction must also run the same command targeting your faction to confirm.
+Wysyła propozycję sojuszu do docelowej frakcji. Sojusz wchodzi w życie dopiero gdy obie strony się zgodzą. Oficer lub Lider z drugiej frakcji musi również wpisać tę samą komendę, celując w twoją frakcję, aby potwierdzić.
 
-## How to Break an Alliance
+## Jak zerwać sojusz
 
 `/f neutral <faction>`
 
-Either side can unilaterally end an alliance by resetting the relation to neutral.
+Każda strona może jednostronnie zakończyć sojusz, resetując relację do neutralnej.
 
 ---
 
-## Alliance Benefits
+## Korzyści z sojuszu
 
-| Benefit | Details |
+| Korzyść | Szczegóły |
 |---------|---------|
-| No friendly fire | Allied players cannot damage each other |
-| Shared map visibility | Allied territory shows in blue on the territory map |
-| Territory interaction | Allies can use doors, seats, and transport in your territory |
-| Ally chat | Cycle to ally chat mode for cross-faction communication |
-| Overclaim protection | Allies cannot overclaim each other's territory |
+| Brak ognia przyjacielskiego | Sojuszniczy gracze nie mogą się nawzajem ranić |
+| Wspólna widoczność na mapie | Terytorium sojusznicze wyświetla się na niebiesko na mapie |
+| Interakcja z terytorium | Sojusznicy mogą używać drzwi, siedzeń i transportu na twoim terytorium |
+| Czat sojuszniczy | Przełącz na tryb czatu sojuszniczego do komunikacji międzyfrakcyjnej |
+| Ochrona przed przejęciem | Sojusznicy nie mogą przejmować nawzajem swoich terytoriów |
 
->[!NOTE] Your faction can have up to 10 alliances at a time. Choose your allies wisely.
+>[!NOTE] Twoja frakcja może mieć jednocześnie do 10 sojuszy. Wybieraj sojuszników mądrze.
 
 ---
 
-## Alliance Etiquette
+## Etykieta sojuszu
 
->[!TIP] Communication is key. Before sending an alliance request, consider reaching out to the other faction's leader to discuss terms. A strong alliance is built on mutual benefit, not just convenience.
+>[!TIP] Komunikacja to klucz. Przed wysłaniem propozycji sojuszu rozważ skontaktowanie się z liderem drugiej frakcji, aby omówić warunki. Silny sojusz opiera się na wzajemnych korzyściach, nie tylko na wygodzie.
 
-- Alliances work both ways -- if you benefit from protection, your allies expect the same
-- Breaking an alliance during wartime may damage your faction's reputation
-- Allied factions can coordinate territory claims to create defensible borders
+- Sojusze działają w obie strony -- jeśli korzystasz z ochrony, twoi sojusznicy oczekują tego samego
+- Zerwanie sojuszu podczas wojny może zaszkodzić reputacji twojej frakcji
+- Sojusznicze frakcje mogą koordynować zajęcia terytoriów, aby tworzyć obronne granice

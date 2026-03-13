@@ -2,49 +2,49 @@
 id: power_claiming
 commands: claim, unclaim
 ---
-# Claiming Territory
+# Zajmowanie terytorium
 
-Claiming a chunk protects it under your faction's control. Only faction members can build, break, or access containers inside claimed territory.
+Zajęcie chunka chroni go pod kontrolą twojej frakcji. Tylko członkowie frakcji mogą budować, niszczyć i korzystać z pojemników na zajętym terytorium.
 
 ---
 
-## How to Claim
+## Jak zajmować
 
 `/f claim`
 
-Stand in the chunk you want to claim and run this command. The chunk is immediately protected. Requires Officer rank or higher.
+Stań na chunku, który chcesz zająć i wpisz tę komendę. Chunk jest natychmiast chroniony. Wymaga rangi Oficera lub wyższej.
 
-## How to Unclaim
+## Jak oddawać
 
 `/f unclaim`
 
-Releases the chunk you are standing in back to wilderness. Also requires Officer+.
+Oddaje chunk, na którym stoisz, z powrotem na pustkowia. Również wymaga Oficera+.
 
 ---
 
-## Claim Rules
+## Zasady zajmowania
 
-| Rule | Default |
+| Zasada | Domyślnie |
 |------|---------|
-| Power cost per claim | 2.0 power |
-| Maximum claims | 100 per faction |
-| Adjacent only | No (you can claim anywhere) |
+| Koszt mocy za zajęcie | 2.0 mocy |
+| Maksymalna liczba zajęć | 100 na frakcję |
+| Tylko przyległe | Nie (możesz zajmować gdziekolwiek) |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] To są wartości domyślne. Administrator serwera mógł skonfigurować inne ustawienia.
 
->[!INFO] Each claim costs 2.0 power to maintain. A faction with 50 total power can hold up to 25 claims safely.
+>[!INFO] Każde zajęcie kosztuje 2.0 mocy w utrzymaniu. Frakcja z 50 łącznej mocy może bezpiecznie utrzymać do 25 zajęć.
 
 ---
 
-## What Protection Provides
+## Co zapewnia ochrona
 
-Inside claimed territory, the following is enforced by default:
+Na zajętym terytorium domyślnie obowiązuje:
 
-- Outsiders cannot break, place, or interact with blocks
-- Allies can use doors, seats, and transport but cannot break or place blocks
-- Members and Officers have full access to build, break, and use everything
-- Container access (chests, crates) is restricted to members only
+- Obcy nie mogą niszczyć, stawiać ani wchodzić w interakcje z blokami
+- Sojusznicy mogą używać drzwi, siedzeń i transportu, ale nie mogą niszczyć ani stawiać bloków
+- Członkowie i Oficerowie mają pełny dostęp do budowania, niszczenia i korzystania ze wszystkiego
+- Dostęp do pojemników (skrzynie, skrzynki) jest ograniczony tylko do członków
 
->[!TIP] You can also claim directly from the territory map. Open /f map and click on unclaimed chunks to claim them.
+>[!TIP] Możesz też zajmować bezpośrednio z mapy terytoriów. Otwórz /f map i kliknij na niezajęte chunki, aby je zająć.
 
->[!WARNING] Do not over-expand. If your faction loses power through deaths, claims beyond your power budget become vulnerable to overclaiming.
+>[!WARNING] Nie rozszerzaj się nadmiernie. Jeśli twoja frakcja straci moc przez śmierci, zajęcia przekraczające budżet mocy staną się podatne na przejęcie.

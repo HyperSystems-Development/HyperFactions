@@ -1,39 +1,39 @@
 ---
 id: admin_treasury_management
 ---
-# Treasury Management
+# Zarządzanie skarbcem
 
-Admin commands for managing faction treasuries. Requires `hyperfactions.admin.economy` permission.
+Komendy administracyjne do zarządzania skarbcami frakcji. Wymaga uprawnienia `hyperfactions.admin.economy`.
 
-## Treasury Commands
+## Komendy skarbca
 
-| Command | Description |
+| Komenda | Opis |
 |---------|-------------|
-| `/f admin economy balance <faction>` | View faction treasury balance |
-| `/f admin economy set <faction> <amount>` | Set exact balance |
-| `/f admin economy add <faction> <amount>` | Add funds to treasury |
-| `/f admin economy take <faction> <amount>` | Remove funds from treasury |
-| `/f admin economy reset <faction>` | Reset treasury to zero |
+| `/f admin economy balance <faction>` | Wyświetl saldo skarbca frakcji |
+| `/f admin economy set <faction> <amount>` | Ustaw dokładne saldo |
+| `/f admin economy add <faction> <amount>` | Dodaj fundusze do skarbca |
+| `/f admin economy take <faction> <amount>` | Usuń fundusze ze skarbca |
+| `/f admin economy reset <faction>` | Resetuj skarbiec do zera |
 
-## Examples
+## Przykłady
 
-- `/f admin economy balance Vikings` -- check balance
-- `/f admin economy set Vikings 5000` -- set to 5000
-- `/f admin economy add Vikings 1000` -- deposit 1000
-- `/f admin economy take Vikings 500` -- withdraw 500
-- `/f admin economy reset Vikings` -- zero out balance
+- `/f admin economy balance Vikings` -- sprawdź saldo
+- `/f admin economy set Vikings 5000` -- ustaw na 5000
+- `/f admin economy add Vikings 1000` -- wpłać 1000
+- `/f admin economy take Vikings 500` -- wypłać 500
+- `/f admin economy reset Vikings` -- wyzeruj saldo
 
->[!TIP] Use `/f admin info <faction>` to see the full economy overview including transaction history alongside the treasury balance.
+>[!TIP] Użyj `/f admin info <faction>`, aby zobaczyć pełny przegląd ekonomii, w tym historię transakcji obok salda skarbca.
 
-## Use Cases
+## Przypadki użycia
 
-| Scenario | Command |
+| Scenariusz | Komenda |
 |----------|---------|
-| Event prize distribution | `economy add <faction> <prize>` |
-| Penalty for rule violation | `economy take <faction> <fine>` |
-| Economy reset after wipe | `economy reset <faction>` |
-| Compensation for bugs | `economy add <faction> <amount>` |
+| Dystrybucja nagród za wydarzenie | `economy add <faction> <prize>` |
+| Kara za złamanie regulaminu | `economy take <faction> <fine>` |
+| Reset ekonomii po wipe | `economy reset <faction>` |
+| Kompensacja za błędy | `economy add <faction> <amount>` |
 
->[!WARNING] Treasury changes are logged in the faction's transaction history. Admin modifications are recorded with the admin's name for accountability.
+>[!WARNING] Zmiany w skarbcu są rejestrowane w historii transakcji frakcji. Modyfikacje administracyjne są zapisywane z nazwą administratora dla odpowiedzialności.
 
->[!NOTE] All economy admin commands work even when the economy module is disabled in config. The data is stored regardless of module status.
+>[!NOTE] Wszystkie komendy ekonomii administracyjnej działają nawet gdy moduł ekonomii jest wyłączony w konfiguracji. Dane są przechowywane niezależnie od statusu modułu.

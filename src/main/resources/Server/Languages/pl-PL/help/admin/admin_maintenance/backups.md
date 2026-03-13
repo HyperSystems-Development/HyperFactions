@@ -1,48 +1,48 @@
 ---
 id: admin_backups
 ---
-# Backup System
+# System kopii zapasowych
 
-HyperFactions includes automatic and manual backups with GFS (Grandfather-Father-Son) rotation.
+HyperFactions zawiera automatyczne i ręczne kopie zapasowe z rotacją GFS (Grandfather-Father-Son).
 
-## Backup Commands
+## Komendy kopii zapasowych
 
-| Command | Description |
+| Komenda | Opis |
 |---------|-------------|
-| `/f admin backup create` | Create a manual backup now |
-| `/f admin backup list` | List all available backups |
-| `/f admin backup restore <name>` | Restore from a backup |
-| `/f admin backup delete <name>` | Delete a specific backup |
+| `/f admin backup create` | Utwórz ręczną kopię zapasową teraz |
+| `/f admin backup list` | Lista wszystkich dostępnych kopii zapasowych |
+| `/f admin backup restore <name>` | Przywróć z kopii zapasowej |
+| `/f admin backup delete <name>` | Usuń konkretną kopię zapasową |
 
-**Permission**: `hyperfactions.admin.backup`
+**Uprawnienie**: `hyperfactions.admin.backup`
 
-## GFS Rotation Defaults
+## Domyślna rotacja GFS
 
-| Type | Retention | Description |
+| Typ | Retencja | Opis |
 |------|-----------|-------------|
-| Hourly | 24 | Last 24 hourly snapshots |
-| Daily | 7 | Last 7 daily snapshots |
-| Weekly | 4 | Last 4 weekly snapshots |
-| Manual | 10 | Manually created backups |
-| Shutdown | 5 | Created on server stop |
+| Godzinowe | 24 | Ostatnie 24 godzinne migawki |
+| Dzienne | 7 | Ostatnie 7 dziennych migawek |
+| Tygodniowe | 4 | Ostatnie 4 tygodniowe migawki |
+| Ręczne | 10 | Ręcznie utworzone kopie zapasowe |
+| Przy wyłączeniu | 5 | Tworzone przy zatrzymaniu serwera |
 
->[!INFO] Shutdown backups are enabled by default (`onShutdown=true`). They capture the latest state before the server stops.
+>[!INFO] Kopie zapasowe przy wyłączeniu są domyślnie włączone (`onShutdown=true`). Przechwytują najnowszy stan przed zatrzymaniem serwera.
 
-## Backup Contents
+## Zawartość kopii zapasowej
 
-Each backup ZIP archive contains:
-- All faction data files
-- Player power data
-- Zone definitions
-- Chat history and economy data
-- Invite and join request data
-- Configuration files
+Każde archiwum ZIP kopii zapasowej zawiera:
+- Wszystkie pliki danych frakcji
+- Dane mocy graczy
+- Definicje stref
+- Historię czatu i dane ekonomii
+- Dane zaproszeń i próśb o dołączenie
+- Pliki konfiguracyjne
 
->[!WARNING] **Restoring a backup is destructive.** It replaces all current data with the backup's contents. Any changes made after the backup was created will be lost. Always create a fresh backup before restoring.
+>[!WARNING] **Przywracanie kopii zapasowej jest destrukcyjne.** Zastępuje wszystkie aktualne dane zawartością kopii zapasowej. Wszelkie zmiany dokonane po utworzeniu kopii zapasowej zostaną utracone. Zawsze twórz świeżą kopię zapasową przed przywracaniem.
 
-## Best Practices
+## Najlepsze praktyki
 
-1. Create a manual backup before major admin actions
-2. Review backup retention in `backup.json`
-3. Test restore on a staging server first
-4. Keep shutdown backups enabled for crash recovery
+1. Utwórz ręczną kopię zapasową przed ważnymi akcjami administracyjnymi
+2. Przejrzyj retencję kopii zapasowych w `backup.json`
+3. Przetestuj przywracanie na serwerze testowym
+4. Utrzymuj kopie zapasowe przy wyłączeniu włączone dla odzyskiwania po awariach

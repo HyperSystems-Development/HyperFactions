@@ -2,38 +2,38 @@
 id: combat_death
 commands: home, sethome, stuck
 ---
-# Death and Recovery
+# Śmierć i odzyskiwanie
 
-Death carries real consequences in factions. Every death costs you personal power, weakening your faction's ability to hold territory.
+Śmierć niesie realne konsekwencje we frakcjach. Każda śmierć kosztuje cię osobistą moc, osłabiając zdolność twojej frakcji do utrzymania terytorium.
 
-## Power Loss
+## Utrata mocy
 
-Each death costs -1.0 power from your personal total. This lowers the faction's combined power.
+Każda śmierć kosztuje -1.0 mocy z twojego osobistego stanu. To obniża łączną moc frakcji.
 
-| Event | Power Change |
+| Zdarzenie | Zmiana mocy |
 |-------|-------------|
-| Death (any cause) | -1.0 |
-| Online regen | +0.1 per minute |
-| Combat logout | -1.0 (killed) |
+| Śmierć (dowolna przyczyna) | -1.0 |
+| Regeneracja online | +0.1 na minutę |
+| Wylogowanie w walce | -1.0 (zabity) |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] To są wartości domyślne. Administrator serwera mógł skonfigurować inne ustawienia.
 
-## Example Scenarios
+## Przykładowe scenariusze
 
-*5 members at 10.0 power each = 50 total, 20 claims.*
-*One member dies twice: 8.0 power, faction total 48.*
-*Three members die once each: total drops to 47.*
+*5 członków po 10.0 mocy każdy = 50 łącznie, 20 zajęć.*
+*Jeden członek ginie dwukrotnie: 8.0 mocy, łącznie we frakcji 48.*
+*Trzech członków ginie po razie: łącznie spada do 47.*
 
->[!WARNING] If your faction power drops below your claim count, enemies can overclaim your territory.
+>[!WARNING] Jeśli moc twojej frakcji spadnie poniżej liczby zajęć, wrogowie mogą przejąć twoje terytorium.
 
-## Recovery
+## Odzyskiwanie
 
-Power regenerates at 0.1 per minute while online. Recovering 1.0 lost power takes about 10 minutes. Multiple deaths stack, so avoid repeated fights.
+Moc regeneruje się z prędkością 0.1 na minutę będąc online. Odzyskanie 1.0 utraconej mocy zajmuje około 10 minut. Wielokrotne śmierci się kumulują, więc unikaj powtarzanych walk.
 
 ---
 
-## All Death Types
+## Wszystkie rodzaje śmierci
 
-Power loss applies to all deaths: PvP, mob kills, fall damage, drowning, and any other cause. There is no safe way to die.
+Utrata mocy dotyczy wszystkich śmierci: PvP, zabójstw przez moby, obrażeń od upadku, utonięcia i każdej innej przyczyny. Nie ma bezpiecznego sposobu na śmierć.
 
->[!TIP] Set a faction home with /f sethome so members can regroup quickly after dying.
+>[!TIP] Ustaw bazę frakcji komendą /f sethome, aby członkowie mogli szybko się przegrupować po śmierci.

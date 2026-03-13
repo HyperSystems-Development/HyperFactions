@@ -2,49 +2,49 @@
 id: power_losing
 commands: overclaim
 ---
-# Losing Territory
+# Tracenie terytorium
 
-When a faction's total power drops below the cost of its claims, it becomes raidable. Enemies can overclaim chunks right out from under you.
+Gdy łączna moc frakcji spadnie poniżej kosztu jej zajęć, staje się ona podatna na rajdy. Wrogowie mogą przejmować chunki spod twoich nóg.
 
 ---
 
-## How Overclaiming Works
+## Jak działa przejmowanie
 
 `/f overclaim`
 
-An Officer or Leader from an enemy faction stands in your claimed chunk and runs this command. If your faction is in a power deficit, the chunk transfers to their faction.
+Oficer lub Lider z wrogiej frakcji staje na twoim zajętym chunku i wpisuje tę komendę. Jeśli twoja frakcja ma deficyt mocy, chunk przechodzi pod ich kontrolę.
 
-## The Math
+## Matematyka
 
-Each claim costs 2.0 power to maintain. If your total power falls below that threshold, the deficit chunks are vulnerable.
+Każde zajęcie kosztuje 2.0 mocy w utrzymaniu. Jeśli twoja łączna moc spadnie poniżej tego progu, chunki z deficytu są podatne na przejęcie.
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] To są wartości domyślne. Administrator serwera mógł skonfigurować inne ustawienia.
 
->[!WARNING] Overclaiming is permanent. Once an enemy takes a chunk, you must reclaim it (or overclaim it back if they weaken).
+>[!WARNING] Przejęcie jest trwałe. Gdy wróg zabierze chunk, musisz go odzyskać (lub przejąć z powrotem, jeśli osłabną).
 
 ---
 
-## Example Scenario
+## Przykładowy scenariusz
 
-| Factor | Value |
+| Czynnik | Wartość |
 |--------|-------|
-| Members | 5 players |
-| Power per member | 10 each (starting) |
-| Total power | 50 |
-| Claims | 30 chunks |
-| Power needed (30 x 2.0) | 60 |
-| Deficit | 10 power short |
+| Członkowie | 5 graczy |
+| Moc na członka | 10 każdy (startowa) |
+| Łączna moc | 50 |
+| Zajęcia | 30 chunków |
+| Wymagana moc (30 x 2.0) | 60 |
+| Deficyt | brakuje 10 mocy |
 
-In this example, the faction is already raidable from the start. Enemies could overclaim up to 5 chunks (10 deficit / 2.0 per claim) before the faction reaches equilibrium.
+W tym przykładzie frakcja jest podatna na rajdy od samego początku. Wrogowie mogą przejąć do 5 chunków (10 deficytu / 2.0 na zajęcie) zanim frakcja osiągnie równowagę.
 
 ---
 
-## How to Prevent Overclaiming
+## Jak zapobiegać przejęciu
 
-- Do not over-expand -- always keep total power above your claim cost with a buffer
-- Stay active -- power only regenerates while online (+0.1/min)
-- Avoid unnecessary deaths -- each death costs 1.0 power
-- Recruit more members -- more players means more total power
-- Unclaim unused chunks -- free up power with /f unclaim
+- Nie rozszerzaj się nadmiernie -- zawsze utrzymuj łączną moc powyżej kosztu zajęć z zapasem
+- Bądź aktywny -- moc regeneruje się tylko będąc online (+0.1/min)
+- Unikaj niepotrzebnych śmierci -- każda śmierć kosztuje 1.0 mocy
+- Rekrutuj więcej członków -- więcej graczy oznacza więcej łącznej mocy
+- Oddawaj nieużywane chunki -- zwolnij moc komendą /f unclaim
 
->[!TIP] Check your power status regularly with /f power. If your total power is close to your claim cost, consider unclaiming less important chunks before a war.
+>[!TIP] Regularnie sprawdzaj status mocy komendą /f power. Jeśli twoja łączna moc jest blisko kosztu zajęć, rozważ oddanie mniej ważnych chunków przed wojną.

@@ -2,37 +2,37 @@
 id: faction_creating
 commands: create
 ---
-# Creating a Faction
+# Tworzenie frakcji
 
-Starting your own faction makes you the Leader with full control over settings, members, and territory.
+Założenie własnej frakcji czyni cię Liderem z pełną kontrolą nad ustawieniami, członkami i terytorium.
 
 ---
 
-## How to Create
+## Jak utworzyć
 
 `/f create <name>`
 
-This creates your faction and immediately opens the Faction Dashboard where you can begin inviting members, claiming land, and configuring settings.
+Tworzy twoją frakcję i natychmiast otwiera Panel frakcji, gdzie możesz zacząć zapraszać członków, zajmować teren i konfigurować ustawienia.
 
-## Name Rules
+## Zasady nazewnictwa
 
-| Rule | Requirement |
+| Zasada | Wymóg |
 |------|------------|
-| Length | Between 3 and 24 characters |
-| Characters | Letters, numbers, and spaces only |
-| Uniqueness | No two factions can share the same name |
+| Długość | Od 3 do 24 znaków |
+| Znaki | Tylko litery, cyfry i spacje |
+| Unikalność | Dwie frakcje nie mogą mieć tej samej nazwy |
 
->[!WARNING] Choose your name carefully. Renaming later requires Leader permissions and may have a cooldown.
+>[!WARNING] Wybierz nazwę ostrożnie. Zmiana nazwy później wymaga uprawnień Lidera i może mieć czas odnowienia.
 
 ---
 
-## What Happens on Creation
+## Co dzieje się po utworzeniu
 
-- You become the Leader (highest rank)
-- Your faction starts with 0 claims and your personal power (10 by default)
-- The faction dashboard opens automatically
-- You can immediately invite players, claim territory, and set a faction home
+- Zostajesz Liderem (najwyższa ranga)
+- Twoja frakcja zaczyna z 0 zajęciami i twoją osobistą mocą (domyślnie 10)
+- Panel frakcji otwiera się automatycznie
+- Możesz natychmiast zapraszać graczy, zajmować terytorium i ustawić bazę frakcji
 
->[!INFO] If the server has economy integration enabled, creating a faction may cost money. The creation cost is set by the server administrator.
+>[!INFO] Jeśli serwer ma włączoną integrację ekonomiczną, utworzenie frakcji może kosztować pieniądze. Koszt utworzenia jest ustalany przez administratora serwera.
 
->[!TIP] After creating, your first priorities should be: invite friends, find a base location, and claim it.
+>[!TIP] Po utworzeniu, twoje pierwsze priorytety powinny być: zaproś znajomych, znajdź lokalizację na bazę i zajmij ją.
