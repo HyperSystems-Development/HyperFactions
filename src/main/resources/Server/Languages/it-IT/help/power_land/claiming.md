@@ -2,49 +2,49 @@
 id: power_claiming
 commands: claim, unclaim
 ---
-# Claiming Territory
+# Reclamare Territorio
 
-Claiming a chunk protects it under your faction's control. Only faction members can build, break, or access containers inside claimed territory.
+Reclamare un chunk lo protegge sotto il controllo della tua fazione. Solo i membri della fazione possono costruire, distruggere o accedere ai contenitori nel territorio reclamato.
 
 ---
 
-## How to Claim
+## Come Reclamare
 
 `/f claim`
 
-Stand in the chunk you want to claim and run this command. The chunk is immediately protected. Requires Officer rank or higher.
+Posizionati nel chunk che vuoi reclamare ed esegui questo comando. Il chunk viene immediatamente protetto. Richiede il grado di Ufficiale o superiore.
 
-## How to Unclaim
+## Come Rilasciare
 
 `/f unclaim`
 
-Releases the chunk you are standing in back to wilderness. Also requires Officer+.
+Rilascia il chunk in cui ti trovi riportandolo a natura selvaggia. Richiede anch'esso Ufficiale+.
 
 ---
 
-## Claim Rules
+## Regole di Claim
 
-| Rule | Default |
-|------|---------|
-| Power cost per claim | 2.0 power |
-| Maximum claims | 100 per faction |
-| Adjacent only | No (you can claim anywhere) |
+| Regola | Predefinito |
+|--------|-------------|
+| Costo in potere per claim | 2.0 potere |
+| Claim massimi | 100 per fazione |
+| Solo adiacenti | No (puoi reclamare ovunque) |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Questi sono valori predefiniti. L'amministratore del tuo server potrebbe aver configurato impostazioni diverse.
 
->[!INFO] Each claim costs 2.0 power to maintain. A faction with 50 total power can hold up to 25 claims safely.
+>[!INFO] Ogni claim costa 2.0 potere da mantenere. Una fazione con 50 potere totale puo' mantenere fino a 25 claim in sicurezza.
 
 ---
 
-## What Protection Provides
+## Cosa Fornisce la Protezione
 
-Inside claimed territory, the following is enforced by default:
+All'interno del territorio reclamato, le seguenti regole sono applicate per impostazione predefinita:
 
-- Outsiders cannot break, place, or interact with blocks
-- Allies can use doors, seats, and transport but cannot break or place blocks
-- Members and Officers have full access to build, break, and use everything
-- Container access (chests, crates) is restricted to members only
+- Gli esterni non possono distruggere, piazzare o interagire con i blocchi
+- Gli alleati possono usare porte, sedili e trasporti ma non possono distruggere o piazzare blocchi
+- Membri e Ufficiali hanno pieno accesso per costruire, distruggere e usare tutto
+- L'accesso ai contenitori (casse, bauli) e' limitato ai soli membri
 
->[!TIP] You can also claim directly from the territory map. Open /f map and click on unclaimed chunks to claim them.
+>[!TIP] Puoi anche reclamare direttamente dalla mappa del territorio. Apri /f map e clicca sui chunk non reclamati per reclamarli.
 
->[!WARNING] Do not over-expand. If your faction loses power through deaths, claims beyond your power budget become vulnerable to overclaiming.
+>[!WARNING] Non espanderti troppo. Se la tua fazione perde potere a causa delle morti, i claim oltre il tuo budget di potere diventano vulnerabili al sovra-claim.

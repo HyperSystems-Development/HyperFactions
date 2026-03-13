@@ -2,35 +2,35 @@
 id: faction_joining
 commands: accept, join, request
 ---
-# Joining a Faction
+# Unirsi a una Fazione
 
-There are three ways to join an existing faction, depending on how the faction is configured.
-
----
-
-## Methods Compared
-
-| Method | How | Requires |
-|--------|-----|----------|
-| Browse and Join | Open /f, click Browse, click Join | Faction is set to open |
-| Accept Invite | Check Invites tab in /f menu | Active invitation |
-| Request to Join | Use /f request, wait for approval | Officer or Leader approves |
+Ci sono tre modi per unirsi a una fazione esistente, a seconda di come e' configurata la fazione.
 
 ---
 
-## Invite Details
+## Confronto dei Metodi
 
-- Invitations are sent by Officers or Leaders
-- Invitations expire after 5 minutes -- accept promptly
-- View your pending invites in the Invites tab of the faction menu
-- Accept with the GUI or /f accept
+| Metodo | Come | Richiede |
+|--------|------|----------|
+| Sfoglia e Unisciti | Apri /f, clicca Sfoglia, clicca Unisciti | La fazione e' impostata come aperta |
+| Accetta Invito | Controlla la scheda Inviti nel menu /f | Un invito attivo |
+| Richiedi di Unirti | Usa /f request, attendi l'approvazione | Un Ufficiale o Leader approva |
 
-## Join Requests
+---
 
-- Use /f request to request membership in a closed faction
-- Requests expire after 24 hours if not acted on
-- Officers and Leaders can approve or deny requests from the faction dashboard
+## Dettagli Inviti
 
->[!TIP] Not sure which faction to join? Use the Browse tab in /f to see faction descriptions, member counts, and whether they are open or invite-only.
+- Gli inviti vengono inviati da Ufficiali o Leader
+- Gli inviti scadono dopo 5 minuti -- accetta prontamente
+- Visualizza i tuoi inviti in sospeso nella scheda Inviti del menu fazione
+- Accetta tramite la GUI o /f accept
 
->[!NOTE] Each faction can hold up to 50 members by default. If a faction is full, you will need to wait for a spot to open up.
+## Richieste di Adesione
+
+- Usa /f request per richiedere l'adesione a una fazione chiusa
+- Le richieste scadono dopo 24 ore se non vengono gestite
+- Ufficiali e Leader possono approvare o rifiutare le richieste dalla dashboard della fazione
+
+>[!TIP] Non sai quale fazione scegliere? Usa la scheda Sfoglia in /f per vedere le descrizioni delle fazioni, il numero di membri e se sono aperte o solo su invito.
+
+>[!NOTE] Ogni fazione puo' contenere fino a 50 membri per impostazione predefinita. Se una fazione e' piena, dovrai attendere che si liberi un posto.

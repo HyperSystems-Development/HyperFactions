@@ -1,42 +1,42 @@
 ---
 id: admin_upkeep_management
 ---
-# Upkeep Management
+# Gestione del Mantenimento
 
-Faction upkeep charges factions periodically based on their territory and member count.
+Il mantenimento delle fazioni addebita le fazioni periodicamente in base al loro territorio e numero di membri.
 
-## Admin Controls
+## Controlli Admin
 
-Upkeep settings are managed through the economy config file or the admin config GUI.
+Le impostazioni di mantenimento sono gestite attraverso il file di configurazione economia o la GUI di configurazione admin.
 
 `/f admin config`
-Open the config editor and navigate to economy settings to adjust upkeep values.
+Apri l'editor di configurazione e naviga alle impostazioni economia per regolare i valori di mantenimento.
 
-## Default Upkeep Settings
+## Impostazioni Predefinite del Mantenimento
 
-| Setting | Default | Description |
-|---------|---------|-------------|
-| Upkeep enabled | false | Master toggle for the system |
-| Upkeep interval | 24h | How often upkeep is charged |
-| Per-claim cost | 5.0 | Cost per claimed chunk per cycle |
-| Per-member cost | 0.0 | Cost per member per cycle |
-| Grace period | 72h | New factions are exempt |
-| Disband on bankrupt | false | Auto-disband if cannot pay |
+| Impostazione | Predefinito | Descrizione |
+|--------------|-------------|-------------|
+| Mantenimento abilitato | false | Interruttore principale del sistema |
+| Intervallo mantenimento | 24h | Quanto spesso viene addebitato il mantenimento |
+| Costo per claim | 5.0 | Costo per chunk reclamato per ciclo |
+| Costo per membro | 0.0 | Costo per membro per ciclo |
+| Periodo di grazia | 72h | Le nuove fazioni sono esenti |
+| Scioglimento per bancarotta | false | Scioglimento automatico se non puo' pagare |
 
-## Monitoring Upkeep
+## Monitorare il Mantenimento
 
-Use `/f admin info <faction>` to see:
-- Current treasury balance
-- Estimated upkeep cost per cycle
-- Time until next upkeep charge
-- Whether the faction can afford upkeep
+Usa `/f admin info <faction>` per vedere:
+- Saldo attuale del tesoro
+- Costo stimato di mantenimento per ciclo
+- Tempo fino al prossimo addebito di mantenimento
+- Se la fazione puo' permettersi il mantenimento
 
->[!TIP] Review economy statistics across all factions from the admin dashboard to identify factions at risk of bankruptcy before upkeep triggers.
+>[!TIP] Controlla le statistiche economiche di tutte le fazioni dalla dashboard admin per identificare le fazioni a rischio di bancarotta prima che il mantenimento venga addebitato.
 
->[!INFO] Upkeep configuration is stored in `economy.json`. Changes made via the config GUI take effect after reload with `/f admin reload`.
+>[!INFO] La configurazione del mantenimento e' salvata in `economy.json`. Le modifiche fatte tramite la GUI di configurazione hanno effetto dopo il ricaricamento con `/f admin reload`.
 
-## Upkeep Formula
+## Formula del Mantenimento
 
-**Total upkeep** = (claimed chunks x per-claim cost) + (member count x per-member cost)
+**Mantenimento totale** = (chunk reclamati x costo per claim) + (numero membri x costo per membro)
 
->[!WARNING] Enabling upkeep on a server with existing factions may cause unexpected bankruptcies. Consider setting a grace period or announcing the change in advance.
+>[!WARNING] Abilitare il mantenimento su un server con fazioni esistenti potrebbe causare bancarotte inaspettate. Considera di impostare un periodo di grazia o annunciare il cambiamento in anticipo.

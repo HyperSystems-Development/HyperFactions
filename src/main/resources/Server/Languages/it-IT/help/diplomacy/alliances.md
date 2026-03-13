@@ -2,44 +2,44 @@
 id: diplomacy_alliances
 commands: ally
 ---
-# Forming Alliances
+# Formare Alleanze
 
-Alliances are mutual agreements between two factions that provide protection and cooperation benefits.
+Le alleanze sono accordi reciproci tra due fazioni che forniscono benefici di protezione e cooperazione.
 
 ---
 
-## How to Form an Alliance
+## Come Formare un'Alleanza
 
 `/f ally <faction>`
 
-Sends an alliance request to the target faction. The alliance only takes effect once both sides agree. An Officer or Leader from the other faction must also run the same command targeting your faction to confirm.
+Invia una richiesta di alleanza alla fazione bersaglio. L'alleanza ha effetto solo quando entrambe le parti accettano. Un Ufficiale o Leader dell'altra fazione deve anch'egli eseguire lo stesso comando verso la tua fazione per confermare.
 
-## How to Break an Alliance
+## Come Rompere un'Alleanza
 
 `/f neutral <faction>`
 
-Either side can unilaterally end an alliance by resetting the relation to neutral.
+Entrambe le parti possono rompere unilateralmente un'alleanza riportando la relazione a neutrale.
 
 ---
 
-## Alliance Benefits
+## Benefici dell'Alleanza
 
-| Benefit | Details |
-|---------|---------|
-| No friendly fire | Allied players cannot damage each other |
-| Shared map visibility | Allied territory shows in blue on the territory map |
-| Territory interaction | Allies can use doors, seats, and transport in your territory |
-| Ally chat | Cycle to ally chat mode for cross-faction communication |
-| Overclaim protection | Allies cannot overclaim each other's territory |
+| Beneficio | Dettagli |
+|-----------|----------|
+| Niente fuoco amico | I giocatori alleati non possono danneggiarsi a vicenda |
+| Visibilita' mappa condivisa | Il territorio alleato appare in blu sulla mappa del territorio |
+| Interazione nel territorio | Gli alleati possono usare porte, sedili e trasporti nel tuo territorio |
+| Chat alleati | Passa alla modalita' chat alleati per comunicare tra fazioni |
+| Protezione dal sovra-claim | Gli alleati non possono sovra-reclamare il territorio l'uno dell'altro |
 
->[!NOTE] Your faction can have up to 10 alliances at a time. Choose your allies wisely.
+>[!NOTE] La tua fazione puo' avere fino a 10 alleanze contemporaneamente. Scegli i tuoi alleati con saggezza.
 
 ---
 
-## Alliance Etiquette
+## Galateo delle Alleanze
 
->[!TIP] Communication is key. Before sending an alliance request, consider reaching out to the other faction's leader to discuss terms. A strong alliance is built on mutual benefit, not just convenience.
+>[!TIP] La comunicazione e' fondamentale. Prima di inviare una richiesta di alleanza, considera di contattare il leader dell'altra fazione per discutere i termini. Un'alleanza forte si basa sul beneficio reciproco, non solo sulla convenienza.
 
-- Alliances work both ways -- if you benefit from protection, your allies expect the same
-- Breaking an alliance during wartime may damage your faction's reputation
-- Allied factions can coordinate territory claims to create defensible borders
+- Le alleanze funzionano in entrambe le direzioni -- se benefici della protezione, i tuoi alleati si aspettano lo stesso
+- Rompere un'alleanza durante un conflitto puo' danneggiare la reputazione della tua fazione
+- Le fazioni alleate possono coordinare i claim territoriali per creare confini difendibili

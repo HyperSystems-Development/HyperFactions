@@ -1,38 +1,38 @@
 ---
 id: admin_power_commands
 ---
-# Power Admin Commands
+# Comandi Admin Potere
 
-Override player and faction power values. All commands require `hyperfactions.admin.power` permission.
+Sovrascrivi i valori di potere di giocatori e fazioni. Tutti i comandi richiedono il permesso `hyperfactions.admin.power`.
 
-## Player Power Commands
+## Comandi Potere Giocatore
 
-| Command | Description |
+| Comando | Descrizione |
 |---------|-------------|
-| `/f admin power set <player> <amount>` | Set exact power value |
-| `/f admin power add <player> <amount>` | Add power to player |
-| `/f admin power remove <player> <amount>` | Remove power from player |
-| `/f admin power reset <player>` | Reset to default starting power |
-| `/f admin power info <player>` | View detailed power breakdown |
+| `/f admin power set <player> <amount>` | Imposta il valore esatto di potere |
+| `/f admin power add <player> <amount>` | Aggiunge potere al giocatore |
+| `/f admin power remove <player> <amount>` | Rimuove potere dal giocatore |
+| `/f admin power reset <player>` | Ripristina al potere iniziale predefinito |
+| `/f admin power info <player>` | Visualizza il dettaglio completo del potere |
 
-## How Power Affects Factions
+## Come il Potere Influisce sulle Fazioni
 
-A faction's total power is the sum of all its members' individual power. Territory claims require sufficient total power to maintain.
+Il potere totale di una fazione e' la somma del potere individuale di tutti i suoi membri. I claim territoriali richiedono un potere totale sufficiente per essere mantenuti.
 
-| Scenario | Effect |
-|----------|--------|
-| Power set higher | Faction can claim more territory |
-| Power set lower | Faction may become vulnerable to overclaim |
-| Power reset | Returns player to default starting value |
+| Scenario | Effetto |
+|----------|---------|
+| Potere impostato piu' alto | La fazione puo' reclamare piu' territorio |
+| Potere impostato piu' basso | La fazione potrebbe diventare vulnerabile al sovra-claim |
+| Potere resettato | Riporta il giocatore al valore iniziale predefinito |
 
->[!WARNING] Lowering a player's power may cause their faction to lose territory if total power drops below the number of claimed chunks.
+>[!WARNING] Ridurre il potere di un giocatore potrebbe causare alla sua fazione la perdita di territorio se il potere totale scende sotto il numero di chunk reclamati.
 
-## Examples
+## Esempi
 
-- `/f admin power set Steve 50` -- set to exactly 50
-- `/f admin power add Steve 10` -- increase by 10
-- `/f admin power remove Steve 5` -- decrease by 5
-- `/f admin power reset Steve` -- back to default
-- `/f admin power info Steve` -- show full breakdown
+- `/f admin power set Steve 50` -- imposta a esattamente 50
+- `/f admin power add Steve 10` -- aumenta di 10
+- `/f admin power remove Steve 5` -- diminuisce di 5
+- `/f admin power reset Steve` -- riporta al predefinito
+- `/f admin power info Steve` -- mostra il dettaglio completo
 
->[!TIP] Use `/f admin power info <player>` to see current power, max power, and any active overrides before making changes.
+>[!TIP] Usa `/f admin power info <player>` per vedere il potere attuale, il potere massimo e qualsiasi override attivo prima di apportare modifiche.

@@ -1,28 +1,28 @@
 ---
 id: combat_protection
 ---
-# Territory Protection
+# Protezione del Territorio
 
-Claimed territory provides several layers of defense for your faction's builds and resources.
+Il territorio reclamato fornisce diversi livelli di difesa per le costruzioni e le risorse della tua fazione.
 
-## Block Protection
+## Protezione Blocchi
 
-Only faction members can place or break blocks in your territory. Enemies and neutrals are blocked from modifying anything.
+Solo i membri della fazione possono piazzare o distruggere blocchi nel tuo territorio. Nemici e neutrali non possono modificare nulla.
 
-## Container Protection
+## Protezione Contenitori
 
-Chests, barrels, and other containers are secured. Only your faction members can open or interact with storage in claimed chunks.
+Casse, barili e altri contenitori sono protetti. Solo i membri della tua fazione possono aprire o interagire con lo stoccaggio nei chunk reclamati.
 
-## Entry Alerts
+## Avvisi di Ingresso
 
-When a non-member enters your claimed territory, online faction members receive a notification with the intruder's name and location.
+Quando un non-membro entra nel tuo territorio reclamato, i membri della fazione online ricevono una notifica con il nome e la posizione dell'intruso.
 
 ---
 
-## Ally Access
+## Accesso degli Alleati
 
-Allies cannot build or break blocks in your territory by default. Ally damage is also disabled, so allied players cannot harm each other.
+Gli alleati non possono costruire o distruggere blocchi nel tuo territorio per impostazione predefinita. Anche il danno tra alleati e' disabilitato, quindi i giocatori alleati non possono danneggiarsi a vicenda.
 
->[!INFO] Territory protects blocks, not players. PvP in your own territory depends on the attacker's relation to your faction.
+>[!INFO] Il territorio protegge i blocchi, non i giocatori. Il PvP nel tuo territorio dipende dalla relazione dell'attaccante con la tua fazione.
 
->[!TIP] Keep your claims connected and avoid isolated chunks that are harder to defend.
+>[!TIP] Mantieni i tuoi claim collegati ed evita chunk isolati che sono piu' difficili da difendere.

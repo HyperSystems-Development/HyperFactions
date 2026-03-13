@@ -2,46 +2,46 @@
 id: diplomacy_enemies
 commands: enemy, neutral
 ---
-# Enemy Factions
+# Fazioni Nemiche
 
-Declaring an enemy is a one-way action that immediately enables PvP and territorial aggression against the target faction. No agreement is required.
+Dichiarare un nemico e' un'azione unilaterale che abilita immediatamente il PvP e l'aggressione territoriale contro la fazione bersaglio. Non e' richiesto alcun accordo.
 
 ---
 
-## Declaring an Enemy
+## Dichiarare un Nemico
 
 `/f enemy <faction>`
 
-Instantly marks the target faction as your enemy. This takes effect immediately -- no confirmation from the other side is needed. Requires Officer rank or higher.
+Segna istantaneamente la fazione bersaglio come tuo nemico. Ha effetto immediato -- nessuna conferma dall'altra parte e' necessaria. Richiede il grado di Ufficiale o superiore.
 
-## Resetting to Neutral
+## Ripristinare a Neutrale
 
 `/f neutral <faction>`
 
-Ends the enemy status and resets the relation to neutral. This also requires Officer+ and takes effect immediately.
+Termina lo stato di nemico e riporta la relazione a neutrale. Richiede anch'esso Ufficiale+ e ha effetto immediato.
 
 ---
 
-## What Enemy Status Enables
+## Cosa Abilita lo Stato di Nemico
 
-| Effect | Details |
-|--------|---------|
-| PvP in territory | Full PvP is enabled in both factions' territory |
-| Overclaiming | You can overclaim their chunks if they are in a power deficit |
-| Map marking | Enemy territory shows in red on the territory map |
-| No protection | Standard territory protection does not prevent enemy PvP |
+| Effetto | Dettagli |
+|---------|----------|
+| PvP nel territorio | Il PvP completo e' abilitato nel territorio di entrambe le fazioni |
+| Sovra-claim | Puoi sovra-reclamare i loro chunk se sono in deficit di potere |
+| Segnalazione sulla mappa | Il territorio nemico appare in rosso sulla mappa del territorio |
+| Nessuna protezione | La protezione territoriale standard non impedisce il PvP nemico |
 
->[!WARNING] Declaring an enemy is a serious decision. Their members can also fight you in your own territory once you declare.
+>[!WARNING] Dichiarare un nemico e' una decisione seria. Anche i loro membri possono combatterti nel tuo stesso territorio una volta che dichiari.
 
 ---
 
-## Strategic Considerations
+## Considerazioni Strategiche
 
-- Enemy declarations are one-way -- you can declare without their consent, but they also see you as hostile
-- Before declaring, check the target's power with /f info. If they are strong, you may lose territory instead
-- Weaken enemies through repeated combat to drain their power, then overclaim their land
-- There is no limit to how many enemies you can have, but fighting on multiple fronts is risky
+- Le dichiarazioni di nemico sono unilaterali -- puoi dichiarare senza il loro consenso, ma anche loro ti vedranno come ostile
+- Prima di dichiarare, controlla il potere del bersaglio con /f info. Se sono forti, potresti perdere territorio invece tu
+- Indebolisci i nemici attraverso combattimenti ripetuti per drenare il loro potere, poi sovra-reclama il loro terreno
+- Non c'e' limite al numero di nemici che puoi avere, ma combattere su piu' fronti e' rischioso
 
->[!TIP] Use /f neutral to de-escalate conflicts. Sometimes a strategic peace is more valuable than continued war.
+>[!TIP] Usa /f neutral per de-escalare i conflitti. A volte una pace strategica e' piu' preziosa di una guerra continua.
 
->[!NOTE] If you are allied with a faction and declare them as an enemy, the alliance is broken first.
+>[!NOTE] Se sei alleato con una fazione e la dichiari nemica, l'alleanza viene rotta prima.

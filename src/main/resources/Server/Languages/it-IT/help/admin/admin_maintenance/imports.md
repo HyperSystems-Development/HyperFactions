@@ -1,48 +1,48 @@
 ---
 id: admin_imports
 ---
-# Data Import
+# Importazione Dati
 
-Import faction data from other plugins to migrate your server to HyperFactions.
+Importa dati di fazioni da altri plugin per migrare il tuo server a HyperFactions.
 
-## Import Command
+## Comando di Importazione
 
 `/f admin import <source> [path] [flags]`
 
-**Permission**: `hyperfactions.admin.use`
+**Permesso**: `hyperfactions.admin.use`
 
-## Supported Sources
+## Sorgenti Supportate
 
-| Source | Description |
-|--------|-------------|
-| `elbaphfactions` | Import from ElbaphFactions data |
-| `hyfactions` | Import from HyFactions v1 data |
+| Sorgente | Descrizione |
+|----------|-------------|
+| `elbaphfactions` | Importa da dati ElbaphFactions |
+| `hyfactions` | Importa da dati HyFactions v1 |
 
-## Import Flags
+## Flag di Importazione
 
-| Flag | Description |
+| Flag | Descrizione |
 |------|-------------|
-| `--dry-run` | Validate data without importing anything |
-| `--overwrite` | Overwrite existing factions with same name |
-| `--no-zones` | Skip zone data during import |
-| `--no-power` | Skip power data during import |
+| `--dry-run` | Valida i dati senza importare nulla |
+| `--overwrite` | Sovrascrivi le fazioni esistenti con lo stesso nome |
+| `--no-zones` | Salta i dati delle zone durante l'importazione |
+| `--no-power` | Salta i dati del potere durante l'importazione |
 
->[!TIP] Always run with `--dry-run` first to preview what will be imported and catch any data issues before committing changes.
+>[!TIP] Esegui sempre con `--dry-run` prima per visualizzare in anteprima cosa verra' importato e individuare eventuali problemi nei dati prima di confermare le modifiche.
 
-## Import Process
+## Processo di Importazione
 
-1. A pre-import backup is created automatically
-2. Player name mappings are loaded
-3. Factions, claims, and zones are converted
-4. Data is validated and saved
+1. Un backup pre-importazione viene creato automaticamente
+2. Le mappature dei nomi giocatore vengono caricate
+3. Fazioni, claim e zone vengono convertiti
+4. I dati vengono validati e salvati
 
-## Examples
+## Esempi
 
 - `/f admin import elbaphfactions --dry-run`
 - `/f admin import elbaphfactions --overwrite`
 - `/f admin import hyfactions --no-zones --no-power`
 - `/f admin import elbaphfactions /custom/path`
 
->[!WARNING] Using `--overwrite` will **replace** any existing faction that shares a name with an imported faction. Member data and claims will be overwritten. Run with `--dry-run` first to identify conflicts.
+>[!WARNING] Usare `--overwrite` **sostituira'** qualsiasi fazione esistente che condivide un nome con una fazione importata. I dati dei membri e i claim verranno sovrascritti. Esegui prima con `--dry-run` per identificare i conflitti.
 
->[!NOTE] Some source-specific data (e.g., worker plots, farm plots) has no equivalent in HyperFactions and will be logged as warnings during import.
+>[!NOTE] Alcuni dati specifici della sorgente (es. worker plots, farm plots) non hanno un equivalente in HyperFactions e verranno registrati come avvisi durante l'importazione.

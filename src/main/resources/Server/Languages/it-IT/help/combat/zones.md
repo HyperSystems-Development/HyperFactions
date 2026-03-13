@@ -1,29 +1,29 @@
 ---
 id: combat_zones
 ---
-# Special Zones
+# Zone Speciali
 
-Admins can designate areas with special rules that override normal faction territory protection.
+Gli admin possono designare aree con regole speciali che sovrascrivono la protezione territoriale normale delle fazioni.
 
 ## SafeZone
 
-No PvP damage, no block breaking by non-admins. Ideal for spawn areas, trading hubs, and event staging areas. Players cannot be harmed here.
+Niente danni PvP, niente distruzione blocchi da parte dei non-admin. Ideale per aree di spawn, hub commerciali e aree di preparazione eventi. I giocatori non possono essere danneggiati qui.
 
 ## WarZone
 
-PvP is always enabled. No block protection applies. Open battle areas where anything goes. You receive no territory protection benefits in a WarZone.
+Il PvP e' sempre abilitato. Nessuna protezione blocchi si applica. Aree di battaglia aperte dove tutto e' permesso. Non ricevi benefici di protezione territoriale in una WarZone.
 
 ---
 
-## Zone Comparison
+## Confronto Zone
 
-| Feature | SafeZone | WarZone | Faction Land |
-|---------|----------|---------|--------------|
-| PvP | Disabled | Always On | Relation-based |
-| Block Break | Disabled | Allowed | Members Only |
-| Containers | Protected | Open | Members Only |
-| Best For | Spawn/Trade | Arenas | Bases |
+| Caratteristica | SafeZone | WarZone | Terreno Fazione |
+|----------------|----------|---------|-----------------|
+| PvP | Disabilitato | Sempre Attivo | Basato sulla relazione |
+| Distruzione Blocchi | Disabilitata | Permessa | Solo Membri |
+| Contenitori | Protetti | Aperti | Solo Membri |
+| Ideale Per | Spawn/Commercio | Arene | Basi |
 
->[!NOTE] Zone rules always override faction territory rules. A claimed chunk inside a WarZone follows WarZone rules.
+>[!NOTE] Le regole delle zone sovrascrivono sempre le regole del territorio delle fazioni. Un chunk reclamato all'interno di una WarZone segue le regole della WarZone.
 
->[!TIP] Check your territory map with /f map to see zone boundaries.
+>[!TIP] Controlla la tua mappa del territorio con /f map per vedere i confini delle zone.

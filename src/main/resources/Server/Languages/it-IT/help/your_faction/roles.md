@@ -1,44 +1,44 @@
 ---
 id: faction_roles
 ---
-# Roles and Ranks
+# Ruoli e Gradi
 
-Every faction has three roles in a strict hierarchy. Higher roles inherit all capabilities of the roles below them.
-
----
-
-## Permission Breakdown
-
-| Action | Leader | Officer | Member |
-|--------|--------|---------|--------|
-| Build in territory | Yes | Yes | Yes |
-| Use faction home | Yes | Yes | Yes |
-| Faction and ally chat | Yes | Yes | Yes |
-| Invite players | Yes | Yes | No |
-| Kick members | Yes | Yes (Members only) | No |
-| Claim / unclaim land | Yes | Yes | No |
-| Overclaim enemy territory | Yes | Yes | No |
-| Set faction home | Yes | Yes | No |
-| Delete faction home | Yes | Yes | No |
-| Manage relations (ally/enemy) | Yes | Yes | No |
-| View faction logs | Yes | Yes | No |
-| Promote to Officer | Yes | No | No |
-| Demote from Officer | Yes | No | No |
-| Rename faction | Yes | No | No |
-| Set description / tag / color | Yes | No | No |
-| Open / close faction | Yes | No | No |
-| Access faction settings | Yes | No | No |
-| Transfer leadership | Yes | No | No |
-| Disband faction | Yes | No | No |
-
->[!NOTE] Officers can kick Members but cannot kick other Officers. Only the Leader can remove Officers.
+Ogni fazione ha tre ruoli in una gerarchia rigida. I ruoli superiori ereditano tutte le capacita' dei ruoli sottostanti.
 
 ---
 
-## Role Details
+## Dettaglio Permessi
 
-- Leader -- One per faction. Has full control over all settings, members, and territory. Can transfer ownership to another member.
-- Officer -- Trusted members who help manage the faction. Can invite, kick members, claim land, and handle diplomacy.
-- Member -- The default role when joining. Can build in territory, use the faction home, and participate in faction chat.
+| Azione | Leader | Ufficiale | Membro |
+|--------|--------|-----------|--------|
+| Costruire nel territorio | Si' | Si' | Si' |
+| Usare la home della fazione | Si' | Si' | Si' |
+| Chat fazione e alleati | Si' | Si' | Si' |
+| Invitare giocatori | Si' | Si' | No |
+| Espellere membri | Si' | Si' (solo Membri) | No |
+| Reclamare / rilasciare terreno | Si' | Si' | No |
+| Sovra-reclamare territorio nemico | Si' | Si' | No |
+| Impostare la home della fazione | Si' | Si' | No |
+| Eliminare la home della fazione | Si' | Si' | No |
+| Gestire relazioni (alleato/nemico) | Si' | Si' | No |
+| Visualizzare i log della fazione | Si' | Si' | No |
+| Promuovere a Ufficiale | Si' | No | No |
+| Degradare da Ufficiale | Si' | No | No |
+| Rinominare la fazione | Si' | No | No |
+| Impostare descrizione / tag / colore | Si' | No | No |
+| Aprire / chiudere la fazione | Si' | No | No |
+| Accedere alle impostazioni della fazione | Si' | No | No |
+| Trasferire la leadership | Si' | No | No |
+| Sciogliere la fazione | Si' | No | No |
 
->[!TIP] Promote your most active and trusted members to Officer so they can help manage territory and recruit new players.
+>[!NOTE] Gli Ufficiali possono espellere i Membri ma non possono espellere altri Ufficiali. Solo il Leader puo' rimuovere gli Ufficiali.
+
+---
+
+## Dettagli dei Ruoli
+
+- Leader -- Uno per fazione. Ha il controllo completo su tutte le impostazioni, i membri e il territorio. Puo' trasferire la proprieta' a un altro membro.
+- Ufficiale -- Membri fidati che aiutano a gestire la fazione. Possono invitare, espellere membri, reclamare terreno e gestire la diplomazia.
+- Membro -- Il ruolo predefinito quando ci si unisce. Puo' costruire nel territorio, usare la home della fazione e partecipare alla chat della fazione.
+
+>[!TIP] Promuovi i tuoi membri piu' attivi e fidati a Ufficiale cosi' possono aiutare a gestire il territorio e reclutare nuovi giocatori.

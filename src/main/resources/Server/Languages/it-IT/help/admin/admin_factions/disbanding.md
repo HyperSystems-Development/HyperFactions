@@ -1,37 +1,37 @@
 ---
 id: admin_disbanding
 ---
-# Force Disbanding
+# Scioglimento Forzato
 
-Admins can forcefully disband any faction, regardless of the leader's wishes.
+Gli admin possono sciogliere forzatamente qualsiasi fazione, indipendentemente dalla volonta' del leader.
 
-## Command
+## Comando
 
 `/f admin disband <faction>`
-Force-disband the named faction. A confirmation prompt will appear before the action is executed.
+Scioglie forzatamente la fazione indicata. Apparira' un messaggio di conferma prima che l'azione venga eseguita.
 
-**Permission**: `hyperfactions.admin.disband`
+**Permesso**: `hyperfactions.admin.disband`
 
->[!WARNING] Disbanding a faction is **irreversible**. All claims are released, all members are removed, and the faction ceases to exist. Create a backup first.
+>[!WARNING] Sciogliere una fazione e' **irreversibile**. Tutti i claim vengono rilasciati, tutti i membri vengono rimossi e la fazione cessa di esistere. Crea un backup prima.
 
-## Consequences
+## Conseguenze
 
-When a faction is disbanded:
+Quando una fazione viene sciolta:
 
-| Effect | Description |
-|--------|-------------|
-| **Claims** | All territory is released immediately |
-| **Members** | All players are removed from the roster |
-| **Relations** | All alliances and enemies are cleared |
-| **Treasury** | Handled per economy config settings |
-| **Home** | Faction home is deleted |
-| **Chat** | Faction chat history is removed |
+| Effetto | Descrizione |
+|---------|-------------|
+| **Claim** | Tutto il territorio viene rilasciato immediatamente |
+| **Membri** | Tutti i giocatori vengono rimossi dal roster |
+| **Relazioni** | Tutte le alleanze e le inimicizie vengono cancellate |
+| **Tesoro** | Gestito secondo le impostazioni della configurazione economia |
+| **Home** | La home della fazione viene eliminata |
+| **Chat** | Lo storico della chat della fazione viene rimosso |
 
-## Best Practices
+## Buone Pratiche
 
-1. Always run `/f admin backup create` before disbanding
-2. Notify faction members when possible
-3. Document the reason for server records
-4. Check `/f admin info <faction>` to review before acting
+1. Esegui sempre `/f admin backup create` prima di sciogliere
+2. Notifica i membri della fazione quando possibile
+3. Documenta il motivo per i registri del server
+4. Controlla `/f admin info <faction>` per rivedere prima di agire
 
->[!TIP] If the issue is with a specific member, consider using the admin factions GUI to transfer leadership rather than disbanding the entire faction.
+>[!TIP] Se il problema e' con un membro specifico, considera di usare la GUI admin fazioni per trasferire la leadership piuttosto che sciogliere l'intera fazione.

@@ -1,48 +1,48 @@
 ---
 id: admin_backups
 ---
-# Backup System
+# Sistema di Backup
 
-HyperFactions includes automatic and manual backups with GFS (Grandfather-Father-Son) rotation.
+HyperFactions include backup automatici e manuali con rotazione GFS (Nonno-Padre-Figlio).
 
-## Backup Commands
+## Comandi Backup
 
-| Command | Description |
+| Comando | Descrizione |
 |---------|-------------|
-| `/f admin backup create` | Create a manual backup now |
-| `/f admin backup list` | List all available backups |
-| `/f admin backup restore <name>` | Restore from a backup |
-| `/f admin backup delete <name>` | Delete a specific backup |
+| `/f admin backup create` | Crea un backup manuale ora |
+| `/f admin backup list` | Elenca tutti i backup disponibili |
+| `/f admin backup restore <name>` | Ripristina da un backup |
+| `/f admin backup delete <name>` | Elimina un backup specifico |
 
-**Permission**: `hyperfactions.admin.backup`
+**Permesso**: `hyperfactions.admin.backup`
 
-## GFS Rotation Defaults
+## Valori Predefiniti Rotazione GFS
 
-| Type | Retention | Description |
-|------|-----------|-------------|
-| Hourly | 24 | Last 24 hourly snapshots |
-| Daily | 7 | Last 7 daily snapshots |
-| Weekly | 4 | Last 4 weekly snapshots |
-| Manual | 10 | Manually created backups |
-| Shutdown | 5 | Created on server stop |
+| Tipo | Conservazione | Descrizione |
+|------|---------------|-------------|
+| Orario | 24 | Ultimi 24 snapshot orari |
+| Giornaliero | 7 | Ultimi 7 snapshot giornalieri |
+| Settimanale | 4 | Ultimi 4 snapshot settimanali |
+| Manuale | 10 | Backup creati manualmente |
+| Spegnimento | 5 | Creati allo stop del server |
 
->[!INFO] Shutdown backups are enabled by default (`onShutdown=true`). They capture the latest state before the server stops.
+>[!INFO] I backup allo spegnimento sono abilitati per impostazione predefinita (`onShutdown=true`). Catturano lo stato piu' recente prima dell'arresto del server.
 
-## Backup Contents
+## Contenuti del Backup
 
-Each backup ZIP archive contains:
-- All faction data files
-- Player power data
-- Zone definitions
-- Chat history and economy data
-- Invite and join request data
-- Configuration files
+Ogni archivio ZIP di backup contiene:
+- Tutti i file dati delle fazioni
+- Dati potere dei giocatori
+- Definizioni delle zone
+- Storico chat e dati economia
+- Dati inviti e richieste di adesione
+- File di configurazione
 
->[!WARNING] **Restoring a backup is destructive.** It replaces all current data with the backup's contents. Any changes made after the backup was created will be lost. Always create a fresh backup before restoring.
+>[!WARNING] **Il ripristino di un backup e' distruttivo.** Sostituisce tutti i dati attuali con i contenuti del backup. Qualsiasi modifica fatta dopo la creazione del backup andra' persa. Crea sempre un backup fresco prima di ripristinare.
 
-## Best Practices
+## Buone Pratiche
 
-1. Create a manual backup before major admin actions
-2. Review backup retention in `backup.json`
-3. Test restore on a staging server first
-4. Keep shutdown backups enabled for crash recovery
+1. Crea un backup manuale prima di azioni admin importanti
+2. Controlla la conservazione dei backup in `backup.json`
+3. Testa il ripristino su un server di staging prima
+4. Mantieni i backup allo spegnimento abilitati per il recupero da crash

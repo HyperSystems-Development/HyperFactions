@@ -2,37 +2,37 @@
 id: diplomacy_relations
 commands: relations
 ---
-# Faction Relations
+# Relazioni tra Fazioni
 
-Every pair of factions has a diplomatic relation that determines how they interact. There are three states: Ally, Enemy, and Neutral.
-
----
-
-## Relation Comparison
-
-| Effect | Ally | Neutral | Enemy |
-|--------|------|---------|-------|
-| PvP in territory | Disabled | Standard rules | Enabled |
-| Territory protection | Mutual protection | Standard protection | Can overclaim if weakened |
-| Friendly fire | Disabled | N/A | Enabled everywhere |
-| Map color | Blue | Gray | Red |
-| How to set | Mutual agreement | Default state | One-way declaration |
-| Chat access | Ally chat channel | None | None |
+Ogni coppia di fazioni ha una relazione diplomatica che determina come interagiscono. Ci sono tre stati: Alleato, Nemico e Neutrale.
 
 ---
 
-## Viewing Relations
+## Confronto Relazioni
+
+| Effetto | Alleato | Neutrale | Nemico |
+|---------|---------|----------|--------|
+| PvP nel territorio | Disabilitato | Regole standard | Abilitato |
+| Protezione territoriale | Protezione reciproca | Protezione standard | Puo' sovra-reclamare se indebolito |
+| Fuoco amico | Disabilitato | N/A | Abilitato ovunque |
+| Colore mappa | Blu | Grigio | Rosso |
+| Come impostare | Accordo reciproco | Stato predefinito | Dichiarazione unilaterale |
+| Accesso chat | Canale chat alleati | Nessuno | Nessuno |
+
+---
+
+## Visualizzare le Relazioni
 
 `/f relations`
 
-Shows all your current alliances, enemies, and any pending alliance requests.
+Mostra tutte le tue alleanze attuali, i nemici e le richieste di alleanza in sospeso.
 
-## How Relations Work
+## Come Funzionano le Relazioni
 
-- Neutral is the default state between all factions. Standard server rules apply.
-- Alliance requires both factions to agree. Either side can break it unilaterally.
-- Enemy is declared one-way. No agreement needed -- the other faction is immediately marked as your enemy.
+- Neutrale e' lo stato predefinito tra tutte le fazioni. Si applicano le regole standard del server.
+- L'alleanza richiede l'accordo di entrambe le fazioni. Entrambe le parti possono romperla unilateralmente.
+- Nemico viene dichiarato unilateralmente. Non serve accordo -- l'altra fazione viene immediatamente segnata come tuo nemico.
 
->[!INFO] Relations are managed by Officers and Leaders. Members can view relations but cannot change them.
+>[!INFO] Le relazioni sono gestite da Ufficiali e Leader. I Membri possono visualizzare le relazioni ma non possono modificarle.
 
->[!TIP] Use /f relations regularly to keep track of the diplomatic landscape. Knowing who your enemies are helps you prepare for territorial conflicts.
+>[!TIP] Usa /f relations regolarmente per tenere traccia del panorama diplomatico. Sapere chi sono i tuoi nemici ti aiuta a prepararti per i conflitti territoriali.

@@ -1,54 +1,54 @@
 ---
 id: admin_power_overrides
 ---
-# Power Overrides
+# Override del Potere
 
-Special power commands that change how power behaves for specific players or factions.
+Comandi speciali del potere che cambiano il comportamento del potere per giocatori o fazioni specifici.
 
-## Override Commands
+## Comandi Override
 
-| Command | Description |
+| Comando | Descrizione |
 |---------|-------------|
-| `/f admin power setmax <player> <amount>` | Set custom max power cap |
-| `/f admin power noloss <player>` | Toggle death power penalty immunity |
-| `/f admin power nodecay <player>` | Toggle offline power decay immunity |
-| `/f admin power info <player>` | View all overrides and power details |
+| `/f admin power setmax <player> <amount>` | Imposta un tetto massimo di potere personalizzato |
+| `/f admin power noloss <player>` | Attiva/disattiva l'immunita' alla penalita' di morte |
+| `/f admin power nodecay <player>` | Attiva/disattiva l'immunita' al decadimento offline |
+| `/f admin power info <player>` | Visualizza tutti gli override e i dettagli del potere |
 
-## Custom Max Power
+## Potere Massimo Personalizzato
 
 `/f admin power setmax <player> <amount>`
-Sets a personal maximum power cap for the player, overriding the server default.
+Imposta un tetto massimo di potere personale per il giocatore, sovrascrivendo il valore predefinito del server.
 
->[!INFO] Setting a custom max does **not** change current power. It only changes the ceiling. The player must still earn power up to the new limit.
+>[!INFO] Impostare un massimo personalizzato **non** cambia il potere attuale. Cambia solo il tetto. Il giocatore deve comunque guadagnare potere fino al nuovo limite.
 
-## No-Loss Mode
+## Modalita' No-Loss
 
 `/f admin power noloss <player>`
-Toggles death power loss immunity. When enabled, the player will **not** lose power on death.
+Attiva/disattiva l'immunita' alla perdita di potere per morte. Quando abilitata, il giocatore **non** perdera' potere alla morte.
 
-Useful for:
-- New player protection periods
-- Event participants
-- Staff members
+Utile per:
+- Periodi di protezione nuovi giocatori
+- Partecipanti ad eventi
+- Membri dello staff
 
-## No-Decay Mode
+## Modalita' No-Decay
 
 `/f admin power nodecay <player>`
-Toggles offline power decay immunity. When enabled, the player's power will **not** decrease while offline.
+Attiva/disattiva l'immunita' al decadimento del potere offline. Quando abilitata, il potere del giocatore **non** diminuira' mentre e' offline.
 
-Useful for:
-- Players on extended leave
-- VIP members
-- Seasonal protection
+Utile per:
+- Giocatori in congedo prolungato
+- Membri VIP
+- Protezione stagionale
 
-## Power Info
+## Info Potere
 
 `/f admin power info <player>`
-Shows a complete breakdown:
+Mostra un dettaglio completo:
 
-- Current power and max power
-- Active overrides (noloss, nodecay, custom max)
-- Last death time and power lost
-- Faction contribution percentage
+- Potere attuale e potere massimo
+- Override attivi (noloss, nodecay, massimo personalizzato)
+- Orario ultima morte e potere perso
+- Percentuale di contributo alla fazione
 
->[!TIP] All power overrides persist across server restarts and are stored in the player's data file.
+>[!TIP] Tutti gli override del potere persistono attraverso i riavvii del server e sono salvati nel file dati del giocatore.

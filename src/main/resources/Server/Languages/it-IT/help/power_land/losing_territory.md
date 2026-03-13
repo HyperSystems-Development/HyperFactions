@@ -2,49 +2,49 @@
 id: power_losing
 commands: overclaim
 ---
-# Losing Territory
+# Perdere Territorio
 
-When a faction's total power drops below the cost of its claims, it becomes raidable. Enemies can overclaim chunks right out from under you.
+Quando il potere totale di una fazione scende sotto il costo dei suoi claim, diventa attaccabile. I nemici possono sovra-reclamare i chunk togliendoteli da sotto i piedi.
 
 ---
 
-## How Overclaiming Works
+## Come Funziona il Sovra-Claim
 
 `/f overclaim`
 
-An Officer or Leader from an enemy faction stands in your claimed chunk and runs this command. If your faction is in a power deficit, the chunk transfers to their faction.
+Un Ufficiale o Leader di una fazione nemica si posiziona nel tuo chunk reclamato ed esegue questo comando. Se la tua fazione e' in deficit di potere, il chunk viene trasferito alla loro fazione.
 
-## The Math
+## I Calcoli
 
-Each claim costs 2.0 power to maintain. If your total power falls below that threshold, the deficit chunks are vulnerable.
+Ogni claim costa 2.0 potere da mantenere. Se il tuo potere totale scende sotto quella soglia, i chunk in deficit sono vulnerabili.
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Questi sono valori predefiniti. L'amministratore del tuo server potrebbe aver configurato impostazioni diverse.
 
->[!WARNING] Overclaiming is permanent. Once an enemy takes a chunk, you must reclaim it (or overclaim it back if they weaken).
-
----
-
-## Example Scenario
-
-| Factor | Value |
-|--------|-------|
-| Members | 5 players |
-| Power per member | 10 each (starting) |
-| Total power | 50 |
-| Claims | 30 chunks |
-| Power needed (30 x 2.0) | 60 |
-| Deficit | 10 power short |
-
-In this example, the faction is already raidable from the start. Enemies could overclaim up to 5 chunks (10 deficit / 2.0 per claim) before the faction reaches equilibrium.
+>[!WARNING] Il sovra-claim e' permanente. Una volta che un nemico prende un chunk, devi reclamarlo di nuovo (o sovra-reclamarlo a tua volta se si indeboliscono).
 
 ---
 
-## How to Prevent Overclaiming
+## Scenario di Esempio
 
-- Do not over-expand -- always keep total power above your claim cost with a buffer
-- Stay active -- power only regenerates while online (+0.1/min)
-- Avoid unnecessary deaths -- each death costs 1.0 power
-- Recruit more members -- more players means more total power
-- Unclaim unused chunks -- free up power with /f unclaim
+| Fattore | Valore |
+|---------|--------|
+| Membri | 5 giocatori |
+| Potere per membro | 10 ciascuno (iniziale) |
+| Potere totale | 50 |
+| Claim | 30 chunk |
+| Potere necessario (30 x 2.0) | 60 |
+| Deficit | 10 potere in meno |
 
->[!TIP] Check your power status regularly with /f power. If your total power is close to your claim cost, consider unclaiming less important chunks before a war.
+In questo esempio, la fazione e' gia' attaccabile fin dall'inizio. I nemici potrebbero sovra-reclamare fino a 5 chunk (10 deficit / 2.0 per claim) prima che la fazione raggiunga l'equilibrio.
+
+---
+
+## Come Prevenire il Sovra-Claim
+
+- Non espanderti troppo -- mantieni sempre il potere totale sopra il costo dei claim con un margine
+- Resta attivo -- il potere si rigenera solo mentre sei online (+0.1/min)
+- Evita morti inutili -- ogni morte costa 1.0 potere
+- Recluta piu' membri -- piu' giocatori significa piu' potere totale
+- Rilascia i chunk inutilizzati -- libera potere con /f unclaim
+
+>[!TIP] Controlla regolarmente il tuo stato di potere con /f power. Se il tuo potere totale e' vicino al costo dei claim, considera di rilasciare i chunk meno importanti prima di una guerra.

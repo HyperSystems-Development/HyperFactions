@@ -2,43 +2,43 @@
 id: faction_managing
 commands: invite, kick, promote, demote, transfer
 ---
-# Managing Members
+# Gestione dei Membri
 
-Officers and Leaders share responsibility for managing the faction roster. Here are the key commands and who can use them.
-
----
-
-## Commands
-
-| Command | What It Does | Required Role |
-|---------|-------------|---------------|
-| `/f invite <player>` | Sends a join invitation (expires in 5 min) | Officer+ |
-| `/f kick <player>` | Removes a member from the faction | Officer+ (see note) |
-| `/f promote <player>` | Promotes a Member to Officer | Leader only |
-| `/f demote <player>` | Demotes an Officer to Member | Leader only |
-| `/f transfer <player>` | Transfers faction ownership | Leader only |
-
->[!NOTE] Officers can only kick Members. To remove another Officer, the Leader must either demote them first or kick them directly.
+Ufficiali e Leader condividono la responsabilita' di gestire il roster della fazione. Ecco i comandi principali e chi puo' usarli.
 
 ---
 
-## Invitations
+## Comandi
 
-- Invitations expire after 5 minutes if not accepted
-- The invited player sees it in their Invites tab when they open /f
-- There is no limit to how many invitations you can send at once
-- Your faction can hold up to 50 members total
+| Comando | Cosa Fa | Ruolo Richiesto |
+|---------|---------|-----------------|
+| `/f invite <player>` | Invia un invito di adesione (scade in 5 min) | Ufficiale+ |
+| `/f kick <player>` | Rimuove un membro dalla fazione | Ufficiale+ (vedi nota) |
+| `/f promote <player>` | Promuove un Membro a Ufficiale | Solo Leader |
+| `/f demote <player>` | Degrada un Ufficiale a Membro | Solo Leader |
+| `/f transfer <player>` | Trasferisce la proprieta' della fazione | Solo Leader |
 
-## Promotions and Demotions
+>[!NOTE] Gli Ufficiali possono espellere solo i Membri. Per rimuovere un altro Ufficiale, il Leader deve prima degradarlo o espellerlo direttamente.
 
-- Only the Leader can promote or demote
-- /f promote raises a Member to Officer
-- /f demote lowers an Officer back to Member
+---
 
-## Transferring Leadership
+## Inviti
 
->[!WARNING] Transferring leadership is irreversible. You will be demoted to Officer and the target player becomes the new Leader. Make sure you trust them completely.
+- Gli inviti scadono dopo 5 minuti se non vengono accettati
+- Il giocatore invitato li vede nella scheda Inviti quando apre /f
+- Non c'e' limite al numero di inviti che puoi inviare contemporaneamente
+- La tua fazione puo' contenere fino a 50 membri in totale
+
+## Promozioni e Degradamenti
+
+- Solo il Leader puo' promuovere o degradare
+- /f promote eleva un Membro a Ufficiale
+- /f demote riporta un Ufficiale a Membro
+
+## Trasferimento della Leadership
+
+>[!WARNING] Il trasferimento della leadership e' irreversibile. Verrai degradato a Ufficiale e il giocatore designato diventera' il nuovo Leader. Assicurati di fidarti completamente di lui.
 
 `/f transfer <player>`
 
-The target must be a current member of your faction.
+Il destinatario deve essere un membro attuale della tua fazione.

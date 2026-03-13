@@ -1,26 +1,26 @@
 ---
 id: admin_zone_flags
 ---
-# Zone Flags
+# Flag delle Zone
 
-Zones support **47 boolean flags** across 10 categories. Each flag controls a specific behavior within the zone.
+Le zone supportano **47 flag booleani** in 10 categorie. Ogni flag controlla un comportamento specifico all'interno della zona.
 
-## Flag Categories Overview
+## Panoramica Categorie Flag
 
-| Category | Count | Key Flags |
-|----------|-------|-----------|
-| Combat | 7 | pvp_enabled, friendly_fire, mob_damage, pve_damage |
-| Damage | 4 | fall_damage, explosion_damage, fire_spread |
-| Death | 2 | keep_inventory, power_loss |
-| Building | 4 | build_allowed, block_place, hammer_use |
-| Interaction | 13 | door_use, container_use, bench_use, npc_tame |
-| Transport | 3 | teleporter_use, portal_use, mount_entry |
-| Items | 4 | item_drop, item_pickup, invincible_items |
-| Mob Spawning | 5 | mob_spawning, hostile/passive/neutral |
-| Mob Clearing | 4 | mob_clear, hostile/passive/neutral clear |
-| Integration | 5 | gravestone_access, show_on_map, essentials_homes |
+| Categoria | Conteggio | Flag Principali |
+|-----------|-----------|-----------------|
+| Combattimento | 7 | pvp_enabled, friendly_fire, mob_damage, pve_damage |
+| Danni | 4 | fall_damage, explosion_damage, fire_spread |
+| Morte | 2 | keep_inventory, power_loss |
+| Costruzione | 4 | build_allowed, block_place, hammer_use |
+| Interazione | 13 | door_use, container_use, bench_use, npc_tame |
+| Trasporto | 3 | teleporter_use, portal_use, mount_entry |
+| Oggetti | 4 | item_drop, item_pickup, invincible_items |
+| Spawn Mob | 5 | mob_spawning, hostile/passive/neutral |
+| Rimozione Mob | 4 | mob_clear, hostile/passive/neutral clear |
+| Integrazione | 5 | gravestone_access, show_on_map, essentials_homes |
 
-## Default Values (SafeZone vs WarZone)
+## Valori Predefiniti (SafeZone vs WarZone)
 
 | Flag | SafeZone | WarZone |
 |------|----------|---------|
@@ -34,10 +34,10 @@ Zones support **47 boolean flags** across 10 categories. Each flag controls a sp
 | door_use | **true** | **true** |
 | container_use | false | **true** |
 
->[!NOTE] Some flags require **HyperProtect-Mixin** to function (e.g., keep_inventory, explosion_damage, fire_spread, block_place, npc_tame). Without the mixin, these flags have no effect even when enabled.
+>[!NOTE] Alcuni flag richiedono **HyperProtect-Mixin** per funzionare (es. keep_inventory, explosion_damage, fire_spread, block_place, npc_tame). Senza il mixin, questi flag non hanno effetto anche quando abilitati.
 
-## Setting Flags
+## Impostare i Flag
 
 `/f admin zoneflag <zone> <flag> <true/false>`
 
->[!TIP] Use `/f admin zone properties <zone>` for a visual toggle editor grouped by category.
+>[!TIP] Usa `/f admin zone properties <zone>` per un editor visuale con interruttori raggruppati per categoria.

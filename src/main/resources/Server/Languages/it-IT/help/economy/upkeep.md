@@ -1,37 +1,37 @@
 ---
 id: economy_upkeep
 ---
-# Territory Upkeep
+# Mantenimento del Territorio
 
-Factions must pay ongoing upkeep to maintain their claimed territory. This prevents land hoarding and keeps the map dynamic.
+Le fazioni devono pagare un mantenimento continuo per conservare il territorio reclamato. Questo previene l'accumulo di terreni e mantiene la mappa dinamica.
 
-## Upkeep Costs
+## Costi di Mantenimento
 
-| Setting | Default |
-|---------|---------|
-| Cost per chunk | 2.0 per cycle |
-| Payment interval | Every 24 hours |
-| Free chunks | 3 (no cost) |
-| Scaling mode | Flat rate |
+| Impostazione | Predefinito |
+|--------------|-------------|
+| Costo per chunk | 2.0 per ciclo |
+| Intervallo di pagamento | Ogni 24 ore |
+| Chunk gratuiti | 3 (nessun costo) |
+| Modalita' di scalatura | Tariffa fissa |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Questi sono valori predefiniti. L'amministratore del tuo server potrebbe aver configurato impostazioni diverse.
 
-Your first 3 chunks are free. Beyond that, each additional claimed chunk costs 2.0 per payment cycle.
+I tuoi primi 3 chunk sono gratuiti. Oltre a cio', ogni chunk reclamato aggiuntivo costa 2.0 per ciclo di pagamento.
 
-## Auto-Pay
+## Pagamento Automatico
 
-Auto-pay is enabled by default. The system automatically deducts upkeep from your treasury at each interval. No manual action needed.
+Il pagamento automatico e' abilitato per impostazione predefinita. Il sistema deduce automaticamente il mantenimento dal tuo tesoro ad ogni intervallo. Nessuna azione manuale necessaria.
 
 ---
 
-## Grace Period
+## Periodo di Grazia
 
-If your treasury cannot cover upkeep, a 48-hour grace period begins. A warning is sent 6 hours before claims start being lost.
+Se il tuo tesoro non puo' coprire il mantenimento, inizia un periodo di grazia di 48 ore. Un avviso viene inviato 6 ore prima che i claim inizino ad essere persi.
 
->[!WARNING] If upkeep remains unpaid after the grace period, your faction loses 1 claim per cycle until costs are covered or all extra claims are gone.
+>[!WARNING] Se il mantenimento resta non pagato dopo il periodo di grazia, la tua fazione perde 1 claim per ciclo fino a quando i costi non sono coperti o tutti i claim extra sono stati rimossi.
 
-## Example
+## Esempio
 
-*A faction with 8 claims pays for 5 chunks (8 minus 3 free). At 2.0 per chunk, that is 10.0 per cycle.*
+*Una fazione con 8 claim paga per 5 chunk (8 meno 3 gratuiti). A 2.0 per chunk, sono 10.0 per ciclo.*
 
->[!TIP] Keep your treasury funded above your upkeep cost. Use /f balance to check your reserves.
+>[!TIP] Mantieni il tuo tesoro al di sopra del costo di mantenimento. Usa /f balance per controllare le tue riserve.

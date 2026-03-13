@@ -2,41 +2,41 @@
 id: economy_funds
 commands: deposit, withdraw
 ---
-# Managing Funds
+# Gestione dei Fondi
 
-Faction members work together to keep the treasury funded through deposits, withdrawals, and transfers.
+I membri della fazione collaborano per mantenere il tesoro finanziato attraverso depositi, prelievi e trasferimenti.
 
-## Depositing
+## Depositare
 
-Any member can deposit personal funds into the faction treasury.
+Qualsiasi membro puo' depositare fondi personali nel tesoro della fazione.
 
 `/f deposit <amount>`
-Deposit from your personal balance into the treasury.
+Deposita dal tuo saldo personale nel tesoro.
 
-## Withdrawing
+## Prelevare
 
-Officers and the Leader can withdraw funds back to their personal balance.
+Gli Ufficiali e il Leader possono prelevare fondi riportandoli al proprio saldo personale.
 
 `/f withdraw <amount>`
-Withdraw from the treasury to your balance. (Officer+)
+Preleva dal tesoro al tuo saldo. (Ufficiale+)
 
-## Transferring
+## Trasferire
 
-Officers can transfer funds directly between faction treasuries for trade deals or diplomacy.
+Gli Ufficiali possono trasferire fondi direttamente tra i tesori delle fazioni per accordi commerciali o diplomazia.
 
 `/f money transfer <faction> <amount>`
-Send funds to another faction's treasury. (Officer+)
+Invia fondi al tesoro di un'altra fazione. (Ufficiale+)
 
 ---
 
-## Fees
+## Commissioni
 
-| Transaction | Fee |
-|------------|-----|
-| Deposit | 0% |
-| Withdraw | 0% |
-| Transfer | 0% |
+| Transazione | Commissione |
+|-------------|-------------|
+| Deposito | 0% |
+| Prelievo | 0% |
+| Trasferimento | 0% |
 
->[!INFO] Fee rates are configurable by the server and may differ from defaults shown above.
+>[!INFO] Le percentuali delle commissioni sono configurabili dal server e potrebbero differire dai valori predefiniti mostrati sopra.
 
->[!TIP] All transactions are logged. Use /f money log to review recent activity.
+>[!TIP] Tutte le transazioni vengono registrate. Usa /f money log per controllare l'attivita' recente.

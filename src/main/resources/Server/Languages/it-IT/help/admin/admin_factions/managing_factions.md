@@ -1,38 +1,38 @@
 ---
 id: admin_managing_factions
 ---
-# Managing Factions
+# Gestione delle Fazioni
 
-Admins can inspect and modify any faction on the server through the dashboard or commands.
+Gli admin possono ispezionare e modificare qualsiasi fazione sul server tramite la dashboard o i comandi.
 
-## Browsing Factions
+## Sfogliare le Fazioni
 
 `/f admin factions`
-Opens the admin faction browser. View all factions with member counts, power levels, and territory.
+Apre il browser admin delle fazioni. Visualizza tutte le fazioni con numero di membri, livelli di potere e territorio.
 
 `/f admin info <faction>`
-Opens the admin info panel for a specific faction with full details and management options.
+Apre il pannello info admin per una fazione specifica con tutti i dettagli e le opzioni di gestione.
 
-## Modifying Faction Settings
+## Modificare le Impostazioni della Fazione
 
-With `hyperfactions.admin.modify` permission, you can:
+Con il permesso `hyperfactions.admin.modify`, puoi:
 
-- **Rename** a faction to resolve conflicts
-- **Set color** to fix display issues
-- **Toggle open/close** to override join policy
-- **Edit description** for moderation purposes
+- **Rinominare** una fazione per risolvere conflitti
+- **Impostare il colore** per risolvere problemi di visualizzazione
+- **Attivare/disattivare aperta/chiusa** per sovrascrivere la politica di adesione
+- **Modificare la descrizione** per scopi di moderazione
 
->[!TIP] Use `/f admin who <player>` to look up which faction a specific player belongs to and view their details.
+>[!TIP] Usa `/f admin who <player>` per cercare a quale fazione appartiene un giocatore specifico e visualizzare i suoi dettagli.
 
-## Viewing Members and Relations
+## Visualizzare Membri e Relazioni
 
-The admin info panel shows:
+Il pannello info admin mostra:
 
-| Section | Details |
-|---------|---------|
-| **Members** | Full roster with roles and last seen |
-| **Relations** | All ally, enemy, and neutral standings |
-| **Territory** | Claimed chunks and power balance |
-| **Economy** | Treasury balance and transaction log |
+| Sezione | Dettagli |
+|---------|----------|
+| **Membri** | Roster completo con ruoli e ultimo accesso |
+| **Relazioni** | Tutti gli stati di alleato, nemico e neutrale |
+| **Territorio** | Chunk reclamati e bilancio di potere |
+| **Economia** | Saldo del tesoro e log delle transazioni |
 
->[!NOTE] Admin inspection commands do not notify the faction being viewed. Only modifications trigger alerts.
+>[!NOTE] I comandi di ispezione admin non notificano la fazione che viene visualizzata. Solo le modifiche attivano gli avvisi.

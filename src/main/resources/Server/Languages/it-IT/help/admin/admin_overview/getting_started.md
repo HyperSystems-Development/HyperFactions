@@ -1,41 +1,41 @@
 ---
 id: admin_getting_started
 ---
-# Getting Started as Admin
+# Per Iniziare come Admin
 
-Welcome to HyperFactions administration. This guide covers your first steps after installing the plugin.
+Benvenuto nell'amministrazione di HyperFactions. Questa guida copre i tuoi primi passi dopo l'installazione del plugin.
 
-## Opening the Admin Dashboard
+## Aprire la Dashboard Admin
 
 `/f admin`
-Opens the admin dashboard GUI with access to all management tools, zone editors, and server settings.
+Apre la GUI della dashboard admin con accesso a tutti gli strumenti di gestione, editor di zone e impostazioni del server.
 
->[!INFO] You need **hyperfactions.admin.use** permission or OP status to access admin commands.
+>[!INFO] Hai bisogno del permesso **hyperfactions.admin.use** o dello stato OP per accedere ai comandi admin.
 
-## Requirements
+## Requisiti
 
-- **With a permission plugin**: Grant `hyperfactions.admin.use`
-- **Without a permission plugin**: The player must be a
-server operator (`adminRequiresOp=true` by default)
+- **Con un plugin di permessi**: Assegna `hyperfactions.admin.use`
+- **Senza un plugin di permessi**: Il giocatore deve essere un
+operatore del server (`adminRequiresOp=true` per impostazione predefinita)
 
-## First Steps After Install
+## Primi Passi Dopo l'Installazione
 
-1. Run `/f admin` to verify your access
-2. Open **Config** to review default faction settings
-3. Create a **SafeZone** at spawn with `/f admin safezone Spawn`
-4. Optionally create **WarZones** for PvP arenas
-5. Review **Backup** settings to ensure data safety
+1. Esegui `/f admin` per verificare il tuo accesso
+2. Apri **Config** per rivedere le impostazioni predefinite della fazione
+3. Crea una **SafeZone** allo spawn con `/f admin safezone Spawn`
+4. Opzionalmente crea **WarZone** per arene PvP
+5. Controlla le impostazioni di **Backup** per garantire la sicurezza dei dati
 
-## Admin Capabilities
+## Capacita' Admin
 
-| Area | What You Can Do |
+| Area | Cosa Puoi Fare |
 |------|----------------|
-| Factions | Inspect, modify, or force-disband any faction |
-| Zones | Create SafeZones and WarZones with custom flags |
-| Power | Override player/faction power values |
-| Economy | Manage faction treasuries and upkeep |
-| Config | Edit settings live via GUI or reload from disk |
-| Backups | Create, restore, and manage data backups |
-| Imports | Migrate data from other faction plugins |
+| Fazioni | Ispezionare, modificare o forzare lo scioglimento di qualsiasi fazione |
+| Zone | Creare SafeZone e WarZone con flag personalizzati |
+| Potere | Sovrascrivere i valori di potere di giocatori/fazioni |
+| Economia | Gestire i tesori delle fazioni e il mantenimento |
+| Configurazione | Modificare le impostazioni in tempo reale tramite GUI o ricaricare da disco |
+| Backup | Creare, ripristinare e gestire backup dei dati |
+| Importazioni | Migrare dati da altri plugin di fazioni |
 
->[!TIP] Use `/f admin --text` to get chat-based output instead of the GUI, useful for console or automation.
+>[!TIP] Usa `/f admin --text` per ottenere output basato su chat invece della GUI, utile per console o automazione.
