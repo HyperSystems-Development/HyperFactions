@@ -2,37 +2,37 @@
 id: diplomacy_relations
 commands: relations
 ---
-# Faction Relations
+# Отношения фракций
 
-Every pair of factions has a diplomatic relation that determines how they interact. There are three states: Ally, Enemy, and Neutral.
-
----
-
-## Relation Comparison
-
-| Effect | Ally | Neutral | Enemy |
-|--------|------|---------|-------|
-| PvP in territory | Disabled | Standard rules | Enabled |
-| Territory protection | Mutual protection | Standard protection | Can overclaim if weakened |
-| Friendly fire | Disabled | N/A | Enabled everywhere |
-| Map color | Blue | Gray | Red |
-| How to set | Mutual agreement | Default state | One-way declaration |
-| Chat access | Ally chat channel | None | None |
+Каждая пара фракций имеет дипломатические отношения, определяющие правила взаимодействия. Есть три состояния: Союзник, Враг и Нейтрал.
 
 ---
 
-## Viewing Relations
+## Сравнение отношений
+
+| Эффект | Союзник | Нейтрал | Враг |
+|--------|---------|---------|------|
+| PvP на территории | Отключён | Стандартные правила | Включён |
+| Защита территории | Взаимная защита | Стандартная защита | Перезахват при ослаблении |
+| Огонь по своим | Отключён | Н/Д | Включён везде |
+| Цвет на карте | Синий | Серый | Красный |
+| Как установить | Взаимное соглашение | Состояние по умолчанию | Одностороннее объявление |
+| Доступ к чату | Союзный канал чата | Нет | Нет |
+
+---
+
+## Просмотр отношений
 
 `/f relations`
 
-Shows all your current alliances, enemies, and any pending alliance requests.
+Показывает все текущие союзы, врагов и ожидающие запросы на союз.
 
-## How Relations Work
+## Как работают отношения
 
-- Neutral is the default state between all factions. Standard server rules apply.
-- Alliance requires both factions to agree. Either side can break it unilaterally.
-- Enemy is declared one-way. No agreement needed -- the other faction is immediately marked as your enemy.
+- Нейтрал -- состояние по умолчанию между всеми фракциями. Действуют стандартные правила сервера.
+- Союз требует согласия обеих фракций. Любая сторона может разорвать его в одностороннем порядке.
+- Враг объявляется односторонне. Согласие не нужно -- другая фракция немедленно отмечается как твой враг.
 
->[!INFO] Relations are managed by Officers and Leaders. Members can view relations but cannot change them.
+>[!INFO] Отношениями управляют Офицеры и Лидеры. Участники могут просматривать отношения, но не изменять их.
 
->[!TIP] Use /f relations regularly to keep track of the diplomatic landscape. Knowing who your enemies are helps you prepare for territorial conflicts.
+>[!TIP] Используй /f relations регулярно, чтобы отслеживать дипломатическую обстановку. Знание своих врагов помогает подготовиться к территориальным конфликтам.

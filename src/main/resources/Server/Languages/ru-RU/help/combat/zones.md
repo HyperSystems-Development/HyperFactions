@@ -1,29 +1,29 @@
 ---
 id: combat_zones
 ---
-# Special Zones
+# Специальные зоны
 
-Admins can designate areas with special rules that override normal faction territory protection.
+Администраторы могут назначать области с особыми правилами, которые переопределяют обычную защиту территории фракций.
 
 ## SafeZone
 
-No PvP damage, no block breaking by non-admins. Ideal for spawn areas, trading hubs, and event staging areas. Players cannot be harmed here.
+Нет PvP-урона, нет разрушения блоков не-администраторами. Идеально подходит для зон спавна, торговых хабов и площадок для мероприятий. Здесь игрокам нельзя навредить.
 
 ## WarZone
 
-PvP is always enabled. No block protection applies. Open battle areas where anything goes. You receive no territory protection benefits in a WarZone.
+PvP всегда включён. Защита блоков не действует. Открытые боевые зоны, где всё разрешено. В WarZone ты не получаешь преимуществ защиты территории.
 
 ---
 
-## Zone Comparison
+## Сравнение зон
 
-| Feature | SafeZone | WarZone | Faction Land |
-|---------|----------|---------|--------------|
-| PvP | Disabled | Always On | Relation-based |
-| Block Break | Disabled | Allowed | Members Only |
-| Containers | Protected | Open | Members Only |
-| Best For | Spawn/Trade | Arenas | Bases |
+| Особенность | SafeZone | WarZone | Земля фракции |
+|-------------|----------|---------|---------------|
+| PvP | Отключён | Всегда вкл. | Зависит от отношений |
+| Разрушение блоков | Отключено | Разрешено | Только участники |
+| Контейнеры | Защищены | Открыты | Только участники |
+| Лучше всего для | Спавн/Торговля | Арены | Базы |
 
->[!NOTE] Zone rules always override faction territory rules. A claimed chunk inside a WarZone follows WarZone rules.
+>[!NOTE] Правила зон всегда переопределяют правила территории фракций. Захваченный чанк внутри WarZone подчиняется правилам WarZone.
 
->[!TIP] Check your territory map with /f map to see zone boundaries.
+>[!TIP] Проверь карту территорий с помощью /f map, чтобы увидеть границы зон.

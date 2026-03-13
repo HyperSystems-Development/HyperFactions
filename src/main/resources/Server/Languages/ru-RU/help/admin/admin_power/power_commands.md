@@ -1,38 +1,38 @@
 ---
 id: admin_power_commands
 ---
-# Power Admin Commands
+# Админ-команды силы
 
-Override player and faction power values. All commands require `hyperfactions.admin.power` permission.
+Переопределение значений силы игроков и фракций. Все команды требуют право `hyperfactions.admin.power`.
 
-## Player Power Commands
+## Команды силы игрока
 
-| Command | Description |
-|---------|-------------|
-| `/f admin power set <player> <amount>` | Set exact power value |
-| `/f admin power add <player> <amount>` | Add power to player |
-| `/f admin power remove <player> <amount>` | Remove power from player |
-| `/f admin power reset <player>` | Reset to default starting power |
-| `/f admin power info <player>` | View detailed power breakdown |
+| Команда | Описание |
+|---------|----------|
+| `/f admin power set <player> <amount>` | Установить точное значение силы |
+| `/f admin power add <player> <amount>` | Добавить силу игроку |
+| `/f admin power remove <player> <amount>` | Убрать силу у игрока |
+| `/f admin power reset <player>` | Сбросить до начального значения |
+| `/f admin power info <player>` | Просмотр детальной информации о силе |
 
-## How Power Affects Factions
+## Как сила влияет на фракции
 
-A faction's total power is the sum of all its members' individual power. Territory claims require sufficient total power to maintain.
+Общая сила фракции -- это сумма индивидуальной силы всех участников. Захваты территории требуют достаточной общей силы для поддержания.
 
-| Scenario | Effect |
+| Сценарий | Эффект |
 |----------|--------|
-| Power set higher | Faction can claim more territory |
-| Power set lower | Faction may become vulnerable to overclaim |
-| Power reset | Returns player to default starting value |
+| Сила увеличена | Фракция может захватить больше территории |
+| Сила уменьшена | Фракция может стать уязвимой для перезахвата |
+| Сила сброшена | Возвращает игроку начальное значение |
 
->[!WARNING] Lowering a player's power may cause their faction to lose territory if total power drops below the number of claimed chunks.
+>[!WARNING] Снижение силы игрока может привести к потере территории его фракцией, если общая сила упадёт ниже количества захваченных чанков.
 
-## Examples
+## Примеры
 
-- `/f admin power set Steve 50` -- set to exactly 50
-- `/f admin power add Steve 10` -- increase by 10
-- `/f admin power remove Steve 5` -- decrease by 5
-- `/f admin power reset Steve` -- back to default
-- `/f admin power info Steve` -- show full breakdown
+- `/f admin power set Steve 50` -- установить ровно 50
+- `/f admin power add Steve 10` -- увеличить на 10
+- `/f admin power remove Steve 5` -- уменьшить на 5
+- `/f admin power reset Steve` -- вернуть к значению по умолчанию
+- `/f admin power info Steve` -- показать полную информацию
 
->[!TIP] Use `/f admin power info <player>` to see current power, max power, and any active overrides before making changes.
+>[!TIP] Используй `/f admin power info <player>`, чтобы увидеть текущую силу, максимальную силу и активные переопределения перед внесением изменений.

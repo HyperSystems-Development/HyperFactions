@@ -1,37 +1,37 @@
 ---
 id: welcome_what
 ---
-# What Are Factions?
+# Что такое фракции?
 
-Factions are player-run teams that claim territory, build bases, and compete for dominance. When you join or create a faction, you gain access to protected land, a shared home, private chat, and diplomatic tools.
+Фракции -- это команды игроков, которые захватывают территории, строят базы и соревнуются за господство. Когда ты вступаешь или создаёшь фракцию, ты получаешь доступ к защищённой земле, общему дому, приватному чату и дипломатическим инструментам.
 
->[!TIP] Factions is all about teamwork. The more active members you have, the stronger your faction becomes.
-
----
-
-## Core Mechanics
-
-| Mechanic | What It Does |
-|----------|-------------|
-| Power | Each player generates power over time (max 20). Your faction's total power determines how much land you can hold. |
-| Claims | Claimed chunks are protected -- only members can build, break, or open containers inside them. Each claim costs 2.0 power to maintain. |
-| Relations | Factions can form alliances for mutual protection or declare enemies to enable PvP and territorial aggression. |
-| Roles | Three ranks -- Leader, Officer, Member -- each with different capabilities. |
+>[!TIP] Фракции -- это прежде всего командная игра. Чем больше активных участников, тем сильнее твоя фракция.
 
 ---
 
-## How Strength Works
+## Основные механики
 
-Your faction's strength comes from its members. Every player starts with 10 power and regenerates up to 20 while online. Dying costs power. If your total faction power drops below the cost of your claims, enemies can overclaim your territory.
-
->[!WARNING] A single death costs 1.0 power. Multiple deaths in a short time can leave your faction vulnerable to overclaiming.
+| Механика | Что она делает |
+|----------|---------------|
+| Сила | Каждый игрок генерирует силу со временем (макс. 20). Общая сила фракции определяет, сколько земли можно удерживать. |
+| Захваты | Захваченные чанки защищены -- только участники могут строить, ломать или открывать контейнеры внутри них. Каждый захват стоит 2.0 силы на содержание. |
+| Отношения | Фракции могут заключать союзы для взаимной защиты или объявлять врагов для включения PvP и территориальной агрессии. |
+| Роли | Три ранга -- Лидер, Офицер, Участник -- каждый с разными возможностями. |
 
 ---
 
-## Diplomacy at a Glance
+## Как работает мощь
 
-- **Allies** -- Mutual agreements that prevent friendly fire and protect each other's territory
-- **Enemies** -- One-way declarations that enable PvP in each other's land and allow overclaiming
-- **Neutral** -- The default state between all factions with standard rules
+Сила твоей фракции зависит от её участников. Каждый игрок начинает с 10 силы и восстанавливает до 20, пока онлайн. Смерть отнимает силу. Если общая сила фракции упадёт ниже стоимости захватов, враги смогут перезахватить твою территорию.
 
->[!INFO] You can manage all of this through the in-game GUI by typing `/f` or through chat commands.
+>[!WARNING] Одна смерть стоит 1.0 силы. Несколько смертей за короткое время могут сделать твою фракцию уязвимой для перезахвата.
+
+---
+
+## Дипломатия в двух словах
+
+- **Союзники** -- Взаимные соглашения, которые предотвращают огонь по своим и защищают территории друг друга
+- **Враги** -- Односторонние объявления, которые включают PvP на территории друг друга и позволяют перезахват
+- **Нейтралы** -- Состояние по умолчанию между всеми фракциями со стандартными правилами
+
+>[!INFO] Всем этим можно управлять через игровое меню, набрав `/f`, или через команды чата.

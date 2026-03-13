@@ -2,44 +2,44 @@
 id: power_understanding
 commands: power
 ---
-# Understanding Power
+# Понимание силы
 
-Power is the core resource that determines how much territory your faction can hold. Every player has personal power that contributes to the faction total.
-
----
-
-## Default Power Values
-
-| Setting | Value |
-|---------|-------|
-| Maximum power per player | 20 |
-| Starting power | 10 |
-| Death penalty | -1.0 per death |
-| Kill reward | 0.0 |
-| Regen rate | +0.1 per minute (while online) |
-| Power cost per claim | 2.0 |
-| Logout while tagged | -1.0 additional |
-
->[!NOTE] These are default values. Your server administrator may have configured different settings.
-
-## How It Works
-
-Your faction's total power is the sum of every member's personal power. Your required power is the number of claims multiplied by 2.0. As long as total power stays above required power, your territory is safe.
-
->[!INFO] Power regenerates passively at 0.1 per minute while you are online. At that rate, recovering 1.0 power takes about 10 minutes.
+Сила -- это основной ресурс, определяющий, сколько территории может удерживать твоя фракция. У каждого игрока есть личная сила, которая вносит вклад в общую силу фракции.
 
 ---
 
-## Checking Your Power
+## Значения силы по умолчанию
+
+| Настройка | Значение |
+|-----------|----------|
+| Максимальная сила на игрока | 20 |
+| Начальная сила | 10 |
+| Штраф за смерть | -1.0 за смерть |
+| Награда за убийство | 0.0 |
+| Скорость восстановления | +0.1 в минуту (пока онлайн) |
+| Стоимость силы на захват | 2.0 |
+| Выход с боевой меткой | -1.0 дополнительно |
+
+>[!NOTE] Это значения по умолчанию. Администратор сервера мог настроить другие параметры.
+
+## Как это работает
+
+Общая сила твоей фракции -- это сумма личной силы всех участников. Необходимая сила -- это количество захватов, умноженное на 2.0. Пока общая сила остаётся выше необходимой, твоя территория в безопасности.
+
+>[!INFO] Сила восстанавливается пассивно со скоростью 0.1 в минуту, пока ты онлайн. При такой скорости восстановление 1.0 силы занимает около 10 минут.
+
+---
+
+## Проверка силы
 
 `/f power`
 
-Shows your personal power, your faction's total power, and how much is needed to maintain current claims.
+Показывает твою личную силу, общую силу фракции и сколько нужно для поддержания текущих захватов.
 
-## The Danger Zone
+## Опасная зона
 
-If total power falls below the required amount for your claims, your faction becomes vulnerable. Enemies can overclaim your chunks.
+Если общая сила упадёт ниже необходимой для твоих захватов, фракция становится уязвимой. Враги смогут перезахватить твои чанки.
 
->[!WARNING] Multiple deaths in a short period can cascade quickly. If you have 5 members each at 10 power (50 total) and 20 claims (40 needed), just 5 deaths across your team drops you to 45 -- still safe. But 11 deaths puts you at 39, below the 40 threshold.
+>[!WARNING] Несколько смертей за короткий период могут быстро привести к лавинному эффекту. Если у тебя 5 участников по 10 силы (50 всего) и 20 захватов (нужно 40), всего 5 смертей в команде снижают силу до 45 -- ещё безопасно. Но 11 смертей опускают до 39, ниже порога в 40.
 
->[!TIP] Keep a power buffer. Do not claim every chunk you can afford -- leave room for a few deaths without becoming raidable.
+>[!TIP] Держи запас силы. Не захватывай каждый чанк, который можешь себе позволить -- оставляй место для нескольких смертей, чтобы не стать уязвимым для рейда.

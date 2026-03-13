@@ -2,49 +2,49 @@
 id: power_losing
 commands: overclaim
 ---
-# Losing Territory
+# Потеря территории
 
-When a faction's total power drops below the cost of its claims, it becomes raidable. Enemies can overclaim chunks right out from under you.
+Когда общая сила фракции падает ниже стоимости её захватов, она становится уязвимой для рейда. Враги могут перезахватить чанки прямо из-под тебя.
 
 ---
 
-## How Overclaiming Works
+## Как работает перезахват
 
 `/f overclaim`
 
-An Officer or Leader from an enemy faction stands in your claimed chunk and runs this command. If your faction is in a power deficit, the chunk transfers to their faction.
+Офицер или Лидер вражеской фракции встаёт в твой захваченный чанк и вводит эту команду. Если твоя фракция в дефиците силы, чанк переходит к их фракции.
 
-## The Math
+## Математика
 
-Each claim costs 2.0 power to maintain. If your total power falls below that threshold, the deficit chunks are vulnerable.
+Каждый захват стоит 2.0 силы на содержание. Если общая сила падает ниже этого порога, чанки в дефиците становятся уязвимыми.
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Это значения по умолчанию. Администратор сервера мог настроить другие параметры.
 
->[!WARNING] Overclaiming is permanent. Once an enemy takes a chunk, you must reclaim it (or overclaim it back if they weaken).
-
----
-
-## Example Scenario
-
-| Factor | Value |
-|--------|-------|
-| Members | 5 players |
-| Power per member | 10 each (starting) |
-| Total power | 50 |
-| Claims | 30 chunks |
-| Power needed (30 x 2.0) | 60 |
-| Deficit | 10 power short |
-
-In this example, the faction is already raidable from the start. Enemies could overclaim up to 5 chunks (10 deficit / 2.0 per claim) before the faction reaches equilibrium.
+>[!WARNING] Перезахват необратим. Как только враг забирает чанк, тебе нужно захватить его заново (или перезахватить обратно, если они ослабнут).
 
 ---
 
-## How to Prevent Overclaiming
+## Пример сценария
 
-- Do not over-expand -- always keep total power above your claim cost with a buffer
-- Stay active -- power only regenerates while online (+0.1/min)
-- Avoid unnecessary deaths -- each death costs 1.0 power
-- Recruit more members -- more players means more total power
-- Unclaim unused chunks -- free up power with /f unclaim
+| Фактор | Значение |
+|--------|----------|
+| Участники | 5 игроков |
+| Сила на участника | 10 у каждого (начальная) |
+| Общая сила | 50 |
+| Захваты | 30 чанков |
+| Необходимая сила (30 x 2.0) | 60 |
+| Дефицит | Не хватает 10 силы |
 
->[!TIP] Check your power status regularly with /f power. If your total power is close to your claim cost, consider unclaiming less important chunks before a war.
+В этом примере фракция уязвима для рейда с самого начала. Враги могут перезахватить до 5 чанков (10 дефицита / 2.0 за захват) до достижения равновесия.
+
+---
+
+## Как предотвратить перезахват
+
+- Не расширяйся чрезмерно -- всегда держи общую силу выше стоимости захватов с запасом
+- Будь активен -- сила восстанавливается только когда ты онлайн (+0.1/мин)
+- Избегай ненужных смертей -- каждая смерть стоит 1.0 силы
+- Набирай больше участников -- больше игроков значит больше общей силы
+- Освобождай неиспользуемые чанки -- высвобождай силу с помощью /f unclaim
+
+>[!TIP] Проверяй свой статус силы регулярно с помощью /f power. Если общая сила близка к стоимости захватов, подумай об освобождении менее важных чанков перед войной.

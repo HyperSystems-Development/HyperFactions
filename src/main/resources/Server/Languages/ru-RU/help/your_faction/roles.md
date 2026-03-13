@@ -1,44 +1,44 @@
 ---
 id: faction_roles
 ---
-# Roles and Ranks
+# Роли и ранги
 
-Every faction has three roles in a strict hierarchy. Higher roles inherit all capabilities of the roles below them.
-
----
-
-## Permission Breakdown
-
-| Action | Leader | Officer | Member |
-|--------|--------|---------|--------|
-| Build in territory | Yes | Yes | Yes |
-| Use faction home | Yes | Yes | Yes |
-| Faction and ally chat | Yes | Yes | Yes |
-| Invite players | Yes | Yes | No |
-| Kick members | Yes | Yes (Members only) | No |
-| Claim / unclaim land | Yes | Yes | No |
-| Overclaim enemy territory | Yes | Yes | No |
-| Set faction home | Yes | Yes | No |
-| Delete faction home | Yes | Yes | No |
-| Manage relations (ally/enemy) | Yes | Yes | No |
-| View faction logs | Yes | Yes | No |
-| Promote to Officer | Yes | No | No |
-| Demote from Officer | Yes | No | No |
-| Rename faction | Yes | No | No |
-| Set description / tag / color | Yes | No | No |
-| Open / close faction | Yes | No | No |
-| Access faction settings | Yes | No | No |
-| Transfer leadership | Yes | No | No |
-| Disband faction | Yes | No | No |
-
->[!NOTE] Officers can kick Members but cannot kick other Officers. Only the Leader can remove Officers.
+В каждой фракции есть три роли в строгой иерархии. Более высокие роли наследуют все возможности нижестоящих.
 
 ---
 
-## Role Details
+## Таблица прав
 
-- Leader -- One per faction. Has full control over all settings, members, and territory. Can transfer ownership to another member.
-- Officer -- Trusted members who help manage the faction. Can invite, kick members, claim land, and handle diplomacy.
-- Member -- The default role when joining. Can build in territory, use the faction home, and participate in faction chat.
+| Действие | Лидер | Офицер | Участник |
+|----------|-------|--------|----------|
+| Строить на территории | Да | Да | Да |
+| Использовать дом фракции | Да | Да | Да |
+| Чат фракции и союзников | Да | Да | Да |
+| Приглашать игроков | Да | Да | Нет |
+| Исключать участников | Да | Да (только Участников) | Нет |
+| Захватывать / освобождать землю | Да | Да | Нет |
+| Перезахватывать вражескую территорию | Да | Да | Нет |
+| Устанавливать дом фракции | Да | Да | Нет |
+| Удалять дом фракции | Да | Да | Нет |
+| Управлять отношениями (союз/враг) | Да | Да | Нет |
+| Просматривать логи фракции | Да | Да | Нет |
+| Повышать до Офицера | Да | Нет | Нет |
+| Понижать из Офицера | Да | Нет | Нет |
+| Переименовывать фракцию | Да | Нет | Нет |
+| Задавать описание / тег / цвет | Да | Нет | Нет |
+| Открывать / закрывать фракцию | Да | Нет | Нет |
+| Доступ к настройкам фракции | Да | Нет | Нет |
+| Передавать лидерство | Да | Нет | Нет |
+| Расформировать фракцию | Да | Нет | Нет |
 
->[!TIP] Promote your most active and trusted members to Officer so they can help manage territory and recruit new players.
+>[!NOTE] Офицеры могут исключать Участников, но не других Офицеров. Только Лидер может исключать Офицеров.
+
+---
+
+## Описание ролей
+
+- Лидер -- Один на фракцию. Имеет полный контроль над настройками, участниками и территорией. Может передать владение другому участнику.
+- Офицер -- Доверенные участники, помогающие управлять фракцией. Могут приглашать, исключать участников, захватывать землю и вести дипломатию.
+- Участник -- Роль по умолчанию при вступлении. Может строить на территории, использовать дом фракции и участвовать в чате фракции.
+
+>[!TIP] Повышай самых активных и надёжных участников до Офицера, чтобы они помогали управлять территорией и набирать новых игроков.

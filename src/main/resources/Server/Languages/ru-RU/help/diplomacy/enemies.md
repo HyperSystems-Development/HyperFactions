@@ -2,46 +2,46 @@
 id: diplomacy_enemies
 commands: enemy, neutral
 ---
-# Enemy Factions
+# Вражеские фракции
 
-Declaring an enemy is a one-way action that immediately enables PvP and territorial aggression against the target faction. No agreement is required.
+Объявление врага -- это одностороннее действие, которое немедленно включает PvP и территориальную агрессию против целевой фракции. Согласие не требуется.
 
 ---
 
-## Declaring an Enemy
+## Объявление врага
 
 `/f enemy <faction>`
 
-Instantly marks the target faction as your enemy. This takes effect immediately -- no confirmation from the other side is needed. Requires Officer rank or higher.
+Мгновенно отмечает целевую фракцию как твоего врага. Вступает в силу немедленно -- подтверждение другой стороны не нужно. Требуется ранг Офицера или выше.
 
-## Resetting to Neutral
+## Сброс до нейтрального
 
 `/f neutral <faction>`
 
-Ends the enemy status and resets the relation to neutral. This also requires Officer+ and takes effect immediately.
+Снимает вражеский статус и сбрасывает отношения до нейтральных. Также требуется Офицер+ и вступает в силу немедленно.
 
 ---
 
-## What Enemy Status Enables
+## Что даёт вражеский статус
 
-| Effect | Details |
-|--------|---------|
-| PvP in territory | Full PvP is enabled in both factions' territory |
-| Overclaiming | You can overclaim their chunks if they are in a power deficit |
-| Map marking | Enemy territory shows in red on the territory map |
-| No protection | Standard territory protection does not prevent enemy PvP |
+| Эффект | Подробности |
+|--------|-------------|
+| PvP на территории | Полный PvP включён на территории обеих фракций |
+| Перезахват | Ты можешь перезахватывать их чанки, если они в дефиците силы |
+| Отметка на карте | Вражеская территория отображается красным на карте территорий |
+| Нет защиты | Стандартная защита территории не предотвращает вражеский PvP |
 
->[!WARNING] Declaring an enemy is a serious decision. Their members can also fight you in your own territory once you declare.
+>[!WARNING] Объявление врага -- серьёзное решение. Их участники тоже смогут сражаться с тобой на твоей собственной территории после объявления.
 
 ---
 
-## Strategic Considerations
+## Стратегические соображения
 
-- Enemy declarations are one-way -- you can declare without their consent, but they also see you as hostile
-- Before declaring, check the target's power with /f info. If they are strong, you may lose territory instead
-- Weaken enemies through repeated combat to drain their power, then overclaim their land
-- There is no limit to how many enemies you can have, but fighting on multiple fronts is risky
+- Объявления врага односторонние -- ты можешь объявить без их согласия, но они тоже будут видеть тебя как враждебного
+- Перед объявлением проверь силу цели с помощью /f info. Если они сильны, ты можешь потерять территорию вместо них
+- Ослабляй врагов повторными боями, чтобы истощить их силу, затем перезахватывай их землю
+- Количество врагов не ограничено, но воевать на нескольких фронтах рискованно
 
->[!TIP] Use /f neutral to de-escalate conflicts. Sometimes a strategic peace is more valuable than continued war.
+>[!TIP] Используй /f neutral для деэскалации конфликтов. Иногда стратегический мир ценнее продолжения войны.
 
->[!NOTE] If you are allied with a faction and declare them as an enemy, the alliance is broken first.
+>[!NOTE] Если ты в союзе с фракцией и объявляешь её врагом, союз разрывается первым.

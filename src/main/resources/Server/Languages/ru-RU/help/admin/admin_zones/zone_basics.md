@@ -1,43 +1,43 @@
 ---
 id: admin_zone_basics
 ---
-# Zone Basics
+# Основы зон
 
-Zones are admin-controlled territories with custom rules that override normal faction protection.
+Зоны -- это контролируемые администратором территории с особыми правилами, которые переопределяют обычную защиту территории фракций.
 
-## Zone Types
+## Типы зон
 
-- **SafeZone** -- No PvP, no building, no damage.
-Ideal for spawn areas and trading hubs.
-- **WarZone** -- PvP always enabled, no building.
-Ideal for arenas and contested battle areas.
+- **SafeZone** -- Нет PvP, нет строительства, нет урона.
+Идеально для зон спавна и торговых хабов.
+- **WarZone** -- PvP всегда включён, нет строительства.
+Идеально для арен и спорных боевых зон.
 
-## Creating Zones
+## Создание зон
 
 `/f admin safezone <name>`
-Creates a SafeZone and claims your current chunk.
+Создаёт SafeZone и захватывает текущий чанк.
 
 `/f admin warzone <name>`
-Creates a WarZone and claims your current chunk.
+Создаёт WarZone и захватывает текущий чанк.
 
-After creation, stand in additional chunks and use `/f admin zone claim <zone>` to expand the zone.
+После создания встань в дополнительные чанки и используй `/f admin zone claim <zone>` для расширения зоны.
 
-## Managing Zone Chunks
+## Управление чанками зоны
 
 `/f admin zone claim <zone>`
-Add the current chunk to the named zone.
+Добавить текущий чанк в указанную зону.
 
 `/f admin zone unclaim <zone>`
-Remove the current chunk from the named zone.
+Убрать текущий чанк из указанной зоны.
 
 `/f admin zone radius <zone> <radius>`
-Claim a square of chunks around your position.
+Захватить квадрат чанков вокруг твоей позиции.
 
-## Deleting Zones
+## Удаление зон
 
 `/f admin removezone <name>`
-Permanently deletes the zone and releases all its claimed chunks.
+Полностью удаляет зону и освобождает все её захваченные чанки.
 
->[!WARNING] Deleting a zone releases all its chunks instantly. This cannot be undone without a backup restore.
+>[!WARNING] Удаление зоны мгновенно освобождает все её чанки. Это нельзя отменить без восстановления из резервной копии.
 
->[!INFO] Zone rules **always override** faction territory rules. A SafeZone inside enemy land is still safe.
+>[!INFO] Правила зон **всегда переопределяют** правила территории фракций. SafeZone внутри вражеской земли всё равно безопасна.

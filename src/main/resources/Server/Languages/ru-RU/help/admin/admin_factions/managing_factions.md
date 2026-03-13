@@ -1,38 +1,38 @@
 ---
 id: admin_managing_factions
 ---
-# Managing Factions
+# Управление фракциями
 
-Admins can inspect and modify any faction on the server through the dashboard or commands.
+Администраторы могут просматривать и изменять любую фракцию на сервере через панель управления или команды.
 
-## Browsing Factions
+## Обзор фракций
 
 `/f admin factions`
-Opens the admin faction browser. View all factions with member counts, power levels, and territory.
+Открывает браузер фракций администратора. Просмотр всех фракций с количеством участников, уровнями силы и территорией.
 
 `/f admin info <faction>`
-Opens the admin info panel for a specific faction with full details and management options.
+Открывает информационную панель администратора для конкретной фракции с полными данными и опциями управления.
 
-## Modifying Faction Settings
+## Изменение настроек фракции
 
-With `hyperfactions.admin.modify` permission, you can:
+С правом `hyperfactions.admin.modify` ты можешь:
 
-- **Rename** a faction to resolve conflicts
-- **Set color** to fix display issues
-- **Toggle open/close** to override join policy
-- **Edit description** for moderation purposes
+- **Переименовать** фракцию для разрешения конфликтов
+- **Задать цвет** для исправления проблем отображения
+- **Переключить открытость/закрытость** для изменения политики вступления
+- **Редактировать описание** для целей модерации
 
->[!TIP] Use `/f admin who <player>` to look up which faction a specific player belongs to and view their details.
+>[!TIP] Используй `/f admin who <player>`, чтобы узнать, к какой фракции принадлежит конкретный игрок, и просмотреть его данные.
 
-## Viewing Members and Relations
+## Просмотр участников и отношений
 
-The admin info panel shows:
+Информационная панель администратора показывает:
 
-| Section | Details |
-|---------|---------|
-| **Members** | Full roster with roles and last seen |
-| **Relations** | All ally, enemy, and neutral standings |
-| **Territory** | Claimed chunks and power balance |
-| **Economy** | Treasury balance and transaction log |
+| Раздел | Подробности |
+|--------|-------------|
+| **Участники** | Полный состав с ролями и временем последнего визита |
+| **Отношения** | Все союзные, вражеские и нейтральные связи |
+| **Территория** | Захваченные чанки и баланс силы |
+| **Экономика** | Баланс казны и журнал транзакций |
 
->[!NOTE] Admin inspection commands do not notify the faction being viewed. Only modifications trigger alerts.
+>[!NOTE] Команды инспекции администратора не уведомляют просматриваемую фракцию. Только изменения вызывают оповещения.

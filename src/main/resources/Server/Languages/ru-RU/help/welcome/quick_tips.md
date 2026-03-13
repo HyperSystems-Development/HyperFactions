@@ -1,44 +1,44 @@
 ---
 id: welcome_tips
 ---
-# Quick Tips
+# Полезные советы
 
-Handy advice organized by category to help you thrive.
+Удобные подсказки по категориям, которые помогут тебе преуспеть.
 
 ---
 
-## Territory
+## Территория
 
-- Claim land around your base early with `/f claim` -- unclaimed builds have **no protection**
-- Each claim costs **2.0 power** to maintain, so do not over-expand beyond what your members can support
-- Use `/f map` to scout nearby claims and find safe spots to build
-- Unclaim chunks you no longer need with `/f unclaim` to free up power
+- Захватывай землю вокруг базы заранее с помощью `/f claim` -- незахваченные постройки **не защищены**
+- Каждый захват стоит **2.0 силы** на содержание, так что не расширяйся сверх того, что твои участники могут поддерживать
+- Используй `/f map` для разведки ближайших захватов и поиска безопасных мест для строительства
+- Освобождай ненужные чанки с помощью `/f unclaim`, чтобы высвободить силу
 
-## Combat
+## Бой
 
-- Dying costs **1.0 power** -- avoid unnecessary fights when your faction is near its claim limit
-- You have **5 seconds of spawn protection** after respawning
-- Combat tagging lasts **15 seconds** -- logging out while tagged costs extra power
-- Friendly fire is **disabled** between faction members and allies by default
+- Смерть стоит **1.0 силы** -- избегай ненужных драк, когда фракция близка к лимиту захватов
+- После возрождения у тебя есть **5 секунд защиты**
+- Боевая метка длится **15 секунд** -- выход из игры с меткой стоит дополнительной силы
+- Огонь по своим **отключён** между участниками фракции и союзниками по умолчанию
 
->[!WARNING] Logging out while combat tagged causes additional power loss (1.0 per logout). Stay and fight or escape first.
+>[!WARNING] Выход из игры с боевой меткой приводит к дополнительной потере силы (1.0 за выход). Оставайся и сражайся или сначала убеги.
 
-## Social
+## Общение
 
-- Use `/f c` to cycle through chat modes so faction talk stays private
-- Invite trusted players with `/f invite <player>` -- invitations expire after **5 minutes**
-- Form alliances with `/f ally <faction>` for mutual protection and shared map visibility
-- Check `/f relations` to see your full diplomatic status
+- Используй `/f c` для переключения режимов чата, чтобы разговоры фракции оставались приватными
+- Приглашай проверенных игроков с помощью `/f invite <player>` -- приглашения истекают через **5 минут**
+- Заключай союзы с помощью `/f ally <faction>` для взаимной защиты и видимости на карте
+- Проверяй `/f relations`, чтобы видеть полный дипломатический статус
 
-## Economy
+## Экономика
 
->[!TIP] If the server has economy enabled, your faction can accumulate a treasury. Members can deposit, but only Officers and Leaders can withdraw or transfer funds.
+>[!TIP] Если на сервере включена экономика, у твоей фракции может быть казна. Участники могут вносить средства, но только Офицеры и Лидеры могут снимать или переводить деньги.
 
-- Deposit funds with the treasury GUI to strengthen your faction
-- A wealthier faction can afford more claims and recover from setbacks faster
+- Вноси средства через меню казны, чтобы укрепить свою фракцию
+- Более богатая фракция может позволить себе больше захватов и быстрее восстанавливаться после неудач
 
-## General
+## Общее
 
-- Type `/f` anytime to open your faction dashboard -- everything is accessible from there
-- Promote active members to Officer so they can help claim and manage territory
-- Keep your faction active -- power only regenerates while players are **online**
+- Набери `/f` в любой момент, чтобы открыть панель фракции -- всё доступно оттуда
+- Повышай активных участников до Офицера, чтобы они помогали захватывать и управлять территорией
+- Поддерживай фракцию активной -- сила восстанавливается только когда игроки **онлайн**

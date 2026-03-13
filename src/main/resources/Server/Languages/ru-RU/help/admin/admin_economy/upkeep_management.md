@@ -1,42 +1,42 @@
 ---
 id: admin_upkeep_management
 ---
-# Upkeep Management
+# Управление содержанием
 
-Faction upkeep charges factions periodically based on their territory and member count.
+Содержание фракций взимает с фракций плату периодически на основе их территории и количества участников.
 
-## Admin Controls
+## Элементы управления администратора
 
-Upkeep settings are managed through the economy config file or the admin config GUI.
+Настройки содержания управляются через файл конфигурации экономики или меню конфигурации администратора.
 
 `/f admin config`
-Open the config editor and navigate to economy settings to adjust upkeep values.
+Открой редактор конфигурации и перейди к настройкам экономики для корректировки значений содержания.
 
-## Default Upkeep Settings
+## Настройки содержания по умолчанию
 
-| Setting | Default | Description |
-|---------|---------|-------------|
-| Upkeep enabled | false | Master toggle for the system |
-| Upkeep interval | 24h | How often upkeep is charged |
-| Per-claim cost | 5.0 | Cost per claimed chunk per cycle |
-| Per-member cost | 0.0 | Cost per member per cycle |
-| Grace period | 72h | New factions are exempt |
-| Disband on bankrupt | false | Auto-disband if cannot pay |
+| Настройка | По умолчанию | Описание |
+|-----------|-------------|----------|
+| Содержание включено | false | Главный переключатель системы |
+| Интервал содержания | 24ч | Как часто взимается содержание |
+| Стоимость за захват | 5.0 | Стоимость за захваченный чанк за цикл |
+| Стоимость за участника | 0.0 | Стоимость за участника за цикл |
+| Льготный период | 72ч | Новые фракции освобождены |
+| Расформирование при банкротстве | false | Автоматическое расформирование, если нечем платить |
 
-## Monitoring Upkeep
+## Мониторинг содержания
 
-Use `/f admin info <faction>` to see:
-- Current treasury balance
-- Estimated upkeep cost per cycle
-- Time until next upkeep charge
-- Whether the faction can afford upkeep
+Используй `/f admin info <faction>`, чтобы увидеть:
+- Текущий баланс казны
+- Расчётную стоимость содержания за цикл
+- Время до следующего списания содержания
+- Может ли фракция оплатить содержание
 
->[!TIP] Review economy statistics across all factions from the admin dashboard to identify factions at risk of bankruptcy before upkeep triggers.
+>[!TIP] Просматривай статистику экономики по всем фракциям из панели администратора, чтобы выявить фракции на грани банкротства до срабатывания содержания.
 
->[!INFO] Upkeep configuration is stored in `economy.json`. Changes made via the config GUI take effect after reload with `/f admin reload`.
+>[!INFO] Конфигурация содержания хранится в `economy.json`. Изменения через меню конфигурации вступают в силу после перезагрузки с помощью `/f admin reload`.
 
-## Upkeep Formula
+## Формула содержания
 
-**Total upkeep** = (claimed chunks x per-claim cost) + (member count x per-member cost)
+**Общее содержание** = (захваченные чанки x стоимость за захват) + (количество участников x стоимость за участника)
 
->[!WARNING] Enabling upkeep on a server with existing factions may cause unexpected bankruptcies. Consider setting a grace period or announcing the change in advance.
+>[!WARNING] Включение содержания на сервере с существующими фракциями может привести к неожиданным банкротствам. Рассмотри установку льготного периода или объявление изменения заранее.

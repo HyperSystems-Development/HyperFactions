@@ -1,37 +1,37 @@
 ---
 id: admin_permissions
 ---
-# Admin Permissions
+# Права администратора
 
-All admin features are gated behind permission nodes in the `hyperfactions.admin` namespace.
+Все функции администратора защищены узлами прав в пространстве имён `hyperfactions.admin`.
 
-## Permission Nodes
+## Узлы прав
 
-| Permission | Description |
-|-----------|-------------|
-| `hyperfactions.admin.*` | Grants **all** admin permissions |
-| `hyperfactions.admin.use` | Access `/f admin` dashboard |
-| `hyperfactions.admin.reload` | Reload configuration files |
-| `hyperfactions.admin.debug` | Toggle debug logging categories |
-| `hyperfactions.admin.zones` | Create, edit, and delete zones |
-| `hyperfactions.admin.disband` | Force-disband any faction |
-| `hyperfactions.admin.modify` | Modify any faction's settings |
-| `hyperfactions.admin.bypass.limits` | Bypass claim and power limits |
-| `hyperfactions.admin.backup` | Create and restore backups |
-| `hyperfactions.admin.power` | Override player power values |
-| `hyperfactions.admin.economy` | Manage faction treasuries |
+| Право | Описание |
+|-------|----------|
+| `hyperfactions.admin.*` | Выдаёт **все** права администратора |
+| `hyperfactions.admin.use` | Доступ к панели `/f admin` |
+| `hyperfactions.admin.reload` | Перезагрузка файлов конфигурации |
+| `hyperfactions.admin.debug` | Переключение категорий отладочного логирования |
+| `hyperfactions.admin.zones` | Создание, редактирование и удаление зон |
+| `hyperfactions.admin.disband` | Принудительное расформирование любой фракции |
+| `hyperfactions.admin.modify` | Изменение настроек любой фракции |
+| `hyperfactions.admin.bypass.limits` | Обход лимитов захватов и силы |
+| `hyperfactions.admin.backup` | Создание и восстановление резервных копий |
+| `hyperfactions.admin.power` | Переопределение значений силы игроков |
+| `hyperfactions.admin.economy` | Управление казнами фракций |
 
-## Fallback Behavior
+## Поведение при отсутствии плагина
 
-When **no permission plugin** is installed, admin permissions fall back to server operator (OP) status. This is controlled by `adminRequiresOp` in the server config (default: `true`).
+Когда **плагин прав не установлен**, права администратора определяются по статусу оператора сервера (OP). Это контролируется параметром `adminRequiresOp` в конфигурации сервера (по умолчанию: `true`).
 
->[!NOTE] The `hyperfactions.admin.*` wildcard grants every admin permission. Use individual nodes for granular control over your staff team.
+>[!NOTE] Подстановочный знак `hyperfactions.admin.*` выдаёт все права администратора. Используй отдельные узлы для детального контроля над командой модераторов.
 
-## Permission Resolution Order
+## Порядок определения прав
 
-1. **VaultUnlocked** provider (if available)
-2. **HyperPerms** provider (if available)
-3. **LuckPerms** provider (if available)
-4. **OP check** for admin nodes (fallback)
+1. Провайдер **VaultUnlocked** (если доступен)
+2. Провайдер **HyperPerms** (если доступен)
+3. Провайдер **LuckPerms** (если доступен)
+4. Проверка **OP** для админ-узлов (запасной вариант)
 
->[!WARNING] Without a permission plugin and with `adminRequiresOp` disabled, admin commands are **open to all players**. Always use a permission plugin in production.
+>[!WARNING] Без плагина прав и с отключённым `adminRequiresOp` админ-команды **доступны всем игрокам**. Всегда используй плагин прав в продакшене.

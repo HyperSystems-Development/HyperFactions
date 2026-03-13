@@ -1,37 +1,37 @@
 ---
 id: admin_disbanding
 ---
-# Force Disbanding
+# Принудительное расформирование
 
-Admins can forcefully disband any faction, regardless of the leader's wishes.
+Администраторы могут принудительно расформировать любую фракцию, независимо от желания лидера.
 
-## Command
+## Команда
 
 `/f admin disband <faction>`
-Force-disband the named faction. A confirmation prompt will appear before the action is executed.
+Принудительно расформировать указанную фракцию. Перед выполнением появится запрос подтверждения.
 
-**Permission**: `hyperfactions.admin.disband`
+**Право**: `hyperfactions.admin.disband`
 
->[!WARNING] Disbanding a faction is **irreversible**. All claims are released, all members are removed, and the faction ceases to exist. Create a backup first.
+>[!WARNING] Расформирование фракции **необратимо**. Все захваты освобождаются, все участники исключаются, и фракция перестаёт существовать. Сначала создай резервную копию.
 
-## Consequences
+## Последствия
 
-When a faction is disbanded:
+При расформировании фракции:
 
-| Effect | Description |
-|--------|-------------|
-| **Claims** | All territory is released immediately |
-| **Members** | All players are removed from the roster |
-| **Relations** | All alliances and enemies are cleared |
-| **Treasury** | Handled per economy config settings |
-| **Home** | Faction home is deleted |
-| **Chat** | Faction chat history is removed |
+| Эффект | Описание |
+|--------|----------|
+| **Захваты** | Вся территория освобождается немедленно |
+| **Участники** | Все игроки исключаются из состава |
+| **Отношения** | Все союзы и вражды сбрасываются |
+| **Казна** | Обрабатывается согласно настройкам экономики |
+| **Дом** | Дом фракции удаляется |
+| **Чат** | История чата фракции удаляется |
 
-## Best Practices
+## Лучшие практики
 
-1. Always run `/f admin backup create` before disbanding
-2. Notify faction members when possible
-3. Document the reason for server records
-4. Check `/f admin info <faction>` to review before acting
+1. Всегда выполняй `/f admin backup create` перед расформированием
+2. Уведомляй участников фракции по возможности
+3. Документируй причину для записей сервера
+4. Проверь `/f admin info <faction>` перед действием
 
->[!TIP] If the issue is with a specific member, consider using the admin factions GUI to transfer leadership rather than disbanding the entire faction.
+>[!TIP] Если проблема связана с конкретным участником, рассмотри использование меню управления фракциями для передачи лидерства вместо расформирования всей фракции.

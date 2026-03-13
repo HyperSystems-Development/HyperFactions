@@ -2,43 +2,43 @@
 id: power_map
 commands: map
 ---
-# The Territory Map
+# Карта территорий
 
-The territory map gives you a bird's-eye view of claimed chunks in your area, showing which factions control the land around you.
+Карта территорий даёт тебе вид сверху на захваченные чанки в твоём районе, показывая, какие фракции контролируют землю вокруг тебя.
 
 ---
 
-## Opening the Map
+## Открытие карты
 
 `/f map`
 
-Opens the territory map GUI centered on your current location.
+Открывает меню карты территорий с центром на твоём текущем местоположении.
 
 ---
 
-## Color Legend
+## Цветовая легенда
 
-| Color | Meaning |
-|-------|---------|
-| [#55FF55] Your faction's color | Territory claimed by your faction |
-| [#5555FF] Blue | Allied faction territory |
-| [#FF5555] Red | Enemy faction territory |
-| [#AAAAAA] Gray | Neutral faction territory |
-| [#333333] Dark | Wilderness (unclaimed land) |
-| [#FFAA00] Gold | Special zones (safezone, warzone) |
+| Цвет | Значение |
+|------|----------|
+| [#55FF55] Цвет твоей фракции | Территория, захваченная твоей фракцией |
+| [#5555FF] Синий | Территория союзной фракции |
+| [#FF5555] Красный | Территория вражеской фракции |
+| [#AAAAAA] Серый | Территория нейтральной фракции |
+| [#333333] Тёмный | Дикая местность (незахваченная земля) |
+| [#FFAA00] Золотой | Специальные зоны (SafeZone, WarZone) |
 
->[!INFO] Your faction's color on the map matches the color you set with the faction color setting. Allies and enemies use fixed colors for easy identification.
+>[!INFO] Цвет твоей фракции на карте соответствует цвету, установленному в настройках фракции. Союзники и враги используют фиксированные цвета для удобства распознавания.
 
 ---
 
-## Click to Claim
+## Нажми для захвата
 
-The map is not just for viewing -- you can interact with it directly.
+Карта не только для просмотра -- ты можешь взаимодействовать с ней напрямую.
 
-- Click an unclaimed chunk to claim it (requires Officer+ rank and sufficient power)
-- Click a claimed chunk to see which faction owns it
-- Scroll or pan to explore the area around you
+- Нажми на незахваченный чанк, чтобы захватить его (требуется ранг Офицер+ и достаточно силы)
+- Нажми на захваченный чанк, чтобы узнать, какая фракция им владеет
+- Прокручивай или перемещайся для исследования окрестностей
 
->[!TIP] The map is the easiest way to plan your territory expansion. Look for unclaimed areas near your base and claim strategically to create a contiguous border.
+>[!TIP] Карта -- самый удобный способ планировать расширение территории. Ищи незахваченные участки рядом с базой и захватывай стратегически, чтобы создать непрерывную границу.
 
->[!NOTE] The map shows a fixed area around your position. Move to a different location and reopen it to see other parts of the world.
+>[!NOTE] Карта показывает фиксированную область вокруг твоей позиции. Перемести персонажа в другое место и открой карту снова, чтобы увидеть другие части мира.

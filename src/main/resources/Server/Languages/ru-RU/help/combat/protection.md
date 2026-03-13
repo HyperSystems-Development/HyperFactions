@@ -1,28 +1,28 @@
 ---
 id: combat_protection
 ---
-# Territory Protection
+# Защита территории
 
-Claimed territory provides several layers of defense for your faction's builds and resources.
+Захваченная территория обеспечивает несколько уровней защиты для построек и ресурсов твоей фракции.
 
-## Block Protection
+## Защита блоков
 
-Only faction members can place or break blocks in your territory. Enemies and neutrals are blocked from modifying anything.
+Только участники фракции могут ставить или ломать блоки на твоей территории. Враги и нейтралы не могут ничего изменять.
 
-## Container Protection
+## Защита контейнеров
 
-Chests, barrels, and other containers are secured. Only your faction members can open or interact with storage in claimed chunks.
+Сундуки, бочки и другие контейнеры защищены. Только участники твоей фракции могут открывать или взаимодействовать с хранилищами на захваченных чанках.
 
-## Entry Alerts
+## Оповещения о вторжении
 
-When a non-member enters your claimed territory, online faction members receive a notification with the intruder's name and location.
+Когда посторонний входит на твою захваченную территорию, онлайн-участники фракции получают уведомление с именем и местоположением нарушителя.
 
 ---
 
-## Ally Access
+## Доступ союзников
 
-Allies cannot build or break blocks in your territory by default. Ally damage is also disabled, so allied players cannot harm each other.
+Союзники не могут строить или ломать блоки на твоей территории по умолчанию. Урон между союзниками также отключён, так что союзные игроки не могут навредить друг другу.
 
->[!INFO] Territory protects blocks, not players. PvP in your own territory depends on the attacker's relation to your faction.
+>[!INFO] Территория защищает блоки, а не игроков. PvP на твоей собственной территории зависит от отношения атакующего к твоей фракции.
 
->[!TIP] Keep your claims connected and avoid isolated chunks that are harder to defend.
+>[!TIP] Держи свои захваты связанными и избегай изолированных чанков, которые сложнее защищать.

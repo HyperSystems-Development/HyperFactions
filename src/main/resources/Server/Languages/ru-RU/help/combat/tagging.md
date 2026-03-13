@@ -1,29 +1,29 @@
 ---
 id: combat_tagging
 ---
-# Combat Tagging
+# Боевая метка
 
-When you attack or are attacked by another player, you become combat tagged for 15 seconds.
+Когда ты атакуешь или тебя атакует другой игрок, ты получаешь боевую метку на 15 секунд.
 
-## While Tagged
+## Пока ты помечен
 
-- No /f home or /f stuck teleports
-- No server teleport commands
-- Tag resets with each new combat action
-- A timer displays your remaining tag duration
+- Нельзя использовать /f home или /f stuck для телепортации
+- Нельзя использовать серверные команды телепортации
+- Метка сбрасывается с каждым новым боевым действием
+- Таймер отображает оставшееся время метки
 
 ---
 
-## Logout Penalty
+## Штраф за выход
 
->[!WARNING] Logging out while combat tagged kills your character and you lose 1.0 power.
+>[!WARNING] Выход из игры с боевой меткой убивает твоего персонажа, и ты теряешь 1.0 силы.
 
-Your items drop where you disconnected and enemies can loot them. Always wait for the tag to expire.
+Твои вещи выпадут там, где ты отключился, и враги смогут их подобрать. Всегда жди, пока метка истечёт.
 
-## How the Timer Works
+## Как работает таймер
 
-The combat tag timer appears on screen when you enter combat. Every new hit resets it to 15 seconds. Once it reaches zero, all restrictions are lifted.
+Таймер боевой метки появляется на экране, когда ты вступаешь в бой. Каждый новый удар сбрасывает его на 15 секунд. Как только он достигнет нуля, все ограничения снимаются.
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Это значения по умолчанию. Администратор сервера мог настроить другие параметры.
 
->[!TIP] Disengage and wait out the timer if you need to teleport.
+>[!TIP] Выйди из боя и переждай таймер, если тебе нужно телепортироваться.

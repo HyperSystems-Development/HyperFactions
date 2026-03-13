@@ -1,27 +1,27 @@
 ---
 id: economy_commands
 ---
-# Economy Commands
+# Команды экономики
 
-Quick reference for all faction economy commands.
+Краткий справочник по всем командам экономики фракции.
 
-| Command | Description | Role |
-|---------|-------------|------|
-| /f balance | View treasury balance | Any |
-| /f deposit (amount) | Deposit into treasury | Any |
-| /f withdraw (amount) | Withdraw from treasury | Officer+ |
-| /f money transfer (faction) (amount) | Transfer to another faction | Officer+ |
-| /f money log [page] | View transaction history | Officer+ |
+| Команда | Описание | Роль |
+|---------|----------|------|
+| /f balance | Просмотр баланса казны | Любой |
+| /f deposit (amount) | Внести в казну | Любой |
+| /f withdraw (amount) | Снять из казны | Офицер+ |
+| /f money transfer (faction) (amount) | Перевести другой фракции | Офицер+ |
+| /f money log [page] | Просмотр истории транзакций | Офицер+ |
 
 ---
 
-## Command Aliases
+## Псевдонимы команд
 
-- /f balance can also be used as /f bal
-- /f deposit and /f withdraw accept decimal amounts
+- /f balance также доступна как /f bal
+- /f deposit и /f withdraw принимают дробные суммы
 
-## Role Requirements
+## Требования к роли
 
-Withdraw and transfer commands are restricted to Officers and Leaders. All other economy commands are available to any faction member.
+Команды снятия и перевода доступны только Офицерам и Лидерам. Все остальные команды экономики доступны любому участнику фракции.
 
->[!TIP] Use /f money log to review recent deposits, withdrawals, and transfers with timestamps.
+>[!TIP] Используй /f money log для просмотра недавних внесений, снятий и переводов с отметками времени.

@@ -1,27 +1,27 @@
 ---
 id: combat_spawn_protection
 ---
-# Spawn Protection
+# Защита при возрождении
 
-After respawning from death, you receive temporary protection to prevent spawn camping.
+После возрождения от смерти ты получаешь временную защиту для предотвращения кемпинга на точке спавна.
 
-## How It Works
+## Как это работает
 
-- Protection lasts 5 seconds after respawn
-- You cannot take damage during this period
-- A visual indicator shows your protected status
+- Защита длится 5 секунд после возрождения
+- Ты не можешь получать урон в этот период
+- Визуальный индикатор показывает твой защищённый статус
 
-## Protection Breaks
+## Снятие защиты
 
-Spawn protection ends early if you:
+Защита при возрождении снимается досрочно, если ты:
 
-- Attack another player or entity
-- Move from your spawn position
+- Атакуешь другого игрока или существо
+- Сдвинешься с точки возрождения
 
-This prevents abuse. You cannot attack others while invulnerable. Once you take any action, protection drops and normal combat rules apply.
+Это предотвращает злоупотребления. Ты не можешь атаковать других, пока неуязвим. Как только ты совершишь любое действие, защита спадёт и вступят в силу обычные правила боя.
 
 ---
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Это значения по умолчанию. Администратор сервера мог настроить другие параметры.
 
->[!TIP] Use your protection time to assess the situation before moving.
+>[!TIP] Используй время защиты, чтобы оценить ситуацию, прежде чем двигаться.

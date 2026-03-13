@@ -1,37 +1,37 @@
 ---
 id: economy_upkeep
 ---
-# Territory Upkeep
+# Содержание территории
 
-Factions must pay ongoing upkeep to maintain their claimed territory. This prevents land hoarding and keeps the map dynamic.
+Фракции должны платить постоянное содержание за свою захваченную территорию. Это предотвращает накопление земли и поддерживает карту динамичной.
 
-## Upkeep Costs
+## Стоимость содержания
 
-| Setting | Default |
-|---------|---------|
-| Cost per chunk | 2.0 per cycle |
-| Payment interval | Every 24 hours |
-| Free chunks | 3 (no cost) |
-| Scaling mode | Flat rate |
+| Настройка | По умолчанию |
+|-----------|-------------|
+| Стоимость за чанк | 2.0 за цикл |
+| Интервал оплаты | Каждые 24 часа |
+| Бесплатные чанки | 3 (без стоимости) |
+| Режим масштабирования | Фиксированная ставка |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Это значения по умолчанию. Администратор сервера мог настроить другие параметры.
 
-Your first 3 chunks are free. Beyond that, each additional claimed chunk costs 2.0 per payment cycle.
+Первые 3 чанка бесплатны. Сверх этого каждый дополнительный захваченный чанк стоит 2.0 за платёжный цикл.
 
-## Auto-Pay
+## Автоплатёж
 
-Auto-pay is enabled by default. The system automatically deducts upkeep from your treasury at each interval. No manual action needed.
+Автоплатёж включён по умолчанию. Система автоматически списывает содержание из казны в каждый интервал. Никаких ручных действий не требуется.
 
 ---
 
-## Grace Period
+## Льготный период
 
-If your treasury cannot cover upkeep, a 48-hour grace period begins. A warning is sent 6 hours before claims start being lost.
+Если казна не может покрыть содержание, начинается 48-часовой льготный период. Предупреждение отправляется за 6 часов до начала потери захватов.
 
->[!WARNING] If upkeep remains unpaid after the grace period, your faction loses 1 claim per cycle until costs are covered or all extra claims are gone.
+>[!WARNING] Если содержание остаётся неоплаченным после льготного периода, фракция теряет 1 захват за цикл, пока расходы не будут покрыты или все лишние захваты не будут потеряны.
 
-## Example
+## Пример
 
-*A faction with 8 claims pays for 5 chunks (8 minus 3 free). At 2.0 per chunk, that is 10.0 per cycle.*
+*Фракция с 8 захватами платит за 5 чанков (8 минус 3 бесплатных). При 2.0 за чанк это 10.0 за цикл.*
 
->[!TIP] Keep your treasury funded above your upkeep cost. Use /f balance to check your reserves.
+>[!TIP] Поддерживай казну выше стоимости содержания. Используй /f balance для проверки резервов.

@@ -1,41 +1,41 @@
 ---
 id: admin_getting_started
 ---
-# Getting Started as Admin
+# Начало работы администратора
 
-Welcome to HyperFactions administration. This guide covers your first steps after installing the plugin.
+Добро пожаловать в администрирование HyperFactions. Это руководство описывает первые шаги после установки плагина.
 
-## Opening the Admin Dashboard
+## Открытие панели администратора
 
 `/f admin`
-Opens the admin dashboard GUI with access to all management tools, zone editors, and server settings.
+Открывает панель администратора с доступом ко всем инструментам управления, редакторам зон и настройкам сервера.
 
->[!INFO] You need **hyperfactions.admin.use** permission or OP status to access admin commands.
+>[!INFO] Тебе нужно право **hyperfactions.admin.use** или статус OP для доступа к админ-командам.
 
-## Requirements
+## Требования
 
-- **With a permission plugin**: Grant `hyperfactions.admin.use`
-- **Without a permission plugin**: The player must be a
-server operator (`adminRequiresOp=true` by default)
+- **С плагином прав**: Выдай `hyperfactions.admin.use`
+- **Без плагина прав**: Игрок должен быть
+оператором сервера (`adminRequiresOp=true` по умолчанию)
 
-## First Steps After Install
+## Первые шаги после установки
 
-1. Run `/f admin` to verify your access
-2. Open **Config** to review default faction settings
-3. Create a **SafeZone** at spawn with `/f admin safezone Spawn`
-4. Optionally create **WarZones** for PvP arenas
-5. Review **Backup** settings to ensure data safety
+1. Выполни `/f admin` для проверки доступа
+2. Открой **Config** для просмотра настроек фракций по умолчанию
+3. Создай **SafeZone** на спавне с помощью `/f admin safezone Spawn`
+4. По желанию создай **WarZone** для PvP-арен
+5. Проверь настройки **Backup** для обеспечения сохранности данных
 
-## Admin Capabilities
+## Возможности администратора
 
-| Area | What You Can Do |
-|------|----------------|
-| Factions | Inspect, modify, or force-disband any faction |
-| Zones | Create SafeZones and WarZones with custom flags |
-| Power | Override player/faction power values |
-| Economy | Manage faction treasuries and upkeep |
-| Config | Edit settings live via GUI or reload from disk |
-| Backups | Create, restore, and manage data backups |
-| Imports | Migrate data from other faction plugins |
+| Область | Что можно делать |
+|---------|-----------------|
+| Фракции | Просматривать, изменять или принудительно расформировать любую фракцию |
+| Зоны | Создавать SafeZone и WarZone с настраиваемыми флагами |
+| Сила | Переопределять значения силы игроков/фракций |
+| Экономика | Управлять казнами фракций и содержанием |
+| Конфигурация | Редактировать настройки через меню или перезагружать с диска |
+| Резервные копии | Создавать, восстанавливать и управлять резервными копиями данных |
+| Импорт | Переносить данные из других плагинов фракций |
 
->[!TIP] Use `/f admin --text` to get chat-based output instead of the GUI, useful for console or automation.
+>[!TIP] Используй `/f admin --text` для получения текстового вывода в чат вместо меню -- полезно для консоли или автоматизации.

@@ -2,37 +2,37 @@
 id: faction_creating
 commands: create
 ---
-# Creating a Faction
+# Создание фракции
 
-Starting your own faction makes you the Leader with full control over settings, members, and territory.
+Создание собственной фракции делает тебя Лидером с полным контролем над настройками, участниками и территорией.
 
 ---
 
-## How to Create
+## Как создать
 
 `/f create <name>`
 
-This creates your faction and immediately opens the Faction Dashboard where you can begin inviting members, claiming land, and configuring settings.
+Это создаёт твою фракцию и сразу открывает Панель фракции, где ты можешь начать приглашать участников, захватывать землю и настраивать параметры.
 
-## Name Rules
+## Правила названия
 
-| Rule | Requirement |
-|------|------------|
-| Length | Between 3 and 24 characters |
-| Characters | Letters, numbers, and spaces only |
-| Uniqueness | No two factions can share the same name |
+| Правило | Требование |
+|---------|------------|
+| Длина | От 3 до 24 символов |
+| Символы | Только буквы, цифры и пробелы |
+| Уникальность | Две фракции не могут иметь одинаковое название |
 
->[!WARNING] Choose your name carefully. Renaming later requires Leader permissions and may have a cooldown.
+>[!WARNING] Выбирай название тщательно. Переименование позже требует прав Лидера и может иметь кулдаун.
 
 ---
 
-## What Happens on Creation
+## Что происходит при создании
 
-- You become the Leader (highest rank)
-- Your faction starts with 0 claims and your personal power (10 by default)
-- The faction dashboard opens automatically
-- You can immediately invite players, claim territory, and set a faction home
+- Ты становишься Лидером (высший ранг)
+- Твоя фракция начинает с 0 захватов и твоей личной силой (10 по умолчанию)
+- Панель фракции открывается автоматически
+- Ты можешь сразу приглашать игроков, захватывать территорию и устанавливать дом фракции
 
->[!INFO] If the server has economy integration enabled, creating a faction may cost money. The creation cost is set by the server administrator.
+>[!INFO] Если на сервере включена интеграция экономики, создание фракции может стоить денег. Стоимость создания устанавливается администратором сервера.
 
->[!TIP] After creating, your first priorities should be: invite friends, find a base location, and claim it.
+>[!TIP] После создания твои первые приоритеты: пригласить друзей, найти место для базы и захватить его.

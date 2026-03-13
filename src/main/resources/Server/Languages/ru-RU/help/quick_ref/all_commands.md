@@ -1,94 +1,94 @@
 ---
 id: quickref_commands
 ---
-# All Commands
+# Все команды
 
-## Core
+## Основные
 
-| Command | Description | Role |
-|---------|-------------|------|
-| /f | Open faction menu | Any |
-| /f help | Open help center | Any |
-| /f create (name) | Create a faction | Any |
-| /f disband | Delete your faction | Leader |
-| /f leave | Leave your faction | Any |
+| Команда | Описание | Роль |
+|---------|----------|------|
+| /f | Открыть меню фракции | Любой |
+| /f help | Открыть справочный центр | Любой |
+| /f create (name) | Создать фракцию | Любой |
+| /f disband | Расформировать фракцию | Лидер |
+| /f leave | Покинуть фракцию | Любой |
 
-## Membership
+## Членство
 
-| Command | Description | Role |
-|---------|-------------|------|
-| /f invite (player) | Invite a player | Officer+ |
-| /f accept [faction] | Accept an invite | Any |
-| /f request (faction) | Request to join | Any |
-| /f kick (player) | Remove a member | Officer+ |
-| /f promote (player) | Promote to Officer | Leader |
-| /f demote (player) | Demote to Member | Leader |
-| /f transfer (player) | Transfer leadership | Leader |
+| Команда | Описание | Роль |
+|---------|----------|------|
+| /f invite (player) | Пригласить игрока | Офицер+ |
+| /f accept [faction] | Принять приглашение | Любой |
+| /f request (faction) | Запросить вступление | Любой |
+| /f kick (player) | Исключить участника | Офицер+ |
+| /f promote (player) | Повысить до Офицера | Лидер |
+| /f demote (player) | Понизить до Участника | Лидер |
+| /f transfer (player) | Передать лидерство | Лидер |
 
-## Territory
+## Территория
 
-| Command | Description | Role |
-|---------|-------------|------|
-| /f claim | Claim current chunk | Officer+ |
-| /f unclaim | Release current chunk | Officer+ |
-| /f overclaim | Take weakened chunk | Officer+ |
-| /f map | Open territory map | Any |
+| Команда | Описание | Роль |
+|---------|----------|------|
+| /f claim | Захватить текущий чанк | Офицер+ |
+| /f unclaim | Освободить текущий чанк | Офицер+ |
+| /f overclaim | Перезахватить ослабленный чанк | Офицер+ |
+| /f map | Открыть карту территорий | Любой |
 
-## Teleport
+## Телепортация
 
-| Command | Description | Role |
-|---------|-------------|------|
-| /f home | Teleport to faction home | Any |
-| /f sethome | Set faction home | Officer+ |
-| /f delhome | Delete faction home | Officer+ |
-| /f stuck | Escape enemy territory | Any |
+| Команда | Описание | Роль |
+|---------|----------|------|
+| /f home | Телепортироваться домой | Любой |
+| /f sethome | Установить дом фракции | Офицер+ |
+| /f delhome | Удалить дом фракции | Офицер+ |
+| /f stuck | Выбраться с вражеской территории | Любой |
 
-## Information
+## Информация
 
-| Command | Description | Role |
-|---------|-------------|------|
-| /f info [faction] | View faction details | Any |
-| /f list | Browse all factions | Any |
-| /f members | View roster | Any |
-| /f who [player] | View player info | Any |
-| /f power [player] | Check power levels | Any |
-| /f invites | Manage invites/requests | Any |
-| /f relations | View diplomatic relations | Any |
+| Команда | Описание | Роль |
+|---------|----------|------|
+| /f info [faction] | Просмотр данных фракции | Любой |
+| /f list | Обзор всех фракций | Любой |
+| /f members | Просмотр состава | Любой |
+| /f who [player] | Просмотр информации об игроке | Любой |
+| /f power [player] | Проверка уровня силы | Любой |
+| /f invites | Управление приглашениями/запросами | Любой |
+| /f relations | Просмотр дипломатических отношений | Любой |
 
-## Diplomacy
+## Дипломатия
 
-| Command | Description | Role |
-|---------|-------------|------|
-| /f ally (faction) | Request alliance | Officer+ |
-| /f enemy (faction) | Declare enemy | Officer+ |
-| /f neutral (faction) | Reset to neutral | Officer+ |
+| Команда | Описание | Роль |
+|---------|----------|------|
+| /f ally (faction) | Запросить союз | Офицер+ |
+| /f enemy (faction) | Объявить врага | Офицер+ |
+| /f neutral (faction) | Сбросить до нейтрала | Офицер+ |
 
-## Settings
+## Настройки
 
-| Command | Description | Role |
-|---------|-------------|------|
-| /f settings | Open settings GUI | Officer+ |
-| /f rename (name) | Rename faction | Leader |
-| /f desc [text] | Set description | Officer+ |
-| /f color (code) | Set faction color | Officer+ |
-| /f open | Allow anyone to join | Leader |
-| /f close | Require invitation | Leader |
+| Команда | Описание | Роль |
+|---------|----------|------|
+| /f settings | Открыть меню настроек | Офицер+ |
+| /f rename (name) | Переименовать фракцию | Лидер |
+| /f desc [text] | Задать описание | Офицер+ |
+| /f color (code) | Задать цвет фракции | Офицер+ |
+| /f open | Разрешить вступление всем | Лидер |
+| /f close | Требовать приглашение | Лидер |
 
-## Economy
+## Экономика
 
-| Command | Description | Role |
-|---------|-------------|------|
-| /f balance | View treasury | Any |
-| /f deposit (amount) | Deposit funds | Any |
-| /f withdraw (amount) | Withdraw funds | Officer+ |
-| /f money transfer (faction) (amt) | Transfer funds | Officer+ |
-| /f money log [page] | Transaction history | Officer+ |
+| Команда | Описание | Роль |
+|---------|----------|------|
+| /f balance | Просмотр казны | Любой |
+| /f deposit (amount) | Внести средства | Любой |
+| /f withdraw (amount) | Снять средства | Офицер+ |
+| /f money transfer (faction) (amt) | Перевести средства | Офицер+ |
+| /f money log [page] | История транзакций | Офицер+ |
 
-## Chat
+## Чат
 
-| Command | Description | Role |
-|---------|-------------|------|
-| /f c | Cycle chat mode | Any |
-| /f c f | Set faction chat | Any |
-| /f c a | Set ally chat | Any |
-| /f c off | Set public chat | Any |
+| Команда | Описание | Роль |
+|---------|----------|------|
+| /f c | Переключить режим чата | Любой |
+| /f c f | Чат фракции | Любой |
+| /f c a | Союзный чат | Любой |
+| /f c off | Публичный чат | Любой |

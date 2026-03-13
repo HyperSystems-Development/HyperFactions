@@ -2,41 +2,41 @@
 id: economy_funds
 commands: deposit, withdraw
 ---
-# Managing Funds
+# Управление средствами
 
-Faction members work together to keep the treasury funded through deposits, withdrawals, and transfers.
+Участники фракции работают вместе, чтобы поддерживать казну через внесения, снятия и переводы.
 
-## Depositing
+## Внесение
 
-Any member can deposit personal funds into the faction treasury.
+Любой участник может внести личные средства в казну фракции.
 
 `/f deposit <amount>`
-Deposit from your personal balance into the treasury.
+Внести со своего личного баланса в казну.
 
-## Withdrawing
+## Снятие
 
-Officers and the Leader can withdraw funds back to their personal balance.
+Офицеры и Лидер могут снимать средства обратно на свой личный баланс.
 
 `/f withdraw <amount>`
-Withdraw from the treasury to your balance. (Officer+)
+Снять из казны на свой баланс. (Офицер+)
 
-## Transferring
+## Перевод
 
-Officers can transfer funds directly between faction treasuries for trade deals or diplomacy.
+Офицеры могут переводить средства напрямую между казнами фракций для торговых сделок или дипломатии.
 
 `/f money transfer <faction> <amount>`
-Send funds to another faction's treasury. (Officer+)
+Отправить средства в казну другой фракции. (Офицер+)
 
 ---
 
-## Fees
+## Комиссии
 
-| Transaction | Fee |
-|------------|-----|
-| Deposit | 0% |
-| Withdraw | 0% |
-| Transfer | 0% |
+| Транзакция | Комиссия |
+|-----------|----------|
+| Внесение | 0% |
+| Снятие | 0% |
+| Перевод | 0% |
 
->[!INFO] Fee rates are configurable by the server and may differ from defaults shown above.
+>[!INFO] Размеры комиссий настраиваются сервером и могут отличаться от значений по умолчанию, показанных выше.
 
->[!TIP] All transactions are logged. Use /f money log to review recent activity.
+>[!TIP] Все транзакции записываются. Используй /f money log для просмотра недавней активности.

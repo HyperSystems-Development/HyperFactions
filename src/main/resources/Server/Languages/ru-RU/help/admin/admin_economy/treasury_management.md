@@ -1,39 +1,39 @@
 ---
 id: admin_treasury_management
 ---
-# Treasury Management
+# Управление казной
 
-Admin commands for managing faction treasuries. Requires `hyperfactions.admin.economy` permission.
+Админ-команды для управления казнами фракций. Требуется право `hyperfactions.admin.economy`.
 
-## Treasury Commands
+## Команды казны
 
-| Command | Description |
-|---------|-------------|
-| `/f admin economy balance <faction>` | View faction treasury balance |
-| `/f admin economy set <faction> <amount>` | Set exact balance |
-| `/f admin economy add <faction> <amount>` | Add funds to treasury |
-| `/f admin economy take <faction> <amount>` | Remove funds from treasury |
-| `/f admin economy reset <faction>` | Reset treasury to zero |
+| Команда | Описание |
+|---------|----------|
+| `/f admin economy balance <faction>` | Просмотр баланса казны фракции |
+| `/f admin economy set <faction> <amount>` | Установить точный баланс |
+| `/f admin economy add <faction> <amount>` | Добавить средства в казну |
+| `/f admin economy take <faction> <amount>` | Снять средства из казны |
+| `/f admin economy reset <faction>` | Сбросить казну до нуля |
 
-## Examples
+## Примеры
 
-- `/f admin economy balance Vikings` -- check balance
-- `/f admin economy set Vikings 5000` -- set to 5000
-- `/f admin economy add Vikings 1000` -- deposit 1000
-- `/f admin economy take Vikings 500` -- withdraw 500
-- `/f admin economy reset Vikings` -- zero out balance
+- `/f admin economy balance Vikings` -- проверить баланс
+- `/f admin economy set Vikings 5000` -- установить 5000
+- `/f admin economy add Vikings 1000` -- внести 1000
+- `/f admin economy take Vikings 500` -- снять 500
+- `/f admin economy reset Vikings` -- обнулить баланс
 
->[!TIP] Use `/f admin info <faction>` to see the full economy overview including transaction history alongside the treasury balance.
+>[!TIP] Используй `/f admin info <faction>`, чтобы увидеть полный обзор экономики, включая историю транзакций вместе с балансом казны.
 
-## Use Cases
+## Случаи использования
 
-| Scenario | Command |
+| Сценарий | Команда |
 |----------|---------|
-| Event prize distribution | `economy add <faction> <prize>` |
-| Penalty for rule violation | `economy take <faction> <fine>` |
-| Economy reset after wipe | `economy reset <faction>` |
-| Compensation for bugs | `economy add <faction> <amount>` |
+| Распределение призов за мероприятие | `economy add <faction> <prize>` |
+| Штраф за нарушение правил | `economy take <faction> <fine>` |
+| Сброс экономики после вайпа | `economy reset <faction>` |
+| Компенсация за баги | `economy add <faction> <amount>` |
 
->[!WARNING] Treasury changes are logged in the faction's transaction history. Admin modifications are recorded with the admin's name for accountability.
+>[!WARNING] Изменения казны записываются в историю транзакций фракции. Действия администратора фиксируются с именем админа для подотчётности.
 
->[!NOTE] All economy admin commands work even when the economy module is disabled in config. The data is stored regardless of module status.
+>[!NOTE] Все админ-команды экономики работают даже когда модуль экономики отключён в конфигурации. Данные хранятся независимо от статуса модуля.

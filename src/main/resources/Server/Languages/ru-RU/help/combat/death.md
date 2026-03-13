@@ -2,38 +2,38 @@
 id: combat_death
 commands: home, sethome, stuck
 ---
-# Death and Recovery
+# Смерть и восстановление
 
-Death carries real consequences in factions. Every death costs you personal power, weakening your faction's ability to hold territory.
+Смерть несёт реальные последствия во фракциях. Каждая смерть отнимает личную силу, ослабляя способность фракции удерживать территорию.
 
-## Power Loss
+## Потеря силы
 
-Each death costs -1.0 power from your personal total. This lowers the faction's combined power.
+Каждая смерть стоит -1.0 силы от твоей личной силы. Это снижает общую силу фракции.
 
-| Event | Power Change |
-|-------|-------------|
-| Death (any cause) | -1.0 |
-| Online regen | +0.1 per minute |
-| Combat logout | -1.0 (killed) |
+| Событие | Изменение силы |
+|---------|---------------|
+| Смерть (любая причина) | -1.0 |
+| Восстановление онлайн | +0.1 в минуту |
+| Выход из боя | -1.0 (гибель) |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Это значения по умолчанию. Администратор сервера мог настроить другие параметры.
 
-## Example Scenarios
+## Примеры сценариев
 
-*5 members at 10.0 power each = 50 total, 20 claims.*
-*One member dies twice: 8.0 power, faction total 48.*
-*Three members die once each: total drops to 47.*
+*5 участников по 10.0 силы = 50 всего, 20 захватов.*
+*Один участник умирает дважды: 8.0 силы, общая фракции 48.*
+*Три участника умирают по разу: общая падает до 47.*
 
->[!WARNING] If your faction power drops below your claim count, enemies can overclaim your territory.
+>[!WARNING] Если сила фракции упадёт ниже количества захватов, враги смогут перезахватить твою территорию.
 
-## Recovery
+## Восстановление
 
-Power regenerates at 0.1 per minute while online. Recovering 1.0 lost power takes about 10 minutes. Multiple deaths stack, so avoid repeated fights.
+Сила восстанавливается со скоростью 0.1 в минуту, пока ты онлайн. Восстановление 1.0 потерянной силы занимает около 10 минут. Множественные смерти суммируются, так что избегай повторных боёв.
 
 ---
 
-## All Death Types
+## Все типы смерти
 
-Power loss applies to all deaths: PvP, mob kills, fall damage, drowning, and any other cause. There is no safe way to die.
+Потеря силы применяется ко всем смертям: PvP, убийства мобами, урон от падения, утопление и любая другая причина. Безопасного способа умереть нет.
 
->[!TIP] Set a faction home with /f sethome so members can regroup quickly after dying.
+>[!TIP] Установи дом фракции с помощью /f sethome, чтобы участники могли быстро перегруппироваться после гибели.

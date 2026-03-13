@@ -2,35 +2,35 @@
 id: faction_joining
 commands: accept, join, request
 ---
-# Joining a Faction
+# Вступление во фракцию
 
-There are three ways to join an existing faction, depending on how the faction is configured.
-
----
-
-## Methods Compared
-
-| Method | How | Requires |
-|--------|-----|----------|
-| Browse and Join | Open /f, click Browse, click Join | Faction is set to open |
-| Accept Invite | Check Invites tab in /f menu | Active invitation |
-| Request to Join | Use /f request, wait for approval | Officer or Leader approves |
+Есть три способа вступить в существующую фракцию, в зависимости от её настроек.
 
 ---
 
-## Invite Details
+## Сравнение способов
 
-- Invitations are sent by Officers or Leaders
-- Invitations expire after 5 minutes -- accept promptly
-- View your pending invites in the Invites tab of the faction menu
-- Accept with the GUI or /f accept
+| Способ | Как | Требуется |
+|--------|-----|-----------|
+| Обзор и вступление | Открой /f, нажми "Обзор", нажми "Вступить" | Фракция открыта |
+| Принять приглашение | Проверь вкладку "Приглашения" в меню /f | Активное приглашение |
+| Запрос на вступление | Используй /f request, жди одобрения | Одобрение Офицера или Лидера |
 
-## Join Requests
+---
 
-- Use /f request to request membership in a closed faction
-- Requests expire after 24 hours if not acted on
-- Officers and Leaders can approve or deny requests from the faction dashboard
+## Подробности о приглашениях
 
->[!TIP] Not sure which faction to join? Use the Browse tab in /f to see faction descriptions, member counts, and whether they are open or invite-only.
+- Приглашения отправляются Офицерами или Лидерами
+- Приглашения истекают через 5 минут -- принимай быстро
+- Просмотри ожидающие приглашения во вкладке "Приглашения" в меню фракции
+- Прими через меню или командой /f accept
 
->[!NOTE] Each faction can hold up to 50 members by default. If a faction is full, you will need to wait for a spot to open up.
+## Запросы на вступление
+
+- Используй /f request, чтобы запросить членство в закрытой фракции
+- Запросы истекают через 24 часа, если по ним не приняты меры
+- Офицеры и Лидеры могут одобрить или отклонить запросы из панели фракции
+
+>[!TIP] Не уверен, к какой фракции присоединиться? Используй вкладку "Обзор" в /f, чтобы увидеть описания фракций, количество участников и открыты ли они для вступления.
+
+>[!NOTE] Каждая фракция может вмещать до 50 участников по умолчанию. Если фракция полна, придётся подождать, пока освободится место.

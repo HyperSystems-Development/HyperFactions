@@ -2,25 +2,25 @@
 id: economy_treasury
 commands: balance
 ---
-# Faction Treasury
+# Казна фракции
 
-Every faction has a shared treasury that serves as the faction's bank. Funds are used for upkeep costs, territory maintenance, and faction operations.
+У каждой фракции есть общая казна, которая служит банком фракции. Средства используются для оплаты содержания, обслуживания территории и операций фракции.
 
-## Starting Balance
+## Начальный баланс
 
-New factions start with 0 in their treasury. Members must deposit funds to build up reserves.
+Новые фракции начинают с 0 в казне. Участники должны вносить средства для накопления резервов.
 
-## Who Can Manage
+## Кто может управлять
 
-- Any member can deposit funds
-- Officers and Leader can withdraw and transfer
-- Leader has full treasury control
+- Любой участник может вносить средства
+- Офицеры и Лидер могут снимать и переводить
+- Лидер имеет полный контроль над казной
 
 ---
 
 `/f balance`
-Check your faction's current treasury balance. Also available as /f bal.
+Проверить текущий баланс казны фракции. Также доступно как /f bal.
 
->[!TIP] Contribute regularly to keep your faction funded. Territory upkeep costs can drain an empty treasury quickly.
+>[!TIP] Вноси средства регулярно, чтобы поддерживать фракцию на плаву. Расходы на содержание территории могут быстро опустошить пустую казну.
 
->[!INFO] All treasury transactions are logged and can be reviewed by officers.
+>[!INFO] Все транзакции казны записываются и могут быть просмотрены офицерами.

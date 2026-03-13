@@ -1,48 +1,48 @@
 ---
 id: admin_backups
 ---
-# Backup System
+# Система резервного копирования
 
-HyperFactions includes automatic and manual backups with GFS (Grandfather-Father-Son) rotation.
+HyperFactions включает автоматическое и ручное резервное копирование с ротацией GFS (дед-отец-сын).
 
-## Backup Commands
+## Команды резервного копирования
 
-| Command | Description |
-|---------|-------------|
-| `/f admin backup create` | Create a manual backup now |
-| `/f admin backup list` | List all available backups |
-| `/f admin backup restore <name>` | Restore from a backup |
-| `/f admin backup delete <name>` | Delete a specific backup |
+| Команда | Описание |
+|---------|----------|
+| `/f admin backup create` | Создать резервную копию вручную |
+| `/f admin backup list` | Список всех доступных резервных копий |
+| `/f admin backup restore <name>` | Восстановить из резервной копии |
+| `/f admin backup delete <name>` | Удалить конкретную резервную копию |
 
-**Permission**: `hyperfactions.admin.backup`
+**Право**: `hyperfactions.admin.backup`
 
-## GFS Rotation Defaults
+## Ротация GFS по умолчанию
 
-| Type | Retention | Description |
-|------|-----------|-------------|
-| Hourly | 24 | Last 24 hourly snapshots |
-| Daily | 7 | Last 7 daily snapshots |
-| Weekly | 4 | Last 4 weekly snapshots |
-| Manual | 10 | Manually created backups |
-| Shutdown | 5 | Created on server stop |
+| Тип | Хранение | Описание |
+|-----|----------|----------|
+| Ежечасные | 24 | Последние 24 ежечасных снимка |
+| Ежедневные | 7 | Последние 7 ежедневных снимков |
+| Еженедельные | 4 | Последние 4 еженедельных снимка |
+| Ручные | 10 | Созданные вручную резервные копии |
+| При выключении | 5 | Создаются при остановке сервера |
 
->[!INFO] Shutdown backups are enabled by default (`onShutdown=true`). They capture the latest state before the server stops.
+>[!INFO] Резервные копии при выключении включены по умолчанию (`onShutdown=true`). Они фиксируют последнее состояние перед остановкой сервера.
 
-## Backup Contents
+## Содержимое резервной копии
 
-Each backup ZIP archive contains:
-- All faction data files
-- Player power data
-- Zone definitions
-- Chat history and economy data
-- Invite and join request data
-- Configuration files
+Каждый ZIP-архив резервной копии содержит:
+- Все файлы данных фракций
+- Данные силы игроков
+- Определения зон
+- Историю чата и данные экономики
+- Данные приглашений и запросов на вступление
+- Файлы конфигурации
 
->[!WARNING] **Restoring a backup is destructive.** It replaces all current data with the backup's contents. Any changes made after the backup was created will be lost. Always create a fresh backup before restoring.
+>[!WARNING] **Восстановление резервной копии -- деструктивная операция.** Оно заменяет все текущие данные содержимым резервной копии. Любые изменения, сделанные после создания копии, будут потеряны. Всегда создавай свежую резервную копию перед восстановлением.
 
-## Best Practices
+## Лучшие практики
 
-1. Create a manual backup before major admin actions
-2. Review backup retention in `backup.json`
-3. Test restore on a staging server first
-4. Keep shutdown backups enabled for crash recovery
+1. Создавай ручную резервную копию перед крупными административными действиями
+2. Проверяй настройки хранения в `backup.json`
+3. Тестируй восстановление сначала на тестовом сервере
+4. Держи включёнными резервные копии при выключении для восстановления после сбоев

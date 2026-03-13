@@ -2,44 +2,44 @@
 id: diplomacy_alliances
 commands: ally
 ---
-# Forming Alliances
+# Заключение союзов
 
-Alliances are mutual agreements between two factions that provide protection and cooperation benefits.
+Союзы -- это взаимные соглашения между двумя фракциями, обеспечивающие защиту и преимущества сотрудничества.
 
 ---
 
-## How to Form an Alliance
+## Как заключить союз
 
 `/f ally <faction>`
 
-Sends an alliance request to the target faction. The alliance only takes effect once both sides agree. An Officer or Leader from the other faction must also run the same command targeting your faction to confirm.
+Отправляет запрос на союз целевой фракции. Союз вступает в силу только когда обе стороны согласятся. Офицер или Лидер другой фракции тоже должен выполнить эту команду, указав твою фракцию, для подтверждения.
 
-## How to Break an Alliance
+## Как разорвать союз
 
 `/f neutral <faction>`
 
-Either side can unilaterally end an alliance by resetting the relation to neutral.
+Любая сторона может в одностороннем порядке разорвать союз, сбросив отношения до нейтральных.
 
 ---
 
-## Alliance Benefits
+## Преимущества союза
 
-| Benefit | Details |
-|---------|---------|
-| No friendly fire | Allied players cannot damage each other |
-| Shared map visibility | Allied territory shows in blue on the territory map |
-| Territory interaction | Allies can use doors, seats, and transport in your territory |
-| Ally chat | Cycle to ally chat mode for cross-faction communication |
-| Overclaim protection | Allies cannot overclaim each other's territory |
+| Преимущество | Подробности |
+|-------------|-------------|
+| Нет огня по своим | Союзные игроки не могут наносить урон друг другу |
+| Общая видимость на карте | Территория союзников отображается синим на карте территорий |
+| Взаимодействие на территории | Союзники могут использовать двери, сиденья и транспорт на твоей территории |
+| Союзный чат | Переключись на режим союзного чата для общения между фракциями |
+| Защита от перезахвата | Союзники не могут перезахватывать территорию друг друга |
 
->[!NOTE] Your faction can have up to 10 alliances at a time. Choose your allies wisely.
+>[!NOTE] Твоя фракция может иметь до 10 союзов одновременно. Выбирай союзников с умом.
 
 ---
 
-## Alliance Etiquette
+## Этикет союзов
 
->[!TIP] Communication is key. Before sending an alliance request, consider reaching out to the other faction's leader to discuss terms. A strong alliance is built on mutual benefit, not just convenience.
+>[!TIP] Общение -- это ключ. Прежде чем отправлять запрос на союз, свяжись с лидером другой фракции, чтобы обсудить условия. Крепкий союз строится на взаимной выгоде, а не просто на удобстве.
 
-- Alliances work both ways -- if you benefit from protection, your allies expect the same
-- Breaking an alliance during wartime may damage your faction's reputation
-- Allied factions can coordinate territory claims to create defensible borders
+- Союзы работают в обе стороны -- если ты пользуешься защитой, твои союзники ожидают того же
+- Разрыв союза во время войны может навредить репутации твоей фракции
+- Союзные фракции могут координировать захваты территорий для создания оборонительных границ

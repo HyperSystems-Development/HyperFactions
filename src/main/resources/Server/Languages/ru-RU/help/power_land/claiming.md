@@ -2,49 +2,49 @@
 id: power_claiming
 commands: claim, unclaim
 ---
-# Claiming Territory
+# Захват территории
 
-Claiming a chunk protects it under your faction's control. Only faction members can build, break, or access containers inside claimed territory.
+Захват чанка ставит его под контроль твоей фракции. Только участники фракции могут строить, ломать или открывать контейнеры на захваченной территории.
 
 ---
 
-## How to Claim
+## Как захватить
 
 `/f claim`
 
-Stand in the chunk you want to claim and run this command. The chunk is immediately protected. Requires Officer rank or higher.
+Встань в чанк, который хочешь захватить, и введи эту команду. Чанк сразу же станет защищённым. Требуется ранг Офицера или выше.
 
-## How to Unclaim
+## Как освободить
 
 `/f unclaim`
 
-Releases the chunk you are standing in back to wilderness. Also requires Officer+.
+Освобождает чанк, в котором ты стоишь, обратно в дикую местность. Также требуется Офицер+.
 
 ---
 
-## Claim Rules
+## Правила захвата
 
-| Rule | Default |
-|------|---------|
-| Power cost per claim | 2.0 power |
-| Maximum claims | 100 per faction |
-| Adjacent only | No (you can claim anywhere) |
+| Правило | По умолчанию |
+|---------|-------------|
+| Стоимость силы на захват | 2.0 силы |
+| Максимум захватов | 100 на фракцию |
+| Только смежные | Нет (можно захватывать где угодно) |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Это значения по умолчанию. Администратор сервера мог настроить другие параметры.
 
->[!INFO] Each claim costs 2.0 power to maintain. A faction with 50 total power can hold up to 25 claims safely.
+>[!INFO] Каждый захват стоит 2.0 силы на содержание. Фракция с 50 общей силы может безопасно удерживать до 25 захватов.
 
 ---
 
-## What Protection Provides
+## Что даёт защита
 
-Inside claimed territory, the following is enforced by default:
+На захваченной территории по умолчанию действуют следующие правила:
 
-- Outsiders cannot break, place, or interact with blocks
-- Allies can use doors, seats, and transport but cannot break or place blocks
-- Members and Officers have full access to build, break, and use everything
-- Container access (chests, crates) is restricted to members only
+- Посторонние не могут ломать, ставить или взаимодействовать с блоками
+- Союзники могут использовать двери, сиденья и транспорт, но не могут ломать или ставить блоки
+- Участники и Офицеры имеют полный доступ к строительству, разрушению и использованию всего
+- Доступ к контейнерам (сундуки, ящики) ограничен только участниками
 
->[!TIP] You can also claim directly from the territory map. Open /f map and click on unclaimed chunks to claim them.
+>[!TIP] Ты также можешь захватывать прямо с карты территорий. Открой /f map и нажми на незахваченные чанки, чтобы захватить их.
 
->[!WARNING] Do not over-expand. If your faction loses power through deaths, claims beyond your power budget become vulnerable to overclaiming.
+>[!WARNING] Не расширяйся чрезмерно. Если фракция потеряет силу из-за смертей, захваты сверх бюджета силы станут уязвимыми для перезахвата.

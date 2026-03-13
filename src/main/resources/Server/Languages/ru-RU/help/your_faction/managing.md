@@ -2,43 +2,43 @@
 id: faction_managing
 commands: invite, kick, promote, demote, transfer
 ---
-# Managing Members
+# Управление участниками
 
-Officers and Leaders share responsibility for managing the faction roster. Here are the key commands and who can use them.
-
----
-
-## Commands
-
-| Command | What It Does | Required Role |
-|---------|-------------|---------------|
-| `/f invite <player>` | Sends a join invitation (expires in 5 min) | Officer+ |
-| `/f kick <player>` | Removes a member from the faction | Officer+ (see note) |
-| `/f promote <player>` | Promotes a Member to Officer | Leader only |
-| `/f demote <player>` | Demotes an Officer to Member | Leader only |
-| `/f transfer <player>` | Transfers faction ownership | Leader only |
-
->[!NOTE] Officers can only kick Members. To remove another Officer, the Leader must either demote them first or kick them directly.
+Офицеры и Лидеры совместно отвечают за управление составом фракции. Вот основные команды и кто может их использовать.
 
 ---
 
-## Invitations
+## Команды
 
-- Invitations expire after 5 minutes if not accepted
-- The invited player sees it in their Invites tab when they open /f
-- There is no limit to how many invitations you can send at once
-- Your faction can hold up to 50 members total
+| Команда | Что делает | Необходимая роль |
+|---------|-----------|-----------------|
+| `/f invite <player>` | Отправляет приглашение (истекает через 5 мин) | Офицер+ |
+| `/f kick <player>` | Исключает участника из фракции | Офицер+ (см. примечание) |
+| `/f promote <player>` | Повышает Участника до Офицера | Только Лидер |
+| `/f demote <player>` | Понижает Офицера до Участника | Только Лидер |
+| `/f transfer <player>` | Передаёт владение фракцией | Только Лидер |
 
-## Promotions and Demotions
+>[!NOTE] Офицеры могут исключать только Участников. Чтобы исключить другого Офицера, Лидер должен сначала понизить его или исключить напрямую.
 
-- Only the Leader can promote or demote
-- /f promote raises a Member to Officer
-- /f demote lowers an Officer back to Member
+---
 
-## Transferring Leadership
+## Приглашения
 
->[!WARNING] Transferring leadership is irreversible. You will be demoted to Officer and the target player becomes the new Leader. Make sure you trust them completely.
+- Приглашения истекают через 5 минут, если не приняты
+- Приглашённый игрок видит приглашение во вкладке "Приглашения" при открытии /f
+- Количество одновременных приглашений не ограничено
+- Фракция может вмещать до 50 участников
+
+## Повышения и понижения
+
+- Только Лидер может повышать или понижать
+- /f promote повышает Участника до Офицера
+- /f demote понижает Офицера до Участника
+
+## Передача лидерства
+
+>[!WARNING] Передача лидерства необратима. Ты будешь понижен до Офицера, а выбранный игрок станет новым Лидером. Убедись, что полностью ему доверяешь.
 
 `/f transfer <player>`
 
-The target must be a current member of your faction.
+Целевой игрок должен быть текущим участником твоей фракции.
