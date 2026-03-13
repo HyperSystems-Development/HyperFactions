@@ -5,7 +5,7 @@ import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -57,11 +57,11 @@ public class MoneySubCommand extends FactionSubCommand {
   }
 
   private void sendHelp(CommandContext ctx, PlayerRef player) {
-    ctx.sendMessage(MessageUtil.info(player, MessageKeys.Economy.MONEY_HELP_HEADER, COLOR_CYAN));
-    ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Economy.MONEY_HELP_BALANCE), COLOR_GRAY));
-    ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Economy.MONEY_HELP_DEPOSIT), COLOR_GRAY));
-    ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Economy.MONEY_HELP_WITHDRAW), COLOR_GRAY));
-    ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Economy.MONEY_HELP_TRANSFER), COLOR_GRAY));
-    ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Economy.MONEY_HELP_LOG), COLOR_GRAY));
+    ctx.sendMessage(MessageUtil.info(player, CommandKeys.Economy.MONEY_HELP_HEADER, COLOR_CYAN));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Economy.MONEY_HELP_BALANCE), COLOR_GRAY));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Economy.MONEY_HELP_DEPOSIT), COLOR_GRAY));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Economy.MONEY_HELP_WITHDRAW), COLOR_GRAY));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Economy.MONEY_HELP_TRANSFER), COLOR_GRAY));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Economy.MONEY_HELP_LOG), COLOR_GRAY));
   }
 }

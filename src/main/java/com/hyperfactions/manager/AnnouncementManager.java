@@ -3,7 +3,7 @@ package com.hyperfactions.manager;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.config.modules.AnnouncementConfig;
 import com.hyperfactions.util.Logger;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import java.util.Collection;
@@ -39,7 +39,7 @@ public class AnnouncementManager {
       return;
     }
 
-    broadcastSuccess(MessageKeys.ServerAnnounce.FACTION_CREATED, leaderName, factionName);
+    broadcastSuccess(CommonKeys.ServerAnnounce.FACTION_CREATED, leaderName, factionName);
   }
 
   /**
@@ -53,7 +53,7 @@ public class AnnouncementManager {
       return;
     }
 
-    broadcastError(MessageKeys.ServerAnnounce.FACTION_DISBANDED, factionName);
+    broadcastError(CommonKeys.ServerAnnounce.FACTION_DISBANDED, factionName);
   }
 
   /**
@@ -70,7 +70,7 @@ public class AnnouncementManager {
       return;
     }
 
-    broadcastInfo(MessageKeys.ServerAnnounce.LEADERSHIP_TRANSFER, MessageUtil.COLOR_GOLD, newLeader, factionName);
+    broadcastInfo(CommonKeys.ServerAnnounce.LEADERSHIP_TRANSFER, MessageUtil.COLOR_GOLD, newLeader, factionName);
   }
 
   /**
@@ -85,7 +85,7 @@ public class AnnouncementManager {
       return;
     }
 
-    broadcastError(MessageKeys.ServerAnnounce.OVERCLAIM, attackerFaction, defenderFaction);
+    broadcastError(CommonKeys.ServerAnnounce.OVERCLAIM, attackerFaction, defenderFaction);
   }
 
   /**
@@ -100,7 +100,7 @@ public class AnnouncementManager {
       return;
     }
 
-    broadcastError(MessageKeys.ServerAnnounce.WAR_DECLARED, declaringFaction, targetFaction);
+    broadcastError(CommonKeys.ServerAnnounce.WAR_DECLARED, declaringFaction, targetFaction);
   }
 
   /**
@@ -115,7 +115,7 @@ public class AnnouncementManager {
       return;
     }
 
-    broadcastSuccess(MessageKeys.ServerAnnounce.ALLIANCE_FORMED, faction1, faction2);
+    broadcastSuccess(CommonKeys.ServerAnnounce.ALLIANCE_FORMED, faction1, faction2);
   }
 
   /**
@@ -130,7 +130,7 @@ public class AnnouncementManager {
       return;
     }
 
-    broadcastInfo(MessageKeys.ServerAnnounce.ALLIANCE_BROKEN, MessageUtil.COLOR_GOLD, faction1, faction2);
+    broadcastInfo(CommonKeys.ServerAnnounce.ALLIANCE_BROKEN, MessageUtil.COLOR_GOLD, faction1, faction2);
   }
 
   /**

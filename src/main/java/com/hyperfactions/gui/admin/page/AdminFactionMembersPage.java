@@ -11,7 +11,9 @@ import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.AdminGuiKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hyperfactions.util.TimeUtil;
 import com.hyperfactions.util.UuidUtil;
 import com.hypixel.hytale.component.Ref;
@@ -80,17 +82,17 @@ public class AdminFactionMembersPage extends InteractiveCustomUIPage<AdminFactio
     AdminNavBarHelper.setupBar(playerRef, "factions", cmd, events);
 
     // Localize page title and labels
-    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_FACTION_MEMBERS));
-    cmd.set("#SearchLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SEARCH));
-    cmd.set("#SortLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SORT));
-    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PREV));
-    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_NEXT));
-    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_BACK));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_TITLE_FACTION_MEMBERS));
+    cmd.set("#SearchLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SEARCH));
+    cmd.set("#SortLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SORT));
+    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PREV));
+    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_NEXT));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, CommonKeys.Common.BACK));
 
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {
-      cmd.set("#FactionName.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.FACTION_NOT_FOUND_LABEL));
-      cmd.set("#MemberCount.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.MEMBERS_SUFFIX, 0));
+      cmd.set("#FactionName.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.FACTION_NOT_FOUND_LABEL));
+      cmd.set("#MemberCount.Text", HFMessages.get(playerRef, CommonKeys.Common.MEMBER_COUNT, 0));
       return;
     }
     cmd.set("#FactionName.Text", faction.name());
@@ -99,8 +101,8 @@ public class AdminFactionMembersPage extends InteractiveCustomUIPage<AdminFactio
 
   private void buildMemberList(UICommandBuilder cmd, UIEventBuilder events, Faction faction) {
     List<FactionMember> allMembers = getFilteredSortedMembers(faction);
-    cmd.set("#MemberCount.Text", searchQuery.isEmpty() ? HFMessages.get(playerRef, MessageKeys.AdminGui.MEMBERS_SUFFIX, allMembers.size()) : HFMessages.get(playerRef, MessageKeys.AdminGui.FOUND_SUFFIX, allMembers.size()));
-    cmd.set("#SortDropdown.Entries", List.of(new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.MEM_SORT_ROLE)), "ROLE"), new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.MEM_SORT_ONLINE)), "ONLINE"), new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.MEM_SORT_NAME)), "NAME"), new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.AdminGui.MEM_SORT_POWER)), "POWER")));
+    cmd.set("#MemberCount.Text", searchQuery.isEmpty() ? HFMessages.get(playerRef, CommonKeys.Common.MEMBER_COUNT, allMembers.size()) : HFMessages.get(playerRef, AdminGuiKeys.AdminGui.FOUND_SUFFIX, allMembers.size()));
+    cmd.set("#SortDropdown.Entries", List.of(new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, AdminGuiKeys.AdminGui.MEM_SORT_ROLE)), "ROLE"), new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, AdminGuiKeys.AdminGui.MEM_SORT_ONLINE)), "ONLINE"), new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, AdminGuiKeys.AdminGui.MEM_SORT_NAME)), "NAME"), new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, AdminGuiKeys.AdminGui.MEM_SORT_POWER)), "POWER")));
     cmd.set("#SortDropdown.Value", sortMode.name());
     events.addEventBinding(CustomUIEventBindingType.ValueChanged, "#SortDropdown", EventData.of("Button", "SortChanged").append("@SortMode", "#SortDropdown.Value"), false);
     events.addEventBinding(CustomUIEventBindingType.ValueChanged, "#SearchInput", EventData.of("Button", "SearchChanged").append("@SearchQuery", "#SearchInput.Value"), false);
@@ -115,7 +117,7 @@ public class AdminFactionMembersPage extends InteractiveCustomUIPage<AdminFactio
       buildMemberEntry(cmd, events, i, allMembers.get(idx));
       i++;
     }
-    cmd.set("#PageInfo.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.PAGE_FORMAT, currentPage + 1, totalPages));
+    cmd.set("#PageInfo.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.PAGE_FORMAT, currentPage + 1, totalPages));
     if (currentPage > 0) {
       events.addEventBinding(CustomUIEventBindingType.Activating, "#PrevBtn", EventData.of("Button", "PrevPage").append("Page", String.valueOf(currentPage - 1)), false);
     }
@@ -130,20 +132,20 @@ public class AdminFactionMembersPage extends InteractiveCustomUIPage<AdminFactio
     cmd.append("#IndexCards", UIPaths.ADMIN_FACTION_MEMBERS_ENTRY);
     String idx = "#IndexCards[" + index + "]";
     // Localize entry labels and buttons
-    cmd.set(idx + " #PowerLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MEM_LABEL_POWER));
-    cmd.set(idx + " #JoinedLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MEM_LABEL_JOINED));
-    cmd.set(idx + " #LastDeathLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MEM_LABEL_LAST_DEATH));
-    cmd.set(idx + " #UuidLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MEM_LABEL_UUID));
-    cmd.set(idx + " #ViewInfoBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MEM_BTN_INFO));
-    cmd.set(idx + " #TeleportBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MEM_BTN_TELEPORT));
-    cmd.set(idx + " #PromoteBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MEM_BTN_PROMOTE));
-    cmd.set(idx + " #DemoteBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MEM_BTN_DEMOTE));
-    cmd.set(idx + " #KickBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_MEM_BTN_KICK));
+    cmd.set(idx + " #PowerLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_MEM_LABEL_POWER));
+    cmd.set(idx + " #JoinedLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_MEM_LABEL_JOINED));
+    cmd.set(idx + " #LastDeathLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_MEM_LABEL_LAST_DEATH));
+    cmd.set(idx + " #UuidLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_MEM_LABEL_UUID));
+    cmd.set(idx + " #ViewInfoBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_MEM_BTN_INFO));
+    cmd.set(idx + " #TeleportBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_MEM_BTN_TELEPORT));
+    cmd.set(idx + " #PromoteBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_MEM_BTN_PROMOTE));
+    cmd.set(idx + " #DemoteBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_MEM_BTN_DEMOTE));
+    cmd.set(idx + " #KickBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_MEM_BTN_KICK));
 
     cmd.set(idx + " #MemberName.Text", member.username());
     cmd.set(idx + " #MemberRole.Text", formatRole(member.role()));
     cmd.set(idx + " #RoleIndicator.Background.Color", GuiColors.forRole(member.role()));
-    cmd.set(idx + " #OnlineStatus.Text", memberIsOnline ? HFMessages.get(playerRef, MessageKeys.Common.ONLINE) : HFMessages.get(playerRef, MessageKeys.Common.OFFLINE));
+    cmd.set(idx + " #OnlineStatus.Text", memberIsOnline ? HFMessages.get(playerRef, CommonKeys.Common.ONLINE) : HFMessages.get(playerRef, CommonKeys.Common.OFFLINE));
     cmd.set(idx + " #OnlineStatus.Style.TextColor", GuiColors.forOnlineStatus(memberIsOnline));
     if (!memberIsOnline) {
       cmd.set(idx + " #LastOnline.Text", formatLastOnline(member.lastOnline()));
@@ -157,8 +159,8 @@ public class AdminFactionMembersPage extends InteractiveCustomUIPage<AdminFactio
       cmd.set(idx + " #PowerValue.Text", String.format("%.0f/%.0f", power.power(), power.getEffectiveMaxPower()));
       int powerPercent = power.getPowerPercent(); String powerColor = GuiColors.forPowerLevel(powerPercent);
       cmd.set(idx + " #PowerValue.Style.TextColor", powerColor);
-      cmd.set(idx + " #JoinedDate.Text", member.joinedAt() > 0 ? DATE_FORMAT.format(Instant.ofEpochMilli(member.joinedAt())) : HFMessages.get(playerRef, MessageKeys.Common.UNKNOWN));
-      cmd.set(idx + " #LastDeath.Text", power.lastDeath() > 0 ? HFMessages.get(playerRef, MessageKeys.AdminGui.AGO_SUFFIX, TimeUtil.formatDuration(System.currentTimeMillis() - power.lastDeath())) : HFMessages.get(playerRef, MessageKeys.AdminGui.MEM_NEVER));
+      cmd.set(idx + " #JoinedDate.Text", member.joinedAt() > 0 ? DATE_FORMAT.format(Instant.ofEpochMilli(member.joinedAt())) : HFMessages.get(playerRef, CommonKeys.Common.UNKNOWN));
+      cmd.set(idx + " #LastDeath.Text", power.lastDeath() > 0 ? HFMessages.get(playerRef, AdminGuiKeys.AdminGui.AGO_SUFFIX, TimeUtil.formatDuration(System.currentTimeMillis() - power.lastDeath())) : HFMessages.get(playerRef, AdminGuiKeys.AdminGui.MEM_NEVER));
       cmd.set(idx + " #UuidValue.Text", member.uuid().toString());
       boolean canPromote = member.role() != FactionRole.LEADER; boolean canDemote = member.role() != FactionRole.MEMBER; boolean canKick = member.role() != FactionRole.LEADER;
       cmd.set(idx + " #ViewInfoBtn.Visible", true); cmd.set(idx + " #TeleportBtn.Visible", true);
@@ -206,9 +208,9 @@ public class AdminFactionMembersPage extends InteractiveCustomUIPage<AdminFactio
     }
     long diffMs = System.currentTimeMillis() - lastOnlineMs;
     if (diffMs < 60000) {
-      return HFMessages.get(playerRef, MessageKeys.AdminGui.JUST_NOW);
+      return HFMessages.get(playerRef, AdminGuiKeys.AdminGui.JUST_NOW);
     }
-    return HFMessages.get(playerRef, MessageKeys.AdminGui.AGO_SUFFIX, TimeUtil.formatDuration(diffMs));
+    return HFMessages.get(playerRef, AdminGuiKeys.AdminGui.AGO_SUFFIX, TimeUtil.formatDuration(diffMs));
   }
 
   /** Handles data event. */
@@ -234,11 +236,11 @@ public class AdminFactionMembersPage extends InteractiveCustomUIPage<AdminFactio
       case "PrevPage" -> { currentPage = Math.max(0, data.page); expandedMembers.clear(); rebuildList(); }
       case "NextPage" -> { currentPage = data.page; expandedMembers.clear(); rebuildList(); }
       case "Back" -> guiManager.openAdminFactionInfo(player, ref, store, playerRef, factionId);
-      case "Teleport" -> { if (data.memberUuid != null) { UUID memberUuid = UuidUtil.parseOrNull(data.memberUuid); if (memberUuid == null) { sendUpdate(); return; } PlayerRef targetPlayer = Universe.get().getPlayer(memberUuid); if (targetPlayer != null && targetPlayer.isValid()) { guiManager.closePage(player, ref, store); var targetWorld = Universe.get().getWorld(targetPlayer.getWorldUuid()); if (targetWorld == null) { player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.FAC_WORLD_NOT_FOUND)); return; } var targetTransform = targetPlayer.getTransform(); var targetPos = targetTransform.getPosition(); var targetRot = targetTransform.getRotation(); targetWorld.execute(() -> { var teleport = com.hypixel.hytale.server.core.modules.entity.teleport.Teleport.createForPlayer(targetWorld, targetPos, targetRot); store.addComponent(ref, com.hypixel.hytale.server.core.modules.entity.teleport.Teleport.getComponentType(), teleport); }); player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.MEM_TELEPORTED, "#55FF55", data.memberName != null ? data.memberName : "player")); } else { player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.PLR_NOT_ONLINE)); sendUpdate(); } } }
-      case "Promote" -> { if (data.memberUuid != null) { UUID memberUuid = UuidUtil.parseOrNull(data.memberUuid); if (memberUuid == null) { sendUpdate(); return; } Faction faction = factionManager.getFaction(factionId); if (faction != null) { FactionMember member = faction.getMember(memberUuid); if (member != null && member.role() != FactionRole.LEADER) { FactionRole newRole = member.role() == FactionRole.MEMBER ? FactionRole.OFFICER : FactionRole.LEADER; factionManager.adminSetMemberRole(factionId, memberUuid, newRole); player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.MEM_PROMOTED, data.memberName != null ? data.memberName : "player", formatRole(newRole))); rebuildList(); } } } }
-      case "Demote" -> { if (data.memberUuid != null) { UUID memberUuid = UuidUtil.parseOrNull(data.memberUuid); if (memberUuid == null) { sendUpdate(); return; } Faction faction = factionManager.getFaction(factionId); if (faction != null) { FactionMember member = faction.getMember(memberUuid); if (member != null && member.role() != FactionRole.MEMBER) { FactionRole newRole = member.role() == FactionRole.LEADER ? FactionRole.OFFICER : FactionRole.MEMBER; factionManager.adminSetMemberRole(factionId, memberUuid, newRole); player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.MEM_DEMOTED, data.memberName != null ? data.memberName : "player", formatRole(newRole))); rebuildList(); } } } }
-      case "Kick" -> { if (data.memberUuid != null) { UUID memberUuid = UuidUtil.parseOrNull(data.memberUuid); if (memberUuid == null) { sendUpdate(); return; } Faction faction = factionManager.getFaction(factionId); if (faction != null) { FactionMember member = faction.getMember(memberUuid); if (member != null && member.role() != FactionRole.LEADER) { factionManager.adminRemoveMember(factionId, memberUuid); player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.MEM_KICKED, data.memberName != null ? data.memberName : "player")); rebuildList(); } } } }
-      case "ViewPlayerInfo" -> { if (data.memberUuid != null) { UUID memberUuid = UuidUtil.parseOrNull(data.memberUuid); if (memberUuid == null) { sendUpdate(); return; } String memberName = data.memberName != null ? data.memberName : HFMessages.get(playerRef, MessageKeys.Common.UNKNOWN); guiManager.openAdminPlayerInfo(player, ref, store, playerRef, memberUuid, memberName, factionId, AdminPlayerInfoPage.Origin.FACTION_MEMBERS); } }
+      case "Teleport" -> { if (data.memberUuid != null) { UUID memberUuid = UuidUtil.parseOrNull(data.memberUuid); if (memberUuid == null) { sendUpdate(); return; } PlayerRef targetPlayer = Universe.get().getPlayer(memberUuid); if (targetPlayer != null && targetPlayer.isValid()) { guiManager.closePage(player, ref, store); var targetWorld = Universe.get().getWorld(targetPlayer.getWorldUuid()); if (targetWorld == null) { player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.FAC_WORLD_NOT_FOUND)); return; } var targetTransform = targetPlayer.getTransform(); var targetPos = targetTransform.getPosition(); var targetRot = targetTransform.getRotation(); targetWorld.execute(() -> { var teleport = com.hypixel.hytale.server.core.modules.entity.teleport.Teleport.createForPlayer(targetWorld, targetPos, targetRot); store.addComponent(ref, com.hypixel.hytale.server.core.modules.entity.teleport.Teleport.getComponentType(), teleport); }); player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.MEM_TELEPORTED, "#55FF55", data.memberName != null ? data.memberName : "player")); } else { player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.PLR_NOT_ONLINE)); sendUpdate(); } } }
+      case "Promote" -> { if (data.memberUuid != null) { UUID memberUuid = UuidUtil.parseOrNull(data.memberUuid); if (memberUuid == null) { sendUpdate(); return; } Faction faction = factionManager.getFaction(factionId); if (faction != null) { FactionMember member = faction.getMember(memberUuid); if (member != null && member.role() != FactionRole.LEADER) { FactionRole newRole = member.role() == FactionRole.MEMBER ? FactionRole.OFFICER : FactionRole.LEADER; factionManager.adminSetMemberRole(factionId, memberUuid, newRole); player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.MEM_PROMOTED, data.memberName != null ? data.memberName : "player", formatRole(newRole))); rebuildList(); } } } }
+      case "Demote" -> { if (data.memberUuid != null) { UUID memberUuid = UuidUtil.parseOrNull(data.memberUuid); if (memberUuid == null) { sendUpdate(); return; } Faction faction = factionManager.getFaction(factionId); if (faction != null) { FactionMember member = faction.getMember(memberUuid); if (member != null && member.role() != FactionRole.MEMBER) { FactionRole newRole = member.role() == FactionRole.LEADER ? FactionRole.OFFICER : FactionRole.MEMBER; factionManager.adminSetMemberRole(factionId, memberUuid, newRole); player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.MEM_DEMOTED, data.memberName != null ? data.memberName : "player", formatRole(newRole))); rebuildList(); } } } }
+      case "Kick" -> { if (data.memberUuid != null) { UUID memberUuid = UuidUtil.parseOrNull(data.memberUuid); if (memberUuid == null) { sendUpdate(); return; } Faction faction = factionManager.getFaction(factionId); if (faction != null) { FactionMember member = faction.getMember(memberUuid); if (member != null && member.role() != FactionRole.LEADER) { factionManager.adminRemoveMember(factionId, memberUuid); player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.MEM_KICKED, data.memberName != null ? data.memberName : "player")); rebuildList(); } } } }
+      case "ViewPlayerInfo" -> { if (data.memberUuid != null) { UUID memberUuid = UuidUtil.parseOrNull(data.memberUuid); if (memberUuid == null) { sendUpdate(); return; } String memberName = data.memberName != null ? data.memberName : HFMessages.get(playerRef, CommonKeys.Common.UNKNOWN); guiManager.openAdminPlayerInfo(player, ref, store, playerRef, memberUuid, memberName, factionId, AdminPlayerInfoPage.Origin.FACTION_MEMBERS); } }
       default -> sendUpdate();
     }
   }

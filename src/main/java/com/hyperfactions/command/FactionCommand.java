@@ -15,7 +15,7 @@ import com.hyperfactions.command.ui.*;
 import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -125,7 +125,7 @@ public class FactionCommand extends AbstractPlayerCommand {
 
     // No subcommand provided - open faction main dashboard GUI
     if (!hasPermission(player, Permissions.USE)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.NO_PERMISSION));
       return;
     }
 
@@ -133,7 +133,7 @@ public class FactionCommand extends AbstractPlayerCommand {
     if (playerEntity != null) {
       hyperFactions.getGuiManager().openFactionMain(playerEntity, ref, store, player);
     } else {
-      ctx.sendMessage(MessageUtil.info(player, MessageKeys.Common.GUI_FALLBACK, CommandUtil.COLOR_YELLOW));
+      ctx.sendMessage(MessageUtil.info(player, CommonKeys.Common.GUI_FALLBACK, CommandUtil.COLOR_YELLOW));
     }
   }
 

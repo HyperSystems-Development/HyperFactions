@@ -12,7 +12,7 @@ import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.manager.ZoneManager;
 import com.hyperfactions.util.Logger;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.GuiKeys;
 import java.io.File;
 import java.io.FileReader;
 import java.nio.file.Path;
@@ -572,7 +572,7 @@ public class SimpleClaimsImporter {
     List<FactionLog> logs = new ArrayList<>();
     logs.add(FactionLog.system(FactionLog.LogType.MEMBER_JOIN,
       "Faction imported from SimpleClaims",
-      MessageKeys.LogsGui.MSG_IMPORTED_FROM, "SimpleClaims"));
+      GuiKeys.LogsGui.MSG_IMPORTED_FROM, "SimpleClaims"));
 
     return new Faction(
       partyId,
@@ -798,7 +798,7 @@ public class SimpleClaimsImporter {
             FactionLog.LogType.MEMBER_LEAVE,
             playerName + " left (imported to another faction)",
             null,
-            MessageKeys.LogsGui.MSG_LEFT_IMPORT, playerName
+            GuiKeys.LogsGui.MSG_LEFT_IMPORT, playerName
           ));
 
         factionManager.removePlayerFromIndex(memberUuid);
@@ -817,7 +817,7 @@ public class SimpleClaimsImporter {
                   FactionLog.LogType.LEADER_TRANSFER,
                   promoted.username() + " became leader (previous leader imported to another faction)",
                   null,
-                  MessageKeys.LogsGui.MSG_LEADER_IMPORT_TRANSFER, promoted.username()
+                  GuiKeys.LogsGui.MSG_LEADER_IMPORT_TRANSFER, promoted.username()
                 ));
               progress("    - %s promoted to leader of '%s'",
                 promoted.username(), existingFaction.name());

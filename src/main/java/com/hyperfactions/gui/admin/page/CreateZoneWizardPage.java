@@ -10,7 +10,8 @@ import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.AdminGuiKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -134,33 +135,33 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
     cmd.append(UIPaths.CREATE_ZONE_WIZARD);
 
     // Localize labels
-    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_TITLE));
-    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_BACK));
-    cmd.set("#CreateBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_CREATE));
-    cmd.set("#ZoneTypeHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_ZONE_TYPE));
-    cmd.set("#SafeZoneDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_SAFE_DESC));
-    cmd.set("#WarZoneDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_WAR_DESC));
-    cmd.set("#ZoneNameHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_ZONE_NAME));
-    cmd.set("#ZoneNameDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_NAME_DESC));
-    cmd.set("#ClaimMethodHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_CLAIM_METHOD));
-    cmd.set("#MethodNoneDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_METHOD_NONE_DESC));
-    cmd.set("#MethodNone.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_METHOD_NONE));
-    cmd.set("#MethodSingleDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_METHOD_SINGLE_DESC));
-    cmd.set("#MethodSingle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_METHOD_SINGLE));
-    cmd.set("#MethodCircleDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_METHOD_CIRCLE_DESC));
-    cmd.set("#MethodCircle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_METHOD_CIRCLE));
-    cmd.set("#MethodSquareDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_METHOD_SQUARE_DESC));
-    cmd.set("#MethodSquare.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_METHOD_SQUARE));
-    cmd.set("#MethodMapDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_METHOD_MAP_DESC));
-    cmd.set("#MethodMap.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_METHOD_MAP));
-    cmd.set("#RadiusHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_RADIUS));
-    cmd.set("#CustomRadiusLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_CUSTOM_RADIUS));
-    cmd.set("#ApplyCustomRadius.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_APPLY));
-    cmd.set("#FlagsHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_FLAGS));
-    cmd.set("#FlagsDefaultsDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_FLAGS_DEFAULTS_DESC));
-    cmd.set("#FlagsDefaults.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_FLAGS_DEFAULTS));
-    cmd.set("#FlagsCustomizeDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_FLAGS_CUSTOMIZE_DESC));
-    cmd.set("#FlagsCustomize.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CZW_FLAGS_CUSTOMIZE));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_TITLE));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_BACK));
+    cmd.set("#CreateBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_CREATE));
+    cmd.set("#ZoneTypeHeader.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_ZONE_TYPE));
+    cmd.set("#SafeZoneDesc.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_SAFE_DESC));
+    cmd.set("#WarZoneDesc.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_WAR_DESC));
+    cmd.set("#ZoneNameHeader.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_ZONE_NAME));
+    cmd.set("#ZoneNameDesc.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_NAME_DESC));
+    cmd.set("#ClaimMethodHeader.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_CLAIM_METHOD));
+    cmd.set("#MethodNoneDesc.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_METHOD_NONE_DESC));
+    cmd.set("#MethodNone.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_METHOD_NONE));
+    cmd.set("#MethodSingleDesc.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_METHOD_SINGLE_DESC));
+    cmd.set("#MethodSingle.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_METHOD_SINGLE));
+    cmd.set("#MethodCircleDesc.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_METHOD_CIRCLE_DESC));
+    cmd.set("#MethodCircle.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_METHOD_CIRCLE));
+    cmd.set("#MethodSquareDesc.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_METHOD_SQUARE_DESC));
+    cmd.set("#MethodSquare.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_METHOD_SQUARE));
+    cmd.set("#MethodMapDesc.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_METHOD_MAP_DESC));
+    cmd.set("#MethodMap.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_METHOD_MAP));
+    cmd.set("#RadiusHeader.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_RADIUS));
+    cmd.set("#CustomRadiusLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_CUSTOM_RADIUS));
+    cmd.set("#ApplyCustomRadius.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_APPLY));
+    cmd.set("#FlagsHeader.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_FLAGS));
+    cmd.set("#FlagsDefaultsDesc.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_FLAGS_DEFAULTS_DESC));
+    cmd.set("#FlagsDefaults.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_FLAGS_DEFAULTS));
+    cmd.set("#FlagsCustomizeDesc.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_FLAGS_CUSTOMIZE_DESC));
+    cmd.set("#FlagsCustomize.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CZW_FLAGS_CUSTOMIZE));
 
     // Restore preserved input value
     if (!preservedName.isEmpty()) {
@@ -270,7 +271,7 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
 
     // Calculate and show preview
     int previewChunks = calculateChunkCount(selectedRadius, claimMethod == ClaimMethod.RADIUS_CIRCLE);
-    cmd.set("#RadiusPreview.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.WIZ_CHUNKS_PREVIEW, previewChunks));
+    cmd.set("#RadiusPreview.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.WIZ_CHUNKS_PREVIEW, previewChunks));
 
     // Highlight selected preset
     for (int preset : RADIUS_PRESETS) {
@@ -358,7 +359,7 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
     Player player = store.getComponent(ref, Player.getComponentType());
     PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
     World world = player != null ? player.getWorld() : null;
-    String worldName = world != null ? world.getName() : HFMessages.get(playerRef, MessageKeys.Common.WORLD_FALLBACK);
+    String worldName = world != null ? world.getName() : HFMessages.get(playerRef, CommonKeys.Common.WORLD_FALLBACK);
 
     if (player == null || playerRef == null || data.button == null) {
       sendUpdate();
@@ -392,7 +393,7 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
       case "ApplyCustomRadius" -> {
         int newRadius = parseRadius(data.customRadius);
         if (newRadius < 1 || newRadius > MAX_RADIUS) {
-          player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.WIZ_RADIUS_RANGE, MAX_RADIUS));
+          player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.WIZ_RADIUS_RANGE, MAX_RADIUS));
           sendUpdate();
           return;
         }
@@ -444,26 +445,26 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
 
     // Validate zone name
     if (name.isEmpty()) {
-      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.WIZ_ENTER_NAME));
+      player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.WIZ_ENTER_NAME));
       sendUpdate();
       return;
     }
 
     if (name.length() < MIN_NAME_LENGTH) {
-      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.WIZ_NAME_TOO_SHORT, MIN_NAME_LENGTH));
+      player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.WIZ_NAME_TOO_SHORT, MIN_NAME_LENGTH));
       sendUpdate();
       return;
     }
 
     if (name.length() > MAX_NAME_LENGTH) {
-      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.WIZ_NAME_TOO_LONG, MAX_NAME_LENGTH));
+      player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.WIZ_NAME_TOO_LONG, MAX_NAME_LENGTH));
       sendUpdate();
       return;
     }
 
     // Check if name is already taken
     if (zoneManager.getZoneByName(name) != null) {
-      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.WIZ_NAME_TAKEN));
+      player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.WIZ_NAME_TAKEN));
       sendUpdate();
       return;
     }
@@ -480,21 +481,21 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
     ZoneManager.ZoneResult result = zoneManager.createZone(name, type, worldName, playerRef.getUuid());
 
     if (result != ZoneManager.ZoneResult.SUCCESS) {
-      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.WIZ_CREATE_FAILED, result));
+      player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.WIZ_CREATE_FAILED, result));
       sendUpdate();
       return;
     }
 
     Zone newZone = zoneManager.getZoneByName(name);
     if (newZone == null) {
-      player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.WIZ_CREATED_NOT_FOUND, MessageUtil.COLOR_GOLD));
+      player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.WIZ_CREATED_NOT_FOUND, MessageUtil.COLOR_GOLD));
       guiManager.openAdminZone(player, ref, store, playerRef);
       return;
     }
 
     // Success message
     String typeColor = type == ZoneType.SAFE ? "#55FF55" : "#FF5555";
-    player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.WIZ_CREATED, "#55FF55", type.getDisplayName(), name));
+    player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.WIZ_CREATED, "#55FF55", type.getDisplayName(), name));
 
     // Handle claiming based on method
     switch (method) {
@@ -509,10 +510,10 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
               newZone.id(), worldName, chunkX, chunkZ);
 
           if (claimResult == ZoneManager.ZoneResult.SUCCESS) {
-            player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.WIZ_CHUNK_CLAIMED, "#44cc44", chunkX, chunkZ));
+            player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.WIZ_CHUNK_CLAIMED, "#44cc44", chunkX, chunkZ));
             newZone = zoneManager.getZoneById(newZone.id());
           } else {
-            player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.WIZ_CHUNK_FAILED, MessageUtil.COLOR_GOLD, claimResult));
+            player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.WIZ_CHUNK_FAILED, MessageUtil.COLOR_GOLD, claimResult));
           }
         }
       }
@@ -528,10 +529,10 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
           int claimed = zoneManager.claimRadius(newZone.id(), worldName, centerX, centerZ, radius, circle);
 
           if (claimed > 0) {
-            player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.WIZ_RADIUS_CLAIMED, "#44cc44", claimed, HFMessages.get(playerRef, circle ? MessageKeys.AdminGui.SHAPE_CIRCULAR : MessageKeys.AdminGui.SHAPE_SQUARE), radius));
+            player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.WIZ_RADIUS_CLAIMED, "#44cc44", claimed, HFMessages.get(playerRef, circle ? AdminGuiKeys.AdminGui.SHAPE_CIRCULAR : AdminGuiKeys.AdminGui.SHAPE_SQUARE), radius));
             newZone = zoneManager.getZoneById(newZone.id());
           } else {
-            player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.WIZ_RADIUS_NO_CLAIMS, MessageUtil.COLOR_GOLD));
+            player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.WIZ_RADIUS_NO_CLAIMS, MessageUtil.COLOR_GOLD));
           }
         }
       }
@@ -539,7 +540,7 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
       case NO_CLAIMS, USE_MAP -> {
         // No chunks to claim now
         if (method == ClaimMethod.NO_CLAIMS) {
-          player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.WIZ_NO_CLAIMS, "#888888"));
+          player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.WIZ_NO_CLAIMS, "#888888"));
         }
       }
       default -> throw new IllegalStateException("Unexpected value");

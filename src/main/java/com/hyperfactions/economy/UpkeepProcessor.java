@@ -12,7 +12,7 @@ import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.integration.economy.VaultEconomyProvider;
 import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.GuiKeys;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
@@ -152,7 +152,7 @@ public class UpkeepProcessor {
           logToFaction(faction.id(), FactionLog.LogType.ECONOMY,
               String.format("Upkeep paid: %s (%d billable chunks)",
                   economyManager.formatCurrency(cost), billableChunks),
-              MessageKeys.LogsGui.MSG_UPKEEP_PAID, economyManager.formatCurrency(cost), String.valueOf(billableChunks));
+              GuiKeys.LogsGui.MSG_UPKEEP_PAID, economyManager.formatCurrency(cost), String.valueOf(billableChunks));
           paid++;
           Logger.debugEconomy("Upkeep paid for %s: %s (%d billable chunks)",
               faction.name(), economyManager.formatCurrency(cost), billableChunks);
@@ -207,7 +207,7 @@ public class UpkeepProcessor {
           "#FFAA00");
       logToFaction(faction.id(), FactionLog.LogType.ECONOMY,
           "Upkeep failed: grace period started (" + config.getUpkeepGracePeriodHours() + "h)",
-          MessageKeys.LogsGui.MSG_UPKEEP_GRACE_STARTED, String.valueOf(config.getUpkeepGracePeriodHours()));
+          GuiKeys.LogsGui.MSG_UPKEEP_GRACE_STARTED, String.valueOf(config.getUpkeepGracePeriodHours()));
 
       Logger.info("[Upkeep] Grace started for %s: %s (missed: %d)", faction.name(), reason, missed);
       return updated;
@@ -229,7 +229,7 @@ public class UpkeepProcessor {
           "#FFAA00");
       logToFaction(faction.id(), FactionLog.LogType.ECONOMY,
           "Upkeep missed (payment " + missed + "), grace expires in " + remaining,
-          MessageKeys.LogsGui.MSG_UPKEEP_MISSED, String.valueOf(missed), remaining);
+          GuiKeys.LogsGui.MSG_UPKEEP_MISSED, String.valueOf(missed), remaining);
 
       Logger.debugEconomy("Grace continues for %s: %s remaining (missed: %d)",
           faction.name(), remaining, missed);
@@ -254,7 +254,7 @@ public class UpkeepProcessor {
       if (current != null) {
         Faction logged = current.withLog(FactionLog.create(FactionLog.LogType.UNCLAIM,
             String.format("Lost %d claim(s) to upkeep (missed %d payments)", removed, missed), null,
-            MessageKeys.LogsGui.MSG_CLAIMS_LOST_UPKEEP, String.valueOf(removed), String.valueOf(missed)));
+            GuiKeys.LogsGui.MSG_CLAIMS_LOST_UPKEEP, String.valueOf(removed), String.valueOf(missed)));
         factionManager.updateFaction(logged);
       }
 

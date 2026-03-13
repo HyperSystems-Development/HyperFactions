@@ -4,6 +4,7 @@ import com.hyperfactions.config.ConfigManager;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Centralized message utilities for HyperFactions.
@@ -79,7 +80,7 @@ public final class MessageUtil {
    * @param args   Replacement arguments for {0}, {1}, etc.
    */
   @NotNull
-  public static Message error(@NotNull PlayerRef player, @NotNull String key, Object... args) {
+  public static Message error(@Nullable PlayerRef player, @NotNull String key, Object... args) {
     return prefix().insert(Message.raw(HFMessages.get(player, key, args)).color(COLOR_RED));
   }
 
@@ -87,7 +88,7 @@ public final class MessageUtil {
    * Creates a prefixed green success message using i18n key resolution.
    */
   @NotNull
-  public static Message success(@NotNull PlayerRef player, @NotNull String key, Object... args) {
+  public static Message success(@Nullable PlayerRef player, @NotNull String key, Object... args) {
     return prefix().insert(Message.raw(HFMessages.get(player, key, args)).color(COLOR_GREEN));
   }
 
@@ -95,7 +96,7 @@ public final class MessageUtil {
    * Creates a prefixed info message with custom color using i18n key resolution.
    */
   @NotNull
-  public static Message info(@NotNull PlayerRef player, @NotNull String key, @NotNull String color, Object... args) {
+  public static Message info(@Nullable PlayerRef player, @NotNull String key, @NotNull String color, Object... args) {
     return prefix().insert(Message.raw(HFMessages.get(player, key, args)).color(color));
   }
 
@@ -103,7 +104,7 @@ public final class MessageUtil {
    * Creates a red error message (no prefix) using i18n key resolution.
    */
   @NotNull
-  public static Message errorText(@NotNull PlayerRef player, @NotNull String key, Object... args) {
+  public static Message errorText(@Nullable PlayerRef player, @NotNull String key, Object... args) {
     return Message.raw(HFMessages.get(player, key, args)).color(COLOR_RED);
   }
 
@@ -111,7 +112,7 @@ public final class MessageUtil {
    * Creates a green success message (no prefix) using i18n key resolution.
    */
   @NotNull
-  public static Message successText(@NotNull PlayerRef player, @NotNull String key, Object... args) {
+  public static Message successText(@Nullable PlayerRef player, @NotNull String key, Object... args) {
     return Message.raw(HFMessages.get(player, key, args)).color(COLOR_GREEN);
   }
 
@@ -119,7 +120,7 @@ public final class MessageUtil {
    * Creates an admin-prefixed red error message using i18n key resolution.
    */
   @NotNull
-  public static Message adminError(@NotNull PlayerRef player, @NotNull String key, Object... args) {
+  public static Message adminError(@Nullable PlayerRef player, @NotNull String key, Object... args) {
     return adminPrefix().insert(Message.raw(HFMessages.get(player, key, args)).color(COLOR_RED));
   }
 
@@ -127,7 +128,7 @@ public final class MessageUtil {
    * Creates an admin-prefixed green success message using i18n key resolution.
    */
   @NotNull
-  public static Message adminSuccess(@NotNull PlayerRef player, @NotNull String key, Object... args) {
+  public static Message adminSuccess(@Nullable PlayerRef player, @NotNull String key, Object... args) {
     return adminPrefix().insert(Message.raw(HFMessages.get(player, key, args)).color(COLOR_GREEN));
   }
 
@@ -135,7 +136,7 @@ public final class MessageUtil {
    * Creates an admin-prefixed gray info message using i18n key resolution.
    */
   @NotNull
-  public static Message adminInfo(@NotNull PlayerRef player, @NotNull String key, Object... args) {
+  public static Message adminInfo(@Nullable PlayerRef player, @NotNull String key, Object... args) {
     return adminPrefix().insert(Message.raw(HFMessages.get(player, key, args)).color(COLOR_GRAY));
   }
 
@@ -143,7 +144,7 @@ public final class MessageUtil {
    * Creates a colored message with no prefix using i18n key resolution.
    */
   @NotNull
-  public static Message text(@NotNull PlayerRef player, @NotNull String key, @NotNull String color, Object... args) {
+  public static Message text(@Nullable PlayerRef player, @NotNull String key, @NotNull String color, Object... args) {
     return Message.raw(HFMessages.get(player, key, args)).color(color);
   }
 

@@ -10,7 +10,7 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -42,7 +42,7 @@ public class MembersSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.MEMBERS)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Info.MEMBERS_NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Info.MEMBERS_NO_PERMISSION));
       return;
     }
 
@@ -65,7 +65,7 @@ public class MembersSubCommand extends FactionSubCommand {
 
     // Text mode: output member list to chat
     List<FactionMember> members = faction.getMembersSorted();
-    ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Info.MEMBERS_HEADER, faction.name(), members.size()), COLOR_CYAN).bold(true));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.MEMBERS_HEADER, faction.name(), members.size()), COLOR_CYAN).bold(true));
 
     for (FactionMember member : members) {
       String roleColor = switch (member.role()) {
@@ -74,7 +74,7 @@ public class MembersSubCommand extends FactionSubCommand {
         default -> COLOR_GRAY;
       };
       boolean isOnline = plugin.getTrackedPlayer(member.uuid()) != null;
-      String status = isOnline ? " " + HFMessages.get(player, MessageKeys.Info.MEMBER_ONLINE) : "";
+      String status = isOnline ? " " + HFMessages.get(player, CommandKeys.Info.MEMBER_ONLINE) : "";
       ctx.sendMessage(msg(ConfigManager.get().getRoleDisplayName(member.role()) + " ", roleColor)
         .insert(msg(member.username(), COLOR_WHITE))
         .insert(msg(status, isOnline ? COLOR_GREEN : COLOR_GRAY)));

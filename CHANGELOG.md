@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+**Split MessageKeys into Domain-Specific Files**
+- Split the monolithic `MessageKeys.java` (2,789 lines, 60 inner classes, ~1,298 constants) into 6 focused domain files:
+  - `CommonKeys.java` — shared messages, protection denial, territory notifications, announcements, teleport, chat display
+  - `CommandKeys.java` — all player command message keys (create, disband, rename, claim, invite, etc.)
+  - `HelpKeys.java` — help system message keys (166 constants)
+  - `AdminKeys.java` — admin command responses and navigation labels
+  - `GuiKeys.java` — faction and shared GUI page keys
+  - `AdminGuiKeys.java` — admin GUI page keys (613 constants)
+- Deleted original `MessageKeys.java`; updated imports across 130+ files
+
+**Localize Remaining Hardcoded Strings**
+- Territory display banners (Wilderness, SafeZone, WarZone titles and subtitles) — now localized per-player via `TerritoryInfo.getPrimaryText(PlayerRef)` and `getSecondaryText(PlayerRef)`
+- Update notification messages — "new version available", version info, and update instructions now localized
+- Player death broadcast location — `"{0} died at ({1}, {2}, {3}) in {4}"` now localized
+- ~70 admin handler strings localized across `AdminUpdateHandler`, `AdminZoneHandler`, `AdminMapDecayHandler`, and `AdminDebugHandler` — covers update/mixin/rollback flow, zone display, decay status, and debug headers
+
+**New Translation Entries**
+- Added ~467 new entries per locale file across all 10 supported languages (en-US, de-DE, es-ES, fr-FR, it-IT, nl-NL, pl-PL, pt-BR, ru-RU, tl-PH)
+- Covers all split key files (help commands, GUI labels, admin GUI) plus newly localized strings
+
+### Changed
+
+**Consolidate Duplicate Message Keys**
+- Consolidated ~25 duplicate keys into shared `CommonKeys.Common` constants — bare `NO_PERMISSION`, `Back`, `Cancel`, `Save`, `Clear`, `N/A` duplicates replaced with single shared references
+- Added `CommonKeys.Common.NO_DESCRIPTION`, `MEMBER_COUNT`, and `ECONOMY_DISABLED` shared keys, replacing 3 identical copies each
+- Command-specific permission messages with unique wording (e.g., "to create factions", "to claim territory") kept as-is
+
 ### Fixed
 - **Water/lava disappears in own faction claim** — fluid spread was incorrectly tied to `fireSpreadAllowed` config, causing all fluid to be removed in claims when fire spread was disabled. Fluid spread in faction claims is now always allowed ([#95](https://github.com/HyperSystems-Development/HyperFactions/issues/95))
 

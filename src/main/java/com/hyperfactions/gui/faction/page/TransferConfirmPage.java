@@ -9,7 +9,8 @@ import com.hyperfactions.gui.faction.data.TransferConfirmData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -66,11 +67,11 @@ public class TransferConfirmPage extends InteractiveCustomUIPage<TransferConfirm
     cmd.append(UIPaths.TRANSFER_CONFIRM);
 
     // Static labels
-    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.TRANSFER_TITLE));
-    cmd.set("#ConfirmText.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.TRANSFER_PROMPT));
-    cmd.set("#WarningText.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.TRANSFER_WARNING));
-    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.CANCEL));
-    cmd.set("#ConfirmBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.TRANSFER));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, GuiKeys.ConfirmGui.TRANSFER_TITLE));
+    cmd.set("#ConfirmText.Text", HFMessages.get(playerRef, GuiKeys.ConfirmGui.TRANSFER_PROMPT));
+    cmd.set("#WarningText.Text", HFMessages.get(playerRef, GuiKeys.ConfirmGui.TRANSFER_WARNING));
+    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, CommonKeys.Common.CANCEL));
+    cmd.set("#ConfirmBtn.Text", HFMessages.get(playerRef, CommonKeys.Common.TRANSFER));
 
     // Set dynamic values
     cmd.set("#TargetName.Text", targetName);
@@ -110,7 +111,7 @@ public class TransferConfirmPage extends InteractiveCustomUIPage<TransferConfirm
     // Re-fetch faction to ensure fresh state
     Faction currentFaction = factionManager.getFaction(faction.id());
     if (currentFaction == null) {
-      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.ConfirmGui.FACTION_GONE));
+      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.FACTION_GONE));
       guiManager.openFactionMain(player, ref, store, playerRef);
       return;
     }
@@ -119,7 +120,7 @@ public class TransferConfirmPage extends InteractiveCustomUIPage<TransferConfirm
 
     // Verify leader permission
     if (member == null || member.role() != FactionRole.LEADER) {
-      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.ConfirmGui.NOT_LEADER_TRANSFER));
+      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.NOT_LEADER_TRANSFER));
       guiManager.openFactionMembers(player, ref, store, playerRef, currentFaction);
       return;
     }
@@ -136,7 +137,7 @@ public class TransferConfirmPage extends InteractiveCustomUIPage<TransferConfirm
             faction.id(), targetUuid, uuid);
 
         if (result == FactionManager.FactionResult.SUCCESS) {
-          player.sendMessage(MessageUtil.successText(playerRef, MessageKeys.ConfirmGui.LEADERSHIP_TRANSFERRED, targetName));
+          player.sendMessage(MessageUtil.successText(playerRef, GuiKeys.ConfirmGui.LEADERSHIP_TRANSFERRED, targetName));
           // Refresh to show updated roles
           Faction refreshedFaction = factionManager.getFaction(faction.id());
           if (refreshedFaction != null) {
@@ -145,7 +146,7 @@ public class TransferConfirmPage extends InteractiveCustomUIPage<TransferConfirm
             guiManager.openFactionMain(player, ref, store, playerRef);
           }
         } else {
-          player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.ConfirmGui.TRANSFER_FAILED, result));
+          player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.TRANSFER_FAILED, result));
           guiManager.openFactionMembers(player, ref, store, playerRef, currentFaction);
         }
       }

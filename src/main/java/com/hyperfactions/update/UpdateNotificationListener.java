@@ -3,6 +3,8 @@ package com.hyperfactions.update;
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
 import com.hyperfactions.integration.PermissionManager;
+import com.hyperfactions.util.AdminKeys;
+import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.event.EventRegistry;
 import com.hypixel.hytale.server.core.Message;
@@ -182,24 +184,17 @@ public final class UpdateNotificationListener {
 
     // [HyperFactions] A new version is available!
     playerRef.sendMessage(
-      Message.raw("[HyperFactions] ").color(GOLD)
-        .insert(Message.raw("A new version is available!").color(GOLD).bold(true))
+      Message.raw(HFMessages.get(playerRef, AdminKeys.AdminCmd.UPDATE_NOTIFY_NEW_VERSION)).color(GOLD).bold(true)
     );
 
     // Current: v1.0.0 -> Latest: v1.1.0 (pre-release)
     playerRef.sendMessage(
-      Message.raw("Current: ").color(GRAY)
-        .insert(Message.raw("v" + currentVersion).color(WHITE))
-        .insert(Message.raw(" -> ").color(GRAY))
-        .insert(Message.raw("Latest: ").color(GRAY))
-        .insert(Message.raw(versionLabel).color(GREEN))
+      Message.raw(HFMessages.get(playerRef, AdminKeys.AdminCmd.UPDATE_NOTIFY_VERSION_INFO, currentVersion, versionLabel)).color(GRAY)
     );
 
     // Run /f admin update to update the plugin.
     playerRef.sendMessage(
-      Message.raw("Run ").color(GRAY)
-        .insert(Message.raw("/f admin update").color(GREEN))
-        .insert(Message.raw(" to update the plugin.").color(GRAY))
+      Message.raw(HFMessages.get(playerRef, AdminKeys.AdminCmd.UPDATE_NOTIFY_INSTRUCTION)).color(GRAY)
     );
 
     Logger.debug("[UpdateNotify] Sent update notification to %s", playerRef.getUsername());
@@ -216,9 +211,7 @@ public final class UpdateNotificationListener {
 
     // [HyperFactions] Plugin is up-to-date (v1.0.0)
     playerRef.sendMessage(
-      Message.raw("[HyperFactions] ").color(GRAY)
-        .insert(Message.raw("Plugin is up-to-date ").color(GRAY))
-        .insert(Message.raw("(v" + currentVersion + ")").color(GREEN))
+      Message.raw(HFMessages.get(playerRef, AdminKeys.AdminCmd.UPDATE_NOTIFY_UP_TO_DATE, currentVersion)).color(GREEN)
     );
 
     Logger.debug("[UpdateNotify] Sent up-to-date notification to %s", playerRef.getUsername());

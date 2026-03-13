@@ -9,7 +9,9 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionLog;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.platform.HyperFactionsPlugin;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -40,7 +42,7 @@ public class CloseSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.CLOSE)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Close.NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.NO_PERMISSION));
       return;
     }
 
@@ -51,24 +53,24 @@ public class CloseSubCommand extends FactionSubCommand {
 
     FactionMember member = faction.getMember(player.getUuid());
     if (member == null || !member.isLeader()) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Close.NOT_LEADER));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Close.NOT_LEADER));
       return;
     }
 
     if (!faction.open()) {
-      ctx.sendMessage(MessageUtil.info(player, MessageKeys.Close.ALREADY_CLOSED, COLOR_YELLOW));
+      ctx.sendMessage(MessageUtil.info(player, CommandKeys.Close.ALREADY_CLOSED, COLOR_YELLOW));
       return;
     }
 
     Faction updated = faction.withOpen(false)
       .withLog(FactionLog.create(FactionLog.LogType.SETTINGS_CHANGE,
         "Faction set to invite-only", player.getUuid(),
-        MessageKeys.LogsGui.MSG_SET_CLOSED));
+        GuiKeys.LogsGui.MSG_SET_CLOSED));
 
     hyperFactions.getFactionManager().updateFaction(updated);
 
-    ctx.sendMessage(MessageUtil.success(player, MessageKeys.Close.SUCCESS));
-    broadcastToFaction(faction.id(), MessageUtil.success(player, MessageKeys.Close.BROADCAST, player.getUsername()));
+    ctx.sendMessage(MessageUtil.success(player, CommandKeys.Close.SUCCESS));
+    broadcastToFaction(faction.id(), MessageUtil.success(player, CommandKeys.Close.BROADCAST, player.getUsername()));
 
     // After action, open settings page if not text mode
     String[] rawArgs = CommandUtil.parseRawArgs(ctx.getInputString(), 2);

@@ -11,7 +11,7 @@ import com.hyperfactions.gui.newplayer.NewPlayerNavBarHelper;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.util.TimeUtil;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -83,15 +83,15 @@ public class LogsViewerPage extends InteractiveCustomUIPage<FactionPageData> {
     }
 
     // Set title with faction name
-    cmd.set("#LogsTitle.Text", HFMessages.get(playerRef, MessageKeys.LogsGui.TITLE, faction.name()));
+    cmd.set("#LogsTitle.Text", HFMessages.get(playerRef, GuiKeys.LogsGui.TITLE, faction.name()));
 
     // Localize static labels
-    cmd.set("#FilterLabel.Text", HFMessages.get(playerRef, MessageKeys.LogsGui.FILTER_LABEL));
-    cmd.set("#ColTimeLabel.Text", HFMessages.get(playerRef, MessageKeys.LogsGui.COL_TIME));
-    cmd.set("#ColTypeLabel.Text", HFMessages.get(playerRef, MessageKeys.LogsGui.COL_TYPE));
-    cmd.set("#ColMessageLabel.Text", HFMessages.get(playerRef, MessageKeys.LogsGui.COL_MESSAGE));
-    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.PREV));
-    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.NEXT));
+    cmd.set("#FilterLabel.Text", HFMessages.get(playerRef, GuiKeys.LogsGui.FILTER_LABEL));
+    cmd.set("#ColTimeLabel.Text", HFMessages.get(playerRef, GuiKeys.LogsGui.COL_TIME));
+    cmd.set("#ColTypeLabel.Text", HFMessages.get(playerRef, GuiKeys.LogsGui.COL_TYPE));
+    cmd.set("#ColMessageLabel.Text", HFMessages.get(playerRef, GuiKeys.LogsGui.COL_MESSAGE));
+    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.PREV));
+    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.NEXT));
 
     buildLogList(cmd, events);
   }
@@ -126,11 +126,11 @@ public class LogsViewerPage extends InteractiveCustomUIPage<FactionPageData> {
     int endIndex = Math.min(startIndex + LOGS_PER_PAGE, totalLogs);
 
     // Log count
-    cmd.set("#LogCount.Text", HFMessages.get(playerRef, MessageKeys.LogsGui.ENTRY_COUNT, totalLogs));
+    cmd.set("#LogCount.Text", HFMessages.get(playerRef, GuiKeys.LogsGui.ENTRY_COUNT, totalLogs));
 
     // Filter dropdown
     List<DropdownEntryInfo> filterOptions = new ArrayList<>();
-    filterOptions.add(new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.LogsGui.ALL_TYPES)), "ALL"));
+    filterOptions.add(new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, GuiKeys.LogsGui.ALL_TYPES)), "ALL"));
     for (FactionLog.LogType type : FactionLog.LogType.values()) {
       filterOptions.add(new DropdownEntryInfo(LocalizableString.fromString(getLocalizedTypeName(type)), type.name()));
     }
@@ -150,8 +150,8 @@ public class LogsViewerPage extends InteractiveCustomUIPage<FactionPageData> {
 
     if (totalLogs == 0) {
       String emptyText = filterType != null
-          ? HFMessages.get(playerRef, MessageKeys.LogsGui.NO_LOGS_TYPE)
-          : HFMessages.get(playerRef, MessageKeys.LogsGui.NO_LOGS);
+          ? HFMessages.get(playerRef, GuiKeys.LogsGui.NO_LOGS_TYPE)
+          : HFMessages.get(playerRef, GuiKeys.LogsGui.NO_LOGS);
       cmd.appendInline("#LogsList",
           "Label { Text: \"" + emptyText +
           "\"; Style: (FontSize: 11, TextColor: #555555); Anchor: (Height: 30); }");
@@ -175,7 +175,7 @@ public class LogsViewerPage extends InteractiveCustomUIPage<FactionPageData> {
     }
 
     // Pagination
-    cmd.set("#PageInfo.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.PAGE_FORMAT, currentPage + 1, totalPages));
+    cmd.set("#PageInfo.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.PAGE_FORMAT, currentPage + 1, totalPages));
 
     if (currentPage > 0) {
       events.addEventBinding(
@@ -260,19 +260,19 @@ public class LogsViewerPage extends InteractiveCustomUIPage<FactionPageData> {
   private String formatRelativeTime(long timestamp) {
     long diff = System.currentTimeMillis() - timestamp;
     if (diff < 60_000) {
-      return HFMessages.get(playerRef, MessageKeys.LogsGui.TIME_JUST_NOW);
+      return HFMessages.get(playerRef, GuiKeys.LogsGui.TIME_JUST_NOW);
     } else if (diff < 3600_000) {
       long m = TimeUnit.MILLISECONDS.toMinutes(diff);
-      return HFMessages.get(playerRef, m == 1 ? MessageKeys.LogsGui.TIME_MINUTE : MessageKeys.LogsGui.TIME_MINUTES, m);
+      return HFMessages.get(playerRef, m == 1 ? GuiKeys.LogsGui.TIME_MINUTE : GuiKeys.LogsGui.TIME_MINUTES, m);
     } else if (diff < 86400_000) {
       long h = TimeUnit.MILLISECONDS.toHours(diff);
-      return HFMessages.get(playerRef, h == 1 ? MessageKeys.LogsGui.TIME_HOUR : MessageKeys.LogsGui.TIME_HOURS, h);
+      return HFMessages.get(playerRef, h == 1 ? GuiKeys.LogsGui.TIME_HOUR : GuiKeys.LogsGui.TIME_HOURS, h);
     } else if (diff < 604800_000) {
       long d = TimeUnit.MILLISECONDS.toDays(diff);
-      return HFMessages.get(playerRef, d == 1 ? MessageKeys.LogsGui.TIME_DAY : MessageKeys.LogsGui.TIME_DAYS, d);
+      return HFMessages.get(playerRef, d == 1 ? GuiKeys.LogsGui.TIME_DAY : GuiKeys.LogsGui.TIME_DAYS, d);
     } else if (diff < 2592000_000L) {
       long w = TimeUnit.MILLISECONDS.toDays(diff) / 7;
-      return HFMessages.get(playerRef, w == 1 ? MessageKeys.LogsGui.TIME_WEEK : MessageKeys.LogsGui.TIME_WEEKS, w);
+      return HFMessages.get(playerRef, w == 1 ? GuiKeys.LogsGui.TIME_WEEK : GuiKeys.LogsGui.TIME_WEEKS, w);
     } else {
       return TimeUtil.formatDate(timestamp);
     }
@@ -280,7 +280,7 @@ public class LogsViewerPage extends InteractiveCustomUIPage<FactionPageData> {
 
   /** Returns the localized display name for a log type. */
   private String getLocalizedTypeName(FactionLog.LogType type) {
-    return HFMessages.get(playerRef, MessageKeys.LogsGui.typeKey(type.name()));
+    return HFMessages.get(playerRef, GuiKeys.LogsGui.typeKey(type.name()));
   }
 
   private void rebuildList() {

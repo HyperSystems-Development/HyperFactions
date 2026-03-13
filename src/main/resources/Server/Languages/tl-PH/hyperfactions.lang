@@ -451,3 +451,452 @@ teleport.mount_entry_blocked = Hindi ka maaaring pumasok sa zone na ito habang n
 chat.display.public = Publiko
 chat.display.faction = Paksyon
 chat.display.ally = Kakampi
+
+# ========== Sistema ng Tulong ==========
+help.commands_label = Mga Utos:
+help.default_footer = Gamitin ang /f <utos> para sa mga detalye
+help.title = HyperFactions
+help.description = Pamamahala ng paksyon at kontrol ng teritoryo
+
+# Mga seksyon ng tulong
+help.section.core = Pangunahin
+help.section.management = Pamamahala
+help.section.territory = Teritoryo
+help.section.relations = Mga Relasyon
+help.section.teleport = Teleport
+help.section.information = Impormasyon
+help.section.other = Iba Pa
+help.section.admin = Admin
+
+# Mga deskripsyon ng utos (Pangunahin)
+help.cmd.create = Gumawa ng paksyon
+help.cmd.disband = Buwagin ang iyong paksyon
+help.cmd.invite = Mag-imbita ng manlalaro
+help.cmd.accept = Tanggapin ang imbitasyon
+help.cmd.request = Humiling na sumali sa paksyon
+help.cmd.leave = Umalis sa iyong paksyon
+help.cmd.kick = Paalisin ang isang kasapi
+
+# Mga deskripsyon ng utos (Pamamahala)
+help.cmd.rename = Palitan ang pangalan ng paksyon
+help.cmd.desc = Itakda ang deskripsyon ng paksyon
+help.cmd.color = Itakda ang kulay ng paksyon
+help.cmd.open = Payagan ang sinumang sumali
+help.cmd.close = Kailangan ng imbitasyon upang sumali
+help.cmd.promote = I-promote sa opisyal
+help.cmd.demote = I-demote sa kasapi
+help.cmd.transfer = Ilipat ang pamumuno
+
+# Mga deskripsyon ng utos (Teritoryo)
+help.cmd.claim = I-claim ang chunk na ito
+help.cmd.unclaim = I-unclaim ang chunk na ito
+help.cmd.overclaim = I-overclaim ang teritoryo ng kalaban
+help.cmd.map = Tingnan ang mapa ng teritoryo
+
+# Mga deskripsyon ng utos (Mga Relasyon)
+help.cmd.ally = Humiling ng alyansa
+help.cmd.enemy = Ideklara bilang kalaban
+help.cmd.neutral = Itakda bilang neutral
+
+# Mga deskripsyon ng utos (Teleport)
+help.cmd.home = Mag-teleport sa faction home
+help.cmd.sethome = Itakda ang faction home
+help.cmd.stuck = Tumakas sa teritoryo ng kalaban
+
+# Mga deskripsyon ng utos (Impormasyon)
+help.cmd.info = Tingnan ang info ng paksyon
+help.cmd.list = Ilista lahat ng paksyon
+help.cmd.browse = Mag-browse ng mga paksyon (alias para sa list)
+help.cmd.members = Tingnan ang mga kasapi ng paksyon
+help.cmd.invites = Pamahalaan ang mga imbitasyon/kahilingan
+help.cmd.who = Tingnan ang info ng manlalaro
+help.cmd.power = Tingnan ang antas ng kapangyarihan
+help.cmd.gui = Buksan ang faction GUI
+help.cmd.settings = Buksan ang mga setting ng paksyon
+
+# Mga deskripsyon ng utos (Iba Pa)
+help.cmd.chat = Magpadala ng mensahe sa faction chat
+help.cmd.chat_short = Faction chat (pinaikli)
+
+# Mga deskripsyon ng utos (Admin sa pangunahing tulong)
+help.cmd.admin = Buksan ang admin GUI
+help.cmd.admin_reload = I-reload ang config
+help.cmd.admin_sync = I-sync ang data mula sa disk
+help.cmd.admin_factions = Pamahalaan ang mga paksyon
+help.cmd.admin_zones = Pamahalaan ang mga zone
+help.cmd.admin_config = Tingnan/i-edit ang config
+help.cmd.admin_backups = Pamahalaan ang mga backup
+help.cmd.admin_update = Mag-check ng mga update
+help.cmd.admin_debug = Mga debug command
+
+# Pahina ng tulong ng admin
+help.admin.title = Mga Admin Command
+help.admin.description = Administrasyon ng server
+help.admin.cmd.dashboard = Buksan ang admin dashboard GUI
+help.admin.cmd.factions = Pamahalaan ang lahat ng paksyon
+help.admin.cmd.zone = Pamamahala ng zone
+help.admin.cmd.config = Konfigurasyong ng server
+help.admin.cmd.backup = Pamamahala ng backup
+help.admin.cmd.import_cmd = Mag-import mula sa ibang plugin
+help.admin.cmd.update = Mag-check at mag-download ng mga update
+help.admin.cmd.update_mixin = I-update ang HyperProtect-Mixin
+help.admin.cmd.update_toggle = I-toggle ang auto-download ng HP-Mixin
+help.admin.cmd.rollback = Mag-rollback sa nakaraang bersyon
+help.admin.cmd.reload = I-reload ang konfigurasyong
+help.admin.cmd.sync = I-sync ang data mula sa disk
+help.admin.cmd.debug = Mga debug command
+help.admin.cmd.decay = Pamamahala ng claim decay
+help.admin.cmd.map = Pamamahala ng world map
+help.admin.cmd.safezone = Gumawa ng SafeZone + i-claim ang chunk
+help.admin.cmd.warzone = Gumawa ng WarZone + i-claim ang chunk
+help.admin.cmd.removezone = I-unclaim ang chunk mula sa zone
+help.admin.cmd.zoneflag = Itakda ang zone flag
+help.admin.cmd.integrations = Buod ng lahat ng integration
+help.admin.cmd.integration = Detalyadong integration status
+help.admin.cmd.clearhistory = I-clear ang kasaysayan ng membership ng manlalaro
+help.admin.cmd.power = Admin power management
+help.admin.cmd.economy = Pamamahala ng economy/treasury
+help.admin.cmd.economy_upkeep = Manu-manong mag-trigger ng upkeep collection
+help.admin.cmd.info = Tingnan ang admin faction info GUI
+help.admin.cmd.who = Tingnan ang admin player info GUI
+help.admin.cmd.log = Tingnan ang global activity log
+help.admin.cmd.world = Pamamahala ng per-world settings
+help.admin.cmd.version = Tingnan ang mod version at integration status
+help.admin.cmd.sentry = Tingnan ang Sentry status
+help.admin.cmd.sentry_disable = I-opt out sa Sentry error reporting
+help.admin.cmd.sentry_enable = I-opt in sa Sentry error reporting
+help.admin.cmd.test_gui = Buksan ang UI element test page
+help.admin.cmd.test_sentry = Magpadala ng test error sa Sentry
+help.admin.cmd.test_md = Buksan ang markdown rendering test page
+
+# Sub-tulong: Backup
+help.backup.title = Pamamahala ng Backup
+help.backup.description = GFS rotation scheme
+help.backup.cmd.create = Gumawa ng manual backup
+help.backup.cmd.list = Ilista lahat ng backup na naka-group ayon sa uri
+help.backup.cmd.restore = I-restore mula sa backup (kailangan ng kumpirmasyon)
+help.backup.cmd.delete = Magtanggal ng backup
+
+# Sub-tulong: Debug
+help.debug.title = Mga Debug Command
+help.debug.description = Diagnostics at troubleshooting
+help.debug.cmd.toggle = I-toggle ang debug logging
+help.debug.cmd.status = Ipakita ang debug status
+help.debug.cmd.power = Ipakita ang mga detalye ng kapangyarihan
+help.debug.cmd.claim = Ipakita ang claim info
+help.debug.cmd.protection = Ipakita ang protection info
+help.debug.cmd.combat = Ipakita ang combat tag status
+help.debug.cmd.relation = Ipakita ang relation info
+
+# Sub-tulong: Kapangyarihan
+help.power.title = Admin Power
+help.power.description = Pamahalaan ang kapangyarihan ng manlalaro/paksyon
+help.power.cmd.set = Itakda ang eksaktong kapangyarihan
+help.power.cmd.add = Dagdagan ang kapangyarihan
+help.power.cmd.remove = Bawasan ang kapangyarihan
+help.power.cmd.reset = I-reset sa default
+help.power.cmd.setmax = Itakda ang max power override
+help.power.cmd.resetmax = I-clear ang max override
+help.power.cmd.noloss = I-toggle ang power loss bypass
+help.power.cmd.nodecay = I-toggle ang claim decay exemption
+help.power.cmd.faction = Mga operasyon sa buong paksyon
+help.power.cmd.info = Ipakita ang mga detalye ng kapangyarihan ng manlalaro
+
+# Sub-tulong: Ekonomiya
+help.economy.title = Admin Economy
+help.economy.description = Pamahalaan ang mga treasury ng paksyon
+help.economy.cmd.balance = Ipakita ang balanse ng paksyon
+help.economy.cmd.set = Itakda ang eksaktong balanse
+help.economy.cmd.add = Magdagdag sa balanse
+help.economy.cmd.take = Magbawas sa balanse
+help.economy.cmd.total = Ipakita ang kabuuang balanse ng server
+help.economy.cmd.reset = I-reset ang balanse sa 0
+help.economy.cmd.upkeep = Manu-manong mag-trigger ng upkeep collection
+
+# Sub-tulong: Mundo
+help.world.title = Mga Setting ng Mundo
+help.world.description = Per-world na konfigurasyong
+help.world.cmd.list = Ilista ang lahat ng na-configure na mga mundo
+help.world.cmd.info = Ipakita ang mga setting ng isang mundo
+help.world.cmd.set = Itakda ang isang world setting
+help.world.cmd.reset = Alisin ang world-specific na mga setting
+
+# Sub-tulong: Mapa
+help.map.title = World Map
+help.map.description = Pamamahala ng map overlay
+help.map.cmd.status = Ipakita ang world map status at mga istatistika
+help.map.cmd.refresh = Pilitin ang agarang map refresh
+
+# Sub-tulong: Decay
+help.decay.title = Claim Decay
+help.decay.description = Awtomatikong nag-aalis ng mga claim mula sa mga hindi aktibong paksyon
+help.decay.cmd.status = Ipakita ang decay status
+help.decay.cmd.run = Manu-manong mag-trigger ng claim decay
+help.decay.cmd.check = I-check ang decay status ng paksyon
+
+# Sub-tulong: Import
+help.import.title = Mga Import Command
+help.import.description = Mag-migrate mula sa ibang faction plugin
+help.import.cmd.hyfactions = Mag-import mula sa HyFactions mod
+help.import.path.hyfactions = Default na path: mods/Kaws_Hyfaction
+help.import.cmd.elbaphfactions = Mag-import mula sa ElbaphFactions mod
+help.import.path.elbaphfactions = Default na path: mods/ElbaphFactions
+help.import.cmd.factionsx = Mag-import mula sa FactionsX mod
+help.import.path.factionsx = Default na path: mods/FactionsX
+help.import.cmd.simpleclaims = Mag-import mula sa SimpleClaims mod
+help.import.path.simpleclaims = Default na path: Server/universe/SimpleClaims
+help.import.flags_header = Mga Flag:
+help.import.flag.dryrun = I-simulate nang walang pagbabago
+help.import.flag.overwrite = Palitan ang mga umiiral na paksyon
+help.import.flag.nozones = Laktawan ang zone import
+help.import.flag.nopower = Laktawan ang power distribution
+
+# Sub-tulong: Test
+help.test.title = Mga Test Command
+help.test.description = Mga development testing tool
+help.test.cmd.gui = Buksan ang UI element test page
+help.test.cmd.sentry = Magpadala ng test error sa Sentry
+help.test.cmd.md = Buksan ang markdown rendering test page
+
+# ========== Mga Admin CLI Message ==========
+admincmd.no_permission = Wala kang pahintulot.
+admincmd.player_only = Ang utos na ito ay para sa mga manlalaro lamang.
+admincmd.player_context = Hindi available ang player context.
+admincmd.entity_not_found = Hindi mahanap ang player entity.
+admincmd.unknown_command = Hindi kilalang admin command. Gamitin ang /f admin help
+admincmd.faction_not_found = Hindi nahanap ang paksyon.
+admincmd.player_not_found = Hindi nahanap ang manlalaro: {0}
+admincmd.invalid_number = Hindi wastong numero: {0}
+admincmd.amount_positive = Ang halaga ay dapat positibo.
+admincmd.balance_not_negative = Ang balanse ay hindi maaaring negatibo.
+admincmd.error_generic = May nangyaring error.
+
+# Admin - Reload/Sync
+admincmd.reload.success = Na-reload na ang konfigurasyong.
+admincmd.sync.start = Sini-sync ang faction data mula sa disk...
+admincmd.sync.complete = Kumpleto na ang sync: {0} paksyon na-update, {1} kasapi naidagdag, {2} kasapi na-update.
+admincmd.sync.failed = Nabigo ang sync: {0}
+
+# Admin - Bersyon
+admincmd.version.title = Impormasyon ng Bersyon
+admincmd.version.server = Hytale Server: {0}
+admincmd.version.java = Java: {0}
+admincmd.version.treasury = Treasury: {0}
+admincmd.version.active = Aktibo
+admincmd.version.not_found = Hindi Nahanap
+
+# Admin - Sentry
+admincmd.sentry.header = Sentry Error Reporting
+admincmd.sentry.config = Config: {0}
+admincmd.sentry.status = Status: {0}
+admincmd.sentry.already_disabled = Naka-disable na ang Sentry.
+admincmd.sentry.already_enabled = Naka-enable na ang Sentry.
+admincmd.sentry.disabled = Na-disable ang Sentry at na-save ang config. Naka-off na ang error reporting.
+admincmd.sentry.enabled = Na-enable ang Sentry at na-save ang config. Naka-on na ang error reporting.
+admincmd.sentry.usage = Paggamit: /f admin sentry [disable|enable]
+admincmd.sentry.not_initialized = Hindi na-initialize ang Sentry. I-check ang config/debug.json
+admincmd.sentry.test_sent = Naipadala ang test error sa Sentry. I-check ang iyong Sentry dashboard.
+admincmd.sentry.test_failed = Nabigo ang pagpapadala ng test event.
+
+# Admin - Backup
+admincmd.backup.no_permission = Wala kang pahintulot na mamahala ng mga backup.
+admincmd.backup.creating = Gumagawa ng backup...
+admincmd.backup.created = Matagumpay na nagawa ang backup!
+admincmd.backup.name = Pangalan: {0}
+admincmd.backup.size = Laki: {0}
+admincmd.backup.failed = Nabigo ang backup: {0}
+admincmd.backup.none = Walang nahanap na mga backup.
+admincmd.backup.header = Mga Backup
+admincmd.backup.not_found = Hindi nahanap ang backup na '{0}'.
+admincmd.backup.unknown_command = Hindi kilalang backup command: {0}
+admincmd.backup.usage_restore = Paggamit: /f admin backup restore <pangalan>
+admincmd.backup.usage_delete = Paggamit: /f admin backup delete <pangalan>
+admincmd.backup.restore_warning = BABALA: Ang pag-restore ng backup ay mag-o-overwrite sa kasalukuyang data!
+admincmd.backup.restore_confirm = I-type muli ang utos sa loob ng {0} segundo upang kumpirmahin.
+admincmd.backup.restoring = Nire-restore ang backup...
+admincmd.backup.restored = Matagumpay na na-restore ang backup! Na-reload ang data.
+admincmd.backup.restore_failed = Nabigo ang pag-restore: {0}
+admincmd.backup.confirm_cancelled = Kinansela ang nakaraang kumpirmasyon. I-type muli upang kumpirmahin ang pag-restore.
+admincmd.backup.deleted = Natanggal ang backup na '{0}'
+admincmd.backup.delete_failed = Nabigo ang pagtanggal ng backup.
+
+# Admin - Debug
+admincmd.debug.no_permission = Wala kang pahintulot na gumamit ng mga debug command.
+admincmd.debug.unknown_command = Hindi kilalang debug command: {0}
+admincmd.debug.player_only = Ang debug command na ito ay para sa mga manlalaro lamang.
+admincmd.debug.toggle_set = Debug category na '{0}' ay naitakda sa {1} (na-save)
+admincmd.debug.all_enabled = Lahat ng debug category ay naka-enable na.
+admincmd.debug.all_disabled = Lahat ng debug category ay naka-disable na.
+admincmd.debug.unknown_category = Hindi kilalang category: {0}
+admincmd.debug.not_implemented = Hindi pa naipapatupad ang debug {0} info.
+
+# Admin - Ekonomiya
+admincmd.econ.disabled = Hindi naka-enable ang economy system.
+admincmd.econ.unknown_command = Hindi kilalang economy command. Gamitin ang /f admin economy help
+admincmd.econ.set = Naitakda ang balanse ni {0} sa {1} (dating {2})
+admincmd.econ.added = Naidagdag ang {0} sa {1} (balanse: {2})
+admincmd.econ.deducted = Nabawasan ng {0} mula sa {1} (balanse: {2})
+admincmd.econ.reset = Na-reset ang balanse ni {0} sa {1} (dating {2})
+admincmd.econ.failed = Nabigo: {0}
+admincmd.econ.total_header = Mga Istatistika ng Server Economy
+admincmd.econ.upkeep_disabled = Hindi naka-enable ang upkeep system.
+admincmd.econ.upkeep_trigger = Manu-manong tini-trigger ang upkeep collection...
+admincmd.econ.upkeep_complete = Kumpleto na ang upkeep collection. I-check ang server log para sa mga detalye.
+admincmd.econ.upkeep_failed = Nabigo ang upkeep collection: {0}
+
+# Admin - Kapangyarihan
+admincmd.power.no_permission = Wala kang pahintulot.
+admincmd.power.unknown_command = Hindi kilalang power command. Gamitin ang /f admin power help
+admincmd.power.max_positive = Ang max power ay dapat positibo.
+admincmd.power.faction_unknown_action = Hindi kilalang faction power action. Gamitin: set, add, remove, reset
+
+# Admin - Clear History
+admincmd.history.no_data = Walang nahanap na player data para kay {0}.
+admincmd.history.empty = Walang membership history si {0}.
+admincmd.history.cleared = Na-clear ang {0} history record para kay {1}.
+admincmd.history.cleared_reinit = Na-clear ang {0} history record para kay {1} (na-reinitialize sa kasalukuyang paksyon: {2}).
+
+# Admin - Zone
+admincmd.zone.created = Nagawa ang {0} na '{1}' sa {2}, {3}
+admincmd.zone.chunk_claimed = Hindi makagawa ng zone: Ang chunk na ito ay naka-claim ng isang paksyon.
+admincmd.zone.already_exists = Mayroon nang zone sa lokasyong ito.
+admincmd.zone.name_taken = Mayroon nang zone na may ganitong pangalan.
+admincmd.zone.not_found = Hindi nahanap ang zone na '{0}'.
+admincmd.zone.unclaimed = Na-unclaim ang chunk mula sa zone.
+admincmd.zone.no_chunk = Walang nahanap na zone chunk sa lokasyong ito.
+admincmd.zone.none = Walang mga na-define na zone.
+admincmd.zone.deleted = Natanggal ang zone na '{0}' ({1} chunk na-release)
+admincmd.zone.renamed = Pinalitan ang pangalan ng zone na '{0}' sa '{1}'
+admincmd.zone.invalid_type = Hindi wastong zone type. Gamitin ang 'safe' o 'war'
+admincmd.zone.invalid_name = Hindi wastong zone name. Dapat 1-32 karakter.
+admincmd.zone.claimed_radius = Na-claim ang {0} chunk para sa zone na '{1}'
+admincmd.zone.no_chunks_claimed = Walang chunk na maaaring ma-claim (lahat ay okupado o nasa zone na).
+admincmd.zone.unknown_command = Hindi kilalang zone command. Gamitin ang /f admin help
+admincmd.zone.chunk_has_zone = Ang chunk na ito ay pag-aari na ng ibang zone.
+admincmd.zone.chunk_has_faction = Ang chunk na ito ay naka-claim ng isang paksyon.
+admincmd.zone.notify_set = Entry notification ng zone na '{0}' {1}
+admincmd.zone.title_set = Naitakda ang {0} title ng zone na '{1}' sa: {2}
+admincmd.zone.title_cleared = Na-clear ang {0} title ng zone na '{1}' (gamit ang default)
+admincmd.zone.no_zone_at = Walang zone sa iyong lokasyon. Tumayo sa isang zone upang pamahalaan ang mga flag.
+admincmd.zone.flag_cleared = Na-clear ang flag na '{0}' (gamit na ang default: {1})
+admincmd.zone.flag_set = Naitakda ang flag na '{0}' sa {1}
+admincmd.zone.flag_invalid = Hindi wastong flag: {0}
+admincmd.zone.flags_cleared = Na-clear lahat ng custom flag ng '{0}' - gamit na ang mga zone type default.
+
+# Admin - Mundo
+admincmd.world.unknown_command = Hindi kilalang world command. Gamitin ang /f admin world help
+admincmd.world.no_settings = Walang na-configure na per-world settings.
+admincmd.world.unknown_setting = Hindi kilalang setting: {0}
+admincmd.world.set = Naitakda ang {0}={1} para sa mundo na {2}
+admincmd.world.reset = Natanggal ang per-world settings para sa: {0}
+admincmd.world.not_found = Walang nahanap na settings para sa mundo: {0}
+
+# Admin - Map/Decay
+admincmd.map.not_available = Hindi available ang world map service.
+admincmd.map.refreshing = Pinipilit ang buong world map refresh...
+admincmd.map.refreshed = Kumpleto na ang world map refresh.
+admincmd.map.unknown_command = Hindi kilalang map command: {0}
+admincmd.decay.disabled = Naka-disable ang claim decay sa config.
+admincmd.decay.running = Nire-run ang claim decay check...
+admincmd.decay.complete = Kumpleto na ang claim decay check. I-check ang console para sa mga detalye.
+admincmd.decay.unknown_command = Hindi kilalang decay command: {0}
+
+# Admin - Update
+admincmd.update.not_available = Hindi available ang update checker.
+admincmd.update.checking = Nagche-check ng mga update...
+admincmd.update.up_to_date = Na-update na ang plugin (v{0})
+admincmd.update.available = May available na update: v{0}
+admincmd.update.unknown_target = Hindi kilalang update target: {0}
+
+# Admin - Import
+admincmd.import.unknown_source = Hindi kilalang import source: {0}
+admincmd.import.importing = Nag-i-import mula sa {0}...
+admincmd.import.complete = {0} import {1}kumpleto na!
+admincmd.import.failed = {0} import nabigo nang may mga error:
+
+# Admin - Update Notifications
+admincmd.update_notify.new_version = [HyperFactions] May bagong bersyon na magagamit!
+admincmd.update_notify.version_info = Kasalukuyan: v{0} -> Pinakabago: v{1}
+admincmd.update_notify.instruction = Patakbuhin ang /f admin update upang i-update ang plugin.
+admincmd.update_notify.up_to_date = [HyperFactions] Ang plugin ay updated na (v{0})
+admincmd.update.no_info = Walang impormasyon tungkol sa update.
+admincmd.update.creating_backup = Gumagawa ng pre-update backup...
+admincmd.update.backup_created = Backup nagawa: {0}
+admincmd.update.backup_warning = Babala: Nabigo ang backup - {0}
+admincmd.update.backup_continue = Nagpapatuloy sa update kahit na...
+admincmd.update.downloading = Dina-download ang HyperFactions v{0}...
+admincmd.update.download_failed = Nabigo ang download. Suriin ang mga log ng server.
+admincmd.update.downloaded = Matagumpay na na-download ang update!
+admincmd.update.file_label = File: {0}
+admincmd.update.cleanup = Paglilinis: {0} lumang backup(s) na tinanggal
+admincmd.update.kept_backup = Napanatili: {0} (para sa rollback)
+admincmd.update.restart = I-restart ang server upang i-apply ang update.
+admincmd.update.use_rollback = Gamitin ang /f admin rollback upang ibalik bago mag-restart.
+admincmd.update.usage_hf = /f admin update — i-update ang HyperFactions
+admincmd.update.usage_mixin = /f admin update mixin — i-update ang HyperProtect-Mixin
+admincmd.update.usage_toggle = /f admin update toggle-mixin-download — i-toggle ang auto-download
+admincmd.update.mixin_current = HyperProtect-Mixin: {0}
+admincmd.update.mixin_up_to_date = Ang HyperProtect-Mixin ay updated na.
+admincmd.update.mixin_none = Wala pang mga release ng HyperProtect-Mixin.
+admincmd.update.mixin_available = Magagamit: v{0}
+admincmd.update.mixin_downloading = Dina-download ang HyperProtect-Mixin v{0}...
+admincmd.update.mixin_downloaded = Matagumpay na na-download!
+admincmd.update.mixin_failed = Nabigo ang download. Suriin ang mga log ng server.
+admincmd.update.mixin_location = Lokasyon: earlyplugins/
+admincmd.update.mixin_restart = I-restart ang server upang i-apply.
+admincmd.update.mixin_auto_on = HP-Mixin auto-download naka-enable.
+admincmd.update.mixin_auto_on_desc = Awtomatikong ida-download ang HyperProtect-Mixin sa susunod na startup kung hindi naka-install.
+admincmd.update.mixin_auto_off = HP-Mixin auto-download naka-disable.
+admincmd.update.mixin_auto_off_desc = Gamitin ang /f admin update mixin upang manual na mag-download.
+admincmd.rollback.no_backup = Walang backup JAR na nahanap para sa rollback.
+admincmd.rollback.unsafe = Hindi maaaring mag-rollback nang awtomatiko!
+admincmd.rollback.unsafe_reason = Na-restart ang server mula sa huling update.
+admincmd.rollback.unsafe_migration = Maaaring nai-apply na ang mga migration ng config/data.
+admincmd.rollback.instructions = Upang ligtas na mag-rollback, kailangan mong:
+admincmd.rollback.find_backup = Gamitin ang /f admin backup list upang mahanap ang pre-update backup.
+admincmd.rollback.rolling = Inibabalik ang update...
+admincmd.rollback.from = Mula: v{0} (bago)
+admincmd.rollback.to = Papunta: v{0} (nakaraan)
+admincmd.rollback.version = Inibabalik sa v{0}...
+admincmd.rollback.success = Matagumpay ang rollback!
+admincmd.rollback.restored = Naibalik: {0}
+admincmd.rollback.removed = Tinanggal: {0}
+admincmd.rollback.restart = I-restart ang server upang i-apply ang rollback.
+admincmd.rollback.failed = Nabigo ang rollback: {0}
+admincmd.zone.failed = Nabigo: {0}
+admincmd.zone.failed_delete = Hindi ma-delete ang zone: {0}
+admincmd.zone.failed_rename = Hindi ma-rename ang zone: {0}
+admincmd.zone.failed_flags = Hindi ma-reset ang mga flag.
+admincmd.zone.failed_flag = Hindi ma-set ang flag.
+admincmd.zone.list_header = Mga Zone ({0})
+admincmd.zone.info_header = Zone: {0}
+admincmd.zone.info_notify = Abiso: {0}
+admincmd.zone.info_upper_title = Itaas na titulo: {0}
+admincmd.zone.info_lower_title = Ibabang titulo: {0}
+admincmd.zone.info_custom_flags = Mga Custom Flag:
+admincmd.zone.flags_header = Mga Flag ng Zone: {0}
+admincmd.zone.flags_type = Uri ng Zone: {0}
+admincmd.zone.player_only = Ang command na ito ay para lamang sa mga manlalaro.
+admincmd.decay.status_header = Status ng Pagkabulok ng Teritoryo
+admincmd.decay.enable_hint = I-set ang claims.decayEnabled sa true upang i-activate.
+admincmd.decay.error = Error sa pagkabulok: {0}
+admincmd.decay.check_header = Pagsusuri ng Pagkabulok: {0}
+admincmd.decay.check_not_found = Hindi nahanap ang faction na '{0}'.
+admincmd.decay.no_claims = Walang mga teritoryo na mabubulok.
+admincmd.decay.disabled_globally = Naka-disable sa buong mundo
+admincmd.map.status_header = Status ng Mapa ng Mundo
+admincmd.debug.status_header = Status ng Debug Logging
+admincmd.debug.full_status_header = Status ng HyperFactions Debug
+common.no_description = Walang nakatakdang paglalarawan.
+common.member_count = {0} mga miyembro
+common.economy_disabled = Hindi naka-enable ang sistema ng ekonomiya.
+territory.display.wilderness = Kagubatan
+territory.display.safezone = Ligtas na Zona
+territory.display.warzone = Zona ng Digmaan
+territory.display.unknown_faction = Hindi Kilalang Faction
+territory.secondary.pvp_disabled = PvP Naka-disable
+territory.secondary.pvp_no_protection = PvP Naka-enable - Walang Proteksyon
+territory.secondary.your_territory = Iyong Teritoryo
+territory.secondary.faction_territory = Teritoryo
+territory.secondary.relation_territory = Teritoryo ng {0}
+announce.death_location = {0} namatay sa ({1}, {2}, {3}) sa {4}

@@ -12,7 +12,8 @@ import com.hyperfactions.manager.ConfirmationManager.ConfirmationType;
 import com.hyperfactions.manager.ConfirmationManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -43,7 +44,7 @@ public class TransferSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.TRANSFER)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Rank.TRANSFER_NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rank.TRANSFER_NO_PERMISSION));
       return;
     }
 
@@ -55,7 +56,7 @@ public class TransferSubCommand extends FactionSubCommand {
     // Check if leader
     FactionMember member = faction.getMember(player.getUuid());
     if (member == null || !member.isLeader()) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.MUST_BE_LEADER));
+      ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.MUST_BE_LEADER));
       return;
     }
 
@@ -63,7 +64,7 @@ public class TransferSubCommand extends FactionSubCommand {
     FactionCommandContext fctx = parseContext(rawArgs);
 
     if (!fctx.hasArgs()) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Rank.TRANSFER_USAGE));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rank.TRANSFER_USAGE));
       return;
     }
 
@@ -73,7 +74,7 @@ public class TransferSubCommand extends FactionSubCommand {
       .findFirst().orElse(null);
 
     if (target == null) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Rank.PLAYER_NOT_IN_FACTION));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rank.PLAYER_NOT_IN_FACTION));
       return;
     }
 
@@ -95,8 +96,8 @@ public class TransferSubCommand extends FactionSubCommand {
 
     switch (confirmResult) {
       case NEEDS_CONFIRMATION, EXPIRED_RECREATED -> {
-        ctx.sendMessage(MessageUtil.info(player, MessageKeys.Rank.TRANSFER_CONFIRM, COLOR_YELLOW, target.username()));
-        ctx.sendMessage(MessageUtil.info(player, MessageKeys.Rank.TRANSFER_CONFIRM_INSTRUCTION, COLOR_YELLOW,
+        ctx.sendMessage(MessageUtil.info(player, CommandKeys.Rank.TRANSFER_CONFIRM, COLOR_YELLOW, target.username()));
+        ctx.sendMessage(MessageUtil.info(player, CommandKeys.Rank.TRANSFER_CONFIRM_INSTRUCTION, COLOR_YELLOW,
           target.username(), confirmManager.getTimeoutSeconds()));
       }
       case CONFIRMED -> {
@@ -104,14 +105,14 @@ public class TransferSubCommand extends FactionSubCommand {
           faction.id(), target.uuid(), player.getUuid()
         );
         if (result == FactionManager.FactionResult.SUCCESS) {
-          ctx.sendMessage(MessageUtil.success(player, MessageKeys.Rank.TRANSFERRED, target.username()));
-          broadcastToFaction(faction.id(), MessageUtil.success(player, MessageKeys.Rank.TRANSFER_BROADCAST, target.username()));
+          ctx.sendMessage(MessageUtil.success(player, CommandKeys.Rank.TRANSFERRED, target.username()));
+          broadcastToFaction(faction.id(), MessageUtil.success(player, CommandKeys.Rank.TRANSFER_BROADCAST, target.username()));
         } else {
-          ctx.sendMessage(MessageUtil.error(player, MessageKeys.Rank.TRANSFER_FAILED));
+          ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rank.TRANSFER_FAILED));
         }
       }
       case DIFFERENT_ACTION -> {
-        ctx.sendMessage(MessageUtil.info(player, MessageKeys.Rank.TRANSFER_CANCELLED, COLOR_YELLOW));
+        ctx.sendMessage(MessageUtil.info(player, CommandKeys.Rank.TRANSFER_CANCELLED, COLOR_YELLOW));
       }
       default -> throw new IllegalStateException("Unexpected value");
     }

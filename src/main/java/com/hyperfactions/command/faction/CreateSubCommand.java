@@ -8,7 +8,8 @@ import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -39,7 +40,7 @@ public class CreateSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.CREATE)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Create.NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Create.NO_PERMISSION));
       return;
     }
 
@@ -57,7 +58,7 @@ public class CreateSubCommand extends FactionSubCommand {
 
     // Text mode or with args: create directly
     if (!fctx.hasArgs()) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Create.USAGE));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Create.USAGE));
       return;
     }
 
@@ -68,7 +69,7 @@ public class CreateSubCommand extends FactionSubCommand {
 
     switch (result) {
       case SUCCESS -> {
-        ctx.sendMessage(MessageUtil.success(player, MessageKeys.Create.SUCCESS, name));
+        ctx.sendMessage(MessageUtil.success(player, CommandKeys.Create.SUCCESS, name));
         // Open dashboard after creation (if not text mode)
         if (!fctx.isTextMode()) {
           Player playerEntity = store.getComponent(ref, Player.getComponentType());
@@ -81,16 +82,16 @@ public class CreateSubCommand extends FactionSubCommand {
       case ALREADY_IN_FACTION -> {
         Faction existingFaction = hyperFactions.getFactionManager().getPlayerFaction(player.getUuid());
         if (existingFaction != null) {
-          ctx.sendMessage(MessageUtil.error(player, MessageKeys.Create.ALREADY_IN_NAMED, existingFaction.name()));
-          ctx.sendMessage(MessageUtil.info(player, MessageKeys.Create.USE_LEAVE_FIRST, COLOR_YELLOW));
+          ctx.sendMessage(MessageUtil.error(player, CommandKeys.Create.ALREADY_IN_NAMED, existingFaction.name()));
+          ctx.sendMessage(MessageUtil.info(player, CommandKeys.Create.USE_LEAVE_FIRST, COLOR_YELLOW));
         } else {
-          ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.ALREADY_IN_FACTION));
+          ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.ALREADY_IN_FACTION));
         }
       }
-      case NAME_TAKEN -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Create.NAME_TAKEN));
-      case NAME_TOO_SHORT -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Create.NAME_TOO_SHORT));
-      case NAME_TOO_LONG -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Create.NAME_TOO_LONG));
-      default -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Create.FAILED));
+      case NAME_TAKEN -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Create.NAME_TAKEN));
+      case NAME_TOO_SHORT -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Create.NAME_TOO_SHORT));
+      case NAME_TOO_LONG -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Create.NAME_TOO_LONG));
+      default -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Create.FAILED));
     }
   }
 }

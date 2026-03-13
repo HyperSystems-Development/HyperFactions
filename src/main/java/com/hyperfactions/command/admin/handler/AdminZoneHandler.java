@@ -6,6 +6,8 @@ import com.hyperfactions.data.Zone;
 import com.hyperfactions.data.ZoneFlags;
 import com.hyperfactions.data.ZoneType;
 import com.hyperfactions.manager.ZoneManager;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.AdminKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.Message;
@@ -57,15 +59,15 @@ public class AdminZoneHandler {
       zoneName, ZoneType.SAFE, world.getName(), chunkX, chunkZ, player.getUuid()
     );
     if (result == ZoneManager.ZoneResult.SUCCESS) {
-      ctx.sendMessage(prefix().insert(msg("Created SafeZone '" + zoneName + "' at " + chunkX + ", " + chunkZ, COLOR_GREEN)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.ZONE_CREATED, zoneName, "SafeZone"), COLOR_GREEN)));
     } else if (result == ZoneManager.ZoneResult.CHUNK_CLAIMED) {
-      ctx.sendMessage(prefix().insert(msg("Cannot create zone: This chunk is claimed by a faction.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.ZONE_CHUNK_HAS_FACTION, "unknown"), COLOR_RED)));
     } else if (result == ZoneManager.ZoneResult.ALREADY_EXISTS) {
-      ctx.sendMessage(prefix().insert(msg("A zone already exists at this location.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.ZONE_ALREADY_EXISTS), COLOR_RED)));
     } else if (result == ZoneManager.ZoneResult.NAME_TAKEN) {
-      ctx.sendMessage(prefix().insert(msg("A zone with that name already exists.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.ZONE_NAME_TAKEN, zoneName), COLOR_RED)));
     } else {
-      ctx.sendMessage(prefix().insert(msg("Failed: " + result, COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.ZONE_FAILED, result), COLOR_RED)));
     }
   }
 
@@ -76,15 +78,15 @@ public class AdminZoneHandler {
       zoneName, ZoneType.WAR, world.getName(), chunkX, chunkZ, player.getUuid()
     );
     if (result == ZoneManager.ZoneResult.SUCCESS) {
-      ctx.sendMessage(prefix().insert(msg("Created WarZone '" + zoneName + "' at " + chunkX + ", " + chunkZ, COLOR_GREEN)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.ZONE_CREATED, zoneName, "WarZone"), COLOR_GREEN)));
     } else if (result == ZoneManager.ZoneResult.CHUNK_CLAIMED) {
-      ctx.sendMessage(prefix().insert(msg("Cannot create zone: This chunk is claimed by a faction.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.ZONE_CHUNK_HAS_FACTION, "unknown"), COLOR_RED)));
     } else if (result == ZoneManager.ZoneResult.ALREADY_EXISTS) {
-      ctx.sendMessage(prefix().insert(msg("A zone already exists at this location.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.ZONE_ALREADY_EXISTS), COLOR_RED)));
     } else if (result == ZoneManager.ZoneResult.NAME_TAKEN) {
-      ctx.sendMessage(prefix().insert(msg("A zone with that name already exists.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.ZONE_NAME_TAKEN, zoneName), COLOR_RED)));
     } else {
-      ctx.sendMessage(prefix().insert(msg("Failed: " + result, COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.ZONE_FAILED, result), COLOR_RED)));
     }
   }
 
@@ -92,9 +94,9 @@ public class AdminZoneHandler {
   public void handleRemovezone(CommandContext ctx, World world, int chunkX, int chunkZ) {
     ZoneManager.ZoneResult result = hyperFactions.getZoneManager().unclaimChunkAt(world.getName(), chunkX, chunkZ);
     if (result == ZoneManager.ZoneResult.SUCCESS) {
-      ctx.sendMessage(prefix().insert(msg("Unclaimed chunk from zone.", COLOR_GREEN)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_UNCLAIMED, chunkX, chunkZ), COLOR_GREEN)));
     } else {
-      ctx.sendMessage(prefix().insert(msg("No zone chunk found at this location.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_NO_CHUNK), COLOR_RED)));
     }
   }
 
@@ -135,26 +137,26 @@ public class AdminZoneHandler {
         if (isPlayer) {
           handleZoneClaim(ctx, worldName, chunkX, chunkZ, subArgs);
         } else {
-          ctx.sendMessage(prefix().insert(msg("This command can only be used by a player.", COLOR_RED)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.ZONE_PLAYER_ONLY), COLOR_RED)));
         }
       }
       case "unclaim" -> {
         if (isPlayer) {
           handleZoneUnclaim(ctx, worldName, chunkX, chunkZ);
         } else {
-          ctx.sendMessage(prefix().insert(msg("This command can only be used by a player.", COLOR_RED)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.ZONE_PLAYER_ONLY), COLOR_RED)));
         }
       }
       case "radius" -> {
         if (isPlayer) {
           handleZoneRadius(ctx, worldName, chunkX, chunkZ, subArgs);
         } else {
-          ctx.sendMessage(prefix().insert(msg("This command can only be used by a player.", COLOR_RED)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.ZONE_PLAYER_ONLY), COLOR_RED)));
         }
       }
       case "notify" -> handleZoneNotify(ctx, subArgs);
       case "title" -> handleZoneTitle(ctx, subArgs);
-      default -> ctx.sendMessage(prefix().insert(msg("Unknown zone command. Use /f admin help", COLOR_RED)));
+      default -> ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.ZONE_UNKNOWN_CMD), COLOR_RED)));
     }
   }
 
@@ -162,11 +164,11 @@ public class AdminZoneHandler {
   public void handleZoneList(CommandContext ctx) {
     var zones = hyperFactions.getZoneManager().getAllZones();
     if (zones.isEmpty()) {
-      ctx.sendMessage(prefix().insert(msg("No zones defined.", COLOR_GRAY)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_NONE), COLOR_GRAY)));
       return;
     }
 
-    ctx.sendMessage(msg("=== Zones (" + zones.size() + ") ===", COLOR_CYAN).bold(true));
+    ctx.sendMessage(msg("=== " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_LIST_HEADER, zones.size()) + " ===", COLOR_CYAN).bold(true));
     for (Zone zone : zones) {
       String typeColor = zone.isSafeZone() ? "#2dd4bf" : "#c084fc";
       ctx.sendMessage(msg("  " + zone.name(), typeColor)
@@ -190,16 +192,16 @@ public class AdminZoneHandler {
     } else if (typeStr.equals("war") || typeStr.equals("warzone")) {
       type = ZoneType.WAR;
     } else {
-      ctx.sendMessage(prefix().insert(msg("Invalid zone type. Use 'safe' or 'war'", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_INVALID_TYPE), COLOR_RED)));
       return;
     }
 
     ZoneManager.ZoneResult result = hyperFactions.getZoneManager().createZone(name, type, worldName, createdBy);
     switch (result) {
-      case SUCCESS -> ctx.sendMessage(prefix().insert(msg("Created " + type.getDisplayName() + " '" + name + "' (empty, use claim to add chunks)", COLOR_GREEN)));
-      case NAME_TAKEN -> ctx.sendMessage(prefix().insert(msg("A zone with that name already exists.", COLOR_RED)));
-      case INVALID_NAME -> ctx.sendMessage(prefix().insert(msg("Invalid zone name. Must be 1-32 characters.", COLOR_RED)));
-      default -> ctx.sendMessage(prefix().insert(msg("Failed: " + result, COLOR_RED)));
+      case SUCCESS -> ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_CREATED, name, type.getDisplayName()), COLOR_GREEN)));
+      case NAME_TAKEN -> ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_NAME_TAKEN, name), COLOR_RED)));
+      case INVALID_NAME -> ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_INVALID_NAME), COLOR_RED)));
+      default -> ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_FAILED, result), COLOR_RED)));
     }
   }
 
@@ -213,15 +215,15 @@ public class AdminZoneHandler {
     String name = args[0];
     Zone zone = hyperFactions.getZoneManager().getZoneByName(name);
     if (zone == null) {
-      ctx.sendMessage(prefix().insert(msg("Zone '" + name + "' not found.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_NOT_FOUND, name), COLOR_RED)));
       return;
     }
 
     ZoneManager.ZoneResult result = hyperFactions.getZoneManager().removeZone(zone.id());
     if (result == ZoneManager.ZoneResult.SUCCESS) {
-      ctx.sendMessage(prefix().insert(msg("Deleted zone '" + name + "' (" + zone.getChunkCount() + " chunks released)", COLOR_GREEN)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_DELETED, name, zone.getChunkCount()), COLOR_GREEN)));
     } else {
-      ctx.sendMessage(prefix().insert(msg("Failed to delete zone: " + result, COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_FAILED_DELETE, result), COLOR_RED)));
     }
   }
 
@@ -237,16 +239,16 @@ public class AdminZoneHandler {
 
     Zone zone = hyperFactions.getZoneManager().getZoneByName(currentName);
     if (zone == null) {
-      ctx.sendMessage(prefix().insert(msg("Zone '" + currentName + "' not found.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_NOT_FOUND, currentName), COLOR_RED)));
       return;
     }
 
     ZoneManager.ZoneResult result = hyperFactions.getZoneManager().renameZone(zone.id(), newName);
     switch (result) {
-      case SUCCESS -> ctx.sendMessage(prefix().insert(msg("Renamed zone '" + currentName + "' to '" + newName + "'", COLOR_GREEN)));
-      case NAME_TAKEN -> ctx.sendMessage(prefix().insert(msg("A zone with the name '" + newName + "' already exists.", COLOR_RED)));
-      case INVALID_NAME -> ctx.sendMessage(prefix().insert(msg("Invalid zone name. Must be 1-32 characters.", COLOR_RED)));
-      default -> ctx.sendMessage(prefix().insert(msg("Failed to rename zone: " + result, COLOR_RED)));
+      case SUCCESS -> ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_RENAMED, newName), COLOR_GREEN)));
+      case NAME_TAKEN -> ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_NAME_TAKEN, newName), COLOR_RED)));
+      case INVALID_NAME -> ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_INVALID_NAME), COLOR_RED)));
+      default -> ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_FAILED_RENAME, result), COLOR_RED)));
     }
   }
 
@@ -256,19 +258,19 @@ public class AdminZoneHandler {
     if (args.length > 0) {
       zone = hyperFactions.getZoneManager().getZoneByName(args[0]);
       if (zone == null) {
-        ctx.sendMessage(prefix().insert(msg("Zone '" + args[0] + "' not found.", COLOR_RED)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_NOT_FOUND, args[0]), COLOR_RED)));
         return;
       }
     } else {
       zone = hyperFactions.getZoneManager().getZone(worldName, chunkX, chunkZ);
       if (zone == null) {
-        ctx.sendMessage(prefix().insert(msg("No zone at your location.", COLOR_RED)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_NO_ZONE_AT), COLOR_RED)));
         return;
       }
     }
 
     String typeColor = zone.isSafeZone() ? "#2dd4bf" : "#c084fc";
-    ctx.sendMessage(msg("=== Zone: " + zone.name() + " ===", typeColor).bold(true));
+    ctx.sendMessage(msg("=== " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_INFO_HEADER, zone.name()) + " ===", typeColor).bold(true));
     ctx.sendMessage(msg("Type: ", COLOR_GRAY).insert(msg(zone.type().getDisplayName(), typeColor)));
     ctx.sendMessage(msg("World: ", COLOR_GRAY).insert(msg(zone.world(), COLOR_WHITE)));
     ctx.sendMessage(msg("Chunks: ", COLOR_GRAY).insert(msg(String.valueOf(zone.getChunkCount()), COLOR_WHITE)));
@@ -285,7 +287,7 @@ public class AdminZoneHandler {
     }
 
     if (!zone.getFlags().isEmpty()) {
-      ctx.sendMessage(msg("Custom Flags:", COLOR_GRAY));
+      ctx.sendMessage(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_INFO_CUSTOM_FLAGS), COLOR_GRAY));
       for (var entry : zone.getFlags().entrySet()) {
         ctx.sendMessage(msg("  " + entry.getKey() + ": " + entry.getValue(), COLOR_YELLOW));
       }
@@ -302,16 +304,16 @@ public class AdminZoneHandler {
     String name = args[0];
     Zone zone = hyperFactions.getZoneManager().getZoneByName(name);
     if (zone == null) {
-      ctx.sendMessage(prefix().insert(msg("Zone '" + name + "' not found.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_NOT_FOUND, name), COLOR_RED)));
       return;
     }
 
     ZoneManager.ZoneResult result = hyperFactions.getZoneManager().claimChunk(zone.id(), worldName, chunkX, chunkZ);
     switch (result) {
-      case SUCCESS -> ctx.sendMessage(prefix().insert(msg("Claimed chunk (" + chunkX + ", " + chunkZ + ") for zone '" + name + "'", COLOR_GREEN)));
-      case CHUNK_HAS_ZONE -> ctx.sendMessage(prefix().insert(msg("This chunk already belongs to another zone.", COLOR_RED)));
-      case CHUNK_HAS_FACTION -> ctx.sendMessage(prefix().insert(msg("This chunk is claimed by a faction.", COLOR_RED)));
-      default -> ctx.sendMessage(prefix().insert(msg("Failed: " + result, COLOR_RED)));
+      case SUCCESS -> ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_CHUNK_CLAIMED, chunkX, chunkZ, name), COLOR_GREEN)));
+      case CHUNK_HAS_ZONE -> ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_CHUNK_HAS_ZONE, "unknown"), COLOR_RED)));
+      case CHUNK_HAS_FACTION -> ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_CHUNK_HAS_FACTION, "unknown"), COLOR_RED)));
+      default -> ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_FAILED, result), COLOR_RED)));
     }
   }
 
@@ -319,9 +321,9 @@ public class AdminZoneHandler {
   public void handleZoneUnclaim(CommandContext ctx, String worldName, int chunkX, int chunkZ) {
     ZoneManager.ZoneResult result = hyperFactions.getZoneManager().unclaimChunkAt(worldName, chunkX, chunkZ);
     if (result == ZoneManager.ZoneResult.SUCCESS) {
-      ctx.sendMessage(prefix().insert(msg("Unclaimed chunk (" + chunkX + ", " + chunkZ + ") from zone.", COLOR_GREEN)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_UNCLAIMED, chunkX, chunkZ), COLOR_GREEN)));
     } else {
-      ctx.sendMessage(prefix().insert(msg("No zone chunk found at this location.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_NO_CHUNK), COLOR_RED)));
     }
   }
 
@@ -337,7 +339,7 @@ public class AdminZoneHandler {
     String name = args[0];
     Zone zone = hyperFactions.getZoneManager().getZoneByName(name);
     if (zone == null) {
-      ctx.sendMessage(prefix().insert(msg("Zone '" + name + "' not found.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_NOT_FOUND, name), COLOR_RED)));
       return;
     }
 
@@ -366,9 +368,9 @@ public class AdminZoneHandler {
 
     int claimed = hyperFactions.getZoneManager().claimRadius(zone.id(), worldName, chunkX, chunkZ, radius, circle);
     if (claimed > 0) {
-      ctx.sendMessage(prefix().insert(msg("Claimed " + claimed + " chunks for zone '" + name + "'", COLOR_GREEN)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_CLAIMED_RADIUS, claimed, name), COLOR_GREEN)));
     } else {
-      ctx.sendMessage(prefix().insert(msg("No chunks could be claimed (all occupied or already in zone).", COLOR_YELLOW)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_NO_CHUNKS_CLAIMED), COLOR_YELLOW)));
     }
   }
 
@@ -382,7 +384,7 @@ public class AdminZoneHandler {
     String name = args[0];
     Zone zone = hyperFactions.getZoneManager().getZoneByName(name);
     if (zone == null) {
-      ctx.sendMessage(prefix().insert(msg("Zone '" + name + "' not found.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_NOT_FOUND, name), COLOR_RED)));
       return;
     }
 
@@ -400,10 +402,9 @@ public class AdminZoneHandler {
     ZoneManager.ZoneResult result = hyperFactions.getZoneManager().setZoneNotifyOnEntry(zone.id(), notifyValue);
     if (result == ZoneManager.ZoneResult.SUCCESS) {
       boolean enabled = notifyValue == null || notifyValue;
-      ctx.sendMessage(prefix().insert(msg("Zone '" + name + "' entry notification "
-          + (enabled ? "enabled" : "disabled"), COLOR_GREEN)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_NOTIFY_SET, name, enabled ? "enabled" : "disabled"), COLOR_GREEN)));
     } else {
-      ctx.sendMessage(prefix().insert(msg("Failed: " + result, COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_FAILED, result), COLOR_RED)));
     }
   }
 
@@ -417,7 +418,7 @@ public class AdminZoneHandler {
     String name = args[0];
     Zone zone = hyperFactions.getZoneManager().getZoneByName(name);
     if (zone == null) {
-      ctx.sendMessage(prefix().insert(msg("Zone '" + name + "' not found.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_NOT_FOUND, name), COLOR_RED)));
       return;
     }
 
@@ -436,12 +437,12 @@ public class AdminZoneHandler {
 
     if (result == ZoneManager.ZoneResult.SUCCESS) {
       if (text.equals("clear")) {
-        ctx.sendMessage(prefix().insert(msg("Cleared " + position + " title for zone '" + name + "' (using default)", COLOR_GREEN)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_TITLE_CLEARED, name), COLOR_GREEN)));
       } else {
-        ctx.sendMessage(prefix().insert(msg("Set " + position + " title for zone '" + name + "' to: " + text, COLOR_GREEN)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_TITLE_SET, name, text), COLOR_GREEN)));
       }
     } else {
-      ctx.sendMessage(prefix().insert(msg("Failed: " + result, COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_FAILED, result), COLOR_RED)));
     }
   }
 
@@ -449,13 +450,13 @@ public class AdminZoneHandler {
   public void handleZoneFlag(CommandContext ctx, String worldName, int chunkX, int chunkZ, String[] args) {
     Zone zone = hyperFactions.getZoneManager().getZone(worldName, chunkX, chunkZ);
     if (zone == null) {
-      ctx.sendMessage(prefix().insert(msg("No zone at your location. Stand in a zone to manage flags.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_NO_ZONE_AT), COLOR_RED)));
       return;
     }
 
     if (args.length == 0) {
-      ctx.sendMessage(msg("=== Zone Flags: " + zone.name() + " ===", COLOR_CYAN).bold(true));
-      ctx.sendMessage(msg("Zone Type: " + zone.type().getDisplayName(), COLOR_GRAY));
+      ctx.sendMessage(msg("=== " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_FLAGS_HEADER, zone.name()) + " ===", COLOR_CYAN).bold(true));
+      ctx.sendMessage(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_FLAGS_TYPE, zone.type().getDisplayName()), COLOR_GRAY));
       ctx.sendMessage(msg("", COLOR_GRAY));
 
       for (String flag : ZoneFlags.ALL_FLAGS) {
@@ -475,16 +476,16 @@ public class AdminZoneHandler {
     if (args[0].equalsIgnoreCase("clearall") || args[0].equalsIgnoreCase("resetall")) {
       ZoneManager.ZoneResult result = hyperFactions.getZoneManager().clearAllZoneFlags(zone.id());
       if (result == ZoneManager.ZoneResult.SUCCESS) {
-        ctx.sendMessage(prefix().insert(msg("Cleared all custom flags for '" + zone.name() + "' - now using zone type defaults.", COLOR_GREEN)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_FLAGS_CLEARED, zone.name()), COLOR_GREEN)));
       } else {
-        ctx.sendMessage(prefix().insert(msg("Failed to clear flags.", COLOR_RED)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_FAILED_FLAGS), COLOR_RED)));
       }
       return;
     }
 
     String flagName = args[0].toLowerCase();
     if (!ZoneFlags.isValidFlag(flagName)) {
-      ctx.sendMessage(prefix().insert(msg("Invalid flag: " + flagName, COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_FLAG_INVALID, flagName), COLOR_RED)));
       ctx.sendMessage(msg("Valid flags: " + String.join(", ", ZoneFlags.ALL_FLAGS), COLOR_GRAY));
       return;
     }
@@ -504,17 +505,17 @@ public class AdminZoneHandler {
       result = hyperFactions.getZoneManager().clearZoneFlag(zone.id(), flagName);
       if (result == ZoneManager.ZoneResult.SUCCESS) {
         boolean defaultValue = zone.isSafeZone() ? ZoneFlags.getSafeZoneDefault(flagName) : ZoneFlags.getWarZoneDefault(flagName);
-        ctx.sendMessage(prefix().insert(msg("Cleared flag '" + flagName + "' (now using default: " + defaultValue + ")", COLOR_GREEN)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_FLAG_CLEARED, flagName, zone.name()), COLOR_GREEN)));
       } else {
-        ctx.sendMessage(prefix().insert(msg("Failed to clear flag.", COLOR_RED)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_FAILED_FLAG), COLOR_RED)));
       }
     } else if (action.equals("true") || action.equals("false")) {
       boolean value = action.equals("true");
       result = hyperFactions.getZoneManager().setZoneFlag(zone.id(), flagName, value);
       if (result == ZoneManager.ZoneResult.SUCCESS) {
-        ctx.sendMessage(prefix().insert(msg("Set flag '" + flagName + "' to " + value, COLOR_GREEN)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_FLAG_SET, flagName, value, zone.name()), COLOR_GREEN)));
       } else {
-        ctx.sendMessage(prefix().insert(msg("Failed to set flag.", COLOR_RED)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ZONE_FAILED_FLAG), COLOR_RED)));
       }
     } else {
       ctx.sendMessage(prefix().insert(msg("Invalid value. Use: true, false, or clear", COLOR_RED)));

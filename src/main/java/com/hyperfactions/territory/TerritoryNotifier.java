@@ -153,17 +153,17 @@ public class TerritoryNotifier {
 
     if (!territory.isNotificationEnabled()) {
       Logger.debugTerritory("Notification suppressed for %s: %s",
-          playerRef.getUsername(), territory.getPrimaryText());
+          playerRef.getUsername(), territory.getPrimaryText(playerRef));
       return;
     }
 
     try {
       // Build primary message (territory name)
-      Message primaryMessage = Message.raw(territory.getPrimaryText())
+      Message primaryMessage = Message.raw(territory.getPrimaryText(playerRef))
           .color(territory.getDisplayColor());
 
       // Build secondary message (territory type description)
-      String secondaryText = territory.getSecondaryText();
+      String secondaryText = territory.getSecondaryText(playerRef);
       Message secondaryMessage = secondaryText != null
           ? Message.raw(secondaryText).color("#AAAAAA")
           : Message.raw("");
@@ -182,7 +182,7 @@ public class TerritoryNotifier {
       );
 
       Logger.debugTerritory("Sent territory notification to %s: %s",
-          playerRef.getUsername(), territory.getPrimaryText());
+          playerRef.getUsername(), territory.getPrimaryText(playerRef));
 
     } catch (Exception e) {
       // Fallback to chat message if notification fails
@@ -199,8 +199,8 @@ public class TerritoryNotifier {
    */
   private void sendChatFallback(@NotNull PlayerRef playerRef, @NotNull TerritoryInfo territory) {
     try {
-      String secondaryText = territory.getSecondaryText();
-      Message message = Message.raw("~ " + territory.getPrimaryText())
+      String secondaryText = territory.getSecondaryText(playerRef);
+      Message message = Message.raw("~ " + territory.getPrimaryText(playerRef))
           .color(territory.getDisplayColor());
 
       if (secondaryText != null) {

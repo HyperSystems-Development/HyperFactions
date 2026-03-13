@@ -7,8 +7,11 @@ import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.config.modules.ServerConfig;
 import com.hyperfactions.update.UpdateChecker;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.AdminKeys;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import java.nio.file.Path;
 import java.util.UUID;
 
@@ -64,10 +67,10 @@ public class AdminUpdateHandler {
       // Legacy alias
       case "disable-mixin-download" -> handleToggleMixinDownload(ctx);
       default -> {
-        ctx.sendMessage(prefix().insert(msg("Unknown update target: " + subArgs[0], COLOR_RED)));
-        ctx.sendMessage(msg("  /f admin update — update HyperFactions", COLOR_GRAY));
-        ctx.sendMessage(msg("  /f admin update mixin — update HyperProtect-Mixin", COLOR_GRAY));
-        ctx.sendMessage(msg("  /f admin update toggle-mixin-download — toggle auto-download", COLOR_GRAY));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_UNKNOWN_TARGET, subArgs[0]), COLOR_RED)));
+        ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_USAGE_HF), COLOR_GRAY));
+        ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_USAGE_MIXIN), COLOR_GRAY));
+        ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_USAGE_TOGGLE), COLOR_GRAY));
       }
     }
   }
@@ -77,17 +80,17 @@ public class AdminUpdateHandler {
   private void handleHyperFactionsUpdate(CommandContext ctx, UUID senderUuid) {
     var updateChecker = hyperFactions.getUpdateChecker();
     if (updateChecker == null) {
-      ctx.sendMessage(prefix().insert(msg("Update checker is not available.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_NOT_AVAILABLE), COLOR_RED)));
       return;
     }
 
     if (!updateChecker.hasUpdateAvailable()) {
-      ctx.sendMessage(prefix().insert(msg("Checking for updates...", COLOR_YELLOW)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_CHECKING), COLOR_YELLOW)));
       updateChecker.checkForUpdates(true).thenAccept(info -> {
         if (info == null) {
-          ctx.sendMessage(prefix().insert(msg("Plugin is already up-to-date (v" + updateChecker.getCurrentVersion() + ")", COLOR_GREEN)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_UP_TO_DATE, updateChecker.getCurrentVersion()), COLOR_GREEN)));
         } else {
-          ctx.sendMessage(prefix().insert(msg("Update available: v" + info.version(), COLOR_GREEN)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_AVAILABLE, info.version()), COLOR_GREEN)));
           startHyperFactionsDownload(ctx, senderUuid, updateChecker, info);
         }
       });
@@ -96,7 +99,7 @@ public class AdminUpdateHandler {
 
     var info = updateChecker.getCachedUpdate();
     if (info == null) {
-      ctx.sendMessage(prefix().insert(msg("No update information available.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_NO_INFO), COLOR_RED)));
       return;
     }
 
@@ -109,40 +112,40 @@ public class AdminUpdateHandler {
     String currentVersion = updateChecker.getCurrentVersion();
 
     // Step 1: Create a data backup before downloading the update
-    ctx.sendMessage(prefix().insert(msg("Creating pre-update backup...", COLOR_YELLOW)));
+    ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_CREATING_BACKUP), COLOR_YELLOW)));
 
     hyperFactions.getBackupManager().createBackup(BackupType.MANUAL, "pre-update-" + currentVersion, senderUuid)
       .thenCompose(backupResult -> {
         if (backupResult instanceof BackupManager.BackupResult.Success success) {
-          ctx.sendMessage(prefix().insert(msg("Backup created: " + success.metadata().name(), COLOR_GREEN)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_BACKUP_CREATED, success.metadata().name()), COLOR_GREEN)));
         } else if (backupResult instanceof BackupManager.BackupResult.Failure failure) {
-          ctx.sendMessage(prefix().insert(msg("Warning: Backup failed - " + failure.error(), COLOR_YELLOW)));
-          ctx.sendMessage(msg("  Continuing with update anyway...", COLOR_GRAY));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_BACKUP_WARNING, failure.error()), COLOR_YELLOW)));
+          ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_BACKUP_CONTINUE), COLOR_GRAY));
         }
 
         // Step 2: Download the update
-        ctx.sendMessage(prefix().insert(msg("Downloading HyperFactions v" + info.version() + "...", COLOR_YELLOW)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_DOWNLOADING, info.version()), COLOR_YELLOW)));
         return updateChecker.downloadUpdate(info);
       })
       .thenAccept(path -> {
         if (path == null) {
-          ctx.sendMessage(prefix().insert(msg("Failed to download update. Check server logs.", COLOR_RED)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_DOWNLOAD_FAILED), COLOR_RED)));
         } else {
-          ctx.sendMessage(prefix().insert(msg("Update downloaded successfully!", COLOR_GREEN)));
-          ctx.sendMessage(msg("  File: " + path.getFileName(), COLOR_GRAY));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_DOWNLOADED), COLOR_GREEN)));
+          ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_FILE_LABEL, path.getFileName()), COLOR_GRAY));
 
           // Step 3: Clean up old JAR backups (keep only the version we just upgraded from)
           int cleaned = updateChecker.cleanupOldBackups(currentVersion);
           if (cleaned > 0) {
-            ctx.sendMessage(msg("  Cleanup: Removed " + cleaned + " old backup(s)", COLOR_GRAY));
+            ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_CLEANUP, cleaned), COLOR_GRAY));
           }
-          ctx.sendMessage(msg("  Kept: " + updateChecker.getArtifactName() + "-" + currentVersion + ".jar.backup (for rollback)", COLOR_GRAY));
+          ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_KEPT_BACKUP, updateChecker.getArtifactName() + "-" + currentVersion + ".jar.backup"), COLOR_GRAY));
 
           // Step 4: Create rollback marker (safe to rollback until server restarts)
           updateChecker.createRollbackMarker(currentVersion, info.version());
 
-          ctx.sendMessage(msg("  Restart the server to apply the update.", COLOR_YELLOW));
-          ctx.sendMessage(msg("  Use /f admin rollback to revert before restarting.", COLOR_GRAY));
+          ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_RESTART), COLOR_YELLOW));
+          ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_USE_ROLLBACK), COLOR_GRAY));
 
           // Run manual backup rotation to respect retention limits
           hyperFactions.getBackupManager().performRotation();
@@ -172,31 +175,31 @@ public class AdminUpdateHandler {
         ? System.getProperty("hyperprotect.bridge.version", "unknown")
         : "not installed";
 
-    ctx.sendMessage(prefix().insert(msg("HyperProtect-Mixin: " + currentVersion, COLOR_CYAN)));
-    ctx.sendMessage(prefix().insert(msg("Checking for updates...", COLOR_YELLOW)));
+    ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_MIXIN_CURRENT, currentVersion), COLOR_CYAN)));
+    ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_CHECKING), COLOR_YELLOW)));
 
     final var checker = hpChecker;
     checker.checkForUpdates(true).thenAccept(info -> {
       if (info == null) {
         if (hpDetected) {
-          ctx.sendMessage(prefix().insert(msg("HyperProtect-Mixin is up-to-date.", COLOR_GREEN)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_MIXIN_UP_TO_DATE), COLOR_GREEN)));
         } else {
-          ctx.sendMessage(prefix().insert(msg("No HyperProtect-Mixin releases available yet.", COLOR_YELLOW)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_MIXIN_NONE), COLOR_YELLOW)));
         }
         return;
       }
 
-      ctx.sendMessage(prefix().insert(msg("Available: v" + info.version(), COLOR_GREEN)));
-      ctx.sendMessage(prefix().insert(msg("Downloading HyperProtect-Mixin v" + info.version() + "...", COLOR_YELLOW)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_MIXIN_AVAILABLE, info.version()), COLOR_GREEN)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_MIXIN_DOWNLOADING, info.version()), COLOR_YELLOW)));
 
       checker.downloadUpdate(info).thenAccept(path -> {
         if (path == null) {
-          ctx.sendMessage(prefix().insert(msg("Failed to download. Check server logs.", COLOR_RED)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_MIXIN_FAILED), COLOR_RED)));
         } else {
-          ctx.sendMessage(prefix().insert(msg("Downloaded successfully!", COLOR_GREEN)));
-          ctx.sendMessage(msg("  File: " + path.getFileName(), COLOR_GRAY));
-          ctx.sendMessage(msg("  Location: earlyplugins/", COLOR_GRAY));
-          ctx.sendMessage(msg("  Restart the server to apply.", COLOR_YELLOW));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_MIXIN_DOWNLOADED), COLOR_GREEN)));
+          ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_FILE_LABEL, path.getFileName()), COLOR_GRAY));
+          ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_MIXIN_LOCATION), COLOR_GRAY));
+          ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_MIXIN_RESTART), COLOR_YELLOW));
         }
       });
     });
@@ -212,11 +215,11 @@ public class AdminUpdateHandler {
     ConfigManager.get().saveAll();
 
     if (newValue) {
-      ctx.sendMessage(prefix().insert(msg("HP-Mixin auto-download enabled.", COLOR_GREEN)));
-      ctx.sendMessage(msg("  HyperProtect-Mixin will be downloaded automatically on next startup if not installed.", COLOR_GRAY));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_MIXIN_AUTO_ON), COLOR_GREEN)));
+      ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_MIXIN_AUTO_ON_DESC), COLOR_GRAY));
     } else {
-      ctx.sendMessage(prefix().insert(msg("HP-Mixin auto-download disabled.", COLOR_GREEN)));
-      ctx.sendMessage(msg("  Use /f admin update mixin to download manually.", COLOR_GRAY));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_MIXIN_AUTO_OFF), COLOR_GREEN)));
+      ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_MIXIN_AUTO_OFF_DESC), COLOR_GRAY));
     }
   }
 
@@ -226,14 +229,14 @@ public class AdminUpdateHandler {
   public void handleAdminRollback(CommandContext ctx) {
     var updateChecker = hyperFactions.getUpdateChecker();
     if (updateChecker == null) {
-      ctx.sendMessage(prefix().insert(msg("Update checker is not available.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.UPDATE_NOT_AVAILABLE), COLOR_RED)));
       return;
     }
 
     // Check if there's a backup to rollback to
     Path latestBackup = updateChecker.findLatestBackup();
     if (latestBackup == null) {
-      ctx.sendMessage(prefix().insert(msg("No backup JAR found to rollback to.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ROLLBACK_NO_BACKUP), COLOR_RED)));
       return;
     }
 
@@ -245,12 +248,12 @@ public class AdminUpdateHandler {
     // Check if rollback is safe (server hasn't restarted since update)
     if (!updateChecker.isRollbackSafe()) {
       // Server has restarted - migrations may have run
-      ctx.sendMessage(prefix().insert(msg("Cannot automatically rollback!", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ROLLBACK_UNSAFE), COLOR_RED)));
       ctx.sendMessage(msg("", COLOR_GRAY));
-      ctx.sendMessage(msg("The server has been restarted since the last update.", COLOR_YELLOW));
-      ctx.sendMessage(msg("Config/data migrations may have been applied.", COLOR_YELLOW));
+      ctx.sendMessage(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ROLLBACK_UNSAFE_REASON), COLOR_YELLOW));
+      ctx.sendMessage(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ROLLBACK_UNSAFE_MIGRATION), COLOR_YELLOW));
       ctx.sendMessage(msg("", COLOR_GRAY));
-      ctx.sendMessage(msg("To rollback safely, you must:", COLOR_WHITE));
+      ctx.sendMessage(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ROLLBACK_INSTRUCTIONS), COLOR_WHITE));
       ctx.sendMessage(msg("  1. Stop the server", COLOR_GRAY));
       ctx.sendMessage(msg("  2. Restore from the pre-update backup:", COLOR_GRAY));
       ctx.sendMessage(msg("     /f admin backup restore <backup-name>", COLOR_CYAN));
@@ -258,32 +261,32 @@ public class AdminUpdateHandler {
       ctx.sendMessage(msg("     " + latestBackup.getFileName() + " -> " + artifactName + "-" + backupVersion + ".jar", COLOR_CYAN));
       ctx.sendMessage(msg("  4. Restart the server", COLOR_GRAY));
       ctx.sendMessage(msg("", COLOR_GRAY));
-      ctx.sendMessage(msg("Use /f admin backup list to find the pre-update backup.", COLOR_YELLOW));
+      ctx.sendMessage(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ROLLBACK_FIND_BACKUP), COLOR_YELLOW));
       return;
     }
 
     // Get rollback info
     var rollbackInfo = updateChecker.getRollbackInfo();
     if (rollbackInfo != null) {
-      ctx.sendMessage(prefix().insert(msg("Rolling back update...", COLOR_YELLOW)));
-      ctx.sendMessage(msg("  From: v" + rollbackInfo.toVersion() + " (new)", COLOR_GRAY));
-      ctx.sendMessage(msg("  To: v" + rollbackInfo.fromVersion() + " (previous)", COLOR_GRAY));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ROLLBACK_ROLLING), COLOR_YELLOW)));
+      ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ROLLBACK_FROM, rollbackInfo.toVersion()), COLOR_GRAY));
+      ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ROLLBACK_TO, rollbackInfo.fromVersion()), COLOR_GRAY));
     } else {
-      ctx.sendMessage(prefix().insert(msg("Rolling back to v" + backupVersion + "...", COLOR_YELLOW)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ROLLBACK_VERSION, backupVersion), COLOR_YELLOW)));
     }
 
     // Perform the rollback
     var result = updateChecker.performRollback();
 
     if (result.success()) {
-      ctx.sendMessage(prefix().insert(msg("Rollback successful!", COLOR_GREEN)));
-      ctx.sendMessage(msg("  Restored: " + artifactName + "-" + result.restoredVersion() + ".jar", COLOR_GRAY));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ROLLBACK_SUCCESS), COLOR_GREEN)));
+      ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ROLLBACK_RESTORED, artifactName + "-" + result.restoredVersion() + ".jar"), COLOR_GRAY));
       if (result.removedVersion() != null) {
-        ctx.sendMessage(msg("  Removed: " + artifactName + "-" + result.removedVersion() + ".jar", COLOR_GRAY));
+        ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ROLLBACK_REMOVED, artifactName + "-" + result.removedVersion() + ".jar"), COLOR_GRAY));
       }
-      ctx.sendMessage(msg("  Restart the server to apply the rollback.", COLOR_YELLOW));
+      ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ROLLBACK_RESTART), COLOR_YELLOW));
     } else {
-      ctx.sendMessage(prefix().insert(msg("Rollback failed: " + result.errorMessage(), COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ROLLBACK_FAILED, result.errorMessage()), COLOR_RED)));
     }
   }
 }

@@ -8,7 +8,8 @@ import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.shared.data.TagModalData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.worldmap.WorldMapService;
 import com.hypixel.hytale.component.Ref;
@@ -86,17 +87,17 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
     cmd.append(UIPaths.TAG_MODAL);
 
     // Static labels
-    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.TagGui.TITLE));
-    cmd.set("#CurrentLabel.Text", HFMessages.get(playerRef, MessageKeys.TagGui.CURRENT_LABEL));
-    cmd.set("#TagInstructions.Text", HFMessages.get(playerRef, MessageKeys.TagGui.INSTRUCTIONS));
-    cmd.set("#TagHelpText.Text", HFMessages.get(playerRef, MessageKeys.TagGui.HELP_TEXT));
-    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.CANCEL));
-    cmd.set("#SaveBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.SAVE));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, GuiKeys.TagGui.TITLE));
+    cmd.set("#CurrentLabel.Text", HFMessages.get(playerRef, GuiKeys.TagGui.CURRENT_LABEL));
+    cmd.set("#TagInstructions.Text", HFMessages.get(playerRef, GuiKeys.TagGui.INSTRUCTIONS));
+    cmd.set("#TagHelpText.Text", HFMessages.get(playerRef, GuiKeys.TagGui.HELP_TEXT));
+    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, CommonKeys.Common.CANCEL));
+    cmd.set("#SaveBtn.Text", HFMessages.get(playerRef, CommonKeys.Common.SAVE));
 
     // Show current tag
     String currentTag = faction.tag();
     if (currentTag == null || currentTag.isEmpty()) {
-      cmd.set("#CurrentTag.Text", HFMessages.get(playerRef, MessageKeys.TagGui.DISPLAY_NONE));
+      cmd.set("#CurrentTag.Text", HFMessages.get(playerRef, GuiKeys.TagGui.DISPLAY_NONE));
     } else {
       cmd.set("#CurrentTag.Text", "[" + currentTag.toUpperCase() + "]");
     }
@@ -136,7 +137,7 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
 
     // Verify officer permission (skip in admin mode)
     if (!adminMode && (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel())) {
-      player.sendMessage(MessageUtil.error(playerRef, MessageKeys.TagGui.NO_PERMISSION));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.TagGui.NO_PERMISSION));
       guiManager.openFactionSettings(player, ref, store, playerRef,
           factionManager.getFaction(faction.id()));
       return;
@@ -165,9 +166,9 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
             worldMapService.triggerFactionWideRefresh(faction.id());
           }
 
-          String clearMsg = HFMessages.get(playerRef, MessageKeys.TagGui.CLEARED);
+          String clearMsg = HFMessages.get(playerRef, GuiKeys.TagGui.CLEARED);
           if (adminMode) {
-            clearMsg = HFMessages.get(playerRef, MessageKeys.Common.ADMIN_PREFIX) + " " + clearMsg;
+            clearMsg = HFMessages.get(playerRef, CommonKeys.Common.ADMIN_PREFIX) + " " + clearMsg;
           }
           player.sendMessage(Message.raw(clearMsg).color("#AAAAAA"));
           if (adminMode) {
@@ -183,27 +184,27 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
 
         // Validate length
         if (newTag.length() < MIN_TAG_LENGTH) {
-          player.sendMessage(MessageUtil.error(playerRef, MessageKeys.TagGui.TOO_SHORT, MIN_TAG_LENGTH));
+          player.sendMessage(MessageUtil.error(playerRef, GuiKeys.TagGui.TOO_SHORT, MIN_TAG_LENGTH));
           sendUpdate();
           return;
         }
 
         if (newTag.length() > MAX_TAG_LENGTH) {
-          player.sendMessage(MessageUtil.error(playerRef, MessageKeys.TagGui.TOO_LONG, MAX_TAG_LENGTH));
+          player.sendMessage(MessageUtil.error(playerRef, GuiKeys.TagGui.TOO_LONG, MAX_TAG_LENGTH));
           sendUpdate();
           return;
         }
 
         // Validate format (alphanumeric only)
         if (!TAG_PATTERN.matcher(newTag).matches()) {
-          player.sendMessage(MessageUtil.error(playerRef, MessageKeys.TagGui.INVALID_FORMAT));
+          player.sendMessage(MessageUtil.error(playerRef, GuiKeys.TagGui.INVALID_FORMAT));
           sendUpdate();
           return;
         }
 
         // Check if same as current
         if (newTag.equalsIgnoreCase(faction.tag())) {
-          player.sendMessage(MessageUtil.info(playerRef, MessageKeys.TagGui.SAME_TAG, "#FFD700"));
+          player.sendMessage(MessageUtil.info(playerRef, GuiKeys.TagGui.SAME_TAG, "#FFD700"));
           sendUpdate();
           return;
         }
@@ -211,7 +212,7 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
         // Check uniqueness
         Faction existing = factionManager.getFactionByTag(newTag);
         if (existing != null && !existing.id().equals(faction.id())) {
-          player.sendMessage(MessageUtil.error(playerRef, MessageKeys.TagGui.TAG_TAKEN));
+          player.sendMessage(MessageUtil.error(playerRef, GuiKeys.TagGui.TAG_TAKEN));
           sendUpdate();
           return;
         }
@@ -225,9 +226,9 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
           worldMapService.triggerFactionWideRefresh(faction.id());
         }
 
-        String successMsg = HFMessages.get(playerRef, MessageKeys.TagGui.SUCCESS, newTag);
+        String successMsg = HFMessages.get(playerRef, GuiKeys.TagGui.SUCCESS, newTag);
         if (adminMode) {
-          successMsg = HFMessages.get(playerRef, MessageKeys.Common.ADMIN_PREFIX) + " " + successMsg;
+          successMsg = HFMessages.get(playerRef, CommonKeys.Common.ADMIN_PREFIX) + " " + successMsg;
         }
         player.sendMessage(Message.raw(successMsg).color("#55FF55"));
 

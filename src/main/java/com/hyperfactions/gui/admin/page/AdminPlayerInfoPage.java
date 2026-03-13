@@ -19,7 +19,9 @@ import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.AdminGuiKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hyperfactions.util.TimeUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -96,42 +98,42 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
     AdminNavBarHelper.setupBar(playerRef, "factions", cmd, events);
 
     // Localize page title
-    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_PLAYER_INFO));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_TITLE_PLAYER_INFO));
 
     // Localize header labels
-    cmd.set("#FirstJoinedLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_FIRST_JOINED));
-    cmd.set("#LastOnlineLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_LAST_ONLINE));
-    cmd.set("#UuidLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_UUID));
+    cmd.set("#FirstJoinedLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_FIRST_JOINED));
+    cmd.set("#LastOnlineLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_LAST_ONLINE));
+    cmd.set("#UuidLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_UUID));
 
     // Localize stat card labels
-    cmd.set("#PowerLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_POWER));
-    cmd.set("#CombatLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_COMBAT));
-    cmd.set("#KDLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_KD_SUBTITLE));
-    cmd.set("#KDRLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_KDR));
-    cmd.set("#FactionLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_FACTION));
+    cmd.set("#PowerLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_POWER));
+    cmd.set("#CombatLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_COMBAT));
+    cmd.set("#KDLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_KD_SUBTITLE));
+    cmd.set("#KDRLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_KDR));
+    cmd.set("#FactionLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_FACTION));
 
     // Localize section headers
-    cmd.set("#HistoryHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_MEMBERSHIP_HISTORY));
-    cmd.set("#AdminControlsHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_ADMIN_CONTROLS));
-    cmd.set("#PowerMgmtHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_POWER_MANAGEMENT));
-    cmd.set("#CombatSectionHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_COMBAT));
-    cmd.set("#BypassHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_BYPASS_FLAGS));
+    cmd.set("#HistoryHeader.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_MEMBERSHIP_HISTORY));
+    cmd.set("#AdminControlsHeader.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_ADMIN_CONTROLS));
+    cmd.set("#PowerMgmtHeader.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_POWER_MANAGEMENT));
+    cmd.set("#CombatSectionHeader.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_COMBAT));
+    cmd.set("#BypassHeader.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_BYPASS_FLAGS));
 
     // Localize button labels
-    cmd.set("#SetPowerBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET));
-    cmd.set("#ResetPowerBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_RESET));
-    cmd.set("#MaxLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_MAX_PREFIX));
-    cmd.set("#SetMaxBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_SET_MAX_BTN));
-    cmd.set("#ResetMaxBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_RESET));
-    cmd.set("#ResetKDBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_RESET_KD));
-    cmd.set("#ViewFactionBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_VIEW));
-    cmd.set("#KickBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_KICK_FROM_FACTION));
-    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_BACK));
+    cmd.set("#SetPowerBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET));
+    cmd.set("#ResetPowerBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_RESET));
+    cmd.set("#MaxLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_MAX_PREFIX));
+    cmd.set("#SetMaxBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_SET_MAX_BTN));
+    cmd.set("#ResetMaxBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_RESET));
+    cmd.set("#ResetKDBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_RESET_KD));
+    cmd.set("#ViewFactionBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_VIEW));
+    cmd.set("#KickBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_KICK_FROM_FACTION));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, CommonKeys.Common.BACK));
 
     // Localize no-faction label and bypass checkbox labels
-    cmd.set("#NoFactionLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.NO_FACTION));
-    cmd.set("#NoLossLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_NO_POWER_LOSS));
-    cmd.set("#NoDecayLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_NO_CLAIM_DECAY));
+    cmd.set("#NoFactionLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.NO_FACTION));
+    cmd.set("#NoLossLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_NO_POWER_LOSS));
+    cmd.set("#NoDecayLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_NO_CLAIM_DECAY));
 
     buildContent(cmd, events);
   }
@@ -142,7 +144,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
 
     // Online status
     boolean isOnline = isOnline(targetPlayerUuid);
-    cmd.set("#OnlineStatus.Text", isOnline ? HFMessages.get(playerRef, MessageKeys.Common.ONLINE) : HFMessages.get(playerRef, MessageKeys.Common.OFFLINE));
+    cmd.set("#OnlineStatus.Text", isOnline ? HFMessages.get(playerRef, CommonKeys.Common.ONLINE) : HFMessages.get(playerRef, CommonKeys.Common.OFFLINE));
     cmd.set("#OnlineStatus.Style.TextColor", GuiColors.forOnlineStatus(isOnline));
 
     // Load player data once for all sections
@@ -152,15 +154,15 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
     if (cachedData != null && cachedData.getFirstJoined() > 0) {
       cmd.set("#FirstJoinedValue.Text", TimeUtil.formatDate(cachedData.getFirstJoined()));
     } else {
-      cmd.set("#FirstJoinedValue.Text", HFMessages.get(playerRef, MessageKeys.Common.UNKNOWN));
+      cmd.set("#FirstJoinedValue.Text", HFMessages.get(playerRef, CommonKeys.Common.UNKNOWN));
     }
     if (isOnline) {
-      cmd.set("#LastOnlineValue.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.NOW));
+      cmd.set("#LastOnlineValue.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.NOW));
       cmd.set("#LastOnlineValue.Style.TextColor", "#55FF55");
     } else if (cachedData != null && cachedData.getLastOnline() > 0) {
       cmd.set("#LastOnlineValue.Text", TimeUtil.formatRelative(cachedData.getLastOnline()));
     } else {
-      cmd.set("#LastOnlineValue.Text", HFMessages.get(playerRef, MessageKeys.Common.UNKNOWN));
+      cmd.set("#LastOnlineValue.Text", HFMessages.get(playerRef, CommonKeys.Common.UNKNOWN));
     }
 
     // === Faction Card ===
@@ -173,7 +175,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
     if (faction != null) {
       cmd.set("#FactionName.Text", faction.name());
     } else {
-      cmd.set("#FactionName.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.NO_FACTION));
+      cmd.set("#FactionName.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.NO_FACTION));
       cmd.set("#FactionName.Style.TextColor", "#888888");
     }
 
@@ -204,9 +206,9 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
 
     // Max override indicator
     if (power.maxPowerOverride() != null) {
-      cmd.set("#MaxOverrideLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.CUSTOM_MAX));
+      cmd.set("#MaxOverrideLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.CUSTOM_MAX));
     } else {
-      cmd.set("#MaxOverrideLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.DEFAULT_MAX));
+      cmd.set("#MaxOverrideLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.DEFAULT_MAX));
       cmd.set("#MaxOverrideLabel.Style.TextColor", "#666666");
     }
 
@@ -237,7 +239,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
       List<MembershipRecord> history = new java.util.ArrayList<>(cachedData.getMembershipHistory());
       Collections.reverse(history);
 
-      cmd.set("#HistoryCount.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.PLR_RECORDS, history.size()));
+      cmd.set("#HistoryCount.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.PLR_RECORDS, history.size()));
       cmd.appendInline("#HistoryList", "Group #HistoryCards { LayoutMode: Top; }");
 
       for (int i = 0; i < history.size(); i++) {
@@ -247,8 +249,8 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
 
         cmd.set(idx + " #HFactionName.Text", rec.factionName());
         cmd.set(idx + " #HRole.Text", ConfigManager.get().getRoleDisplayName(rec.highestRole()));
-        cmd.set(idx + " #HJoined.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.PLR_JOINED_DATE, TimeUtil.formatDate(rec.joinedAt())));
-        cmd.set(idx + " #HLeft.Text", rec.isActive() ? HFMessages.get(playerRef, MessageKeys.AdminGui.PLR_CURRENT) : HFMessages.get(playerRef, MessageKeys.AdminGui.PLR_LEFT_DATE, TimeUtil.formatDate(rec.leftAt())));
+        cmd.set(idx + " #HJoined.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.PLR_JOINED_DATE, TimeUtil.formatDate(rec.joinedAt())));
+        cmd.set(idx + " #HLeft.Text", rec.isActive() ? HFMessages.get(playerRef, AdminGuiKeys.AdminGui.PLR_CURRENT) : HFMessages.get(playerRef, AdminGuiKeys.AdminGui.PLR_LEFT_DATE, TimeUtil.formatDate(rec.leftAt())));
         cmd.set(idx + " #HReason.Text", formatReason(rec.reason()));
         cmd.set(idx + " #HReason.Style.TextColor", GuiColors.forLeaveReason(rec.reason()));
         cmd.set(idx + " #RoleBar.Background.Color", GuiColors.forRole(rec.highestRole()));
@@ -256,7 +258,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
     } else {
       cmd.set("#HistoryCount.Text", "");
       cmd.appendInline("#HistoryList",
-          "Label { Text: \"" + HFMessages.get(playerRef, MessageKeys.AdminGui.NO_MEMBERSHIP_HISTORY) + "\"; Style: (FontSize: 10, TextColor: #555555); }");
+          "Label { Text: \"" + HFMessages.get(playerRef, AdminGuiKeys.AdminGui.NO_MEMBERSHIP_HISTORY) + "\"; Style: (FontSize: 10, TextColor: #555555); }");
     }
 
     // === Kick button ===
@@ -265,9 +267,9 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
     } else {
       FactionMember targetMember = faction.getMember(targetPlayerUuid);
       if (targetMember != null && targetMember.isLeader() && faction.getMemberCount() == 1) {
-        cmd.set("#KickBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.PLR_DISBAND_FACTION));
+        cmd.set("#KickBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.PLR_DISBAND_FACTION));
       } else if (targetMember != null && targetMember.isLeader()) {
-        cmd.set("#KickBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.PLR_KICK_LEADER));
+        cmd.set("#KickBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.PLR_KICK_LEADER));
       }
     }
 
@@ -339,7 +341,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
         logAdminPowerChange(adminUuid,
           "Admin adjusted " + targetPlayerName + "'s power by " + String.format("%.1f", delta)
           + " (" + String.format("%.1f", oldPower) + " -> " + String.format("%.1f", newPower) + ")",
-          MessageKeys.LogsGui.MSG_ADMIN_POWER_ADJUSTED, targetPlayerName,
+          GuiKeys.LogsGui.MSG_ADMIN_POWER_ADJUSTED, targetPlayerName,
           String.format("%.1f", delta), String.format("%.1f", oldPower), String.format("%.1f", newPower));
         reopenPage(player, ref, store, playerRef);
       }
@@ -347,7 +349,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
       case "SetPower" -> {
         double amount = parseDoubleOrNaN(data.powerInput);
         if (Double.isNaN(amount)) {
-          player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.PLR_ENTER_VALID_NUMBER));
+          player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.PLR_ENTER_VALID_NUMBER));
           return;
         }
         double oldPower = powerManager.getPlayerPower(targetPlayerUuid).power();
@@ -355,7 +357,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
         logAdminPowerChange(adminUuid,
           "Admin set " + targetPlayerName + "'s power to " + String.format("%.1f", newPower)
           + " (was " + String.format("%.1f", oldPower) + ")",
-          MessageKeys.LogsGui.MSG_ADMIN_POWER_SET, targetPlayerName,
+          GuiKeys.LogsGui.MSG_ADMIN_POWER_SET, targetPlayerName,
           String.format("%.1f", newPower), String.format("%.1f", oldPower));
         reopenPage(player, ref, store, playerRef);
       }
@@ -366,7 +368,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
         logAdminPowerChange(adminUuid,
           "Admin reset " + targetPlayerName + "'s power to " + String.format("%.1f", newPower)
           + " (was " + String.format("%.1f", oldPower) + ")",
-          MessageKeys.LogsGui.MSG_ADMIN_POWER_RESET, targetPlayerName,
+          GuiKeys.LogsGui.MSG_ADMIN_POWER_RESET, targetPlayerName,
           String.format("%.1f", newPower), String.format("%.1f", oldPower));
         reopenPage(player, ref, store, playerRef);
       }
@@ -374,7 +376,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
       case "SetMax" -> {
         double amount = parseDoubleOrNaN(data.powerInput);
         if (Double.isNaN(amount) || amount <= 0) {
-          player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.PLR_ENTER_VALID_POSITIVE));
+          player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.PLR_ENTER_VALID_POSITIVE));
           return;
         }
         PlayerPower old = powerManager.getPlayerPower(targetPlayerUuid);
@@ -383,7 +385,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
         logAdminPowerChange(adminUuid,
           "Admin set " + targetPlayerName + "'s max power to " + String.format("%.1f", amount)
           + " (was " + String.format("%.1f", oldMax) + ")",
-          MessageKeys.LogsGui.MSG_ADMIN_MAXPOWER_SET, targetPlayerName,
+          GuiKeys.LogsGui.MSG_ADMIN_MAXPOWER_SET, targetPlayerName,
           String.format("%.1f", amount), String.format("%.1f", oldMax));
         reopenPage(player, ref, store, playerRef);
       }
@@ -395,7 +397,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
         logAdminPowerChange(adminUuid,
           "Admin reset " + targetPlayerName + "'s max power to global default ("
           + String.format("%.1f", ConfigManager.get().getMaxPlayerPower()) + ")",
-          MessageKeys.LogsGui.MSG_ADMIN_MAXPOWER_RESET, targetPlayerName,
+          GuiKeys.LogsGui.MSG_ADMIN_MAXPOWER_RESET, targetPlayerName,
           String.format("%.1f", ConfigManager.get().getMaxPlayerPower()));
         reopenPage(player, ref, store, playerRef);
       }
@@ -407,7 +409,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
         powerManager.setPlayerPowerLossDisabled(targetPlayerUuid, newState);
         logAdminPowerChange(adminUuid,
           "Admin " + (newState ? "disabled" : "enabled") + " power loss for " + targetPlayerName,
-          newState ? MessageKeys.LogsGui.MSG_ADMIN_POWERLOSS_DISABLED : MessageKeys.LogsGui.MSG_ADMIN_POWERLOSS_ENABLED,
+          newState ? GuiKeys.LogsGui.MSG_ADMIN_POWERLOSS_DISABLED : GuiKeys.LogsGui.MSG_ADMIN_POWERLOSS_ENABLED,
           targetPlayerName);
         reopenPage(player, ref, store, playerRef);
       }
@@ -419,7 +421,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
         powerManager.setPlayerClaimDecayExempt(targetPlayerUuid, newState);
         logAdminPowerChange(adminUuid,
           "Admin " + (newState ? "enabled" : "disabled") + " claim decay exemption for " + targetPlayerName,
-          newState ? MessageKeys.LogsGui.MSG_ADMIN_DECAY_ENABLED : MessageKeys.LogsGui.MSG_ADMIN_DECAY_DISABLED,
+          newState ? GuiKeys.LogsGui.MSG_ADMIN_DECAY_ENABLED : GuiKeys.LogsGui.MSG_ADMIN_DECAY_DISABLED,
           targetPlayerName);
         reopenPage(player, ref, store, playerRef);
       }
@@ -433,10 +435,10 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
         if (faction != null) {
           Faction updated = faction.withLog(FactionLog.create(FactionLog.LogType.ADMIN_POWER,
               "Admin reset K/D for " + targetPlayerName, adminUuid,
-              MessageKeys.LogsGui.MSG_ADMIN_KD_RESET, targetPlayerName));
+              GuiKeys.LogsGui.MSG_ADMIN_KD_RESET, targetPlayerName));
           factionManager.updateFaction(updated);
         }
-        player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.PLR_KD_RESET, targetPlayerName));
+        player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.PLR_KD_RESET, targetPlayerName));
         reopenPage(player, ref, store, playerRef);
       }
 
@@ -456,7 +458,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
             // Last member — disband the faction
             factionManager.forceDisband(faction.id(),
               "[Admin] Disbanded via admin kick of last member " + targetPlayerName);
-            player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.PLR_DISBANDED_KICK, MessageUtil.COLOR_GOLD, faction.name()));
+            player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.PLR_DISBANDED_KICK, MessageUtil.COLOR_GOLD, faction.name()));
             // Navigate back to factions list since faction no longer exists
             guiManager.openAdminFactions(player, ref, store, playerRef);
           } else {
@@ -471,12 +473,12 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
                   "[Admin] Leadership transferred from " + targetPlayerName
                   + " to " + successor.username() + " (admin kick)",
                   adminUuid,
-                  MessageKeys.LogsGui.MSG_ADMIN_LEADER_KICK, targetPlayerName, successor.username()));
+                  GuiKeys.LogsGui.MSG_ADMIN_LEADER_KICK, targetPlayerName, successor.username()));
               factionManager.updateFaction(updated);
 
               // Now kick the demoted member
               factionManager.adminRemoveMember(faction.id(), targetPlayerUuid);
-              player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.PLR_KICKED_LEADER, targetPlayerName, successor.username()));
+              player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.PLR_KICKED_LEADER, targetPlayerName, successor.username()));
             }
             reopenPage(player, ref, store, playerRef);
           }
@@ -484,7 +486,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
           // Normal kick
           FactionResult result = factionManager.adminRemoveMember(faction.id(), targetPlayerUuid);
           if (result == FactionResult.SUCCESS) {
-            player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.PLR_KICKED_SUCCESS, targetPlayerName, faction.name()));
+            player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.PLR_KICKED_SUCCESS, targetPlayerName, faction.name()));
           }
           reopenPage(player, ref, store, playerRef);
         }
@@ -496,7 +498,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
         if (viewFaction != null) {
           guiManager.openAdminFactionInfo(player, ref, store, playerRef, viewFaction.id());
         } else {
-          player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.PLR_FACTION_GONE));
+          player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.PLR_FACTION_GONE));
         }
       }
 
@@ -560,10 +562,10 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
 
   private String formatReason(MembershipRecord.LeaveReason reason) {
     return switch (reason) {
-      case ACTIVE -> HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_REASON_ACTIVE);
-      case LEFT -> HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_REASON_LEFT);
-      case KICKED -> HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_REASON_KICKED);
-      case DISBANDED -> HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_PLR_REASON_DISBANDED);
+      case ACTIVE -> HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_REASON_ACTIVE);
+      case LEFT -> HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_REASON_LEFT);
+      case KICKED -> HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_REASON_KICKED);
+      case DISBANDED -> HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PLR_REASON_DISBANDED);
     };
   }
 

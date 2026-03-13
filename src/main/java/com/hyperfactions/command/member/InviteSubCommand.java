@@ -8,7 +8,7 @@ import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.platform.HyperFactionsPlugin;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -39,7 +39,7 @@ public class InviteSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.INVITE)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Invite.NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Invite.NO_PERMISSION));
       return;
     }
 
@@ -50,7 +50,7 @@ public class InviteSubCommand extends FactionSubCommand {
 
     FactionMember member = faction.getMember(player.getUuid());
     if (member == null || !member.isOfficerOrHigher()) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Invite.NOT_OFFICER));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Invite.NOT_OFFICER));
       return;
     }
 
@@ -67,26 +67,26 @@ public class InviteSubCommand extends FactionSubCommand {
     }
 
     if (!fctx.hasArgs()) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Invite.USAGE));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Invite.USAGE));
       return;
     }
 
     String targetName = fctx.getArg(0);
     PlayerRef target = findOnlinePlayer(targetName);
     if (target == null) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Invite.PLAYER_NOT_FOUND, targetName));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Invite.PLAYER_NOT_FOUND, targetName));
       return;
     }
 
     if (hyperFactions.getFactionManager().isInFaction(target.getUuid())) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Invite.TARGET_IN_FACTION));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Invite.TARGET_IN_FACTION));
       return;
     }
 
     hyperFactions.getInviteManager().createInvite(faction.id(), target.getUuid(), player.getUuid());
 
-    ctx.sendMessage(MessageUtil.success(player, MessageKeys.Invite.SENT, target.getUsername()));
-    target.sendMessage(MessageUtil.info(target, MessageKeys.Invite.RECEIVED, COLOR_YELLOW, faction.name()));
-    target.sendMessage(MessageUtil.info(target, MessageKeys.Invite.ACCEPT_HINT, COLOR_YELLOW, faction.name()));
+    ctx.sendMessage(MessageUtil.success(player, CommandKeys.Invite.SENT, target.getUsername()));
+    target.sendMessage(MessageUtil.info(target, CommandKeys.Invite.RECEIVED, COLOR_YELLOW, faction.name()));
+    target.sendMessage(MessageUtil.info(target, CommandKeys.Invite.ACCEPT_HINT, COLOR_YELLOW, faction.name()));
   }
 }

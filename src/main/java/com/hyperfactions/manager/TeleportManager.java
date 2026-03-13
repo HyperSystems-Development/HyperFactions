@@ -6,7 +6,7 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.Logger;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.TimeUtil;
 import com.hypixel.hytale.server.core.Message;
@@ -305,7 +305,7 @@ public class TeleportManager {
       if (isOnCooldown(playerUuid)) {
         int remaining = getCooldownRemaining(playerUuid);
         sendMessage.accept(MessageUtil.error(
-          HFMessages.get((PlayerRef) null, MessageKeys.Teleport.COOLDOWN_WAIT, TimeUtil.formatDurationSeconds(remaining))));
+          HFMessages.get((PlayerRef) null, CommonKeys.Teleport.COOLDOWN_WAIT, TimeUtil.formatDurationSeconds(remaining))));
         return TeleportResult.ON_COOLDOWN;
       }
     }
@@ -338,7 +338,7 @@ public class TeleportManager {
 
     // Send warmup message
     sendMessage.accept(MessageUtil.info(
-      HFMessages.get((PlayerRef) null, MessageKeys.Teleport.WARMUP_START, warmup), MessageUtil.COLOR_YELLOW));
+      HFMessages.get((PlayerRef) null, CommonKeys.Teleport.WARMUP_START, warmup), MessageUtil.COLOR_YELLOW));
 
     Logger.debug("Scheduled teleport for %s, will execute at %d", playerUuid, executeAt);
     return TeleportResult.SUCCESS_WARMUP;
@@ -415,7 +415,7 @@ public class TeleportManager {
 
     // Check combat tag
     if (pending.isTagged().get()) {
-      sendMessage.accept(MessageUtil.error(HFMessages.get((PlayerRef) null, MessageKeys.Teleport.COMBAT_CANCELLED)));
+      sendMessage.accept(MessageUtil.error(HFMessages.get((PlayerRef) null, CommonKeys.Teleport.COMBAT_CANCELLED)));
       return null;
     }
 
@@ -430,7 +430,7 @@ public class TeleportManager {
    */
   public void onTeleportSuccess(@NotNull UUID playerUuid, @Nullable String customMessage, @NotNull Consumer<Message> sendMessage) {
     applyCooldown(playerUuid);
-    String msg = customMessage != null ? customMessage : HFMessages.get((PlayerRef) null, MessageKeys.Teleport.SUCCESS_DEFAULT);
+    String msg = customMessage != null ? customMessage : HFMessages.get((PlayerRef) null, CommonKeys.Teleport.SUCCESS_DEFAULT);
     sendMessage.accept(MessageUtil.success(msg));
   }
 
@@ -442,9 +442,9 @@ public class TeleportManager {
    */
   public void onTeleportFailed(@NotNull TeleportResult result, @NotNull Consumer<Message> sendMessage) {
     switch (result) {
-      case NO_HOME -> sendMessage.accept(MessageUtil.error(HFMessages.get((PlayerRef) null, MessageKeys.Teleport.NO_HOME)));
-      case WORLD_NOT_FOUND -> sendMessage.accept(MessageUtil.error(HFMessages.get((PlayerRef) null, MessageKeys.Teleport.WORLD_NOT_FOUND)));
-      default -> sendMessage.accept(MessageUtil.error(HFMessages.get((PlayerRef) null, MessageKeys.Teleport.FAILED)));
+      case NO_HOME -> sendMessage.accept(MessageUtil.error(HFMessages.get((PlayerRef) null, CommonKeys.Teleport.NO_HOME)));
+      case WORLD_NOT_FOUND -> sendMessage.accept(MessageUtil.error(HFMessages.get((PlayerRef) null, CommonKeys.Teleport.WORLD_NOT_FOUND)));
+      default -> sendMessage.accept(MessageUtil.error(HFMessages.get((PlayerRef) null, CommonKeys.Teleport.FAILED)));
     }
   }
 
@@ -458,8 +458,8 @@ public class TeleportManager {
     int secondsToAnnounce = pending.checkCountdown();
     if (secondsToAnnounce > 0) {
       String timeText = secondsToAnnounce == 1
-        ? HFMessages.get((PlayerRef) null, MessageKeys.Teleport.COUNTDOWN_ONE)
-        : HFMessages.get((PlayerRef) null, MessageKeys.Teleport.COUNTDOWN, secondsToAnnounce);
+        ? HFMessages.get((PlayerRef) null, CommonKeys.Teleport.COUNTDOWN_ONE)
+        : HFMessages.get((PlayerRef) null, CommonKeys.Teleport.COUNTDOWN, secondsToAnnounce);
       sendMessage.accept(MessageUtil.info(timeText, MessageUtil.COLOR_YELLOW));
     }
   }
@@ -496,7 +496,7 @@ public class TeleportManager {
 
     if (distSq > 0.25) { // 0.5 blocks
       removePending(playerUuid);
-      sendMessage.accept(MessageUtil.error(HFMessages.get((PlayerRef) null, MessageKeys.Teleport.MOVED_CANCELLED)));
+      sendMessage.accept(MessageUtil.error(HFMessages.get((PlayerRef) null, CommonKeys.Teleport.MOVED_CANCELLED)));
       return true;
     }
 
@@ -520,7 +520,7 @@ public class TeleportManager {
 
     if (pendingTeleports.containsKey(playerUuid)) {
       removePending(playerUuid);
-      sendMessage.accept(MessageUtil.error(HFMessages.get((PlayerRef) null, MessageKeys.Teleport.DAMAGE_CANCELLED)));
+      sendMessage.accept(MessageUtil.error(HFMessages.get((PlayerRef) null, CommonKeys.Teleport.DAMAGE_CANCELLED)));
       return true;
     }
 

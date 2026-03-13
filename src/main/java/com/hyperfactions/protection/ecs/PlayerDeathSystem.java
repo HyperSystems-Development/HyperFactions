@@ -12,7 +12,9 @@ import com.hyperfactions.data.ZoneFlags;
 import com.hyperfactions.manager.CombatTagManager;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.util.ChunkUtil;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.ErrorHandler;
+import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.ComponentType;
@@ -288,14 +290,12 @@ public class PlayerDeathSystem extends RefChangeSystem<EntityStore, DeathCompone
 
       // Build and send message to faction members
       String playerName = playerRef.getUsername();
+      String deathText = HFMessages.get((PlayerRef) null, CommonKeys.Announce.DEATH_LOCATION,
+          playerName, String.valueOf(x), String.valueOf(y), String.valueOf(z), worldName);
       Message deathMsg = Message.raw("[").color("#555555")
           .insert(Message.raw("HF").color("#55FFFF"))
           .insert(Message.raw("] ").color("#555555"))
-          .insert(Message.raw(playerName).color("#FFAA00"))
-          .insert(Message.raw(" died at ").color("#AAAAAA"))
-          .insert(Message.raw("(" + x + ", " + y + ", " + z + ")").color("#55FF55"))
-          .insert(Message.raw(" in ").color("#AAAAAA"))
-          .insert(Message.raw(worldName).color("#55FFFF"));
+          .insert(Message.raw(deathText).color("#AAAAAA"));
 
       for (UUID memberUuid : faction.members().keySet()) {
         if (memberUuid.equals(victimUuid)) { // Don't notify the dead player

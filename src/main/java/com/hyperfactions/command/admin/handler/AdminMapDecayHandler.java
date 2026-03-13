@@ -5,7 +5,10 @@ import com.hyperfactions.Permissions;
 import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.util.CommandHelp;
+import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.HelpFormatter;
+import com.hyperfactions.util.AdminKeys;
+import com.hyperfactions.util.HelpKeys;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -59,12 +62,12 @@ public class AdminMapDecayHandler {
   /** Handles admin map. */
   public void handleAdminMap(CommandContext ctx, @Nullable PlayerRef player, String[] args) {
     if (!hasPermission(player, Permissions.ADMIN)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.NO_PERMISSION), COLOR_RED)));
       return;
     }
 
     if (args.length == 0) {
-      showMapHelp(ctx);
+      showMapHelp(ctx, player);
       return;
     }
 
@@ -73,34 +76,34 @@ public class AdminMapDecayHandler {
     switch (subCmd) {
       case "refresh" -> handleMapRefresh(ctx, player);
       case "status" -> handleMapStatus(ctx);
-      case "help", "?" -> showMapHelp(ctx);
+      case "help", "?" -> showMapHelp(ctx, player);
       default -> {
-        ctx.sendMessage(prefix().insert(msg("Unknown map command: " + subCmd, COLOR_RED)));
-        showMapHelp(ctx);
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.MAP_UNKNOWN_CMD), COLOR_RED)));
+        showMapHelp(ctx, player);
       }
     }
   }
 
-  private void showMapHelp(CommandContext ctx) {
+  private void showMapHelp(CommandContext ctx, @Nullable PlayerRef player) {
     List<CommandHelp> commands = new ArrayList<>();
-    commands.add(new CommandHelp("/f admin map status", "Show world map status and statistics"));
-    commands.add(new CommandHelp("/f admin map refresh", "Force immediate map refresh"));
-    ctx.sendMessage(HelpFormatter.buildHelp("World Map", "Map overlay management", commands, null));
+    commands.add(new CommandHelp("/f admin map status", HelpKeys.Help.MAP_CMD_STATUS));
+    commands.add(new CommandHelp("/f admin map refresh", HelpKeys.Help.MAP_CMD_REFRESH));
+    ctx.sendMessage(HelpFormatter.buildHelp(HelpKeys.Help.MAP_TITLE, HelpKeys.Help.MAP_DESCRIPTION, commands, null, player));
   }
 
   /** Handles map refresh. */
   public void handleMapRefresh(CommandContext ctx, @Nullable PlayerRef player) {
     var worldMapService = hyperFactions.getWorldMapService();
     if (worldMapService == null) {
-      ctx.sendMessage(prefix().insert(msg("World map service is not available.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.MAP_NOT_AVAILABLE), COLOR_RED)));
       return;
     }
 
-    ctx.sendMessage(prefix().insert(msg("Forcing full world map refresh...", COLOR_YELLOW)));
+    ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.MAP_REFRESHING), COLOR_YELLOW)));
 
     worldMapService.forceFullRefresh();
 
-    ctx.sendMessage(prefix().insert(msg("World map refresh complete.", COLOR_GREEN)));
+    ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.MAP_REFRESHED), COLOR_GREEN)));
   }
 
   /** Handles map status. */
@@ -108,7 +111,7 @@ public class AdminMapDecayHandler {
     var worldMapConfig = ConfigManager.get().worldMap();
     var worldMapService = hyperFactions.getWorldMapService();
 
-    ctx.sendMessage(msg("=== World Map Status ===", COLOR_CYAN).bold(true));
+    ctx.sendMessage(msg("=== " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.MAP_STATUS_HEADER) + " ===", COLOR_CYAN).bold(true));
 
     // Config status
     ctx.sendMessage(msg("Enabled: ", COLOR_GRAY)
@@ -191,7 +194,7 @@ public class AdminMapDecayHandler {
   /** Handles admin decay. */
   public void handleAdminDecay(CommandContext ctx, @Nullable PlayerRef player, String[] args) {
     if (!hasPermission(player, Permissions.ADMIN)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.NO_PERMISSION), COLOR_RED)));
       return;
     }
 
@@ -206,26 +209,26 @@ public class AdminMapDecayHandler {
       case "run", "trigger" -> handleDecayRun(ctx);
       case "check" -> handleDecayCheck(ctx, Arrays.copyOfRange(args, 1, args.length));
       case "status" -> showDecayStatus(ctx);
-      case "help", "?" -> showDecayHelp(ctx);
+      case "help", "?" -> showDecayHelp(ctx, player);
       default -> {
-        ctx.sendMessage(prefix().insert(msg("Unknown decay command: " + subCmd, COLOR_RED)));
-        showDecayHelp(ctx);
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.DECAY_UNKNOWN_CMD), COLOR_RED)));
+        showDecayHelp(ctx, player);
       }
     }
   }
 
-  private void showDecayHelp(CommandContext ctx) {
+  private void showDecayHelp(CommandContext ctx, @Nullable PlayerRef player) {
     List<CommandHelp> commands = new ArrayList<>();
-    commands.add(new CommandHelp("/f admin decay", "Show decay status"));
-    commands.add(new CommandHelp("/f admin decay run", "Manually trigger claim decay"));
-    commands.add(new CommandHelp("/f admin decay check <faction>", "Check faction decay status"));
-    ctx.sendMessage(HelpFormatter.buildHelp("Claim Decay", "Auto-removes claims from inactive factions", commands, null));
+    commands.add(new CommandHelp("/f admin decay", HelpKeys.Help.DECAY_CMD_STATUS));
+    commands.add(new CommandHelp("/f admin decay run", HelpKeys.Help.DECAY_CMD_RUN));
+    commands.add(new CommandHelp("/f admin decay check <faction>", HelpKeys.Help.DECAY_CMD_CHECK));
+    ctx.sendMessage(HelpFormatter.buildHelp(HelpKeys.Help.DECAY_TITLE, HelpKeys.Help.DECAY_DESCRIPTION, commands, null, player));
   }
 
   private void showDecayStatus(CommandContext ctx) {
     ConfigManager config = ConfigManager.get();
 
-    ctx.sendMessage(msg("=== Claim Decay Status ===", COLOR_CYAN).bold(true));
+    ctx.sendMessage(msg("=== " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.DECAY_STATUS_HEADER) + " ===", COLOR_CYAN).bold(true));
     ctx.sendMessage(msg("Enabled: ", COLOR_GRAY)
       .insert(msg(config.isDecayEnabled() ? "Yes" : "No", config.isDecayEnabled() ? COLOR_GREEN : COLOR_RED)));
     ctx.sendMessage(msg("Inactivity Threshold: ", COLOR_GRAY)
@@ -258,20 +261,20 @@ public class AdminMapDecayHandler {
     ConfigManager config = ConfigManager.get();
 
     if (!config.isDecayEnabled()) {
-      ctx.sendMessage(prefix().insert(msg("Claim decay is disabled in config.", COLOR_YELLOW)));
-      ctx.sendMessage(msg("Set claims.decayEnabled to true to enable.", COLOR_GRAY));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.DECAY_DISABLED), COLOR_YELLOW)));
+      ctx.sendMessage(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.DECAY_ENABLE_HINT), COLOR_GRAY));
       return;
     }
 
-    ctx.sendMessage(prefix().insert(msg("Running claim decay check...", COLOR_YELLOW)));
+    ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.DECAY_RUNNING), COLOR_YELLOW)));
 
     // Run decay on separate thread to avoid blocking
     CompletableFuture.runAsync(() -> {
       try {
         hyperFactions.getClaimManager().tickClaimDecay();
-        ctx.sendMessage(prefix().insert(msg("Claim decay check complete. Check console for details.", COLOR_GREEN)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.DECAY_COMPLETE, "?"), COLOR_GREEN)));
       } catch (Exception e) {
-        ctx.sendMessage(prefix().insert(msg("Error during decay: " + e.getMessage(), COLOR_RED)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.DECAY_ERROR, e.getMessage()), COLOR_RED)));
       }
     });
   }
@@ -286,22 +289,22 @@ public class AdminMapDecayHandler {
     String factionName = args[0];
     var faction = hyperFactions.getFactionManager().getFactionByName(factionName);
     if (faction == null) {
-      ctx.sendMessage(prefix().insert(msg("Faction '" + factionName + "' not found.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.DECAY_CHECK_NOT_FOUND, factionName), COLOR_RED)));
       return;
     }
 
     ConfigManager config = ConfigManager.get();
 
-    ctx.sendMessage(msg("=== Decay Check: " + faction.name() + " ===", COLOR_CYAN).bold(true));
+    ctx.sendMessage(msg("=== " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.DECAY_CHECK_HEADER, faction.name()) + " ===", COLOR_CYAN).bold(true));
     ctx.sendMessage(msg("Claims: ", COLOR_GRAY).insert(msg(String.valueOf(faction.getClaimCount()), COLOR_WHITE)));
 
     if (faction.getClaimCount() == 0) {
-      ctx.sendMessage(msg("No claims to decay.", COLOR_GRAY));
+      ctx.sendMessage(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.DECAY_NO_CLAIMS), COLOR_GRAY));
       return;
     }
 
     if (!config.isDecayEnabled()) {
-      ctx.sendMessage(msg("Decay Status: ", COLOR_GRAY).insert(msg("Disabled globally", COLOR_YELLOW)));
+      ctx.sendMessage(msg("Decay Status: ", COLOR_GRAY).insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.DECAY_DISABLED_GLOBALLY), COLOR_YELLOW)));
       return;
     }
 

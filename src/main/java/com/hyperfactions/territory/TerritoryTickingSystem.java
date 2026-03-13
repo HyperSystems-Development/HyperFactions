@@ -133,7 +133,7 @@ public class TerritoryTickingSystem extends EntityTickingSystem<EntityStore> {
               TeleportManager.TeleportDestination dest = ready.destination();
               if (!isMountEntryAllowed(dest.world(), dest.x(), dest.z())) {
                 playerRef.sendMessage(com.hyperfactions.util.MessageUtil.error(
-                    playerRef, com.hyperfactions.util.MessageKeys.Teleport.MOUNT_TELEPORT_BLOCKED));
+                    playerRef, com.hyperfactions.util.CommonKeys.Teleport.MOUNT_TELEPORT_BLOCKED));
                 Logger.debugTerritory("Teleport blocked for mounted player %s to zone at (%.1f, %.1f)",
                     playerUuid, dest.x(), dest.z());
                 mountBlocked = true;
@@ -172,7 +172,7 @@ public class TerritoryTickingSystem extends EntityTickingSystem<EntityStore> {
                   }
                 });
                 ProtectionMessageDebounce.sendDenial(playerRef, "mount_entry",
-                    com.hyperfactions.util.HFMessages.get(playerRef, com.hyperfactions.util.MessageKeys.Teleport.MOUNT_ENTRY_BLOCKED));
+                    com.hyperfactions.util.HFMessages.get(playerRef, com.hyperfactions.util.CommonKeys.Teleport.MOUNT_ENTRY_BLOCKED));
                 Logger.debugTerritory("Mount entry blocked for %s at zone '%s' (%s), safe=(%.1f, %.1f, %.1f)",
                     playerUuid, zone.name(), zone.type().name(), safePos[0], safeY, safePos[1]);
               }

@@ -7,7 +7,10 @@ import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Zone;
 import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.CommandHelp;
+import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.HelpFormatter;
+import com.hyperfactions.util.AdminKeys;
+import com.hyperfactions.util.HelpKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.math.vector.Vector3d;
@@ -67,12 +70,12 @@ public class AdminDebugHandler {
   public void handleDebug(CommandContext ctx, @Nullable Store<EntityStore> store, @Nullable Ref<EntityStore> ref,
               @Nullable PlayerRef player, @Nullable World world, String[] args) {
     if (!hasPermission(player, Permissions.ADMIN_DEBUG)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to use debug commands.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.DEBUG_NO_PERMISSION), COLOR_RED)));
       return;
     }
 
     if (args.length == 0) {
-      showDebugHelp(ctx);
+      showDebugHelp(ctx, player);
       return;
     }
 
@@ -85,38 +88,38 @@ public class AdminDebugHandler {
       case "power" -> handleDebugPower(ctx, subArgs);
       case "claim" -> {
         if (store == null) {
-          ctx.sendMessage(prefix().insert(msg("This debug command can only be used by a player.", COLOR_RED)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.DEBUG_PLAYER_ONLY), COLOR_RED)));
         } else {
           handleDebugClaim(ctx, store, ref, world, subArgs);
         }
       }
       case "protection" -> {
         if (store == null) {
-          ctx.sendMessage(prefix().insert(msg("This debug command can only be used by a player.", COLOR_RED)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.DEBUG_PLAYER_ONLY), COLOR_RED)));
         } else {
           handleDebugProtection(ctx, store, ref, world, subArgs);
         }
       }
       case "combat" -> handleDebugCombat(ctx, subArgs);
       case "relation" -> handleDebugRelation(ctx, subArgs);
-      case "help", "?" -> showDebugHelp(ctx);
+      case "help", "?" -> showDebugHelp(ctx, player);
       default -> {
-        ctx.sendMessage(prefix().insert(msg("Unknown debug command: " + subCmd, COLOR_RED)));
-        showDebugHelp(ctx);
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.DEBUG_UNKNOWN_CMD), COLOR_RED)));
+        showDebugHelp(ctx, player);
       }
     }
   }
 
-  private void showDebugHelp(CommandContext ctx) {
+  private void showDebugHelp(CommandContext ctx, @Nullable PlayerRef player) {
     List<CommandHelp> commands = new ArrayList<>();
-    commands.add(new CommandHelp("/f admin debug toggle <category> [on|off]", "Toggle debug logging"));
-    commands.add(new CommandHelp("/f admin debug status", "Show debug status"));
-    commands.add(new CommandHelp("/f admin debug power <player>", "Show power details"));
-    commands.add(new CommandHelp("/f admin debug claim [x z]", "Show claim info"));
-    commands.add(new CommandHelp("/f admin debug protection <player>", "Show protection info"));
-    commands.add(new CommandHelp("/f admin debug combat <player>", "Show combat tag status"));
-    commands.add(new CommandHelp("/f admin debug relation <faction1> <faction2>", "Show relation info"));
-    ctx.sendMessage(HelpFormatter.buildHelp("Debug Commands", "Diagnostics and troubleshooting", commands, null));
+    commands.add(new CommandHelp("/f admin debug toggle <category> [on|off]", HelpKeys.Help.DEBUG_CMD_TOGGLE));
+    commands.add(new CommandHelp("/f admin debug status", HelpKeys.Help.DEBUG_CMD_STATUS));
+    commands.add(new CommandHelp("/f admin debug power <player>", HelpKeys.Help.DEBUG_CMD_POWER));
+    commands.add(new CommandHelp("/f admin debug claim [x z]", HelpKeys.Help.DEBUG_CMD_CLAIM));
+    commands.add(new CommandHelp("/f admin debug protection <player>", HelpKeys.Help.DEBUG_CMD_PROTECTION));
+    commands.add(new CommandHelp("/f admin debug combat <player>", HelpKeys.Help.DEBUG_CMD_COMBAT));
+    commands.add(new CommandHelp("/f admin debug relation <faction1> <faction2>", HelpKeys.Help.DEBUG_CMD_RELATION));
+    ctx.sendMessage(HelpFormatter.buildHelp(HelpKeys.Help.DEBUG_TITLE, HelpKeys.Help.DEBUG_DESCRIPTION, commands, null, player));
   }
 
   /** Handles debug toggle. */
@@ -125,7 +128,7 @@ public class AdminDebugHandler {
 
     if (args.length == 0) {
       // Show current status
-      ctx.sendMessage(msg("=== Debug Logging Status ===", COLOR_CYAN).bold(true));
+      ctx.sendMessage(msg("=== " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.DEBUG_STATUS_HEADER) + " ===", COLOR_CYAN).bold(true));
       ctx.sendMessage(msg("Categories:", COLOR_GRAY));
       ctx.sendMessage(msg("  power: ", COLOR_WHITE).insert(msg(debugConfig.isPower() ? "ON" : "OFF", debugConfig.isPower() ? COLOR_GREEN : COLOR_RED)));
       ctx.sendMessage(msg("  claim: ", COLOR_WHITE).insert(msg(debugConfig.isClaim() ? "ON" : "OFF", debugConfig.isClaim() ? COLOR_GREEN : COLOR_RED)));
@@ -150,10 +153,10 @@ public class AdminDebugHandler {
       boolean enable = args.length > 1 ? args[1].equalsIgnoreCase("on") : !debugConfig.isEnabledByDefault();
       if (enable) {
         debugConfig.enableAll();
-        ctx.sendMessage(prefix().insert(msg("All debug categories enabled.", COLOR_GREEN)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.DEBUG_ALL_ENABLED), COLOR_GREEN)));
       } else {
         debugConfig.disableAll();
-        ctx.sendMessage(prefix().insert(msg("All debug categories disabled.", COLOR_GREEN)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.DEBUG_ALL_DISABLED), COLOR_GREEN)));
       }
       debugConfig.save();
       return;
@@ -175,7 +178,7 @@ public class AdminDebugHandler {
       case "integration" -> currentValue = debugConfig.isIntegration();
       case "economy" -> currentValue = debugConfig.isEconomy();
       default -> {
-        ctx.sendMessage(prefix().insert(msg("Unknown category: " + category, COLOR_RED)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.DEBUG_UNKNOWN_CATEGORY, category), COLOR_RED)));
         ctx.sendMessage(msg("Valid categories: power, claim, combat, protection, relation, territory, worldmap, interaction, mixin, spawning, integration, economy, all", COLOR_GRAY));
         return;
       }
@@ -207,11 +210,7 @@ public class AdminDebugHandler {
     debugConfig.save();
 
     ctx.sendMessage(prefix().insert(
-      msg("Debug category '", COLOR_GREEN)
-        .insert(msg(category, COLOR_CYAN))
-        .insert(msg("' set to ", COLOR_GREEN))
-        .insert(msg(newValue ? "ON" : "OFF", newValue ? COLOR_GREEN : COLOR_RED))
-        .insert(msg(" (saved)", COLOR_GRAY))
+      msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.DEBUG_TOGGLE_SET, category, newValue ? "ON" : "OFF"), COLOR_GREEN)
     ));
   }
 
@@ -219,7 +218,7 @@ public class AdminDebugHandler {
   public void handleDebugStatus(CommandContext ctx) {
     var debugConfig = ConfigManager.get().debug();
 
-    ctx.sendMessage(msg("=== HyperFactions Debug Status ===", COLOR_CYAN).bold(true));
+    ctx.sendMessage(msg("=== " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.DEBUG_FULL_STATUS_HEADER) + " ===", COLOR_CYAN).bold(true));
 
     // Data counts
     ctx.sendMessage(msg("Data:", COLOR_GRAY));
@@ -249,7 +248,7 @@ public class AdminDebugHandler {
       ctx.sendMessage(prefix().insert(msg("Usage: /f admin debug power <player>", COLOR_RED)));
       return;
     }
-    ctx.sendMessage(prefix().insert(msg("Debug power info not yet implemented.", COLOR_YELLOW)));
+    ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.DEBUG_NOT_IMPLEMENTED), COLOR_YELLOW)));
   }
 
   /** Handles debug claim. */
@@ -290,7 +289,7 @@ public class AdminDebugHandler {
 
   /** Handles debug protection. */
   public void handleDebugProtection(CommandContext ctx, Store<EntityStore> store, Ref<EntityStore> ref, World world, String[] args) {
-    ctx.sendMessage(prefix().insert(msg("Debug protection info not yet implemented.", COLOR_YELLOW)));
+    ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.DEBUG_NOT_IMPLEMENTED), COLOR_YELLOW)));
   }
 
   /** Handles debug combat. */
@@ -299,7 +298,7 @@ public class AdminDebugHandler {
       ctx.sendMessage(prefix().insert(msg("Usage: /f admin debug combat <player>", COLOR_RED)));
       return;
     }
-    ctx.sendMessage(prefix().insert(msg("Debug combat info not yet implemented.", COLOR_YELLOW)));
+    ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.DEBUG_NOT_IMPLEMENTED), COLOR_YELLOW)));
   }
 
   public void handleDebugRelation(CommandContext ctx, String[] args) {
@@ -307,6 +306,6 @@ public class AdminDebugHandler {
       ctx.sendMessage(prefix().insert(msg("Usage: /f admin debug relation <faction1> <faction2>", COLOR_RED)));
       return;
     }
-    ctx.sendMessage(prefix().insert(msg("Debug relation info not yet implemented.", COLOR_YELLOW)));
+    ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.DEBUG_NOT_IMPLEMENTED), COLOR_YELLOW)));
   }
 }

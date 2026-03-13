@@ -8,7 +8,8 @@ import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -41,7 +42,7 @@ public class RelationsSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.RELATIONS)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Relation.VIEW_NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.VIEW_NO_PERMISSION));
       return;
     }
 
@@ -66,28 +67,28 @@ public class RelationsSubCommand extends FactionSubCommand {
     List<UUID> allies = hyperFactions.getRelationManager().getAllies(faction.id());
     List<UUID> enemies = hyperFactions.getRelationManager().getEnemies(faction.id());
 
-    ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Relation.HEADER), COLOR_CYAN).bold(true));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Relation.HEADER), COLOR_CYAN).bold(true));
 
-    ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Relation.ALLIES_COUNT, allies.size()), COLOR_GREEN));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Relation.ALLIES_COUNT, allies.size()), COLOR_GREEN));
     if (allies.isEmpty()) {
-      ctx.sendMessage(msg("  (" + HFMessages.get(player, MessageKeys.Common.NONE) + ")", COLOR_GRAY));
+      ctx.sendMessage(msg("  (" + HFMessages.get(player, CommonKeys.Common.NONE) + ")", COLOR_GRAY));
     } else {
       for (UUID allyId : allies) {
         Faction ally = hyperFactions.getFactionManager().getFaction(allyId);
         if (ally != null) {
-          ctx.sendMessage(msg("  ", COLOR_GRAY).insert(msg(HFMessages.get(player, MessageKeys.Relation.LIST_ENTRY, ally.name()), COLOR_GREEN)));
+          ctx.sendMessage(msg("  ", COLOR_GRAY).insert(msg(HFMessages.get(player, CommandKeys.Relation.LIST_ENTRY, ally.name()), COLOR_GREEN)));
         }
       }
     }
 
-    ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Relation.ENEMIES_COUNT, enemies.size()), COLOR_RED));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Relation.ENEMIES_COUNT, enemies.size()), COLOR_RED));
     if (enemies.isEmpty()) {
-      ctx.sendMessage(msg("  (" + HFMessages.get(player, MessageKeys.Common.NONE) + ")", COLOR_GRAY));
+      ctx.sendMessage(msg("  (" + HFMessages.get(player, CommonKeys.Common.NONE) + ")", COLOR_GRAY));
     } else {
       for (UUID enemyId : enemies) {
         Faction enemy = hyperFactions.getFactionManager().getFaction(enemyId);
         if (enemy != null) {
-          ctx.sendMessage(msg("  ", COLOR_GRAY).insert(msg(HFMessages.get(player, MessageKeys.Relation.LIST_ENTRY, enemy.name()), COLOR_RED)));
+          ctx.sendMessage(msg("  ", COLOR_GRAY).insert(msg(HFMessages.get(player, CommandKeys.Relation.LIST_ENTRY, enemy.name()), COLOR_RED)));
         }
       }
     }

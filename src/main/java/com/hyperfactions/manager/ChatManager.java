@@ -10,7 +10,7 @@ import com.hyperfactions.gui.GuiUpdateService;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.Logger;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import java.util.List;
@@ -509,9 +509,9 @@ public class ChatManager {
   @NotNull
   public static String getChannelDisplay(@NotNull ChatChannel channel) {
     return switch (channel) {
-      case NORMAL -> HFMessages.get((PlayerRef) null, MessageKeys.ChatDisplay.PUBLIC);
-      case FACTION -> HFMessages.get((PlayerRef) null, MessageKeys.ChatDisplay.FACTION);
-      case ALLY -> HFMessages.get((PlayerRef) null, MessageKeys.ChatDisplay.ALLY);
+      case NORMAL -> HFMessages.get((PlayerRef) null, CommonKeys.ChatDisplay.PUBLIC);
+      case FACTION -> HFMessages.get((PlayerRef) null, CommonKeys.ChatDisplay.FACTION);
+      case ALLY -> HFMessages.get((PlayerRef) null, CommonKeys.ChatDisplay.ALLY);
     };
   }
 

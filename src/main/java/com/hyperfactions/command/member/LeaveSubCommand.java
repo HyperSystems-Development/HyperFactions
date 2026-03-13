@@ -13,7 +13,7 @@ import com.hyperfactions.manager.ConfirmationManager.ConfirmationType;
 import com.hyperfactions.manager.ConfirmationManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -45,7 +45,7 @@ public class LeaveSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.LEAVE)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Leave.NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Leave.NO_PERMISSION));
       return;
     }
 
@@ -80,8 +80,8 @@ public class LeaveSubCommand extends FactionSubCommand {
 
     switch (confirmResult) {
       case NEEDS_CONFIRMATION, EXPIRED_RECREATED -> {
-        ctx.sendMessage(MessageUtil.info(player, MessageKeys.Leave.CONFIRM_PROMPT, COLOR_YELLOW));
-        ctx.sendMessage(MessageUtil.info(player, MessageKeys.Leave.CONFIRM_INSTRUCTION, COLOR_YELLOW,
+        ctx.sendMessage(MessageUtil.info(player, CommandKeys.Leave.CONFIRM_PROMPT, COLOR_YELLOW));
+        ctx.sendMessage(MessageUtil.info(player, CommandKeys.Leave.CONFIRM_INSTRUCTION, COLOR_YELLOW,
           confirmManager.getTimeoutSeconds()));
       }
       case CONFIRMED -> {
@@ -90,14 +90,14 @@ public class LeaveSubCommand extends FactionSubCommand {
           factionId, player.getUuid(), player.getUuid(), false
         );
         if (result == FactionManager.FactionResult.SUCCESS) {
-          ctx.sendMessage(MessageUtil.success(player, MessageKeys.Leave.SUCCESS));
-          broadcastToFaction(factionId, MessageUtil.error(player, MessageKeys.Leave.BROADCAST, player.getUsername()));
+          ctx.sendMessage(MessageUtil.success(player, CommandKeys.Leave.SUCCESS));
+          broadcastToFaction(factionId, MessageUtil.error(player, CommandKeys.Leave.BROADCAST, player.getUsername()));
         } else {
-          ctx.sendMessage(MessageUtil.error(player, MessageKeys.Leave.FAILED));
+          ctx.sendMessage(MessageUtil.error(player, CommandKeys.Leave.FAILED));
         }
       }
       case DIFFERENT_ACTION -> {
-        ctx.sendMessage(MessageUtil.info(player, MessageKeys.Leave.CANCELLED, COLOR_YELLOW));
+        ctx.sendMessage(MessageUtil.info(player, CommandKeys.Leave.CANCELLED, COLOR_YELLOW));
       }
       default -> throw new IllegalStateException("Unexpected value");
     }

@@ -7,7 +7,7 @@ import com.hyperfactions.gui.shared.data.MainMenuData;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -56,12 +56,12 @@ public class MainMenuPage extends InteractiveCustomUIPage<MainMenuData> {
     cmd.append(UIPaths.MAIN_MENU);
 
     // Set title
-    cmd.set("#MenuTitle.Text", HFMessages.get(playerRef, MessageKeys.MainMenu.TITLE));
+    cmd.set("#MenuTitle.Text", HFMessages.get(playerRef, GuiKeys.MainMenu.TITLE));
 
     // Section: My Faction
     if (faction != null) {
       cmd.append("#MyFactionSection", UIPaths.MENU_SECTION);
-      cmd.set("#MyFactionSection #SectionTitle.Text", HFMessages.get(playerRef, MessageKeys.MainMenu.SECTION_MY_FACTION));
+      cmd.set("#MyFactionSection #SectionTitle.Text", HFMessages.get(playerRef, GuiKeys.MainMenu.SECTION_MY_FACTION));
       cmd.append("#MyFactionSection #SectionContent", UIPaths.MAIN_MENU_FACTION);
       cmd.set("#MyFactionSection #FactionNameLabel.Text", faction.name());
 
@@ -87,7 +87,7 @@ public class MainMenuPage extends InteractiveCustomUIPage<MainMenuData> {
       );
     } else {
       cmd.append("#MyFactionSection", UIPaths.MENU_SECTION);
-      cmd.set("#MyFactionSection #SectionTitle.Text", HFMessages.get(playerRef, MessageKeys.MainMenu.SECTION_GET_STARTED));
+      cmd.set("#MyFactionSection #SectionTitle.Text", HFMessages.get(playerRef, GuiKeys.MainMenu.SECTION_GET_STARTED));
       cmd.append("#MyFactionSection #SectionContent", UIPaths.MAIN_MENU_NO_FACTION);
 
       events.addEventBinding(
@@ -100,7 +100,7 @@ public class MainMenuPage extends InteractiveCustomUIPage<MainMenuData> {
 
     // Section: Territory
     cmd.append("#TerritorySection", UIPaths.MENU_SECTION);
-    cmd.set("#TerritorySection #SectionTitle.Text", HFMessages.get(playerRef, MessageKeys.MainMenu.SECTION_TERRITORY));
+    cmd.set("#TerritorySection #SectionTitle.Text", HFMessages.get(playerRef, GuiKeys.MainMenu.SECTION_TERRITORY));
     cmd.append("#TerritorySection #SectionContent", UIPaths.MAIN_MENU_TERRITORY);
 
     events.addEventBinding(
@@ -121,7 +121,7 @@ public class MainMenuPage extends InteractiveCustomUIPage<MainMenuData> {
 
     // Section: Browse
     cmd.append("#BrowseSection", UIPaths.MENU_SECTION);
-    cmd.set("#BrowseSection #SectionTitle.Text", HFMessages.get(playerRef, MessageKeys.MainMenu.SECTION_BROWSE));
+    cmd.set("#BrowseSection #SectionTitle.Text", HFMessages.get(playerRef, GuiKeys.MainMenu.SECTION_BROWSE));
     cmd.append("#BrowseSection #SectionContent", UIPaths.MAIN_MENU_BROWSE);
 
     events.addEventBinding(
@@ -134,7 +134,7 @@ public class MainMenuPage extends InteractiveCustomUIPage<MainMenuData> {
     // Section: Admin (if permission)
     if (hasAdmin) {
       cmd.append("#AdminSection", UIPaths.MENU_SECTION);
-      cmd.set("#AdminSection #SectionTitle.Text", HFMessages.get(playerRef, MessageKeys.MainMenu.SECTION_ADMIN));
+      cmd.set("#AdminSection #SectionTitle.Text", HFMessages.get(playerRef, GuiKeys.MainMenu.SECTION_ADMIN));
       cmd.append("#AdminSection #SectionContent", UIPaths.MAIN_MENU_ADMIN);
 
       events.addEventBinding(
@@ -197,7 +197,7 @@ public class MainMenuPage extends InteractiveCustomUIPage<MainMenuData> {
           guiManager.closePage(player, ref, store);
           player.sendMessage(
             com.hypixel.hytale.server.core.Message.raw(
-                HFMessages.get(playerRef, MessageKeys.MainMenu.CLAIM_HINT)).color("#AAAAAA")
+                HFMessages.get(playerRef, GuiKeys.MainMenu.CLAIM_HINT)).color("#AAAAAA")
           );
         }
       }

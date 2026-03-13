@@ -30,9 +30,9 @@ import org.jetbrains.annotations.Nullable;
  *
  * <p>Usage:
  * <pre>
- *   HFMessages.get(playerRef, MessageKeys.Common.NO_PERMISSION);
- *   HFMessages.get(playerRef, MessageKeys.Create.SUCCESS, factionName);
- *   HFMessages.get(MessageKeys.Common.LOADING); // server language
+ *   HFMessages.get(playerRef, CommonKeys.Common.NO_PERMISSION);
+ *   HFMessages.get(playerRef, CommandKeys.Create.SUCCESS, factionName);
+ *   HFMessages.get(CommonKeys.Common.LOADING); // server language
  * </pre>
  */
 public final class HFMessages {

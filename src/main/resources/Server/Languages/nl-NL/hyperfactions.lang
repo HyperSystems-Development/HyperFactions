@@ -451,3 +451,452 @@ teleport.mount_entry_blocked = Je kunt deze zone niet betreden terwijl je een mo
 chat.display.public = Openbaar
 chat.display.faction = Factie
 chat.display.ally = Bondgenoot
+
+# ========== Helpsysteem ==========
+help.commands_label = Commando's:
+help.default_footer = Gebruik /f <commando> voor meer details
+help.title = HyperFactions
+help.description = Factiebeheer en gebiedscontrole
+
+# Helpsecties
+help.section.core = Basis
+help.section.management = Beheer
+help.section.territory = Territorium
+help.section.relations = Relaties
+help.section.teleport = Teleport
+help.section.information = Informatie
+help.section.other = Overig
+help.section.admin = Admin
+
+# Helpbeschrijvingen (Basis)
+help.cmd.create = Maak een factie aan
+help.cmd.disband = Ontbind je factie
+help.cmd.invite = Nodig een speler uit
+help.cmd.accept = Accepteer een uitnodiging
+help.cmd.request = Vraag lidmaatschap aan
+help.cmd.leave = Verlaat je factie
+help.cmd.kick = Schop een lid
+
+# Helpbeschrijvingen (Beheer)
+help.cmd.rename = Hernoem je factie
+help.cmd.desc = Stel factiebeschrijving in
+help.cmd.color = Stel factiekleur in
+help.cmd.open = Laat iedereen toetreden
+help.cmd.close = Alleen op uitnodiging
+help.cmd.promote = Promoveer tot officier
+help.cmd.demote = Degradeer tot lid
+help.cmd.transfer = Draag leiderschap over
+
+# Helpbeschrijvingen (Territorium)
+help.cmd.claim = Claim dit gebied
+help.cmd.unclaim = Geef dit gebied vrij
+help.cmd.overclaim = Neem vijandelijk territorium over
+help.cmd.map = Bekijk gebiedskaart
+
+# Helpbeschrijvingen (Relaties)
+help.cmd.ally = Vraag bondgenootschap aan
+help.cmd.enemy = Verklaar vijand
+help.cmd.neutral = Stel neutrale relatie in
+
+# Helpbeschrijvingen (Teleport)
+help.cmd.home = Teleporteer naar factiebasis
+help.cmd.sethome = Stel factiebasis in
+help.cmd.stuck = Ontsnap uit vijandelijk territorium
+
+# Helpbeschrijvingen (Informatie)
+help.cmd.info = Bekijk factie-info
+help.cmd.list = Toon alle facties
+help.cmd.browse = Blader door facties (alias voor list)
+help.cmd.members = Bekijk factieleden
+help.cmd.invites = Beheer uitnodigingen/verzoeken
+help.cmd.who = Bekijk spelerinfo
+help.cmd.power = Bekijk krachtniveau
+help.cmd.gui = Open factie-GUI
+help.cmd.settings = Open factie-instellingen
+
+# Helpbeschrijvingen (Overig)
+help.cmd.chat = Stuur factiechatbericht
+help.cmd.chat_short = Factiechat (kort)
+
+# Helpbeschrijvingen (Admin in hoofdhulp)
+help.cmd.admin = Open admin-GUI
+help.cmd.admin_reload = Herlaad configuratie
+help.cmd.admin_sync = Synchroniseer data vanaf schijf
+help.cmd.admin_factions = Beheer facties
+help.cmd.admin_zones = Beheer zones
+help.cmd.admin_config = Bekijk/bewerk configuratie
+help.cmd.admin_backups = Beheer back-ups
+help.cmd.admin_update = Controleer op updates
+help.cmd.admin_debug = Debugcommando's
+
+# Admin-helppagina
+help.admin.title = Admincommando's
+help.admin.description = Serverbeheer
+help.admin.cmd.dashboard = Open admin-dashboard-GUI
+help.admin.cmd.factions = Beheer alle facties
+help.admin.cmd.zone = Zonebeheer
+help.admin.cmd.config = Serverconfiguratie
+help.admin.cmd.backup = Back-upbeheer
+help.admin.cmd.import_cmd = Importeer uit andere plugins
+help.admin.cmd.update = Controleer op en download updates
+help.admin.cmd.update_mixin = Update HyperProtect-Mixin
+help.admin.cmd.update_toggle = Schakel HP-Mixin auto-download in/uit
+help.admin.cmd.rollback = Terugdraaien naar vorige versie
+help.admin.cmd.reload = Herlaad configuratie
+help.admin.cmd.sync = Synchroniseer data vanaf schijf
+help.admin.cmd.debug = Debugcommando's
+help.admin.cmd.decay = Beheer gebiedsverval
+help.admin.cmd.map = Beheer wereldkaart
+help.admin.cmd.safezone = Maak SafeZone aan + claim gebied
+help.admin.cmd.warzone = Maak WarZone aan + claim gebied
+help.admin.cmd.removezone = Verwijder gebied uit zone
+help.admin.cmd.zoneflag = Stel zonevlag in
+help.admin.cmd.integrations = Overzicht van alle integraties
+help.admin.cmd.integration = Gedetailleerde integratiestatus
+help.admin.cmd.clearhistory = Wis lidmaatschapsgeschiedenis van speler
+help.admin.cmd.power = Admin-krachtbeheer
+help.admin.cmd.economy = Economie/schatkistbeheer
+help.admin.cmd.economy_upkeep = Handmatig onderhoudsinning starten
+help.admin.cmd.info = Bekijk admin factie-info-GUI
+help.admin.cmd.who = Bekijk admin spelerinfo-GUI
+help.admin.cmd.log = Bekijk globaal activiteitenlog
+help.admin.cmd.world = Beheer per-wereld-instellingen
+help.admin.cmd.version = Bekijk modversie en integratiestatus
+help.admin.cmd.sentry = Bekijk Sentry-status
+help.admin.cmd.sentry_disable = Schakel Sentry-foutrapportage uit
+help.admin.cmd.sentry_enable = Schakel Sentry-foutrapportage in
+help.admin.cmd.test_gui = Open UI-elementen testpagina
+help.admin.cmd.test_sentry = Stuur testfout naar Sentry
+help.admin.cmd.test_md = Open markdown rendering testpagina
+
+# Sub-help: Back-up
+help.backup.title = Back-upbeheer
+help.backup.description = GFS-rotatieschema
+help.backup.cmd.create = Maak handmatige back-up
+help.backup.cmd.list = Toon alle back-ups gegroepeerd per type
+help.backup.cmd.restore = Herstel van back-up (bevestiging vereist)
+help.backup.cmd.delete = Verwijder een back-up
+
+# Sub-help: Debug
+help.debug.title = Debugcommando's
+help.debug.description = Diagnostiek en probleemoplossing
+help.debug.cmd.toggle = Schakel debug-logging in/uit
+help.debug.cmd.status = Toon debugstatus
+help.debug.cmd.power = Toon krachtdetails
+help.debug.cmd.claim = Toon claiminfo
+help.debug.cmd.protection = Toon beschermingsinfo
+help.debug.cmd.combat = Toon gevechtstagstatus
+help.debug.cmd.relation = Toon relatie-info
+
+# Sub-help: Kracht
+help.power.title = Admin-kracht
+help.power.description = Beheer speler-/factiekracht
+help.power.cmd.set = Stel exacte kracht in
+help.power.cmd.add = Verhoog kracht
+help.power.cmd.remove = Verlaag kracht
+help.power.cmd.reset = Herstel naar standaard
+help.power.cmd.setmax = Stel max kracht-override in
+help.power.cmd.resetmax = Wis max-override
+help.power.cmd.noloss = Schakel krachtverliesdoorgang in/uit
+help.power.cmd.nodecay = Schakel claimvervalvrijstelling in/uit
+help.power.cmd.faction = Factiewijde bewerkingen
+help.power.cmd.info = Toon krachtdetails van speler
+
+# Sub-help: Economie
+help.economy.title = Admin-economie
+help.economy.description = Beheer factieschatkisten
+help.economy.cmd.balance = Toon factiesaldo
+help.economy.cmd.set = Stel exact saldo in
+help.economy.cmd.add = Voeg toe aan saldo
+help.economy.cmd.take = Trek af van saldo
+help.economy.cmd.total = Toon totaal serversaldo
+help.economy.cmd.reset = Zet saldo op 0
+help.economy.cmd.upkeep = Handmatig onderhoudsinning starten
+
+# Sub-help: Wereld
+help.world.title = Wereldinstellingen
+help.world.description = Per-wereld-configuratie
+help.world.cmd.list = Toon alle geconfigureerde werelden
+help.world.cmd.info = Toon instellingen van een wereld
+help.world.cmd.set = Stel een wereldinstelling in
+help.world.cmd.reset = Verwijder wereld-specifieke instellingen
+
+# Sub-help: Kaart
+help.map.title = Wereldkaart
+help.map.description = Beheer kaartoverlay
+help.map.cmd.status = Toon wereldkaartstatus en statistieken
+help.map.cmd.refresh = Forceer directe kaartverversing
+
+# Sub-help: Verval
+help.decay.title = Gebiedsverval
+help.decay.description = Verwijdert automatisch gebieden van inactieve facties
+help.decay.cmd.status = Toon vervalstatus
+help.decay.cmd.run = Handmatig gebiedsverval starten
+help.decay.cmd.check = Controleer vervalstatus van factie
+
+# Sub-help: Importeren
+help.import.title = Importcommando's
+help.import.description = Migreer van andere factieplugins
+help.import.cmd.hyfactions = Importeer uit HyFactions mod
+help.import.path.hyfactions = Standaardpad: mods/Kaws_Hyfaction
+help.import.cmd.elbaphfactions = Importeer uit ElbaphFactions mod
+help.import.path.elbaphfactions = Standaardpad: mods/ElbaphFactions
+help.import.cmd.factionsx = Importeer uit FactionsX mod
+help.import.path.factionsx = Standaardpad: mods/FactionsX
+help.import.cmd.simpleclaims = Importeer uit SimpleClaims mod
+help.import.path.simpleclaims = Standaardpad: Server/universe/SimpleClaims
+help.import.flags_header = Vlaggen:
+help.import.flag.dryrun = Simuleer zonder wijzigingen
+help.import.flag.overwrite = Vervang bestaande facties
+help.import.flag.nozones = Sla zone-import over
+help.import.flag.nopower = Sla krachtverdeling over
+
+# Sub-help: Test
+help.test.title = Testcommando's
+help.test.description = Ontwikkelingstestgereedschap
+help.test.cmd.gui = Open UI-elementen testpagina
+help.test.cmd.sentry = Stuur testfout naar Sentry
+help.test.cmd.md = Open markdown rendering testpagina
+
+# ========== Admin CLI-berichten ==========
+admincmd.no_permission = Je hebt geen toestemming.
+admincmd.player_only = Dit commando kan alleen door een speler worden gebruikt.
+admincmd.player_context = Spelercontext niet beschikbaar.
+admincmd.entity_not_found = Kon spelerentiteit niet vinden.
+admincmd.unknown_command = Onbekend admincommando. Gebruik /f admin help
+admincmd.faction_not_found = Factie niet gevonden.
+admincmd.player_not_found = Speler niet gevonden: {0}
+admincmd.invalid_number = Ongeldig nummer: {0}
+admincmd.amount_positive = Bedrag moet positief zijn.
+admincmd.balance_not_negative = Saldo kan niet negatief zijn.
+admincmd.error_generic = Er is een fout opgetreden.
+
+# Admin - Herladen/Synchroniseren
+admincmd.reload.success = Configuratie herladen.
+admincmd.sync.start = Factiedata synchroniseren vanaf schijf...
+admincmd.sync.complete = Synchronisatie voltooid: {0} facties bijgewerkt, {1} leden toegevoegd, {2} leden bijgewerkt.
+admincmd.sync.failed = Synchronisatie mislukt: {0}
+
+# Admin - Versie
+admincmd.version.title = Versie-informatie
+admincmd.version.server = Hytale Server: {0}
+admincmd.version.java = Java: {0}
+admincmd.version.treasury = Schatkist: {0}
+admincmd.version.active = Actief
+admincmd.version.not_found = Niet gevonden
+
+# Admin - Sentry
+admincmd.sentry.header = Sentry Foutrapportage
+admincmd.sentry.config = Configuratie: {0}
+admincmd.sentry.status = Status: {0}
+admincmd.sentry.already_disabled = Sentry is al uitgeschakeld.
+admincmd.sentry.already_enabled = Sentry is al ingeschakeld.
+admincmd.sentry.disabled = Sentry uitgeschakeld en configuratie opgeslagen. Foutrapportage is nu uit.
+admincmd.sentry.enabled = Sentry ingeschakeld en configuratie opgeslagen. Foutrapportage is nu aan.
+admincmd.sentry.usage = Gebruik: /f admin sentry [disable|enable]
+admincmd.sentry.not_initialized = Sentry is niet geinitialiseerd. Controleer config/debug.json
+admincmd.sentry.test_sent = Testfout verstuurd naar Sentry. Controleer je Sentry-dashboard.
+admincmd.sentry.test_failed = Verzenden van testgebeurtenis mislukt.
+
+# Admin - Back-up
+admincmd.backup.no_permission = Je hebt geen toestemming om back-ups te beheren.
+admincmd.backup.creating = Back-up wordt aangemaakt...
+admincmd.backup.created = Back-up succesvol aangemaakt!
+admincmd.backup.name = Naam: {0}
+admincmd.backup.size = Grootte: {0}
+admincmd.backup.failed = Back-up mislukt: {0}
+admincmd.backup.none = Geen back-ups gevonden.
+admincmd.backup.header = Back-ups
+admincmd.backup.not_found = Back-up '{0}' niet gevonden.
+admincmd.backup.unknown_command = Onbekend back-upcommando: {0}
+admincmd.backup.usage_restore = Gebruik: /f admin backup restore <naam>
+admincmd.backup.usage_delete = Gebruik: /f admin backup delete <naam>
+admincmd.backup.restore_warning = WAARSCHUWING: Herstellen overschrijft de huidige data!
+admincmd.backup.restore_confirm = Typ het commando opnieuw binnen {0} seconden om te bevestigen.
+admincmd.backup.restoring = Back-up herstellen...
+admincmd.backup.restored = Back-up succesvol hersteld! Data opnieuw geladen.
+admincmd.backup.restore_failed = Herstellen mislukt: {0}
+admincmd.backup.confirm_cancelled = Vorige bevestiging geannuleerd. Typ opnieuw om herstel te bevestigen.
+admincmd.backup.deleted = Back-up '{0}' verwijderd
+admincmd.backup.delete_failed = Back-up verwijderen mislukt.
+
+# Admin - Debug
+admincmd.debug.no_permission = Je hebt geen toestemming om debugcommando's te gebruiken.
+admincmd.debug.unknown_command = Onbekend debugcommando: {0}
+admincmd.debug.player_only = Dit debugcommando kan alleen door een speler worden gebruikt.
+admincmd.debug.toggle_set = Debugcategorie '{0}' ingesteld op {1} (opgeslagen)
+admincmd.debug.all_enabled = Alle debugcategorieen ingeschakeld.
+admincmd.debug.all_disabled = Alle debugcategorieen uitgeschakeld.
+admincmd.debug.unknown_category = Onbekende categorie: {0}
+admincmd.debug.not_implemented = Debug {0} info nog niet geimplementeerd.
+
+# Admin - Economie
+admincmd.econ.disabled = Het economiesysteem is niet ingeschakeld.
+admincmd.econ.unknown_command = Onbekend economiecommando. Gebruik /f admin economy help
+admincmd.econ.set = Saldo van {0} ingesteld op {1} (was {2})
+admincmd.econ.added = {0} toegevoegd aan {1} (saldo: {2})
+admincmd.econ.deducted = {0} afgetrokken van {1} (saldo: {2})
+admincmd.econ.reset = Saldo van {0} gereset naar {1} (was {2})
+admincmd.econ.failed = Mislukt: {0}
+admincmd.econ.total_header = Servereconomiestatistieken
+admincmd.econ.upkeep_disabled = Het onderhoudssysteem is niet ingeschakeld.
+admincmd.econ.upkeep_trigger = Handmatig onderhoudsinning starten...
+admincmd.econ.upkeep_complete = Onderhoudsinning voltooid. Controleer het serverlog voor details.
+admincmd.econ.upkeep_failed = Onderhoudsinning mislukt: {0}
+
+# Admin - Kracht
+admincmd.power.no_permission = Je hebt geen toestemming.
+admincmd.power.unknown_command = Onbekend krachtcommando. Gebruik /f admin power help
+admincmd.power.max_positive = Maximale kracht moet positief zijn.
+admincmd.power.faction_unknown_action = Onbekende factiekrachtactie. Gebruik: set, add, remove, reset
+
+# Admin - Geschiedenis wissen
+admincmd.history.no_data = Geen spelerdata gevonden voor {0}.
+admincmd.history.empty = {0} heeft geen lidmaatschapsgeschiedenis.
+admincmd.history.cleared = {0} geschiedenisrecords gewist voor {1}.
+admincmd.history.cleared_reinit = {0} geschiedenisrecords gewist voor {1} (opnieuw geinitialiseerd met huidige factie: {2}).
+
+# Admin - Zone
+admincmd.zone.created = {0} '{1}' aangemaakt op {2}, {3}
+admincmd.zone.chunk_claimed = Kan zone niet aanmaken: Dit gebied is geclaimd door een factie.
+admincmd.zone.already_exists = Er bestaat al een zone op deze locatie.
+admincmd.zone.name_taken = Er bestaat al een zone met die naam.
+admincmd.zone.not_found = Zone '{0}' niet gevonden.
+admincmd.zone.unclaimed = Gebied vrijgegeven uit zone.
+admincmd.zone.no_chunk = Geen zonegebied gevonden op deze locatie.
+admincmd.zone.none = Geen zones gedefinieerd.
+admincmd.zone.deleted = Zone '{0}' verwijderd ({1} gebieden vrijgegeven)
+admincmd.zone.renamed = Zone '{0}' hernoemd naar '{1}'
+admincmd.zone.invalid_type = Ongeldig zonetype. Gebruik 'safe' of 'war'
+admincmd.zone.invalid_name = Ongeldige zonenaam. Moet 1-32 tekens zijn.
+admincmd.zone.claimed_radius = {0} gebieden geclaimd voor zone '{1}'
+admincmd.zone.no_chunks_claimed = Geen gebieden konden worden geclaimd (allemaal bezet of al in een zone).
+admincmd.zone.unknown_command = Onbekend zonecommando. Gebruik /f admin help
+admincmd.zone.chunk_has_zone = Dit gebied behoort al tot een andere zone.
+admincmd.zone.chunk_has_faction = Dit gebied is geclaimd door een factie.
+admincmd.zone.notify_set = Ingangsmelding van zone '{0}' {1}
+admincmd.zone.title_set = {0} titel ingesteld voor zone '{1}' op: {2}
+admincmd.zone.title_cleared = {0} titel gewist voor zone '{1}' (standaard wordt gebruikt)
+admincmd.zone.no_zone_at = Geen zone op je locatie. Sta in een zone om vlaggen te beheren.
+admincmd.zone.flag_cleared = Vlag '{0}' gewist (gebruikt nu standaard: {1})
+admincmd.zone.flag_set = Vlag '{0}' ingesteld op {1}
+admincmd.zone.flag_invalid = Ongeldige vlag: {0}
+admincmd.zone.flags_cleared = Alle aangepaste vlaggen gewist voor '{0}' — gebruikt nu standaardwaarden van het zonetype.
+
+# Admin - Wereld
+admincmd.world.unknown_command = Onbekend wereldcommando. Gebruik /f admin world help
+admincmd.world.no_settings = Geen per-wereld-instellingen geconfigureerd.
+admincmd.world.unknown_setting = Onbekende instelling: {0}
+admincmd.world.set = {0}={1} ingesteld voor wereld {2}
+admincmd.world.reset = Per-wereld-instellingen verwijderd voor: {0}
+admincmd.world.not_found = Geen instellingen gevonden voor wereld: {0}
+
+# Admin - Kaart/Verval
+admincmd.map.not_available = Wereldkaartdienst is niet beschikbaar.
+admincmd.map.refreshing = Geforceerde wereldkaartverversing bezig...
+admincmd.map.refreshed = Wereldkaartverversing voltooid.
+admincmd.map.unknown_command = Onbekend kaartcommando: {0}
+admincmd.decay.disabled = Gebiedsverval is uitgeschakeld in de configuratie.
+admincmd.decay.running = Gebiedsvervalcontrole wordt uitgevoerd...
+admincmd.decay.complete = Gebiedsvervalcontrole voltooid. Controleer de console voor details.
+admincmd.decay.unknown_command = Onbekend vervalcommando: {0}
+
+# Admin - Update
+admincmd.update.not_available = Updatecontrole is niet beschikbaar.
+admincmd.update.checking = Controleren op updates...
+admincmd.update.up_to_date = Plugin is al up-to-date (v{0})
+admincmd.update.available = Update beschikbaar: v{0}
+admincmd.update.unknown_target = Onbekend updatedoel: {0}
+
+# Admin - Importeren
+admincmd.import.unknown_source = Onbekende importbron: {0}
+admincmd.import.importing = Importeren uit {0}...
+admincmd.import.complete = {0} import {1}voltooid!
+admincmd.import.failed = {0} import mislukt met fouten:
+
+# Admin - Update Notifications
+admincmd.update_notify.new_version = [HyperFactions] Een nieuwe versie is beschikbaar!
+admincmd.update_notify.version_info = Huidig: v{0} -> Nieuwste: v{1}
+admincmd.update_notify.instruction = Voer /f admin update uit om de plugin bij te werken.
+admincmd.update_notify.up_to_date = [HyperFactions] Plugin is up-to-date (v{0})
+admincmd.update.no_info = Geen update-informatie beschikbaar.
+admincmd.update.creating_backup = Pre-update back-up maken...
+admincmd.update.backup_created = Back-up gemaakt: {0}
+admincmd.update.backup_warning = Waarschuwing: Back-up mislukt - {0}
+admincmd.update.backup_continue = Toch doorgaan met de update...
+admincmd.update.downloading = HyperFactions v{0} downloaden...
+admincmd.update.download_failed = Download mislukt. Controleer de serverlogboeken.
+admincmd.update.downloaded = Update succesvol gedownload!
+admincmd.update.file_label = Bestand: {0}
+admincmd.update.cleanup = Opruiming: {0} oude back-up(s) verwijderd
+admincmd.update.kept_backup = Bewaard: {0} (voor rollback)
+admincmd.update.restart = Herstart de server om de update toe te passen.
+admincmd.update.use_rollback = Gebruik /f admin rollback om terug te draaien voor herstart.
+admincmd.update.usage_hf = /f admin update — HyperFactions bijwerken
+admincmd.update.usage_mixin = /f admin update mixin — HyperProtect-Mixin bijwerken
+admincmd.update.usage_toggle = /f admin update toggle-mixin-download — automatisch downloaden omschakelen
+admincmd.update.mixin_current = HyperProtect-Mixin: {0}
+admincmd.update.mixin_up_to_date = HyperProtect-Mixin is up-to-date.
+admincmd.update.mixin_none = Nog geen HyperProtect-Mixin releases beschikbaar.
+admincmd.update.mixin_available = Beschikbaar: v{0}
+admincmd.update.mixin_downloading = HyperProtect-Mixin v{0} downloaden...
+admincmd.update.mixin_downloaded = Succesvol gedownload!
+admincmd.update.mixin_failed = Download mislukt. Controleer de serverlogboeken.
+admincmd.update.mixin_location = Locatie: earlyplugins/
+admincmd.update.mixin_restart = Herstart de server om toe te passen.
+admincmd.update.mixin_auto_on = HP-Mixin automatisch downloaden ingeschakeld.
+admincmd.update.mixin_auto_on_desc = HyperProtect-Mixin wordt automatisch gedownload bij de volgende opstart als het niet is geïnstalleerd.
+admincmd.update.mixin_auto_off = HP-Mixin automatisch downloaden uitgeschakeld.
+admincmd.update.mixin_auto_off_desc = Gebruik /f admin update mixin om handmatig te downloaden.
+admincmd.rollback.no_backup = Geen back-up JAR gevonden om terug te draaien.
+admincmd.rollback.unsafe = Kan niet automatisch terugdraaien!
+admincmd.rollback.unsafe_reason = De server is herstart sinds de laatste update.
+admincmd.rollback.unsafe_migration = Configuratie-/datamigraties zijn mogelijk toegepast.
+admincmd.rollback.instructions = Om veilig terug te draaien, moet je:
+admincmd.rollback.find_backup = Gebruik /f admin backup list om de pre-update back-up te vinden.
+admincmd.rollback.rolling = Update terugdraaien...
+admincmd.rollback.from = Van: v{0} (nieuw)
+admincmd.rollback.to = Naar: v{0} (vorige)
+admincmd.rollback.version = Terugdraaien naar v{0}...
+admincmd.rollback.success = Rollback succesvol!
+admincmd.rollback.restored = Hersteld: {0}
+admincmd.rollback.removed = Verwijderd: {0}
+admincmd.rollback.restart = Herstart de server om de rollback toe te passen.
+admincmd.rollback.failed = Rollback mislukt: {0}
+admincmd.zone.failed = Mislukt: {0}
+admincmd.zone.failed_delete = Kan zone niet verwijderen: {0}
+admincmd.zone.failed_rename = Kan zone niet hernoemen: {0}
+admincmd.zone.failed_flags = Kan vlaggen niet resetten.
+admincmd.zone.failed_flag = Kan vlag niet instellen.
+admincmd.zone.list_header = Zones ({0})
+admincmd.zone.info_header = Zone: {0}
+admincmd.zone.info_notify = Melding: {0}
+admincmd.zone.info_upper_title = Bovenste titel: {0}
+admincmd.zone.info_lower_title = Onderste titel: {0}
+admincmd.zone.info_custom_flags = Aangepaste vlaggen:
+admincmd.zone.flags_header = Zone Vlaggen: {0}
+admincmd.zone.flags_type = Zone Type: {0}
+admincmd.zone.player_only = Dit commando kan alleen door een speler worden gebruikt.
+admincmd.decay.status_header = Gebiedsverval Status
+admincmd.decay.enable_hint = Stel claims.decayEnabled in op true om te activeren.
+admincmd.decay.error = Fout tijdens verval: {0}
+admincmd.decay.check_header = Vervalcontrole: {0}
+admincmd.decay.check_not_found = Factie '{0}' niet gevonden.
+admincmd.decay.no_claims = Geen gebieden om te laten vervallen.
+admincmd.decay.disabled_globally = Globaal uitgeschakeld
+admincmd.map.status_header = Wereldkaart Status
+admincmd.debug.status_header = Debug Logging Status
+admincmd.debug.full_status_header = HyperFactions Debug Status
+common.no_description = Geen beschrijving ingesteld.
+common.member_count = {0} leden
+common.economy_disabled = Economiesysteem is niet ingeschakeld.
+territory.display.wilderness = Wildernis
+territory.display.safezone = Veilige Zone
+territory.display.warzone = Oorlogszone
+territory.display.unknown_faction = Onbekende Factie
+territory.secondary.pvp_disabled = PvP Uitgeschakeld
+territory.secondary.pvp_no_protection = PvP Ingeschakeld - Geen Bescherming
+territory.secondary.your_territory = Jouw Territorium
+territory.secondary.faction_territory = Territorium
+territory.secondary.relation_territory = {0} Territorium
+announce.death_location = {0} stierf op ({1}, {2}, {3}) in {4}

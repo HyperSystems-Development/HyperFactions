@@ -8,7 +8,8 @@ import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.shared.data.DescriptionModalData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -73,17 +74,17 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
     cmd.append(UIPaths.DESCRIPTION_MODAL);
 
     // Static labels
-    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.DescGui.TITLE));
-    cmd.set("#CurrentLabel.Text", HFMessages.get(playerRef, MessageKeys.DescGui.CURRENT_LABEL));
-    cmd.set("#NewDescLabel.Text", HFMessages.get(playerRef, MessageKeys.DescGui.NEW_DESC_LABEL));
-    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.CANCEL));
-    cmd.set("#ClearBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.CLEAR));
-    cmd.set("#SaveBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.SAVE));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, GuiKeys.DescGui.TITLE));
+    cmd.set("#CurrentLabel.Text", HFMessages.get(playerRef, GuiKeys.DescGui.CURRENT_LABEL));
+    cmd.set("#NewDescLabel.Text", HFMessages.get(playerRef, GuiKeys.DescGui.NEW_DESC_LABEL));
+    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, CommonKeys.Common.CANCEL));
+    cmd.set("#ClearBtn.Text", HFMessages.get(playerRef, CommonKeys.Common.CLEAR));
+    cmd.set("#SaveBtn.Text", HFMessages.get(playerRef, CommonKeys.Common.SAVE));
 
     // Show current description
     String currentDesc = faction.description();
     if (currentDesc == null || currentDesc.isEmpty()) {
-      cmd.set("#CurrentDesc.Text", HFMessages.get(playerRef, MessageKeys.DescGui.DISPLAY_NONE));
+      cmd.set("#CurrentDesc.Text", HFMessages.get(playerRef, GuiKeys.DescGui.DISPLAY_NONE));
     } else {
       // Truncate display if too long
       String display = currentDesc.length() > 100
@@ -135,7 +136,7 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
 
     // Verify officer permission (skip in admin mode)
     if (!adminMode && (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel())) {
-      player.sendMessage(MessageUtil.error(playerRef, MessageKeys.DescGui.NO_PERMISSION));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.DescGui.NO_PERMISSION));
       guiManager.openFactionSettings(player, ref, store, playerRef,
           factionManager.getFaction(faction.id()));
       return;
@@ -156,9 +157,9 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
         Faction updatedFaction = faction.withDescription(null);
         factionManager.updateFaction(updatedFaction);
 
-        String msg = HFMessages.get(playerRef, MessageKeys.DescGui.CLEARED);
+        String msg = HFMessages.get(playerRef, GuiKeys.DescGui.CLEARED);
         if (adminMode) {
-          msg = HFMessages.get(playerRef, MessageKeys.Common.ADMIN_PREFIX) + " " + msg;
+          msg = HFMessages.get(playerRef, CommonKeys.Common.ADMIN_PREFIX) + " " + msg;
         }
         player.sendMessage(Message.raw(msg).color("#AAAAAA"));
 
@@ -177,9 +178,9 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
         if (newDesc == null || newDesc.trim().isEmpty()) {
           Faction updatedFaction = faction.withDescription(null);
           factionManager.updateFaction(updatedFaction);
-          String clearMsg = HFMessages.get(playerRef, MessageKeys.DescGui.CLEARED);
+          String clearMsg = HFMessages.get(playerRef, GuiKeys.DescGui.CLEARED);
           if (adminMode) {
-            clearMsg = HFMessages.get(playerRef, MessageKeys.Common.ADMIN_PREFIX) + " " + clearMsg;
+            clearMsg = HFMessages.get(playerRef, CommonKeys.Common.ADMIN_PREFIX) + " " + clearMsg;
           }
           player.sendMessage(Message.raw(clearMsg).color("#AAAAAA"));
         } else {
@@ -192,9 +193,9 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
           Faction updatedFaction = faction.withDescription(newDesc);
           factionManager.updateFaction(updatedFaction);
 
-          String updateMsg = HFMessages.get(playerRef, MessageKeys.DescGui.UPDATED);
+          String updateMsg = HFMessages.get(playerRef, GuiKeys.DescGui.UPDATED);
           if (adminMode) {
-            updateMsg = HFMessages.get(playerRef, MessageKeys.Common.ADMIN_PREFIX) + " " + updateMsg;
+            updateMsg = HFMessages.get(playerRef, CommonKeys.Common.ADMIN_PREFIX) + " " + updateMsg;
           }
           player.sendMessage(Message.raw(updateMsg).color("#55FF55"));
         }

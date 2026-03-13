@@ -6,7 +6,7 @@ import com.hyperfactions.gui.admin.AdminNavBarHelper;
 import com.hyperfactions.gui.admin.data.AdminHelpData;
 import com.hyperfactions.gui.help.*;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.AdminGuiKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -61,7 +61,7 @@ public class AdminHelpPage extends InteractiveCustomUIPage<AdminHelpData> {
     AdminNavBarHelper.setupBar(playerRef, "help", cmd, events);
 
     // Page title
-    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_HELP));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_TITLE_HELP));
 
     // Set localized sidebar button labels (admin categories only)
     int catIdx = 0;

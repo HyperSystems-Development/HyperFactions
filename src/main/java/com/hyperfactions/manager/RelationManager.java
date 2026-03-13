@@ -5,7 +5,7 @@ import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.*;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.util.Logger;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.GuiKeys;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
@@ -640,7 +640,7 @@ public class RelationManager {
 
     Faction updated = faction.withRelation(relation)
       .withLog(FactionLog.create(logType, "Set " + targetName + " as " + type.getDisplayName(), actorUuid,
-          MessageKeys.LogsGui.MSG_RELATION_SET, targetName, type.getDisplayName()));
+          GuiKeys.LogsGui.MSG_RELATION_SET, targetName, type.getDisplayName()));
 
     factionManager.updateFaction(updated);
 
