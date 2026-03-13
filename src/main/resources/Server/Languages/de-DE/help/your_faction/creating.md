@@ -2,37 +2,37 @@
 id: faction_creating
 commands: create
 ---
-# Creating a Faction
+# Eine Fraktion gruenden
 
-Starting your own faction makes you the Leader with full control over settings, members, and territory.
+Deine eigene Fraktion zu gruenden macht dich zum Anfuehrer mit voller Kontrolle ueber Einstellungen, Mitglieder und Gebiet.
 
 ---
 
-## How to Create
+## So gruendest du eine Fraktion
 
 `/f create <name>`
 
-This creates your faction and immediately opens the Faction Dashboard where you can begin inviting members, claiming land, and configuring settings.
+Dies erstellt deine Fraktion und oeffnet sofort das Fraktions-Dashboard, wo du Mitglieder einladen, Land beanspruchen und Einstellungen konfigurieren kannst.
 
-## Name Rules
+## Namensregeln
 
-| Rule | Requirement |
-|------|------------|
-| Length | Between 3 and 24 characters |
-| Characters | Letters, numbers, and spaces only |
-| Uniqueness | No two factions can share the same name |
+| Regel | Anforderung |
+|-------|------------|
+| Laenge | Zwischen 3 und 24 Zeichen |
+| Zeichen | Nur Buchstaben, Zahlen und Leerzeichen |
+| Einzigartigkeit | Keine zwei Fraktionen koennen den gleichen Namen haben |
 
->[!WARNING] Choose your name carefully. Renaming later requires Leader permissions and may have a cooldown.
+>[!WARNING] Waehle deinen Namen sorgfaeltig. Eine spaetere Umbenennung erfordert Anfuehrer-Berechtigungen und kann eine Abklingzeit haben.
 
 ---
 
-## What Happens on Creation
+## Was bei der Gruendung passiert
 
-- You become the Leader (highest rank)
-- Your faction starts with 0 claims and your personal power (10 by default)
-- The faction dashboard opens automatically
-- You can immediately invite players, claim territory, and set a faction home
+- Du wirst zum Anfuehrer (hoechster Rang)
+- Deine Fraktion startet mit 0 Anspruechen und deiner persoenlichen Macht (standardmaessig 10)
+- Das Fraktions-Dashboard oeffnet sich automatisch
+- Du kannst sofort Spieler einladen, Gebiet beanspruchen und ein Fraktions-Zuhause setzen
 
->[!INFO] If the server has economy integration enabled, creating a faction may cost money. The creation cost is set by the server administrator.
+>[!INFO] Wenn der Server Wirtschaftsintegration aktiviert hat, kann das Gruenden einer Fraktion Geld kosten. Die Gruendungskosten werden vom Server-Administrator festgelegt.
 
->[!TIP] After creating, your first priorities should be: invite friends, find a base location, and claim it.
+>[!TIP] Nach der Gruendung sollten deine ersten Prioritaeten sein: Freunde einladen, einen Standort fuer die Basis finden und ihn beanspruchen.

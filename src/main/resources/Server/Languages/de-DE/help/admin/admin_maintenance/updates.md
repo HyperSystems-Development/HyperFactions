@@ -1,45 +1,45 @@
 ---
 id: admin_updates
 ---
-# Update Checking
+# Update-Pruefung
 
-HyperFactions can check for new versions and manage the HyperProtect-Mixin dependency.
+HyperFactions kann nach neuen Versionen suchen und die HyperProtect-Mixin-Abhaengigkeit verwalten.
 
-## Update Commands
+## Update-Befehle
 
-| Command | Description |
+| Befehl | Beschreibung |
 |---------|-------------|
-| `/f admin update` | Check for HyperFactions updates |
-| `/f admin update mixin` | Check/download HyperProtect-Mixin |
-| `/f admin update toggle-mixin-download` | Toggle auto-download |
-| `/f admin version` | Show current version and build info |
+| `/f admin update` | Nach HyperFactions-Updates suchen |
+| `/f admin update mixin` | HyperProtect-Mixin pruefen/herunterladen |
+| `/f admin update toggle-mixin-download` | Automatischen Download umschalten |
+| `/f admin version` | Aktuelle Version und Build-Info anzeigen |
 
-## Release Channels
+## Release-Kanaele
 
-| Channel | Description |
+| Kanal | Beschreibung |
 |---------|-------------|
-| **Stable** | Recommended for production servers |
-| **Pre-release** | Early access to upcoming features |
+| **Stable** | Empfohlen fuer Produktivserver |
+| **Pre-release** | Fruehzeitiger Zugang zu kommenden Funktionen |
 
->[!INFO] The update checker only notifies about new versions. It does **not** automatically install updates to HyperFactions itself.
+>[!INFO] Die Update-Pruefung benachrichtigt nur ueber neue Versionen. Sie installiert **keine** Updates fuer HyperFactions selbst automatisch.
 
 ## HyperProtect-Mixin
 
-HyperProtect-Mixin is the recommended protection mixin that enables advanced zone flags (explosions, fire spread, keep inventory, etc.).
+HyperProtect-Mixin ist das empfohlene Schutz-Mixin, das erweiterte Zonen-Flags aktiviert (Explosionen, Feuerausbreitung, Inventar behalten usw.).
 
-- `/f admin update mixin` checks for the latest version
-and downloads it if a newer version is available
-- Auto-download can be toggled on or off per server
+- `/f admin update mixin` prueft auf die neueste Version
+und laedt sie herunter, wenn eine neuere Version verfuegbar ist
+- Automatischer Download kann pro Server ein- oder ausgeschaltet werden
 
->[!TIP] After downloading a new mixin version, a server restart is required for the changes to take effect.
+>[!TIP] Nach dem Herunterladen einer neuen Mixin-Version ist ein Serverneustart erforderlich, damit die Aenderungen wirksam werden.
 
-## Rollback Procedure
+## Rollback-Verfahren
 
-If an update causes issues:
+Wenn ein Update Probleme verursacht:
 
-1. Stop the server
-2. Replace the plugin JAR with the previous version
-3. Start the server
-4. Verify functionality with `/f admin version`
+1. Stoppe den Server
+2. Ersetze die Plugin-JAR-Datei durch die vorherige Version
+3. Starte den Server
+4. Ueberpreufe die Funktionalitaet mit `/f admin version`
 
->[!WARNING] Downgrading may require a config migration reset. Always keep backups before updating.
+>[!WARNING] Ein Downgrade kann ein Zuruecksetzen der Konfigurationsmigration erfordern. Halte immer Backups bereit, bevor du aktualisierst.

@@ -2,44 +2,44 @@
 id: diplomacy_alliances
 commands: ally
 ---
-# Forming Alliances
+# Allianzen bilden
 
-Alliances are mutual agreements between two factions that provide protection and cooperation benefits.
+Allianzen sind gegenseitige Abkommen zwischen zwei Fraktionen, die Schutz- und Kooperationsvorteile bieten.
 
 ---
 
-## How to Form an Alliance
+## So bildest du eine Allianz
 
 `/f ally <faction>`
 
-Sends an alliance request to the target faction. The alliance only takes effect once both sides agree. An Officer or Leader from the other faction must also run the same command targeting your faction to confirm.
+Sendet eine Allianzanfrage an die Zielfraktion. Die Allianz tritt erst in Kraft, wenn beide Seiten zustimmen. Ein Offizier oder Anfuehrer der anderen Fraktion muss ebenfalls denselben Befehl auf deine Fraktion ausfuehren, um zu bestaetigen.
 
-## How to Break an Alliance
+## So beendest du eine Allianz
 
 `/f neutral <faction>`
 
-Either side can unilaterally end an alliance by resetting the relation to neutral.
+Jede Seite kann eine Allianz einseitig beenden, indem sie die Beziehung auf neutral zuruecksetzt.
 
 ---
 
-## Alliance Benefits
+## Allianzvorteile
 
-| Benefit | Details |
+| Vorteil | Details |
 |---------|---------|
-| No friendly fire | Allied players cannot damage each other |
-| Shared map visibility | Allied territory shows in blue on the territory map |
-| Territory interaction | Allies can use doors, seats, and transport in your territory |
-| Ally chat | Cycle to ally chat mode for cross-faction communication |
-| Overclaim protection | Allies cannot overclaim each other's territory |
+| Kein Eigenbeschuss | Verbuendete Spieler koennen einander keinen Schaden zufuegen |
+| Gemeinsame Kartensichtbarkeit | Verbuendetes Gebiet wird blau auf der Gebietskarte angezeigt |
+| Gebietsinteraktion | Verbuendete koennen Tueren, Sitzplaetze und Transportmittel in eurem Gebiet nutzen |
+| Verbuendeten-Chat | Wechsle zum Verbuendeten-Chat fuer fraktionsuebergreifende Kommunikation |
+| Schutz vor Uebernahme | Verbuendete koennen das Gebiet des anderen nicht ueberbeanspruchen |
 
->[!NOTE] Your faction can have up to 10 alliances at a time. Choose your allies wisely.
+>[!NOTE] Deine Fraktion kann gleichzeitig bis zu 10 Allianzen haben. Waehle deine Verbuendeten weise.
 
 ---
 
-## Alliance Etiquette
+## Allianz-Etikette
 
->[!TIP] Communication is key. Before sending an alliance request, consider reaching out to the other faction's leader to discuss terms. A strong alliance is built on mutual benefit, not just convenience.
+>[!TIP] Kommunikation ist entscheidend. Bevor du eine Allianzanfrage sendest, erwaege, den Anfuehrer der anderen Fraktion zu kontaktieren, um Bedingungen zu besprechen. Eine starke Allianz basiert auf gegenseitigem Nutzen, nicht nur auf Bequemlichkeit.
 
-- Alliances work both ways -- if you benefit from protection, your allies expect the same
-- Breaking an alliance during wartime may damage your faction's reputation
-- Allied factions can coordinate territory claims to create defensible borders
+- Allianzen funktionieren in beide Richtungen -- wenn du vom Schutz profitierst, erwarten deine Verbuendeten dasselbe
+- Eine Allianz waehrend eines Krieges zu brechen, kann den Ruf deiner Fraktion schaedigen
+- Verbuendete Fraktionen koennen Gebietsansprueche koordinieren, um verteidigungsfaehige Grenzen zu schaffen

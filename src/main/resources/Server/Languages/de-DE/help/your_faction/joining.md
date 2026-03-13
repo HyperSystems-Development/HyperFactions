@@ -2,35 +2,35 @@
 id: faction_joining
 commands: accept, join, request
 ---
-# Joining a Faction
+# Einer Fraktion beitreten
 
-There are three ways to join an existing faction, depending on how the faction is configured.
-
----
-
-## Methods Compared
-
-| Method | How | Requires |
-|--------|-----|----------|
-| Browse and Join | Open /f, click Browse, click Join | Faction is set to open |
-| Accept Invite | Check Invites tab in /f menu | Active invitation |
-| Request to Join | Use /f request, wait for approval | Officer or Leader approves |
+Es gibt drei Wege, einer bestehenden Fraktion beizutreten, abhaengig davon, wie die Fraktion konfiguriert ist.
 
 ---
 
-## Invite Details
+## Methoden im Vergleich
 
-- Invitations are sent by Officers or Leaders
-- Invitations expire after 5 minutes -- accept promptly
-- View your pending invites in the Invites tab of the faction menu
-- Accept with the GUI or /f accept
+| Methode | Wie | Voraussetzung |
+|---------|-----|----------|
+| Durchsuchen und beitreten | Oeffne /f, klicke auf Durchsuchen, klicke auf Beitreten | Fraktion ist offen |
+| Einladung annehmen | Pruefe den Einladungs-Tab im /f Menu | Aktive Einladung |
+| Beitrittsanfrage stellen | Nutze /f request, warte auf Genehmigung | Offizier oder Anfuehrer genehmigt |
 
-## Join Requests
+---
 
-- Use /f request to request membership in a closed faction
-- Requests expire after 24 hours if not acted on
-- Officers and Leaders can approve or deny requests from the faction dashboard
+## Einladungsdetails
 
->[!TIP] Not sure which faction to join? Use the Browse tab in /f to see faction descriptions, member counts, and whether they are open or invite-only.
+- Einladungen werden von Offizieren oder Anfuehrern gesendet
+- Einladungen laufen nach 5 Minuten ab -- nimm sie rechtzeitig an
+- Sieh dir deine ausstehenden Einladungen im Einladungs-Tab des Fraktions-Menus an
+- Annehmen ueber das GUI oder mit /f accept
 
->[!NOTE] Each faction can hold up to 50 members by default. If a faction is full, you will need to wait for a spot to open up.
+## Beitrittsanfragen
+
+- Nutze /f request, um die Mitgliedschaft in einer geschlossenen Fraktion zu beantragen
+- Anfragen laufen nach 24 Stunden ab, wenn nicht darauf reagiert wird
+- Offiziere und Anfuehrer koennen Anfragen ueber das Fraktions-Dashboard genehmigen oder ablehnen
+
+>[!TIP] Nicht sicher, welcher Fraktion du beitreten sollst? Nutze den Durchsuchen-Tab in /f, um Fraktionsbeschreibungen, Mitgliederzahlen und ob sie offen oder nur auf Einladung sind, zu sehen.
+
+>[!NOTE] Jede Fraktion kann standardmaessig bis zu 50 Mitglieder aufnehmen. Wenn eine Fraktion voll ist, musst du warten, bis ein Platz frei wird.

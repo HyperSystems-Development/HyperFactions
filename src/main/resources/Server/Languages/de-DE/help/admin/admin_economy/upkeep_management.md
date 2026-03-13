@@ -1,42 +1,42 @@
 ---
 id: admin_upkeep_management
 ---
-# Upkeep Management
+# Unterhaltsverwaltung
 
-Faction upkeep charges factions periodically based on their territory and member count.
+Fraktionsunterhalt belastet Fraktionen periodisch basierend auf ihrem Gebiet und ihrer Mitgliederzahl.
 
-## Admin Controls
+## Admin-Steuerung
 
-Upkeep settings are managed through the economy config file or the admin config GUI.
+Unterhaltseinstellungen werden ueber die Wirtschafts-Konfigurationsdatei oder das Admin-Konfigurations-GUI verwaltet.
 
 `/f admin config`
-Open the config editor and navigate to economy settings to adjust upkeep values.
+Oeffne den Konfigurationseditor und navigiere zu den Wirtschaftseinstellungen, um Unterhaltswerte anzupassen.
 
-## Default Upkeep Settings
+## Standard-Unterhaltseinstellungen
 
-| Setting | Default | Description |
+| Einstellung | Standard | Beschreibung |
 |---------|---------|-------------|
-| Upkeep enabled | false | Master toggle for the system |
-| Upkeep interval | 24h | How often upkeep is charged |
-| Per-claim cost | 5.0 | Cost per claimed chunk per cycle |
-| Per-member cost | 0.0 | Cost per member per cycle |
-| Grace period | 72h | New factions are exempt |
-| Disband on bankrupt | false | Auto-disband if cannot pay |
+| Unterhalt aktiviert | false | Hauptschalter fuer das System |
+| Unterhaltsintervall | 24h | Wie oft Unterhalt berechnet wird |
+| Kosten pro Anspruch | 5.0 | Kosten pro beanspruchtem Chunk pro Zyklus |
+| Kosten pro Mitglied | 0.0 | Kosten pro Mitglied pro Zyklus |
+| Gnadenfrist | 72h | Neue Fraktionen sind befreit |
+| Aufloesung bei Bankrott | false | Automatische Aufloesung bei Zahlungsunfaehigkeit |
 
-## Monitoring Upkeep
+## Unterhalt ueberwachen
 
-Use `/f admin info <faction>` to see:
-- Current treasury balance
-- Estimated upkeep cost per cycle
-- Time until next upkeep charge
-- Whether the faction can afford upkeep
+Nutze `/f admin info <faction>`, um zu sehen:
+- Aktueller Schatzkammer-Kontostand
+- Geschaetzte Unterhaltskosten pro Zyklus
+- Zeit bis zur naechsten Unterhaltsberechnung
+- Ob die Fraktion sich den Unterhalt leisten kann
 
->[!TIP] Review economy statistics across all factions from the admin dashboard to identify factions at risk of bankruptcy before upkeep triggers.
+>[!TIP] Ueberpreufe die Wirtschaftsstatistiken aller Fraktionen vom Admin-Dashboard aus, um Fraktionen zu identifizieren, die vor dem Unterhaltszeitpunkt bankrottgefaehrdet sind.
 
->[!INFO] Upkeep configuration is stored in `economy.json`. Changes made via the config GUI take effect after reload with `/f admin reload`.
+>[!INFO] Die Unterhaltskonfiguration ist in `economy.json` gespeichert. Aenderungen ueber das Konfigurations-GUI werden nach dem Neuladen mit `/f admin reload` wirksam.
 
-## Upkeep Formula
+## Unterhaltsformel
 
-**Total upkeep** = (claimed chunks x per-claim cost) + (member count x per-member cost)
+**Gesamtunterhalt** = (beanspruchte Chunks x Kosten pro Anspruch) + (Mitgliederzahl x Kosten pro Mitglied)
 
->[!WARNING] Enabling upkeep on a server with existing factions may cause unexpected bankruptcies. Consider setting a grace period or announcing the change in advance.
+>[!WARNING] Das Aktivieren von Unterhalt auf einem Server mit bestehenden Fraktionen kann unerwartete Bankrotte verursachen. Erwaege, eine Gnadenfrist festzulegen oder die Aenderung im Voraus anzukuendigen.

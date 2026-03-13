@@ -2,46 +2,46 @@
 id: diplomacy_enemies
 commands: enemy, neutral
 ---
-# Enemy Factions
+# Feindliche Fraktionen
 
-Declaring an enemy is a one-way action that immediately enables PvP and territorial aggression against the target faction. No agreement is required.
+Einen Feind zu erklaeren ist eine einseitige Aktion, die sofort PvP und territoriale Aggression gegen die Zielfraktion aktiviert. Keine Zustimmung ist erforderlich.
 
 ---
 
-## Declaring an Enemy
+## Einen Feind erklaeren
 
 `/f enemy <faction>`
 
-Instantly marks the target faction as your enemy. This takes effect immediately -- no confirmation from the other side is needed. Requires Officer rank or higher.
+Markiert die Zielfraktion sofort als euren Feind. Dies tritt sofort in Kraft -- keine Bestaetigung von der anderen Seite ist noetig. Erfordert den Rang Offizier oder hoeher.
 
-## Resetting to Neutral
+## Auf Neutral zuruecksetzen
 
 `/f neutral <faction>`
 
-Ends the enemy status and resets the relation to neutral. This also requires Officer+ and takes effect immediately.
+Beendet den Feindstatus und setzt die Beziehung auf neutral zurueck. Dies erfordert ebenfalls Offizier+ und tritt sofort in Kraft.
 
 ---
 
-## What Enemy Status Enables
+## Was der Feindstatus bewirkt
 
-| Effect | Details |
+| Effekt | Details |
 |--------|---------|
-| PvP in territory | Full PvP is enabled in both factions' territory |
-| Overclaiming | You can overclaim their chunks if they are in a power deficit |
-| Map marking | Enemy territory shows in red on the territory map |
-| No protection | Standard territory protection does not prevent enemy PvP |
+| PvP im Gebiet | Volles PvP ist in den Gebieten beider Fraktionen aktiviert |
+| Ueberbeanspruchung | Du kannst deren Chunks ueberbeanspruchen, wenn sie ein Machtdefizit haben |
+| Kartenmarkierung | Feindliches Gebiet wird rot auf der Gebietskarte angezeigt |
+| Kein Schutz | Standard-Gebietsschutz verhindert kein feindliches PvP |
 
->[!WARNING] Declaring an enemy is a serious decision. Their members can also fight you in your own territory once you declare.
+>[!WARNING] Einen Feind zu erklaeren ist eine ernste Entscheidung. Deren Mitglieder koennen euch auch in eurem eigenen Gebiet bekaempfen, sobald ihr es erklaert habt.
 
 ---
 
-## Strategic Considerations
+## Strategische Ueberlegungen
 
-- Enemy declarations are one-way -- you can declare without their consent, but they also see you as hostile
-- Before declaring, check the target's power with /f info. If they are strong, you may lose territory instead
-- Weaken enemies through repeated combat to drain their power, then overclaim their land
-- There is no limit to how many enemies you can have, but fighting on multiple fronts is risky
+- Feinderklaerungen sind einseitig -- du kannst ohne deren Zustimmung erklaeren, aber sie sehen dich ebenfalls als feindlich
+- Pruefe vor der Erklaerung die Macht des Ziels mit /f info. Wenn sie stark sind, koenntest stattdessen du Gebiet verlieren
+- Schwaeche Feinde durch wiederholten Kampf, um ihre Macht zu entziehen, dann ueberbeanspruche ihr Land
+- Es gibt kein Limit fuer die Anzahl der Feinde, aber an mehreren Fronten zu kaempfen ist riskant
 
->[!TIP] Use /f neutral to de-escalate conflicts. Sometimes a strategic peace is more valuable than continued war.
+>[!TIP] Nutze /f neutral, um Konflikte zu deeskalieren. Manchmal ist ein strategischer Frieden wertvoller als fortgesetzter Krieg.
 
->[!NOTE] If you are allied with a faction and declare them as an enemy, the alliance is broken first.
+>[!NOTE] Wenn du mit einer Fraktion verbuendet bist und sie zum Feind erklaerst, wird zuerst die Allianz aufgeloest.

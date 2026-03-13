@@ -1,38 +1,38 @@
 ---
 id: admin_managing_factions
 ---
-# Managing Factions
+# Fraktionen verwalten
 
-Admins can inspect and modify any faction on the server through the dashboard or commands.
+Admins koennen jede Fraktion auf dem Server ueber das Dashboard oder Befehle einsehen und aendern.
 
-## Browsing Factions
+## Fraktionen durchsuchen
 
 `/f admin factions`
-Opens the admin faction browser. View all factions with member counts, power levels, and territory.
+Oeffnet den Admin-Fraktionsbrowser. Zeigt alle Fraktionen mit Mitgliederzahlen, Machtwerten und Gebiet an.
 
 `/f admin info <faction>`
-Opens the admin info panel for a specific faction with full details and management options.
+Oeffnet das Admin-Infopanel fuer eine bestimmte Fraktion mit allen Details und Verwaltungsoptionen.
 
-## Modifying Faction Settings
+## Fraktionseinstellungen aendern
 
-With `hyperfactions.admin.modify` permission, you can:
+Mit der `hyperfactions.admin.modify` Berechtigung kannst du:
 
-- **Rename** a faction to resolve conflicts
-- **Set color** to fix display issues
-- **Toggle open/close** to override join policy
-- **Edit description** for moderation purposes
+- Fraktion **umbenennen**, um Konflikte zu loesen
+- **Farbe setzen**, um Anzeigeprobleme zu beheben
+- **Offen/Geschlossen umschalten**, um die Beitrittspolitik zu ueberschreiben
+- **Beschreibung bearbeiten** fuer Moderationszwecke
 
->[!TIP] Use `/f admin who <player>` to look up which faction a specific player belongs to and view their details.
+>[!TIP] Nutze `/f admin who <player>`, um nachzuschlagen, zu welcher Fraktion ein bestimmter Spieler gehoert, und seine Details einzusehen.
 
-## Viewing Members and Relations
+## Mitglieder und Beziehungen einsehen
 
-The admin info panel shows:
+Das Admin-Infopanel zeigt:
 
-| Section | Details |
+| Bereich | Details |
 |---------|---------|
-| **Members** | Full roster with roles and last seen |
-| **Relations** | All ally, enemy, and neutral standings |
-| **Territory** | Claimed chunks and power balance |
-| **Economy** | Treasury balance and transaction log |
+| **Mitglieder** | Vollstaendige Liste mit Rollen und letzter Aktivitaet |
+| **Beziehungen** | Alle Verbuendeten-, Feind- und Neutral-Verhaeltnisse |
+| **Gebiet** | Beanspruchte Chunks und Machtbilanz |
+| **Wirtschaft** | Schatzkammer-Kontostand und Transaktionsprotokoll |
 
->[!NOTE] Admin inspection commands do not notify the faction being viewed. Only modifications trigger alerts.
+>[!NOTE] Admin-Einsichtsbefehle benachrichtigen die eingesehene Fraktion nicht. Nur Aenderungen loesen Benachrichtigungen aus.

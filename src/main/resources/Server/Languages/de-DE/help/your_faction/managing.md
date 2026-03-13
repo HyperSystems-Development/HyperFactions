@@ -2,43 +2,43 @@
 id: faction_managing
 commands: invite, kick, promote, demote, transfer
 ---
-# Managing Members
+# Mitglieder verwalten
 
-Officers and Leaders share responsibility for managing the faction roster. Here are the key commands and who can use them.
+Offiziere und Anfuehrer teilen sich die Verantwortung fuer die Verwaltung der Fraktions-Mitgliederliste. Hier sind die wichtigsten Befehle und wer sie nutzen kann.
 
 ---
 
-## Commands
+## Befehle
 
-| Command | What It Does | Required Role |
+| Befehl | Beschreibung | Benoetigter Rang |
 |---------|-------------|---------------|
-| `/f invite <player>` | Sends a join invitation (expires in 5 min) | Officer+ |
-| `/f kick <player>` | Removes a member from the faction | Officer+ (see note) |
-| `/f promote <player>` | Promotes a Member to Officer | Leader only |
-| `/f demote <player>` | Demotes an Officer to Member | Leader only |
-| `/f transfer <player>` | Transfers faction ownership | Leader only |
+| `/f invite <player>` | Sendet eine Beitrittseinladung (laeuft in 5 Min. ab) | Offizier+ |
+| `/f kick <player>` | Entfernt ein Mitglied aus der Fraktion | Offizier+ (siehe Hinweis) |
+| `/f promote <player>` | Befoerdert ein Mitglied zum Offizier | Nur Anfuehrer |
+| `/f demote <player>` | Degradiert einen Offizier zum Mitglied | Nur Anfuehrer |
+| `/f transfer <player>` | Uebertraegt die Fraktionsfuehrung | Nur Anfuehrer |
 
->[!NOTE] Officers can only kick Members. To remove another Officer, the Leader must either demote them first or kick them directly.
+>[!NOTE] Offiziere koennen nur Mitglieder entfernen. Um einen anderen Offizier zu entfernen, muss der Anfuehrer ihn entweder zuerst degradieren oder direkt entfernen.
 
 ---
 
-## Invitations
+## Einladungen
 
-- Invitations expire after 5 minutes if not accepted
-- The invited player sees it in their Invites tab when they open /f
-- There is no limit to how many invitations you can send at once
-- Your faction can hold up to 50 members total
+- Einladungen laufen nach 5 Minuten ab, wenn sie nicht angenommen werden
+- Der eingeladene Spieler sieht sie im Einladungs-Tab, wenn er /f oeffnet
+- Es gibt kein Limit fuer die Anzahl gleichzeitig versendeter Einladungen
+- Deine Fraktion kann insgesamt bis zu 50 Mitglieder haben
 
-## Promotions and Demotions
+## Befoerderungen und Degradierungen
 
-- Only the Leader can promote or demote
-- /f promote raises a Member to Officer
-- /f demote lowers an Officer back to Member
+- Nur der Anfuehrer kann befoerdern oder degradieren
+- /f promote befoerdert ein Mitglied zum Offizier
+- /f demote degradiert einen Offizier zurueck zum Mitglied
 
-## Transferring Leadership
+## Fuehrung uebertragen
 
->[!WARNING] Transferring leadership is irreversible. You will be demoted to Officer and the target player becomes the new Leader. Make sure you trust them completely.
+>[!WARNING] Die Uebertragung der Fuehrung ist unwiderruflich. Du wirst zum Offizier degradiert und der Zielspieler wird der neue Anfuehrer. Stelle sicher, dass du ihm vollstaendig vertraust.
 
 `/f transfer <player>`
 
-The target must be a current member of your faction.
+Das Ziel muss ein aktuelles Mitglied deiner Fraktion sein.

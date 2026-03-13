@@ -2,44 +2,44 @@
 id: power_understanding
 commands: power
 ---
-# Understanding Power
+# Macht verstehen
 
-Power is the core resource that determines how much territory your faction can hold. Every player has personal power that contributes to the faction total.
+Macht ist die zentrale Ressource, die bestimmt, wie viel Gebiet deine Fraktion halten kann. Jeder Spieler hat persoenliche Macht, die zur Fraktionsgesamtmacht beitraegt.
 
 ---
 
-## Default Power Values
+## Standard-Machtwerte
 
-| Setting | Value |
+| Einstellung | Wert |
 |---------|-------|
-| Maximum power per player | 20 |
-| Starting power | 10 |
-| Death penalty | -1.0 per death |
-| Kill reward | 0.0 |
-| Regen rate | +0.1 per minute (while online) |
-| Power cost per claim | 2.0 |
-| Logout while tagged | -1.0 additional |
+| Maximale Macht pro Spieler | 20 |
+| Startmacht | 10 |
+| Todesstrafe | -1.0 pro Tod |
+| Belohnung fuer Kills | 0.0 |
+| Regenerationsrate | +0.1 pro Minute (solange online) |
+| Machtkosten pro Anspruch | 2.0 |
+| Abmeldung waehrend Markierung | -1.0 zusaetzlich |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Dies sind Standardwerte. Dein Server-Administrator hat moeglicherweise andere Einstellungen konfiguriert.
 
-## How It Works
+## So funktioniert es
 
-Your faction's total power is the sum of every member's personal power. Your required power is the number of claims multiplied by 2.0. As long as total power stays above required power, your territory is safe.
+Die Gesamtmacht deiner Fraktion ist die Summe der persoenlichen Macht aller Mitglieder. Die benoetigte Macht ist die Anzahl der Ansprueche multipliziert mit 2.0. Solange die Gesamtmacht ueber der benoetigten Macht bleibt, ist euer Gebiet sicher.
 
->[!INFO] Power regenerates passively at 0.1 per minute while you are online. At that rate, recovering 1.0 power takes about 10 minutes.
+>[!INFO] Macht regeneriert sich passiv mit 0.1 pro Minute, solange du online bist. Mit dieser Rate dauert die Erholung von 1.0 Macht etwa 10 Minuten.
 
 ---
 
-## Checking Your Power
+## Deine Macht pruefen
 
 `/f power`
 
-Shows your personal power, your faction's total power, and how much is needed to maintain current claims.
+Zeigt deine persoenliche Macht, die Gesamtmacht deiner Fraktion und wie viel benoetigt wird, um die aktuellen Ansprueche zu halten.
 
-## The Danger Zone
+## Die Gefahrenzone
 
-If total power falls below the required amount for your claims, your faction becomes vulnerable. Enemies can overclaim your chunks.
+Wenn die Gesamtmacht unter den fuer eure Ansprueche benoetigten Betrag faellt, wird eure Fraktion verwundbar. Feinde koennen eure Chunks ueberbeanspruchen.
 
->[!WARNING] Multiple deaths in a short period can cascade quickly. If you have 5 members each at 10 power (50 total) and 20 claims (40 needed), just 5 deaths across your team drops you to 45 -- still safe. But 11 deaths puts you at 39, below the 40 threshold.
+>[!WARNING] Mehrere Tode in kurzer Zeit koennen sich schnell aufsummieren. Wenn ihr 5 Mitglieder mit je 10 Macht habt (50 gesamt) und 20 Ansprueche (40 benoetigt), bringen euch 5 Tode im Team auf 45 -- noch sicher. Aber 11 Tode bringen euch auf 39, unter die 40er-Schwelle.
 
->[!TIP] Keep a power buffer. Do not claim every chunk you can afford -- leave room for a few deaths without becoming raidable.
+>[!TIP] Halte einen Machtpuffer. Beanspruche nicht jeden Chunk, den du dir leisten kannst -- lass Spielraum fuer ein paar Tode, ohne ueberfallbar zu werden.

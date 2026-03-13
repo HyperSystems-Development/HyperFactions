@@ -1,38 +1,38 @@
 ---
 id: admin_power_commands
 ---
-# Power Admin Commands
+# Macht-Admin-Befehle
 
-Override player and faction power values. All commands require `hyperfactions.admin.power` permission.
+Spieler- und Fraktionsmachtwerte ueberschreiben. Alle Befehle erfordern die `hyperfactions.admin.power` Berechtigung.
 
-## Player Power Commands
+## Spieler-Machtbefehle
 
-| Command | Description |
+| Befehl | Beschreibung |
 |---------|-------------|
-| `/f admin power set <player> <amount>` | Set exact power value |
-| `/f admin power add <player> <amount>` | Add power to player |
-| `/f admin power remove <player> <amount>` | Remove power from player |
-| `/f admin power reset <player>` | Reset to default starting power |
-| `/f admin power info <player>` | View detailed power breakdown |
+| `/f admin power set <player> <amount>` | Exakten Machtwert setzen |
+| `/f admin power add <player> <amount>` | Macht zum Spieler hinzufuegen |
+| `/f admin power remove <player> <amount>` | Macht vom Spieler entfernen |
+| `/f admin power reset <player>` | Auf Standard-Startmacht zuruecksetzen |
+| `/f admin power info <player>` | Detaillierte Machtaufschluesselung anzeigen |
 
-## How Power Affects Factions
+## Wie Macht Fraktionen beeinflusst
 
-A faction's total power is the sum of all its members' individual power. Territory claims require sufficient total power to maintain.
+Die Gesamtmacht einer Fraktion ist die Summe der individuellen Macht aller Mitglieder. Gebietsansprueche erfordern ausreichend Gesamtmacht fuer den Unterhalt.
 
-| Scenario | Effect |
+| Szenario | Auswirkung |
 |----------|--------|
-| Power set higher | Faction can claim more territory |
-| Power set lower | Faction may become vulnerable to overclaim |
-| Power reset | Returns player to default starting value |
+| Macht hoeher gesetzt | Fraktion kann mehr Gebiet beanspruchen |
+| Macht niedriger gesetzt | Fraktion kann anfaellig fuer Uebernahmen werden |
+| Macht zurueckgesetzt | Setzt Spieler auf Standard-Startwert zurueck |
 
->[!WARNING] Lowering a player's power may cause their faction to lose territory if total power drops below the number of claimed chunks.
+>[!WARNING] Das Senken der Macht eines Spielers kann dazu fuehren, dass seine Fraktion Gebiet verliert, wenn die Gesamtmacht unter die Anzahl der beanspruchten Chunks faellt.
 
-## Examples
+## Beispiele
 
-- `/f admin power set Steve 50` -- set to exactly 50
-- `/f admin power add Steve 10` -- increase by 10
-- `/f admin power remove Steve 5` -- decrease by 5
-- `/f admin power reset Steve` -- back to default
-- `/f admin power info Steve` -- show full breakdown
+- `/f admin power set Steve 50` -- auf genau 50 setzen
+- `/f admin power add Steve 10` -- um 10 erhoehen
+- `/f admin power remove Steve 5` -- um 5 verringern
+- `/f admin power reset Steve` -- auf Standard zuruecksetzen
+- `/f admin power info Steve` -- vollstaendige Aufschluesselung anzeigen
 
->[!TIP] Use `/f admin power info <player>` to see current power, max power, and any active overrides before making changes.
+>[!TIP] Nutze `/f admin power info <player>`, um aktuelle Macht, maximale Macht und aktive Ueberschreibungen zu sehen, bevor du Aenderungen vornimmst.

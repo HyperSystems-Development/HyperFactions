@@ -2,37 +2,37 @@
 id: welcome_started
 commands: gui, menu
 ---
-# Getting Started
+# Erste Schritte
 
-Welcome to HyperFactions! Here is how to get up and running in just a few steps.
+Willkommen bei HyperFactions! So startest du in wenigen Schritten durch.
 
 ---
 
-## Step 1: Open the Faction Menu
+## Schritt 1: Das Fraktions-Menu oeffnen
 
-Type /f to open the main faction GUI. This is your hub for everything -- browsing factions, creating your own, and managing invitations.
+Tippe /f, um das Fraktions-GUI zu oeffnen. Dies ist deine Zentrale fuer alles -- Fraktionen durchsuchen, eigene gruenden und Einladungen verwalten.
 
-## Step 2: Choose Your Path
+## Schritt 2: Waehle deinen Weg
 
-| Option | How |
+| Option | Wie |
 |--------|-----|
-| Browse open factions | Click Browse in the menu and hit Join on any open faction. |
-| Accept an invitation | Check the Invites tab. If someone invited you, click Accept. |
-| Create your own | Click Create Faction, pick a name, and you are the Leader. |
+| Offene Fraktionen durchsuchen | Klicke im Menu auf Durchsuchen und dann auf Beitreten bei einer offenen Fraktion. |
+| Einladung annehmen | Pruefe den Einladungs-Tab. Wenn dich jemand eingeladen hat, klicke auf Annehmen. |
+| Eigene Fraktion gruenden | Klicke auf Fraktion erstellen, waehle einen Namen und du bist der Anfuehrer. |
 
-## Step 3: Explore Your Faction
+## Schritt 3: Deine Fraktion erkunden
 
-Once you are in a faction, you will see the Faction Dashboard with your roster, territory map, relations, and settings.
+Sobald du in einer Fraktion bist, siehst du das Fraktions-Dashboard mit der Mitgliederliste, der Gebietskarte, den Beziehungen und den Einstellungen.
 
->[!TIP] If you are brand new, try joining an existing faction first. You will learn the ropes faster with experienced members around you.
+>[!TIP] Wenn du ganz neu bist, tritt zuerst einer bestehenden Fraktion bei. Mit erfahrenen Mitgliedern lernst du schneller die Grundlagen.
 
 ---
 
-## Essential First Commands
+## Wichtige erste Befehle
 
-- /f -- Opens the faction GUI
-- /f home -- Teleport to your faction's home base
-- /f c -- Cycle chat mode between Normal, Faction, and Ally
-- /f map -- View the territory map around you
+- /f -- Oeffnet das Fraktions-GUI
+- /f home -- Teleportiert dich zur Heimatbasis deiner Fraktion
+- /f c -- Wechselt den Chat-Modus zwischen Normal, Fraktion und Verbuendete
+- /f map -- Zeigt die Gebietskarte um dich herum
 
->[!TIP] You can also type /f help in chat for a quick command reference anytime.
+>[!TIP] Du kannst auch jederzeit /f help im Chat eingeben, um eine schnelle Befehlsuebersicht zu erhalten.

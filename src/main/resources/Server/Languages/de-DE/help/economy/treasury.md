@@ -2,25 +2,25 @@
 id: economy_treasury
 commands: balance
 ---
-# Faction Treasury
+# Fraktions-Schatzkammer
 
-Every faction has a shared treasury that serves as the faction's bank. Funds are used for upkeep costs, territory maintenance, and faction operations.
+Jede Fraktion hat eine gemeinsame Schatzkammer, die als Bank der Fraktion dient. Mittel werden fuer Unterhaltskosten, Gebietspflege und Fraktionsoperationen verwendet.
 
-## Starting Balance
+## Startguthaben
 
-New factions start with 0 in their treasury. Members must deposit funds to build up reserves.
+Neue Fraktionen starten mit 0 in ihrer Schatzkammer. Mitglieder muessen Mittel einzahlen, um Reserven aufzubauen.
 
-## Who Can Manage
+## Wer verwalten darf
 
-- Any member can deposit funds
-- Officers and Leader can withdraw and transfer
-- Leader has full treasury control
+- Jedes Mitglied kann Mittel einzahlen
+- Offiziere und Anfuehrer koennen abheben und ueberweisen
+- Der Anfuehrer hat volle Kontrolle ueber die Schatzkammer
 
 ---
 
 `/f balance`
-Check your faction's current treasury balance. Also available as /f bal.
+Pruefe den aktuellen Kontostand der Schatzkammer deiner Fraktion. Auch verfuegbar als /f bal.
 
->[!TIP] Contribute regularly to keep your faction funded. Territory upkeep costs can drain an empty treasury quickly.
+>[!TIP] Zahle regelmaessig ein, um deine Fraktion finanziert zu halten. Gebietsunterhaltskosten koennen eine leere Schatzkammer schnell aufbrauchen.
 
->[!INFO] All treasury transactions are logged and can be reviewed by officers.
+>[!INFO] Alle Schatzkammer-Transaktionen werden protokolliert und koennen von Offizieren eingesehen werden.

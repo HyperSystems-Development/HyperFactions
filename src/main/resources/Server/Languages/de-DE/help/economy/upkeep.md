@@ -1,37 +1,37 @@
 ---
 id: economy_upkeep
 ---
-# Territory Upkeep
+# Gebietsunterhalt
 
-Factions must pay ongoing upkeep to maintain their claimed territory. This prevents land hoarding and keeps the map dynamic.
+Fraktionen muessen laufenden Unterhalt zahlen, um ihr beanspruchtes Gebiet zu halten. Dies verhindert Landhamsterei und haelt die Karte dynamisch.
 
-## Upkeep Costs
+## Unterhaltskosten
 
-| Setting | Default |
+| Einstellung | Standard |
 |---------|---------|
-| Cost per chunk | 2.0 per cycle |
-| Payment interval | Every 24 hours |
-| Free chunks | 3 (no cost) |
-| Scaling mode | Flat rate |
+| Kosten pro Chunk | 2.0 pro Zyklus |
+| Zahlungsintervall | Alle 24 Stunden |
+| Kostenlose Chunks | 3 (keine Kosten) |
+| Skalierungsmodus | Pauschale |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Dies sind Standardwerte. Dein Server-Administrator hat moeglicherweise andere Einstellungen konfiguriert.
 
-Your first 3 chunks are free. Beyond that, each additional claimed chunk costs 2.0 per payment cycle.
+Deine ersten 3 Chunks sind kostenlos. Darueber hinaus kostet jeder zusaetzliche beanspruchte Chunk 2.0 pro Zahlungszyklus.
 
-## Auto-Pay
+## Automatische Zahlung
 
-Auto-pay is enabled by default. The system automatically deducts upkeep from your treasury at each interval. No manual action needed.
+Automatische Zahlung ist standardmaessig aktiviert. Das System zieht den Unterhalt automatisch bei jedem Intervall von eurer Schatzkammer ab. Kein manuelles Eingreifen noetig.
 
 ---
 
-## Grace Period
+## Gnadenfrist
 
-If your treasury cannot cover upkeep, a 48-hour grace period begins. A warning is sent 6 hours before claims start being lost.
+Wenn eure Schatzkammer den Unterhalt nicht decken kann, beginnt eine 48-stuendige Gnadenfrist. Eine Warnung wird 6 Stunden vor dem Verlust von Anspruechen gesendet.
 
->[!WARNING] If upkeep remains unpaid after the grace period, your faction loses 1 claim per cycle until costs are covered or all extra claims are gone.
+>[!WARNING] Wenn der Unterhalt nach der Gnadenfrist unbezahlt bleibt, verliert eure Fraktion 1 Anspruch pro Zyklus, bis die Kosten gedeckt sind oder alle zusaetzlichen Ansprueche aufgebraucht sind.
 
-## Example
+## Beispiel
 
-*A faction with 8 claims pays for 5 chunks (8 minus 3 free). At 2.0 per chunk, that is 10.0 per cycle.*
+*Eine Fraktion mit 8 Anspruechen zahlt fuer 5 Chunks (8 minus 3 kostenlose). Bei 2.0 pro Chunk sind das 10.0 pro Zyklus.*
 
->[!TIP] Keep your treasury funded above your upkeep cost. Use /f balance to check your reserves.
+>[!TIP] Halte deine Schatzkammer ueber den Unterhaltskosten. Nutze /f balance, um deine Reserven zu pruefen.

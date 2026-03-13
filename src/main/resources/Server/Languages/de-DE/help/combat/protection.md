@@ -1,28 +1,28 @@
 ---
 id: combat_protection
 ---
-# Territory Protection
+# Gebietsschutz
 
-Claimed territory provides several layers of defense for your faction's builds and resources.
+Beanspruchtes Gebiet bietet mehrere Verteidigungsschichten fuer die Bauten und Ressourcen deiner Fraktion.
 
-## Block Protection
+## Blockschutz
 
-Only faction members can place or break blocks in your territory. Enemies and neutrals are blocked from modifying anything.
+Nur Fraktionsmitglieder koennen in eurem Gebiet Bloecke platzieren oder abbauen. Feinde und Neutrale koennen nichts veraendern.
 
-## Container Protection
+## Behaelterschutz
 
-Chests, barrels, and other containers are secured. Only your faction members can open or interact with storage in claimed chunks.
+Truhen, Faesser und andere Behaelter sind gesichert. Nur eure Fraktionsmitglieder koennen Lager in beanspruchten Chunks oeffnen oder damit interagieren.
 
-## Entry Alerts
+## Eindringlingsalarme
 
-When a non-member enters your claimed territory, online faction members receive a notification with the intruder's name and location.
+Wenn ein Nicht-Mitglied euer beanspruchtes Gebiet betritt, erhalten online anwesende Fraktionsmitglieder eine Benachrichtigung mit dem Namen und Standort des Eindringlings.
 
 ---
 
-## Ally Access
+## Verbuendeten-Zugang
 
-Allies cannot build or break blocks in your territory by default. Ally damage is also disabled, so allied players cannot harm each other.
+Verbuendete koennen standardmaessig keine Bloecke in eurem Gebiet bauen oder abbauen. Verbuendeten-Schaden ist ebenfalls deaktiviert, sodass verbuendete Spieler einander nicht verletzen koennen.
 
->[!INFO] Territory protects blocks, not players. PvP in your own territory depends on the attacker's relation to your faction.
+>[!INFO] Gebietsschutz schuetzt Bloecke, nicht Spieler. PvP in eurem eigenen Gebiet haengt von der Beziehung des Angreifers zu eurer Fraktion ab.
 
->[!TIP] Keep your claims connected and avoid isolated chunks that are harder to defend.
+>[!TIP] Halte deine Ansprueche zusammenhaengend und vermeide isolierte Chunks, die schwerer zu verteidigen sind.

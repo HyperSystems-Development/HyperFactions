@@ -1,45 +1,45 @@
 ---
 id: admin_world_settings
 ---
-# Per-World Settings
+# Welt-spezifische Einstellungen
 
-HyperFactions supports per-world configuration for claiming, PvP, and protection behavior.
+HyperFactions unterstuetzt welt-spezifische Konfiguration fuer Beanspruchung, PvP und Schutzverhalten.
 
-## World Commands
+## Welt-Befehle
 
-| Command | Description |
+| Befehl | Beschreibung |
 |---------|-------------|
-| `/f admin world list` | List all world overrides |
-| `/f admin world info <world>` | Show settings for a world |
-| `/f admin world set <world> <key> <value>` | Set a setting |
-| `/f admin world reset <world>` | Reset world to defaults |
+| `/f admin world list` | Alle Welt-Ueberschreibungen auflisten |
+| `/f admin world info <world>` | Einstellungen fuer eine Welt anzeigen |
+| `/f admin world set <world> <key> <value>` | Eine Einstellung setzen |
+| `/f admin world reset <world>` | Welt auf Standards zuruecksetzen |
 
-## Available Settings
+## Verfuegbare Einstellungen
 
-| Setting | Type | Description |
+| Einstellung | Typ | Beschreibung |
 |---------|------|-------------|
-| claiming_enabled | boolean | Allow faction claims in this world |
-| pvp_enabled | boolean | Allow PvP combat in this world |
-| power_loss | boolean | Apply power loss on death |
-| build_protection | boolean | Enforce claim build protection |
-| explosion_protection | boolean | Protect claims from explosions |
+| claiming_enabled | boolean | Fraktions-Beanspruchungen in dieser Welt erlauben |
+| pvp_enabled | boolean | PvP-Kampf in dieser Welt erlauben |
+| power_loss | boolean | Machtverlust bei Tod anwenden |
+| build_protection | boolean | Anspruchs-Bauschutz durchsetzen |
+| explosion_protection | boolean | Ansprueche vor Explosionen schuetzen |
 
-## World Whitelist / Blacklist
+## Welt-Whitelist / Blacklist
 
-Control which worlds allow faction features through the `worlds.json` config file:
+Steuere, welche Welten Fraktionsfunktionen erlauben, ueber die `worlds.json` Konfigurationsdatei:
 
-- **Whitelist mode**: Only listed worlds allow claiming
-- **Blacklist mode**: All worlds allow claiming except listed
+- **Whitelist-Modus**: Nur gelistete Welten erlauben Beanspruchung
+- **Blacklist-Modus**: Alle Welten erlauben Beanspruchung ausser den gelisteten
 
->[!INFO] World settings are stored in `worlds.json` and override the global defaults from `factions.json`.
+>[!INFO] Welt-Einstellungen sind in `worlds.json` gespeichert und ueberschreiben die globalen Standards aus `factions.json`.
 
-## Examples
+## Beispiele
 
 - `/f admin world set survival claiming_enabled true`
 - `/f admin world set creative claiming_enabled false`
 - `/f admin world set pvp_arena pvp_enabled true`
-- `/f admin world reset lobby` -- restore all defaults
+- `/f admin world reset lobby` -- alle Standards wiederherstellen
 
->[!TIP] Disable claiming in creative or lobby worlds to keep the faction system focused on survival gameplay.
+>[!TIP] Deaktiviere Beanspruchung in Kreativ- oder Lobby-Welten, um das Fraktionssystem auf das Survival-Gameplay zu konzentrieren.
 
->[!NOTE] Per-world settings take priority over global config but are overridden by zone flags within that world.
+>[!NOTE] Welt-spezifische Einstellungen haben Vorrang vor der globalen Konfiguration, werden aber von Zonen-Flags innerhalb dieser Welt ueberschrieben.

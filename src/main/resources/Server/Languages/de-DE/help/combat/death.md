@@ -2,38 +2,38 @@
 id: combat_death
 commands: home, sethome, stuck
 ---
-# Death and Recovery
+# Tod und Erholung
 
-Death carries real consequences in factions. Every death costs you personal power, weakening your faction's ability to hold territory.
+Der Tod hat echte Konsequenzen bei Fraktionen. Jeder Tod kostet dich persoenliche Macht und schwaecht die Faehigkeit deiner Fraktion, Gebiet zu halten.
 
-## Power Loss
+## Machtverlust
 
-Each death costs -1.0 power from your personal total. This lowers the faction's combined power.
+Jeder Tod kostet -1.0 Macht von deinem persoenlichen Gesamtwert. Dies senkt die kombinierte Macht der Fraktion.
 
-| Event | Power Change |
+| Ereignis | Machtaenderung |
 |-------|-------------|
-| Death (any cause) | -1.0 |
-| Online regen | +0.1 per minute |
-| Combat logout | -1.0 (killed) |
+| Tod (jede Ursache) | -1.0 |
+| Online-Regeneration | +0.1 pro Minute |
+| Kampf-Abmeldung | -1.0 (getoetet) |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Dies sind Standardwerte. Dein Server-Administrator hat moeglicherweise andere Einstellungen konfiguriert.
 
-## Example Scenarios
+## Beispielszenarien
 
-*5 members at 10.0 power each = 50 total, 20 claims.*
-*One member dies twice: 8.0 power, faction total 48.*
-*Three members die once each: total drops to 47.*
+*5 Mitglieder mit je 10.0 Macht = 50 gesamt, 20 Ansprueche.*
+*Ein Mitglied stirbt zweimal: 8.0 Macht, Fraktionsgesamt 48.*
+*Drei Mitglieder sterben je einmal: Gesamt faellt auf 47.*
 
->[!WARNING] If your faction power drops below your claim count, enemies can overclaim your territory.
+>[!WARNING] Wenn die Macht deiner Fraktion unter die Anzahl eurer Ansprueche faellt, koennen Feinde euer Gebiet ueberbeanspruchen.
 
-## Recovery
+## Erholung
 
-Power regenerates at 0.1 per minute while online. Recovering 1.0 lost power takes about 10 minutes. Multiple deaths stack, so avoid repeated fights.
+Macht regeneriert sich mit 0.1 pro Minute, solange du online bist. Die Erholung von 1.0 verlorener Macht dauert etwa 10 Minuten. Mehrere Tode summieren sich, also vermeide wiederholte Kaempfe.
 
 ---
 
-## All Death Types
+## Alle Todesarten
 
-Power loss applies to all deaths: PvP, mob kills, fall damage, drowning, and any other cause. There is no safe way to die.
+Machtverlust gilt fuer alle Tode: PvP, Mob-Kills, Fallschaden, Ertrinken und jede andere Ursache. Es gibt keinen sicheren Weg zu sterben.
 
->[!TIP] Set a faction home with /f sethome so members can regroup quickly after dying.
+>[!TIP] Setze ein Fraktions-Zuhause mit /f sethome, damit Mitglieder sich nach dem Tod schnell sammeln koennen.

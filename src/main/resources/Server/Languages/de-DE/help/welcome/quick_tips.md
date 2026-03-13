@@ -1,44 +1,44 @@
 ---
 id: welcome_tips
 ---
-# Quick Tips
+# Schnelle Tipps
 
-Handy advice organized by category to help you thrive.
+Nuetzliche Ratschlaege nach Kategorie sortiert, die dir zum Erfolg verhelfen.
 
 ---
 
-## Territory
+## Gebiet
 
-- Claim land around your base early with `/f claim` -- unclaimed builds have **no protection**
-- Each claim costs **2.0 power** to maintain, so do not over-expand beyond what your members can support
-- Use `/f map` to scout nearby claims and find safe spots to build
-- Unclaim chunks you no longer need with `/f unclaim` to free up power
+- Beanspruche frueh Land um deine Basis mit `/f claim` -- ungeschuetzte Bauten haben **keinen Schutz**
+- Jeder Gebietsanspruch kostet **2.0 Macht** im Unterhalt, also dehne dich nicht ueber das hinaus aus, was deine Mitglieder tragen koennen
+- Nutze `/f map`, um nahegelegene Gebietsansprueche zu erkunden und sichere Bauplaetze zu finden
+- Gib nicht mehr benoetigte Chunks mit `/f unclaim` frei, um Macht freizusetzen
 
-## Combat
+## Kampf
 
-- Dying costs **1.0 power** -- avoid unnecessary fights when your faction is near its claim limit
-- You have **5 seconds of spawn protection** after respawning
-- Combat tagging lasts **15 seconds** -- logging out while tagged costs extra power
-- Friendly fire is **disabled** between faction members and allies by default
+- Ein Tod kostet **1.0 Macht** -- vermeide unnoetige Kaempfe, wenn deine Fraktion nahe am Gebietslimit ist
+- Du hast **5 Sekunden Spawn-Schutz** nach dem Wiedererscheinen
+- Kampfmarkierung dauert **15 Sekunden** -- sich abzumelden waehrend der Markierung kostet zusaetzliche Macht
+- Eigenbeschuss ist standardmaessig zwischen Fraktionsmitgliedern und Verbuendeten **deaktiviert**
 
->[!WARNING] Logging out while combat tagged causes additional power loss (1.0 per logout). Stay and fight or escape first.
+>[!WARNING] Sich abzumelden waehrend einer Kampfmarkierung verursacht zusaetzlichen Machtverlust (1.0 pro Abmeldung). Bleib und kaempfe oder fliehe zuerst.
 
-## Social
+## Soziales
 
-- Use `/f c` to cycle through chat modes so faction talk stays private
-- Invite trusted players with `/f invite <player>` -- invitations expire after **5 minutes**
-- Form alliances with `/f ally <faction>` for mutual protection and shared map visibility
-- Check `/f relations` to see your full diplomatic status
+- Nutze `/f c`, um zwischen Chat-Modi zu wechseln, damit Fraktions-Gespraeche privat bleiben
+- Lade vertrauenswuerdige Spieler mit `/f invite <player>` ein -- Einladungen laufen nach **5 Minuten** ab
+- Schliesse Allianzen mit `/f ally <faction>` fuer gegenseitigen Schutz und gemeinsame Kartensichtbarkeit
+- Pruefe `/f relations`, um deinen vollstaendigen diplomatischen Status zu sehen
 
-## Economy
+## Wirtschaft
 
->[!TIP] If the server has economy enabled, your faction can accumulate a treasury. Members can deposit, but only Officers and Leaders can withdraw or transfer funds.
+>[!TIP] Wenn der Server die Wirtschaft aktiviert hat, kann deine Fraktion eine Schatzkammer aufbauen. Mitglieder koennen einzahlen, aber nur Offiziere und Anfuehrer koennen abheben oder Geld ueberweisen.
 
-- Deposit funds with the treasury GUI to strengthen your faction
-- A wealthier faction can afford more claims and recover from setbacks faster
+- Zahle ueber das Schatzkammer-GUI Geld ein, um deine Fraktion zu staerken
+- Eine wohlhabendere Fraktion kann sich mehr Gebietsansprueche leisten und sich schneller von Rueckschlaegen erholen
 
-## General
+## Allgemein
 
-- Type `/f` anytime to open your faction dashboard -- everything is accessible from there
-- Promote active members to Officer so they can help claim and manage territory
-- Keep your faction active -- power only regenerates while players are **online**
+- Tippe jederzeit `/f`, um dein Fraktions-Dashboard zu oeffnen -- alles ist von dort aus erreichbar
+- Befoerdere aktive Mitglieder zum Offizier, damit sie beim Beanspruchen und Verwalten von Gebiet helfen koennen
+- Halte deine Fraktion aktiv -- Macht regeneriert sich nur, waehrend Spieler **online** sind

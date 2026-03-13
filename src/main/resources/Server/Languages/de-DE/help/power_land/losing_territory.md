@@ -2,49 +2,49 @@
 id: power_losing
 commands: overclaim
 ---
-# Losing Territory
+# Gebiet verlieren
 
-When a faction's total power drops below the cost of its claims, it becomes raidable. Enemies can overclaim chunks right out from under you.
+Wenn die Gesamtmacht einer Fraktion unter die Kosten ihrer Ansprueche faellt, wird sie ueberfallbar. Feinde koennen Chunks direkt unter euch wegbeanspruchen.
 
 ---
 
-## How Overclaiming Works
+## So funktioniert das Ueberbeanspruchen
 
 `/f overclaim`
 
-An Officer or Leader from an enemy faction stands in your claimed chunk and runs this command. If your faction is in a power deficit, the chunk transfers to their faction.
+Ein Offizier oder Anfuehrer einer feindlichen Fraktion stellt sich in euren beanspruchten Chunk und fuehrt diesen Befehl aus. Wenn eure Fraktion ein Machtdefizit hat, wechselt der Chunk zu deren Fraktion.
 
-## The Math
+## Die Berechnung
 
-Each claim costs 2.0 power to maintain. If your total power falls below that threshold, the deficit chunks are vulnerable.
+Jeder Anspruch kostet 2.0 Macht im Unterhalt. Wenn eure Gesamtmacht unter diese Schwelle faellt, sind die Defizit-Chunks verwundbar.
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Dies sind Standardwerte. Dein Server-Administrator hat moeglicherweise andere Einstellungen konfiguriert.
 
->[!WARNING] Overclaiming is permanent. Once an enemy takes a chunk, you must reclaim it (or overclaim it back if they weaken).
+>[!WARNING] Ueberbeanspruchung ist dauerhaft. Sobald ein Feind einen Chunk uebernimmt, musst du ihn zurueckerobern (oder zurueckbeanspruchen, wenn sie geschwaecht sind).
 
 ---
 
-## Example Scenario
+## Beispielszenario
 
-| Factor | Value |
+| Faktor | Wert |
 |--------|-------|
-| Members | 5 players |
-| Power per member | 10 each (starting) |
-| Total power | 50 |
-| Claims | 30 chunks |
-| Power needed (30 x 2.0) | 60 |
-| Deficit | 10 power short |
+| Mitglieder | 5 Spieler |
+| Macht pro Mitglied | Jeweils 10 (Start) |
+| Gesamtmacht | 50 |
+| Ansprueche | 30 Chunks |
+| Benoetigte Macht (30 x 2.0) | 60 |
+| Defizit | 10 Macht zu wenig |
 
-In this example, the faction is already raidable from the start. Enemies could overclaim up to 5 chunks (10 deficit / 2.0 per claim) before the faction reaches equilibrium.
+In diesem Beispiel ist die Fraktion von Anfang an ueberfallbar. Feinde koennten bis zu 5 Chunks ueberbeanspruchen (10 Defizit / 2.0 pro Anspruch), bevor die Fraktion ein Gleichgewicht erreicht.
 
 ---
 
-## How to Prevent Overclaiming
+## So verhinderst du Gebietsverlust
 
-- Do not over-expand -- always keep total power above your claim cost with a buffer
-- Stay active -- power only regenerates while online (+0.1/min)
-- Avoid unnecessary deaths -- each death costs 1.0 power
-- Recruit more members -- more players means more total power
-- Unclaim unused chunks -- free up power with /f unclaim
+- Ueberdehne dich nicht -- halte die Gesamtmacht immer mit einem Puffer ueber deinen Anspruchskosten
+- Bleib aktiv -- Macht regeneriert sich nur im Online-Zustand (+0.1/Min.)
+- Vermeide unnoetige Tode -- jeder Tod kostet 1.0 Macht
+- Rekrutiere mehr Mitglieder -- mehr Spieler bedeuten mehr Gesamtmacht
+- Gib ungenutzte Chunks frei -- setze Macht frei mit /f unclaim
 
->[!TIP] Check your power status regularly with /f power. If your total power is close to your claim cost, consider unclaiming less important chunks before a war.
+>[!TIP] Pruefe regelmaessig deinen Machtstatus mit /f power. Wenn deine Gesamtmacht nahe an deinen Anspruchskosten liegt, erwaege, weniger wichtige Chunks vor einem Krieg freizugeben.

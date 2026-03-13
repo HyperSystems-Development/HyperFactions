@@ -1,44 +1,44 @@
 ---
 id: faction_roles
 ---
-# Roles and Ranks
+# Rollen und Raenge
 
-Every faction has three roles in a strict hierarchy. Higher roles inherit all capabilities of the roles below them.
+Jede Fraktion hat drei Rollen in einer strikten Hierarchie. Hoehere Rollen erben alle Faehigkeiten der darunterliegenden Rollen.
 
 ---
 
-## Permission Breakdown
+## Berechtigungsuebersicht
 
-| Action | Leader | Officer | Member |
+| Aktion | Anfuehrer | Offizier | Mitglied |
 |--------|--------|---------|--------|
-| Build in territory | Yes | Yes | Yes |
-| Use faction home | Yes | Yes | Yes |
-| Faction and ally chat | Yes | Yes | Yes |
-| Invite players | Yes | Yes | No |
-| Kick members | Yes | Yes (Members only) | No |
-| Claim / unclaim land | Yes | Yes | No |
-| Overclaim enemy territory | Yes | Yes | No |
-| Set faction home | Yes | Yes | No |
-| Delete faction home | Yes | Yes | No |
-| Manage relations (ally/enemy) | Yes | Yes | No |
-| View faction logs | Yes | Yes | No |
-| Promote to Officer | Yes | No | No |
-| Demote from Officer | Yes | No | No |
-| Rename faction | Yes | No | No |
-| Set description / tag / color | Yes | No | No |
-| Open / close faction | Yes | No | No |
-| Access faction settings | Yes | No | No |
-| Transfer leadership | Yes | No | No |
-| Disband faction | Yes | No | No |
+| Im Gebiet bauen | Ja | Ja | Ja |
+| Fraktions-Zuhause nutzen | Ja | Ja | Ja |
+| Fraktions- und Verbuendeten-Chat | Ja | Ja | Ja |
+| Spieler einladen | Ja | Ja | Nein |
+| Mitglieder entfernen | Ja | Ja (nur Mitglieder) | Nein |
+| Land beanspruchen / freigeben | Ja | Ja | Nein |
+| Feindliches Gebiet uebernehmen | Ja | Ja | Nein |
+| Fraktions-Zuhause setzen | Ja | Ja | Nein |
+| Fraktions-Zuhause loeschen | Ja | Ja | Nein |
+| Beziehungen verwalten (Allianz/Feind) | Ja | Ja | Nein |
+| Fraktions-Protokolle einsehen | Ja | Ja | Nein |
+| Zum Offizier befoerdern | Ja | Nein | Nein |
+| Offizier degradieren | Ja | Nein | Nein |
+| Fraktion umbenennen | Ja | Nein | Nein |
+| Beschreibung / Tag / Farbe setzen | Ja | Nein | Nein |
+| Fraktion oeffnen / schliessen | Ja | Nein | Nein |
+| Fraktionseinstellungen oeffnen | Ja | Nein | Nein |
+| Fuehrung uebertragen | Ja | Nein | Nein |
+| Fraktion aufloesen | Ja | Nein | Nein |
 
->[!NOTE] Officers can kick Members but cannot kick other Officers. Only the Leader can remove Officers.
+>[!NOTE] Offiziere koennen Mitglieder entfernen, aber keine anderen Offiziere. Nur der Anfuehrer kann Offiziere entfernen.
 
 ---
 
-## Role Details
+## Rollendetails
 
-- Leader -- One per faction. Has full control over all settings, members, and territory. Can transfer ownership to another member.
-- Officer -- Trusted members who help manage the faction. Can invite, kick members, claim land, and handle diplomacy.
-- Member -- The default role when joining. Can build in territory, use the faction home, and participate in faction chat.
+- Anfuehrer -- Einer pro Fraktion. Hat volle Kontrolle ueber alle Einstellungen, Mitglieder und Gebiete. Kann die Fuehrung an ein anderes Mitglied uebertragen.
+- Offizier -- Vertrauenswuerdige Mitglieder, die bei der Fraktionsverwaltung helfen. Koennen einladen, Mitglieder entfernen, Land beanspruchen und Diplomatie betreiben.
+- Mitglied -- Die Standardrolle beim Beitritt. Kann im Gebiet bauen, das Fraktions-Zuhause nutzen und am Fraktions-Chat teilnehmen.
 
->[!TIP] Promote your most active and trusted members to Officer so they can help manage territory and recruit new players.
+>[!TIP] Befoerdere deine aktivsten und vertrauenswuerdigsten Mitglieder zu Offizieren, damit sie beim Verwalten von Gebiet und beim Rekrutieren neuer Spieler helfen koennen.

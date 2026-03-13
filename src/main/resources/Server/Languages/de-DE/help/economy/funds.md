@@ -2,41 +2,41 @@
 id: economy_funds
 commands: deposit, withdraw
 ---
-# Managing Funds
+# Finanzen verwalten
 
-Faction members work together to keep the treasury funded through deposits, withdrawals, and transfers.
+Fraktionsmitglieder arbeiten zusammen, um die Schatzkammer durch Einzahlungen, Abhebungen und Ueberweisungen finanziert zu halten.
 
-## Depositing
+## Einzahlen
 
-Any member can deposit personal funds into the faction treasury.
+Jedes Mitglied kann persoenliche Mittel in die Fraktions-Schatzkammer einzahlen.
 
 `/f deposit <amount>`
-Deposit from your personal balance into the treasury.
+Zahle von deinem persoenlichen Kontostand in die Schatzkammer ein.
 
-## Withdrawing
+## Abheben
 
-Officers and the Leader can withdraw funds back to their personal balance.
+Offiziere und der Anfuehrer koennen Mittel zurueck auf ihr persoenliches Konto abheben.
 
 `/f withdraw <amount>`
-Withdraw from the treasury to your balance. (Officer+)
+Hebe von der Schatzkammer auf dein Konto ab. (Offizier+)
 
-## Transferring
+## Ueberweisen
 
-Officers can transfer funds directly between faction treasuries for trade deals or diplomacy.
+Offiziere koennen Mittel direkt zwischen Fraktions-Schatzkammern fuer Handelsgeschaefte oder Diplomatie ueberweisen.
 
 `/f money transfer <faction> <amount>`
-Send funds to another faction's treasury. (Officer+)
+Sende Mittel an die Schatzkammer einer anderen Fraktion. (Offizier+)
 
 ---
 
-## Fees
+## Gebuehren
 
-| Transaction | Fee |
+| Transaktion | Gebuehr |
 |------------|-----|
-| Deposit | 0% |
-| Withdraw | 0% |
-| Transfer | 0% |
+| Einzahlung | 0% |
+| Abhebung | 0% |
+| Ueberweisung | 0% |
 
->[!INFO] Fee rates are configurable by the server and may differ from defaults shown above.
+>[!INFO] Gebuehrensaetze sind vom Server konfigurierbar und koennen von den oben gezeigten Standardwerten abweichen.
 
->[!TIP] All transactions are logged. Use /f money log to review recent activity.
+>[!TIP] Alle Transaktionen werden protokolliert. Nutze /f money log, um die letzten Aktivitaeten einzusehen.

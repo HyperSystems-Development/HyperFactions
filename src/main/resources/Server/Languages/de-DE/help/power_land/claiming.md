@@ -2,49 +2,49 @@
 id: power_claiming
 commands: claim, unclaim
 ---
-# Claiming Territory
+# Gebiet beanspruchen
 
-Claiming a chunk protects it under your faction's control. Only faction members can build, break, or access containers inside claimed territory.
+Einen Chunk zu beanspruchen schuetzt ihn unter der Kontrolle deiner Fraktion. Nur Fraktionsmitglieder koennen in beanspruchtem Gebiet bauen, abbauen oder auf Behaelter zugreifen.
 
 ---
 
-## How to Claim
+## So beanspruchst du Gebiet
 
 `/f claim`
 
-Stand in the chunk you want to claim and run this command. The chunk is immediately protected. Requires Officer rank or higher.
+Stelle dich in den Chunk, den du beanspruchen moechtest, und fuehre diesen Befehl aus. Der Chunk wird sofort geschuetzt. Erfordert den Rang Offizier oder hoeher.
 
-## How to Unclaim
+## So gibst du Gebiet frei
 
 `/f unclaim`
 
-Releases the chunk you are standing in back to wilderness. Also requires Officer+.
+Gibt den Chunk, in dem du stehst, als Wildnis frei. Erfordert ebenfalls Offizier+.
 
 ---
 
-## Claim Rules
+## Anspruchsregeln
 
-| Rule | Default |
-|------|---------|
-| Power cost per claim | 2.0 power |
-| Maximum claims | 100 per faction |
-| Adjacent only | No (you can claim anywhere) |
+| Regel | Standard |
+|-------|---------|
+| Machtkosten pro Anspruch | 2.0 Macht |
+| Maximale Ansprueche | 100 pro Fraktion |
+| Nur angrenzend | Nein (du kannst ueberall beanspruchen) |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Dies sind Standardwerte. Dein Server-Administrator hat moeglicherweise andere Einstellungen konfiguriert.
 
->[!INFO] Each claim costs 2.0 power to maintain. A faction with 50 total power can hold up to 25 claims safely.
+>[!INFO] Jeder Anspruch kostet 2.0 Macht im Unterhalt. Eine Fraktion mit 50 Gesamtmacht kann sicher bis zu 25 Ansprueche halten.
 
 ---
 
-## What Protection Provides
+## Was der Schutz bietet
 
-Inside claimed territory, the following is enforced by default:
+Innerhalb beanspruchten Gebiets gilt standardmaessig Folgendes:
 
-- Outsiders cannot break, place, or interact with blocks
-- Allies can use doors, seats, and transport but cannot break or place blocks
-- Members and Officers have full access to build, break, and use everything
-- Container access (chests, crates) is restricted to members only
+- Aussenstehende koennen keine Bloecke abbauen, platzieren oder mit ihnen interagieren
+- Verbuendete koennen Tueren, Sitzplaetze und Transportmittel nutzen, aber keine Bloecke abbauen oder platzieren
+- Mitglieder und Offiziere haben vollen Zugang zum Bauen, Abbauen und Nutzen von allem
+- Behaelterzugriff (Truhen, Kisten) ist nur fuer Mitglieder beschraenkt
 
->[!TIP] You can also claim directly from the territory map. Open /f map and click on unclaimed chunks to claim them.
+>[!TIP] Du kannst auch direkt ueber die Gebietskarte beanspruchen. Oeffne /f map und klicke auf nicht beanspruchte Chunks, um sie zu beanspruchen.
 
->[!WARNING] Do not over-expand. If your faction loses power through deaths, claims beyond your power budget become vulnerable to overclaiming.
+>[!WARNING] Ueberdehne dich nicht. Wenn deine Fraktion durch Tode Macht verliert, werden Ansprueche ueber eurem Machtbudget anfaellig fuer feindliche Uebernahmen.

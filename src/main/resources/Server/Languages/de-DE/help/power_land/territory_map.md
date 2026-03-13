@@ -2,43 +2,43 @@
 id: power_map
 commands: map
 ---
-# The Territory Map
+# Die Gebietskarte
 
-The territory map gives you a bird's-eye view of claimed chunks in your area, showing which factions control the land around you.
+Die Gebietskarte bietet dir eine Vogelperspektive auf beanspruchte Chunks in deiner Umgebung und zeigt, welche Fraktionen das Land um dich herum kontrollieren.
 
 ---
 
-## Opening the Map
+## Karte oeffnen
 
 `/f map`
 
-Opens the territory map GUI centered on your current location.
+Oeffnet das Gebietskarten-GUI, zentriert auf deinen aktuellen Standort.
 
 ---
 
-## Color Legend
+## Farblegende
 
-| Color | Meaning |
+| Farbe | Bedeutung |
 |-------|---------|
-| [#55FF55] Your faction's color | Territory claimed by your faction |
-| [#5555FF] Blue | Allied faction territory |
-| [#FF5555] Red | Enemy faction territory |
-| [#AAAAAA] Gray | Neutral faction territory |
-| [#333333] Dark | Wilderness (unclaimed land) |
-| [#FFAA00] Gold | Special zones (safezone, warzone) |
+| [#55FF55] Farbe deiner Fraktion | Von deiner Fraktion beanspruchtes Gebiet |
+| [#5555FF] Blau | Gebiet verbuendeter Fraktionen |
+| [#FF5555] Rot | Gebiet feindlicher Fraktionen |
+| [#AAAAAA] Grau | Gebiet neutraler Fraktionen |
+| [#333333] Dunkel | Wildnis (nicht beanspruchtes Land) |
+| [#FFAA00] Gold | Spezialzonen (SafeZone, WarZone) |
 
->[!INFO] Your faction's color on the map matches the color you set with the faction color setting. Allies and enemies use fixed colors for easy identification.
+>[!INFO] Die Farbe deiner Fraktion auf der Karte entspricht der Farbe, die du in den Fraktionseinstellungen festgelegt hast. Verbuendete und Feinde verwenden feste Farben zur einfachen Identifikation.
 
 ---
 
-## Click to Claim
+## Klicken zum Beanspruchen
 
-The map is not just for viewing -- you can interact with it directly.
+Die Karte ist nicht nur zum Ansehen -- du kannst direkt damit interagieren.
 
-- Click an unclaimed chunk to claim it (requires Officer+ rank and sufficient power)
-- Click a claimed chunk to see which faction owns it
-- Scroll or pan to explore the area around you
+- Klicke auf einen nicht beanspruchten Chunk, um ihn zu beanspruchen (erfordert Offizier+ Rang und ausreichend Macht)
+- Klicke auf einen beanspruchten Chunk, um zu sehen, welche Fraktion ihn besitzt
+- Scrolle oder verschiebe die Ansicht, um die Umgebung zu erkunden
 
->[!TIP] The map is the easiest way to plan your territory expansion. Look for unclaimed areas near your base and claim strategically to create a contiguous border.
+>[!TIP] Die Karte ist der einfachste Weg, deine Gebietsexpansion zu planen. Suche nach nicht beanspruchten Gebieten in der Naehe deiner Basis und beanspruche strategisch, um eine zusammenhaengende Grenze zu schaffen.
 
->[!NOTE] The map shows a fixed area around your position. Move to a different location and reopen it to see other parts of the world.
+>[!NOTE] Die Karte zeigt einen festen Bereich um deine Position. Bewege dich an einen anderen Standort und oeffne sie erneut, um andere Teile der Welt zu sehen.

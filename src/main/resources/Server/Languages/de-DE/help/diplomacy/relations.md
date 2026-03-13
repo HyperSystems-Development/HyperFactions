@@ -2,37 +2,37 @@
 id: diplomacy_relations
 commands: relations
 ---
-# Faction Relations
+# Fraktionsbeziehungen
 
-Every pair of factions has a diplomatic relation that determines how they interact. There are three states: Ally, Enemy, and Neutral.
+Jedes Fraktionspaar hat eine diplomatische Beziehung, die bestimmt, wie sie miteinander interagieren. Es gibt drei Zustaende: Verbuendet, Feindlich und Neutral.
 
 ---
 
-## Relation Comparison
+## Beziehungsvergleich
 
-| Effect | Ally | Neutral | Enemy |
+| Effekt | Verbuendet | Neutral | Feindlich |
 |--------|------|---------|-------|
-| PvP in territory | Disabled | Standard rules | Enabled |
-| Territory protection | Mutual protection | Standard protection | Can overclaim if weakened |
-| Friendly fire | Disabled | N/A | Enabled everywhere |
-| Map color | Blue | Gray | Red |
-| How to set | Mutual agreement | Default state | One-way declaration |
-| Chat access | Ally chat channel | None | None |
+| PvP im Gebiet | Deaktiviert | Standardregeln | Aktiviert |
+| Gebietsschutz | Gegenseitiger Schutz | Standardschutz | Kann bei Schwaeche uebernommen werden |
+| Eigenbeschuss | Deaktiviert | N/A | Ueberall aktiviert |
+| Kartenfarbe | Blau | Grau | Rot |
+| Wie zu setzen | Gegenseitiges Abkommen | Standardzustand | Einseitige Erklaerung |
+| Chat-Zugang | Verbuendeten-Chat | Keiner | Keiner |
 
 ---
 
-## Viewing Relations
+## Beziehungen anzeigen
 
 `/f relations`
 
-Shows all your current alliances, enemies, and any pending alliance requests.
+Zeigt alle aktuellen Allianzen, Feindschaften und ausstehenden Allianzanfragen an.
 
-## How Relations Work
+## Wie Beziehungen funktionieren
 
-- Neutral is the default state between all factions. Standard server rules apply.
-- Alliance requires both factions to agree. Either side can break it unilaterally.
-- Enemy is declared one-way. No agreement needed -- the other faction is immediately marked as your enemy.
+- Neutral ist der Standardzustand zwischen allen Fraktionen. Standardmaessige Serverregeln gelten.
+- Allianzen erfordern die Zustimmung beider Fraktionen. Jede Seite kann sie einseitig beenden.
+- Feindschaft wird einseitig erklaert. Keine Zustimmung noetig -- die andere Fraktion wird sofort als Feind markiert.
 
->[!INFO] Relations are managed by Officers and Leaders. Members can view relations but cannot change them.
+>[!INFO] Beziehungen werden von Offizieren und Anfuehrern verwaltet. Mitglieder koennen Beziehungen einsehen, aber nicht aendern.
 
->[!TIP] Use /f relations regularly to keep track of the diplomatic landscape. Knowing who your enemies are helps you prepare for territorial conflicts.
+>[!TIP] Nutze /f relations regelmaessig, um die diplomatische Landschaft im Blick zu behalten. Zu wissen, wer deine Feinde sind, hilft dir, dich auf territoriale Konflikte vorzubereiten.

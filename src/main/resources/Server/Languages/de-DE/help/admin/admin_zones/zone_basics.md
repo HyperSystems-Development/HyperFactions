@@ -1,43 +1,43 @@
 ---
 id: admin_zone_basics
 ---
-# Zone Basics
+# Zonen-Grundlagen
 
-Zones are admin-controlled territories with custom rules that override normal faction protection.
+Zonen sind von Admins kontrollierte Gebiete mit benutzerdefinierten Regeln, die den normalen Fraktionsschutz ueberschreiben.
 
-## Zone Types
+## Zonentypen
 
-- **SafeZone** -- No PvP, no building, no damage.
-Ideal for spawn areas and trading hubs.
-- **WarZone** -- PvP always enabled, no building.
-Ideal for arenas and contested battle areas.
+- **SafeZone** -- Kein PvP, kein Bauen, kein Schaden.
+Ideal fuer Spawngebiete und Handelsplaetze.
+- **WarZone** -- PvP ist immer aktiviert, kein Bauen.
+Ideal fuer Arenen und umkaempfte Kampfgebiete.
 
-## Creating Zones
+## Zonen erstellen
 
 `/f admin safezone <name>`
-Creates a SafeZone and claims your current chunk.
+Erstellt eine SafeZone und beansprucht deinen aktuellen Chunk.
 
 `/f admin warzone <name>`
-Creates a WarZone and claims your current chunk.
+Erstellt eine WarZone und beansprucht deinen aktuellen Chunk.
 
-After creation, stand in additional chunks and use `/f admin zone claim <zone>` to expand the zone.
+Nach der Erstellung stelle dich in weitere Chunks und nutze `/f admin zone claim <zone>`, um die Zone zu erweitern.
 
-## Managing Zone Chunks
+## Zonen-Chunks verwalten
 
 `/f admin zone claim <zone>`
-Add the current chunk to the named zone.
+Fuegt den aktuellen Chunk zur benannten Zone hinzu.
 
 `/f admin zone unclaim <zone>`
-Remove the current chunk from the named zone.
+Entfernt den aktuellen Chunk aus der benannten Zone.
 
 `/f admin zone radius <zone> <radius>`
-Claim a square of chunks around your position.
+Beansprucht ein Quadrat von Chunks um deine Position.
 
-## Deleting Zones
+## Zonen loeschen
 
 `/f admin removezone <name>`
-Permanently deletes the zone and releases all its claimed chunks.
+Loescht die Zone dauerhaft und gibt alle beanspruchten Chunks frei.
 
->[!WARNING] Deleting a zone releases all its chunks instantly. This cannot be undone without a backup restore.
+>[!WARNING] Das Loeschen einer Zone gibt alle Chunks sofort frei. Dies kann ohne Backup-Wiederherstellung nicht rueckgaengig gemacht werden.
 
->[!INFO] Zone rules **always override** faction territory rules. A SafeZone inside enemy land is still safe.
+>[!INFO] Zonenregeln **ueberschreiben immer** Fraktions-Gebietsregeln. Eine SafeZone in feindlichem Land ist trotzdem sicher.

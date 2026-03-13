@@ -1,37 +1,37 @@
 ---
 id: welcome_what
 ---
-# What Are Factions?
+# Was sind Fraktionen?
 
-Factions are player-run teams that claim territory, build bases, and compete for dominance. When you join or create a faction, you gain access to protected land, a shared home, private chat, and diplomatic tools.
+Fraktionen sind von Spielern gefuehrte Teams, die Gebiete beanspruchen, Basen errichten und um die Vorherrschaft kaempfen. Wenn du einer Fraktion beitrittst oder eine gruendest, erhaeltst du Zugang zu geschuetztem Land, einem gemeinsamen Zuhause, privatem Chat und diplomatischen Werkzeugen.
 
->[!TIP] Factions is all about teamwork. The more active members you have, the stronger your faction becomes.
+>[!TIP] Bei Fraktionen dreht sich alles um Teamwork. Je mehr aktive Mitglieder du hast, desto staerker wird deine Fraktion.
 
 ---
 
-## Core Mechanics
+## Kernmechaniken
 
-| Mechanic | What It Does |
+| Mechanik | Beschreibung |
 |----------|-------------|
-| Power | Each player generates power over time (max 20). Your faction's total power determines how much land you can hold. |
-| Claims | Claimed chunks are protected -- only members can build, break, or open containers inside them. Each claim costs 2.0 power to maintain. |
-| Relations | Factions can form alliances for mutual protection or declare enemies to enable PvP and territorial aggression. |
-| Roles | Three ranks -- Leader, Officer, Member -- each with different capabilities. |
+| Macht | Jeder Spieler erzeugt ueber die Zeit Macht (max. 20). Die Gesamtmacht deiner Fraktion bestimmt, wie viel Land ihr halten koennt. |
+| Gebietsansprueche | Beanspruchte Chunks sind geschuetzt -- nur Mitglieder koennen darin bauen, abbauen oder Behaelter oeffnen. Jeder Anspruch kostet 2.0 Macht im Unterhalt. |
+| Beziehungen | Fraktionen koennen Allianzen fuer gegenseitigen Schutz bilden oder Feindschaften erklaeren, um PvP und territoriale Aggression zu ermoeglichen. |
+| Raenge | Drei Raenge -- Anfuehrer, Offizier, Mitglied -- jeweils mit unterschiedlichen Faehigkeiten. |
 
 ---
 
-## How Strength Works
+## Wie Staerke funktioniert
 
-Your faction's strength comes from its members. Every player starts with 10 power and regenerates up to 20 while online. Dying costs power. If your total faction power drops below the cost of your claims, enemies can overclaim your territory.
+Die Staerke deiner Fraktion kommt von ihren Mitgliedern. Jeder Spieler startet mit 10 Macht und regeneriert bis zu 20, solange er online ist. Sterben kostet Macht. Wenn die Gesamtmacht deiner Fraktion unter die Kosten eurer Ansprueche faellt, koennen Feinde euer Gebiet uebernehmen.
 
->[!WARNING] A single death costs 1.0 power. Multiple deaths in a short time can leave your faction vulnerable to overclaiming.
+>[!WARNING] Ein einzelner Tod kostet 1.0 Macht. Mehrere Tode in kurzer Zeit koennen deine Fraktion anfaellig fuer Gebietsverlust machen.
 
 ---
 
-## Diplomacy at a Glance
+## Diplomatie auf einen Blick
 
-- **Allies** -- Mutual agreements that prevent friendly fire and protect each other's territory
-- **Enemies** -- One-way declarations that enable PvP in each other's land and allow overclaiming
-- **Neutral** -- The default state between all factions with standard rules
+- **Verbuendete** -- Gegenseitige Abkommen, die Eigenbeschuss verhindern und das Gebiet des anderen schuetzen
+- **Feinde** -- Einseitige Erklaerungen, die PvP im Gebiet des anderen aktivieren und Gebietsuebernehmen ermoeglichen
+- **Neutral** -- Der Standardzustand zwischen allen Fraktionen mit normalen Regeln
 
->[!INFO] You can manage all of this through the in-game GUI by typing `/f` or through chat commands.
+>[!INFO] Du kannst all dies ueber das In-Game-GUI verwalten, indem du `/f` eingibst, oder ueber Chat-Befehle.

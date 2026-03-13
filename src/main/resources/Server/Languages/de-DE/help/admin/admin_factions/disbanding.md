@@ -1,37 +1,37 @@
 ---
 id: admin_disbanding
 ---
-# Force Disbanding
+# Zwangsaufloesung
 
-Admins can forcefully disband any faction, regardless of the leader's wishes.
+Admins koennen jede Fraktion zwangsweise aufloesen, unabhaengig vom Wunsch des Anfuehrers.
 
-## Command
+## Befehl
 
 `/f admin disband <faction>`
-Force-disband the named faction. A confirmation prompt will appear before the action is executed.
+Loest die genannte Fraktion zwangsweise auf. Eine Bestaetigungsabfrage erscheint, bevor die Aktion ausgefuehrt wird.
 
-**Permission**: `hyperfactions.admin.disband`
+**Berechtigung**: `hyperfactions.admin.disband`
 
->[!WARNING] Disbanding a faction is **irreversible**. All claims are released, all members are removed, and the faction ceases to exist. Create a backup first.
+>[!WARNING] Das Aufloesen einer Fraktion ist **unwiderruflich**. Alle Ansprueche werden freigegeben, alle Mitglieder werden entfernt und die Fraktion hoert auf zu existieren. Erstelle zuerst ein Backup.
 
-## Consequences
+## Konsequenzen
 
-When a faction is disbanded:
+Wenn eine Fraktion aufgeloest wird:
 
-| Effect | Description |
+| Auswirkung | Beschreibung |
 |--------|-------------|
-| **Claims** | All territory is released immediately |
-| **Members** | All players are removed from the roster |
-| **Relations** | All alliances and enemies are cleared |
-| **Treasury** | Handled per economy config settings |
-| **Home** | Faction home is deleted |
-| **Chat** | Faction chat history is removed |
+| **Ansprueche** | Alles Gebiet wird sofort freigegeben |
+| **Mitglieder** | Alle Spieler werden aus der Liste entfernt |
+| **Beziehungen** | Alle Allianzen und Feindschaften werden geloescht |
+| **Schatzkammer** | Wird gemaess Wirtschaftskonfiguration behandelt |
+| **Zuhause** | Fraktions-Zuhause wird geloescht |
+| **Chat** | Fraktions-Chatverlauf wird entfernt |
 
-## Best Practices
+## Empfohlene Vorgehensweise
 
-1. Always run `/f admin backup create` before disbanding
-2. Notify faction members when possible
-3. Document the reason for server records
-4. Check `/f admin info <faction>` to review before acting
+1. Fuehre immer `/f admin backup create` vor der Aufloesung aus
+2. Benachrichtige die Fraktionsmitglieder wenn moeglich
+3. Dokumentiere den Grund fuer die Serveraufzeichnungen
+4. Pruefe `/f admin info <faction>` zur Ueberpruefung vor dem Handeln
 
->[!TIP] If the issue is with a specific member, consider using the admin factions GUI to transfer leadership rather than disbanding the entire faction.
+>[!TIP] Wenn das Problem bei einem bestimmten Mitglied liegt, erwaege, ueber das Admin-Fraktions-GUI die Fuehrung zu uebertragen, anstatt die gesamte Fraktion aufzuloesen.
