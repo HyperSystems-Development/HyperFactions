@@ -1,0 +1,453 @@
+# HyperFactions - Deutsche Übersetzungen
+# Format: key = value (oder key = "quoted value")
+# Hinweis: Schlüssel werden automatisch mit "hyperfactions." durch Hytales I18nModule vorangestellt
+# Platzhalter: {0}, {1}, etc.
+
+# ========== Allgemein ==========
+common.no_permission = Sie haben keine Berechtigung, das zu tun.
+common.not_in_faction = Sie sind in keiner Fraktion.
+common.already_in_faction = Sie sind bereits in einer Fraktion.
+common.player_not_found = Spieler nicht gefunden.
+common.faction_not_found = Fraktion nicht gefunden.
+common.player_not_online = Dieser Spieler ist nicht online.
+common.must_be_leader = Nur der Fraktionsanführer kann das tun.
+common.must_be_officer = Sie müssen ein Offizier oder Anführer sein, um das zu tun.
+common.combat_tagged = Sie können das nicht tun, während Sie im Kampf markiert sind.
+common.cancel = Abbrechen
+common.confirm = Bestätigen
+common.save = Speichern
+common.close = Schließen
+common.clear = Leeren
+common.back = Zurück
+common.leave = Verlassen
+common.transfer = Übertragen
+common.disband = Auflösen
+common.world_fallback = Welt
+common.yes = Ja
+common.no = Nein
+common.loading = Laden...
+common.online = Online
+common.offline = Offline
+common.enabled = Aktiviert
+common.disabled = Deaktiviert
+common.none = Keine
+common.page = Seite {0} von {1}
+common.unknown = Unbekannt
+common.error_generic = Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.
+common.gui_fallback = GUI konnte nicht geöffnet werden. Verwenden Sie /f help für Befehle.
+common.admin_prefix = [Admin]
+common.location_error = Ihr Standort konnte nicht ermittelt werden.
+common.world_error = Ihre Welt konnte nicht ermittelt werden.
+common.invalid_id = Ungültige Fraktions-ID.
+common.na = N/A
+
+# ========== Befehle - Erstellen ==========
+cmd.create.no_permission = Sie haben keine Berechtigung, Fraktionen zu erstellen.
+cmd.create.usage = Verwendung: /f create <Name>
+cmd.create.success = Fraktion '{0}' erstellt!
+cmd.create.already_in_named = Sie sind bereits in {0}.
+cmd.create.use_leave_first = Verwenden Sie zuerst /f leave, wenn Sie eine neue Fraktion erstellen möchten.
+cmd.create.name_taken = Dieser Fraktionsname ist bereits vergeben.
+cmd.create.name_too_short = Fraktionsname ist zu kurz.
+cmd.create.name_too_long = Fraktionsname ist zu lang.
+cmd.create.failed = Fraktion konnte nicht erstellt werden.
+
+# ========== Befehle - Auflösen ==========
+cmd.disband.no_permission = Sie haben keine Berechtigung, Fraktionen aufzulösen.
+cmd.disband.not_leader = Nur der Fraktionsanführer kann auflösen.
+cmd.disband.confirm_prompt = Sind Sie sicher, dass Sie Ihre Fraktion auflösen möchten?
+cmd.disband.confirm_instruction = Geben Sie innerhalb von {0} Sekunden erneut /f disband --text ein, um zu bestätigen.
+cmd.disband.success = Ihre Fraktion wurde aufgelöst.
+cmd.disband.failed = Fraktion konnte nicht aufgelöst werden.
+cmd.disband.cancelled = Vorherige Bestätigung abgebrochen. Geben Sie den Befehl erneut ein, um die Auflösung zu bestätigen.
+
+# ========== Befehle - Umbenennen ==========
+cmd.rename.no_permission = Sie haben keine Berechtigung.
+cmd.rename.not_leader = Nur der Anführer kann die Fraktion umbenennen.
+cmd.rename.usage = Verwendung: /f rename <Name>
+cmd.rename.too_short = Name ist zu kurz (min. {0} Zeichen).
+cmd.rename.too_long = Name ist zu lang (max. {0} Zeichen).
+cmd.rename.name_taken = Dieser Name ist bereits vergeben.
+cmd.rename.success = Fraktion umbenannt zu {0}!
+cmd.rename.broadcast = {0} hat die Fraktion in {1} umbenannt
+
+# ========== Befehle - Beschreibung ==========
+cmd.desc.no_permission = Sie haben keine Berechtigung.
+cmd.desc.not_officer = Sie müssen ein Offizier sein, um die Beschreibung festzulegen.
+cmd.desc.set = Fraktionsbeschreibung festgelegt!
+cmd.desc.cleared = Fraktionsbeschreibung gelöscht.
+
+# ========== Befehle - Öffnen / Schließen ==========
+cmd.open.no_permission = Sie haben keine Berechtigung.
+cmd.open.not_leader = Nur der Anführer kann diese Einstellung ändern.
+cmd.open.already_open = Ihre Fraktion ist bereits offen.
+cmd.open.success = Ihre Fraktion ist jetzt offen! Jeder kann mit /f join beitreten.
+cmd.open.broadcast = {0} hat die Fraktion für öffentlichen Beitritt geöffnet.
+cmd.close.no_permission = Sie haben keine Berechtigung.
+cmd.close.not_leader = Nur der Anführer kann diese Einstellung ändern.
+cmd.close.already_closed = Ihre Fraktion ist bereits geschlossen.
+cmd.close.success = Ihre Fraktion ist jetzt nur auf Einladung zugänglich.
+cmd.close.broadcast = {0} hat die Fraktion auf Einladung beschränkt.
+
+# ========== Befehle - Farbe ==========
+cmd.color.no_permission = Sie haben keine Berechtigung.
+cmd.color.not_officer = Sie müssen ein Offizier sein, um die Farbe zu ändern.
+cmd.color.colors_disabled = Fraktionsfarben sind deaktiviert.
+cmd.color.usage = Verwendung: /f color <Code|#hex>
+cmd.color.usage_hint = Gültige Codes: 0-9, a-f oder #RRGGBB Hex
+cmd.color.invalid = Ungültige Farbe. Verwenden Sie 0-9, a-f oder #RRGGBB.
+cmd.color.success = Fraktionsfarbe aktualisiert!
+
+# ========== Befehle - Beanspruchen ==========
+cmd.claim.no_permission = Sie haben keine Berechtigung, Territorium zu beanspruchen.
+cmd.claim.already_yours = Ihre Fraktion besitzt diesen Chunk bereits.
+cmd.claim.cannot_claim_ally = Sie können verbündetes Territorium nicht beanspruchen.
+cmd.claim.already_claimed_hint = Dieser Chunk ist beansprucht. Verwenden Sie /f overclaim, wenn sie plünderbar sind.
+cmd.claim.success = Chunk bei {0}, {1} beansprucht!
+cmd.claim.not_officer = Sie müssen ein Offizier sein, um Land zu beanspruchen.
+cmd.claim.already_claimed = Dieser Chunk ist bereits beansprucht.
+cmd.claim.max_claims = Ihre Fraktion hat die maximale Anzahl an Gebietsansprüchen erreicht. Erhalten Sie mehr Macht!
+cmd.claim.not_adjacent = Sie müssen angrenzend an bestehendes Territorium beanspruchen.
+cmd.claim.world_not_allowed = Beanspruchung ist in dieser Welt nicht erlaubt.
+cmd.claim.orbisguard = Dieses Gebiet ist durch OrbisGuard geschützt.
+cmd.claim.zone_protected = Dieser Chunk befindet sich in einer SafeZone oder WarZone.
+cmd.claim.insufficient_power = Ihre Fraktion hat nicht genug Macht, um mehr Land zu beanspruchen.
+cmd.claim.failed = Chunk konnte nicht beansprucht werden.
+
+# ========== Befehle - Einladen ==========
+cmd.invite.no_permission = Sie haben keine Berechtigung, Spieler einzuladen.
+cmd.invite.not_officer = Sie müssen ein Offizier sein, um Spieler einzuladen.
+cmd.invite.usage = Verwendung: /f invite <Spieler>
+cmd.invite.player_not_found = Spieler '{0}' nicht gefunden oder offline.
+cmd.invite.target_in_faction = Dieser Spieler ist bereits in einer Fraktion.
+cmd.invite.sent = {0} zu Ihrer Fraktion eingeladen.
+cmd.invite.received = Sie wurden eingeladen, {0} beizutreten!
+cmd.invite.accept_hint = Geben Sie /f accept {0} ein, um beizutreten.
+
+# ========== Befehle - Annehmen / Beitreten ==========
+cmd.join.no_permission = Sie haben keine Berechtigung, Fraktionen beizutreten.
+cmd.join.already_in_named = Sie sind bereits in {0}.
+cmd.join.use_leave_hint = Verwenden Sie zuerst /f leave, wenn Sie einer anderen Fraktion beitreten möchten.
+cmd.join.no_invites = Sie haben keine ausstehenden Einladungen.
+cmd.join.faction_not_found = Fraktion '{0}' nicht gefunden.
+cmd.join.not_invited = Sie haben keine Einladung von dieser Fraktion.
+cmd.join.faction_gone = Diese Fraktion existiert nicht mehr.
+cmd.join.success = Sie sind {0} beigetreten!
+cmd.join.broadcast = {0} ist der Fraktion beigetreten!
+cmd.join.faction_full = Diese Fraktion ist voll.
+cmd.join.failed = Beitritt zur Fraktion fehlgeschlagen.
+
+# ========== Befehle - Rauswerfen ==========
+cmd.kick.no_permission = Sie haben keine Berechtigung, Mitglieder rauszuwerfen.
+cmd.kick.usage = Verwendung: /f kick <Spieler>
+cmd.kick.not_in_your_faction = Spieler '{0}' ist nicht in Ihrer Fraktion.
+cmd.kick.success = {0} aus der Fraktion geworfen.
+cmd.kick.broadcast = {0} wurde aus der Fraktion geworfen.
+cmd.kick.kicked = Sie wurden aus der Fraktion geworfen.
+cmd.kick.cannot_kick_higher = Sie haben keine Berechtigung, diesen Spieler rauszuwerfen.
+cmd.kick.cannot_kick_leader = Sie können den Fraktionsanführer nicht rauswerfen.
+cmd.kick.failed = Spieler konnte nicht rausgeworfen werden.
+
+# ========== Befehle - Verlassen ==========
+cmd.leave.no_permission = Sie haben keine Berechtigung, Fraktionen zu verlassen.
+cmd.leave.confirm_prompt = Sind Sie sicher, dass Sie Ihre Fraktion verlassen möchten?
+cmd.leave.confirm_instruction = Geben Sie innerhalb von {0} Sekunden erneut /f leave --text ein, um zu bestätigen.
+cmd.leave.success = Sie haben Ihre Fraktion verlassen.
+cmd.leave.broadcast = {0} hat die Fraktion verlassen.
+cmd.leave.failed = Verlassen der Fraktion fehlgeschlagen.
+cmd.leave.cancelled = Vorherige Bestätigung abgebrochen. Geben Sie den Befehl erneut ein, um das Verlassen zu bestätigen.
+
+# ========== Befehle - Befördern / Degradieren / Übertragen ==========
+cmd.rank.promote_no_permission = Sie haben keine Berechtigung, Mitglieder zu befördern.
+cmd.rank.promote_usage = Verwendung: /f promote <Spieler>
+cmd.rank.promoted = {0} zu {1} befördert!
+cmd.rank.promote_broadcast = {0} wurde zu {1} befördert!
+cmd.rank.already_highest = Weitere Beförderung nicht möglich. Verwenden Sie /f transfer, um den Anführer zu wechseln.
+cmd.rank.promote_failed = Beförderung des Spielers fehlgeschlagen.
+cmd.rank.demote_no_permission = Sie haben keine Berechtigung, Mitglieder zu degradieren.
+cmd.rank.demote_usage = Verwendung: /f demote <Spieler>
+cmd.rank.demoted = {0} zu {1} degradiert.
+cmd.rank.demote_broadcast = {0} wurde zu {1} degradiert.
+cmd.rank.already_lowest = Dieser Spieler ist bereits ein Mitglied.
+cmd.rank.demote_failed = Degradierung des Spielers fehlgeschlagen.
+cmd.rank.transfer_no_permission = Sie haben keine Berechtigung, die Führung zu übertragen.
+cmd.rank.transfer_usage = Verwendung: /f transfer <Spieler>
+cmd.rank.player_not_in_faction = Spieler nicht in Ihrer Fraktion gefunden.
+cmd.rank.transfer_confirm = Sind Sie sicher, dass Sie die Führung an {0} übertragen möchten?
+cmd.rank.transfer_confirm_instruction = Geben Sie innerhalb von {1} Sekunden erneut /f transfer {0} --text ein, um zu bestätigen.
+cmd.rank.transferred = Führung an {0} übertragen!
+cmd.rank.transfer_broadcast = {0} ist jetzt der Fraktionsanführer!
+cmd.rank.transfer_failed = Übertragung der Führung fehlgeschlagen.
+cmd.rank.transfer_cancelled = Vorherige Bestätigung abgebrochen. Geben Sie den Befehl erneut ein, um die Übertragung zu bestätigen.
+
+# ========== Befehle - Freigeben ==========
+cmd.unclaim.no_permission = Sie haben keine Berechtigung, Territorium freizugeben.
+cmd.unclaim.success = Chunk bei {0}, {1} freigegeben.
+cmd.unclaim.not_officer = Sie müssen ein Offizier sein, um Land freizugeben.
+cmd.unclaim.chunk_not_claimed = Dieser Chunk ist nicht beansprucht.
+cmd.unclaim.not_your_claim = Ihre Fraktion besitzt diesen Chunk nicht.
+cmd.unclaim.cannot_unclaim_home = Der Chunk mit dem Fraktionsheim kann nicht freigegeben werden.
+cmd.unclaim.would_disconnect = Freigabe nicht möglich — sie würde Ihr Territorium trennen.
+cmd.unclaim.failed = Freigabe des Chunks fehlgeschlagen.
+
+# ========== Befehle - Überbeanspruchen ==========
+cmd.overclaim.no_permission = Sie haben keine Berechtigung, Territorium zu überbeanspruchen.
+cmd.overclaim.success = Feindliches Territorium überbeansprucht!
+cmd.overclaim.not_officer = Sie müssen ein Offizier sein, um zu überbeanspruchen.
+cmd.overclaim.not_claimed = Dieser Chunk ist nicht beansprucht. Verwenden Sie /f claim.
+cmd.overclaim.own_chunk = Ihre Fraktion besitzt diesen Chunk bereits.
+cmd.overclaim.ally = Sie können verbündetes Territorium nicht überbeanspruchen.
+cmd.overclaim.target_has_power = Diese Fraktion hat noch genug Macht.
+cmd.overclaim.failed = Überbeanspruchung fehlgeschlagen.
+
+# ========== Befehle - Feststecken ==========
+cmd.stuck.no_permission = Sie haben keine Berechtigung, /f stuck zu verwenden.
+cmd.stuck.not_stuck = Sie stecken nicht fest — dies ist Wildnis.
+cmd.stuck.combat_tagged = Sie können /f stuck nicht im Kampf verwenden!
+cmd.stuck.no_safe = Es konnte kein sicherer Ort gefunden werden.
+cmd.stuck.teleporting = Teleportation in Sicherheit in {0} Sekunden. Nicht bewegen!
+
+# ========== Befehle - Heim ==========
+cmd.home.no_permission = Sie haben keine Berechtigung, sich zum Fraktionsheim zu teleportieren.
+cmd.home.no_home = Ihre Fraktion hat kein Heim festgelegt.
+cmd.home.combat_tagged = Sie können sich nicht im Kampf teleportieren!
+cmd.home.teleported = Zum Fraktionsheim teleportiert!
+
+# ========== Befehle - Heim Setzen ==========
+cmd.sethome.no_permission = Sie haben keine Berechtigung, das Fraktionsheim festzulegen.
+cmd.sethome.world_not_allowed = In dieser Welt kann kein Heim gesetzt werden.
+cmd.sethome.not_in_territory = Sie können das Heim nur im Territorium Ihrer Fraktion setzen.
+cmd.sethome.set = Fraktionsheim festgelegt!
+cmd.sethome.broadcast = {0} hat das Fraktionsheim festgelegt.
+cmd.sethome.not_officer = Sie müssen ein Offizier sein, um das Heim festzulegen.
+cmd.sethome.failed = Heim konnte nicht festgelegt werden.
+
+# ========== Befehle - Heim Löschen ==========
+cmd.delhome.no_permission = Sie haben keine Berechtigung, das Fraktionsheim zu löschen.
+cmd.delhome.no_home = Ihre Fraktion hat kein Heim festgelegt.
+cmd.delhome.deleted = Fraktionsheim gelöscht!
+cmd.delhome.broadcast = {0} hat das Fraktionsheim gelöscht.
+cmd.delhome.not_officer = Sie müssen ein Offizier sein, um das Heim zu löschen.
+cmd.delhome.failed = Heim konnte nicht gelöscht werden.
+
+# ========== Befehle - Beziehung (Verbündeter/Feind/Neutral/Beziehungen) ==========
+cmd.relation.ally_no_permission = Sie haben keine Berechtigung, Allianzen zu verwalten.
+cmd.relation.ally_usage = Verwendung: /f ally <Fraktion>
+cmd.relation.ally_sent = Allianzanfrage an {0} gesendet!
+cmd.relation.ally_formed = Sie sind jetzt mit {0} verbündet!
+cmd.relation.already_ally = Sie sind bereits mit dieser Fraktion verbündet.
+cmd.relation.ally_failed = Allianzanfrage konnte nicht gesendet werden.
+cmd.relation.enemy_no_permission = Sie haben keine Berechtigung, Feinde zu erklären.
+cmd.relation.enemy_usage = Verwendung: /f enemy <Fraktion>
+cmd.relation.enemy_declared = {0} ist jetzt Ihr Feind!
+cmd.relation.already_enemy = Sie sind bereits Feinde mit dieser Fraktion.
+cmd.relation.max_enemies = Sie haben die maximale Anzahl an Feinden erreicht.
+cmd.relation.enemy_failed = Feind konnte nicht gesetzt werden.
+cmd.relation.neutral_no_permission = Sie haben keine Berechtigung, neutrale Beziehungen zu setzen.
+cmd.relation.neutral_usage = Verwendung: /f neutral <Fraktion>
+cmd.relation.neutral_set = Ihre Fraktion ist jetzt neutral mit {0}.
+cmd.relation.already_neutral = Sie sind bereits neutral mit dieser Fraktion.
+cmd.relation.neutral_failed = Neutral konnte nicht gesetzt werden.
+cmd.relation.cannot_self = Sie können sich nicht mit sich selbst verbünden.
+cmd.relation.max_allies = Sie haben die maximale Anzahl an Verbündeten erreicht.
+cmd.relation.view_no_permission = Sie haben keine Berechtigung, Beziehungen anzuzeigen.
+cmd.relation.header = === Fraktionsbeziehungen ===
+cmd.relation.allies_count = Verbündete ({0}):
+cmd.relation.enemies_count = Feinde ({0}):
+cmd.relation.list_entry = - {0}
+
+# ========== Befehle - Chat ==========
+cmd.chat.usage = Verwendung: /f c [f|a|off]
+cmd.chat.no_permission = Sie haben keine Berechtigung für diesen Chat-Modus.
+cmd.chat.mode_set = Chat-Modus auf {0} gesetzt
+
+# ========== Befehle - Einladungen ==========
+cmd.invites.not_officer = Sie müssen ein Offizier sein, um Einladungen zu verwalten.
+cmd.invites.header = === Fraktionseinladungen ===
+cmd.invites.no_pending = Keine ausstehenden Einladungen oder Anfragen.
+cmd.invites.outgoing = Ausgehende Einladungen:
+cmd.invites.outgoing_entry = {0} (eingeladen von {1})
+cmd.invites.requests = Beitrittsanfragen:
+cmd.invites.request_entry = {0}{1}
+cmd.invites.your_invites_header = === Ihre Einladungen ===
+cmd.invites.no_invites = Sie haben keine ausstehenden Einladungen.
+cmd.invites.invite_entry = {0} - Verwenden Sie /f accept {1}
+
+# ========== Befehle - Anfrage ==========
+cmd.request.no_permission = Sie haben keine Berechtigung, eine Fraktionsmitgliedschaft anzufragen.
+cmd.request.already_in_named = Sie sind bereits in {0}.
+cmd.request.use_leave_hint = Verwenden Sie zuerst /f leave, wenn Sie einer anderen Fraktion beitreten möchten.
+cmd.request.usage = Verwendung: /f request <Fraktion> [Nachricht]
+cmd.request.faction_open = Diese Fraktion ist offen! Verwenden Sie /f accept {0}, um direkt beizutreten.
+cmd.request.already_requested = Sie haben bereits eine ausstehende Anfrage bei dieser Fraktion.
+cmd.request.has_invite = Sie wurden von dieser Fraktion eingeladen! Verwenden Sie /f accept {0}, um beizutreten.
+cmd.request.sent = Beitrittsanfrage an {0} gesendet!
+cmd.request.your_message = Ihre Nachricht: "{0}"
+cmd.request.officer_review = Ein Offizier wird Ihre Anfrage prüfen.
+cmd.request.officer_notify = {0} hat einen Beitritt zu Ihrer Fraktion angefragt!
+cmd.request.officer_review_hint = Verwenden Sie /f gui > Einladungen zur Prüfung.
+
+# ========== Befehle - Info ==========
+cmd.info.faction_header = === {0} ===
+cmd.info.player_header = === {0} ===
+cmd.info.no_permission = Sie haben keine Berechtigung, Fraktionsinfo anzuzeigen.
+cmd.info.faction_not_found = Fraktion '{0}' nicht gefunden.
+cmd.info.not_in_faction_hint = Sie sind in keiner Fraktion. Verwenden Sie /f info <Fraktion>
+cmd.info.leader = Anführer: {0}
+cmd.info.members = Mitglieder: {0}/{1}
+cmd.info.power = Macht: {0}
+cmd.info.claims = Gebietsansprüche: {0}
+cmd.info.raidable = PLÜNDERBAR!
+cmd.info.allies = Verbündete: {0}
+cmd.info.enemies = Feinde: {0}
+cmd.info.they_consider = Sie betrachten euch als: {0}
+cmd.info.you_consider = Ihr betrachtet sie als: {0}
+cmd.info.members_no_permission = Sie haben keine Berechtigung, Fraktionsmitglieder anzuzeigen.
+cmd.info.members_header = === {0} Mitglieder ({1}) ===
+cmd.info.member_online = [Online]
+cmd.info.list_no_permission = Sie haben keine Berechtigung, die Fraktionsliste anzuzeigen.
+cmd.info.list_empty = Es gibt keine Fraktionen.
+cmd.info.list_header = === Fraktionen ({0}) ===
+cmd.info.list_entry = {0} - {1} Mitglieder, {2} Macht
+cmd.info.list_entry_raidable = {0} - {1} Mitglieder, {2} Macht [PLÜNDERBAR]
+cmd.info.help_no_permission = Sie haben keine Berechtigung, die Hilfe anzuzeigen.
+cmd.info.who_no_permission = Sie haben keine Berechtigung, Spielerinfo anzuzeigen.
+cmd.info.who_faction = Fraktion: {0}
+cmd.info.who_role = Rolle: {0}
+cmd.info.who_joined = Beigetreten: {0}
+cmd.info.who_faction_none = Fraktion: Keine
+cmd.info.who_power = Macht: {0}
+cmd.info.who_status = Status: {0}
+cmd.info.who_last_seen = Zuletzt gesehen: {0}
+cmd.info.map_no_permission = Sie haben keine Berechtigung, die Karte anzuzeigen.
+cmd.info.map_header = === Gebietskarte ===
+cmd.info.map_legend = Legende: +Du /Eigen /Verbündet /Feind -Wildnis
+cmd.info.map_gui_hint = Verwenden Sie /f gui für die interaktive Karte
+
+# ========== Befehle - Macht ==========
+cmd.power.personal = Persönliche Macht: {0}/{1}
+cmd.power.faction = Fraktionsmacht: {0}/{1}
+cmd.power.death_loss = Todesverlust: {0}
+cmd.power.regen = Regenerationsrate: {0}/Std
+cmd.power.no_permission = Sie haben keine Berechtigung, Machtinfo anzuzeigen.
+cmd.power.header = Macht von {0}:
+cmd.power.current = Aktuell: {0}
+
+# ========== Befehle - Wirtschaft ==========
+cmd.economy.balance = Guthaben: {0}
+cmd.economy.deposited = {0} in die Fraktionsschatzkammer eingezahlt.
+cmd.economy.withdrawn = {0} aus der Fraktionsschatzkammer abgehoben.
+cmd.economy.transferred = {0} an {1} überwiesen.
+cmd.economy.insufficient = Unzureichendes Guthaben in der Fraktionsschatzkammer.
+cmd.economy.invalid_amount = Ungültiger Betrag: {0}
+cmd.economy.economy_disabled = Wirtschaft ist deaktiviert.
+cmd.economy.balance_no_permission = Sie haben keine Berechtigung, Guthaben anzuzeigen.
+cmd.economy.treasury_unavailable = Schatzkammer ist nicht verfügbar.
+cmd.economy.balance_display = Schatzkammer von {0}: {1}
+cmd.economy.deposit_no_permission = Sie haben keine Berechtigung, einzuzahlen.
+cmd.economy.deposit_faction_denied = Sie haben keine Fraktionsberechtigung zum Einzahlen.
+cmd.economy.deposit_usage = Verwendung: /f deposit <Betrag>
+cmd.economy.amount_positive = Betrag muss positiv sein.
+cmd.economy.wallet_insufficient = Sie haben nicht genug Geld. Geldbörse: {0}
+cmd.economy.wallet_withdraw_failed = Abhebung von Ihrer Geldbörse fehlgeschlagen.
+cmd.economy.deposit_failed = Einzahlung in die Fraktionsschatzkammer fehlgeschlagen. Geld zurückerstattet.
+cmd.economy.withdraw_no_permission = Sie haben keine Berechtigung, abzuheben.
+cmd.economy.withdraw_faction_denied = Sie haben keine Fraktionsberechtigung zum Abheben.
+cmd.economy.withdraw_usage = Verwendung: /f withdraw <Betrag>
+cmd.economy.withdraw_limit_denied = Abhebung abgelehnt: {0}
+cmd.economy.wallet_deposit_failed = Warnung: Einzahlung in Ihre Geldbörse fehlgeschlagen. Kontaktieren Sie einen Admin.
+cmd.economy.withdraw_limit_exceeded = Abhebung abgelehnt: Limit überschritten.
+cmd.economy.withdraw_failed = Abhebung fehlgeschlagen: {0}
+cmd.economy.transfer_no_permission = Sie haben keine Berechtigung zu überweisen.
+cmd.economy.transfer_faction_denied = Sie haben keine Fraktionsberechtigung zum Überweisen.
+cmd.economy.transfer_usage = Verwendung: /f money transfer <Fraktion> <Betrag>
+cmd.economy.transfer_self = Überweisung an die eigene Fraktion nicht möglich.
+cmd.economy.transfer_limit_denied = Überweisung abgelehnt: {0}
+cmd.economy.transfer_limit_exceeded = Überweisung abgelehnt: Limit überschritten.
+cmd.economy.transfer_failed = Überweisung fehlgeschlagen: {0}
+cmd.economy.log_no_permission = Sie haben keine Berechtigung, das Transaktionsprotokoll anzuzeigen.
+cmd.economy.log_header = Transaktionsprotokoll (Seite {0}/{1})
+cmd.economy.log_empty = Keine Transaktionen gefunden.
+cmd.economy.money_help_header = Schatzkammer-Befehle:
+cmd.economy.money_help_balance = /f money balance [Fraktion] - Guthaben anzeigen
+cmd.economy.money_help_deposit = /f money deposit <Betrag> - In Schatzkammer einzahlen
+cmd.economy.money_help_withdraw = /f money withdraw <Betrag> - Von Schatzkammer abheben
+cmd.economy.money_help_transfer = /f money transfer <Fraktion> <Betrag> - Zwischen Fraktionen überweisen
+cmd.economy.money_help_log = /f money log [Seite] [Typ] - Transaktionsverlauf anzeigen
+
+# ========== Schutz - Aktionsphrasen ==========
+protection.action.generic = Sie können das hier nicht tun
+protection.action.build = Sie können keine Blöcke bauen oder abbauen
+protection.action.interact = Sie können damit nicht interagieren
+protection.action.door = Sie können keine Türen benutzen
+protection.action.container = Sie können keine Behälter öffnen
+protection.action.bench = Sie können keine Werkbänke benutzen
+protection.action.processing = Sie können keine Verarbeitungsstationen benutzen
+protection.action.seat = Sie können keine Sitzplätze benutzen
+protection.action.light = Sie können keine Lichter umschalten
+protection.action.teleporter = Sie können keine Teleporter benutzen
+protection.action.crate = Sie können keine Kisten benutzen
+protection.action.tame = Sie können keine Kreaturen zähmen
+protection.action.npc = Sie können nicht mit NPCs interagieren
+protection.action.mount = Sie können keine Kreaturen reiten
+protection.action.pve = Sie können keine Kreaturen verletzen
+protection.action.item_drop = Sie können keine Gegenstände fallen lassen
+protection.action.item_pickup = Sie können keine Gegenstände aufheben
+
+# ========== Schutz - Ablehnungsgründe ==========
+protection.denied.safezone = {0} in einer SafeZone.
+protection.denied.warzone = {0} in einer WarZone.
+protection.denied.enemy_claim = {0} in feindlichem Territorium.
+protection.denied.claimed = {0} in beanspruchtem Territorium.
+protection.denied.here = {0} hier.
+protection.denied.zone = {0} in dieser Zone.
+protection.denied.faction_perm = {0} hier. (Fraktionsberechtigung: {1})
+protection.denied.ally_territory = {0} hier. (Verbündetes Territorium)
+protection.denied.error = Schutzfehler — Aktion zur Sicherheit blockiert.
+
+# ========== Schutz - PvP ==========
+protection.pvp.safezone = PvP ist in SafeZones deaktiviert.
+protection.pvp.same_faction = Sie können Fraktionsmitglieder nicht angreifen.
+protection.pvp.ally = Sie können Verbündete nicht angreifen.
+protection.pvp.spawn_protected = Dieser Spieler hat Spawn-Schutz.
+protection.pvp.territory_disabled = PvP ist in diesem Territorium deaktiviert.
+protection.pvp.generic = Sie können diesen Spieler nicht angreifen.
+
+# ========== Schutz - Kreaturschaden ==========
+protection.mob_damage_disabled = Mob-Schaden ist in dieser Zone deaktiviert.
+protection.pve_damage_disabled = PvE-Schaden ist in dieser Zone deaktiviert.
+protection.pve_territory_denied = Sie können Mobs in diesem Territorium nicht verletzen.
+
+# ========== Schutz - Kampfmarkierung ==========
+protection.combat_tag_command = Sie können diesen Befehl nicht verwenden, während Sie im Kampf markiert sind.
+
+# ========== Server-Ankündigungen ==========
+# Diese werden an alle Online-Spieler für bedeutende Fraktionsereignisse gesendet.
+# {0}, {1} = dynamische Werte (Fraktionsnamen, Spielernamen)
+server_announce.faction_created = {0} hat die Fraktion {1} gegründet!
+server_announce.faction_disbanded = Die Fraktion {0} wurde aufgelöst!
+server_announce.leadership_transfer = {0} ist jetzt der Anführer von {1}!
+server_announce.overclaim = {0} hat Territorium von {1} überbeansprucht!
+server_announce.war_declared = {0} hat {1} den Krieg erklärt!
+server_announce.alliance_formed = {0} und {1} sind jetzt Verbündete!
+server_announce.alliance_broken = {0} und {1} sind keine Verbündeten mehr!
+
+# ========== Teleportationssystem ==========
+teleport.cooldown_wait = Sie müssen {0} warten, bevor Sie sich erneut teleportieren können.
+teleport.warmup_start = Teleportation zum Fraktionsheim in {0} Sekunden...
+teleport.combat_cancelled = Teleportation abgebrochen — Sie sind im Kampf!
+teleport.success_default = Zum Fraktionsheim teleportiert!
+teleport.no_home = Ihre Fraktion hat kein Heim festgelegt.
+teleport.world_not_found = Welt nicht gefunden.
+teleport.failed = Teleportation fehlgeschlagen.
+teleport.countdown = Teleportation in {0} Sekunden...
+teleport.countdown_one = Teleportation in 1 Sekunde...
+teleport.moved_cancelled = Teleportation abgebrochen — Sie haben sich bewegt!
+teleport.damage_cancelled = Teleportation abgebrochen — Sie haben Schaden erlitten!
+teleport.mount_teleport_blocked = Sie können sich nicht in diese Zone teleportieren, während Sie reiten.
+teleport.mount_entry_blocked = Sie können diese Zone nicht betreten, während Sie reiten.
+
+# ========== Chat-Anzeige ==========
+chat.display.public = Öffentlich
+chat.display.faction = Fraktion
+chat.display.ally = Verbündete

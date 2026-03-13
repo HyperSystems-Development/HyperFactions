@@ -1,0 +1,453 @@
+# HyperFactions - Polskie tłumaczenie
+# Format: key = value (or key = "quoted value")
+# Note: Keys are auto-prefixed with "hyperfactions." by Hytale's I18nModule
+# Placeholders: {0}, {1}, etc.
+
+# ========== Ogólne ==========
+common.no_permission = Nie masz uprawnień, aby to zrobić.
+common.not_in_faction = Nie należysz do żadnej frakcji.
+common.already_in_faction = Już należysz do frakcji.
+common.player_not_found = Nie znaleziono gracza.
+common.faction_not_found = Nie znaleziono frakcji.
+common.player_not_online = Ten gracz nie jest online.
+common.must_be_leader = Tylko przywódca frakcji może to zrobić.
+common.must_be_officer = Musisz być Oficerem lub Przywódcą, aby to zrobić.
+common.combat_tagged = Nie możesz tego zrobić podczas walki.
+common.cancel = Anuluj
+common.confirm = Potwierdź
+common.save = Zapisz
+common.close = Zamknij
+common.clear = Wyczyść
+common.back = Wstecz
+common.leave = Opuść
+common.transfer = Przekaż
+common.disband = Rozwiąż
+common.world_fallback = świat
+common.yes = Tak
+common.no = Nie
+common.loading = Ładowanie...
+common.online = Online
+common.offline = Offline
+common.enabled = Włączone
+common.disabled = Wyłączone
+common.none = Brak
+common.page = Strona {0} z {1}
+common.unknown = Nieznane
+common.error_generic = Coś poszło nie tak. Spróbuj ponownie.
+common.gui_fallback = Nie udało się otworzyć GUI. Użyj /f help, aby zobaczyć komendy.
+common.admin_prefix = [Admin]
+common.location_error = Nie udało się określić Twojej lokalizacji.
+common.world_error = Nie udało się określić Twojego świata.
+common.invalid_id = Nieprawidłowy identyfikator frakcji.
+common.na = N/D
+
+# ========== Komendy - Tworzenie ==========
+cmd.create.no_permission = Nie masz uprawnień do tworzenia frakcji.
+cmd.create.usage = Użycie: /f create <nazwa>
+cmd.create.success = Frakcja '{0}' została utworzona!
+cmd.create.already_in_named = Już należysz do {0}.
+cmd.create.use_leave_first = Użyj /f leave, jeśli chcesz utworzyć nową frakcję.
+cmd.create.name_taken = Ta nazwa frakcji jest już zajęta.
+cmd.create.name_too_short = Nazwa frakcji jest za krótka.
+cmd.create.name_too_long = Nazwa frakcji jest za długa.
+cmd.create.failed = Nie udało się utworzyć frakcji.
+
+# ========== Komendy - Rozwiązywanie ==========
+cmd.disband.no_permission = Nie masz uprawnień do rozwiązywania frakcji.
+cmd.disband.not_leader = Tylko przywódca frakcji może ją rozwiązać.
+cmd.disband.confirm_prompt = Czy na pewno chcesz rozwiązać swoją frakcję?
+cmd.disband.confirm_instruction = Wpisz /f disband --text ponownie w ciągu {0} sekund, aby potwierdzić.
+cmd.disband.success = Twoja frakcja została rozwiązana.
+cmd.disband.failed = Nie udało się rozwiązać frakcji.
+cmd.disband.cancelled = Poprzednie potwierdzenie anulowane. Wpisz ponownie, aby potwierdzić rozwiązanie.
+
+# ========== Komendy - Zmiana nazwy ==========
+cmd.rename.no_permission = Nie masz uprawnień.
+cmd.rename.not_leader = Tylko przywódca może zmienić nazwę frakcji.
+cmd.rename.usage = Użycie: /f rename <nazwa>
+cmd.rename.too_short = Nazwa jest za krótka (min. {0} znaków).
+cmd.rename.too_long = Nazwa jest za długa (maks. {0} znaków).
+cmd.rename.name_taken = Ta nazwa jest już zajęta.
+cmd.rename.success = Nazwa frakcji zmieniona na {0}!
+cmd.rename.broadcast = {0} zmienił(a) nazwę frakcji na {1}
+
+# ========== Komendy - Opis ==========
+cmd.desc.no_permission = Nie masz uprawnień.
+cmd.desc.not_officer = Musisz być oficerem, aby ustawić opis.
+cmd.desc.set = Opis frakcji ustawiony!
+cmd.desc.cleared = Opis frakcji wyczyszczony.
+
+# ========== Komendy - Otwarta / Zamknięta ==========
+cmd.open.no_permission = Nie masz uprawnień.
+cmd.open.not_leader = Tylko przywódca może zmienić to ustawienie.
+cmd.open.already_open = Twoja frakcja jest już otwarta.
+cmd.open.success = Twoja frakcja jest teraz otwarta! Każdy może dołączyć komendą /f join.
+cmd.open.broadcast = {0} otworzył(a) frakcję na publiczne dołączanie.
+cmd.close.no_permission = Nie masz uprawnień.
+cmd.close.not_leader = Tylko przywódca może zmienić to ustawienie.
+cmd.close.already_closed = Twoja frakcja jest już zamknięta.
+cmd.close.success = Twoja frakcja jest teraz tylko na zaproszenia.
+cmd.close.broadcast = {0} zamknął(a) frakcję — tylko na zaproszenia.
+
+# ========== Komendy - Kolor ==========
+cmd.color.no_permission = Nie masz uprawnień.
+cmd.color.not_officer = Musisz być oficerem, aby zmienić kolor.
+cmd.color.colors_disabled = Kolory frakcji są wyłączone.
+cmd.color.usage = Użycie: /f color <kod|#hex>
+cmd.color.usage_hint = Prawidłowe kody: 0-9, a-f lub #RRGGBB hex
+cmd.color.invalid = Nieprawidłowy kolor. Użyj 0-9, a-f lub #RRGGBB.
+cmd.color.success = Kolor frakcji zaktualizowany!
+
+# ========== Komendy - Zajmowanie terenu ==========
+cmd.claim.no_permission = Nie masz uprawnień do zajmowania terenu.
+cmd.claim.already_yours = Twoja frakcja już posiada ten chunk.
+cmd.claim.cannot_claim_ally = Nie możesz zająć terenu sojusznika.
+cmd.claim.already_claimed_hint = Ten chunk jest zajęty. Użyj /f overclaim, jeśli frakcja jest podatna na najazd.
+cmd.claim.success = Zajęto chunk na {0}, {1}!
+cmd.claim.not_officer = Musisz być oficerem, aby zajmować teren.
+cmd.claim.already_claimed = Ten chunk jest już zajęty.
+cmd.claim.max_claims = Twoja frakcja osiągnęła maksymalną liczbę terenów. Zdobądź więcej mocy!
+cmd.claim.not_adjacent = Musisz zajmować teren przylegający do istniejącego terytorium.
+cmd.claim.world_not_allowed = Zajmowanie terenu jest niedozwolone w tym świecie.
+cmd.claim.orbisguard = Ten obszar jest chroniony przez OrbisGuard.
+cmd.claim.zone_protected = Ten chunk znajduje się w strefie bezpiecznej lub wojennej.
+cmd.claim.insufficient_power = Twoja frakcja nie ma wystarczająco mocy, aby zająć więcej terenu.
+cmd.claim.failed = Nie udało się zająć chunka.
+
+# ========== Komendy - Zaproszenia ==========
+cmd.invite.no_permission = Nie masz uprawnień do zapraszania graczy.
+cmd.invite.not_officer = Musisz być oficerem, aby zapraszać graczy.
+cmd.invite.usage = Użycie: /f invite <gracz>
+cmd.invite.player_not_found = Gracz '{0}' nie został znaleziony lub jest offline.
+cmd.invite.target_in_faction = Ten gracz już należy do frakcji.
+cmd.invite.sent = Zaproszono {0} do Twojej frakcji.
+cmd.invite.received = Otrzymałeś zaproszenie do frakcji {0}!
+cmd.invite.accept_hint = Wpisz /f accept {0}, aby dołączyć.
+
+# ========== Komendy - Akceptacja / Dołączanie ==========
+cmd.join.no_permission = Nie masz uprawnień do dołączania do frakcji.
+cmd.join.already_in_named = Już należysz do {0}.
+cmd.join.use_leave_hint = Użyj /f leave, jeśli chcesz dołączyć do innej frakcji.
+cmd.join.no_invites = Nie masz żadnych oczekujących zaproszeń.
+cmd.join.faction_not_found = Frakcja '{0}' nie została znaleziona.
+cmd.join.not_invited = Nie masz zaproszenia od tej frakcji.
+cmd.join.faction_gone = Ta frakcja już nie istnieje.
+cmd.join.success = Dołączyłeś do {0}!
+cmd.join.broadcast = {0} dołączył(a) do frakcji!
+cmd.join.faction_full = Ta frakcja jest pełna.
+cmd.join.failed = Nie udało się dołączyć do frakcji.
+
+# ========== Komendy - Wyrzucanie ==========
+cmd.kick.no_permission = Nie masz uprawnień do wyrzucania członków.
+cmd.kick.usage = Użycie: /f kick <gracz>
+cmd.kick.not_in_your_faction = Gracz '{0}' nie jest w Twojej frakcji.
+cmd.kick.success = Wyrzucono {0} z frakcji.
+cmd.kick.broadcast = {0} został(a) wyrzucony(a) z frakcji.
+cmd.kick.kicked = Zostałeś wyrzucony z frakcji.
+cmd.kick.cannot_kick_higher = Nie masz uprawnień, aby wyrzucić tego gracza.
+cmd.kick.cannot_kick_leader = Nie możesz wyrzucić przywódcy frakcji.
+cmd.kick.failed = Nie udało się wyrzucić gracza.
+
+# ========== Komendy - Opuszczanie ==========
+cmd.leave.no_permission = Nie masz uprawnień do opuszczenia frakcji.
+cmd.leave.confirm_prompt = Czy na pewno chcesz opuścić swoją frakcję?
+cmd.leave.confirm_instruction = Wpisz /f leave --text ponownie w ciągu {0} sekund, aby potwierdzić.
+cmd.leave.success = Opuściłeś swoją frakcję.
+cmd.leave.broadcast = {0} opuścił(a) frakcję.
+cmd.leave.failed = Nie udało się opuścić frakcji.
+cmd.leave.cancelled = Poprzednie potwierdzenie anulowane. Wpisz ponownie, aby potwierdzić opuszczenie.
+
+# ========== Komendy - Awans / Degradacja / Przekazanie ==========
+cmd.rank.promote_no_permission = Nie masz uprawnień do awansowania członków.
+cmd.rank.promote_usage = Użycie: /f promote <gracz>
+cmd.rank.promoted = Awansowano {0} na {1}!
+cmd.rank.promote_broadcast = {0} został(a) awansowany(a) na {1}!
+cmd.rank.already_highest = Nie można awansować wyżej. Użyj /f transfer, aby zmienić przywódcę.
+cmd.rank.promote_failed = Nie udało się awansować gracza.
+cmd.rank.demote_no_permission = Nie masz uprawnień do degradowania członków.
+cmd.rank.demote_usage = Użycie: /f demote <gracz>
+cmd.rank.demoted = Zdegradowano {0} do {1}.
+cmd.rank.demote_broadcast = {0} został(a) zdegradowany(a) do {1}.
+cmd.rank.already_lowest = Ten gracz jest już Członkiem.
+cmd.rank.demote_failed = Nie udało się zdegradować gracza.
+cmd.rank.transfer_no_permission = Nie masz uprawnień do przekazania przywództwa.
+cmd.rank.transfer_usage = Użycie: /f transfer <gracz>
+cmd.rank.player_not_in_faction = Nie znaleziono gracza w Twojej frakcji.
+cmd.rank.transfer_confirm = Czy na pewno chcesz przekazać przywództwo graczowi {0}?
+cmd.rank.transfer_confirm_instruction = Wpisz /f transfer {0} --text ponownie w ciągu {1} sekund, aby potwierdzić.
+cmd.rank.transferred = Przywództwo przekazane graczowi {0}!
+cmd.rank.transfer_broadcast = {0} jest teraz przywódcą frakcji!
+cmd.rank.transfer_failed = Nie udało się przekazać przywództwa.
+cmd.rank.transfer_cancelled = Poprzednie potwierdzenie anulowane. Wpisz ponownie, aby potwierdzić przekazanie.
+
+# ========== Komendy - Zrzeczenie się terenu ==========
+cmd.unclaim.no_permission = Nie masz uprawnień do zrzekania się terenu.
+cmd.unclaim.success = Zrzeczono się chunka na {0}, {1}.
+cmd.unclaim.not_officer = Musisz być oficerem, aby zrzec się terenu.
+cmd.unclaim.chunk_not_claimed = Ten chunk nie jest zajęty.
+cmd.unclaim.not_your_claim = Twoja frakcja nie posiada tego chunka.
+cmd.unclaim.cannot_unclaim_home = Nie można zrzec się chunka z domem frakcji.
+cmd.unclaim.would_disconnect = Nie można zrzec się — rozłączyłoby to Twoje terytorium.
+cmd.unclaim.failed = Nie udało się zrzec chunka.
+
+# ========== Komendy - Przejęcie terenu ==========
+cmd.overclaim.no_permission = Nie masz uprawnień do przejmowania terenu.
+cmd.overclaim.success = Przejęto terytorium wroga!
+cmd.overclaim.not_officer = Musisz być oficerem, aby przejmować teren.
+cmd.overclaim.not_claimed = Ten chunk nie jest zajęty. Użyj /f claim.
+cmd.overclaim.own_chunk = Twoja frakcja już posiada ten chunk.
+cmd.overclaim.ally = Nie możesz przejąć terenu sojusznika.
+cmd.overclaim.target_has_power = Ta frakcja wciąż ma wystarczająco mocy.
+cmd.overclaim.failed = Nie udało się przejąć terenu.
+
+# ========== Komendy - Utknięcie ==========
+cmd.stuck.no_permission = Nie masz uprawnień do użycia /f stuck.
+cmd.stuck.not_stuck = Nie utknąłeś — to jest dzicz.
+cmd.stuck.combat_tagged = Nie możesz użyć /f stuck podczas walki!
+cmd.stuck.no_safe = Nie udało się znaleźć bezpiecznej lokalizacji.
+cmd.stuck.teleporting = Teleportacja do bezpiecznego miejsca za {0} sekund. Nie ruszaj się!
+
+# ========== Komendy - Dom ==========
+cmd.home.no_permission = Nie masz uprawnień do teleportacji do domu frakcji.
+cmd.home.no_home = Twoja frakcja nie ma ustawionego domu.
+cmd.home.combat_tagged = Nie możesz się teleportować podczas walki!
+cmd.home.teleported = Przeteleportowano do domu frakcji!
+
+# ========== Komendy - Ustawianie domu ==========
+cmd.sethome.no_permission = Nie masz uprawnień do ustawienia domu frakcji.
+cmd.sethome.world_not_allowed = Nie można ustawić domu w tym świecie.
+cmd.sethome.not_in_territory = Dom można ustawić tylko na terytorium frakcji.
+cmd.sethome.set = Dom frakcji ustawiony!
+cmd.sethome.broadcast = {0} ustawił(a) dom frakcji.
+cmd.sethome.not_officer = Musisz być oficerem, aby ustawić dom.
+cmd.sethome.failed = Nie udało się ustawić domu.
+
+# ========== Komendy - Usuwanie domu ==========
+cmd.delhome.no_permission = Nie masz uprawnień do usunięcia domu frakcji.
+cmd.delhome.no_home = Twoja frakcja nie ma ustawionego domu.
+cmd.delhome.deleted = Dom frakcji usunięty!
+cmd.delhome.broadcast = {0} usunął/usunęła dom frakcji.
+cmd.delhome.not_officer = Musisz być oficerem, aby usunąć dom.
+cmd.delhome.failed = Nie udało się usunąć domu.
+
+# ========== Komendy - Relacje (Sojusznik/Wróg/Neutralny/Relacje) ==========
+cmd.relation.ally_no_permission = Nie masz uprawnień do zarządzania sojuszami.
+cmd.relation.ally_usage = Użycie: /f ally <frakcja>
+cmd.relation.ally_sent = Prośba o sojusz wysłana do {0}!
+cmd.relation.ally_formed = Jesteście teraz sojusznikami z {0}!
+cmd.relation.already_ally = Jesteście już sprzymierzeni z tą frakcją.
+cmd.relation.ally_failed = Nie udało się wysłać prośby o sojusz.
+cmd.relation.enemy_no_permission = Nie masz uprawnień do ogłaszania wrogów.
+cmd.relation.enemy_usage = Użycie: /f enemy <frakcja>
+cmd.relation.enemy_declared = {0} jest teraz Twoim wrogiem!
+cmd.relation.already_enemy = Jesteście już wrogami z tą frakcją.
+cmd.relation.max_enemies = Osiągnąłeś maksymalną liczbę wrogów.
+cmd.relation.enemy_failed = Nie udało się ustawić wroga.
+cmd.relation.neutral_no_permission = Nie masz uprawnień do ustawiania neutralnych relacji.
+cmd.relation.neutral_usage = Użycie: /f neutral <frakcja>
+cmd.relation.neutral_set = Twoja frakcja jest teraz neutralna wobec {0}.
+cmd.relation.already_neutral = Jesteście już neutralni wobec tej frakcji.
+cmd.relation.neutral_failed = Nie udało się ustawić neutralności.
+cmd.relation.cannot_self = Nie możesz zawrzeć sojuszu z samym sobą.
+cmd.relation.max_allies = Osiągnąłeś maksymalną liczbę sojuszników.
+cmd.relation.view_no_permission = Nie masz uprawnień do przeglądania relacji.
+cmd.relation.header = === Relacje frakcji ===
+cmd.relation.allies_count = Sojusznicy ({0}):
+cmd.relation.enemies_count = Wrogowie ({0}):
+cmd.relation.list_entry = - {0}
+
+# ========== Komendy - Czat ==========
+cmd.chat.usage = Użycie: /f c [f|a|off]
+cmd.chat.no_permission = Nie masz uprawnień do tego trybu czatu.
+cmd.chat.mode_set = Tryb czatu ustawiony na {0}
+
+# ========== Komendy - Zaproszenia ==========
+cmd.invites.not_officer = Musisz być oficerem, aby zarządzać zaproszeniami.
+cmd.invites.header = === Zaproszenia frakcji ===
+cmd.invites.no_pending = Brak oczekujących zaproszeń lub próśb.
+cmd.invites.outgoing = Wysłane zaproszenia:
+cmd.invites.outgoing_entry = {0} (zaproszony przez {1})
+cmd.invites.requests = Prośby o dołączenie:
+cmd.invites.request_entry = {0}{1}
+cmd.invites.your_invites_header = === Twoje zaproszenia ===
+cmd.invites.no_invites = Nie masz żadnych oczekujących zaproszeń.
+cmd.invites.invite_entry = {0} - Użyj /f accept {1}
+
+# ========== Komendy - Prośba o dołączenie ==========
+cmd.request.no_permission = Nie masz uprawnień do składania próśb o członkostwo.
+cmd.request.already_in_named = Już należysz do {0}.
+cmd.request.use_leave_hint = Użyj /f leave, jeśli chcesz dołączyć do innej frakcji.
+cmd.request.usage = Użycie: /f request <frakcja> [wiadomość]
+cmd.request.faction_open = Ta frakcja jest otwarta! Użyj /f accept {0}, aby dołączyć bezpośrednio.
+cmd.request.already_requested = Masz już oczekującą prośbę do tej frakcji.
+cmd.request.has_invite = Masz zaproszenie od tej frakcji! Użyj /f accept {0}, aby dołączyć.
+cmd.request.sent = Wysłano prośbę o dołączenie do {0}!
+cmd.request.your_message = Twoja wiadomość: "{0}"
+cmd.request.officer_review = Oficer rozpatrzy Twoją prośbę.
+cmd.request.officer_notify = {0} poprosił(a) o dołączenie do Twojej frakcji!
+cmd.request.officer_review_hint = Użyj /f gui > Zaproszenia, aby sprawdzić.
+
+# ========== Komendy - Informacje ==========
+cmd.info.faction_header = === {0} ===
+cmd.info.player_header = === {0} ===
+cmd.info.no_permission = Nie masz uprawnień do przeglądania informacji o frakcji.
+cmd.info.faction_not_found = Frakcja '{0}' nie została znaleziona.
+cmd.info.not_in_faction_hint = Nie należysz do frakcji. Użyj /f info <frakcja>
+cmd.info.leader = Przywódca: {0}
+cmd.info.members = Członkowie: {0}/{1}
+cmd.info.power = Moc: {0}
+cmd.info.claims = Tereny: {0}
+cmd.info.raidable = PODATNA NA NAJAZD!
+cmd.info.allies = Sojusznicy: {0}
+cmd.info.enemies = Wrogowie: {0}
+cmd.info.they_consider = Oni uważają Cię za: {0}
+cmd.info.you_consider = Ty uważasz ich za: {0}
+cmd.info.members_no_permission = Nie masz uprawnień do przeglądania członków frakcji.
+cmd.info.members_header = === Członkowie {0} ({1}) ===
+cmd.info.member_online = [Online]
+cmd.info.list_no_permission = Nie masz uprawnień do przeglądania listy frakcji.
+cmd.info.list_empty = Nie ma żadnych frakcji.
+cmd.info.list_header = === Frakcje ({0}) ===
+cmd.info.list_entry = {0} - {1} członków, {2} mocy
+cmd.info.list_entry_raidable = {0} - {1} członków, {2} mocy [PODATNA NA NAJAZD]
+cmd.info.help_no_permission = Nie masz uprawnień do przeglądania pomocy.
+cmd.info.who_no_permission = Nie masz uprawnień do przeglądania informacji o graczu.
+cmd.info.who_faction = Frakcja: {0}
+cmd.info.who_role = Ranga: {0}
+cmd.info.who_joined = Dołączył: {0}
+cmd.info.who_faction_none = Frakcja: Brak
+cmd.info.who_power = Moc: {0}
+cmd.info.who_status = Status: {0}
+cmd.info.who_last_seen = Ostatnio widziany: {0}
+cmd.info.map_no_permission = Nie masz uprawnień do przeglądania mapy.
+cmd.info.map_header = === Mapa terytorium ===
+cmd.info.map_legend = Legenda: +Twoje /Własne /Sojusznik /Wróg -Dzicz
+cmd.info.map_gui_hint = Użyj /f gui, aby otworzyć interaktywną mapę
+
+# ========== Komendy - Moc ==========
+cmd.power.personal = Moc osobista: {0}/{1}
+cmd.power.faction = Moc frakcji: {0}/{1}
+cmd.power.death_loss = Strata przy śmierci: {0}
+cmd.power.regen = Szybkość regeneracji: {0}/godz.
+cmd.power.no_permission = Nie masz uprawnień do przeglądania informacji o mocy.
+cmd.power.header = Moc gracza {0}:
+cmd.power.current = Aktualna: {0}
+
+# ========== Komendy - Ekonomia ==========
+cmd.economy.balance = Saldo: {0}
+cmd.economy.deposited = Wpłacono {0} do skarbca frakcji.
+cmd.economy.withdrawn = Wypłacono {0} ze skarbca frakcji.
+cmd.economy.transferred = Przelano {0} do {1}.
+cmd.economy.insufficient = Niewystarczające środki w skarbcu frakcji.
+cmd.economy.invalid_amount = Nieprawidłowa kwota: {0}
+cmd.economy.economy_disabled = Ekonomia jest wyłączona.
+cmd.economy.balance_no_permission = Nie masz uprawnień do przeglądania sald.
+cmd.economy.treasury_unavailable = Skarbiec jest niedostępny.
+cmd.economy.balance_display = Skarbiec {0}: {1}
+cmd.economy.deposit_no_permission = Nie masz uprawnień do wpłacania.
+cmd.economy.deposit_faction_denied = Nie masz uprawnień frakcyjnych do wpłacania.
+cmd.economy.deposit_usage = Użycie: /f deposit <kwota>
+cmd.economy.amount_positive = Kwota musi być dodatnia.
+cmd.economy.wallet_insufficient = Nie masz wystarczająco pieniędzy. Portfel: {0}
+cmd.economy.wallet_withdraw_failed = Nie udało się pobrać środków z portfela.
+cmd.economy.deposit_failed = Nie udało się wpłacić do skarbca frakcji. Pieniądze zwrócone.
+cmd.economy.withdraw_no_permission = Nie masz uprawnień do wypłacania.
+cmd.economy.withdraw_faction_denied = Nie masz uprawnień frakcyjnych do wypłacania.
+cmd.economy.withdraw_usage = Użycie: /f withdraw <kwota>
+cmd.economy.withdraw_limit_denied = Wypłata odrzucona: {0}
+cmd.economy.wallet_deposit_failed = Uwaga: Nie udało się wpłacić do Twojego portfela. Skontaktuj się z administratorem.
+cmd.economy.withdraw_limit_exceeded = Wypłata odrzucona: przekroczono limit.
+cmd.economy.withdraw_failed = Wypłata nieudana: {0}
+cmd.economy.transfer_no_permission = Nie masz uprawnień do przelewów.
+cmd.economy.transfer_faction_denied = Nie masz uprawnień frakcyjnych do przelewów.
+cmd.economy.transfer_usage = Użycie: /f money transfer <frakcja> <kwota>
+cmd.economy.transfer_self = Nie można przelać do własnej frakcji.
+cmd.economy.transfer_limit_denied = Przelew odrzucony: {0}
+cmd.economy.transfer_limit_exceeded = Przelew odrzucony: przekroczono limit.
+cmd.economy.transfer_failed = Przelew nieudany: {0}
+cmd.economy.log_no_permission = Nie masz uprawnień do przeglądania dziennika transakcji.
+cmd.economy.log_header = Dziennik transakcji (strona {0}/{1})
+cmd.economy.log_empty = Nie znaleziono transakcji.
+cmd.economy.money_help_header = Komendy skarbca:
+cmd.economy.money_help_balance = /f money balance [frakcja] - Sprawdź saldo
+cmd.economy.money_help_deposit = /f money deposit <kwota> - Wpłać do skarbca
+cmd.economy.money_help_withdraw = /f money withdraw <kwota> - Wypłać ze skarbca
+cmd.economy.money_help_transfer = /f money transfer <frakcja> <kwota> - Przelew między frakcjami
+cmd.economy.money_help_log = /f money log [strona] [typ] - Historia transakcji
+
+# ========== Ochrona - Frazy dotyczące akcji ==========
+protection.action.generic = Nie możesz tego zrobić
+protection.action.build = Nie możesz budować ani niszczyć bloków
+protection.action.interact = Nie możesz z tym interagować
+protection.action.door = Nie możesz używać drzwi
+protection.action.container = Nie możesz otwierać pojemników
+protection.action.bench = Nie możesz używać stacji rzemieślniczych
+protection.action.processing = Nie możesz używać stacji przetwórczych
+protection.action.seat = Nie możesz używać siedzeń
+protection.action.light = Nie możesz przełączać świateł
+protection.action.teleporter = Nie możesz używać teleporterów
+protection.action.crate = Nie możesz używać skrzyń
+protection.action.tame = Nie możesz oswajać stworzeń
+protection.action.npc = Nie możesz interagować z NPC
+protection.action.mount = Nie możesz dosiadać stworzeń
+protection.action.pve = Nie możesz zadawać obrażeń stworzeniom
+protection.action.item_drop = Nie możesz upuszczać przedmiotów
+protection.action.item_pickup = Nie możesz podnosić przedmiotów
+
+# ========== Ochrona - Powody odmowy ==========
+protection.denied.safezone = {0} w SafeZone.
+protection.denied.warzone = {0} w WarZone.
+protection.denied.enemy_claim = {0} na terytorium wroga.
+protection.denied.claimed = {0} na zajętym terytorium.
+protection.denied.here = {0} tutaj.
+protection.denied.zone = {0} w tej strefie.
+protection.denied.faction_perm = {0} tutaj. (Uprawnienie frakcji: {1})
+protection.denied.ally_territory = {0} tutaj. (Terytorium sojusznika)
+protection.denied.error = Błąd ochrony — akcja zablokowana dla bezpieczeństwa.
+
+# ========== Ochrona - PvP ==========
+protection.pvp.safezone = PvP jest wyłączone w SafeZone.
+protection.pvp.same_faction = Nie możesz atakować członków frakcji.
+protection.pvp.ally = Nie możesz atakować sojuszników.
+protection.pvp.spawn_protected = Ten gracz ma ochronę po odrodzeniu.
+protection.pvp.territory_disabled = PvP jest wyłączone na tym terytorium.
+protection.pvp.generic = Nie możesz zaatakować tego gracza.
+
+# ========== Ochrona - Obrażenia od istot ==========
+protection.mob_damage_disabled = Obrażenia od mobów są wyłączone w tej strefie.
+protection.pve_damage_disabled = Obrażenia PvE są wyłączone w tej strefie.
+protection.pve_territory_denied = Nie możesz zadawać obrażeń mobom na tym terytorium.
+
+# ========== Ochrona - Oznaczenie bojowe ==========
+protection.combat_tag_command = Nie możesz użyć tej komendy podczas oznaczenia bojowego.
+
+# ========== Ogłoszenia serwera ==========
+# Transmitowane do wszystkich graczy online przy ważnych wydarzeniach frakcji.
+# {0}, {1} = wartości dynamiczne (nazwy frakcji, nazwy graczy)
+server_announce.faction_created = {0} założył(a) frakcję {1}!
+server_announce.faction_disbanded = Frakcja {0} została rozwiązana!
+server_announce.leadership_transfer = {0} jest teraz przywódcą {1}!
+server_announce.overclaim = {0} przejął(ęła) terytorium od {1}!
+server_announce.war_declared = {0} wypowiedział(a) wojnę {1}!
+server_announce.alliance_formed = {0} i {1} są teraz sojusznikami!
+server_announce.alliance_broken = {0} i {1} nie są już sojusznikami!
+
+# ========== System teleportacji ==========
+teleport.cooldown_wait = Musisz poczekać {0} przed ponowną teleportacją.
+teleport.warmup_start = Teleportacja do domu frakcji za {0} sekund...
+teleport.combat_cancelled = Teleportacja anulowana — jesteś w walce!
+teleport.success_default = Przeteleportowano do domu frakcji!
+teleport.no_home = Twoja frakcja nie ma ustawionego domu.
+teleport.world_not_found = Nie znaleziono świata.
+teleport.failed = Teleportacja nieudana.
+teleport.countdown = Teleportacja za {0} sekund...
+teleport.countdown_one = Teleportacja za 1 sekundę...
+teleport.moved_cancelled = Teleportacja anulowana — ruszyłeś się!
+teleport.damage_cancelled = Teleportacja anulowana — otrzymałeś obrażenia!
+teleport.mount_teleport_blocked = Nie możesz teleportować się do tej strefy na wierzchowcu.
+teleport.mount_entry_blocked = Nie możesz wejść do tej strefy na wierzchowcu.
+
+# ========== Wyświetlanie czatu ==========
+chat.display.public = Publiczny
+chat.display.faction = Frakcja
+chat.display.ally = Sojusznik
