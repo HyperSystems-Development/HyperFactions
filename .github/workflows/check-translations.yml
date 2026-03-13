@@ -1,0 +1,85 @@
+name: Check Translations
+
+on:
+  push:
+    paths:
+      - 'src/main/resources/Server/Languages/**/*.lang'
+  pull_request:
+    paths:
+      - 'src/main/resources/Server/Languages/**/*.lang'
+
+jobs:
+  check-translations:
+    name: Verify locale keys
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check for missing translation keys
+        run: |
+          LANG_DIR="src/main/resources/Server/Languages"
+          EN_DIR="$LANG_DIR/en-US"
+          EXIT_CODE=0
+          TOTAL_MISSING=0
+
+          if [ ! -d "$EN_DIR" ]; then
+            echo "::error::No en-US directory found at $EN_DIR"
+            exit 1
+          fi
+
+          # Collect en-US keys per file
+          for en_file in "$EN_DIR"/*.lang; do
+            [ -f "$en_file" ] || continue
+            filename=$(basename "$en_file")
+
+            # Extract keys (non-blank, non-comment lines before '=')
+            en_keys=$(grep -v '^\s*#' "$en_file" | grep -v '^\s*$' | sed 's/=.*//' | sed 's/\s*$//' | sort)
+            en_count=$(echo "$en_keys" | wc -l)
+
+            # Check each locale
+            for locale_dir in "$LANG_DIR"/*/; do
+              locale=$(basename "$locale_dir")
+              [ "$locale" = "en-US" ] && continue
+
+              locale_file="$locale_dir/$filename"
+
+              if [ ! -f "$locale_file" ]; then
+                echo "::error file=$locale_file::[$locale] MISSING FILE: $filename ($en_count keys)"
+                TOTAL_MISSING=$((TOTAL_MISSING + en_count))
+                EXIT_CODE=1
+                continue
+              fi
+
+              # Extract locale keys
+              locale_keys=$(grep -v '^\s*#' "$locale_file" | grep -v '^\s*$' | sed 's/=.*//' | sed 's/\s*$//' | sort)
+
+              # Find missing keys
+              missing=$(comm -23 <(echo "$en_keys") <(echo "$locale_keys"))
+
+              if [ -n "$missing" ]; then
+                count=$(echo "$missing" | wc -l)
+                echo "::warning file=$locale_file::[$locale] $filename: $count missing key(s)"
+                echo "$missing" | while read -r key; do
+                  echo "  - $key"
+                done
+                TOTAL_MISSING=$((TOTAL_MISSING + count))
+                EXIT_CODE=1
+              fi
+
+              # Find extra keys (in locale but not in en-US)
+              extra=$(comm -13 <(echo "$en_keys") <(echo "$locale_keys"))
+              if [ -n "$extra" ]; then
+                extra_count=$(echo "$extra" | wc -l)
+                echo "::notice file=$locale_file::[$locale] $filename: $extra_count extra key(s) not in en-US"
+              fi
+            done
+          done
+
+          echo ""
+          if [ $TOTAL_MISSING -gt 0 ]; then
+            echo "::error::Total missing keys across all locales: $TOTAL_MISSING"
+          else
+            echo "All locales have complete key coverage."
+          fi
+
+          exit $EXIT_CODE
