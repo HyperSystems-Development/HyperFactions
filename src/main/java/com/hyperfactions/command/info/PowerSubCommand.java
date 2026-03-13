@@ -8,7 +8,8 @@ import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.data.PlayerPower;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.PlayerResolver;
 import com.hypixel.hytale.component.Ref;
@@ -41,7 +42,7 @@ public class PowerSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.POWER)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Power.NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Power.NO_PERMISSION));
       return;
     }
 
@@ -59,7 +60,7 @@ public class PowerSubCommand extends FactionSubCommand {
       // Look up target player using centralized resolver
       var resolved = PlayerResolver.resolve(hyperFactions, fctx.getArg(0));
       if (resolved == null) {
-        ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.PLAYER_NOT_FOUND));
+        ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.PLAYER_NOT_FOUND));
         return;
       }
       targetUuid = resolved.uuid();
@@ -68,8 +69,8 @@ public class PowerSubCommand extends FactionSubCommand {
 
     // Power info is text-only (no GUI mode needed)
     PlayerPower power = hyperFactions.getPowerManager().getPlayerPower(targetUuid);
-    ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Power.HEADER, targetName), COLOR_CYAN));
-    ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Power.CURRENT,
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Power.HEADER, targetName), COLOR_CYAN));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Power.CURRENT,
       String.format("%.1f/%.1f (%d%%)", power.power(), power.getEffectiveMaxPower(), power.getPowerPercent())), COLOR_GRAY));
   }
 }

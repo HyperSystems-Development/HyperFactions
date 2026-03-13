@@ -6,7 +6,8 @@ import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.TeleportManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -42,7 +43,7 @@ public class HomeSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.HOME)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.NO_PERMISSION));
       return;
     }
 
@@ -80,11 +81,11 @@ public class HomeSubCommand extends FactionSubCommand {
 
     // Handle immediate results (warmup teleports are handled by TerritoryTickingSystem)
     switch (result) {
-      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.NOT_IN_FACTION));
-      case NO_HOME -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.NO_HOME));
-      case COMBAT_TAGGED -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.COMBAT_TAGGED));
+      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.NOT_IN_FACTION));
+      case NO_HOME -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.NO_HOME));
+      case COMBAT_TAGGED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.COMBAT_TAGGED));
       case ON_COOLDOWN -> {} // Message sent by TeleportManager
-      case SUCCESS_INSTANT -> ctx.sendMessage(MessageUtil.success(player, MessageKeys.Home.TELEPORTED));
+      case SUCCESS_INSTANT -> ctx.sendMessage(MessageUtil.success(player, CommandKeys.Home.TELEPORTED));
       case SUCCESS_WARMUP -> {} // Message sent by TeleportManager, teleport executed by TerritoryTickingSystem
       default -> {}
     }

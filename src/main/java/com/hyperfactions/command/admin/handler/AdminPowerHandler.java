@@ -12,8 +12,11 @@ import com.hyperfactions.data.PlayerData;
 import com.hyperfactions.data.PlayerPower;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.CommandHelp;
+import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.HelpFormatter;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.AdminKeys;
+import com.hyperfactions.util.GuiKeys;
+import com.hyperfactions.util.HelpKeys;
 import com.hyperfactions.util.PlayerResolver;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -69,12 +72,12 @@ public class AdminPowerHandler {
   /** Handles admin power. */
   public void handleAdminPower(CommandContext ctx, @Nullable PlayerRef player, UUID senderUuid, String[] args) {
     if (!hasPermission(player, Permissions.ADMIN_POWER)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.POWER_NO_PERMISSION), COLOR_RED)));
       return;
     }
 
     if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
-      showAdminPowerHelp(ctx);
+      showAdminPowerHelp(ctx, player);
       return;
     }
 
@@ -91,23 +94,23 @@ public class AdminPowerHandler {
       case "nodecay" -> handlePowerNoDecay(ctx, senderUuid, args);
       case "faction" -> handlePowerFaction(ctx, senderUuid, args);
       case "info" -> handlePowerInfo(ctx, args);
-      default -> ctx.sendMessage(prefix().insert(msg("Unknown power command. Use /f admin power help", COLOR_RED)));
+      default -> ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.POWER_UNKNOWN_CMD), COLOR_RED)));
     }
   }
 
-  private void showAdminPowerHelp(CommandContext ctx) {
+  private void showAdminPowerHelp(CommandContext ctx, @Nullable PlayerRef player) {
     List<CommandHelp> commands = new ArrayList<>();
-    commands.add(new CommandHelp("/f admin power set <player> <amount>", "Set exact power"));
-    commands.add(new CommandHelp("/f admin power add <player> <amount>", "Increase power"));
-    commands.add(new CommandHelp("/f admin power remove <player> <amount>", "Decrease power"));
-    commands.add(new CommandHelp("/f admin power reset <player>", "Reset to default"));
-    commands.add(new CommandHelp("/f admin power setmax <player> <amount>", "Set max power override"));
-    commands.add(new CommandHelp("/f admin power resetmax <player>", "Clear max override"));
-    commands.add(new CommandHelp("/f admin power noloss <player>", "Toggle power loss bypass"));
-    commands.add(new CommandHelp("/f admin power nodecay <player>", "Toggle claim decay exemption"));
-    commands.add(new CommandHelp("/f admin power faction <name> <action>", "Faction-wide operations"));
-    commands.add(new CommandHelp("/f admin power info <player>", "Show player power details"));
-    ctx.sendMessage(HelpFormatter.buildHelp("Admin Power", "Manage player/faction power", commands, null));
+    commands.add(new CommandHelp("/f admin power set <player> <amount>", HelpKeys.Help.POWER_CMD_SET));
+    commands.add(new CommandHelp("/f admin power add <player> <amount>", HelpKeys.Help.POWER_CMD_ADD));
+    commands.add(new CommandHelp("/f admin power remove <player> <amount>", HelpKeys.Help.POWER_CMD_REMOVE));
+    commands.add(new CommandHelp("/f admin power reset <player>", HelpKeys.Help.POWER_CMD_RESET));
+    commands.add(new CommandHelp("/f admin power setmax <player> <amount>", HelpKeys.Help.POWER_CMD_SETMAX));
+    commands.add(new CommandHelp("/f admin power resetmax <player>", HelpKeys.Help.POWER_CMD_RESETMAX));
+    commands.add(new CommandHelp("/f admin power noloss <player>", HelpKeys.Help.POWER_CMD_NOLOSS));
+    commands.add(new CommandHelp("/f admin power nodecay <player>", HelpKeys.Help.POWER_CMD_NODECAY));
+    commands.add(new CommandHelp("/f admin power faction <name> <action>", HelpKeys.Help.POWER_CMD_FACTION));
+    commands.add(new CommandHelp("/f admin power info <player>", HelpKeys.Help.POWER_CMD_INFO));
+    ctx.sendMessage(HelpFormatter.buildHelp(HelpKeys.Help.POWER_TITLE, HelpKeys.Help.POWER_DESCRIPTION, commands, null, player));
   }
 
   /**
@@ -150,14 +153,14 @@ public class AdminPowerHandler {
     }
     ResolvedPlayer target = resolvePlayer(args[1]);
     if (target == null) {
-      ctx.sendMessage(prefix().insert(msg("Player not found: " + args[1], COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.PLAYER_NOT_FOUND, args[1]), COLOR_RED)));
       return;
     }
     double amount;
     try {
       amount = Double.parseDouble(args[2]);
     } catch (NumberFormatException e) {
-      ctx.sendMessage(prefix().insert(msg("Invalid number: " + args[2], COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.INVALID_NUMBER, args[2]), COLOR_RED)));
       return;
     }
 
@@ -165,7 +168,7 @@ public class AdminPowerHandler {
     double newPower = hyperFactions.getPowerManager().setPlayerPower(target.uuid(), amount);
     logAdminPowerChange(target.uuid(), senderUuid,
       "Admin set " + target.name() + "'s power to " + String.format("%.1f", newPower) + " (was " + String.format("%.1f", oldPower) + ")",
-      MessageKeys.LogsGui.MSG_ADMIN_POWER_SET, target.name(), String.format("%.1f", newPower), String.format("%.1f", oldPower));
+      GuiKeys.LogsGui.MSG_ADMIN_POWER_SET, target.name(), String.format("%.1f", newPower), String.format("%.1f", oldPower));
     ctx.sendMessage(prefix().insert(msg("Set ", COLOR_GREEN))
       .insert(msg(target.name(), COLOR_CYAN))
       .insert(msg("'s power to ", COLOR_GREEN))
@@ -182,14 +185,14 @@ public class AdminPowerHandler {
     }
     ResolvedPlayer target = resolvePlayer(args[1]);
     if (target == null) {
-      ctx.sendMessage(prefix().insert(msg("Player not found: " + args[1], COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.PLAYER_NOT_FOUND, args[1]), COLOR_RED)));
       return;
     }
     double amount;
     try {
       amount = Double.parseDouble(args[2]);
     } catch (NumberFormatException e) {
-      ctx.sendMessage(prefix().insert(msg("Invalid number: " + args[2], COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.INVALID_NUMBER, args[2]), COLOR_RED)));
       return;
     }
 
@@ -197,7 +200,7 @@ public class AdminPowerHandler {
     double newPower = hyperFactions.getPowerManager().adjustPlayerPower(target.uuid(), amount);
     logAdminPowerChange(target.uuid(), senderUuid,
       "Admin added " + String.format("%.1f", amount) + " power to " + target.name() + " (" + String.format("%.1f", oldPower) + " -> " + String.format("%.1f", newPower) + ")",
-      MessageKeys.LogsGui.MSG_ADMIN_POWER_ADD, String.format("%.1f", amount), target.name(), String.format("%.1f", oldPower), String.format("%.1f", newPower));
+      GuiKeys.LogsGui.MSG_ADMIN_POWER_ADD, String.format("%.1f", amount), target.name(), String.format("%.1f", oldPower), String.format("%.1f", newPower));
     ctx.sendMessage(prefix().insert(msg("Added ", COLOR_GREEN))
       .insert(msg(String.format("%.1f", amount), COLOR_WHITE))
       .insert(msg(" power to ", COLOR_GREEN))
@@ -214,14 +217,14 @@ public class AdminPowerHandler {
     }
     ResolvedPlayer target = resolvePlayer(args[1]);
     if (target == null) {
-      ctx.sendMessage(prefix().insert(msg("Player not found: " + args[1], COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.PLAYER_NOT_FOUND, args[1]), COLOR_RED)));
       return;
     }
     double amount;
     try {
       amount = Double.parseDouble(args[2]);
     } catch (NumberFormatException e) {
-      ctx.sendMessage(prefix().insert(msg("Invalid number: " + args[2], COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.INVALID_NUMBER, args[2]), COLOR_RED)));
       return;
     }
 
@@ -229,7 +232,7 @@ public class AdminPowerHandler {
     double newPower = hyperFactions.getPowerManager().adjustPlayerPower(target.uuid(), -amount);
     logAdminPowerChange(target.uuid(), senderUuid,
       "Admin removed " + String.format("%.1f", amount) + " power from " + target.name() + " (" + String.format("%.1f", oldPower) + " -> " + String.format("%.1f", newPower) + ")",
-      MessageKeys.LogsGui.MSG_ADMIN_POWER_REMOVE, String.format("%.1f", amount), target.name(), String.format("%.1f", oldPower), String.format("%.1f", newPower));
+      GuiKeys.LogsGui.MSG_ADMIN_POWER_REMOVE, String.format("%.1f", amount), target.name(), String.format("%.1f", oldPower), String.format("%.1f", newPower));
     ctx.sendMessage(prefix().insert(msg("Removed ", COLOR_GREEN))
       .insert(msg(String.format("%.1f", amount), COLOR_WHITE))
       .insert(msg(" power from ", COLOR_GREEN))
@@ -246,7 +249,7 @@ public class AdminPowerHandler {
     }
     ResolvedPlayer target = resolvePlayer(args[1]);
     if (target == null) {
-      ctx.sendMessage(prefix().insert(msg("Player not found: " + args[1], COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.PLAYER_NOT_FOUND, args[1]), COLOR_RED)));
       return;
     }
 
@@ -254,7 +257,7 @@ public class AdminPowerHandler {
     double newPower = hyperFactions.getPowerManager().resetPlayerPower(target.uuid());
     logAdminPowerChange(target.uuid(), senderUuid,
       "Admin reset " + target.name() + "'s power to " + String.format("%.1f", newPower) + " (was " + String.format("%.1f", oldPower) + ")",
-      MessageKeys.LogsGui.MSG_ADMIN_POWER_RESET, target.name(), String.format("%.1f", newPower), String.format("%.1f", oldPower));
+      GuiKeys.LogsGui.MSG_ADMIN_POWER_RESET, target.name(), String.format("%.1f", newPower), String.format("%.1f", oldPower));
     ctx.sendMessage(prefix().insert(msg("Reset ", COLOR_GREEN))
       .insert(msg(target.name(), COLOR_CYAN))
       .insert(msg("'s power to ", COLOR_GREEN))
@@ -271,18 +274,18 @@ public class AdminPowerHandler {
     }
     ResolvedPlayer target = resolvePlayer(args[1]);
     if (target == null) {
-      ctx.sendMessage(prefix().insert(msg("Player not found: " + args[1], COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.PLAYER_NOT_FOUND, args[1]), COLOR_RED)));
       return;
     }
     double amount;
     try {
       amount = Double.parseDouble(args[2]);
       if (amount <= 0) {
-        ctx.sendMessage(prefix().insert(msg("Max power must be positive.", COLOR_RED)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.POWER_MAX_POSITIVE), COLOR_RED)));
         return;
       }
     } catch (NumberFormatException e) {
-      ctx.sendMessage(prefix().insert(msg("Invalid number: " + args[2], COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.INVALID_NUMBER, args[2]), COLOR_RED)));
       return;
     }
 
@@ -291,7 +294,7 @@ public class AdminPowerHandler {
     double newCurrentPower = hyperFactions.getPowerManager().setPlayerMaxPower(target.uuid(), amount);
     logAdminPowerChange(target.uuid(), senderUuid,
       "Admin set " + target.name() + "'s max power to " + String.format("%.1f", amount) + " (was " + String.format("%.1f", oldMax) + ")",
-      MessageKeys.LogsGui.MSG_ADMIN_MAXPOWER_SET, target.name(), String.format("%.1f", amount), String.format("%.1f", oldMax));
+      GuiKeys.LogsGui.MSG_ADMIN_MAXPOWER_SET, target.name(), String.format("%.1f", amount), String.format("%.1f", oldMax));
     ctx.sendMessage(prefix().insert(msg("Set ", COLOR_GREEN))
       .insert(msg(target.name(), COLOR_CYAN))
       .insert(msg("'s max power to ", COLOR_GREEN))
@@ -308,7 +311,7 @@ public class AdminPowerHandler {
     }
     ResolvedPlayer target = resolvePlayer(args[1]);
     if (target == null) {
-      ctx.sendMessage(prefix().insert(msg("Player not found: " + args[1], COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.PLAYER_NOT_FOUND, args[1]), COLOR_RED)));
       return;
     }
 
@@ -318,7 +321,7 @@ public class AdminPowerHandler {
     double globalMax = ConfigManager.get().getMaxPlayerPower();
     logAdminPowerChange(target.uuid(), senderUuid,
       "Admin reset " + target.name() + "'s max power to global default (" + String.format("%.1f", globalMax) + ")",
-      MessageKeys.LogsGui.MSG_ADMIN_MAXPOWER_RESET, target.name(), String.format("%.1f", globalMax));
+      GuiKeys.LogsGui.MSG_ADMIN_MAXPOWER_RESET, target.name(), String.format("%.1f", globalMax));
     ctx.sendMessage(prefix().insert(msg("Reset ", COLOR_GREEN))
       .insert(msg(target.name(), COLOR_CYAN))
       .insert(msg("'s max power to global default ", COLOR_GREEN))
@@ -335,7 +338,7 @@ public class AdminPowerHandler {
     }
     ResolvedPlayer target = resolvePlayer(args[1]);
     if (target == null) {
-      ctx.sendMessage(prefix().insert(msg("Player not found: " + args[1], COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.PLAYER_NOT_FOUND, args[1]), COLOR_RED)));
       return;
     }
 
@@ -344,7 +347,7 @@ public class AdminPowerHandler {
     hyperFactions.getPowerManager().setPlayerPowerLossDisabled(target.uuid(), newState);
     logAdminPowerChange(target.uuid(), senderUuid,
       "Admin " + (newState ? "disabled" : "enabled") + " power loss for " + target.name(),
-      newState ? MessageKeys.LogsGui.MSG_ADMIN_POWERLOSS_DISABLED : MessageKeys.LogsGui.MSG_ADMIN_POWERLOSS_ENABLED, target.name());
+      newState ? GuiKeys.LogsGui.MSG_ADMIN_POWERLOSS_DISABLED : GuiKeys.LogsGui.MSG_ADMIN_POWERLOSS_ENABLED, target.name());
     ctx.sendMessage(prefix().insert(msg("Power loss ", COLOR_GREEN))
       .insert(msg(newState ? "disabled" : "enabled", newState ? COLOR_RED : COLOR_GREEN))
       .insert(msg(" for ", COLOR_GREEN))
@@ -360,7 +363,7 @@ public class AdminPowerHandler {
     }
     ResolvedPlayer target = resolvePlayer(args[1]);
     if (target == null) {
-      ctx.sendMessage(prefix().insert(msg("Player not found: " + args[1], COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.PLAYER_NOT_FOUND, args[1]), COLOR_RED)));
       return;
     }
 
@@ -369,7 +372,7 @@ public class AdminPowerHandler {
     hyperFactions.getPowerManager().setPlayerClaimDecayExempt(target.uuid(), newState);
     logAdminPowerChange(target.uuid(), senderUuid,
       "Admin " + (newState ? "enabled" : "disabled") + " claim decay exemption for " + target.name(),
-      newState ? MessageKeys.LogsGui.MSG_ADMIN_DECAY_ENABLED : MessageKeys.LogsGui.MSG_ADMIN_DECAY_DISABLED, target.name());
+      newState ? GuiKeys.LogsGui.MSG_ADMIN_DECAY_ENABLED : GuiKeys.LogsGui.MSG_ADMIN_DECAY_DISABLED, target.name());
     ctx.sendMessage(prefix().insert(msg("Claim decay exemption ", COLOR_GREEN))
       .insert(msg(newState ? "enabled" : "disabled", newState ? COLOR_GREEN : COLOR_RED))
       .insert(msg(" for ", COLOR_GREEN))
@@ -386,7 +389,7 @@ public class AdminPowerHandler {
     String factionName = args[1];
     Faction faction = hyperFactions.getFactionManager().getFactionByName(factionName);
     if (faction == null) {
-      ctx.sendMessage(prefix().insert(msg("Faction not found: " + factionName, COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.FACTION_NOT_FOUND, factionName), COLOR_RED)));
       return;
     }
 
@@ -410,7 +413,7 @@ public class AdminPowerHandler {
           FactionLog.LogType.ADMIN_POWER,
           "Admin set all " + members.size() + " members' power to " + String.format("%.1f", amount),
           senderUuid,
-          MessageKeys.LogsGui.MSG_ADMIN_POWER_SET_ALL, String.valueOf(members.size()), String.format("%.1f", amount))));
+          GuiKeys.LogsGui.MSG_ADMIN_POWER_SET_ALL, String.valueOf(members.size()), String.format("%.1f", amount))));
         ctx.sendMessage(prefix().insert(msg("Set power to ", COLOR_GREEN))
           .insert(msg(String.format("%.1f", amount), COLOR_WHITE))
           .insert(msg(" for " + members.size() + " members of ", COLOR_GREEN))
@@ -432,7 +435,7 @@ public class AdminPowerHandler {
           FactionLog.LogType.ADMIN_POWER,
           "Admin added " + String.format("%.1f", amount) + " power to all " + members.size() + " members",
           senderUuid,
-          MessageKeys.LogsGui.MSG_ADMIN_POWER_ADD_ALL, String.format("%.1f", amount), String.valueOf(members.size()))));
+          GuiKeys.LogsGui.MSG_ADMIN_POWER_ADD_ALL, String.format("%.1f", amount), String.valueOf(members.size()))));
         ctx.sendMessage(prefix().insert(msg("Added ", COLOR_GREEN))
           .insert(msg(String.format("%.1f", amount), COLOR_WHITE))
           .insert(msg(" power to " + members.size() + " members of ", COLOR_GREEN))
@@ -454,7 +457,7 @@ public class AdminPowerHandler {
           FactionLog.LogType.ADMIN_POWER,
           "Admin removed " + String.format("%.1f", amount) + " power from all " + members.size() + " members",
           senderUuid,
-          MessageKeys.LogsGui.MSG_ADMIN_POWER_REMOVE_ALL, String.format("%.1f", amount), String.valueOf(members.size()))));
+          GuiKeys.LogsGui.MSG_ADMIN_POWER_REMOVE_ALL, String.format("%.1f", amount), String.valueOf(members.size()))));
         ctx.sendMessage(prefix().insert(msg("Removed ", COLOR_GREEN))
           .insert(msg(String.format("%.1f", amount), COLOR_WHITE))
           .insert(msg(" power from " + members.size() + " members of ", COLOR_GREEN))
@@ -468,13 +471,13 @@ public class AdminPowerHandler {
           FactionLog.LogType.ADMIN_POWER,
           "Admin reset power for all " + members.size() + " members",
           senderUuid,
-          MessageKeys.LogsGui.MSG_ADMIN_POWER_RESET_ALL, String.valueOf(members.size()))));
+          GuiKeys.LogsGui.MSG_ADMIN_POWER_RESET_ALL, String.valueOf(members.size()))));
         ctx.sendMessage(prefix().insert(msg("Reset power for ", COLOR_GREEN))
           .insert(msg(String.valueOf(members.size()), COLOR_WHITE))
           .insert(msg(" members of ", COLOR_GREEN))
           .insert(msg(faction.name(), COLOR_CYAN)));
       }
-      default -> ctx.sendMessage(prefix().insert(msg("Unknown faction power action. Use: set, add, remove, reset", COLOR_RED)));
+      default -> ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.POWER_FACTION_UNKNOWN_ACTION), COLOR_RED)));
     }
   }
 
@@ -487,7 +490,7 @@ public class AdminPowerHandler {
     }
     ResolvedPlayer target = resolvePlayer(args[1]);
     if (target == null) {
-      ctx.sendMessage(prefix().insert(msg("Player not found: " + args[1], COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.PLAYER_NOT_FOUND, args[1]), COLOR_RED)));
       return;
     }
 
@@ -520,7 +523,7 @@ public class AdminPowerHandler {
   /** Handles clear history. */
   public void handleClearHistory(CommandContext ctx, @Nullable PlayerRef player, String[] args) {
     if (!hasPermission(player, Permissions.ADMIN)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.NO_PERMISSION), COLOR_RED)));
       return;
     }
 
@@ -534,7 +537,7 @@ public class AdminPowerHandler {
     // Resolve player using centralized resolver (online -> faction members -> PlayerDB)
     var resolved = PlayerResolver.resolve(hyperFactions, targetName);
     if (resolved == null) {
-      ctx.sendMessage(prefix().insert(msg("Player not found.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.PLAYER_NOT_FOUND, targetName), COLOR_RED)));
       return;
     }
 
@@ -544,7 +547,7 @@ public class AdminPowerHandler {
     final String finalName = resolvedName;
     hyperFactions.getPlayerStorage().loadPlayerData(targetUuid).thenAccept(opt -> {
       if (opt.isEmpty()) {
-        ctx.sendMessage(prefix().insert(msg("No player data found for " + finalName + ".", COLOR_RED)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.HISTORY_NO_DATA, finalName), COLOR_RED)));
         return;
       }
 
@@ -552,7 +555,7 @@ public class AdminPowerHandler {
       int count = data.getMembershipHistory().size();
 
       if (count == 0) {
-        ctx.sendMessage(prefix().insert(msg(finalName + " has no membership history.", COLOR_YELLOW)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.HISTORY_EMPTY, finalName), COLOR_YELLOW)));
         return;
       }
 
@@ -573,10 +576,9 @@ public class AdminPowerHandler {
 
       hyperFactions.getPlayerStorage().savePlayerData(data).thenRun(() -> {
         if (currentFaction != null) {
-          ctx.sendMessage(prefix().insert(msg("Cleared " + count + " history records for " + finalName
-            + " (re-initialized with current faction: " + currentFaction.name() + ").", COLOR_GREEN)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.HISTORY_CLEARED_REINIT, String.valueOf(count), finalName, currentFaction.name()), COLOR_GREEN)));
         } else {
-          ctx.sendMessage(prefix().insert(msg("Cleared " + count + " history records for " + finalName + ".", COLOR_GREEN)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.HISTORY_CLEARED, String.valueOf(count), finalName), COLOR_GREEN)));
         }
       });
     });
@@ -590,7 +592,7 @@ public class AdminPowerHandler {
     try {
       return Double.parseDouble(value);
     } catch (NumberFormatException e) {
-      ctx.sendMessage(prefix().insert(msg("Invalid number: " + value, COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.INVALID_NUMBER, value), COLOR_RED)));
       return Double.NaN;
     }
   }

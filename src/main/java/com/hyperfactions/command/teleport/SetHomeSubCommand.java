@@ -8,7 +8,7 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.ChunkUtil;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -42,12 +42,12 @@ public class SetHomeSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.SETHOME)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.SETHOME_NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.SETHOME_NO_PERMISSION));
       return;
     }
 
     if (!ConfigManager.get().isWorldAllowed(currentWorld.getName())) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.SETHOME_WORLD_NOT_ALLOWED));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.SETHOME_WORLD_NOT_ALLOWED));
       return;
     }
 
@@ -68,7 +68,7 @@ public class SetHomeSubCommand extends FactionSubCommand {
     UUID claimOwner = hyperFactions.getClaimManager().getClaimOwner(currentWorld.getName(), chunkX, chunkZ);
 
     if (claimOwner == null || !claimOwner.equals(faction.id())) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.NOT_IN_TERRITORY));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.NOT_IN_TERRITORY));
       return;
     }
 
@@ -80,12 +80,12 @@ public class SetHomeSubCommand extends FactionSubCommand {
     FactionManager.FactionResult result = hyperFactions.getFactionManager().setHome(faction.id(), home, player.getUuid());
 
     if (result == FactionManager.FactionResult.SUCCESS) {
-      ctx.sendMessage(MessageUtil.success(player, MessageKeys.Home.SET));
-      broadcastToFaction(faction.id(), MessageUtil.success(player, MessageKeys.Home.SETHOME_BROADCAST, player.getUsername()));
+      ctx.sendMessage(MessageUtil.success(player, CommandKeys.Home.SET));
+      broadcastToFaction(faction.id(), MessageUtil.success(player, CommandKeys.Home.SETHOME_BROADCAST, player.getUsername()));
     } else if (result == FactionManager.FactionResult.NOT_OFFICER) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.SETHOME_NOT_OFFICER));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.SETHOME_NOT_OFFICER));
     } else {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.SETHOME_FAILED));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.SETHOME_FAILED));
     }
   }
 }

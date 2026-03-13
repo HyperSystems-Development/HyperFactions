@@ -9,7 +9,9 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionLog;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.platform.HyperFactionsPlugin;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -41,7 +43,7 @@ public class DescSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.DESC)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Desc.NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.NO_PERMISSION));
       return;
     }
 
@@ -52,7 +54,7 @@ public class DescSubCommand extends FactionSubCommand {
 
     FactionMember member = faction.getMember(player.getUuid());
     if (member == null || !member.isOfficerOrHigher()) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Desc.NOT_OFFICER));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Desc.NOT_OFFICER));
       return;
     }
 
@@ -74,14 +76,14 @@ public class DescSubCommand extends FactionSubCommand {
     Faction updated = faction.withDescription(description)
       .withLog(FactionLog.create(FactionLog.LogType.SETTINGS_CHANGE,
         description != null ? "Description set" : "Description cleared", player.getUuid(),
-        description != null ? MessageKeys.LogsGui.MSG_DESC_SET : MessageKeys.LogsGui.MSG_DESC_CLEARED));
+        description != null ? GuiKeys.LogsGui.MSG_DESC_SET : GuiKeys.LogsGui.MSG_DESC_CLEARED));
 
     hyperFactions.getFactionManager().updateFaction(updated);
 
     if (description != null) {
-      ctx.sendMessage(MessageUtil.success(player, MessageKeys.Desc.SET));
+      ctx.sendMessage(MessageUtil.success(player, CommandKeys.Desc.SET));
     } else {
-      ctx.sendMessage(MessageUtil.success(player, MessageKeys.Desc.CLEARED));
+      ctx.sendMessage(MessageUtil.success(player, CommandKeys.Desc.CLEARED));
     }
 
     // After action, open settings page if not text mode

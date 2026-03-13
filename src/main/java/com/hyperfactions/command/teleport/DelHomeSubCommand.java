@@ -6,7 +6,7 @@ import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -36,7 +36,7 @@ public class DelHomeSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.DELHOME)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.DELHOME_NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.DELHOME_NO_PERMISSION));
       return;
     }
 
@@ -46,19 +46,19 @@ public class DelHomeSubCommand extends FactionSubCommand {
     }
 
     if (faction.home() == null) {
-      ctx.sendMessage(MessageUtil.info(player, MessageKeys.Home.DELHOME_NO_HOME, COLOR_YELLOW));
+      ctx.sendMessage(MessageUtil.info(player, CommandKeys.Home.DELHOME_NO_HOME, COLOR_YELLOW));
       return;
     }
 
     FactionManager.FactionResult result = hyperFactions.getFactionManager().setHome(faction.id(), null, player.getUuid());
 
     if (result == FactionManager.FactionResult.SUCCESS) {
-      ctx.sendMessage(MessageUtil.success(player, MessageKeys.Home.DELETED));
-      broadcastToFaction(faction.id(), MessageUtil.success(player, MessageKeys.Home.DELHOME_BROADCAST, player.getUsername()));
+      ctx.sendMessage(MessageUtil.success(player, CommandKeys.Home.DELETED));
+      broadcastToFaction(faction.id(), MessageUtil.success(player, CommandKeys.Home.DELHOME_BROADCAST, player.getUsername()));
     } else if (result == FactionManager.FactionResult.NOT_OFFICER) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.DELHOME_NOT_OFFICER));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.DELHOME_NOT_OFFICER));
     } else {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.DELHOME_FAILED));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.DELHOME_FAILED));
     }
   }
 }

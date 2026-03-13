@@ -8,7 +8,8 @@ import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.RelationManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -39,7 +40,7 @@ public class AllySubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.ALLY)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Relation.ALLY_NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.ALLY_NO_PERMISSION));
       return;
     }
 
@@ -61,28 +62,28 @@ public class AllySubCommand extends FactionSubCommand {
     }
 
     if (!fctx.hasArgs()) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Relation.ALLY_USAGE));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.ALLY_USAGE));
       return;
     }
 
     String factionName = fctx.joinArgs();
     Faction targetFaction = hyperFactions.getFactionManager().getFactionByName(factionName);
     if (targetFaction == null) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.FACTION_NOT_FOUND));
+      ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.FACTION_NOT_FOUND));
       return;
     }
 
     RelationManager.RelationResult result = hyperFactions.getRelationManager().requestAlly(player.getUuid(), targetFaction.id());
 
     switch (result) {
-      case REQUEST_SENT -> ctx.sendMessage(MessageUtil.success(player, MessageKeys.Relation.ALLY_SENT, targetFaction.name()));
-      case REQUEST_ACCEPTED -> ctx.sendMessage(MessageUtil.success(player, MessageKeys.Relation.ALLY_FORMED, targetFaction.name()));
-      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.NOT_IN_FACTION));
-      case NOT_OFFICER -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.MUST_BE_OFFICER));
-      case CANNOT_RELATE_SELF -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Relation.CANNOT_SELF));
-      case ALREADY_ALLY -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Relation.ALREADY_ALLY));
-      case ALLY_LIMIT_REACHED -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Relation.MAX_ALLIES));
-      default -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Relation.ALLY_FAILED));
+      case REQUEST_SENT -> ctx.sendMessage(MessageUtil.success(player, CommandKeys.Relation.ALLY_SENT, targetFaction.name()));
+      case REQUEST_ACCEPTED -> ctx.sendMessage(MessageUtil.success(player, CommandKeys.Relation.ALLY_FORMED, targetFaction.name()));
+      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.NOT_IN_FACTION));
+      case NOT_OFFICER -> ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.MUST_BE_OFFICER));
+      case CANNOT_RELATE_SELF -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.CANNOT_SELF));
+      case ALREADY_ALLY -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.ALREADY_ALLY));
+      case ALLY_LIMIT_REACHED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.MAX_ALLIES));
+      default -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.ALLY_FAILED));
     }
   }
 }

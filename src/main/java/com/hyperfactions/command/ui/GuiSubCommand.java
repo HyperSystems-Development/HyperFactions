@@ -4,7 +4,7 @@ import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
 import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.platform.HyperFactionsPlugin;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -37,13 +37,13 @@ public class GuiSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(playerRef, Permissions.USE)) {
-      ctx.sendMessage(MessageUtil.error(playerRef, MessageKeys.Common.NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.NO_PERMISSION));
       return;
     }
 
     Player player = store.getComponent(ref, Player.getComponentType());
     if (player == null) {
-      ctx.sendMessage(MessageUtil.error(playerRef, MessageKeys.Common.ERROR_GENERIC));
+      ctx.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.ERROR_GENERIC));
       return;
     }
 

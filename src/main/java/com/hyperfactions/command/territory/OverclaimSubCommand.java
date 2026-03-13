@@ -9,7 +9,8 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.ClaimManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.ChunkUtil;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -42,7 +43,7 @@ public class OverclaimSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.OVERCLAIM)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Claim.OVERCLAIM_NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.OVERCLAIM_NO_PERMISSION));
       return;
     }
 
@@ -69,7 +70,7 @@ public class OverclaimSubCommand extends FactionSubCommand {
 
     switch (result) {
       case SUCCESS -> {
-        ctx.sendMessage(MessageUtil.success(player, MessageKeys.Claim.OVERCLAIMED));
+        ctx.sendMessage(MessageUtil.success(player, CommandKeys.Claim.OVERCLAIMED));
         // Show map after overclaiming (if not text mode)
         if (!fctx.isTextMode()) {
           Player playerEntity = store.getComponent(ref, Player.getComponentType());
@@ -78,14 +79,14 @@ public class OverclaimSubCommand extends FactionSubCommand {
           }
         }
       }
-      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.NOT_IN_FACTION));
-      case NOT_OFFICER -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Claim.OVERCLAIM_NOT_OFFICER));
-      case CHUNK_NOT_CLAIMED -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Claim.OVERCLAIM_NOT_CLAIMED));
-      case ALREADY_CLAIMED_SELF -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Claim.OVERCLAIM_OWN));
-      case ALREADY_CLAIMED_ALLY -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Claim.OVERCLAIM_ALLY));
-      case TARGET_HAS_POWER -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Claim.TARGET_HAS_POWER));
-      case MAX_CLAIMS_REACHED -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Claim.MAX_CLAIMS));
-      default -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Claim.OVERCLAIM_FAILED));
+      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.NOT_IN_FACTION));
+      case NOT_OFFICER -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.OVERCLAIM_NOT_OFFICER));
+      case CHUNK_NOT_CLAIMED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.OVERCLAIM_NOT_CLAIMED));
+      case ALREADY_CLAIMED_SELF -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.OVERCLAIM_OWN));
+      case ALREADY_CLAIMED_ALLY -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.OVERCLAIM_ALLY));
+      case TARGET_HAS_POWER -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.TARGET_HAS_POWER));
+      case MAX_CLAIMS_REACHED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.MAX_CLAIMS));
+      default -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.OVERCLAIM_FAILED));
     }
   }
 }

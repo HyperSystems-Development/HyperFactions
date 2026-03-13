@@ -4,7 +4,10 @@ import com.hyperfactions.HyperFactions;
 import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.integration.SentryIntegration;
 import com.hyperfactions.util.CommandHelp;
+import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.HelpFormatter;
+import com.hyperfactions.util.AdminKeys;
+import com.hyperfactions.util.HelpKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.Message;
@@ -54,7 +57,7 @@ public class AdminTestHandler {
               @Nullable Ref<EntityStore> ref, @Nullable PlayerRef player,
               @NotNull String[] subArgs, boolean isPlayer) {
     if (subArgs.length == 0) {
-      showTestHelp(ctx);
+      showTestHelp(ctx, player);
       return;
     }
 
@@ -62,14 +65,14 @@ public class AdminTestHandler {
       case "gui" -> handleTestGui(ctx, store, ref, player, isPlayer);
       case "sentry" -> handleSentryTest(ctx);
       case "md", "markdown" -> handleMarkdownTest(ctx, store, ref, player, isPlayer);
-      default -> showTestHelp(ctx);
+      default -> showTestHelp(ctx, player);
     }
   }
 
   private void handleTestGui(CommandContext ctx, Store<EntityStore> store,
                 Ref<EntityStore> ref, PlayerRef player, boolean isPlayer) {
     if (!isPlayer) {
-      ctx.sendMessage(prefix().insert(msg("This command can only be used by a player.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.PLAYER_ONLY), COLOR_RED)));
       return;
     }
     Player playerEntity = store.getComponent(ref, Player.getComponentType());
@@ -80,22 +83,22 @@ public class AdminTestHandler {
 
   private void handleSentryTest(CommandContext ctx) {
     if (!SentryIntegration.isInitialized()) {
-      ctx.sendMessage(prefix().insert(msg("Sentry is not initialized. Check config/debug.json", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.SENTRY_NOT_INITIALIZED), COLOR_RED)));
       return;
     }
 
     boolean sent = SentryIntegration.sendTestEvent();
     if (sent) {
-      ctx.sendMessage(prefix().insert(msg("Test error sent to Sentry. Check your Sentry dashboard.", COLOR_GREEN)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.SENTRY_TEST_SENT), COLOR_GREEN)));
     } else {
-      ctx.sendMessage(prefix().insert(msg("Failed to send test event.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.SENTRY_TEST_FAILED), COLOR_RED)));
     }
   }
 
   private void handleMarkdownTest(CommandContext ctx, Store<EntityStore> store,
                   Ref<EntityStore> ref, PlayerRef player, boolean isPlayer) {
     if (!isPlayer) {
-      ctx.sendMessage(prefix().insert(msg("This command can only be used by a player.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.PLAYER_ONLY), COLOR_RED)));
       return;
     }
     Player playerEntity = store.getComponent(ref, Player.getComponentType());
@@ -104,11 +107,11 @@ public class AdminTestHandler {
     }
   }
 
-  private void showTestHelp(CommandContext ctx) {
+  private void showTestHelp(CommandContext ctx, @Nullable PlayerRef player) {
     List<CommandHelp> commands = new ArrayList<>();
-    commands.add(new CommandHelp("/f admin test gui", "Open UI element test page"));
-    commands.add(new CommandHelp("/f admin test sentry", "Send test error to Sentry"));
-    commands.add(new CommandHelp("/f admin test md", "Open markdown rendering test page"));
-    ctx.sendMessage(HelpFormatter.buildHelp("Test Commands", "Development testing tools", commands, null));
+    commands.add(new CommandHelp("/f admin test gui", HelpKeys.Help.TEST_CMD_GUI));
+    commands.add(new CommandHelp("/f admin test sentry", HelpKeys.Help.TEST_CMD_SENTRY));
+    commands.add(new CommandHelp("/f admin test md", HelpKeys.Help.TEST_CMD_MD));
+    ctx.sendMessage(HelpFormatter.buildHelp(HelpKeys.Help.TEST_TITLE, HelpKeys.Help.TEST_DESCRIPTION, commands, null, player));
   }
 }

@@ -7,8 +7,12 @@ import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.EconomyManager;
 import com.hyperfactions.util.CommandHelp;
+import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.HelpFormatter;
 import com.hyperfactions.util.ErrorHandler;
+import com.hyperfactions.util.AdminKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.HelpKeys;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.Message;
@@ -64,18 +68,18 @@ public class AdminEconomyHandler {
   /** Handles admin economy. */
   public void handleAdminEconomy(CommandContext ctx, @Nullable PlayerRef player, UUID senderUuid, String[] args) {
     if (!hasPermission(player, Permissions.ADMIN_ECONOMY)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.NO_PERMISSION), COLOR_RED)));
       return;
     }
 
     EconomyManager econ = hyperFactions.getEconomyManager();
     if (econ == null) {
-      ctx.sendMessage(prefix().insert(msg("Economy system is not enabled.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, CommonKeys.Common.ECONOMY_DISABLED), COLOR_RED)));
       return;
     }
 
     if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
-      showAdminEconomyHelp(ctx);
+      showAdminEconomyHelp(ctx, player);
       return;
     }
 
@@ -89,20 +93,20 @@ public class AdminEconomyHandler {
       case "total" -> handleTotal(ctx, econ);
       case "reset" -> handleReset(ctx, econ, senderUuid, args);
       case "upkeep" -> handleUpkeep(ctx, senderUuid);
-      default -> ctx.sendMessage(prefix().insert(msg("Unknown economy command. Use /f admin economy help", COLOR_RED)));
+      default -> ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.ECON_UNKNOWN_CMD), COLOR_RED)));
     }
   }
 
-  private void showAdminEconomyHelp(CommandContext ctx) {
+  private void showAdminEconomyHelp(CommandContext ctx, @Nullable PlayerRef player) {
     List<CommandHelp> commands = new ArrayList<>();
-    commands.add(new CommandHelp("/f admin economy balance <faction>", "Show faction balance"));
-    commands.add(new CommandHelp("/f admin economy set <faction> <amount>", "Set exact balance"));
-    commands.add(new CommandHelp("/f admin economy add <faction> <amount>", "Add to balance"));
-    commands.add(new CommandHelp("/f admin economy take <faction> <amount>", "Deduct from balance"));
-    commands.add(new CommandHelp("/f admin economy total", "Show server total balance"));
-    commands.add(new CommandHelp("/f admin economy reset <faction>", "Reset balance to 0"));
-    commands.add(new CommandHelp("/f admin economy upkeep", "Manually trigger upkeep collection"));
-    ctx.sendMessage(HelpFormatter.buildHelp("Admin Economy", "Manage faction treasuries", commands, null));
+    commands.add(new CommandHelp("/f admin economy balance <faction>", HelpKeys.Help.ECONOMY_CMD_BALANCE));
+    commands.add(new CommandHelp("/f admin economy set <faction> <amount>", HelpKeys.Help.ECONOMY_CMD_SET));
+    commands.add(new CommandHelp("/f admin economy add <faction> <amount>", HelpKeys.Help.ECONOMY_CMD_ADD));
+    commands.add(new CommandHelp("/f admin economy take <faction> <amount>", HelpKeys.Help.ECONOMY_CMD_TAKE));
+    commands.add(new CommandHelp("/f admin economy total", HelpKeys.Help.ECONOMY_CMD_TOTAL));
+    commands.add(new CommandHelp("/f admin economy reset <faction>", HelpKeys.Help.ECONOMY_CMD_RESET));
+    commands.add(new CommandHelp("/f admin economy upkeep", HelpKeys.Help.ECONOMY_CMD_UPKEEP));
+    ctx.sendMessage(HelpFormatter.buildHelp(HelpKeys.Help.ECONOMY_TITLE, HelpKeys.Help.ECONOMY_DESCRIPTION, commands, null, player));
   }
 
   // /f admin economy balance <faction>
@@ -114,7 +118,7 @@ public class AdminEconomyHandler {
     String factionName = args[1];
     Faction faction = hyperFactions.getFactionManager().getFactionByName(factionName);
     if (faction == null) {
-      ctx.sendMessage(prefix().insert(msg("Faction not found: " + factionName, COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.FACTION_NOT_FOUND, factionName), COLOR_RED)));
       return;
     }
 
@@ -141,7 +145,7 @@ public class AdminEconomyHandler {
     }
 
     if (amount.compareTo(BigDecimal.ZERO) < 0) {
-      ctx.sendMessage(prefix().insert(msg("Balance cannot be negative.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.BALANCE_NOT_NEGATIVE), COLOR_RED)));
       return;
     }
 
@@ -151,17 +155,13 @@ public class AdminEconomyHandler {
 
     econ.setBalance(faction.id(), amount, senderUuid).thenAccept(result -> {
       if (result == EconomyAPI.TransactionResult.SUCCESS) {
-        ctx.sendMessage(prefix().insert(msg("Set ", COLOR_GREEN))
-            .insert(msg(faction.name(), COLOR_CYAN))
-            .insert(msg("'s balance to ", COLOR_GREEN))
-            .insert(msg(econ.formatCurrency(amount), COLOR_GOLD))
-            .insert(msg(" (was " + econ.formatCurrency(oldBalance) + ")", COLOR_GRAY)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ECON_SET, faction.name(), econ.formatCurrency(amount)), COLOR_GREEN)));
       } else {
-        ctx.sendMessage(prefix().insert(msg("Failed: " + result.name(), COLOR_RED)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ECON_FAILED, result.name()), COLOR_RED)));
       }
     }).exceptionally(ex -> {
       ErrorHandler.report(String.format("Admin economy set balance failed for %s", faction.name()), ex);
-      ctx.sendMessage(prefix().insert(msg("An error occurred.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ERROR_GENERIC, ex.getMessage()), COLOR_RED)));
       return null;
     });
   }
@@ -183,7 +183,7 @@ public class AdminEconomyHandler {
     }
 
     if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-      ctx.sendMessage(prefix().insert(msg("Amount must be positive.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.AMOUNT_POSITIVE), COLOR_RED)));
       return;
     }
 
@@ -193,17 +193,13 @@ public class AdminEconomyHandler {
     econ.adminAdjust(faction.id(), amount, senderUuid, desc).thenAccept(result -> {
       if (result == EconomyAPI.TransactionResult.SUCCESS) {
         BigDecimal newBalance = econ.getFactionBalance(faction.id());
-        ctx.sendMessage(prefix().insert(msg("Added ", COLOR_GREEN))
-            .insert(msg(econ.formatCurrency(amount), COLOR_GOLD))
-            .insert(msg(" to ", COLOR_GREEN))
-            .insert(msg(faction.name(), COLOR_CYAN))
-            .insert(msg(" (balance: " + econ.formatCurrency(newBalance) + ")", COLOR_GRAY)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ECON_ADDED, econ.formatCurrency(amount), faction.name(), econ.formatCurrency(newBalance)), COLOR_GREEN)));
       } else {
-        ctx.sendMessage(prefix().insert(msg("Failed: " + result.name(), COLOR_RED)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ECON_FAILED, result.name()), COLOR_RED)));
       }
     }).exceptionally(ex -> {
       ErrorHandler.report(String.format("Admin economy add failed for %s", faction.name()), ex);
-      ctx.sendMessage(prefix().insert(msg("An error occurred.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ERROR_GENERIC, ex.getMessage()), COLOR_RED)));
       return null;
     });
   }
@@ -225,7 +221,7 @@ public class AdminEconomyHandler {
     }
 
     if (amount.compareTo(BigDecimal.ZERO) <= 0) {
-      ctx.sendMessage(prefix().insert(msg("Amount must be positive.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.AMOUNT_POSITIVE), COLOR_RED)));
       return;
     }
 
@@ -235,17 +231,13 @@ public class AdminEconomyHandler {
     econ.adminAdjust(faction.id(), amount.negate(), senderUuid, desc).thenAccept(result -> {
       if (result == EconomyAPI.TransactionResult.SUCCESS) {
         BigDecimal newBalance = econ.getFactionBalance(faction.id());
-        ctx.sendMessage(prefix().insert(msg("Deducted ", COLOR_GREEN))
-            .insert(msg(econ.formatCurrency(amount), COLOR_GOLD))
-            .insert(msg(" from ", COLOR_GREEN))
-            .insert(msg(faction.name(), COLOR_CYAN))
-            .insert(msg(" (balance: " + econ.formatCurrency(newBalance) + ")", COLOR_GRAY)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ECON_DEDUCTED, econ.formatCurrency(amount), faction.name(), econ.formatCurrency(newBalance)), COLOR_GREEN)));
       } else {
-        ctx.sendMessage(prefix().insert(msg("Failed: " + result.name(), COLOR_RED)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ECON_FAILED, result.name()), COLOR_RED)));
       }
     }).exceptionally(ex -> {
       ErrorHandler.report(String.format("Admin economy take failed for %s", faction.name()), ex);
-      ctx.sendMessage(prefix().insert(msg("An error occurred.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ERROR_GENERIC, ex.getMessage()), COLOR_RED)));
       return null;
     });
   }
@@ -256,7 +248,7 @@ public class AdminEconomyHandler {
     int count = econ.getFactionEconomyCount();
     BigDecimal avg = count > 0 ? total.divide(BigDecimal.valueOf(count), 2, java.math.RoundingMode.HALF_UP) : BigDecimal.ZERO;
 
-    ctx.sendMessage(prefix().insert(msg("Server Economy Statistics", COLOR_CYAN)));
+    ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ECON_TOTAL_HEADER), COLOR_CYAN)));
     ctx.sendMessage(msg("  Total Balance: ", COLOR_GRAY)
         .insert(msg(econ.formatCurrency(total), COLOR_GOLD)));
     ctx.sendMessage(msg("  Factions: ", COLOR_GRAY)
@@ -282,17 +274,13 @@ public class AdminEconomyHandler {
 
     econ.setBalance(faction.id(), BigDecimal.ZERO, senderUuid).thenAccept(result -> {
       if (result == EconomyAPI.TransactionResult.SUCCESS) {
-        ctx.sendMessage(prefix().insert(msg("Reset ", COLOR_GREEN))
-            .insert(msg(faction.name(), COLOR_CYAN))
-            .insert(msg("'s balance to ", COLOR_GREEN))
-            .insert(msg(econ.formatCurrency(BigDecimal.ZERO), COLOR_GOLD))
-            .insert(msg(" (was " + econ.formatCurrency(oldBalance) + ")", COLOR_GRAY)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ECON_RESET, faction.name()), COLOR_GREEN)));
       } else {
-        ctx.sendMessage(prefix().insert(msg("Failed: " + result.name(), COLOR_RED)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ECON_FAILED, result.name()), COLOR_RED)));
       }
     }).exceptionally(ex -> {
       ErrorHandler.report(String.format("Admin economy reset failed for %s", faction.name()), ex);
-      ctx.sendMessage(prefix().insert(msg("An error occurred.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ERROR_GENERIC, ex.getMessage()), COLOR_RED)));
       return null;
     });
   }
@@ -301,18 +289,18 @@ public class AdminEconomyHandler {
   private void handleUpkeep(CommandContext ctx, UUID senderUuid) {
     com.hyperfactions.economy.UpkeepProcessor processor = hyperFactions.getUpkeepProcessor();
     if (processor == null) {
-      ctx.sendMessage(prefix().insert(msg("Upkeep system is not enabled.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ECON_UPKEEP_DISABLED), COLOR_RED)));
       return;
     }
 
-    ctx.sendMessage(prefix().insert(msg("Manually triggering upkeep collection...", COLOR_CYAN)));
+    ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ECON_UPKEEP_TRIGGER), COLOR_CYAN)));
     Logger.info("[Admin] %s manually triggered upkeep collection", senderUuid);
 
     try {
       processor.processUpkeep();
-      ctx.sendMessage(prefix().insert(msg("Upkeep collection completed. Check server log for details.", COLOR_GREEN)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ECON_UPKEEP_COMPLETE), COLOR_GREEN)));
     } catch (Exception e) {
-      ctx.sendMessage(prefix().insert(msg("Upkeep collection failed: " + e.getMessage(), COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ECON_UPKEEP_FAILED, e.getMessage()), COLOR_RED)));
       ErrorHandler.report("[Admin] Manual upkeep collection failed", e);
     }
   }
@@ -321,7 +309,7 @@ public class AdminEconomyHandler {
   private Faction resolveFaction(CommandContext ctx, String name) {
     Faction faction = hyperFactions.getFactionManager().getFactionByName(name);
     if (faction == null) {
-      ctx.sendMessage(prefix().insert(msg("Faction not found: " + name, COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.FACTION_NOT_FOUND, name), COLOR_RED)));
     }
     return faction;
   }
@@ -331,7 +319,7 @@ public class AdminEconomyHandler {
     try {
       return new BigDecimal(value);
     } catch (NumberFormatException e) {
-      ctx.sendMessage(prefix().insert(msg("Invalid number: " + value, COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.INVALID_NUMBER, value), COLOR_RED)));
       return null;
     }
   }

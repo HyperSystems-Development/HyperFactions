@@ -9,7 +9,7 @@ import com.hyperfactions.gui.shared.data.PlayerSettingsData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.storage.PlayerStorage;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -123,7 +123,7 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
 
     // Page title
     cmd.set("#PageTitle.Text",
-        HFMessages.get(playerRef, MessageKeys.PlayerSettings.TITLE));
+        HFMessages.get(playerRef, GuiKeys.PlayerSettings.TITLE));
 
     // Setup nav bar based on faction status
     if (faction != null) {
@@ -134,15 +134,15 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
 
     // === Language Section ===
     cmd.set("#LanguageSectionTitle.Text",
-        HFMessages.get(playerRef, MessageKeys.PlayerSettings.LANGUAGE_SECTION));
+        HFMessages.get(playerRef, GuiKeys.PlayerSettings.LANGUAGE_SECTION));
     cmd.set("#AutoDetectDesc.Text",
-        HFMessages.get(playerRef, MessageKeys.PlayerSettings.AUTO_DETECT_DESC));
+        HFMessages.get(playerRef, GuiKeys.PlayerSettings.AUTO_DETECT_DESC));
     cmd.set("#LanguageLabel.Text",
-        HFMessages.get(playerRef, MessageKeys.PlayerSettings.LANGUAGE_LABEL));
+        HFMessages.get(playerRef, GuiKeys.PlayerSettings.LANGUAGE_LABEL));
 
     // Auto-detect checkbox
     cmd.set("#AutoDetectLabel.Text",
-        HFMessages.get(playerRef, MessageKeys.PlayerSettings.AUTO_DETECT));
+        HFMessages.get(playerRef, GuiKeys.PlayerSettings.AUTO_DETECT));
     boolean autoDetect = (languagePreference == null);
     cmd.set("#AutoDetectCB #CheckBox.Value", autoDetect);
 
@@ -182,30 +182,30 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
 
     // === Notifications Section ===
     cmd.set("#NotifSectionTitle.Text",
-        HFMessages.get(playerRef, MessageKeys.PlayerSettings.NOTIFICATIONS_SECTION));
+        HFMessages.get(playerRef, GuiKeys.PlayerSettings.NOTIFICATIONS_SECTION));
 
     // Territory Alerts
     cmd.set("#TerritoryAlertsLabel.Text",
-        HFMessages.get(playerRef, MessageKeys.PlayerSettings.TERRITORY_ALERTS));
+        HFMessages.get(playerRef, GuiKeys.PlayerSettings.TERRITORY_ALERTS));
     buildNotificationToggle(cmd, events, "#TerritoryAlertsCB",
-        MessageKeys.PlayerSettings.TERRITORY_ALERTS,
-        MessageKeys.PlayerSettings.TERRITORY_ALERTS_DESC,
+        GuiKeys.PlayerSettings.TERRITORY_ALERTS,
+        GuiKeys.PlayerSettings.TERRITORY_ALERTS_DESC,
         "#TerritoryAlertsDesc", territoryAlerts, "ToggleTerritoryAlerts");
 
     // Death Announcements
     cmd.set("#DeathAnnounceLabel.Text",
-        HFMessages.get(playerRef, MessageKeys.PlayerSettings.DEATH_ANNOUNCEMENTS));
+        HFMessages.get(playerRef, GuiKeys.PlayerSettings.DEATH_ANNOUNCEMENTS));
     buildNotificationToggle(cmd, events, "#DeathAnnounceCB",
-        MessageKeys.PlayerSettings.DEATH_ANNOUNCEMENTS,
-        MessageKeys.PlayerSettings.DEATH_ANNOUNCEMENTS_DESC,
+        GuiKeys.PlayerSettings.DEATH_ANNOUNCEMENTS,
+        GuiKeys.PlayerSettings.DEATH_ANNOUNCEMENTS_DESC,
         "#DeathAnnounceDesc", deathAnnouncements, "ToggleDeathAnnouncements");
 
     // TODO: Wire up power change notifications in PowerManager, then enable this toggle
     // Power Notifications (not yet wired up — disable toggle)
     cmd.set("#PowerNotifLabel.Text",
-        HFMessages.get(playerRef, MessageKeys.PlayerSettings.POWER_NOTIFICATIONS));
+        HFMessages.get(playerRef, GuiKeys.PlayerSettings.POWER_NOTIFICATIONS));
     cmd.set("#PowerNotifDesc.Text",
-        HFMessages.get(playerRef, MessageKeys.PlayerSettings.POWER_NOTIFICATIONS_DESC));
+        HFMessages.get(playerRef, GuiKeys.PlayerSettings.POWER_NOTIFICATIONS_DESC));
     cmd.set("#PowerNotifCB #CheckBox.Value", powerNotifications);
     cmd.set("#PowerNotifCB #CheckBox.Disabled", true);
   }
@@ -286,7 +286,7 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
           savePreference(uuid, d -> d.setLanguagePreference(languagePreference));
           HFMessages.setLanguageOverride(uuid, languagePreference);
           player.sendMessage(MessageUtil.successText(playerRef,
-              MessageKeys.PlayerSettings.LANGUAGE_CHANGED,
+              GuiKeys.PlayerSettings.LANGUAGE_CHANGED,
               nativeDisplayName(data.language)));
         }
         rebuild();
@@ -296,10 +296,10 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
         territoryAlerts = !territoryAlerts;
         savePreference(uuid, d -> d.setTerritoryAlertsEnabled(territoryAlerts));
         player.sendMessage(territoryAlerts
-            ? MessageUtil.successText(playerRef, MessageKeys.PlayerSettings.PREF_ENABLED,
-                HFMessages.get(playerRef, MessageKeys.PlayerSettings.TERRITORY_ALERTS))
-            : MessageUtil.text(playerRef, MessageKeys.PlayerSettings.PREF_DISABLED, "#FFAA00",
-                HFMessages.get(playerRef, MessageKeys.PlayerSettings.TERRITORY_ALERTS)));
+            ? MessageUtil.successText(playerRef, GuiKeys.PlayerSettings.PREF_ENABLED,
+                HFMessages.get(playerRef, GuiKeys.PlayerSettings.TERRITORY_ALERTS))
+            : MessageUtil.text(playerRef, GuiKeys.PlayerSettings.PREF_DISABLED, "#FFAA00",
+                HFMessages.get(playerRef, GuiKeys.PlayerSettings.TERRITORY_ALERTS)));
         rebuild();
       }
 
@@ -307,10 +307,10 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
         deathAnnouncements = !deathAnnouncements;
         savePreference(uuid, d -> d.setDeathAnnouncementsEnabled(deathAnnouncements));
         player.sendMessage(deathAnnouncements
-            ? MessageUtil.successText(playerRef, MessageKeys.PlayerSettings.PREF_ENABLED,
-                HFMessages.get(playerRef, MessageKeys.PlayerSettings.DEATH_ANNOUNCEMENTS))
-            : MessageUtil.text(playerRef, MessageKeys.PlayerSettings.PREF_DISABLED, "#FFAA00",
-                HFMessages.get(playerRef, MessageKeys.PlayerSettings.DEATH_ANNOUNCEMENTS)));
+            ? MessageUtil.successText(playerRef, GuiKeys.PlayerSettings.PREF_ENABLED,
+                HFMessages.get(playerRef, GuiKeys.PlayerSettings.DEATH_ANNOUNCEMENTS))
+            : MessageUtil.text(playerRef, GuiKeys.PlayerSettings.PREF_DISABLED, "#FFAA00",
+                HFMessages.get(playerRef, GuiKeys.PlayerSettings.DEATH_ANNOUNCEMENTS)));
         rebuild();
       }
 
@@ -318,10 +318,10 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
         powerNotifications = !powerNotifications;
         savePreference(uuid, d -> d.setPowerNotificationsEnabled(powerNotifications));
         player.sendMessage(powerNotifications
-            ? MessageUtil.successText(playerRef, MessageKeys.PlayerSettings.PREF_ENABLED,
-                HFMessages.get(playerRef, MessageKeys.PlayerSettings.POWER_NOTIFICATIONS))
-            : MessageUtil.text(playerRef, MessageKeys.PlayerSettings.PREF_DISABLED, "#FFAA00",
-                HFMessages.get(playerRef, MessageKeys.PlayerSettings.POWER_NOTIFICATIONS)));
+            ? MessageUtil.successText(playerRef, GuiKeys.PlayerSettings.PREF_ENABLED,
+                HFMessages.get(playerRef, GuiKeys.PlayerSettings.POWER_NOTIFICATIONS))
+            : MessageUtil.text(playerRef, GuiKeys.PlayerSettings.PREF_DISABLED, "#FFAA00",
+                HFMessages.get(playerRef, GuiKeys.PlayerSettings.POWER_NOTIFICATIONS)));
         rebuild();
       }
 

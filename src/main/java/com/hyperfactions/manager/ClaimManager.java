@@ -11,7 +11,7 @@ import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.integration.protection.OrbisGuardIntegration;
 import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.Logger;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.GuiKeys;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
@@ -417,7 +417,7 @@ public class ClaimManager {
     Faction updated = faction.withClaim(claim)
       .withLog(FactionLog.create(FactionLog.LogType.CLAIM,
         String.format("Claimed chunk at %d, %d in %s", chunkX, chunkZ, world), playerUuid,
-        MessageKeys.LogsGui.MSG_CLAIMED, String.valueOf(chunkX), String.valueOf(chunkZ), world));
+        GuiKeys.LogsGui.MSG_CLAIMED, String.valueOf(chunkX), String.valueOf(chunkZ), world));
 
     // Update indices and faction
     claimIndex.put(key, faction.id());
@@ -496,7 +496,7 @@ public class ClaimManager {
     Faction updated = faction.withoutClaimAt(world, chunkX, chunkZ)
       .withLog(FactionLog.create(FactionLog.LogType.UNCLAIM,
         String.format("Unclaimed chunk at %d, %d in %s", chunkX, chunkZ, world), playerUuid,
-        MessageKeys.LogsGui.MSG_UNCLAIMED, String.valueOf(chunkX), String.valueOf(chunkZ), world));
+        GuiKeys.LogsGui.MSG_UNCLAIMED, String.valueOf(chunkX), String.valueOf(chunkZ), world));
 
     claimIndex.remove(key);
     Set<ChunkKey> factionClaims = factionClaimsIndex.get(faction.id());
@@ -580,14 +580,14 @@ public class ClaimManager {
     Faction updatedDefender = defenderFaction.withoutClaimAt(world, chunkX, chunkZ)
       .withLog(FactionLog.create(FactionLog.LogType.OVERCLAIM,
         String.format("Lost chunk at %d, %d to %s", chunkX, chunkZ, attackerFaction.name()), null,
-        MessageKeys.LogsGui.MSG_OVERCLAIM_LOST, String.valueOf(chunkX), String.valueOf(chunkZ), attackerFaction.name()));
+        GuiKeys.LogsGui.MSG_OVERCLAIM_LOST, String.valueOf(chunkX), String.valueOf(chunkZ), attackerFaction.name()));
 
     // Add to attacker
     FactionClaim claim = FactionClaim.create(world, chunkX, chunkZ, playerUuid);
     Faction updatedAttacker = attackerFaction.withClaim(claim)
       .withLog(FactionLog.create(FactionLog.LogType.OVERCLAIM,
         String.format("Overclaimed chunk at %d, %d from %s", chunkX, chunkZ, defenderFaction.name()), playerUuid,
-        MessageKeys.LogsGui.MSG_OVERCLAIM_TAKEN, String.valueOf(chunkX), String.valueOf(chunkZ), defenderFaction.name()));
+        GuiKeys.LogsGui.MSG_OVERCLAIM_TAKEN, String.valueOf(chunkX), String.valueOf(chunkZ), defenderFaction.name()));
 
     // Update indices - remove from defender
     Set<ChunkKey> defenderClaims = factionClaimsIndex.get(defenderId);
@@ -646,7 +646,7 @@ public class ClaimManager {
       Faction updated = faction.withoutAllClaims()
         .withLog(FactionLog.create(FactionLog.LogType.UNCLAIM,
           "All territory unclaimed", null,
-          MessageKeys.LogsGui.MSG_ALL_UNCLAIMED));
+          GuiKeys.LogsGui.MSG_ALL_UNCLAIMED));
       factionManager.updateFaction(updated);
       Logger.debugClaim("Unclaim all: faction=%s, claims removed=%d", faction.name(), faction.getClaimCount());
     }
@@ -685,7 +685,7 @@ public class ClaimManager {
           Faction updated = faction.withoutClaimAt(key.world(), key.chunkX(), key.chunkZ())
             .withLog(FactionLog.create(FactionLog.LogType.UNCLAIM,
               "Claim in '" + key.world() + "' removed (world disallows claiming)", null,
-              MessageKeys.LogsGui.MSG_CLAIM_REMOVED_WORLD, key.world()));
+              GuiKeys.LogsGui.MSG_CLAIM_REMOVED_WORLD, key.world()));
           factionManager.updateFaction(updated);
         }
         removed++;
@@ -769,7 +769,7 @@ public class ClaimManager {
     Faction updated = faction.withClaim(claim)
       .withLog(FactionLog.create(FactionLog.LogType.CLAIM,
         String.format("Claimed chunk at %d, %d in %s", chunkX, chunkZ, world), playerUuid,
-        MessageKeys.LogsGui.MSG_CLAIMED, String.valueOf(chunkX), String.valueOf(chunkZ), world));
+        GuiKeys.LogsGui.MSG_CLAIMED, String.valueOf(chunkX), String.valueOf(chunkZ), world));
 
     // Update both indices
     claimIndex.put(key, faction.id());
@@ -940,7 +940,7 @@ public class ClaimManager {
           if (current != null) {
             Faction logged = current.withLog(FactionLog.create(FactionLog.LogType.UNCLAIM,
                 String.format("%d claims removed due to inactivity (%d days)", removed, daysSinceActive), null,
-                MessageKeys.LogsGui.MSG_CLAIMS_REMOVED_INACTIVE, String.valueOf(removed), String.valueOf(daysSinceActive)));
+                GuiKeys.LogsGui.MSG_CLAIMS_REMOVED_INACTIVE, String.valueOf(removed), String.valueOf(daysSinceActive)));
             factionManager.updateFaction(logged);
           }
 

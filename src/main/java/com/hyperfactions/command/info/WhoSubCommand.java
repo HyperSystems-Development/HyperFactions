@@ -11,7 +11,8 @@ import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.data.PlayerPower;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.PlayerResolver;
 import com.hyperfactions.util.TimeUtil;
@@ -45,7 +46,7 @@ public class WhoSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.WHO)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Info.WHO_NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Info.WHO_NO_PERMISSION));
       return;
     }
 
@@ -63,7 +64,7 @@ public class WhoSubCommand extends FactionSubCommand {
       // Look up target player using centralized resolver
       var resolved = PlayerResolver.resolve(hyperFactions, fctx.getArg(0));
       if (resolved == null) {
-        ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.PLAYER_NOT_FOUND));
+        ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.PLAYER_NOT_FOUND));
         return;
       }
       targetUuid = resolved.uuid();
@@ -88,14 +89,14 @@ public class WhoSubCommand extends FactionSubCommand {
     boolean isOnline = plugin.getTrackedPlayer(targetUuid) != null;
 
     // Display info
-    ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Info.PLAYER_HEADER, targetName), COLOR_CYAN));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.PLAYER_HEADER, targetName), COLOR_CYAN));
 
     if (faction != null && member != null) {
-      ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Info.WHO_FACTION, faction.name()), COLOR_GRAY));
-      ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Info.WHO_ROLE, ConfigManager.get().getRoleDisplayName(member.role())), COLOR_GRAY));
-      ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Info.WHO_JOINED, TimeUtil.formatRelative(member.joinedAt())), COLOR_GRAY));
+      ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.WHO_FACTION, faction.name()), COLOR_GRAY));
+      ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.WHO_ROLE, ConfigManager.get().getRoleDisplayName(member.role())), COLOR_GRAY));
+      ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.WHO_JOINED, TimeUtil.formatRelative(member.joinedAt())), COLOR_GRAY));
     } else {
-      ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Info.WHO_FACTION_NONE), COLOR_GRAY));
+      ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.WHO_FACTION_NONE), COLOR_GRAY));
     }
 
     // Power display — hardcore mode shows faction power, normal mode shows player power
@@ -112,12 +113,12 @@ public class WhoSubCommand extends FactionSubCommand {
       PlayerPower power = hyperFactions.getPowerManager().getPlayerPower(targetUuid);
       powerText = String.format("%.1f/%.1f", power.power(), power.getEffectiveMaxPower());
     }
-    ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Info.WHO_POWER, powerText), COLOR_GRAY));
-    String statusText = isOnline ? HFMessages.get(player, MessageKeys.Common.ONLINE) : HFMessages.get(player, MessageKeys.Common.OFFLINE);
-    ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Info.WHO_STATUS, statusText), COLOR_GRAY));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.WHO_POWER, powerText), COLOR_GRAY));
+    String statusText = isOnline ? HFMessages.get(player, CommonKeys.Common.ONLINE) : HFMessages.get(player, CommonKeys.Common.OFFLINE);
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.WHO_STATUS, statusText), COLOR_GRAY));
 
     if (!isOnline && member != null) {
-      ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Info.WHO_LAST_SEEN, TimeUtil.formatRelative(member.lastOnline())), COLOR_GRAY));
+      ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.WHO_LAST_SEEN, TimeUtil.formatRelative(member.lastOnline())), COLOR_GRAY));
     }
   }
 }

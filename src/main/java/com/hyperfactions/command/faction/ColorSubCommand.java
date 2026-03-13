@@ -11,7 +11,9 @@ import com.hyperfactions.data.FactionLog;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -43,7 +45,7 @@ public class ColorSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.COLOR)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Color.NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.NO_PERMISSION));
       return;
     }
 
@@ -54,12 +56,12 @@ public class ColorSubCommand extends FactionSubCommand {
 
     FactionMember member = faction.getMember(player.getUuid());
     if (member == null || !member.isOfficerOrHigher()) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Color.NOT_OFFICER));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Color.NOT_OFFICER));
       return;
     }
 
     if (!ConfigManager.get().isAllowColors()) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Color.COLORS_DISABLED));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Color.COLORS_DISABLED));
       return;
     }
 
@@ -77,8 +79,8 @@ public class ColorSubCommand extends FactionSubCommand {
 
     // Text mode requires args
     if (!fctx.hasArgs()) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Color.USAGE));
-      ctx.sendMessage(Message.raw(HFMessages.get(player, MessageKeys.Color.USAGE_HINT)).color(COLOR_GRAY));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Color.USAGE));
+      ctx.sendMessage(Message.raw(HFMessages.get(player, CommandKeys.Color.USAGE_HINT)).color(COLOR_GRAY));
       return;
     }
 
@@ -91,14 +93,14 @@ public class ColorSubCommand extends FactionSubCommand {
       // Legacy color code - convert to hex
       hexColor = com.hyperfactions.util.LegacyColorParser.codeToHex(colorInput.charAt(0));
     } else {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Color.INVALID));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Color.INVALID));
       return;
     }
 
     Faction updated = faction.withColor(hexColor)
       .withLog(FactionLog.create(FactionLog.LogType.SETTINGS_CHANGE,
         "Color changed to '" + hexColor + "'", player.getUuid(),
-        MessageKeys.LogsGui.MSG_COLOR_CHANGED, hexColor));
+        GuiKeys.LogsGui.MSG_COLOR_CHANGED, hexColor));
 
     hyperFactions.getFactionManager().updateFaction(updated);
 
@@ -107,7 +109,7 @@ public class ColorSubCommand extends FactionSubCommand {
 
     // Show success with the actual color swatch
     ctx.sendMessage(MessageUtil.prefix().insert(
-      Message.raw(HFMessages.get(player, MessageKeys.Color.SUCCESS) + " ").color(COLOR_GREEN))
+      Message.raw(HFMessages.get(player, CommandKeys.Color.SUCCESS) + " ").color(COLOR_GREEN))
       .insert(Message.raw("\u2588\u2588").color(hexColor)));
 
     // After action, open settings page if not text mode

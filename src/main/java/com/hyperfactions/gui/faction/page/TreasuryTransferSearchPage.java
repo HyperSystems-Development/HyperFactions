@@ -9,7 +9,7 @@ import com.hyperfactions.gui.faction.data.TransferSearchData;
 import com.hyperfactions.manager.EconomyManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hyperfactions.util.PlayerResolver;
 import com.hyperfactions.util.UiUtil;
 import com.hypixel.hytale.component.Ref;
@@ -98,11 +98,11 @@ public class TreasuryTransferSearchPage extends InteractiveCustomUIPage<Transfer
 
     if (results.isEmpty()) {
       if (searchQuery.isEmpty()) {
-        cmd.set("#EmptyText.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.SEARCH_HINT));
+        cmd.set("#EmptyText.Text", HFMessages.get(playerRef, GuiKeys.TreasuryGui.SEARCH_HINT));
       } else {
-        cmd.set("#EmptyText.Text", HFMessages.get(playerRef, MessageKeys.TreasuryGui.NO_RESULTS, UiUtil.sanitize(searchQuery)));
+        cmd.set("#EmptyText.Text", HFMessages.get(playerRef, GuiKeys.TreasuryGui.NO_RESULTS, UiUtil.sanitize(searchQuery)));
       }
-      cmd.set("#PageInfo.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.PAGE_FORMAT, 0, 0));
+      cmd.set("#PageInfo.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.PAGE_FORMAT, 0, 0));
     } else {
       cmd.set("#EmptyText.Text", "");
 
@@ -120,8 +120,8 @@ public class TreasuryTransferSearchPage extends InteractiveCustomUIPage<Transfer
         SearchResult result = results.get(idx);
         String tagColor = "player".equals(result.type) ? "#55FF55" : "#00AAFF";
         String typeTag = "player".equals(result.type)
-            ? HFMessages.get(playerRef, MessageKeys.TreasuryGui.TAG_PLAYER)
-            : HFMessages.get(playerRef, MessageKeys.TreasuryGui.TAG_FACTION);
+            ? HFMessages.get(playerRef, GuiKeys.TreasuryGui.TAG_PLAYER)
+            : HFMessages.get(playerRef, GuiKeys.TreasuryGui.TAG_FACTION);
 
         cmd.append("#ResultsList", UIPaths.TRANSFER_SEARCH_ENTRY);
         String prefix = "#ResultsList[" + i + "] ";
@@ -141,7 +141,7 @@ public class TreasuryTransferSearchPage extends InteractiveCustomUIPage<Transfer
       }
 
       // Pagination
-      cmd.set("#PageInfo.Text", HFMessages.get(playerRef, MessageKeys.GuiCommon.PAGE_FORMAT, currentPage + 1, totalPages));
+      cmd.set("#PageInfo.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.PAGE_FORMAT, currentPage + 1, totalPages));
 
       if (currentPage > 0) {
         events.addEventBinding(CustomUIEventBindingType.Activating, "#PrevBtn",
@@ -167,11 +167,11 @@ public class TreasuryTransferSearchPage extends InteractiveCustomUIPage<Transfer
     List<PlayerResolver.ResolvedPlayer> players = PlayerResolver.search(plugin, searchQuery, selfUuid);
     for (PlayerResolver.ResolvedPlayer p : players) {
       String subtitle = switch (p.source()) {
-        case ONLINE -> HFMessages.get(playerRef, MessageKeys.TreasuryGui.SOURCE_ONLINE)
+        case ONLINE -> HFMessages.get(playerRef, GuiKeys.TreasuryGui.SOURCE_ONLINE)
             + (p.factionName() != null ? " - " + p.factionName() : "");
-        case FACTION_MEMBER -> HFMessages.get(playerRef, MessageKeys.TreasuryGui.SOURCE_OFFLINE)
+        case FACTION_MEMBER -> HFMessages.get(playerRef, GuiKeys.TreasuryGui.SOURCE_OFFLINE)
             + " - " + p.factionName();
-        case PLAYER_DB -> HFMessages.get(playerRef, MessageKeys.TreasuryGui.SOURCE_PLAYER_DB);
+        case PLAYER_DB -> HFMessages.get(playerRef, GuiKeys.TreasuryGui.SOURCE_PLAYER_DB);
       };
       results.add(new SearchResult(p.uuid().toString(), p.username(), "player", subtitle));
     }

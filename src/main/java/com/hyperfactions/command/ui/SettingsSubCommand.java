@@ -6,7 +6,7 @@ import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.platform.HyperFactionsPlugin;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -54,7 +54,7 @@ public class SettingsSubCommand extends FactionSubCommand {
 
     FactionMember member = faction.getMember(player.getUuid());
     if (member == null || !member.isOfficerOrHigher()) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.MUST_BE_OFFICER));
+      ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.MUST_BE_OFFICER));
       return;
     }
 

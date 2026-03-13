@@ -12,7 +12,7 @@ import com.hyperfactions.manager.ConfirmationManager.ConfirmationType;
 import com.hyperfactions.manager.ConfirmationManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -44,7 +44,7 @@ public class DisbandSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.DISBAND)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Disband.NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Disband.NO_PERMISSION));
       return;
     }
 
@@ -56,7 +56,7 @@ public class DisbandSubCommand extends FactionSubCommand {
     // Check if leader
     FactionMember member = faction.getMember(player.getUuid());
     if (member == null || !member.isLeader()) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Disband.NOT_LEADER));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Disband.NOT_LEADER));
       return;
     }
 
@@ -80,8 +80,8 @@ public class DisbandSubCommand extends FactionSubCommand {
 
     switch (confirmResult) {
       case NEEDS_CONFIRMATION, EXPIRED_RECREATED -> {
-        ctx.sendMessage(MessageUtil.info(player, MessageKeys.Disband.CONFIRM_PROMPT, COLOR_YELLOW));
-        ctx.sendMessage(MessageUtil.info(player, MessageKeys.Disband.CONFIRM_INSTRUCTION, COLOR_YELLOW, confirmManager.getTimeoutSeconds()));
+        ctx.sendMessage(MessageUtil.info(player, CommandKeys.Disband.CONFIRM_PROMPT, COLOR_YELLOW));
+        ctx.sendMessage(MessageUtil.info(player, CommandKeys.Disband.CONFIRM_INSTRUCTION, COLOR_YELLOW, confirmManager.getTimeoutSeconds()));
       }
       case CONFIRMED -> {
         UUID factionId = faction.id();
@@ -93,13 +93,13 @@ public class DisbandSubCommand extends FactionSubCommand {
           hyperFactions.getInviteManager().clearFactionInvites(factionId);
           hyperFactions.getJoinRequestManager().clearFactionRequests(factionId);
           hyperFactions.getRelationManager().clearAllRelations(factionId);
-          ctx.sendMessage(MessageUtil.success(player, MessageKeys.Disband.SUCCESS));
+          ctx.sendMessage(MessageUtil.success(player, CommandKeys.Disband.SUCCESS));
         } else {
-          ctx.sendMessage(MessageUtil.error(player, MessageKeys.Disband.FAILED));
+          ctx.sendMessage(MessageUtil.error(player, CommandKeys.Disband.FAILED));
         }
       }
       case DIFFERENT_ACTION -> {
-        ctx.sendMessage(MessageUtil.info(player, MessageKeys.Disband.CANCELLED, COLOR_YELLOW));
+        ctx.sendMessage(MessageUtil.info(player, CommandKeys.Disband.CANCELLED, COLOR_YELLOW));
       }
       default -> throw new IllegalStateException("Unexpected value");
     }

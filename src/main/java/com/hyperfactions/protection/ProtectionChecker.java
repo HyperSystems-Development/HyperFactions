@@ -17,8 +17,9 @@ import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.Logger;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommonKeys;
 import java.util.UUID;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import java.util.function.Supplier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -685,84 +686,114 @@ public class ProtectionChecker {
   }
 
   /**
-   * Gets a user-friendly denial message with generic action wording.
-   *
-   * @param result the protection result
-   * @return the denial message
+   * Looks up a PlayerRef from a UUID for i18n message resolution.
+   * Returns null if the player is offline or plugin is unavailable.
    */
-  @NotNull
-  public String getDenialMessage(@NotNull ProtectionResult result) {
-    return getDenialMessage(result, null);
+  @Nullable
+  private PlayerRef lookupPlayerRef(@Nullable UUID uuid) {
+    if (uuid == null || plugin == null) {
+      return null;
+    }
+    HyperFactions hf = plugin.get();
+    return hf != null ? hf.lookupPlayer(uuid) : null;
   }
 
   /**
-   * Gets a user-friendly denial message with specific action context.
+   * Gets a user-friendly denial message with generic action wording (server default language).
+   */
+  @NotNull
+  public String getDenialMessage(@NotNull ProtectionResult result) {
+    return getDenialMessage(null, result, null);
+  }
+
+  /**
+   * Gets a user-friendly denial message with specific action context (server default language).
+   */
+  @NotNull
+  public String getDenialMessage(@NotNull ProtectionResult result, @Nullable InteractionType type) {
+    return getDenialMessage(null, result, type);
+  }
+
+  /**
+   * Gets a user-friendly denial message localized to the player's language.
    *
+   * @param player the player (null for server default language)
    * @param result the protection result
    * @param type   the interaction type (null for generic messages)
    * @return the denial message
    */
   @NotNull
-  public String getDenialMessage(@NotNull ProtectionResult result, @Nullable InteractionType type) {
-    String action = getActionPhrase(type);
+  public String getDenialMessage(@Nullable PlayerRef player, @NotNull ProtectionResult result,
+                  @Nullable InteractionType type) {
+    String action = getActionPhrase(player, type);
     return switch (result) {
-      case DENIED_SAFEZONE -> HFMessages.get(MessageKeys.Protection.DENIED_SAFEZONE, action);
-      case DENIED_WARZONE -> HFMessages.get(MessageKeys.Protection.DENIED_WARZONE, action);
-      case DENIED_ENEMY_CLAIM -> HFMessages.get(MessageKeys.Protection.DENIED_ENEMY_CLAIM, action);
-      case DENIED_NEUTRAL_CLAIM -> HFMessages.get(MessageKeys.Protection.DENIED_CLAIMED, action);
-      case DENIED_NO_PERMISSION -> HFMessages.get(MessageKeys.Protection.DENIED_HERE, action);
-      default -> HFMessages.get(MessageKeys.Protection.DENIED_HERE, action);
+      case DENIED_SAFEZONE -> HFMessages.get(player, CommonKeys.Protection.DENIED_SAFEZONE, action);
+      case DENIED_WARZONE -> HFMessages.get(player, CommonKeys.Protection.DENIED_WARZONE, action);
+      case DENIED_ENEMY_CLAIM -> HFMessages.get(player, CommonKeys.Protection.DENIED_ENEMY_CLAIM, action);
+      case DENIED_NEUTRAL_CLAIM -> HFMessages.get(player, CommonKeys.Protection.DENIED_CLAIMED, action);
+      case DENIED_NO_PERMISSION -> HFMessages.get(player, CommonKeys.Protection.DENIED_HERE, action);
+      default -> HFMessages.get(player, CommonKeys.Protection.DENIED_HERE, action);
     };
   }
 
   /**
    * Gets a player-friendly action phrase for the given interaction type.
    *
-   * @param type the interaction type, or null for generic
+   * @param player the player (null for server default language)
+   * @param type   the interaction type, or null for generic
    * @return phrase like "You can't build or break blocks"
    */
   @NotNull
-  private String getActionPhrase(@Nullable InteractionType type) {
+  private String getActionPhrase(@Nullable PlayerRef player, @Nullable InteractionType type) {
     if (type == null) {
-      return HFMessages.get(MessageKeys.Protection.ACTION_GENERIC);
+      return HFMessages.get(player, CommonKeys.Protection.ACTION_GENERIC);
     }
     return switch (type) {
-      case BUILD -> HFMessages.get(MessageKeys.Protection.ACTION_BUILD);
-      case INTERACT, USE -> HFMessages.get(MessageKeys.Protection.ACTION_INTERACT);
-      case DOOR -> HFMessages.get(MessageKeys.Protection.ACTION_DOOR);
-      case CONTAINER -> HFMessages.get(MessageKeys.Protection.ACTION_CONTAINER);
-      case BENCH -> HFMessages.get(MessageKeys.Protection.ACTION_BENCH);
-      case PROCESSING -> HFMessages.get(MessageKeys.Protection.ACTION_PROCESSING);
-      case SEAT -> HFMessages.get(MessageKeys.Protection.ACTION_SEAT);
-      case LIGHT -> HFMessages.get(MessageKeys.Protection.ACTION_LIGHT);
-      case TELEPORTER, PORTAL -> HFMessages.get(MessageKeys.Protection.ACTION_TELEPORTER);
-      case CRATE_PICKUP, CRATE_PLACE -> HFMessages.get(MessageKeys.Protection.ACTION_CRATE);
-      case NPC_TAME -> HFMessages.get(MessageKeys.Protection.ACTION_TAME);
-      case NPC_INTERACT -> HFMessages.get(MessageKeys.Protection.ACTION_NPC);
-      case MOUNT -> HFMessages.get(MessageKeys.Protection.ACTION_MOUNT);
-      case PVE_DAMAGE -> HFMessages.get(MessageKeys.Protection.ACTION_PVE);
-      case DAMAGE -> HFMessages.get(MessageKeys.Protection.ACTION_GENERIC);
-      case ITEM_DROP -> HFMessages.get(MessageKeys.Protection.ACTION_ITEM_DROP);
-      case ITEM_PICKUP -> HFMessages.get(MessageKeys.Protection.ACTION_ITEM_PICKUP);
+      case BUILD -> HFMessages.get(player, CommonKeys.Protection.ACTION_BUILD);
+      case INTERACT, USE -> HFMessages.get(player, CommonKeys.Protection.ACTION_INTERACT);
+      case DOOR -> HFMessages.get(player, CommonKeys.Protection.ACTION_DOOR);
+      case CONTAINER -> HFMessages.get(player, CommonKeys.Protection.ACTION_CONTAINER);
+      case BENCH -> HFMessages.get(player, CommonKeys.Protection.ACTION_BENCH);
+      case PROCESSING -> HFMessages.get(player, CommonKeys.Protection.ACTION_PROCESSING);
+      case SEAT -> HFMessages.get(player, CommonKeys.Protection.ACTION_SEAT);
+      case LIGHT -> HFMessages.get(player, CommonKeys.Protection.ACTION_LIGHT);
+      case TELEPORTER, PORTAL -> HFMessages.get(player, CommonKeys.Protection.ACTION_TELEPORTER);
+      case CRATE_PICKUP, CRATE_PLACE -> HFMessages.get(player, CommonKeys.Protection.ACTION_CRATE);
+      case NPC_TAME -> HFMessages.get(player, CommonKeys.Protection.ACTION_TAME);
+      case NPC_INTERACT -> HFMessages.get(player, CommonKeys.Protection.ACTION_NPC);
+      case MOUNT -> HFMessages.get(player, CommonKeys.Protection.ACTION_MOUNT);
+      case PVE_DAMAGE -> HFMessages.get(player, CommonKeys.Protection.ACTION_PVE);
+      case DAMAGE -> HFMessages.get(player, CommonKeys.Protection.ACTION_GENERIC);
+      case ITEM_DROP -> HFMessages.get(player, CommonKeys.Protection.ACTION_ITEM_DROP);
+      case ITEM_PICKUP -> HFMessages.get(player, CommonKeys.Protection.ACTION_ITEM_PICKUP);
     };
   }
 
   /**
-   * Gets a user-friendly PvP denial message.
+   * Gets a user-friendly PvP denial message (server default language).
+   */
+  @NotNull
+  public String getDenialMessage(@NotNull PvPResult result) {
+    return getDenialMessage(null, result);
+  }
+
+  /**
+   * Gets a user-friendly PvP denial message localized to the player's language.
    *
+   * @param player the player (null for server default language)
    * @param result the PvP result
    * @return the denial message
    */
   @NotNull
-  public String getDenialMessage(@NotNull PvPResult result) {
+  public String getDenialMessage(@Nullable PlayerRef player, @NotNull PvPResult result) {
     return switch (result) {
-      case DENIED_SAFEZONE -> HFMessages.get(MessageKeys.Protection.PVP_SAFEZONE);
-      case DENIED_SAME_FACTION -> HFMessages.get(MessageKeys.Protection.PVP_SAME_FACTION);
-      case DENIED_ALLY -> HFMessages.get(MessageKeys.Protection.PVP_ALLY);
-      case DENIED_ATTACKER_SAFEZONE, DENIED_DEFENDER_SAFEZONE -> HFMessages.get(MessageKeys.Protection.PVP_SAFEZONE);
-      case DENIED_SPAWN_PROTECTED -> HFMessages.get(MessageKeys.Protection.PVP_SPAWN_PROTECTED);
-      case DENIED_TERRITORY_NO_PVP -> HFMessages.get(MessageKeys.Protection.PVP_TERRITORY_DISABLED);
-      default -> HFMessages.get(MessageKeys.Protection.PVP_GENERIC);
+      case DENIED_SAFEZONE -> HFMessages.get(player, CommonKeys.Protection.PVP_SAFEZONE);
+      case DENIED_SAME_FACTION -> HFMessages.get(player, CommonKeys.Protection.PVP_SAME_FACTION);
+      case DENIED_ALLY -> HFMessages.get(player, CommonKeys.Protection.PVP_ALLY);
+      case DENIED_ATTACKER_SAFEZONE, DENIED_DEFENDER_SAFEZONE -> HFMessages.get(player, CommonKeys.Protection.PVP_SAFEZONE);
+      case DENIED_SPAWN_PROTECTED -> HFMessages.get(player, CommonKeys.Protection.PVP_SPAWN_PROTECTED);
+      case DENIED_TERRITORY_NO_PVP -> HFMessages.get(player, CommonKeys.Protection.PVP_TERRITORY_DISABLED);
+      default -> HFMessages.get(player, CommonKeys.Protection.PVP_GENERIC);
     };
   }
 
@@ -820,18 +851,21 @@ public class ProtectionChecker {
         }
       }
 
+      // Resolve player's locale for localized denial messages
+      PlayerRef playerRef = lookupPlayerRef(playerUuid);
+
       // 3. Zone flag check
       Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
       if (zone != null) {
         if (!zone.getEffectiveFlag(zoneFlag)) {
-          String action = getActionPhrase(factionType);
+          String action = getActionPhrase(playerRef, factionType);
           if (zone.isSafeZone()) {
-            return HFMessages.get(MessageKeys.Protection.DENIED_SAFEZONE, action);
+            return HFMessages.get(playerRef, CommonKeys.Protection.DENIED_SAFEZONE, action);
           }
           if (zone.isWarZone()) {
-            return HFMessages.get(MessageKeys.Protection.DENIED_WARZONE, action);
+            return HFMessages.get(playerRef, CommonKeys.Protection.DENIED_WARZONE, action);
           }
-          return HFMessages.get(MessageKeys.Protection.DENIED_ZONE, action);
+          return HFMessages.get(playerRef, CommonKeys.Protection.DENIED_ZONE, action);
         }
         if (zone.isWarZone()) {
           return null;
@@ -858,7 +892,7 @@ public class ProtectionChecker {
           && member.role().getLevel() >= FactionRole.OFFICER.getLevel();
         String level = isOfficerOrLeader ? "officer" : "member";
         if (perms != null && !checkPermission(perms, level, factionType)) {
-          return HFMessages.get(MessageKeys.Protection.DENIED_FACTION_PERM, getActionPhrase(factionType), level);
+          return HFMessages.get(playerRef, CommonKeys.Protection.DENIED_FACTION_PERM, getActionPhrase(playerRef, factionType), level);
         }
         return null;
       }
@@ -870,7 +904,7 @@ public class ProtectionChecker {
           if (perms != null && checkPermission(perms, "ally", factionType)) {
             return null;
           }
-          return HFMessages.get(MessageKeys.Protection.DENIED_ALLY_TERRITORY, getActionPhrase(factionType));
+          return HFMessages.get(playerRef, CommonKeys.Protection.DENIED_ALLY_TERRITORY, getActionPhrase(playerRef, factionType));
         }
       }
 
@@ -883,15 +917,15 @@ public class ProtectionChecker {
       if (playerFactionId != null) {
         RelationType relation = relationManager.getRelation(playerFactionId, claimOwner);
         if (relation == RelationType.ENEMY) {
-          return HFMessages.get(MessageKeys.Protection.DENIED_ENEMY_CLAIM, getActionPhrase(factionType));
+          return HFMessages.get(playerRef, CommonKeys.Protection.DENIED_ENEMY_CLAIM, getActionPhrase(playerRef, factionType));
         }
       }
-      return HFMessages.get(MessageKeys.Protection.DENIED_CLAIMED, getActionPhrase(factionType));
+      return HFMessages.get(playerRef, CommonKeys.Protection.DENIED_CLAIMED, getActionPhrase(playerRef, factionType));
     } catch (Exception e) {
       // Fail-closed: deny on any exception to prevent unauthorized actions
       ErrorHandler.report(String.format("Protection check error (fail-closed) for player %s at %s/%d/%d/%d type=%s",
         playerUuid, worldName, x, y, z, factionType), e);
-      return HFMessages.get(MessageKeys.Protection.DENIED_ERROR);
+      return HFMessages.get(lookupPlayerRef(playerUuid), CommonKeys.Protection.DENIED_ERROR);
     }
   }
 
@@ -1069,7 +1103,8 @@ public class ProtectionChecker {
     if (attackerUuid == null && targetUuid != null) {
       Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
       if (zone != null && !zone.getEffectiveFlag(ZoneFlags.MOB_DAMAGE)) {
-        return HFMessages.get(MessageKeys.Protection.MOB_DAMAGE_DISABLED);
+        PlayerRef targetRef = lookupPlayerRef(targetUuid);
+        return HFMessages.get(targetRef, CommonKeys.Protection.MOB_DAMAGE_DISABLED);
       }
       return null;
     }
@@ -1078,7 +1113,8 @@ public class ProtectionChecker {
     if (attackerUuid != null && targetUuid == null) {
       Zone zone = zoneManager.getZone(worldName, chunkX, chunkZ);
       if (zone != null && !zone.getEffectiveFlag(ZoneFlags.PVE_DAMAGE)) {
-        return HFMessages.get(MessageKeys.Protection.PVE_DAMAGE_DISABLED);
+        PlayerRef attackerRef = lookupPlayerRef(attackerUuid);
+        return HFMessages.get(attackerRef, CommonKeys.Protection.PVE_DAMAGE_DISABLED);
       }
       // Check territory claim permissions
       return checkPveInTerritory(attackerUuid, worldName, chunkX, chunkZ);
@@ -1086,7 +1122,7 @@ public class ProtectionChecker {
 
     // PvP check using existing canDamagePlayerChunk
     PvPResult result = canDamagePlayerChunk(attackerUuid, targetUuid, worldName, chunkX, chunkZ);
-    return isAllowed(result) ? null : getDenialMessage(result);
+    return isAllowed(result) ? null : getDenialMessage(lookupPlayerRef(attackerUuid), result);
   }
 
   /**
@@ -1148,7 +1184,8 @@ public class ProtectionChecker {
     }
 
     if (!checkPermission(perms, level, InteractionType.PVE_DAMAGE)) {
-      return HFMessages.get(MessageKeys.Protection.PVE_TERRITORY_DENIED);
+      PlayerRef attackerRef = lookupPlayerRef(attackerUuid);
+      return HFMessages.get(attackerRef, CommonKeys.Protection.PVE_TERRITORY_DENIED);
     }
     return null;
   }
@@ -1344,7 +1381,7 @@ public class ProtectionChecker {
         || lowerCmd.startsWith("/home") || lowerCmd.startsWith("/spawn")
         || lowerCmd.startsWith("/tp") || lowerCmd.startsWith("/tpa")) {
         return OrbisMixinsIntegration.CommandCheckResult.deny(
-          HFMessages.get(MessageKeys.Protection.COMBAT_TAG_COMMAND));
+          HFMessages.get(lookupPlayerRef(playerUuid), CommonKeys.Protection.COMBAT_TAG_COMMAND));
       }
     }
 

@@ -5,7 +5,7 @@ import com.hyperfactions.Permissions;
 import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.manager.TeleportManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
@@ -49,7 +49,7 @@ public class StuckSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.STUCK)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.STUCK_NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.STUCK_NO_PERMISSION));
       return;
     }
 
@@ -69,20 +69,20 @@ public class StuckSubCommand extends FactionSubCommand {
     Faction playerFaction = hyperFactions.getFactionManager().getPlayerFaction(playerUuid);
 
     if (claimOwner == null) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.STUCK_NOT_STUCK));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.STUCK_NOT_STUCK));
       return;
     }
 
     // Combat check
     if (hyperFactions.getCombatTagManager().isTagged(playerUuid)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.STUCK_COMBAT_TAGGED));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.STUCK_COMBAT_TAGGED));
       return;
     }
 
     // Find nearest safe chunk
     int[] safeChunk = findNearestSafeChunk(currentWorld.getName(), chunkX, chunkZ);
     if (safeChunk == null) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Home.STUCK_NO_SAFE));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.STUCK_NO_SAFE));
       return;
     }
 
@@ -114,7 +114,7 @@ public class StuckSubCommand extends FactionSubCommand {
       "Teleported to safety!"
     );
 
-    ctx.sendMessage(MessageUtil.info(player, MessageKeys.Home.STUCK_TELEPORTING, COLOR_YELLOW, warmupSeconds));
+    ctx.sendMessage(MessageUtil.info(player, CommandKeys.Home.STUCK_TELEPORTING, COLOR_YELLOW, warmupSeconds));
   }
 
   /**

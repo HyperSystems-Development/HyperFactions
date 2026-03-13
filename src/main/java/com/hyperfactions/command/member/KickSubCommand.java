@@ -9,7 +9,7 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -40,7 +40,7 @@ public class KickSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.KICK)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Kick.NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Kick.NO_PERMISSION));
       return;
     }
 
@@ -53,7 +53,7 @@ public class KickSubCommand extends FactionSubCommand {
     FactionCommandContext fctx = parseContext(rawArgs);
 
     if (!fctx.hasArgs()) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Kick.USAGE));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Kick.USAGE));
       return;
     }
 
@@ -63,7 +63,7 @@ public class KickSubCommand extends FactionSubCommand {
       .findFirst().orElse(null);
 
     if (target == null) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Kick.NOT_IN_YOUR_FACTION, targetName));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Kick.NOT_IN_YOUR_FACTION, targetName));
       return;
     }
 
@@ -73,11 +73,11 @@ public class KickSubCommand extends FactionSubCommand {
 
     switch (result) {
       case SUCCESS -> {
-        ctx.sendMessage(MessageUtil.success(player, MessageKeys.Kick.SUCCESS, target.username()));
-        broadcastToFaction(faction.id(), MessageUtil.error(player, MessageKeys.Kick.BROADCAST, target.username()));
+        ctx.sendMessage(MessageUtil.success(player, CommandKeys.Kick.SUCCESS, target.username()));
+        broadcastToFaction(faction.id(), MessageUtil.error(player, CommandKeys.Kick.BROADCAST, target.username()));
         PlayerRef targetPlayer = plugin.getTrackedPlayer(target.uuid());
         if (targetPlayer != null) {
-          targetPlayer.sendMessage(MessageUtil.error(targetPlayer, MessageKeys.Kick.KICKED));
+          targetPlayer.sendMessage(MessageUtil.error(targetPlayer, CommandKeys.Kick.KICKED));
         }
 
         // Show members page after action (if not text mode)
@@ -88,9 +88,9 @@ public class KickSubCommand extends FactionSubCommand {
           }
         }
       }
-      case NOT_OFFICER -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Kick.CANNOT_KICK_HIGHER));
-      case CANNOT_KICK_LEADER -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Kick.CANNOT_KICK_LEADER));
-      default -> ctx.sendMessage(MessageUtil.error(player, MessageKeys.Kick.FAILED));
+      case NOT_OFFICER -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Kick.CANNOT_KICK_HIGHER));
+      case CANNOT_KICK_LEADER -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Kick.CANNOT_KICK_LEADER));
+      default -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Kick.FAILED));
     }
   }
 }

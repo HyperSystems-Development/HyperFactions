@@ -8,7 +8,10 @@ import com.hyperfactions.backup.BackupType;
 import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.manager.ConfirmationManager;
 import com.hyperfactions.util.CommandHelp;
+import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.HelpFormatter;
+import com.hyperfactions.util.AdminKeys;
+import com.hyperfactions.util.HelpKeys;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -61,12 +64,12 @@ public class AdminBackupHandler {
   /** Handles admin backup. */
   public void handleAdminBackup(CommandContext ctx, @Nullable PlayerRef player, UUID senderUuid, String[] args) {
     if (!hasPermission(player, Permissions.ADMIN_BACKUP)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to manage backups.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.BACKUP_NO_PERMISSION), COLOR_RED)));
       return;
     }
 
     if (args.length == 0) {
-      showBackupHelp(ctx);
+      showBackupHelp(ctx, player);
       return;
     }
 
@@ -78,37 +81,37 @@ public class AdminBackupHandler {
       case "list" -> handleBackupList(ctx);
       case "restore" -> handleBackupRestore(ctx, senderUuid, subArgs);
       case "delete" -> handleBackupDelete(ctx, subArgs);
-      case "help", "?" -> showBackupHelp(ctx);
+      case "help", "?" -> showBackupHelp(ctx, player);
       default -> {
-        ctx.sendMessage(prefix().insert(msg("Unknown backup command: " + subCmd, COLOR_RED)));
-        showBackupHelp(ctx);
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.BACKUP_UNKNOWN_CMD), COLOR_RED)));
+        showBackupHelp(ctx, player);
       }
     }
   }
 
-  private void showBackupHelp(CommandContext ctx) {
+  private void showBackupHelp(CommandContext ctx, @Nullable PlayerRef player) {
     List<CommandHelp> commands = new ArrayList<>();
-    commands.add(new CommandHelp("/f admin backup create [name]", "Create manual backup"));
-    commands.add(new CommandHelp("/f admin backup list", "List all backups grouped by type"));
-    commands.add(new CommandHelp("/f admin backup restore <name>", "Restore from backup (requires confirmation)"));
-    commands.add(new CommandHelp("/f admin backup delete <name>", "Delete a backup"));
-    ctx.sendMessage(HelpFormatter.buildHelp("Backup Management", "GFS rotation scheme", commands, null));
+    commands.add(new CommandHelp("/f admin backup create [name]", HelpKeys.Help.BACKUP_CMD_CREATE));
+    commands.add(new CommandHelp("/f admin backup list", HelpKeys.Help.BACKUP_CMD_LIST));
+    commands.add(new CommandHelp("/f admin backup restore <name>", HelpKeys.Help.BACKUP_CMD_RESTORE));
+    commands.add(new CommandHelp("/f admin backup delete <name>", HelpKeys.Help.BACKUP_CMD_DELETE));
+    ctx.sendMessage(HelpFormatter.buildHelp(HelpKeys.Help.BACKUP_TITLE, HelpKeys.Help.BACKUP_DESCRIPTION, commands, null, player));
   }
 
   /** Handles backup create. */
   public void handleBackupCreate(CommandContext ctx, UUID senderUuid, String[] args) {
     String customName = args.length > 0 ? String.join("_", args) : null;
 
-    ctx.sendMessage(prefix().insert(msg("Creating backup...", COLOR_YELLOW)));
+    ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.BACKUP_CREATING), COLOR_YELLOW)));
 
     hyperFactions.getBackupManager().createBackup(BackupType.MANUAL, customName, senderUuid)
       .thenAccept(result -> {
         if (result instanceof BackupManager.BackupResult.Success success) {
-          ctx.sendMessage(prefix().insert(msg("Backup created successfully!", COLOR_GREEN)));
-          ctx.sendMessage(msg("  Name: " + success.metadata().name(), COLOR_GRAY));
-          ctx.sendMessage(msg("  Size: " + success.metadata().getFormattedSize(), COLOR_GRAY));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.BACKUP_CREATED), COLOR_GREEN)));
+          ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.BACKUP_NAME, success.metadata().name()), COLOR_GRAY));
+          ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.BACKUP_SIZE, success.metadata().getFormattedSize()), COLOR_GRAY));
         } else if (result instanceof BackupManager.BackupResult.Failure failure) {
-          ctx.sendMessage(prefix().insert(msg("Backup failed: " + failure.error(), COLOR_RED)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.BACKUP_FAILED, failure.error()), COLOR_RED)));
         }
       });
   }
@@ -118,11 +121,11 @@ public class AdminBackupHandler {
     Map<BackupType, List<BackupMetadata>> grouped = hyperFactions.getBackupManager().getBackupsGroupedByType();
 
     if (grouped.isEmpty()) {
-      ctx.sendMessage(prefix().insert(msg("No backups found.", COLOR_GRAY)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.BACKUP_NONE), COLOR_GRAY)));
       return;
     }
 
-    ctx.sendMessage(msg("=== Backups ===", COLOR_CYAN).bold(true));
+    ctx.sendMessage(msg("=== " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.BACKUP_HEADER) + " ===", COLOR_CYAN).bold(true));
 
     for (BackupType type : BackupType.values()) {
       List<BackupMetadata> backups = grouped.getOrDefault(type, List.of());
@@ -141,7 +144,7 @@ public class AdminBackupHandler {
   /** Handles backup restore. */
   public void handleBackupRestore(CommandContext ctx, UUID senderUuid, String[] args) {
     if (args.length < 1) {
-      ctx.sendMessage(prefix().insert(msg("Usage: /f admin backup restore <name>", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.BACKUP_USAGE_RESTORE), COLOR_RED)));
       return;
     }
 
@@ -152,7 +155,7 @@ public class AdminBackupHandler {
       .findFirst()
       .orElse(null);
     if (backup == null) {
-      ctx.sendMessage(prefix().insert(msg("Backup '" + backupName + "' not found.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.BACKUP_NOT_FOUND, backupName), COLOR_RED)));
       return;
     }
 
@@ -163,24 +166,22 @@ public class AdminBackupHandler {
 
     switch (confirmResult) {
       case NEEDS_CONFIRMATION, EXPIRED_RECREATED -> {
-        ctx.sendMessage(prefix().insert(msg("WARNING: Restoring backup will overwrite current data!", COLOR_RED)));
-        ctx.sendMessage(prefix().insert(msg("Type ", COLOR_YELLOW))
-          .insert(msg("/f admin backup restore " + backupName, COLOR_WHITE))
-          .insert(msg(" again within " + confirmManager.getTimeoutSeconds() + " seconds to confirm.", COLOR_YELLOW)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.BACKUP_RESTORE_WARNING), COLOR_RED)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.BACKUP_RESTORE_CONFIRM), COLOR_YELLOW)));
       }
       case CONFIRMED -> {
-        ctx.sendMessage(prefix().insert(msg("Restoring backup...", COLOR_YELLOW)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.BACKUP_RESTORING), COLOR_YELLOW)));
         hyperFactions.getBackupManager().restoreBackup(backup.name())
           .thenAccept(result -> {
             if (result instanceof BackupManager.RestoreResult.Success) {
-              ctx.sendMessage(prefix().insert(msg("Backup restored successfully! Data reloaded.", COLOR_GREEN)));
+              ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.BACKUP_RESTORED, String.valueOf(hyperFactions.getFactionManager().getAllFactions().size())), COLOR_GREEN)));
             } else if (result instanceof BackupManager.RestoreResult.Failure failure) {
-              ctx.sendMessage(prefix().insert(msg("Restore failed: " + failure.error(), COLOR_RED)));
+              ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.BACKUP_RESTORE_FAILED, failure.error()), COLOR_RED)));
             }
           });
       }
       case DIFFERENT_ACTION -> {
-        ctx.sendMessage(prefix().insert(msg("Previous confirmation cancelled. Type again to confirm restore.", COLOR_YELLOW)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.BACKUP_CONFIRM_CANCEL), COLOR_YELLOW)));
       }
       default -> throw new IllegalStateException("Unexpected value");
     }
@@ -189,7 +190,7 @@ public class AdminBackupHandler {
   /** Handles backup delete. */
   public void handleBackupDelete(CommandContext ctx, String[] args) {
     if (args.length < 1) {
-      ctx.sendMessage(prefix().insert(msg("Usage: /f admin backup delete <name>", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.BACKUP_USAGE_DELETE), COLOR_RED)));
       return;
     }
 
@@ -200,16 +201,16 @@ public class AdminBackupHandler {
       .findFirst()
       .orElse(null);
     if (backup == null) {
-      ctx.sendMessage(prefix().insert(msg("Backup '" + backupName + "' not found.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.BACKUP_NOT_FOUND, backupName), COLOR_RED)));
       return;
     }
 
     hyperFactions.getBackupManager().deleteBackup(backup.name())
       .thenAccept(deleted -> {
         if (deleted) {
-          ctx.sendMessage(prefix().insert(msg("Deleted backup '" + backupName + "'", COLOR_GREEN)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.BACKUP_DELETED, backupName), COLOR_GREEN)));
         } else {
-          ctx.sendMessage(prefix().insert(msg("Failed to delete backup.", COLOR_RED)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.BACKUP_DELETE_FAILED, "unknown error"), COLOR_RED)));
         }
       });
   }

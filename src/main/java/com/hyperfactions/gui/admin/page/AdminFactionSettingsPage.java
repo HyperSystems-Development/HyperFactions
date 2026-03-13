@@ -10,7 +10,9 @@ import com.hyperfactions.gui.admin.data.AdminFactionSettingsData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.AdminGuiKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -67,70 +69,70 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     AdminNavBarHelper.setupBar(playerRef, "factions", cmd, events);
 
     // Localize page title and labels
-    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_FACTION_SETTINGS));
-    cmd.set("#EditingLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_EDITING));
-    cmd.set("#AdminOverrideLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_ADMIN_OVERRIDE));
-    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_BACK_TO_INFO));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_TITLE_FACTION_SETTINGS));
+    cmd.set("#EditingLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_EDITING));
+    cmd.set("#AdminOverrideLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_ADMIN_OVERRIDE));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_BACK_TO_INFO));
 
     // Left column section headers and row labels
-    cmd.set("#SectionGeneral.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_GENERAL));
-    cmd.set("#NameLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_NAME_LABEL));
-    cmd.set("#TagLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_TAG_LABEL));
-    cmd.set("#DescLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_DESC_LABEL));
-    String editText = HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_EDIT);
+    cmd.set("#SectionGeneral.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_GENERAL));
+    cmd.set("#NameLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_NAME_LABEL));
+    cmd.set("#TagLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_TAG_LABEL));
+    cmd.set("#DescLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_DESC_LABEL));
+    String editText = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_EDIT);
     cmd.set("#NameEditBtn.Text", editText);
     cmd.set("#TagEditBtn.Text", editText);
     cmd.set("#DescEditBtn.Text", editText);
-    cmd.set("#SectionRecruitment.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_RECRUITMENT));
-    cmd.set("#StatusLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_STATUS_LABEL));
-    cmd.set("#SectionHome.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_HOME));
-    cmd.set("#LocationLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_LOCATION_LABEL));
-    cmd.set("#ClearHomeBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_CLEAR_HOME));
-    cmd.set("#SectionDangerZone.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_DANGER_ZONE));
-    cmd.set("#IrreversibleWarning.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_IRREVERSIBLE));
-    cmd.set("#DisbandBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_DISBAND_FACTION));
+    cmd.set("#SectionRecruitment.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_RECRUITMENT));
+    cmd.set("#StatusLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_STATUS_LABEL));
+    cmd.set("#SectionHome.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_HOME));
+    cmd.set("#LocationLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_LOCATION_LABEL));
+    cmd.set("#ClearHomeBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_CLEAR_HOME));
+    cmd.set("#SectionDangerZone.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_DANGER_ZONE));
+    cmd.set("#IrreversibleWarning.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_IRREVERSIBLE));
+    cmd.set("#DisbandBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_DISBAND_FACTION));
 
     // Middle column - territory permissions
-    cmd.set("#LockHint.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_LOCK_HINT));
-    cmd.set("#SectionTerritoryPerms.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_TERRITORY_PERMS));
-    cmd.set("#ColOutsider.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_COL_OUT));
-    cmd.set("#ColAlly.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_COL_ALLY));
-    cmd.set("#ColMember.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_COL_MEM));
-    cmd.set("#ColOfficer.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_COL_OFF));
-    cmd.set("#CatBuilding.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_CAT_BUILDING));
-    cmd.set("#PermBreak.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_BREAK));
-    cmd.set("#PermPlace.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_PLACE));
-    cmd.set("#CatInteraction.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_CAT_INTERACTION));
-    cmd.set("#CatInteractionSub.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_CAT_INTERACT_SUB));
-    cmd.set("#PermAll.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_ALL));
-    cmd.set("#PermDoor.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_DOOR));
-    cmd.set("#PermChest.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_CHEST));
-    cmd.set("#PermBench.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_BENCH));
-    cmd.set("#PermProcessing.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_PROCESSING));
-    cmd.set("#PermSeat.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_SEAT));
-    cmd.set("#PermTransport.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_TRANSPORT));
-    cmd.set("#CatOther.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_CAT_OTHER));
-    cmd.set("#PermCrateUse.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_CRATE_USE));
-    cmd.set("#PermNpcTame.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_NPC_TAME));
-    cmd.set("#PermPveDamage.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_PVE_DAMAGE));
+    cmd.set("#LockHint.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_LOCK_HINT));
+    cmd.set("#SectionTerritoryPerms.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_TERRITORY_PERMS));
+    cmd.set("#ColOutsider.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_COL_OUT));
+    cmd.set("#ColAlly.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_COL_ALLY));
+    cmd.set("#ColMember.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_COL_MEM));
+    cmd.set("#ColOfficer.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_COL_OFF));
+    cmd.set("#CatBuilding.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_CAT_BUILDING));
+    cmd.set("#PermBreak.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_PERM_BREAK));
+    cmd.set("#PermPlace.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_PERM_PLACE));
+    cmd.set("#CatInteraction.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_CAT_INTERACTION));
+    cmd.set("#CatInteractionSub.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_CAT_INTERACT_SUB));
+    cmd.set("#PermAll.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_PERM_ALL));
+    cmd.set("#PermDoor.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_PERM_DOOR));
+    cmd.set("#PermChest.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_PERM_CHEST));
+    cmd.set("#PermBench.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_PERM_BENCH));
+    cmd.set("#PermProcessing.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_PERM_PROCESSING));
+    cmd.set("#PermSeat.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_PERM_SEAT));
+    cmd.set("#PermTransport.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_PERM_TRANSPORT));
+    cmd.set("#CatOther.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_CAT_OTHER));
+    cmd.set("#PermCrateUse.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_PERM_CRATE_USE));
+    cmd.set("#PermNpcTame.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_PERM_NPC_TAME));
+    cmd.set("#PermPveDamage.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_PERM_PVE_DAMAGE));
 
     // Right column - appearance, mob spawning, faction settings
-    cmd.set("#SectionAppearance.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_APPEARANCE));
-    cmd.set("#ColorLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_COLOR_LABEL));
-    cmd.set("#SectionMobSpawning.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_MOB_SPAWNING));
-    cmd.set("#SectionMobSpawningSub.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_MOB_SUB));
-    cmd.set("#PermMobSpawning.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_MOB_SPAWNING));
-    cmd.set("#PermHostile.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_HOSTILE));
-    cmd.set("#PermPassive.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_PASSIVE));
-    cmd.set("#PermNeutral.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_NEUTRAL));
-    cmd.set("#SectionFactionSettings.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_FACTION_SETTINGS));
-    cmd.set("#PermPvP.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_PVP));
-    cmd.set("#PermOfficersEdit.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SET_PERM_OFFICERS_EDIT));
+    cmd.set("#SectionAppearance.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_APPEARANCE));
+    cmd.set("#ColorLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_COLOR_LABEL));
+    cmd.set("#SectionMobSpawning.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_MOB_SPAWNING));
+    cmd.set("#SectionMobSpawningSub.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_MOB_SUB));
+    cmd.set("#PermMobSpawning.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_PERM_MOB_SPAWNING));
+    cmd.set("#PermHostile.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_PERM_HOSTILE));
+    cmd.set("#PermPassive.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_PERM_PASSIVE));
+    cmd.set("#PermNeutral.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_PERM_NEUTRAL));
+    cmd.set("#SectionFactionSettings.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_FACTION_SETTINGS));
+    cmd.set("#PermPvP.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_PERM_PVP));
+    cmd.set("#PermOfficersEdit.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SET_PERM_OFFICERS_EDIT));
 
     // Get the faction
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {
-      cmd.set("#FactionName.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.FACTION_NOT_FOUND_LABEL));
+      cmd.set("#FactionName.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.FACTION_NOT_FOUND_LABEL));
       return;
     }
 
@@ -167,7 +169,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     // Tag
     String tagDisplay = faction.tag() != null && !faction.tag().isEmpty()
         ? "[" + faction.tag().toUpperCase() + "]"
-        : HFMessages.get(playerRef, MessageKeys.AdminGui.NONE_PAREN);
+        : HFMessages.get(playerRef, AdminGuiKeys.AdminGui.NONE_PAREN);
     cmd.set("#TagValue.Text", tagDisplay);
     events.addEventBinding(
         CustomUIEventBindingType.Activating,
@@ -179,7 +181,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     // Description
     String desc = faction.description() != null && !faction.description().isEmpty()
         ? faction.description()
-        : HFMessages.get(playerRef, MessageKeys.AdminGui.NONE_PAREN);
+        : HFMessages.get(playerRef, AdminGuiKeys.AdminGui.NONE_PAREN);
     cmd.set("#DescValue.Text", desc);
     events.addEventBinding(
         CustomUIEventBindingType.Activating,
@@ -190,8 +192,8 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
 
     // Recruitment dropdown
     cmd.set("#RecruitmentDropdown.Entries", List.of(
-        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_OPEN)), "OPEN"),
-        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_INVITE_ONLY)), "INVITE_ONLY")
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_OPEN)), "OPEN"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_INVITE_ONLY)), "INVITE_ONLY")
     ));
     cmd.set("#RecruitmentDropdown.Value", faction.open() ? "OPEN" : "INVITE_ONLY");
     events.addEventBinding(
@@ -213,7 +215,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
           worldName, home.x(), home.y(), home.z());
       cmd.set("#HomeLocation.Text", homeText);
     } else {
-      cmd.set("#HomeLocation.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.NOT_SET));
+      cmd.set("#HomeLocation.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.NOT_SET));
     }
     events.addEventBinding(
         CustomUIEventBindingType.Activating,
@@ -283,7 +285,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
 
     // PvP toggle
     buildToggle(cmd, events, "PvPToggle", "pvpEnabled", perms.pvpEnabled(), config, false);
-    cmd.set("#PvPStatus.Text", perms.pvpEnabled() ? HFMessages.get(playerRef, MessageKeys.SettingsGui.PVP_ENABLED) : HFMessages.get(playerRef, MessageKeys.SettingsGui.PVP_DISABLED));
+    cmd.set("#PvPStatus.Text", perms.pvpEnabled() ? HFMessages.get(playerRef, GuiKeys.SettingsGui.PVP_ENABLED) : HFMessages.get(playerRef, GuiKeys.SettingsGui.PVP_DISABLED));
     cmd.set("#PvPStatus.Style.TextColor", perms.pvpEnabled() ? "#55FF55" : "#FF5555");
 
     // Officers can edit
@@ -347,7 +349,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
 
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null && !data.button.equals("Back")) {
-      player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.Common.FACTION_NOT_FOUND));
+      player.sendMessage(MessageUtil.adminError(playerRef, CommonKeys.Common.FACTION_NOT_FOUND));
       sendUpdate();
       return;
     }
@@ -387,7 +389,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
 
     // Check if server has locked this setting
     if (config.isPermissionLocked(permName)) {
-      player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.SET_LOCKED));
+      player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.SET_LOCKED));
       sendUpdate();
       return;
     }
@@ -395,7 +397,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     // Get current faction
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {
-      player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.Common.FACTION_NOT_FOUND));
+      player.sendMessage(MessageUtil.adminError(playerRef, CommonKeys.Common.FACTION_NOT_FOUND));
       sendUpdate();
       return;
     }
@@ -412,7 +414,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     String displayName = formatPermissionName(permName);
     boolean newValue = updated.get(permName);
 
-    player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.SET_PERM_TOGGLED, displayName, newValue ? HFMessages.get(playerRef, MessageKeys.AdminGui.ON) : HFMessages.get(playerRef, MessageKeys.AdminGui.OFF)));
+    player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.SET_PERM_TOGGLED, displayName, newValue ? HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ON) : HFMessages.get(playerRef, AdminGuiKeys.AdminGui.OFF)));
 
     // Rebuild page with fresh data
     rebuildPage();
@@ -438,7 +440,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     Faction updatedFaction = faction.withColor(hexColor);
     factionManager.updateFaction(updatedFaction);
 
-    player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.SET_COLOR_CHANGED, hexColor));
+    player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.SET_COLOR_CHANGED, hexColor));
 
     rebuildPage();
   }
@@ -455,14 +457,14 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     Faction updatedFaction = faction.withOpen(isOpen);
     factionManager.updateFaction(updatedFaction);
 
-    player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.SET_RECRUITMENT_SET, isOpen ? HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_OPEN) : HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_INVITE_ONLY)));
+    player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.SET_RECRUITMENT_SET, isOpen ? HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_OPEN) : HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_INVITE_ONLY)));
 
     rebuildPage();
   }
 
   private void handleClearHome(Player player, Ref<EntityStore> ref, Store<EntityStore> store, Faction faction) {
     if (faction.home() == null) {
-      player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.SET_NO_HOME, MessageUtil.COLOR_GOLD));
+      player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.SET_NO_HOME, MessageUtil.COLOR_GOLD));
       sendUpdate();
       return;
     }
@@ -470,7 +472,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     Faction updatedFaction = faction.withHome(null);
     factionManager.updateFaction(updatedFaction);
 
-    player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.SET_HOME_CLEARED, faction.name()));
+    player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.SET_HOME_CLEARED, faction.name()));
 
     // Rebuild page with fresh data
     rebuildPage();
@@ -488,7 +490,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     // Get fresh faction data
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {
-      cmd.set("#FactionName.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.FACTION_NOT_FOUND_LABEL));
+      cmd.set("#FactionName.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.FACTION_NOT_FOUND_LABEL));
       sendUpdate(cmd, events, false);
       return;
     }
@@ -515,19 +517,19 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     // Tag
     String tagDisplay = faction.tag() != null && !faction.tag().isEmpty()
         ? "[" + faction.tag().toUpperCase() + "]"
-        : HFMessages.get(playerRef, MessageKeys.AdminGui.NONE_PAREN);
+        : HFMessages.get(playerRef, AdminGuiKeys.AdminGui.NONE_PAREN);
     cmd.set("#TagValue.Text", tagDisplay);
 
     // Description
     String desc = faction.description() != null && !faction.description().isEmpty()
         ? faction.description()
-        : HFMessages.get(playerRef, MessageKeys.AdminGui.NONE_PAREN);
+        : HFMessages.get(playerRef, AdminGuiKeys.AdminGui.NONE_PAREN);
     cmd.set("#DescValue.Text", desc);
 
     // Recruitment dropdown
     cmd.set("#RecruitmentDropdown.Entries", List.of(
-        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_OPEN)), "OPEN"),
-        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, MessageKeys.FactionInfoGui.STATUS_INVITE_ONLY)), "INVITE_ONLY")
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_OPEN)), "OPEN"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_INVITE_ONLY)), "INVITE_ONLY")
     ));
     cmd.set("#RecruitmentDropdown.Value", faction.open() ? "OPEN" : "INVITE_ONLY");
     events.addEventBinding(
@@ -549,7 +551,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
           worldName, home.x(), home.y(), home.z());
       cmd.set("#HomeLocation.Text", homeText);
     } else {
-      cmd.set("#HomeLocation.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.NOT_SET));
+      cmd.set("#HomeLocation.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.NOT_SET));
     }
   }
 

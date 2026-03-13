@@ -8,7 +8,8 @@ import com.hyperfactions.gui.admin.data.ZoneChangeTypeModalData;
 import com.hyperfactions.manager.ZoneManager;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.AdminGuiKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -85,18 +86,18 @@ public class ZoneChangeTypeModalPage extends InteractiveCustomUIPage<ZoneChangeT
     cmd.append(UIPaths.ZONE_CHANGE_TYPE_MODAL);
 
     // Localize labels
-    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_TITLE));
-    cmd.set("#ZoneLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_ZONE_LABEL));
-    cmd.set("#CurrentLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_CURRENT));
-    cmd.set("#WillBecomeLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_WILL_BECOME));
-    cmd.set("#NewLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_NEW));
-    cmd.set("#WarningLine1.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_WARNING1));
-    cmd.set("#WarningLine2.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_WARNING2));
-    cmd.set("#KeepFlagsDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_KEEP_DESC));
-    cmd.set("#KeepFlagsBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_KEEP_FLAGS));
-    cmd.set("#ResetFlagsDesc.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_RESET_DESC));
-    cmd.set("#ResetFlagsBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZTYPE_RESET_FLAGS));
-    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CANCEL));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZTYPE_TITLE));
+    cmd.set("#ZoneLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZTYPE_ZONE_LABEL));
+    cmd.set("#CurrentLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZTYPE_CURRENT));
+    cmd.set("#WillBecomeLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZTYPE_WILL_BECOME));
+    cmd.set("#NewLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZTYPE_NEW));
+    cmd.set("#WarningLine1.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZTYPE_WARNING1));
+    cmd.set("#WarningLine2.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZTYPE_WARNING2));
+    cmd.set("#KeepFlagsDesc.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZTYPE_KEEP_DESC));
+    cmd.set("#KeepFlagsBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZTYPE_KEEP_FLAGS));
+    cmd.set("#ResetFlagsDesc.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZTYPE_RESET_DESC));
+    cmd.set("#ResetFlagsBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZTYPE_RESET_FLAGS));
+    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, CommonKeys.Common.CANCEL));
 
     // Zone name
     cmd.set("#ZoneName.Text", zone.name());
@@ -153,7 +154,7 @@ public class ZoneChangeTypeModalPage extends InteractiveCustomUIPage<ZoneChangeT
 
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.ZTYPE_ZONE_GONE));
+      player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZTYPE_ZONE_GONE));
       navigateBack(player, ref, store, playerRef);
       return;
     }
@@ -186,11 +187,11 @@ public class ZoneChangeTypeModalPage extends InteractiveCustomUIPage<ZoneChangeT
       String oldColor = oldType == ZoneType.SAFE ? "#55FF55" : "#FF5555";
       String newColor = newType == ZoneType.SAFE ? "#55FF55" : "#FF5555";
 
-      player.sendMessage(MessageUtil.text(playerRef, MessageKeys.AdminGui.ZTYPE_CHANGED, "#AAAAAA",
+      player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.ZTYPE_CHANGED, "#AAAAAA",
           zone.name(), oldType.getDisplayName(), newType.getDisplayName(),
-          HFMessages.get(playerRef, resetFlags ? MessageKeys.AdminGui.ZTYPE_FLAGS_RESET : MessageKeys.AdminGui.ZTYPE_FLAGS_KEPT)));
+          HFMessages.get(playerRef, resetFlags ? AdminGuiKeys.AdminGui.ZTYPE_FLAGS_RESET : AdminGuiKeys.AdminGui.ZTYPE_FLAGS_KEPT)));
     } else {
-      player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.ZTYPE_FAILED, result));
+      player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZTYPE_FAILED, result));
     }
 
     navigateBack(player, ref, store, playerRef);

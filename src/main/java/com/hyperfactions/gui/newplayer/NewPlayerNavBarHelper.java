@@ -6,7 +6,7 @@ import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.shared.NavBarUtil;
 import com.hyperfactions.gui.shared.data.NavAwareData;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
@@ -69,7 +69,7 @@ public final class NewPlayerNavBarHelper {
     // "Player" button on far right
     cmd.append("#HyperFactionsNavBar #NavBarButtons", UIPaths.NAV_BUTTON);
     cmd.set("#HyperFactionsNavBar #NavBarButtons[2] #NavActionButton.Text",
-        HFMessages.get(playerRef, MessageKeys.Nav.PLAYER_SETTINGS));
+        HFMessages.get(playerRef, GuiKeys.Nav.PLAYER_SETTINGS));
     events.addEventBinding(
         CustomUIEventBindingType.Activating,
         "#HyperFactionsNavBar #NavBarButtons[2] #NavActionButton",

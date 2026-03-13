@@ -9,7 +9,8 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.PendingInvite;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -43,17 +44,17 @@ public class AcceptSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.JOIN)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Join.NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Join.NO_PERMISSION));
       return;
     }
 
     if (hyperFactions.getFactionManager().isInFaction(player.getUuid())) {
       Faction existingFaction = hyperFactions.getFactionManager().getPlayerFaction(player.getUuid());
       if (existingFaction != null) {
-        ctx.sendMessage(MessageUtil.error(player, MessageKeys.Join.ALREADY_IN_NAMED, existingFaction.name()));
-        ctx.sendMessage(MessageUtil.info(player, MessageKeys.Join.USE_LEAVE_HINT, COLOR_YELLOW));
+        ctx.sendMessage(MessageUtil.error(player, CommandKeys.Join.ALREADY_IN_NAMED, existingFaction.name()));
+        ctx.sendMessage(MessageUtil.info(player, CommandKeys.Join.USE_LEAVE_HINT, COLOR_YELLOW));
       } else {
-        ctx.sendMessage(MessageUtil.error(player, MessageKeys.Common.ALREADY_IN_FACTION));
+        ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.ALREADY_IN_FACTION));
       }
       return;
     }
@@ -73,7 +74,7 @@ public class AcceptSubCommand extends FactionSubCommand {
     }
 
     if (invites.isEmpty()) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Join.NO_INVITES));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Join.NO_INVITES));
       return;
     }
 
@@ -82,12 +83,12 @@ public class AcceptSubCommand extends FactionSubCommand {
       String factionName = fctx.joinArgs();
       Faction targetFaction = hyperFactions.getFactionManager().getFactionByName(factionName);
       if (targetFaction == null) {
-        ctx.sendMessage(MessageUtil.error(player, MessageKeys.Join.FACTION_NOT_FOUND, factionName));
+        ctx.sendMessage(MessageUtil.error(player, CommandKeys.Join.FACTION_NOT_FOUND, factionName));
         return;
       }
       invite = hyperFactions.getInviteManager().getInvite(targetFaction.id(), player.getUuid());
       if (invite == null) {
-        ctx.sendMessage(MessageUtil.error(player, MessageKeys.Join.NOT_INVITED));
+        ctx.sendMessage(MessageUtil.error(player, CommandKeys.Join.NOT_INVITED));
         return;
       }
     } else {
@@ -96,7 +97,7 @@ public class AcceptSubCommand extends FactionSubCommand {
 
     Faction faction = hyperFactions.getFactionManager().getFaction(invite.factionId());
     if (faction == null) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Join.FACTION_GONE));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Join.FACTION_GONE));
       hyperFactions.getInviteManager().removeInvite(invite.factionId(), player.getUuid());
       return;
     }
@@ -108,12 +109,12 @@ public class AcceptSubCommand extends FactionSubCommand {
     if (result == FactionManager.FactionResult.SUCCESS) {
       hyperFactions.getInviteManager().clearPlayerInvites(player.getUuid());
       hyperFactions.getJoinRequestManager().clearPlayerRequests(player.getUuid());
-      ctx.sendMessage(MessageUtil.success(player, MessageKeys.Join.SUCCESS, faction.name()));
-      broadcastToFaction(faction.id(), MessageUtil.success(player, MessageKeys.Join.BROADCAST, player.getUsername()));
+      ctx.sendMessage(MessageUtil.success(player, CommandKeys.Join.SUCCESS, faction.name()));
+      broadcastToFaction(faction.id(), MessageUtil.success(player, CommandKeys.Join.BROADCAST, player.getUsername()));
     } else if (result == FactionManager.FactionResult.FACTION_FULL) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Join.FACTION_FULL));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Join.FACTION_FULL));
     } else {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Join.FAILED));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Join.FAILED));
     }
   }
 }

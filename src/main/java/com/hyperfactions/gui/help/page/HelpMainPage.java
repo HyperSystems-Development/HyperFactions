@@ -9,7 +9,7 @@ import com.hyperfactions.gui.help.data.HelpPageData;
 import com.hyperfactions.gui.newplayer.NewPlayerNavBarHelper;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -107,7 +107,7 @@ public class HelpMainPage extends InteractiveCustomUIPage<HelpPageData> {
     }
 
     // Page title
-    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.HelpGui.HELP_CENTER_TITLE));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, GuiKeys.HelpGui.HELP_CENTER_TITLE));
 
     // Set localized sidebar button labels (player categories only)
     int catIdx = 0;

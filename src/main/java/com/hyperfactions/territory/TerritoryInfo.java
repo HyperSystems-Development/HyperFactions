@@ -2,6 +2,9 @@ package com.hyperfactions.territory;
 
 import com.hyperfactions.data.RelationType;
 import com.hyperfactions.data.Zone;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.HFMessages;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import java.util.Objects;
 import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
@@ -214,23 +217,24 @@ public record TerritoryInfo(
   }
 
   /**
-   * Gets the primary display text for the notification.
+   * Gets the primary display text for the notification, localized for the given player.
    * For faction claims, includes the tag if available (e.g., "FactionName [TAG]").
    *
+   * @param player the player to localize for, or null for default language
    * @return the primary display text
    */
   @NotNull
-  public String getPrimaryText() {
+  public String getPrimaryText(@Nullable PlayerRef player) {
     if (notifyTitleLower != null) {
       return notifyTitleLower;
     }
     return switch (type) {
-      case WILDERNESS -> "Wilderness";
-      case SAFEZONE -> factionName != null ? factionName : "SafeZone";
-      case WARZONE -> factionName != null ? factionName : "WarZone";
+      case WILDERNESS -> HFMessages.get(player, CommonKeys.Territory.DISPLAY_WILDERNESS);
+      case SAFEZONE -> factionName != null ? factionName : HFMessages.get(player, CommonKeys.Territory.DISPLAY_SAFEZONE);
+      case WARZONE -> factionName != null ? factionName : HFMessages.get(player, CommonKeys.Territory.DISPLAY_WARZONE);
       case FACTION_CLAIM -> {
         if (factionName == null) {
-          yield "Unknown Faction";
+          yield HFMessages.get(player, CommonKeys.Territory.DISPLAY_UNKNOWN_FACTION);
         }
         if (factionTag != null && !factionTag.isEmpty()) {
           yield factionName + " [" + factionTag + "]";
@@ -241,29 +245,52 @@ public record TerritoryInfo(
   }
 
   /**
-   * Gets the secondary display text for the notification.
+   * Gets the primary display text for the notification using default language.
+   * For faction claims, includes the tag if available (e.g., "FactionName [TAG]").
+   *
+   * @return the primary display text
+   */
+  @NotNull
+  public String getPrimaryText() {
+    return getPrimaryText(null);
+  }
+
+  /**
+   * Gets the secondary display text for the notification, localized for the given player.
+   * Includes territory type and special status.
+   *
+   * @param player the player to localize for, or null for default language
+   * @return the secondary display text, or null if none
+   */
+  @Nullable
+  public String getSecondaryText(@Nullable PlayerRef player) {
+    if (notifyTitleUpper != null) {
+      return notifyTitleUpper.isEmpty() ? null : notifyTitleUpper;
+    }
+    return switch (type) {
+      case WILDERNESS -> null;
+      case SAFEZONE -> HFMessages.get(player, CommonKeys.Territory.SECONDARY_PVP_DISABLED);
+      case WARZONE -> HFMessages.get(player, CommonKeys.Territory.SECONDARY_PVP_NO_PROTECTION);
+      case FACTION_CLAIM -> {
+        if (relation == RelationType.OWN) {
+          yield HFMessages.get(player, CommonKeys.Territory.SECONDARY_YOUR_TERRITORY);
+        }
+        if (relation != null) {
+          yield HFMessages.get(player, CommonKeys.Territory.SECONDARY_RELATION_TERRITORY, relation.getDisplayName());
+        }
+        yield HFMessages.get(player, CommonKeys.Territory.SECONDARY_FACTION_TERRITORY);
+      }
+    };
+  }
+
+  /**
+   * Gets the secondary display text for the notification using default language.
    * Includes territory type and special status.
    *
    * @return the secondary display text, or null if none
    */
   @Nullable
   public String getSecondaryText() {
-    if (notifyTitleUpper != null) {
-      return notifyTitleUpper.isEmpty() ? null : notifyTitleUpper;
-    }
-    return switch (type) {
-      case WILDERNESS -> null;
-      case SAFEZONE -> "PvP Disabled";
-      case WARZONE -> "PvP Enabled - No Protection";
-      case FACTION_CLAIM -> {
-        if (relation == RelationType.OWN) {
-          yield "Your Territory";
-        }
-        if (relation != null) {
-          yield relation.getDisplayName() + " Territory";
-        }
-        yield "Faction Territory";
-      }
-    };
+    return getSecondaryText(null);
   }
 }

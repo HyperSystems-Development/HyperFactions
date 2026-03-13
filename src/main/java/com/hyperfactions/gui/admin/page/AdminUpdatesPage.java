@@ -5,7 +5,7 @@ import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.admin.AdminNavBarHelper;
 import com.hyperfactions.gui.admin.data.AdminUpdatesData;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.AdminGuiKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -43,11 +43,11 @@ public class AdminUpdatesPage extends InteractiveCustomUIPage<AdminUpdatesData> 
     AdminNavBarHelper.setupBar(playerRef, "updates", cmd, events);
 
     // Localize page title and labels
-    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_UPDATES));
-    cmd.set("#ComingSoon.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_UPDATES_HEADING));
-    cmd.set("#ComingSoonSub.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_COMING_SOON));
-    cmd.set("#Description.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_UPDATES_DESC1));
-    cmd.set("#Description2.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_UPDATES_DESC2));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_TITLE_UPDATES));
+    cmd.set("#ComingSoon.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_UPDATES_HEADING));
+    cmd.set("#ComingSoonSub.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_COMING_SOON));
+    cmd.set("#Description.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_UPDATES_DESC1));
+    cmd.set("#Description2.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_UPDATES_DESC2));
   }
 
   /** Handles data event. */

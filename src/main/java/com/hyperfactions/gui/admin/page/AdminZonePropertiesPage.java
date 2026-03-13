@@ -8,7 +8,8 @@ import com.hyperfactions.gui.admin.data.AdminZonePropertiesData;
 import com.hyperfactions.manager.ZoneManager;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.AdminGuiKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -75,28 +76,28 @@ public class AdminZonePropertiesPage extends InteractiveCustomUIPage<AdminZonePr
     AdminNavBarHelper.setupBar(playerRef, "zones", cmd, events);
 
     // Localize labels
-    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_TITLE_ZONE_PROPERTIES));
-    cmd.set("#GeneralHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZPROP_GENERAL));
-    cmd.set("#ZoneNameLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZPROP_ZONE_NAME));
-    cmd.set("#ZoneTypeLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZPROP_ZONE_TYPE));
-    cmd.set("#ChangeTypeBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZPROP_CHANGE_TYPE));
-    cmd.set("#NotificationsHeader.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZPROP_NOTIFICATIONS));
-    cmd.set("#UpperTitleLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZPROP_UPPER_DESC));
-    cmd.set("#LowerTitleLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZPROP_LOWER_DESC));
-    String saveText = HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_SAVE);
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_TITLE_ZONE_PROPERTIES));
+    cmd.set("#GeneralHeader.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZPROP_GENERAL));
+    cmd.set("#ZoneNameLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZPROP_ZONE_NAME));
+    cmd.set("#ZoneTypeLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZPROP_ZONE_TYPE));
+    cmd.set("#ChangeTypeBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZPROP_CHANGE_TYPE));
+    cmd.set("#NotificationsHeader.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZPROP_NOTIFICATIONS));
+    cmd.set("#UpperTitleLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZPROP_UPPER_DESC));
+    cmd.set("#LowerTitleLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZPROP_LOWER_DESC));
+    String saveText = HFMessages.get(playerRef, CommonKeys.Common.SAVE);
     cmd.set("#SaveNameBtn.Text", saveText);
     cmd.set("#SaveUpperBtn.Text", saveText);
     cmd.set("#SaveLowerBtn.Text", saveText);
-    String clearText = HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_CLEAR);
+    String clearText = HFMessages.get(playerRef, CommonKeys.Common.CLEAR);
     cmd.set("#ClearUpperBtn.Text", clearText);
     cmd.set("#ClearLowerBtn.Text", clearText);
-    cmd.set("#FlagsBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZPROP_EDIT_FLAGS));
-    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.GUI_ZPROP_BACK_TO_ZONES));
+    cmd.set("#FlagsBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZPROP_EDIT_FLAGS));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZPROP_BACK_TO_ZONES));
 
     // Get the zone
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      cmd.set("#ZoneName.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ZINT_ZONE_NOT_FOUND));
+      cmd.set("#ZoneName.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ZINT_ZONE_NOT_FOUND));
       cmd.set("#GeneralBox.Visible", false);
       cmd.set("#NotificationsBox.Visible", false);
       return;
@@ -172,11 +173,11 @@ public class AdminZonePropertiesPage extends InteractiveCustomUIPage<AdminZonePr
     // Upper title
     String upperCustom = zone.notifyTitleUpper();
     if (upperCustom != null && !upperCustom.isEmpty()) {
-      cmd.set("#UpperCurrent.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ZPROP_CURRENT_CUSTOM, upperCustom));
+      cmd.set("#UpperCurrent.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ZPROP_CURRENT_CUSTOM, upperCustom));
       cmd.set("#UpperTitleInput.Value", upperCustom);
     } else {
-      String defaultUpper = zone.isSafeZone() ? HFMessages.get(playerRef, MessageKeys.AdminGui.ZPROP_PVP_DISABLED) : HFMessages.get(playerRef, MessageKeys.AdminGui.ZPROP_PVP_ENABLED);
-      cmd.set("#UpperCurrent.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ZPROP_CURRENT_DEFAULT, defaultUpper));
+      String defaultUpper = zone.isSafeZone() ? HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ZPROP_PVP_DISABLED) : HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ZPROP_PVP_ENABLED);
+      cmd.set("#UpperCurrent.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ZPROP_CURRENT_DEFAULT, defaultUpper));
     }
 
     events.addEventBinding(
@@ -199,10 +200,10 @@ public class AdminZonePropertiesPage extends InteractiveCustomUIPage<AdminZonePr
     // Lower title
     String lowerCustom = zone.notifyTitleLower();
     if (lowerCustom != null && !lowerCustom.isEmpty()) {
-      cmd.set("#LowerCurrent.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ZPROP_CURRENT_CUSTOM, lowerCustom));
+      cmd.set("#LowerCurrent.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ZPROP_CURRENT_CUSTOM, lowerCustom));
       cmd.set("#LowerTitleInput.Value", lowerCustom);
     } else {
-      cmd.set("#LowerCurrent.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.ZPROP_CURRENT_DEFAULT, zone.name()));
+      cmd.set("#LowerCurrent.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ZPROP_CURRENT_DEFAULT, zone.name()));
     }
 
     events.addEventBinding(
@@ -288,7 +289,7 @@ public class AdminZonePropertiesPage extends InteractiveCustomUIPage<AdminZonePr
   private void handleSaveName(Player player, AdminZonePropertiesData data) {
     String newName = data.name;
     if (newName == null || newName.isBlank()) {
-      nameError = HFMessages.get(playerRef, MessageKeys.AdminGui.ZPROP_NAME_EMPTY);
+      nameError = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ZPROP_NAME_EMPTY);
       rebuildPage();
       return;
     }
@@ -299,11 +300,11 @@ public class AdminZonePropertiesPage extends InteractiveCustomUIPage<AdminZonePr
     switch (result) {
       case SUCCESS -> {
         nameError = null;
-        player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.ZPROP_RENAMED, newName));
+        player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ZPROP_RENAMED, newName));
       }
-      case NAME_TAKEN -> nameError = HFMessages.get(playerRef, MessageKeys.AdminGui.ZPROP_NAME_TAKEN);
-      case INVALID_NAME -> nameError = HFMessages.get(playerRef, MessageKeys.AdminGui.ZPROP_NAME_INVALID);
-      default -> nameError = HFMessages.get(playerRef, MessageKeys.AdminGui.ZPROP_RENAME_FAILED, result);
+      case NAME_TAKEN -> nameError = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ZPROP_NAME_TAKEN);
+      case INVALID_NAME -> nameError = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ZPROP_NAME_INVALID);
+      default -> nameError = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ZPROP_RENAME_FAILED, result);
     }
 
     rebuildPage();
@@ -327,38 +328,38 @@ public class AdminZonePropertiesPage extends InteractiveCustomUIPage<AdminZonePr
   private void handleSaveUpper(Player player, AdminZonePropertiesData data) {
     String upper = data.upperTitle;
     if (upper == null || upper.isBlank()) {
-      player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.ZPROP_UPPER_EMPTY));
+      player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZPROP_UPPER_EMPTY));
       sendUpdate();
       return;
     }
 
     zoneManager.setZoneNotifyTitle(zoneId, upper.trim(), null);
-    player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.ZPROP_UPPER_SET));
+    player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ZPROP_UPPER_SET));
     rebuildPage();
   }
 
   private void handleClearUpper(Player player) {
     zoneManager.setZoneNotifyTitle(zoneId, "clear", null);
-    player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.ZPROP_UPPER_RESET));
+    player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ZPROP_UPPER_RESET));
     rebuildPage();
   }
 
   private void handleSaveLower(Player player, AdminZonePropertiesData data) {
     String lower = data.lowerTitle;
     if (lower == null || lower.isBlank()) {
-      player.sendMessage(MessageUtil.adminError(playerRef, MessageKeys.AdminGui.ZPROP_LOWER_EMPTY));
+      player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZPROP_LOWER_EMPTY));
       sendUpdate();
       return;
     }
 
     zoneManager.setZoneNotifyTitle(zoneId, null, lower.trim());
-    player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.ZPROP_LOWER_SET));
+    player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ZPROP_LOWER_SET));
     rebuildPage();
   }
 
   private void handleClearLower(Player player) {
     zoneManager.setZoneNotifyTitle(zoneId, null, "clear");
-    player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.ZPROP_LOWER_RESET));
+    player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ZPROP_LOWER_RESET));
     rebuildPage();
   }
 

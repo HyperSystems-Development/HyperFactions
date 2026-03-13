@@ -3,7 +3,7 @@ package com.hyperfactions.gui.admin;
 import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.AdminGuiKeys;
 import com.hyperfactions.gui.admin.data.AdminNavAwareData;
 import com.hyperfactions.gui.shared.NavBarUtil;
 import com.hypixel.hytale.component.Ref;
@@ -52,7 +52,7 @@ public final class AdminNavBarHelper {
 
     // Nav bar is included in UI templates via $Nav.@HyperFactionsAdminNavBar
     // Localize the nav bar title
-    cmd.set("#AdminNavBarTitleLabel.Text", HFMessages.get(playerRef, MessageKeys.AdminGui.NAV_TITLE));
+    cmd.set("#AdminNavBarTitleLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.NAV_TITLE));
 
     // Create admin nav cards container and build buttons using shared utility
     cmd.appendInline("#HyperFactionsAdminNavBar #AdminNavBarButtons", "Group #AdminNavCards { LayoutMode: Left; }");

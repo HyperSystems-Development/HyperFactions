@@ -7,7 +7,9 @@ import com.hyperfactions.gui.admin.data.AdminDisbandConfirmData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.AdminGuiKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -60,11 +62,11 @@ public class AdminDisbandConfirmPage extends InteractiveCustomUIPage<AdminDisban
     cmd.append(UIPaths.DISBAND_CONFIRM);
 
     // Localize labels
-    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.DISBAND_TITLE));
-    cmd.set("#ConfirmText.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.DISBAND_PROMPT));
-    cmd.set("#WarningText.Text", HFMessages.get(playerRef, MessageKeys.ConfirmGui.DISBAND_WARNING));
-    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.CANCEL));
-    cmd.set("#ConfirmBtn.Text", HFMessages.get(playerRef, MessageKeys.Common.DISBAND));
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, GuiKeys.ConfirmGui.DISBAND_TITLE));
+    cmd.set("#ConfirmText.Text", HFMessages.get(playerRef, GuiKeys.ConfirmGui.DISBAND_PROMPT));
+    cmd.set("#WarningText.Text", HFMessages.get(playerRef, GuiKeys.ConfirmGui.DISBAND_WARNING));
+    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, CommonKeys.Common.CANCEL));
+    cmd.set("#ConfirmBtn.Text", HFMessages.get(playerRef, CommonKeys.Common.DISBAND));
 
     // Set faction name in the modal
     cmd.set("#FactionName.Text", factionName);
@@ -109,7 +111,7 @@ public class AdminDisbandConfirmPage extends InteractiveCustomUIPage<AdminDisban
         // Re-fetch faction to verify it still exists
         Faction faction = factionManager.getFaction(factionId);
         if (faction == null) {
-          player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.DISBAND_FACTION_GONE));
+          player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.DISBAND_FACTION_GONE));
           guiManager.openAdminMain(player, ref, store, playerRef);
           return;
         }
@@ -119,12 +121,12 @@ public class AdminDisbandConfirmPage extends InteractiveCustomUIPage<AdminDisban
         if (leaderId != null) {
           FactionManager.FactionResult result = factionManager.disbandFaction(factionId, leaderId);
           if (result == FactionManager.FactionResult.SUCCESS) {
-            player.sendMessage(MessageUtil.adminSuccess(playerRef, MessageKeys.AdminGui.DISBAND_SUCCESS, factionName));
+            player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.DISBAND_SUCCESS, factionName));
           } else {
-            player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.DISBAND_FAILED, result));
+            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.DISBAND_FAILED, result));
           }
         } else {
-          player.sendMessage(MessageUtil.errorText(playerRef, MessageKeys.AdminGui.DISBAND_NO_LEADER));
+          player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.DISBAND_NO_LEADER));
         }
 
         // Return to admin page (will show updated list)

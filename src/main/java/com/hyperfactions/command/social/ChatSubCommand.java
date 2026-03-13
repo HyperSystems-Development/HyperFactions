@@ -6,7 +6,7 @@ import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.ChatManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -70,7 +70,7 @@ public class ChatSubCommand extends FactionSubCommand {
           yield new ChatManager.ToggleResult(ChatManager.ChatResult.SUCCESS, ChatManager.ChatChannel.NORMAL);
         }
         default -> {
-          ctx.sendMessage(MessageUtil.error(player, MessageKeys.Chat.USAGE));
+          ctx.sendMessage(MessageUtil.error(player, CommandKeys.Chat.USAGE));
           yield null;
         }
       };
@@ -81,7 +81,7 @@ public class ChatSubCommand extends FactionSubCommand {
     }
 
     if (!result.isSuccess()) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Chat.NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Chat.NO_PERMISSION));
       return;
     }
 
@@ -89,6 +89,6 @@ public class ChatSubCommand extends FactionSubCommand {
     String display = ChatManager.getChannelDisplay(channel);
     String color = ChatManager.getChannelColor(channel);
 
-    ctx.sendMessage(MessageUtil.info(player, MessageKeys.Chat.MODE_SET, color, display));
+    ctx.sendMessage(MessageUtil.info(player, CommandKeys.Chat.MODE_SET, color, display));
   }
 }

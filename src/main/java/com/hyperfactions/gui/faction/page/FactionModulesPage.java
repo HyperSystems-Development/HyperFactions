@@ -9,7 +9,7 @@ import com.hyperfactions.gui.faction.NavBarHelper;
 import com.hyperfactions.gui.faction.data.FactionModulesData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -33,10 +33,10 @@ public class FactionModulesPage extends InteractiveCustomUIPage<FactionModulesDa
 
   // Module definitions for the 2x2 grid (treasury state is dynamic)
   private static final List<ModuleInfo> MODULES = List.of(
-      new ModuleInfo("treasury", MessageKeys.ModulesGui.TREASURY_NAME, MessageKeys.ModulesGui.TREASURY_DESC, "#fbbf24"),
-      new ModuleInfo("raids", MessageKeys.ModulesGui.RAIDS_NAME, MessageKeys.ModulesGui.RAIDS_DESC, "#ef4444"),
-      new ModuleInfo("levels", MessageKeys.ModulesGui.LEVELS_NAME, MessageKeys.ModulesGui.LEVELS_DESC, "#22c55e"),
-      new ModuleInfo("war", MessageKeys.ModulesGui.WAR_NAME, MessageKeys.ModulesGui.WAR_DESC, "#a855f7")
+      new ModuleInfo("treasury", GuiKeys.ModulesGui.TREASURY_NAME, GuiKeys.ModulesGui.TREASURY_DESC, "#fbbf24"),
+      new ModuleInfo("raids", GuiKeys.ModulesGui.RAIDS_NAME, GuiKeys.ModulesGui.RAIDS_DESC, "#ef4444"),
+      new ModuleInfo("levels", GuiKeys.ModulesGui.LEVELS_NAME, GuiKeys.ModulesGui.LEVELS_DESC, "#22c55e"),
+      new ModuleInfo("war", GuiKeys.ModulesGui.WAR_NAME, GuiKeys.ModulesGui.WAR_DESC, "#a855f7")
   );
 
   private final PlayerRef playerRef;
@@ -72,9 +72,9 @@ public class FactionModulesPage extends InteractiveCustomUIPage<FactionModulesDa
     cmd.append(UIPaths.FACTION_MODULES);
 
     // Localize static labels
-    cmd.set("#ModulesTitle.Text", HFMessages.get(playerRef, MessageKeys.ModulesGui.TITLE));
-    cmd.set("#ModulesDescription.Text", HFMessages.get(playerRef, MessageKeys.ModulesGui.DESCRIPTION));
-    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, MessageKeys.ModulesGui.BACK_BTN));
+    cmd.set("#ModulesTitle.Text", HFMessages.get(playerRef, GuiKeys.ModulesGui.TITLE));
+    cmd.set("#ModulesDescription.Text", HFMessages.get(playerRef, GuiKeys.ModulesGui.DESCRIPTION));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, GuiKeys.ModulesGui.BACK_BTN));
 
     // Setup navigation bar
     NavBarHelper.setupBar(playerRef, faction, PAGE_ID, cmd, events);
@@ -96,7 +96,7 @@ public class FactionModulesPage extends InteractiveCustomUIPage<FactionModulesDa
         buildTreasuryCard(cmd, events, cardSelector);
       } else {
         // Other modules: coming soon
-        cmd.set(cardSelector + " #StatusBadge.Text", HFMessages.get(playerRef, MessageKeys.ModulesGui.COMING_SOON));
+        cmd.set(cardSelector + " #StatusBadge.Text", HFMessages.get(playerRef, GuiKeys.ModulesGui.COMING_SOON));
         cmd.set(cardSelector + " #StatusBadge.Style.TextColor", "#888888");
       }
     }
@@ -168,10 +168,10 @@ public class FactionModulesPage extends InteractiveCustomUIPage<FactionModulesDa
   private void buildTreasuryCard(UICommandBuilder cmd, UIEventBuilder events, String cardSelector) {
     if (hyperFactions.isTreasuryEnabled()) {
       // State 1: Active
-      cmd.set(cardSelector + " #StatusBadge.Text", HFMessages.get(playerRef, MessageKeys.ModulesGui.ACTIVE));
+      cmd.set(cardSelector + " #StatusBadge.Text", HFMessages.get(playerRef, GuiKeys.ModulesGui.ACTIVE));
       cmd.set(cardSelector + " #StatusBadge.Style.TextColor", "#22c55e");
       cmd.set(cardSelector + " #ModuleBtn.Visible", true);
-      cmd.set(cardSelector + " #ModuleBtn.Text", HFMessages.get(playerRef, MessageKeys.ModulesGui.VIEW_TREASURY));
+      cmd.set(cardSelector + " #ModuleBtn.Text", HFMessages.get(playerRef, GuiKeys.ModulesGui.VIEW_TREASURY));
       events.addEventBinding(
           CustomUIEventBindingType.Activating,
           cardSelector + " #ModuleBtn",
@@ -182,14 +182,14 @@ public class FactionModulesPage extends InteractiveCustomUIPage<FactionModulesDa
       String reason = hyperFactions.getTreasuryDisabledReason();
       if (reason != null && reason.contains("economy plugin")) {
         // State 3: Config enabled but no economy plugin
-        cmd.set(cardSelector + " #StatusBadge.Text", HFMessages.get(playerRef, MessageKeys.ModulesGui.UNAVAILABLE));
+        cmd.set(cardSelector + " #StatusBadge.Text", HFMessages.get(playerRef, GuiKeys.ModulesGui.UNAVAILABLE));
         cmd.set(cardSelector + " #StatusBadge.Style.TextColor", "#fbbf24");
-        cmd.set(cardSelector + " #ModuleDesc.Text", HFMessages.get(playerRef, MessageKeys.ModulesGui.NO_ECONOMY));
+        cmd.set(cardSelector + " #ModuleDesc.Text", HFMessages.get(playerRef, GuiKeys.ModulesGui.NO_ECONOMY));
       } else {
         // State 2: Disabled by server config
-        cmd.set(cardSelector + " #StatusBadge.Text", HFMessages.get(playerRef, MessageKeys.ModulesGui.DISABLED));
+        cmd.set(cardSelector + " #StatusBadge.Text", HFMessages.get(playerRef, GuiKeys.ModulesGui.DISABLED));
         cmd.set(cardSelector + " #StatusBadge.Style.TextColor", "#888888");
-        cmd.set(cardSelector + " #ModuleDesc.Text", HFMessages.get(playerRef, MessageKeys.ModulesGui.ECONOMY_NOT_AVAILABLE));
+        cmd.set(cardSelector + " #ModuleDesc.Text", HFMessages.get(playerRef, GuiKeys.ModulesGui.ECONOMY_NOT_AVAILABLE));
       }
     }
   }

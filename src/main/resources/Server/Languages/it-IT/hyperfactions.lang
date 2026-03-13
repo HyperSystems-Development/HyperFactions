@@ -451,3 +451,452 @@ teleport.mount_entry_blocked = Non puoi entrare in questa zona mentre sei in sel
 chat.display.public = Pubblico
 chat.display.faction = Fazione
 chat.display.ally = Alleato
+
+# ========== Sistema di Aiuto ==========
+help.commands_label = Comandi:
+help.default_footer = Usa /f <comando> per maggiori dettagli
+help.title = HyperFactions
+help.description = Gestione fazioni e controllo del territorio
+
+# Sezioni dell'aiuto
+help.section.core = Principali
+help.section.management = Gestione
+help.section.territory = Territorio
+help.section.relations = Relazioni
+help.section.teleport = Teletrasporto
+help.section.information = Informazioni
+help.section.other = Altro
+help.section.admin = Admin
+
+# Descrizioni comandi dell'aiuto (Principali)
+help.cmd.create = Crea una fazione
+help.cmd.disband = Sciogli la tua fazione
+help.cmd.invite = Invita un giocatore
+help.cmd.accept = Accetta un invito
+help.cmd.request = Richiedi di unirti a una fazione
+help.cmd.leave = Abbandona la tua fazione
+help.cmd.kick = Espelli un membro
+
+# Descrizioni comandi dell'aiuto (Gestione)
+help.cmd.rename = Rinomina la tua fazione
+help.cmd.desc = Imposta la descrizione della fazione
+help.cmd.color = Imposta il colore della fazione
+help.cmd.open = Consenti a chiunque di unirsi
+help.cmd.close = Richiedi invito per unirsi
+help.cmd.promote = Promuovi a ufficiale
+help.cmd.demote = Retrocedi a membro
+help.cmd.transfer = Trasferisci la leadership
+
+# Descrizioni comandi dell'aiuto (Territorio)
+help.cmd.claim = Rivendica questo chunk
+help.cmd.unclaim = Rinuncia a questo chunk
+help.cmd.overclaim = Conquista territorio nemico
+help.cmd.map = Visualizza la mappa del territorio
+
+# Descrizioni comandi dell'aiuto (Relazioni)
+help.cmd.ally = Richiedi un'alleanza
+help.cmd.enemy = Dichiara nemico
+help.cmd.neutral = Imposta relazione neutrale
+
+# Descrizioni comandi dell'aiuto (Teletrasporto)
+help.cmd.home = Teletrasportati alla base della fazione
+help.cmd.sethome = Imposta la base della fazione
+help.cmd.stuck = Esci dal territorio nemico
+
+# Descrizioni comandi dell'aiuto (Informazioni)
+help.cmd.info = Visualizza informazioni sulla fazione
+help.cmd.list = Elenca tutte le fazioni
+help.cmd.browse = Sfoglia le fazioni (alias di list)
+help.cmd.members = Visualizza i membri della fazione
+help.cmd.invites = Gestisci inviti/richieste
+help.cmd.who = Visualizza informazioni sul giocatore
+help.cmd.power = Visualizza livello di potere
+help.cmd.gui = Apri la GUI della fazione
+help.cmd.settings = Apri le impostazioni della fazione
+
+# Descrizioni comandi dell'aiuto (Altro)
+help.cmd.chat = Invia un messaggio nella chat di fazione
+help.cmd.chat_short = Chat di fazione (abbreviata)
+
+# Descrizioni comandi dell'aiuto (Admin nell'aiuto principale)
+help.cmd.admin = Apri la GUI admin
+help.cmd.admin_reload = Ricarica la configurazione
+help.cmd.admin_sync = Sincronizza i dati dal disco
+help.cmd.admin_factions = Gestisci le fazioni
+help.cmd.admin_zones = Gestisci le zone
+help.cmd.admin_config = Visualizza/modifica la configurazione
+help.cmd.admin_backups = Gestisci i backup
+help.cmd.admin_update = Controlla aggiornamenti
+help.cmd.admin_debug = Comandi di debug
+
+# Pagina aiuto admin
+help.admin.title = Comandi Admin
+help.admin.description = Amministrazione del server
+help.admin.cmd.dashboard = Apri la GUI del pannello admin
+help.admin.cmd.factions = Gestisci tutte le fazioni
+help.admin.cmd.zone = Gestione zone
+help.admin.cmd.config = Configurazione del server
+help.admin.cmd.backup = Gestione backup
+help.admin.cmd.import_cmd = Importa da altri plugin
+help.admin.cmd.update = Controlla e scarica aggiornamenti
+help.admin.cmd.update_mixin = Aggiorna HyperProtect-Mixin
+help.admin.cmd.update_toggle = Attiva/disattiva auto-download HP-Mixin
+help.admin.cmd.rollback = Ripristina versione precedente
+help.admin.cmd.reload = Ricarica la configurazione
+help.admin.cmd.sync = Sincronizza i dati dal disco
+help.admin.cmd.debug = Comandi di debug
+help.admin.cmd.decay = Gestione decadimento territori
+help.admin.cmd.map = Gestione mappa del mondo
+help.admin.cmd.safezone = Crea SafeZone + rivendica chunk
+help.admin.cmd.warzone = Crea WarZone + rivendica chunk
+help.admin.cmd.removezone = Rimuovi chunk dalla zona
+help.admin.cmd.zoneflag = Imposta flag della zona
+help.admin.cmd.integrations = Riepilogo di tutte le integrazioni
+help.admin.cmd.integration = Stato dettagliato dell'integrazione
+help.admin.cmd.clearhistory = Cancella la cronologia di appartenenza del giocatore
+help.admin.cmd.power = Gestione potere admin
+help.admin.cmd.economy = Gestione economia/tesoreria
+help.admin.cmd.economy_upkeep = Attiva manualmente la riscossione del mantenimento
+help.admin.cmd.info = Visualizza GUI info fazione admin
+help.admin.cmd.who = Visualizza GUI info giocatore admin
+help.admin.cmd.log = Visualizza registro attività globale
+help.admin.cmd.world = Gestione impostazioni per mondo
+help.admin.cmd.version = Visualizza versione mod e stato integrazioni
+help.admin.cmd.sentry = Visualizza stato Sentry
+help.admin.cmd.sentry_disable = Disattiva segnalazione errori Sentry
+help.admin.cmd.sentry_enable = Attiva segnalazione errori Sentry
+help.admin.cmd.test_gui = Apri pagina di test elementi UI
+help.admin.cmd.test_sentry = Invia un errore di test a Sentry
+help.admin.cmd.test_md = Apri pagina di test rendering markdown
+
+# Sotto-aiuto: Backup
+help.backup.title = Gestione Backup
+help.backup.description = Schema di rotazione GFS
+help.backup.cmd.create = Crea backup manuale
+help.backup.cmd.list = Elenca tutti i backup raggruppati per tipo
+help.backup.cmd.restore = Ripristina da backup (richiede conferma)
+help.backup.cmd.delete = Elimina un backup
+
+# Sotto-aiuto: Debug
+help.debug.title = Comandi di Debug
+help.debug.description = Diagnostica e risoluzione problemi
+help.debug.cmd.toggle = Attiva/disattiva il logging di debug
+help.debug.cmd.status = Mostra stato del debug
+help.debug.cmd.power = Mostra dettagli del potere
+help.debug.cmd.claim = Mostra informazioni sul territorio
+help.debug.cmd.protection = Mostra informazioni sulla protezione
+help.debug.cmd.combat = Mostra stato del tag combattimento
+help.debug.cmd.relation = Mostra informazioni sulle relazioni
+
+# Sotto-aiuto: Potere
+help.power.title = Potere Admin
+help.power.description = Gestisci potere giocatore/fazione
+help.power.cmd.set = Imposta potere esatto
+help.power.cmd.add = Aumenta potere
+help.power.cmd.remove = Diminuisci potere
+help.power.cmd.reset = Ripristina al valore predefinito
+help.power.cmd.setmax = Imposta override potere massimo
+help.power.cmd.resetmax = Rimuovi override massimo
+help.power.cmd.noloss = Attiva/disattiva bypass perdita potere
+help.power.cmd.nodecay = Attiva/disattiva esenzione decadimento
+help.power.cmd.faction = Operazioni a livello di fazione
+help.power.cmd.info = Mostra dettagli potere del giocatore
+
+# Sotto-aiuto: Economia
+help.economy.title = Economia Admin
+help.economy.description = Gestisci le tesorerie delle fazioni
+help.economy.cmd.balance = Mostra saldo della fazione
+help.economy.cmd.set = Imposta saldo esatto
+help.economy.cmd.add = Aggiungi al saldo
+help.economy.cmd.take = Deduci dal saldo
+help.economy.cmd.total = Mostra saldo totale del server
+help.economy.cmd.reset = Azzera il saldo
+help.economy.cmd.upkeep = Attiva manualmente la riscossione del mantenimento
+
+# Sotto-aiuto: Mondo
+help.world.title = Impostazioni Mondo
+help.world.description = Configurazione per mondo
+help.world.cmd.list = Elenca tutti i mondi configurati
+help.world.cmd.info = Mostra le impostazioni di un mondo
+help.world.cmd.set = Imposta un'impostazione del mondo
+help.world.cmd.reset = Rimuovi impostazioni specifiche del mondo
+
+# Sotto-aiuto: Mappa
+help.map.title = Mappa del Mondo
+help.map.description = Gestione overlay della mappa
+help.map.cmd.status = Mostra stato e statistiche della mappa del mondo
+help.map.cmd.refresh = Forza aggiornamento immediato della mappa
+
+# Sotto-aiuto: Decadimento
+help.decay.title = Decadimento Territori
+help.decay.description = Rimuove automaticamente i territori delle fazioni inattive
+help.decay.cmd.status = Mostra stato del decadimento
+help.decay.cmd.run = Attiva manualmente il decadimento dei territori
+help.decay.cmd.check = Controlla stato di decadimento della fazione
+
+# Sotto-aiuto: Importazione
+help.import.title = Comandi di Importazione
+help.import.description = Migra da altri plugin di fazioni
+help.import.cmd.hyfactions = Importa dal mod HyFactions
+help.import.path.hyfactions = Percorso predefinito: mods/Kaws_Hyfaction
+help.import.cmd.elbaphfactions = Importa dal mod ElbaphFactions
+help.import.path.elbaphfactions = Percorso predefinito: mods/ElbaphFactions
+help.import.cmd.factionsx = Importa dal mod FactionsX
+help.import.path.factionsx = Percorso predefinito: mods/FactionsX
+help.import.cmd.simpleclaims = Importa dal mod SimpleClaims
+help.import.path.simpleclaims = Percorso predefinito: Server/universe/SimpleClaims
+help.import.flags_header = Flag:
+help.import.flag.dryrun = Simula senza modifiche
+help.import.flag.overwrite = Sostituisci fazioni esistenti
+help.import.flag.nozones = Salta importazione zone
+help.import.flag.nopower = Salta distribuzione potere
+
+# Sotto-aiuto: Test
+help.test.title = Comandi di Test
+help.test.description = Strumenti di test per lo sviluppo
+help.test.cmd.gui = Apri pagina di test elementi UI
+help.test.cmd.sentry = Invia errore di test a Sentry
+help.test.cmd.md = Apri pagina di test rendering markdown
+
+# ========== Messaggi Admin CLI ==========
+admincmd.no_permission = Non hai il permesso.
+admincmd.player_only = Questo comando può essere usato solo da un giocatore.
+admincmd.player_context = Contesto giocatore non disponibile.
+admincmd.entity_not_found = Impossibile trovare l'entità del giocatore.
+admincmd.unknown_command = Comando admin sconosciuto. Usa /f admin help
+admincmd.faction_not_found = Fazione non trovata.
+admincmd.player_not_found = Giocatore non trovato: {0}
+admincmd.invalid_number = Numero non valido: {0}
+admincmd.amount_positive = L'importo deve essere positivo.
+admincmd.balance_not_negative = Il saldo non può essere negativo.
+admincmd.error_generic = Si è verificato un errore.
+
+# Admin - Ricarica/Sincronizzazione
+admincmd.reload.success = Configurazione ricaricata.
+admincmd.sync.start = Sincronizzazione dati delle fazioni dal disco...
+admincmd.sync.complete = Sincronizzazione completata: {0} fazioni aggiornate, {1} membri aggiunti, {2} membri aggiornati.
+admincmd.sync.failed = Sincronizzazione fallita: {0}
+
+# Admin - Versione
+admincmd.version.title = Informazioni Versione
+admincmd.version.server = Hytale Server: {0}
+admincmd.version.java = Java: {0}
+admincmd.version.treasury = Tesoreria: {0}
+admincmd.version.active = Attivo
+admincmd.version.not_found = Non trovato
+
+# Admin - Sentry
+admincmd.sentry.header = Sentry - Segnalazione Errori
+admincmd.sentry.config = Configurazione: {0}
+admincmd.sentry.status = Stato: {0}
+admincmd.sentry.already_disabled = Sentry è già disattivato.
+admincmd.sentry.already_enabled = Sentry è già attivato.
+admincmd.sentry.disabled = Sentry disattivato e configurazione salvata. La segnalazione errori è ora disattivata.
+admincmd.sentry.enabled = Sentry attivato e configurazione salvata. La segnalazione errori è ora attiva.
+admincmd.sentry.usage = Uso: /f admin sentry [disable|enable]
+admincmd.sentry.not_initialized = Sentry non è inizializzato. Controlla config/debug.json
+admincmd.sentry.test_sent = Errore di test inviato a Sentry. Controlla la dashboard di Sentry.
+admincmd.sentry.test_failed = Impossibile inviare l'evento di test.
+
+# Admin - Backup
+admincmd.backup.no_permission = Non hai il permesso di gestire i backup.
+admincmd.backup.creating = Creazione backup in corso...
+admincmd.backup.created = Backup creato con successo!
+admincmd.backup.name = Nome: {0}
+admincmd.backup.size = Dimensione: {0}
+admincmd.backup.failed = Backup fallito: {0}
+admincmd.backup.none = Nessun backup trovato.
+admincmd.backup.header = Backup
+admincmd.backup.not_found = Backup '{0}' non trovato.
+admincmd.backup.unknown_command = Comando backup sconosciuto: {0}
+admincmd.backup.usage_restore = Uso: /f admin backup restore <nome>
+admincmd.backup.usage_delete = Uso: /f admin backup delete <nome>
+admincmd.backup.restore_warning = ATTENZIONE: Il ripristino sovrascriverà i dati attuali!
+admincmd.backup.restore_confirm = Digita il comando di nuovo entro {0} secondi per confermare.
+admincmd.backup.restoring = Ripristino backup in corso...
+admincmd.backup.restored = Backup ripristinato con successo! Dati ricaricati.
+admincmd.backup.restore_failed = Ripristino fallito: {0}
+admincmd.backup.confirm_cancelled = Conferma precedente annullata. Digita di nuovo per confermare il ripristino.
+admincmd.backup.deleted = Backup '{0}' eliminato
+admincmd.backup.delete_failed = Impossibile eliminare il backup.
+
+# Admin - Debug
+admincmd.debug.no_permission = Non hai il permesso di usare i comandi di debug.
+admincmd.debug.unknown_command = Comando debug sconosciuto: {0}
+admincmd.debug.player_only = Questo comando di debug può essere usato solo da un giocatore.
+admincmd.debug.toggle_set = Categoria di debug '{0}' impostata su {1} (salvata)
+admincmd.debug.all_enabled = Tutte le categorie di debug attivate.
+admincmd.debug.all_disabled = Tutte le categorie di debug disattivate.
+admincmd.debug.unknown_category = Categoria sconosciuta: {0}
+admincmd.debug.not_implemented = Informazioni debug {0} non ancora implementate.
+
+# Admin - Economia
+admincmd.econ.disabled = Il sistema economico non è attivato.
+admincmd.econ.unknown_command = Comando economia sconosciuto. Usa /f admin economy help
+admincmd.econ.set = Saldo di {0} impostato a {1} (era {2})
+admincmd.econ.added = Aggiunto {0} a {1} (saldo: {2})
+admincmd.econ.deducted = Dedotto {0} da {1} (saldo: {2})
+admincmd.econ.reset = Saldo di {0} azzerato a {1} (era {2})
+admincmd.econ.failed = Errore: {0}
+admincmd.econ.total_header = Statistiche Economia del Server
+admincmd.econ.upkeep_disabled = Il sistema di mantenimento non è attivato.
+admincmd.econ.upkeep_trigger = Attivazione manuale della riscossione del mantenimento...
+admincmd.econ.upkeep_complete = Riscossione del mantenimento completata. Controlla il log del server per i dettagli.
+admincmd.econ.upkeep_failed = Riscossione del mantenimento fallita: {0}
+
+# Admin - Potere
+admincmd.power.no_permission = Non hai il permesso.
+admincmd.power.unknown_command = Comando potere sconosciuto. Usa /f admin power help
+admincmd.power.max_positive = Il potere massimo deve essere positivo.
+admincmd.power.faction_unknown_action = Azione potere fazione sconosciuta. Usa: set, add, remove, reset
+
+# Admin - Cancella Cronologia
+admincmd.history.no_data = Nessun dato giocatore trovato per {0}.
+admincmd.history.empty = {0} non ha cronologia di appartenenza.
+admincmd.history.cleared = Cancellati {0} record di cronologia per {1}.
+admincmd.history.cleared_reinit = Cancellati {0} record di cronologia per {1} (reinizializzato con fazione attuale: {2}).
+
+# Admin - Zone
+admincmd.zone.created = Creata {0} '{1}' a {2}, {3}
+admincmd.zone.chunk_claimed = Impossibile creare la zona: Questo chunk è rivendicato da una fazione.
+admincmd.zone.already_exists = Una zona esiste già in questa posizione.
+admincmd.zone.name_taken = Una zona con quel nome esiste già.
+admincmd.zone.not_found = Zona '{0}' non trovata.
+admincmd.zone.unclaimed = Chunk rimosso dalla zona.
+admincmd.zone.no_chunk = Nessun chunk di zona trovato in questa posizione.
+admincmd.zone.none = Nessuna zona definita.
+admincmd.zone.deleted = Zona '{0}' eliminata ({1} chunk rilasciati)
+admincmd.zone.renamed = Zona '{0}' rinominata in '{1}'
+admincmd.zone.invalid_type = Tipo di zona non valido. Usa 'safe' o 'war'
+admincmd.zone.invalid_name = Nome zona non valido. Deve essere tra 1 e 32 caratteri.
+admincmd.zone.claimed_radius = Rivendicati {0} chunk per la zona '{1}'
+admincmd.zone.no_chunks_claimed = Nessun chunk rivendicabile (tutti occupati o già in una zona).
+admincmd.zone.unknown_command = Comando zona sconosciuto. Usa /f admin help
+admincmd.zone.chunk_has_zone = Questo chunk appartiene già a un'altra zona.
+admincmd.zone.chunk_has_faction = Questo chunk è rivendicato da una fazione.
+admincmd.zone.notify_set = Notifica di ingresso della zona '{0}' {1}
+admincmd.zone.title_set = Impostato titolo {0} per la zona '{1}' a: {2}
+admincmd.zone.title_cleared = Cancellato titolo {0} per la zona '{1}' (uso predefinito)
+admincmd.zone.no_zone_at = Nessuna zona nella tua posizione. Entra in una zona per gestirne i flag.
+admincmd.zone.flag_cleared = Flag '{0}' cancellato (ora usa il predefinito: {1})
+admincmd.zone.flag_set = Flag '{0}' impostato su {1}
+admincmd.zone.flag_invalid = Flag non valido: {0}
+admincmd.zone.flags_cleared = Cancellati tutti i flag personalizzati per '{0}' — ora usa i predefiniti del tipo di zona.
+
+# Admin - Mondo
+admincmd.world.unknown_command = Comando mondo sconosciuto. Usa /f admin world help
+admincmd.world.no_settings = Nessuna impostazione per mondo configurata.
+admincmd.world.unknown_setting = Impostazione sconosciuta: {0}
+admincmd.world.set = Impostato {0}={1} per il mondo {2}
+admincmd.world.reset = Rimosse le impostazioni per mondo per: {0}
+admincmd.world.not_found = Nessuna impostazione trovata per il mondo: {0}
+
+# Admin - Mappa/Decadimento
+admincmd.map.not_available = Il servizio mappa del mondo non è disponibile.
+admincmd.map.refreshing = Aggiornamento forzato della mappa del mondo...
+admincmd.map.refreshed = Aggiornamento mappa del mondo completato.
+admincmd.map.unknown_command = Comando mappa sconosciuto: {0}
+admincmd.decay.disabled = Il decadimento dei territori è disattivato nella configurazione.
+admincmd.decay.running = Esecuzione del controllo decadimento...
+admincmd.decay.complete = Controllo decadimento completato. Controlla la console per i dettagli.
+admincmd.decay.unknown_command = Comando decadimento sconosciuto: {0}
+
+# Admin - Aggiornamento
+admincmd.update.not_available = Il controllo aggiornamenti non è disponibile.
+admincmd.update.checking = Controllo aggiornamenti in corso...
+admincmd.update.up_to_date = Il plugin è già aggiornato (v{0})
+admincmd.update.available = Aggiornamento disponibile: v{0}
+admincmd.update.unknown_target = Obiettivo di aggiornamento sconosciuto: {0}
+
+# Admin - Importazione
+admincmd.import.unknown_source = Sorgente di importazione sconosciuta: {0}
+admincmd.import.importing = Importazione da {0} in corso...
+admincmd.import.complete = Importazione da {0} {1}completata!
+admincmd.import.failed = Importazione da {0} fallita con errori:
+
+# Admin - Update Notifications (login messages)
+admincmd.update_notify.new_version = [HyperFactions] Una nuova versione è disponibile!
+admincmd.update_notify.version_info = Attuale: v{0} -> Ultima: v{1}
+admincmd.update_notify.instruction = Esegui /f admin update per aggiornare il plugin.
+admincmd.update_notify.up_to_date = [HyperFactions] Il plugin è aggiornato (v{0})
+admincmd.update.no_info = Nessuna informazione di aggiornamento disponibile.
+admincmd.update.creating_backup = Creazione backup pre-aggiornamento...
+admincmd.update.backup_created = Backup creato: {0}
+admincmd.update.backup_warning = Attenzione: Backup fallito - {0}
+admincmd.update.backup_continue = Continuando con l'aggiornamento comunque...
+admincmd.update.downloading = Scaricamento di HyperFactions v{0}...
+admincmd.update.download_failed = Scaricamento fallito. Controlla i log del server.
+admincmd.update.downloaded = Aggiornamento scaricato con successo!
+admincmd.update.file_label = File: {0}
+admincmd.update.cleanup = Pulizia: {0} backup vecchio/i rimosso/i
+admincmd.update.kept_backup = Mantenuto: {0} (per rollback)
+admincmd.update.restart = Riavvia il server per applicare l'aggiornamento.
+admincmd.update.use_rollback = Usa /f admin rollback per annullare prima del riavvio.
+admincmd.update.usage_hf = /f admin update — aggiorna HyperFactions
+admincmd.update.usage_mixin = /f admin update mixin — aggiorna HyperProtect-Mixin
+admincmd.update.usage_toggle = /f admin update toggle-mixin-download — attiva/disattiva download automatico
+admincmd.update.mixin_current = HyperProtect-Mixin: {0}
+admincmd.update.mixin_up_to_date = HyperProtect-Mixin è aggiornato.
+admincmd.update.mixin_none = Nessuna release di HyperProtect-Mixin ancora disponibile.
+admincmd.update.mixin_available = Disponibile: v{0}
+admincmd.update.mixin_downloading = Scaricamento di HyperProtect-Mixin v{0}...
+admincmd.update.mixin_downloaded = Scaricato con successo!
+admincmd.update.mixin_failed = Scaricamento fallito. Controlla i log del server.
+admincmd.update.mixin_location = Posizione: earlyplugins/
+admincmd.update.mixin_restart = Riavvia il server per applicare.
+admincmd.update.mixin_auto_on = Download automatico HP-Mixin attivato.
+admincmd.update.mixin_auto_on_desc = HyperProtect-Mixin verrà scaricato automaticamente al prossimo avvio se non installato.
+admincmd.update.mixin_auto_off = Download automatico HP-Mixin disattivato.
+admincmd.update.mixin_auto_off_desc = Usa /f admin update mixin per scaricare manualmente.
+admincmd.rollback.no_backup = Nessun JAR di backup trovato per il rollback.
+admincmd.rollback.unsafe = Impossibile eseguire il rollback automaticamente!
+admincmd.rollback.unsafe_reason = Il server è stato riavviato dall'ultimo aggiornamento.
+admincmd.rollback.unsafe_migration = Le migrazioni di configurazione/dati potrebbero essere state applicate.
+admincmd.rollback.instructions = Per un rollback sicuro, devi:
+admincmd.rollback.find_backup = Usa /f admin backup list per trovare il backup pre-aggiornamento.
+admincmd.rollback.rolling = Ripristino aggiornamento...
+admincmd.rollback.from = Da: v{0} (nuova)
+admincmd.rollback.to = A: v{0} (precedente)
+admincmd.rollback.version = Ripristino a v{0}...
+admincmd.rollback.success = Rollback riuscito!
+admincmd.rollback.restored = Ripristinato: {0}
+admincmd.rollback.removed = Rimosso: {0}
+admincmd.rollback.restart = Riavvia il server per applicare il rollback.
+admincmd.rollback.failed = Rollback fallito: {0}
+admincmd.zone.failed = Fallito: {0}
+admincmd.zone.failed_delete = Impossibile eliminare la zona: {0}
+admincmd.zone.failed_rename = Impossibile rinominare la zona: {0}
+admincmd.zone.failed_flags = Impossibile resettare i flag.
+admincmd.zone.failed_flag = Impossibile impostare il flag.
+admincmd.zone.list_header = Zone ({0})
+admincmd.zone.info_header = Zona: {0}
+admincmd.zone.info_notify = Notifica: {0}
+admincmd.zone.info_upper_title = Titolo superiore: {0}
+admincmd.zone.info_lower_title = Titolo inferiore: {0}
+admincmd.zone.info_custom_flags = Flag personalizzati:
+admincmd.zone.flags_header = Flag della Zona: {0}
+admincmd.zone.flags_type = Tipo di Zona: {0}
+admincmd.zone.player_only = Questo comando può essere usato solo da un giocatore.
+admincmd.decay.status_header = Stato Decadimento Territori
+admincmd.decay.enable_hint = Imposta claims.decayEnabled su true per attivare.
+admincmd.decay.error = Errore durante il decadimento: {0}
+admincmd.decay.check_header = Controllo Decadimento: {0}
+admincmd.decay.check_not_found = Fazione '{0}' non trovata.
+admincmd.decay.no_claims = Nessun territorio da far decadere.
+admincmd.decay.disabled_globally = Disabilitato globalmente
+admincmd.map.status_header = Stato Mappa Mondiale
+admincmd.debug.status_header = Stato Registrazione Debug
+admincmd.debug.full_status_header = Stato Debug HyperFactions
+common.no_description = Nessuna descrizione impostata.
+common.member_count = {0} membri
+common.economy_disabled = Il sistema economico non è abilitato.
+territory.display.wilderness = Terre Selvagge
+territory.display.safezone = Zona Sicura
+territory.display.warzone = Zona di Guerra
+territory.display.unknown_faction = Fazione Sconosciuta
+territory.secondary.pvp_disabled = PvP Disabilitato
+territory.secondary.pvp_no_protection = PvP Abilitato - Nessuna Protezione
+territory.secondary.your_territory = Il Tuo Territorio
+territory.secondary.faction_territory = Territorio
+territory.secondary.relation_territory = Territorio di {0}
+announce.death_location = {0} è morto/a a ({1}, {2}, {3}) in {4}

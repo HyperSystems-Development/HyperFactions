@@ -8,7 +8,7 @@ import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.CommandKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -43,7 +43,7 @@ public class MapSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.MAP)) {
-      ctx.sendMessage(MessageUtil.error(player, MessageKeys.Info.MAP_NO_PERMISSION));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Info.MAP_NO_PERMISSION));
       return;
     }
 
@@ -71,7 +71,7 @@ public class MapSubCommand extends FactionSubCommand {
 
     UUID playerFactionId = hyperFactions.getFactionManager().getPlayerFactionId(player.getUuid());
 
-    ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Info.MAP_HEADER), COLOR_CYAN).bold(true));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.MAP_HEADER), COLOR_CYAN).bold(true));
 
     for (int dz = -3; dz <= 3; dz++) {
       StringBuilder row = new StringBuilder();
@@ -93,7 +93,7 @@ public class MapSubCommand extends FactionSubCommand {
       }
       ctx.sendMessage(Message.raw(row.toString()));
     }
-    ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Info.MAP_LEGEND), COLOR_GRAY));
-    ctx.sendMessage(msg(HFMessages.get(player, MessageKeys.Info.MAP_GUI_HINT), COLOR_GRAY));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.MAP_LEGEND), COLOR_GRAY));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.MAP_GUI_HINT), COLOR_GRAY));
   }
 }

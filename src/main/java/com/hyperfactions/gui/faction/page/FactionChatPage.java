@@ -18,7 +18,7 @@ import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.HFMessages;
-import com.hyperfactions.util.MessageKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -96,10 +96,10 @@ public class FactionChatPage extends InteractiveCustomUIPage<FactionChatData> im
     cmd.append(UIPaths.FACTION_CHAT);
 
     // Localize static labels
-    cmd.set("#ChatTitle.Text", HFMessages.get(playerRef, MessageKeys.ChatGui.TITLE));
-    cmd.set("#TabFactionBtn.Text", HFMessages.get(playerRef, MessageKeys.ChatGui.TAB_FACTION));
-    cmd.set("#TabAllyBtn.Text", HFMessages.get(playerRef, MessageKeys.ChatGui.TAB_ALLY));
-    cmd.set("#SendBtn.Text", HFMessages.get(playerRef, MessageKeys.ChatGui.SEND_BTN));
+    cmd.set("#ChatTitle.Text", HFMessages.get(playerRef, GuiKeys.ChatGui.TITLE));
+    cmd.set("#TabFactionBtn.Text", HFMessages.get(playerRef, GuiKeys.ChatGui.TAB_FACTION));
+    cmd.set("#TabAllyBtn.Text", HFMessages.get(playerRef, GuiKeys.ChatGui.TAB_ALLY));
+    cmd.set("#SendBtn.Text", HFMessages.get(playerRef, GuiKeys.ChatGui.SEND_BTN));
 
     // Setup navigation bar
     NavBarHelper.setupBar(playerRef, faction, PAGE_ID, cmd, events);
@@ -117,7 +117,7 @@ public class FactionChatPage extends InteractiveCustomUIPage<FactionChatData> im
     buildMessageList(cmd);
 
     // Chat input placeholder
-    cmd.set("#ChatInput.PlaceholderText", HFMessages.get(playerRef, MessageKeys.ChatGui.PLACEHOLDER));
+    cmd.set("#ChatInput.PlaceholderText", HFMessages.get(playerRef, GuiKeys.ChatGui.PLACEHOLDER));
 
     // Build chat input bar events
     buildChatInputEvents(events);
@@ -165,7 +165,7 @@ public class FactionChatPage extends InteractiveCustomUIPage<FactionChatData> im
 
     if (messages.isEmpty()) {
       cmd.appendInline("#MessageList",
-          "Label { Text: \"" + HFMessages.get(playerRef, MessageKeys.ChatGui.NO_MESSAGES) + "\"; Style: (FontSize: 12, TextColor: #555555); "
+          "Label { Text: \"" + HFMessages.get(playerRef, GuiKeys.ChatGui.NO_MESSAGES) + "\"; Style: (FontSize: 12, TextColor: #555555); "
           + "Anchor: (Height: 30); }");
       return;
     }
@@ -237,13 +237,13 @@ public class FactionChatPage extends InteractiveCustomUIPage<FactionChatData> im
 
     // Recent: show relative time
     if (ageMs < 60_000) {
-      return HFMessages.get(playerRef, MessageKeys.ChatGui.TIME_NOW);
+      return HFMessages.get(playerRef, GuiKeys.ChatGui.TIME_NOW);
     } else if (ageMs < 3_600_000) {
       long minutes = ageMs / 60_000;
-      return HFMessages.get(playerRef, MessageKeys.ChatGui.TIME_MINUTES, minutes);
+      return HFMessages.get(playerRef, GuiKeys.ChatGui.TIME_MINUTES, minutes);
     } else if (ageMs < 86_400_000) {
       long hours = ageMs / 3_600_000;
-      return HFMessages.get(playerRef, MessageKeys.ChatGui.TIME_HOURS, hours);
+      return HFMessages.get(playerRef, GuiKeys.ChatGui.TIME_HOURS, hours);
     }
 
     // Older: show date + time
@@ -292,7 +292,7 @@ public class FactionChatPage extends InteractiveCustomUIPage<FactionChatData> im
       }
       case "TabAlly" -> {
         if (!PermissionManager.get().hasPermission(pRef.getUuid(), Permissions.CHAT_ALLY)) {
-          player.sendMessage(MessageUtil.errorText(pRef, MessageKeys.ChatGui.NO_ALLY_PERMISSION));
+          player.sendMessage(MessageUtil.errorText(pRef, GuiKeys.ChatGui.NO_ALLY_PERMISSION));
           rebuild();
           return;
         }
@@ -322,7 +322,7 @@ public class FactionChatPage extends InteractiveCustomUIPage<FactionChatData> im
     String requiredPerm = (channel == ChatMessage.Channel.ALLY)
         ? Permissions.CHAT_ALLY : Permissions.CHAT_FACTION;
     if (!PermissionManager.get().hasPermission(uuid, requiredPerm)) {
-      player.sendMessage(MessageUtil.errorText(pRef, MessageKeys.ChatGui.NO_PERMISSION));
+      player.sendMessage(MessageUtil.errorText(pRef, GuiKeys.ChatGui.NO_PERMISSION));
       rebuild();
       return;
     }
@@ -330,7 +330,7 @@ public class FactionChatPage extends InteractiveCustomUIPage<FactionChatData> im
     // Get fresh faction data
     Faction currentFaction = factionManager.getFaction(faction.id());
     if (currentFaction == null) {
-      player.sendMessage(MessageUtil.errorText(pRef, MessageKeys.ChatGui.FACTION_GONE));
+      player.sendMessage(MessageUtil.errorText(pRef, GuiKeys.ChatGui.FACTION_GONE));
       rebuild();
       return;
     }
