@@ -1,29 +1,29 @@
 ---
 id: combat_zones
 ---
-# Special Zones
+# Zonas Especiais
 
-Admins can designate areas with special rules that override normal faction territory protection.
+Administradores podem designar áreas com regras especiais que substituem a proteção normal de território de facção.
 
 ## SafeZone
 
-No PvP damage, no block breaking by non-admins. Ideal for spawn areas, trading hubs, and event staging areas. Players cannot be harmed here.
+Sem dano PvP, sem destruição de blocos por não-admins. Ideal para áreas de spawn, centros de comércio e áreas de preparação para eventos. Jogadores não podem ser feridos aqui.
 
 ## WarZone
 
-PvP is always enabled. No block protection applies. Open battle areas where anything goes. You receive no territory protection benefits in a WarZone.
+PvP sempre ativado. Sem proteção de blocos. Áreas de batalha aberta onde vale tudo. Você não recebe benefícios de proteção territorial em uma WarZone.
 
 ---
 
-## Zone Comparison
+## Comparação de Zonas
 
-| Feature | SafeZone | WarZone | Faction Land |
-|---------|----------|---------|--------------|
-| PvP | Disabled | Always On | Relation-based |
-| Block Break | Disabled | Allowed | Members Only |
-| Containers | Protected | Open | Members Only |
-| Best For | Spawn/Trade | Arenas | Bases |
+| Recurso | SafeZone | WarZone | Terreno de Facção |
+|---------|----------|---------|-------------------|
+| PvP | Desativado | Sempre Ligado | Baseado em relação |
+| Destruir Blocos | Desativado | Permitido | Apenas Membros |
+| Contêineres | Protegidos | Abertos | Apenas Membros |
+| Melhor Para | Spawn/Comércio | Arenas | Bases |
 
->[!NOTE] Zone rules always override faction territory rules. A claimed chunk inside a WarZone follows WarZone rules.
+>[!NOTE] Regras de zona sempre substituem regras de território de facção. Um chunk reivindicado dentro de uma WarZone segue as regras da WarZone.
 
->[!TIP] Check your territory map with /f map to see zone boundaries.
+>[!TIP] Verifique seu mapa de território com /f map para ver os limites das zonas.

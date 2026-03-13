@@ -2,44 +2,44 @@
 id: power_understanding
 commands: power
 ---
-# Understanding Power
+# Entendendo o Poder
 
-Power is the core resource that determines how much territory your faction can hold. Every player has personal power that contributes to the faction total.
-
----
-
-## Default Power Values
-
-| Setting | Value |
-|---------|-------|
-| Maximum power per player | 20 |
-| Starting power | 10 |
-| Death penalty | -1.0 per death |
-| Kill reward | 0.0 |
-| Regen rate | +0.1 per minute (while online) |
-| Power cost per claim | 2.0 |
-| Logout while tagged | -1.0 additional |
-
->[!NOTE] These are default values. Your server administrator may have configured different settings.
-
-## How It Works
-
-Your faction's total power is the sum of every member's personal power. Your required power is the number of claims multiplied by 2.0. As long as total power stays above required power, your territory is safe.
-
->[!INFO] Power regenerates passively at 0.1 per minute while you are online. At that rate, recovering 1.0 power takes about 10 minutes.
+Poder é o recurso principal que determina quanto território sua facção pode manter. Cada jogador tem poder pessoal que contribui para o total da facção.
 
 ---
 
-## Checking Your Power
+## Valores Padrão de Poder
+
+| Configuração | Valor |
+|--------------|-------|
+| Poder máximo por jogador | 20 |
+| Poder inicial | 10 |
+| Penalidade por morte | -1.0 por morte |
+| Recompensa por abate | 0.0 |
+| Taxa de regeneração | +0.1 por minuto (enquanto online) |
+| Custo de poder por reivindicação | 2.0 |
+| Desconexão enquanto marcado | -1.0 adicional |
+
+>[!NOTE] Estes são valores padrão. O administrador do seu servidor pode ter configurado valores diferentes.
+
+## Como Funciona
+
+O poder total da sua facção é a soma do poder pessoal de cada membro. O poder necessário é o número de reivindicações multiplicado por 2.0. Enquanto o poder total ficar acima do poder necessário, seu território está seguro.
+
+>[!INFO] O poder regenera passivamente a 0.1 por minuto enquanto você estiver online. Nessa taxa, recuperar 1.0 de poder leva cerca de 10 minutos.
+
+---
+
+## Verificando Seu Poder
 
 `/f power`
 
-Shows your personal power, your faction's total power, and how much is needed to maintain current claims.
+Mostra seu poder pessoal, o poder total da sua facção e quanto é necessário para manter as reivindicações atuais.
 
-## The Danger Zone
+## A Zona de Perigo
 
-If total power falls below the required amount for your claims, your faction becomes vulnerable. Enemies can overclaim your chunks.
+Se o poder total cair abaixo da quantidade necessária para suas reivindicações, sua facção fica vulnerável. Inimigos podem tomar seus chunks.
 
->[!WARNING] Multiple deaths in a short period can cascade quickly. If you have 5 members each at 10 power (50 total) and 20 claims (40 needed), just 5 deaths across your team drops you to 45 -- still safe. But 11 deaths puts you at 39, below the 40 threshold.
+>[!WARNING] Múltiplas mortes em um curto período podem escalar rapidamente. Se você tem 5 membros cada um com 10 de poder (50 total) e 20 reivindicações (40 necessários), apenas 5 mortes na equipe reduzem para 45 -- ainda seguro. Mas 11 mortes colocam em 39, abaixo do limite de 40.
 
->[!TIP] Keep a power buffer. Do not claim every chunk you can afford -- leave room for a few deaths without becoming raidable.
+>[!TIP] Mantenha uma margem de poder. Não reivindique cada chunk que puder pagar -- deixe espaço para algumas mortes sem ficar vulnerável.

@@ -1,28 +1,28 @@
 ---
 id: combat_protection
 ---
-# Territory Protection
+# Proteção Territorial
 
-Claimed territory provides several layers of defense for your faction's builds and resources.
+Território reivindicado oferece várias camadas de defesa para as construções e recursos da sua facção.
 
-## Block Protection
+## Proteção de Blocos
 
-Only faction members can place or break blocks in your territory. Enemies and neutrals are blocked from modifying anything.
+Apenas membros da facção podem colocar ou destruir blocos no seu território. Inimigos e neutros são impedidos de modificar qualquer coisa.
 
-## Container Protection
+## Proteção de Contêineres
 
-Chests, barrels, and other containers are secured. Only your faction members can open or interact with storage in claimed chunks.
+Baús, barris e outros contêineres estão protegidos. Apenas os membros da sua facção podem abrir ou interagir com armazenamento em chunks reivindicados.
 
-## Entry Alerts
+## Alertas de Entrada
 
-When a non-member enters your claimed territory, online faction members receive a notification with the intruder's name and location.
+Quando um não-membro entra no seu território reivindicado, membros online da facção recebem uma notificação com o nome e localização do intruso.
 
 ---
 
-## Ally Access
+## Acesso de Aliados
 
-Allies cannot build or break blocks in your territory by default. Ally damage is also disabled, so allied players cannot harm each other.
+Aliados não podem construir ou destruir blocos no seu território por padrão. Dano entre aliados também é desativado, então jogadores aliados não podem se machucar.
 
->[!INFO] Territory protects blocks, not players. PvP in your own territory depends on the attacker's relation to your faction.
+>[!INFO] O território protege blocos, não jogadores. PvP no seu próprio território depende da relação do atacante com sua facção.
 
->[!TIP] Keep your claims connected and avoid isolated chunks that are harder to defend.
+>[!TIP] Mantenha suas reivindicações conectadas e evite chunks isolados que são mais difíceis de defender.

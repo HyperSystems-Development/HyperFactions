@@ -1,44 +1,44 @@
 ---
 id: faction_roles
 ---
-# Roles and Ranks
+# Cargos e Patentes
 
-Every faction has three roles in a strict hierarchy. Higher roles inherit all capabilities of the roles below them.
-
----
-
-## Permission Breakdown
-
-| Action | Leader | Officer | Member |
-|--------|--------|---------|--------|
-| Build in territory | Yes | Yes | Yes |
-| Use faction home | Yes | Yes | Yes |
-| Faction and ally chat | Yes | Yes | Yes |
-| Invite players | Yes | Yes | No |
-| Kick members | Yes | Yes (Members only) | No |
-| Claim / unclaim land | Yes | Yes | No |
-| Overclaim enemy territory | Yes | Yes | No |
-| Set faction home | Yes | Yes | No |
-| Delete faction home | Yes | Yes | No |
-| Manage relations (ally/enemy) | Yes | Yes | No |
-| View faction logs | Yes | Yes | No |
-| Promote to Officer | Yes | No | No |
-| Demote from Officer | Yes | No | No |
-| Rename faction | Yes | No | No |
-| Set description / tag / color | Yes | No | No |
-| Open / close faction | Yes | No | No |
-| Access faction settings | Yes | No | No |
-| Transfer leadership | Yes | No | No |
-| Disband faction | Yes | No | No |
-
->[!NOTE] Officers can kick Members but cannot kick other Officers. Only the Leader can remove Officers.
+Toda facção possui três cargos em uma hierarquia rígida. Cargos superiores herdam todas as capacidades dos cargos abaixo deles.
 
 ---
 
-## Role Details
+## Detalhamento de Permissões
 
-- Leader -- One per faction. Has full control over all settings, members, and territory. Can transfer ownership to another member.
-- Officer -- Trusted members who help manage the faction. Can invite, kick members, claim land, and handle diplomacy.
-- Member -- The default role when joining. Can build in territory, use the faction home, and participate in faction chat.
+| Ação | Líder | Oficial | Membro |
+|------|-------|---------|--------|
+| Construir no território | Sim | Sim | Sim |
+| Usar base da facção | Sim | Sim | Sim |
+| Chat de facção e aliados | Sim | Sim | Sim |
+| Convidar jogadores | Sim | Sim | Não |
+| Expulsar membros | Sim | Sim (apenas Membros) | Não |
+| Reivindicar / liberar terreno | Sim | Sim | Não |
+| Tomar território inimigo | Sim | Sim | Não |
+| Definir base da facção | Sim | Sim | Não |
+| Excluir base da facção | Sim | Sim | Não |
+| Gerenciar relações (aliança/inimigo) | Sim | Sim | Não |
+| Ver registros da facção | Sim | Sim | Não |
+| Promover a Oficial | Sim | Não | Não |
+| Rebaixar de Oficial | Sim | Não | Não |
+| Renomear facção | Sim | Não | Não |
+| Definir descrição / tag / cor | Sim | Não | Não |
+| Abrir / fechar facção | Sim | Não | Não |
+| Acessar configurações da facção | Sim | Não | Não |
+| Transferir liderança | Sim | Não | Não |
+| Dissolver facção | Sim | Não | Não |
 
->[!TIP] Promote your most active and trusted members to Officer so they can help manage territory and recruit new players.
+>[!NOTE] Oficiais podem expulsar Membros, mas não podem expulsar outros Oficiais. Apenas o Líder pode remover Oficiais.
+
+---
+
+## Detalhes dos Cargos
+
+- Líder -- Um por facção. Tem controle total sobre todas as configurações, membros e território. Pode transferir a liderança para outro membro.
+- Oficial -- Membros de confiança que ajudam a gerenciar a facção. Podem convidar, expulsar membros, reivindicar terrenos e cuidar da diplomacia.
+- Membro -- O cargo padrão ao entrar. Pode construir no território, usar a base da facção e participar do chat da facção.
+
+>[!TIP] Promova seus membros mais ativos e confiáveis a Oficial para que possam ajudar a gerenciar o território e recrutar novos jogadores.

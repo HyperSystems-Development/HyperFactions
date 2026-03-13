@@ -1,37 +1,37 @@
 ---
 id: welcome_what
 ---
-# What Are Factions?
+# O Que São Facções?
 
-Factions are player-run teams that claim territory, build bases, and compete for dominance. When you join or create a faction, you gain access to protected land, a shared home, private chat, and diplomatic tools.
+Facções são equipes criadas por jogadores que reivindicam território, constroem bases e competem por dominância. Quando você entra ou cria uma facção, ganha acesso a terrenos protegidos, uma base compartilhada, chat privado e ferramentas diplomáticas.
 
->[!TIP] Factions is all about teamwork. The more active members you have, the stronger your faction becomes.
-
----
-
-## Core Mechanics
-
-| Mechanic | What It Does |
-|----------|-------------|
-| Power | Each player generates power over time (max 20). Your faction's total power determines how much land you can hold. |
-| Claims | Claimed chunks are protected -- only members can build, break, or open containers inside them. Each claim costs 2.0 power to maintain. |
-| Relations | Factions can form alliances for mutual protection or declare enemies to enable PvP and territorial aggression. |
-| Roles | Three ranks -- Leader, Officer, Member -- each with different capabilities. |
+>[!TIP] Facções é tudo sobre trabalho em equipe. Quanto mais membros ativos você tiver, mais forte sua facção se torna.
 
 ---
 
-## How Strength Works
+## Mecânicas Principais
 
-Your faction's strength comes from its members. Every player starts with 10 power and regenerates up to 20 while online. Dying costs power. If your total faction power drops below the cost of your claims, enemies can overclaim your territory.
-
->[!WARNING] A single death costs 1.0 power. Multiple deaths in a short time can leave your faction vulnerable to overclaiming.
+| Mecânica | O Que Faz |
+|----------|-----------|
+| Poder | Cada jogador gera poder ao longo do tempo (máx. 20). O poder total da sua facção determina quanto terreno você pode manter. |
+| Reivindicações | Chunks reivindicados são protegidos -- apenas membros podem construir, destruir ou abrir contêineres dentro deles. Cada reivindicação custa 2.0 de poder para manter. |
+| Relações | Facções podem formar alianças para proteção mútua ou declarar inimigos para habilitar PvP e agressão territorial. |
+| Cargos | Três patentes -- Líder, Oficial, Membro -- cada uma com diferentes capacidades. |
 
 ---
 
-## Diplomacy at a Glance
+## Como a Força Funciona
 
-- **Allies** -- Mutual agreements that prevent friendly fire and protect each other's territory
-- **Enemies** -- One-way declarations that enable PvP in each other's land and allow overclaiming
-- **Neutral** -- The default state between all factions with standard rules
+A força da sua facção vem dos seus membros. Cada jogador começa com 10 de poder e regenera até 20 enquanto estiver online. Morrer custa poder. Se o poder total da facção cair abaixo do custo das suas reivindicações, inimigos podem tomar seu território.
 
->[!INFO] You can manage all of this through the in-game GUI by typing `/f` or through chat commands.
+>[!WARNING] Uma única morte custa 1.0 de poder. Múltiplas mortes em um curto período podem deixar sua facção vulnerável a tomadas de território.
+
+---
+
+## Diplomacia Resumida
+
+- **Aliados** -- Acordos mútuos que impedem fogo amigo e protegem o território um do outro
+- **Inimigos** -- Declarações unilaterais que habilitam PvP no território de cada um e permitem tomadas de território
+- **Neutros** -- O estado padrão entre todas as facções com regras normais
+
+>[!INFO] Você pode gerenciar tudo isso pela GUI dentro do jogo digitando `/f` ou por comandos no chat.

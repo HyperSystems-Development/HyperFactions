@@ -2,35 +2,35 @@
 id: faction_joining
 commands: accept, join, request
 ---
-# Joining a Faction
+# Entrando em uma Facção
 
-There are three ways to join an existing faction, depending on how the faction is configured.
-
----
-
-## Methods Compared
-
-| Method | How | Requires |
-|--------|-----|----------|
-| Browse and Join | Open /f, click Browse, click Join | Faction is set to open |
-| Accept Invite | Check Invites tab in /f menu | Active invitation |
-| Request to Join | Use /f request, wait for approval | Officer or Leader approves |
+Existem três maneiras de entrar em uma facção existente, dependendo de como ela está configurada.
 
 ---
 
-## Invite Details
+## Comparação de Métodos
 
-- Invitations are sent by Officers or Leaders
-- Invitations expire after 5 minutes -- accept promptly
-- View your pending invites in the Invites tab of the faction menu
-- Accept with the GUI or /f accept
+| Método | Como | Requer |
+|--------|------|--------|
+| Explorar e Entrar | Abra /f, clique em Explorar, clique em Entrar | Facção configurada como aberta |
+| Aceitar Convite | Verifique a aba Convites no menu /f | Convite ativo |
+| Solicitar Entrada | Use /f request, aguarde aprovação | Aprovação de Oficial ou Líder |
 
-## Join Requests
+---
 
-- Use /f request to request membership in a closed faction
-- Requests expire after 24 hours if not acted on
-- Officers and Leaders can approve or deny requests from the faction dashboard
+## Detalhes do Convite
 
->[!TIP] Not sure which faction to join? Use the Browse tab in /f to see faction descriptions, member counts, and whether they are open or invite-only.
+- Convites são enviados por Oficiais ou Líderes
+- Convites expiram após 5 minutos -- aceite rapidamente
+- Veja seus convites pendentes na aba Convites do menu de facções
+- Aceite pela GUI ou com /f accept
 
->[!NOTE] Each faction can hold up to 50 members by default. If a faction is full, you will need to wait for a spot to open up.
+## Solicitações de Entrada
+
+- Use /f request para solicitar entrada em uma facção fechada
+- Solicitações expiram após 24 horas se não forem respondidas
+- Oficiais e Líderes podem aprovar ou negar solicitações pelo painel da facção
+
+>[!TIP] Não sabe qual facção entrar? Use a aba Explorar no /f para ver descrições, número de membros e se são abertas ou apenas por convite.
+
+>[!NOTE] Cada facção pode ter até 50 membros por padrão. Se uma facção estiver cheia, você precisará esperar uma vaga abrir.

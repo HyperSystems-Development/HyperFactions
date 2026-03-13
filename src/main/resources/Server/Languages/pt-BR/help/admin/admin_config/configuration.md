@@ -1,41 +1,41 @@
 ---
 id: admin_configuration
 ---
-# Configuration System
+# Sistema de Configuração
 
-HyperFactions uses a modular JSON config system with 11 configuration files.
+HyperFactions usa um sistema de configuração modular em JSON com 11 arquivos de configuração.
 
-## Admin Config Commands
+## Comandos de Configuração Admin
 
-| Command | Description |
-|---------|-------------|
-| `/f admin config` | Open the visual config editor GUI |
-| `/f admin reload` | Reload all config files from disk |
-| `/f admin sync` | Synchronize faction data to storage |
+| Comando | Descrição |
+|---------|-----------|
+| `/f admin config` | Abrir a GUI do editor visual de configuração |
+| `/f admin reload` | Recarregar todos os arquivos de configuração do disco |
+| `/f admin sync` | Sincronizar dados de facção com o armazenamento |
 
-## Configuration Files
+## Arquivos de Configuração
 
-| File | Contents |
-|------|----------|
-| `factions.json` | Roles, power, claims, combat, relations |
-| `server.json` | Teleport, auto-save, messages, GUI, permissions |
-| `economy.json` | Treasury, upkeep, transaction settings |
-| `backup.json` | Backup rotation and retention settings |
-| `chat.json` | Faction and ally chat formatting |
-| `debug.json` | Debug logging categories |
-| `faction-permissions.json` | Per-role permission defaults |
-| `announcements.json` | Event broadcast and territory notifications |
-| `gravestones.json` | Gravestone integration settings |
-| `worldmap.json` | World map refresh modes |
-| `worlds.json` | Per-world behavior overrides |
+| Arquivo | Conteúdo |
+|---------|----------|
+| `factions.json` | Cargos, poder, reivindicações, combate, relações |
+| `server.json` | Teleporte, salvamento automático, mensagens, GUI, permissões |
+| `economy.json` | Tesouro, manutenção, configurações de transação |
+| `backup.json` | Rotação e retenção de backups |
+| `chat.json` | Formatação de chat de facção e aliados |
+| `debug.json` | Categorias de log de debug |
+| `faction-permissions.json` | Padrões de permissão por cargo |
+| `announcements.json` | Transmissões de eventos e notificações de território |
+| `gravestones.json` | Configurações de integração com lápides |
+| `worldmap.json` | Modos de atualização do mapa do mundo |
+| `worlds.json` | Sobrescritas de comportamento por mundo |
 
->[!TIP] The config GUI provides a visual editor with descriptions for every setting. Changes are saved immediately but some require `/f admin reload` to take full effect.
+>[!TIP] A GUI de configuração fornece um editor visual com descrições para cada configuração. Alterações são salvas imediatamente, mas algumas requerem `/f admin reload` para entrar em pleno efeito.
 
-## Config Location
+## Localização das Configurações
 
-All files are stored in:
+Todos os arquivos são armazenados em:
 `mods/com.hyperfactions_HyperFactions/config/`
 
->[!WARNING] Manual JSON edits require `/f admin reload` to apply. Invalid JSON will cause the file to be skipped with a warning in the server log.
+>[!WARNING] Edições manuais em JSON requerem `/f admin reload` para serem aplicadas. JSON inválido fará com que o arquivo seja ignorado com um aviso no log do servidor.
 
->[!NOTE] Config version is tracked in `server.json`. The plugin auto-migrates older configs on startup.
+>[!NOTE] A versão da configuração é rastreada em `server.json`. O plugin migra automaticamente configurações antigas na inicialização.

@@ -2,44 +2,44 @@
 id: diplomacy_alliances
 commands: ally
 ---
-# Forming Alliances
+# Formando Alianças
 
-Alliances are mutual agreements between two factions that provide protection and cooperation benefits.
+Alianças são acordos mútuos entre duas facções que oferecem benefícios de proteção e cooperação.
 
 ---
 
-## How to Form an Alliance
+## Como Formar uma Aliança
 
 `/f ally <faction>`
 
-Sends an alliance request to the target faction. The alliance only takes effect once both sides agree. An Officer or Leader from the other faction must also run the same command targeting your faction to confirm.
+Envia um pedido de aliança para a facção alvo. A aliança só entra em vigor quando ambos os lados concordarem. Um Oficial ou Líder da outra facção também deve executar o mesmo comando mirando sua facção para confirmar.
 
-## How to Break an Alliance
+## Como Romper uma Aliança
 
 `/f neutral <faction>`
 
-Either side can unilaterally end an alliance by resetting the relation to neutral.
+Qualquer um dos lados pode encerrar unilateralmente uma aliança resetando a relação para neutro.
 
 ---
 
-## Alliance Benefits
+## Benefícios da Aliança
 
-| Benefit | Details |
-|---------|---------|
-| No friendly fire | Allied players cannot damage each other |
-| Shared map visibility | Allied territory shows in blue on the territory map |
-| Territory interaction | Allies can use doors, seats, and transport in your territory |
-| Ally chat | Cycle to ally chat mode for cross-faction communication |
-| Overclaim protection | Allies cannot overclaim each other's territory |
+| Benefício | Detalhes |
+|-----------|----------|
+| Sem fogo amigo | Jogadores aliados não podem causar dano uns aos outros |
+| Visibilidade compartilhada no mapa | Território aliado aparece em azul no mapa de território |
+| Interação no território | Aliados podem usar portas, assentos e transporte no seu território |
+| Chat de aliados | Alterne para o modo de chat de aliados para comunicação entre facções |
+| Proteção contra tomadas | Aliados não podem tomar o território um do outro |
 
->[!NOTE] Your faction can have up to 10 alliances at a time. Choose your allies wisely.
+>[!NOTE] Sua facção pode ter até 10 alianças ao mesmo tempo. Escolha seus aliados com sabedoria.
 
 ---
 
-## Alliance Etiquette
+## Etiqueta de Aliança
 
->[!TIP] Communication is key. Before sending an alliance request, consider reaching out to the other faction's leader to discuss terms. A strong alliance is built on mutual benefit, not just convenience.
+>[!TIP] Comunicação é fundamental. Antes de enviar um pedido de aliança, considere entrar em contato com o líder da outra facção para discutir termos. Uma aliança forte é construída sobre benefício mútuo, não apenas conveniência.
 
-- Alliances work both ways -- if you benefit from protection, your allies expect the same
-- Breaking an alliance during wartime may damage your faction's reputation
-- Allied factions can coordinate territory claims to create defensible borders
+- Alianças funcionam nos dois sentidos -- se você se beneficia da proteção, seus aliados esperam o mesmo
+- Romper uma aliança durante guerra pode prejudicar a reputação da sua facção
+- Facções aliadas podem coordenar reivindicações de território para criar fronteiras defensáveis

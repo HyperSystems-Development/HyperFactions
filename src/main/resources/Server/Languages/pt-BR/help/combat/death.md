@@ -2,38 +2,38 @@
 id: combat_death
 commands: home, sethome, stuck
 ---
-# Death and Recovery
+# Morte e Recuperação
 
-Death carries real consequences in factions. Every death costs you personal power, weakening your faction's ability to hold territory.
+Morrer tem consequências reais em facções. Cada morte custa poder pessoal, enfraquecendo a capacidade da sua facção de manter território.
 
-## Power Loss
+## Perda de Poder
 
-Each death costs -1.0 power from your personal total. This lowers the faction's combined power.
+Cada morte custa -1.0 de poder do seu total pessoal. Isso reduz o poder combinado da facção.
 
-| Event | Power Change |
-|-------|-------------|
-| Death (any cause) | -1.0 |
-| Online regen | +0.1 per minute |
-| Combat logout | -1.0 (killed) |
+| Evento | Alteração de Poder |
+|--------|-------------------|
+| Morte (qualquer causa) | -1.0 |
+| Regeneração online | +0.1 por minuto |
+| Desconexão em combate | -1.0 (morto) |
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Estes são valores padrão. O administrador do seu servidor pode ter configurado valores diferentes.
 
-## Example Scenarios
+## Cenários de Exemplo
 
-*5 members at 10.0 power each = 50 total, 20 claims.*
-*One member dies twice: 8.0 power, faction total 48.*
-*Three members die once each: total drops to 47.*
+*5 membros com 10.0 de poder cada = 50 total, 20 reivindicações.*
+*Um membro morre duas vezes: 8.0 de poder, total da facção 48.*
+*Três membros morrem uma vez cada: total cai para 47.*
 
->[!WARNING] If your faction power drops below your claim count, enemies can overclaim your territory.
+>[!WARNING] Se o poder da sua facção cair abaixo da contagem de reivindicações, inimigos podem tomar seu território.
 
-## Recovery
+## Recuperação
 
-Power regenerates at 0.1 per minute while online. Recovering 1.0 lost power takes about 10 minutes. Multiple deaths stack, so avoid repeated fights.
+O poder regenera a 0.1 por minuto enquanto online. Recuperar 1.0 de poder perdido leva cerca de 10 minutos. Múltiplas mortes acumulam, então evite lutas repetidas.
 
 ---
 
-## All Death Types
+## Todos os Tipos de Morte
 
-Power loss applies to all deaths: PvP, mob kills, fall damage, drowning, and any other cause. There is no safe way to die.
+A perda de poder se aplica a todas as mortes: PvP, mobs, dano de queda, afogamento e qualquer outra causa. Não existe maneira segura de morrer.
 
->[!TIP] Set a faction home with /f sethome so members can regroup quickly after dying.
+>[!TIP] Defina uma base da facção com /f sethome para que membros possam se reagrupar rapidamente após morrer.

@@ -1,43 +1,43 @@
 ---
 id: admin_zone_commands
 ---
-# Zone Command Reference
+# Referência de Comandos de Zona
 
-Complete reference for all zone management commands. All require `hyperfactions.admin.zones` permission.
+Referência completa de todos os comandos de gerenciamento de zona. Todos requerem a permissão `hyperfactions.admin.zones`.
 
-## Quick Creation
+## Criação Rápida
 
-| Command | Description |
-|---------|-------------|
-| `/f admin safezone <name>` | Create a SafeZone at current chunk |
-| `/f admin warzone <name>` | Create a WarZone at current chunk |
-| `/f admin removezone <name>` | Delete a zone and release chunks |
+| Comando | Descrição |
+|---------|-----------|
+| `/f admin safezone <name>` | Criar uma SafeZone no chunk atual |
+| `/f admin warzone <name>` | Criar uma WarZone no chunk atual |
+| `/f admin removezone <name>` | Excluir uma zona e liberar chunks |
 
-## Zone Management
+## Gerenciamento de Zona
 
-| Command | Description |
-|---------|-------------|
-| `/f admin zone create <name> <type>` | Create a zone (safezone/warzone) |
-| `/f admin zone delete <name>` | Delete a zone |
-| `/f admin zone claim <zone>` | Add current chunk to zone |
-| `/f admin zone unclaim <zone>` | Remove current chunk from zone |
-| `/f admin zone radius <zone> <r>` | Claim square radius of chunks |
-| `/f admin zone list` | List all zones with chunk counts |
-| `/f admin zone notify <zone> <true/false>` | Toggle entry/leave messages |
-| `/f admin zone title <zone> upper/lower <text>` | Set zone title text |
-| `/f admin zone properties <zone>` | Open zone properties GUI |
+| Comando | Descrição |
+|---------|-----------|
+| `/f admin zone create <name> <type>` | Criar uma zona (safezone/warzone) |
+| `/f admin zone delete <name>` | Excluir uma zona |
+| `/f admin zone claim <zone>` | Adicionar chunk atual à zona |
+| `/f admin zone unclaim <zone>` | Remover chunk atual da zona |
+| `/f admin zone radius <zone> <r>` | Reivindicar raio quadrado de chunks |
+| `/f admin zone list` | Listar todas as zonas com contagem de chunks |
+| `/f admin zone notify <zone> <true/false>` | Alternar mensagens de entrada/saída |
+| `/f admin zone title <zone> upper/lower <text>` | Definir texto do título da zona |
+| `/f admin zone properties <zone>` | Abrir GUI de propriedades da zona |
 
-## Flag Management
+## Gerenciamento de Flags
 
-| Command | Description |
-|---------|-------------|
-| `/f admin zoneflag <zone> <flag> <true/false>` | Set a specific flag |
+| Comando | Descrição |
+|---------|-----------|
+| `/f admin zoneflag <zone> <flag> <true/false>` | Definir uma flag específica |
 
->[!TIP] Use the zone **properties GUI** for a visual editor with toggles for every flag, organized by category.
+>[!TIP] Use a **GUI de propriedades** da zona para um editor visual com toggles para cada flag, organizados por categoria.
 
-## Examples
+## Exemplos
 
-- `/f admin safezone Spawn` -- create spawn protection
-- `/f admin zone radius Spawn 3` -- expand to 7x7 chunks
-- `/f admin zoneflag Spawn door_use true` -- allow doors
-- `/f admin zone notify Spawn true` -- show entry messages
+- `/f admin safezone Spawn` -- criar proteção de spawn
+- `/f admin zone radius Spawn 3` -- expandir para 7x7 chunks
+- `/f admin zoneflag Spawn door_use true` -- permitir portas
+- `/f admin zone notify Spawn true` -- mostrar mensagens de entrada

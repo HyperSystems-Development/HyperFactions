@@ -1,13 +1,13 @@
 ---
 id: admin_quickref_commands
 ---
-# Admin Command Reference
+# Referência de Comandos Admin
 
-Complete list of all `/f admin` subcommands with syntax and required permissions.
+Lista completa de todos os subcomandos `/f admin` com sintaxe e permissões necessárias.
 
-## Dashboard and General
+## Painel e Geral
 
-| Command | Permission |
+| Comando | Permissão |
 |---------|-----------|
 | `/f admin` | admin.use |
 | `/f admin version` | admin.use |
@@ -15,9 +15,9 @@ Complete list of all `/f admin` subcommands with syntax and required permissions
 | `/f admin sync` | admin.use |
 | `/f admin sentry` | admin.use |
 
-## Faction Management
+## Gerenciamento de Facções
 
-| Command | Permission |
+| Comando | Permissão |
 |---------|-----------|
 | `/f admin factions` | admin.use |
 | `/f admin info <faction>` | admin.use |
@@ -25,9 +25,9 @@ Complete list of all `/f admin` subcommands with syntax and required permissions
 | `/f admin disband <faction>` | admin.disband |
 | `/f admin log` | admin.use |
 
-## Zone Management
+## Gerenciamento de Zonas
 
-| Command | Permission |
+| Comando | Permissão |
 |---------|-----------|
 | `/f admin safezone <name>` | admin.zones |
 | `/f admin warzone <name>` | admin.zones |
@@ -40,18 +40,18 @@ Complete list of all `/f admin` subcommands with syntax and required permissions
 | `/f admin zone properties <zone>` | admin.zones |
 | `/f admin zoneflag <zone> <flag> <bool>` | admin.zones |
 
-## Power and Economy
+## Poder e Economia
 
-| Command | Permission |
+| Comando | Permissão |
 |---------|-----------|
 | `/f admin power set/add/remove/reset <player> [amt]` | admin.power |
 | `/f admin power setmax/noloss/nodecay <player> [amt]` | admin.power |
 | `/f admin power info <player>` | admin.power |
 | `/f admin economy balance/set/add/take/reset <faction> [amt]` | admin.economy |
 
-## Maintenance
+## Manutenção
 
-| Command | Permission |
+| Comando | Permissão |
 |---------|-----------|
 | `/f admin backup create/list/restore/delete` | admin.backup |
 | `/f admin import <source> [flags]` | admin.use |
@@ -62,4 +62,4 @@ Complete list of all `/f admin` subcommands with syntax and required permissions
 | `/f admin debug toggle <category>` | admin.debug |
 | `/f admin integration` | admin.use |
 
->[!NOTE] All permission nodes are prefixed with `hyperfactions.` (e.g., `hyperfactions.admin.use`).
+>[!NOTE] Todos os nós de permissão são prefixados com `hyperfactions.` (ex.: `hyperfactions.admin.use`).

@@ -1,27 +1,27 @@
 ---
 id: economy_commands
 ---
-# Economy Commands
+# Comandos de Economia
 
-Quick reference for all faction economy commands.
+Referência rápida de todos os comandos de economia de facção.
 
-| Command | Description | Role |
-|---------|-------------|------|
-| /f balance | View treasury balance | Any |
-| /f deposit (amount) | Deposit into treasury | Any |
-| /f withdraw (amount) | Withdraw from treasury | Officer+ |
-| /f money transfer (faction) (amount) | Transfer to another faction | Officer+ |
-| /f money log [page] | View transaction history | Officer+ |
+| Comando | Descrição | Cargo |
+|---------|-----------|-------|
+| /f balance | Ver saldo do tesouro | Qualquer |
+| /f deposit (amount) | Depositar no tesouro | Qualquer |
+| /f withdraw (amount) | Sacar do tesouro | Oficial+ |
+| /f money transfer (faction) (amount) | Transferir para outra facção | Oficial+ |
+| /f money log [page] | Ver histórico de transações | Oficial+ |
 
 ---
 
-## Command Aliases
+## Aliases de Comandos
 
-- /f balance can also be used as /f bal
-- /f deposit and /f withdraw accept decimal amounts
+- /f balance também pode ser usado como /f bal
+- /f deposit e /f withdraw aceitam valores decimais
 
-## Role Requirements
+## Requisitos de Cargo
 
-Withdraw and transfer commands are restricted to Officers and Leaders. All other economy commands are available to any faction member.
+Comandos de saque e transferência são restritos a Oficiais e Líderes. Todos os outros comandos de economia estão disponíveis para qualquer membro da facção.
 
->[!TIP] Use /f money log to review recent deposits, withdrawals, and transfers with timestamps.
+>[!TIP] Use /f money log para revisar depósitos, saques e transferências recentes com data e hora.

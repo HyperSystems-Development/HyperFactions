@@ -2,37 +2,37 @@
 id: faction_creating
 commands: create
 ---
-# Creating a Faction
+# Criando uma Facção
 
-Starting your own faction makes you the Leader with full control over settings, members, and territory.
+Criar sua própria facção faz de você o Líder com controle total sobre configurações, membros e território.
 
 ---
 
-## How to Create
+## Como Criar
 
 `/f create <name>`
 
-This creates your faction and immediately opens the Faction Dashboard where you can begin inviting members, claiming land, and configuring settings.
+Isso cria sua facção e imediatamente abre o Painel da Facção onde você pode começar a convidar membros, reivindicar terrenos e ajustar configurações.
 
-## Name Rules
+## Regras de Nome
 
-| Rule | Requirement |
-|------|------------|
-| Length | Between 3 and 24 characters |
-| Characters | Letters, numbers, and spaces only |
-| Uniqueness | No two factions can share the same name |
+| Regra | Requisito |
+|-------|-----------|
+| Tamanho | Entre 3 e 24 caracteres |
+| Caracteres | Apenas letras, números e espaços |
+| Exclusividade | Duas facções não podem ter o mesmo nome |
 
->[!WARNING] Choose your name carefully. Renaming later requires Leader permissions and may have a cooldown.
+>[!WARNING] Escolha seu nome com cuidado. Renomear depois requer permissões de Líder e pode ter um tempo de espera.
 
 ---
 
-## What Happens on Creation
+## O Que Acontece ao Criar
 
-- You become the Leader (highest rank)
-- Your faction starts with 0 claims and your personal power (10 by default)
-- The faction dashboard opens automatically
-- You can immediately invite players, claim territory, and set a faction home
+- Você se torna o Líder (cargo mais alto)
+- Sua facção começa com 0 reivindicações e seu poder pessoal (10 por padrão)
+- O painel da facção abre automaticamente
+- Você pode imediatamente convidar jogadores, reivindicar território e definir uma base da facção
 
->[!INFO] If the server has economy integration enabled, creating a faction may cost money. The creation cost is set by the server administrator.
+>[!INFO] Se o servidor tiver integração com economia habilitada, criar uma facção pode custar dinheiro. O custo de criação é definido pelo administrador do servidor.
 
->[!TIP] After creating, your first priorities should be: invite friends, find a base location, and claim it.
+>[!TIP] Após criar, suas primeiras prioridades devem ser: convidar amigos, encontrar um local para a base e reivindicá-lo.

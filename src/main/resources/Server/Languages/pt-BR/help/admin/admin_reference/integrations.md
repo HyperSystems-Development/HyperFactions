@@ -1,43 +1,43 @@
 ---
 id: admin_integrations
 ---
-# Plugin Integrations
+# Integrações com Plugins
 
-HyperFactions integrates with several external plugins through soft dependencies. All integrations are optional and fail gracefully if unavailable.
+HyperFactions se integra com vários plugins externos através de dependências opcionais. Todas as integrações são opcionais e falham graciosamente se não estiverem disponíveis.
 
-## Checking Integration Status
+## Verificando o Status das Integrações
 
 `/f admin version`
-Shows current version and detected integrations.
+Mostra a versão atual e integrações detectadas.
 
 `/f admin integration`
-Opens the integration management panel with detailed status for each detected plugin.
+Abre o painel de gerenciamento de integrações com status detalhado para cada plugin detectado.
 
-## Integration Table
+## Tabela de Integrações
 
-| Plugin | Type | Description |
-|--------|------|-------------|
-| **HyperPerms** | Permissions | Full permission system with groups, inheritance, and context |
-| **LuckPerms** | Permissions | Alternative permission provider |
-| **VaultUnlocked** | Permissions/Economy | Permission and economy bridge |
-| **HyperProtect-Mixin** | Protection | Enables advanced zone flags (explosions, fire, keep inventory) |
-| **OrbisGuard-Mixins** | Protection | Alternative mixin for zone flag enforcement |
-| **PlaceholderAPI** | Placeholders | 49 faction placeholders for other plugins |
-| **WiFlow PlaceholderAPI** | Placeholders | Alternative placeholder provider |
-| **GravestonePlugin** | Death | Gravestone access control in zones |
-| **HyperEssentials** | Features | Zone flags for homes, warps, and kits |
-| **KyuubiSoft Core** | Framework | Core library integration |
-| **Sentry** | Monitoring | Error tracking and diagnostics |
+| Plugin | Tipo | Descrição |
+|--------|------|-----------|
+| **HyperPerms** | Permissões | Sistema completo de permissões com grupos, herança e contexto |
+| **LuckPerms** | Permissões | Provedor alternativo de permissões |
+| **VaultUnlocked** | Permissões/Economia | Ponte de permissões e economia |
+| **HyperProtect-Mixin** | Proteção | Habilita flags avançadas de zona (explosões, fogo, manter inventário) |
+| **OrbisGuard-Mixins** | Proteção | Mixin alternativo para aplicação de flags de zona |
+| **PlaceholderAPI** | Placeholders | 49 placeholders de facção para outros plugins |
+| **WiFlow PlaceholderAPI** | Placeholders | Provedor alternativo de placeholders |
+| **GravestonePlugin** | Morte | Controle de acesso a lápides em zonas |
+| **HyperEssentials** | Recursos | Flags de zona para homes, warps e kits |
+| **KyuubiSoft Core** | Framework | Integração com biblioteca core |
+| **Sentry** | Monitoramento | Rastreamento de erros e diagnósticos |
 
-## Permission Provider Priority
+## Prioridade do Provedor de Permissões
 
-1. **VaultUnlocked** (highest priority)
+1. **VaultUnlocked** (prioridade mais alta)
 2. **HyperPerms**
 3. **LuckPerms**
-4. **OP fallback** (if no provider found)
+4. **Fallback de OP** (se nenhum provedor encontrado)
 
->[!INFO] Integrations are detected once at startup using reflection. Results are cached for the session. A server restart is required after adding or removing an integrated plugin.
+>[!INFO] As integrações são detectadas uma vez na inicialização usando reflexão. Os resultados são cacheados para a sessão. É necessário reiniciar o servidor após adicionar ou remover um plugin integrado.
 
->[!TIP] Use `/f admin debug toggle integration` to enable detailed integration logging for troubleshooting.
+>[!TIP] Use `/f admin debug toggle integration` para habilitar log detalhado de integração para solução de problemas.
 
->[!NOTE] HyperProtect-Mixin is the **recommended** protection mixin. Without it, 15 zone flags will have no effect.
+>[!NOTE] HyperProtect-Mixin é o mixin de proteção **recomendado**. Sem ele, 15 flags de zona não terão efeito.

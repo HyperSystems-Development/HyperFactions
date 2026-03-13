@@ -1,29 +1,29 @@
 ---
 id: combat_tagging
 ---
-# Combat Tagging
+# Marcação de Combate
 
-When you attack or are attacked by another player, you become combat tagged for 15 seconds.
+Quando você ataca ou é atacado por outro jogador, você fica marcado por combate por 15 segundos.
 
-## While Tagged
+## Enquanto Marcado
 
-- No /f home or /f stuck teleports
-- No server teleport commands
-- Tag resets with each new combat action
-- A timer displays your remaining tag duration
+- Sem teleportes /f home ou /f stuck
+- Sem comandos de teleporte do servidor
+- A marcação reseta a cada nova ação de combate
+- Um temporizador exibe a duração restante da marcação
 
 ---
 
-## Logout Penalty
+## Penalidade por Desconexão
 
->[!WARNING] Logging out while combat tagged kills your character and you lose 1.0 power.
+>[!WARNING] Desconectar enquanto marcado por combate mata seu personagem e você perde 1.0 de poder.
 
-Your items drop where you disconnected and enemies can loot them. Always wait for the tag to expire.
+Seus itens caem onde você desconectou e inimigos podem saqueá-los. Sempre espere a marcação expirar.
 
-## How the Timer Works
+## Como o Temporizador Funciona
 
-The combat tag timer appears on screen when you enter combat. Every new hit resets it to 15 seconds. Once it reaches zero, all restrictions are lifted.
+O temporizador de marcação de combate aparece na tela quando você entra em combate. Cada novo golpe o reseta para 15 segundos. Quando chega a zero, todas as restrições são removidas.
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Estes são valores padrão. O administrador do seu servidor pode ter configurado valores diferentes.
 
->[!TIP] Disengage and wait out the timer if you need to teleport.
+>[!TIP] Desengaje e espere o temporizador acabar se precisar teleportar.

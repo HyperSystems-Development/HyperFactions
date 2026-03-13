@@ -1,27 +1,27 @@
 ---
 id: combat_spawn_protection
 ---
-# Spawn Protection
+# Proteção de Spawn
 
-After respawning from death, you receive temporary protection to prevent spawn camping.
+Após renascer de uma morte, você recebe proteção temporária para evitar spawn camping.
 
-## How It Works
+## Como Funciona
 
-- Protection lasts 5 seconds after respawn
-- You cannot take damage during this period
-- A visual indicator shows your protected status
+- A proteção dura 5 segundos após renascer
+- Você não pode receber dano durante este período
+- Um indicador visual mostra seu status de proteção
 
-## Protection Breaks
+## A Proteção é Cancelada
 
-Spawn protection ends early if you:
+A proteção de spawn termina antecipadamente se você:
 
-- Attack another player or entity
-- Move from your spawn position
+- Atacar outro jogador ou entidade
+- Se mover da sua posição de spawn
 
-This prevents abuse. You cannot attack others while invulnerable. Once you take any action, protection drops and normal combat rules apply.
+Isso previne abuso. Você não pode atacar outros enquanto invulnerável. Uma vez que tomar qualquer ação, a proteção cai e as regras normais de combate se aplicam.
 
 ---
 
->[!NOTE] These are default values. Your server administrator may have configured different settings.
+>[!NOTE] Estes são valores padrão. O administrador do seu servidor pode ter configurado valores diferentes.
 
->[!TIP] Use your protection time to assess the situation before moving.
+>[!TIP] Use seu tempo de proteção para avaliar a situação antes de se mover.

@@ -1,39 +1,39 @@
 ---
 id: admin_treasury_management
 ---
-# Treasury Management
+# Gerenciamento do Tesouro
 
-Admin commands for managing faction treasuries. Requires `hyperfactions.admin.economy` permission.
+Comandos de admin para gerenciar tesouros de facção. Requer a permissão `hyperfactions.admin.economy`.
 
-## Treasury Commands
+## Comandos do Tesouro
 
-| Command | Description |
-|---------|-------------|
-| `/f admin economy balance <faction>` | View faction treasury balance |
-| `/f admin economy set <faction> <amount>` | Set exact balance |
-| `/f admin economy add <faction> <amount>` | Add funds to treasury |
-| `/f admin economy take <faction> <amount>` | Remove funds from treasury |
-| `/f admin economy reset <faction>` | Reset treasury to zero |
+| Comando | Descrição |
+|---------|-----------|
+| `/f admin economy balance <faction>` | Ver saldo do tesouro da facção |
+| `/f admin economy set <faction> <amount>` | Definir saldo exato |
+| `/f admin economy add <faction> <amount>` | Adicionar fundos ao tesouro |
+| `/f admin economy take <faction> <amount>` | Remover fundos do tesouro |
+| `/f admin economy reset <faction>` | Resetar tesouro para zero |
 
-## Examples
+## Exemplos
 
-- `/f admin economy balance Vikings` -- check balance
-- `/f admin economy set Vikings 5000` -- set to 5000
-- `/f admin economy add Vikings 1000` -- deposit 1000
-- `/f admin economy take Vikings 500` -- withdraw 500
-- `/f admin economy reset Vikings` -- zero out balance
+- `/f admin economy balance Vikings` -- verificar saldo
+- `/f admin economy set Vikings 5000` -- definir para 5000
+- `/f admin economy add Vikings 1000` -- depositar 1000
+- `/f admin economy take Vikings 500` -- sacar 500
+- `/f admin economy reset Vikings` -- zerar saldo
 
->[!TIP] Use `/f admin info <faction>` to see the full economy overview including transaction history alongside the treasury balance.
+>[!TIP] Use `/f admin info <faction>` para ver a visão geral completa da economia incluindo histórico de transações junto com o saldo do tesouro.
 
-## Use Cases
+## Casos de Uso
 
-| Scenario | Command |
-|----------|---------|
-| Event prize distribution | `economy add <faction> <prize>` |
-| Penalty for rule violation | `economy take <faction> <fine>` |
-| Economy reset after wipe | `economy reset <faction>` |
-| Compensation for bugs | `economy add <faction> <amount>` |
+| Cenário | Comando |
+|---------|---------|
+| Distribuição de prêmio de evento | `economy add <faction> <prize>` |
+| Penalidade por violação de regra | `economy take <faction> <fine>` |
+| Reset de economia após wipe | `economy reset <faction>` |
+| Compensação por bugs | `economy add <faction> <amount>` |
 
->[!WARNING] Treasury changes are logged in the faction's transaction history. Admin modifications are recorded with the admin's name for accountability.
+>[!WARNING] Alterações no tesouro são registradas no histórico de transações da facção. Modificações de admin são registradas com o nome do admin para prestação de contas.
 
->[!NOTE] All economy admin commands work even when the economy module is disabled in config. The data is stored regardless of module status.
+>[!NOTE] Todos os comandos de admin de economia funcionam mesmo quando o módulo de economia está desativado na configuração. Os dados são armazenados independentemente do status do módulo.

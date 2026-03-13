@@ -2,46 +2,46 @@
 id: diplomacy_enemies
 commands: enemy, neutral
 ---
-# Enemy Factions
+# Facções Inimigas
 
-Declaring an enemy is a one-way action that immediately enables PvP and territorial aggression against the target faction. No agreement is required.
+Declarar um inimigo é uma ação unilateral que imediatamente habilita PvP e agressão territorial contra a facção alvo. Nenhum acordo é necessário.
 
 ---
 
-## Declaring an Enemy
+## Declarando um Inimigo
 
 `/f enemy <faction>`
 
-Instantly marks the target faction as your enemy. This takes effect immediately -- no confirmation from the other side is needed. Requires Officer rank or higher.
+Marca instantaneamente a facção alvo como sua inimiga. Isso entra em vigor imediatamente -- nenhuma confirmação do outro lado é necessária. Requer cargo de Oficial ou superior.
 
-## Resetting to Neutral
+## Resetando para Neutro
 
 `/f neutral <faction>`
 
-Ends the enemy status and resets the relation to neutral. This also requires Officer+ and takes effect immediately.
+Encerra o status de inimigo e reseta a relação para neutro. Também requer Oficial+ e entra em vigor imediatamente.
 
 ---
 
-## What Enemy Status Enables
+## O Que o Status de Inimigo Habilita
 
-| Effect | Details |
-|--------|---------|
-| PvP in territory | Full PvP is enabled in both factions' territory |
-| Overclaiming | You can overclaim their chunks if they are in a power deficit |
-| Map marking | Enemy territory shows in red on the territory map |
-| No protection | Standard territory protection does not prevent enemy PvP |
+| Efeito | Detalhes |
+|--------|----------|
+| PvP no território | PvP completo é habilitado no território de ambas as facções |
+| Tomada de território | Você pode tomar chunks deles se estiverem em déficit de poder |
+| Marcação no mapa | Território inimigo aparece em vermelho no mapa de território |
+| Sem proteção | A proteção padrão de território não impede PvP inimigo |
 
->[!WARNING] Declaring an enemy is a serious decision. Their members can also fight you in your own territory once you declare.
+>[!WARNING] Declarar um inimigo é uma decisão séria. Os membros deles também podem lutar com você no seu próprio território após a declaração.
 
 ---
 
-## Strategic Considerations
+## Considerações Estratégicas
 
-- Enemy declarations are one-way -- you can declare without their consent, but they also see you as hostile
-- Before declaring, check the target's power with /f info. If they are strong, you may lose territory instead
-- Weaken enemies through repeated combat to drain their power, then overclaim their land
-- There is no limit to how many enemies you can have, but fighting on multiple fronts is risky
+- Declarações de inimizade são unilaterais -- você pode declarar sem o consentimento deles, mas eles também passam a te ver como hostil
+- Antes de declarar, verifique o poder do alvo com /f info. Se eles forem fortes, você pode perder território em vez de ganhar
+- Enfraqueça inimigos através de combate repetido para drenar o poder deles, depois tome seu terreno
+- Não há limite de quantos inimigos você pode ter, mas lutar em múltiplas frentes é arriscado
 
->[!TIP] Use /f neutral to de-escalate conflicts. Sometimes a strategic peace is more valuable than continued war.
+>[!TIP] Use /f neutral para desescalar conflitos. Às vezes uma paz estratégica é mais valiosa do que guerra contínua.
 
->[!NOTE] If you are allied with a faction and declare them as an enemy, the alliance is broken first.
+>[!NOTE] Se você estiver aliado a uma facção e declará-la como inimiga, a aliança é rompida primeiro.

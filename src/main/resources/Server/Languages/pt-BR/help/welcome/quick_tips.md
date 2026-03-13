@@ -1,44 +1,44 @@
 ---
 id: welcome_tips
 ---
-# Quick Tips
+# Dicas Rápidas
 
-Handy advice organized by category to help you thrive.
+Conselhos úteis organizados por categoria para ajudar você a prosperar.
 
 ---
 
-## Territory
+## Território
 
-- Claim land around your base early with `/f claim` -- unclaimed builds have **no protection**
-- Each claim costs **2.0 power** to maintain, so do not over-expand beyond what your members can support
-- Use `/f map` to scout nearby claims and find safe spots to build
-- Unclaim chunks you no longer need with `/f unclaim` to free up power
+- Reivindique terrenos ao redor da sua base cedo com `/f claim` -- construções em áreas não reivindicadas **não têm proteção**
+- Cada reivindicação custa **2.0 de poder** para manter, então não expanda demais além do que seus membros podem sustentar
+- Use `/f map` para explorar reivindicações próximas e encontrar locais seguros para construir
+- Libere chunks que não precisa mais com `/f unclaim` para liberar poder
 
-## Combat
+## Combate
 
-- Dying costs **1.0 power** -- avoid unnecessary fights when your faction is near its claim limit
-- You have **5 seconds of spawn protection** after respawning
-- Combat tagging lasts **15 seconds** -- logging out while tagged costs extra power
-- Friendly fire is **disabled** between faction members and allies by default
+- Morrer custa **1.0 de poder** -- evite lutas desnecessárias quando sua facção estiver perto do limite de reivindicações
+- Você tem **5 segundos de proteção de spawn** após renascer
+- O marcador de combate dura **15 segundos** -- desconectar enquanto marcado custa poder extra
+- Fogo amigo é **desativado** entre membros da facção e aliados por padrão
 
->[!WARNING] Logging out while combat tagged causes additional power loss (1.0 per logout). Stay and fight or escape first.
+>[!WARNING] Desconectar enquanto marcado por combate causa perda adicional de poder (1.0 por desconexão). Fique e lute ou escape primeiro.
 
 ## Social
 
-- Use `/f c` to cycle through chat modes so faction talk stays private
-- Invite trusted players with `/f invite <player>` -- invitations expire after **5 minutes**
-- Form alliances with `/f ally <faction>` for mutual protection and shared map visibility
-- Check `/f relations` to see your full diplomatic status
+- Use `/f c` para alternar entre modos de chat para que conversas da facção fiquem privadas
+- Convide jogadores confiáveis com `/f invite <player>` -- convites expiram após **5 minutos**
+- Forme alianças com `/f ally <faction>` para proteção mútua e visibilidade compartilhada no mapa
+- Verifique `/f relations` para ver seu status diplomático completo
 
-## Economy
+## Economia
 
->[!TIP] If the server has economy enabled, your faction can accumulate a treasury. Members can deposit, but only Officers and Leaders can withdraw or transfer funds.
+>[!TIP] Se o servidor tiver economia habilitada, sua facção pode acumular um tesouro. Membros podem depositar, mas apenas Oficiais e Líderes podem sacar ou transferir fundos.
 
-- Deposit funds with the treasury GUI to strengthen your faction
-- A wealthier faction can afford more claims and recover from setbacks faster
+- Deposite fundos pela GUI do tesouro para fortalecer sua facção
+- Uma facção mais rica pode arcar com mais reivindicações e se recuperar de reveses mais rápido
 
-## General
+## Geral
 
-- Type `/f` anytime to open your faction dashboard -- everything is accessible from there
-- Promote active members to Officer so they can help claim and manage territory
-- Keep your faction active -- power only regenerates while players are **online**
+- Digite `/f` a qualquer momento para abrir o painel da sua facção -- tudo é acessível por lá
+- Promova membros ativos a Oficial para que possam ajudar a reivindicar e gerenciar território
+- Mantenha sua facção ativa -- poder só regenera enquanto jogadores estão **online**

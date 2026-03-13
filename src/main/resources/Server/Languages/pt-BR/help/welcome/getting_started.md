@@ -2,37 +2,37 @@
 id: welcome_started
 commands: gui, menu
 ---
-# Getting Started
+# Primeiros Passos
 
-Welcome to HyperFactions! Here is how to get up and running in just a few steps.
-
----
-
-## Step 1: Open the Faction Menu
-
-Type /f to open the main faction GUI. This is your hub for everything -- browsing factions, creating your own, and managing invitations.
-
-## Step 2: Choose Your Path
-
-| Option | How |
-|--------|-----|
-| Browse open factions | Click Browse in the menu and hit Join on any open faction. |
-| Accept an invitation | Check the Invites tab. If someone invited you, click Accept. |
-| Create your own | Click Create Faction, pick a name, and you are the Leader. |
-
-## Step 3: Explore Your Faction
-
-Once you are in a faction, you will see the Faction Dashboard with your roster, territory map, relations, and settings.
-
->[!TIP] If you are brand new, try joining an existing faction first. You will learn the ropes faster with experienced members around you.
+Bem-vindo ao HyperFactions! Veja como começar a jogar em poucos passos.
 
 ---
 
-## Essential First Commands
+## Passo 1: Abra o Menu de Facções
 
-- /f -- Opens the faction GUI
-- /f home -- Teleport to your faction's home base
-- /f c -- Cycle chat mode between Normal, Faction, and Ally
-- /f map -- View the territory map around you
+Digite /f para abrir a GUI principal de facções. Este é o seu centro para tudo -- navegar por facções, criar a sua própria e gerenciar convites.
 
->[!TIP] You can also type /f help in chat for a quick command reference anytime.
+## Passo 2: Escolha Seu Caminho
+
+| Opção | Como |
+|-------|------|
+| Explorar facções abertas | Clique em Explorar no menu e aperte Entrar em qualquer facção aberta. |
+| Aceitar um convite | Verifique a aba Convites. Se alguém te convidou, clique em Aceitar. |
+| Criar a sua própria | Clique em Criar Facção, escolha um nome, e você será o Líder. |
+
+## Passo 3: Explore Sua Facção
+
+Uma vez que estiver em uma facção, você verá o Painel da Facção com sua lista de membros, mapa de território, relações e configurações.
+
+>[!TIP] Se você é novato, tente entrar em uma facção existente primeiro. Você vai aprender mais rápido com membros experientes ao seu redor.
+
+---
+
+## Comandos Essenciais
+
+- /f -- Abre a GUI de facções
+- /f home -- Teleporta para a base da sua facção
+- /f c -- Alterna o modo de chat entre Normal, Facção e Aliados
+- /f map -- Visualiza o mapa de territórios ao seu redor
+
+>[!TIP] Você também pode digitar /f help no chat para uma referência rápida de comandos a qualquer momento.
