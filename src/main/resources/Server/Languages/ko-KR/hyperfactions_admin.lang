@@ -1,0 +1,801 @@
+# HyperFactions Admin GUI - Korean Translations
+# Format: key = value
+# Note: Keys are auto-prefixed with "hyperfactions_admin." by Hytale's I18nModule
+
+# ========== 관리자 내비게이션 바 ==========
+nav.dashboard = 대시보드
+nav.actions = 작업
+nav.factions = 세력
+nav.players = 플레이어
+nav.economy = 경제
+nav.zones = 구역
+nav.config = 설정
+nav.backups = 백업
+nav.log = 로그
+nav.updates = 업데이트
+nav.help = 도움말
+nav.version = 버전
+
+# ========== 공통 관리자 라벨 ==========
+common.faction_not_found = 세력을 찾을 수 없음
+common.no_faction = 세력 없음
+common.not_set = 미설정
+common.on = 켜짐
+common.off = 꺼짐
+common.enable = 활성화
+common.disable = 비활성화
+common.none_paren = (없음)
+common.invalid_faction = 잘못된 세력입니다.
+common.leader_prefix = 지도자: {0}
+common.members_suffix = 멤버 {0}명
+common.claims_suffix = 영토 {0}개
+common.factions_suffix = 세력 {0}개
+common.players_suffix = 플레이어 {0}명
+common.chunks_suffix = 청크 {0}개
+common.entries_suffix = 항목 {0}건
+common.found_suffix = {0}건 발견
+common.power_format = 파워 {0}/{1}
+common.raidable = 약탈 가능
+common.protected = 보호됨
+common.no_description = 설명이 설정되지 않았습니다.
+common.officers_more = +{0}명
+common.custom_max = (사용자 지정 최대)
+common.default_max = (기본 최대)
+common.now = 현재
+common.ago_suffix = {0} 전
+common.just_now = 방금
+common.no_membership_history = 소속 이력이 없습니다
+
+# ========== 관리자 대시보드 ==========
+dashboard.factions_prefix = 세력: {0}
+dashboard.members_prefix = 전체 멤버: {0}
+dashboard.claims_prefix = 전체 영토: {0}
+
+# ========== 관리자 작업 ==========
+actions.confirm_reset = 초기화를 확인하시겠습니까?
+actions.confirm_trigger = 실행을 확인하시겠습니까?
+actions.kd_reset = 플레이어 {0}명의 K/D를 초기화했습니다.
+actions.kd_reset_failed = K/D 초기화 실패: {0}
+actions.upkeep_unavailable = 유지비 처리기를 사용할 수 없습니다.
+actions.upkeep_triggered = 유지비 징수가 실행되었습니다.
+actions.upkeep_failed = 유지비 실패: {0}
+
+# ========== 관리자 해산 ==========
+disband.faction_gone = 세력이 더 이상 존재하지 않습니다.
+disband.success = 세력 '{0}'이(가) 해산되었습니다.
+disband.failed = 해산 실패: {0}
+disband.no_leader = 세력에 지도자가 없어 해산할 수 없습니다.
+
+# ========== 관리자 전체 포기 ==========
+unclaim.removed = [Admin] {1}에서 영토 {0}개를 제거했습니다.
+unclaim.no_claims = {0}에는 제거할 영토가 없습니다.
+
+# ========== 관리자 세력 목록 ==========
+factions.home_not_set = 미설정
+factions.teleported = {0}의 홈으로 이동했습니다.
+factions.no_home = 세력 홈이 설정되어 있지 않습니다.
+factions.world_not_found = 대상 월드를 찾을 수 없습니다.
+
+# ========== 관리자 세력 정보 ==========
+info.faction_gone = 이 세력은 더 이상 존재하지 않습니다.
+
+# ========== 관리자 세력 멤버 ==========
+members.sort_role = 역할
+members.sort_online = 온라인
+members.sort_name = 이름
+members.sort_power = 파워
+members.promoted = [Admin] {0}을(를) {1}(으)로 승급시켰습니다.
+members.demoted = [Admin] {0}을(를) {1}(으)로 강등시켰습니다.
+members.kicked = [Admin] {0}을(를) 세력에서 추방했습니다.
+
+# ========== 관리자 세력 관계 ==========
+relations.allies_header = 동맹 ({0})
+relations.enemies_header = 적 ({0})
+relations.no_allies = 동맹이 없습니다.
+relations.no_enemies = 적이 없습니다.
+relations.neutral_count = 중립 세력 {0}개
+relations.since_today = 시작일: 오늘
+relations.since_one_day = 시작일: 1일 전
+relations.since_days = 시작일: {0}일 전
+relations.set_ally = [Admin] {0}과(와) 상호 동맹 관계를 설정했습니다.
+relations.set_enemy = {0}과(와) 상호 적대 관계를 설정했습니다.
+relations.set_neutral = [Admin] {0}과(와) 상호 중립 관계를 설정했습니다.
+
+# ========== 관리자 세력 설정 ==========
+settings.locked = 이 설정은 서버 설정에 의해 잠겨 있습니다.
+settings.perm_toggled = {0}을(를) {1}(으)로 설정했습니다.
+settings.color_changed = 세력 색상을 {0}(으)로 설정했습니다.
+settings.recruitment_set = 모집을 {0}(으)로 설정했습니다.
+settings.no_home = [Admin] 이 세력에는 홈이 설정되어 있지 않습니다.
+settings.home_cleared = {0}의 세력 홈을 초기화했습니다.
+
+# ========== 정렬 드롭다운 라벨 ==========
+sort.power = 파워
+sort.name = 이름
+sort.members = 멤버
+sort.balance = 잔액
+
+# ========== 관리자 플레이어 ==========
+players.sort_last_online = 마지막 접속
+players.sort_faction = 세력
+players.sort_online = 온라인
+players.not_online = 플레이어가 온라인이 아닙니다.
+players.world_not_found = 대상 월드를 찾을 수 없습니다.
+players.teleported = [Admin] {0}에게 이동했습니다.
+
+# ========== 관리자 플레이어 정보 ==========
+playerinfo.disband_faction = 세력 해산
+playerinfo.kick_leader = 지도자 추방
+playerinfo.enter_valid_number = 유효한 숫자를 입력하세요.
+playerinfo.enter_valid_positive = 유효한 양수를 입력하세요.
+playerinfo.faction_gone = 세력이 더 이상 존재하지 않습니다.
+playerinfo.kd_reset = {0}의 K/D를 초기화했습니다.
+playerinfo.kicked_success = {1}에서 {0}을(를) 추방했습니다.
+playerinfo.kicked_leader = 지도자 {0}을(를) 추방했습니다. 지도자가 {1}에게 이양되었습니다.
+playerinfo.disbanded_kick = [Admin] 세력 '{0}'이(가) 해산되었습니다 (마지막 멤버 추방).
+
+# ========== 관리자 경제 ==========
+economy.no_data = 경제 데이터가 있는 세력이 없습니다.
+economy.amount_zero = 금액은 0일 수 없습니다.
+economy.enter_amount = 금액을 입력하세요.
+economy.invalid_number = 잘못된 숫자: {0}
+economy.error = 오류가 발생했습니다.
+economy.balance_negative = 잔액은 음수일 수 없습니다.
+economy.failed = 실패: {0}
+economy.bulk_complete = 일괄 조정 완료: 세력 {2}개에 {1} {0}.
+economy.bulk_failures = ({0}건 실패)
+
+# ========== 관리자 구역 ==========
+zones.not_found = 구역을 찾을 수 없습니다.
+zones.invalid_id = 잘못된 구역 ID입니다.
+zones.deleted = 구역 {0}이(가) 삭제되었습니다.
+zones.delete_failed = 구역 삭제 실패: {0}
+zones.no_chunks = 청크 없음
+zones.chunks_suffix = {0} (청크 {1}개)
+
+# ========== 구역 생성 마법사 ==========
+wizard.enter_name = 구역 이름을 입력하세요.
+wizard.name_too_short = 구역 이름은 최소 {0}자 이상이어야 합니다.
+wizard.name_too_long = 구역 이름은 {0}자를 초과할 수 없습니다.
+wizard.name_taken = 해당 이름의 구역이 이미 존재합니다.
+wizard.radius_range = 반경은 1에서 {0} 사이여야 합니다.
+wizard.create_failed = 구역을 생성할 수 없습니다: {0}
+wizard.created_not_found = 구역이 생성되었지만 찾을 수 없습니다.
+wizard.created = {0} '{1}'을(를) 생성했습니다!
+wizard.chunk_claimed = 청크 ({0}, {1})을(를) 점령했습니다.
+wizard.chunk_failed = 현재 청크를 점령할 수 없습니다: {0}
+wizard.radius_claimed = {2}을(를) 중심으로 반경 {1}에서 청크 {0}개를 점령했습니다.
+wizard.radius_no_claims = 점령할 수 있는 청크가 없습니다 (지역이 점유되어 있을 수 있음).
+wizard.no_claims = 영토 없이 구역이 생성되었습니다.
+wizard.chunks_preview = 약 {0}개 청크
+
+# ========== 구역 이름 변경 ==========
+zone_rename.zone_gone = 구역이 더 이상 존재하지 않습니다.
+zone_rename.enter_name = 구역 이름을 입력하세요.
+zone_rename.too_short = 구역 이름은 최소 {0}자 이상이어야 합니다.
+zone_rename.too_long = 구역 이름은 {0}자를 초과할 수 없습니다.
+zone_rename.same_name = 이미 현재 구역의 이름입니다.
+zone_rename.renamed = [Admin] 구역 이름이 {0}에서 {1}(으)로 변경되었습니다!
+zone_rename.name_taken = 해당 이름의 구역이 이미 존재합니다.
+zone_rename.invalid_name = 잘못된 구역 이름입니다.
+zone_rename.rename_failed = 구역 이름 변경 실패: {0}
+
+# ========== 구역 유형 변경 ==========
+zone_type.zone_gone = 구역이 더 이상 존재하지 않습니다.
+zone_type.changed = [Admin] {0}을(를) {1}에서 {2}(으)로 변경했습니다 ({3}).
+zone_type.failed = 구역 유형 변경 실패: {0}
+zone_type.flags_reset = 플래그 초기화됨
+zone_type.flags_kept = 플래그 유지됨
+
+# ========== 구역 통합 플래그 ==========
+zone_int.zone_not_found = 구역을 찾을 수 없음
+zone_int.no_plugin = (플러그인 없음)
+zone_int.default = (기본값)
+zone_int.custom = (사용자 지정)
+
+# 통합 플래그 UI 라벨
+gui.zint_cat_gravestones = 묘비
+gui.zint_gravestones_desc = 켜짐 상태에서 비소유자가 묘비를 약탈할 수 있습니다. 소유자는 항상 가능합니다.
+gui.zint_cat_world_map = 월드 맵
+gui.zint_world_map_desc = 이 구역의 플레이어에 대한 맵 숨김을 재정의합니다. 활성화하면 이 구역에서 플레이어를 볼 수 있는 대상을 선택합니다.
+gui.zint_visibility_label = 가시성 수준:
+gui.zint_cat_essentials = HyperEssentials
+gui.zint_reset_defaults = 기본값으로 초기화
+gui.zint_back_to_flags = 플래그로 돌아가기
+gui.zint_map_vis_faction = 세력만
+gui.zint_map_vis_ally = 세력 + 동맹
+gui.zint_map_vis_all = 모든 플레이어
+
+# ========== 활동 로그 ==========
+log.all_types = 전체 유형
+log.no_logs = 필터에 일치하는 활동 로그가 없습니다.
+
+# ========== 버전 페이지 ==========
+version.active = 활성
+version.not_found = 찾을 수 없음
+version.not_detected = 감지되지 않음
+version.not_installed = 설치되지 않음
+version.active_version = 활성 (v{0})
+version.active_compatible = 활성 (호환)
+version.active_claims_only = 활성 (영토만)
+version.installed_no_perm = 설치됨 (권한 제공자 없음)
+version.active_provider = 활성 ({0})
+
+# ========== 관리자 메인 페이지 ==========
+main.reload_hint = 설정을 다시 불러오려면 /f reload를 사용하세요.
+main.unclaim_hint = 모든 청크 {1}개를 포기하려면 /f admin unclaim {0}을(를) 사용하세요.
+
+# ========== 구역 플래그/설정 ==========
+zflags.invalid_flag = 잘못된 플래그입니다.
+zflags.zone_not_found = 구역을 찾을 수 없습니다.
+zflags.conflict = (충돌)
+zflags.mixin = (mixin)
+zflags.reset_int = 통합 플래그를 기본값으로 초기화합니다.
+zflags.reset_all = 모든 플래그를 기본값으로 초기화합니다.
+zflags.reset_failed = 플래그 초기화 실패: {0}
+zflags.back_to_settings = 설정으로 돌아가기
+
+# 구역 설정 UI 라벨
+gui.zset_cat_combat = 전투
+gui.zset_cat_damage = 피해
+gui.zset_cat_death = 사망
+gui.zset_cat_building = 건축
+gui.zset_cat_interaction = 상호작용
+gui.zset_cat_transport = 이동수단
+gui.zset_cat_items = 아이템
+gui.zset_cat_spawning = 몹 스폰
+gui.zset_cat_mob_clear = 몹 제거
+gui.zset_children_hint = (상위 항목이 켜져 있을 때만 하위 항목 적용)
+gui.zset_reset_defaults = 기본값으로 초기화
+gui.zset_integration_flags = 통합 플래그
+gui.zset_back_to_zones = 구역으로 돌아가기
+gui.zset_chunks = 청크 {0}개
+
+# 구역 플래그 표시 이름
+gui.zflag_pvp_enabled = PvP 활성화
+gui.zflag_friendly_fire = 아군 피해
+gui.zflag_friendly_fire_faction = 세력 피해
+gui.zflag_friendly_fire_ally = 동맹 피해
+gui.zflag_projectile_damage = 투사체 피해
+gui.zflag_mob_damage = 몹 피해 받기
+gui.zflag_pve_damage = 몹 피해 주기
+gui.zflag_fall_damage = 낙하 피해
+gui.zflag_environmental_damage = 환경 피해
+gui.zflag_explosion_damage = 폭발 피해
+gui.zflag_fire_spread = 불 확산
+gui.zflag_keep_inventory = 인벤토리 유지
+gui.zflag_power_loss = 파워 손실
+gui.zflag_build_allowed = 건축 허용
+gui.zflag_block_place = 블록 설치
+gui.zflag_hammer_use = 망치 사용
+gui.zflag_builder_tools_use = 건축 도구
+gui.zflag_block_interact = 블록 상호작용
+gui.zflag_door_use = 문 사용
+gui.zflag_container_use = 상자 사용
+gui.zflag_bench_use = 제작대 사용
+gui.zflag_processing_use = 가공대 사용
+gui.zflag_seat_use = 좌석 사용
+gui.zflag_mount_use = 탑승체 사용
+gui.zflag_light_use = 조명 사용
+gui.zflag_npc_use = NPC 상호작용
+gui.zflag_crate_pickup = 상자 줍기
+gui.zflag_crate_place = 상자 놓기
+gui.zflag_npc_tame = NPC 길들이기
+gui.zflag_npc_interact = NPC 상호작용
+gui.zflag_teleporter_use = 텔레포터 사용
+gui.zflag_portal_use = 포탈 사용
+gui.zflag_mount_entry = 탑승 진입
+gui.zflag_item_drop = 아이템 버리기
+gui.zflag_item_pickup = 자동 줍기
+gui.zflag_item_pickup_manual = F키 줍기
+gui.zflag_invincible_items = 파괴 불가 아이템
+gui.zflag_mob_spawning = 몹 스폰
+gui.zflag_hostile_mob_spawning = 적대적 몹
+gui.zflag_passive_mob_spawning = 수동적 몹
+gui.zflag_neutral_mob_spawning = 중립 몹
+gui.zflag_npc_spawning = NPC 스폰
+gui.zflag_mob_clear = 몹 제거
+gui.zflag_hostile_mob_clear = 적대적 몹 제거
+gui.zflag_passive_mob_clear = 수동적 몹 제거
+gui.zflag_neutral_mob_clear = 중립 몹 제거
+gui.zflag_gravestone_access = 타인 묘비 약탈
+gui.zflag_show_on_map = 맵에 표시
+gui.zflag_essentials_homes = 홈 사용
+gui.zflag_essentials_warps = 워프 사용
+gui.zflag_essentials_kits = 킷 수령
+
+# ========== 구역 속성 ==========
+zprop.current_custom = 현재: "{0}" (사용자 지정)
+zprop.current_default = 현재: "{0}" (기본값)
+zprop.pvp_disabled = PvP 비활성화
+zprop.pvp_enabled = PvP 활성화
+zprop.name_empty = 이름은 비워둘 수 없습니다.
+zprop.renamed = 구역 이름이 "{0}"(으)로 변경되었습니다.
+zprop.name_taken = 해당 이름의 구역이 이미 존재합니다.
+zprop.name_invalid = 잘못된 이름입니다 (최대 32자).
+zprop.rename_failed = 이름 변경 실패: {0}
+zprop.upper_empty = 상단 제목은 비워둘 수 없습니다. 초기화하려면 초기화를 사용하세요.
+zprop.upper_set = 상단 제목이 설정되었습니다.
+zprop.upper_reset = 상단 제목이 기본값으로 초기화되었습니다.
+zprop.lower_empty = 하단 제목은 비워둘 수 없습니다. 초기화하려면 초기화를 사용하세요.
+zprop.lower_set = 하단 제목이 설정되었습니다.
+zprop.lower_reset = 하단 제목이 기본값으로 초기화되었습니다.
+
+# ========== 관계 추가 ==========
+relations.failed = 실패: {0}
+
+# ========== 멤버 추가 ==========
+members.never = 없음
+members.teleported = [Admin] {0}에게 이동했습니다.
+
+# ========== 플레이어 정보 추가 ==========
+playerinfo.records = 기록 {0}건
+playerinfo.joined_date = 가입일: {0}
+playerinfo.current = 현재
+playerinfo.left_date = 탈퇴일: {0}
+
+# ========== 구역 지도 ==========
+map.world_warning = 경고: 현재 '{0}'에 있습니다 - 구역은 '{1}'에 있습니다
+map.position = 내 위치: 청크 ({0}, {1})
+map.zone_gone = 구역이 더 이상 존재하지 않습니다.
+map.claimed = {2}을(를) 위해 청크 ({0}, {1})을(를) 점령했습니다.
+map.claim_failed = 청크 점령 실패: {0}
+map.unclaimed = {2}에서 청크 ({0}, {1})을(를) 포기했습니다.
+map.unclaim_failed = 청크 포기 실패: {0}
+map.chunk_belongs = 이 청크는 {0}에 속해 있습니다.
+map.chunk_faction = 이 청크는 세력이 점령하고 있습니다.
+map.chunk_protected = 이 청크는 보호 지역에 있습니다.
+map.another_zone = 다른 구역
+
+# ========== GUI 라벨 키 (.ui 하드코딩 텍스트 로컬라이제이션) ==========
+
+# 페이지 제목
+gui.title_dashboard = 관리자 대시보드
+gui.title_main = 세력 관리
+gui.title_actions = 관리자: 서버 작업
+gui.title_factions = 세력 관리
+gui.title_players = 플레이어 관리
+gui.title_economy = 관리자: 서버 경제
+gui.title_zones = 구역 관리
+gui.title_backups = 백업
+gui.title_config = 설정
+gui.title_help = 관리자 도움말
+gui.title_updates = 업데이트
+gui.title_version = 버전 및 통합
+gui.title_activity_log = 관리자: 활동 로그
+gui.title_player_info = 관리자: 플레이어 정보
+gui.title_faction_info = 관리자: 세력 정보
+gui.title_faction_settings = 관리자: 세력 설정
+gui.title_faction_members = 관리자: 멤버
+gui.title_faction_relations = 관리자: 관계
+gui.title_zone_map = 구역 지도 편집기
+gui.title_zone_settings = 관리자: 구역 설정
+gui.title_zone_properties = 관리자: 구역 속성
+gui.title_bulk_economy = 일괄 금고 조정
+gui.title_economy_adjust = 관리자: 경제
+
+# 대시보드 라벨
+gui.dash_server_stats = 서버 통계
+gui.dash_factions = 세력
+gui.dash_total_members = 전체 멤버
+gui.dash_total_claims = 전체 영토
+gui.dash_zones = 구역
+gui.dash_safe_war = 안전 / 전쟁
+gui.dash_total_power = 전체 파워
+gui.dash_avg_power = 세력당 평균 파워
+gui.dash_total_economy = 전체 경제
+gui.dash_wealthiest = 최고 부유
+gui.dash_avg_balance = 평균 잔액
+gui.dash_protection_bypass = 보호 우회:
+
+# 공통 버튼 및 라벨
+gui.search = 검색:
+gui.sort = 정렬:
+gui.prev = < 이전
+gui.next = 다음 >
+gui.back = 뒤로
+gui.done = 완료
+gui.cancel = 취소
+gui.apply = 적용
+gui.set = 설정
+gui.reset = 초기화
+gui.coming_soon = 출시 예정
+gui.zones_btn = 구역
+gui.reload_btn = 다시 불러오기
+gui.all = 전체
+gui.safe = 안전
+gui.war = 전쟁
+gui.create_zone = + 생성
+
+# 작업 페이지 라벨
+gui.act_combat_stats = 전투 통계
+gui.act_combat_desc = 서버의 모든 플레이어의 킬과 데스를 초기화합니다. 이 작업은 되돌릴 수 없습니다.
+gui.act_reset_kd = 전체 K/D 초기화
+gui.act_economy = 경제
+gui.act_economy_desc = 모든 세력 금고에 한 번에 금액을 추가하거나 제거합니다.
+gui.act_bulk_adjust = 일괄 추가/제거
+gui.act_upkeep_collection = 유지비 징수
+gui.act_upkeep_desc = 예정된 타이머에 관계없이 모든 세력의 유지비 징수를 즉시 실행합니다.
+gui.act_trigger_upkeep = 유지비 실행
+
+# 플레이스홀더 페이지 라벨
+gui.backup_heading = 백업 관리
+gui.backup_desc1 = 세력 데이터 백업을 생성, 복원 및 관리합니다.
+gui.backup_desc2 = 자동 백업은 data/backups 폴더에 저장됩니다.
+gui.config_heading = 설정 편집기
+gui.config_desc1 = GUI에서 직접 HyperFactions 설정을 구성합니다.
+gui.config_desc2 = 현재는 /f reload를 사용하여 설정 변경을 다시 불러오세요.
+gui.help_heading = 관리자 문서
+gui.help_desc1 = 관리자 문서 및 명령어 참조를 확인합니다.
+gui.help_desc2 = 도움이 필요하면 HyperFactions 위키를 방문하세요.
+gui.updates_heading = 업데이트 센터
+gui.updates_desc1 = 새 버전을 확인하고 변경 사항을 확인합니다.
+gui.updates_desc2 = 최신 업데이트는 HyperFactions 페이지를 방문하세요.
+
+# 버전 페이지 라벨
+gui.ver_hyperfactions = HyperFactions
+gui.ver_hytale_server = Hytale Server
+gui.ver_java = Java
+gui.ver_permissions = 권한
+gui.ver_placeholders = 플레이스홀더
+gui.ver_economy_section = 경제
+gui.ver_protection = 보호
+gui.ver_disabled = 비활성화
+
+# 열 헤더 (페이지 간 공유)
+gui.col_faction = 세력
+gui.col_balance = 잔액
+gui.col_members = 멤버
+gui.col_actions = 작업
+gui.col_time = 시간
+gui.col_type = 유형
+gui.col_message = 메시지
+
+# 경제 페이지 라벨
+gui.econ_total_balance = 전체 잔액
+gui.econ_factions = 세력
+gui.econ_avg_balance = 평균 잔액
+gui.econ_in_grace = 유예 중
+gui.econ_collected = 징수액 (24시간)
+gui.econ_next_collection = 다음 징수
+gui.econ_no_data = 경제 데이터가 있는 세력이 없습니다.
+
+# 활동 로그 라벨
+gui.log_type = 유형:
+gui.log_time = 시간:
+gui.log_player = 플레이어:
+gui.log_no_logs = 필터에 일치하는 활동 로그가 없습니다.
+
+# 플레이어 정보 라벨
+gui.plr_first_joined = 최초 가입:
+gui.plr_last_online = 마지막 접속:
+gui.plr_uuid = UUID:
+gui.plr_faction = 세력:
+gui.plr_role = 역할:
+gui.plr_view_faction = 세력 보기
+gui.plr_power = 파워
+gui.plr_max_power = 최대 파워
+gui.plr_set_power = 설정
+gui.plr_reset_power = 초기화
+gui.plr_set_max = 설정
+gui.plr_reset_max = 초기화
+gui.plr_no_power_loss = 파워 손실 없음
+gui.plr_no_claim_decay = 영토 소멸 없음
+gui.plr_kills = 킬
+gui.plr_deaths = 데스
+gui.plr_kdr = K/D 비율
+gui.plr_reset_kd = K/D 초기화
+gui.plr_kick = 추방
+gui.plr_membership_history = 소속 이력
+gui.plr_no_faction_label = 세력에 소속되어 있지 않음
+gui.plr_power_management = 파워 관리
+gui.plr_combat_stats = 전투 통계
+gui.plr_bypass_flags = 우회 플래그
+gui.plr_admin_controls = 관리자 컨트롤
+gui.plr_kd_subtitle = K / D
+gui.plr_max_prefix = 최대:
+gui.plr_view = 보기
+gui.plr_kick_from_faction = 세력에서 추방
+gui.plr_set_max_btn = 최대 설정
+gui.plr_combat = 전투
+gui.plr_reason_active = 활동 중
+gui.plr_reason_left = 탈퇴
+gui.plr_reason_kicked = 추방됨
+gui.plr_reason_disbanded = 해산됨
+
+# 멤버 항목 라벨
+gui.mem_label_power = 파워:
+gui.mem_label_joined = 가입일:
+gui.mem_label_last_death = 마지막 사망:
+gui.mem_label_uuid = UUID:
+gui.mem_btn_info = 정보
+gui.mem_btn_teleport = 텔레포트
+gui.mem_btn_promote = 승급
+gui.mem_btn_demote = 강등
+gui.mem_btn_kick = 추방
+gui.econ_not_enabled = 경제 시스템이 활성화되어 있지 않습니다.
+gui.info_more = +{0}명
+gui.log_time_1h = 1시간
+gui.log_time_24h = 24시간
+gui.log_time_7d = 7일
+gui.log_time_all = 전체
+gui.shape_circular = 원형
+gui.shape_square = 사각형
+gui.nav_title = 관리자 패널
+gui.econ_btn_adjust = 조정
+gui.econ_btn_info = 정보
+
+# 세력 정보 라벨
+gui.fac_description = 설명
+gui.fac_power = 파워
+gui.fac_claims = 영토
+gui.fac_members = 멤버
+gui.fac_recruitment = 모집
+gui.fac_founded = 설립일
+gui.fac_allies = 동맹
+gui.fac_enemies = 적
+gui.fac_raidable = 약탈 가능 상태
+gui.fac_treasury = 금고
+gui.fac_leader = 지도자
+gui.fac_officers = 간부
+gui.fac_view_members = 멤버 보기
+gui.fac_view_relations = 관계 보기
+gui.fac_view_settings = 설정
+gui.fac_disband = 세력 해산
+gui.fac_power_management = 파워 관리
+gui.fac_reset_all_power = 전체 파워 초기화
+gui.fac_econ_adjust = 잔액 조정
+gui.fac_econ_view_log = 거래 내역 보기
+gui.fac_current_max = 현재 / 최대
+gui.fac_claimed_max = 점령 / 최대
+gui.fac_relations = 관계
+gui.fac_ally_enemy = 동맹 / 적
+gui.fac_status = 상태
+gui.fac_info = 정보
+gui.fac_treasury_balance = 금고 잔액
+gui.fac_leadership = 리더십
+gui.fac_leader_label = 지도자:
+gui.fac_officers_label = 간부:
+gui.fac_econ_mgmt = 경제 관리
+gui.fac_danger_zone = 위험 구역
+gui.fac_view_treasury = 금고 보기
+
+# 세력 설정 라벨
+gui.set_editing = 편집 중:
+gui.set_general = 일반 설정
+gui.set_name = 이름
+gui.set_tag = 태그
+gui.set_description = 설명
+gui.set_recruitment = 모집
+gui.set_home = 홈 위치
+gui.set_clear_home = 홈 초기화
+gui.set_disband_faction = 세력 해산
+gui.set_faction_color = 세력 색상
+gui.set_admin_override = [관리자 재정의]
+gui.set_territory_perms = 영토 권한
+gui.set_mob_spawning = 몹 스폰
+gui.set_faction_settings = 세력 설정
+gui.set_name_label = 이름:
+gui.set_tag_label = 태그:
+gui.set_desc_label = 설명:
+gui.set_edit = 편집
+gui.set_status_label = 상태:
+gui.set_location_label = 위치:
+gui.set_danger_zone = 위험 구역
+gui.set_irreversible = 이 작업은 되돌릴 수 없습니다.
+gui.set_lock_hint = 일부 옵션은 서버에 의해 잠겨 있어 변경할 수 없을 수 있습니다.
+gui.set_appearance = 외관
+gui.set_color_label = 색상:
+gui.set_mob_sub = (마스터가 꺼져 있으면 하위 항목 비활성화)
+gui.set_back_to_info = 정보로 돌아가기
+gui.set_col_out = 외부
+gui.set_col_ally = 동맹
+gui.set_col_mem = 멤버
+gui.set_col_off = 간부
+gui.set_cat_building = 건축
+gui.set_cat_interaction = 상호작용
+gui.set_cat_interact_sub = (전체가 꺼져 있으면 하위 항목 비활성화)
+gui.set_cat_other = 기타
+gui.set_perm_break = 파괴
+gui.set_perm_place = 설치
+gui.set_perm_all = 전체
+gui.set_perm_door = 문
+gui.set_perm_chest = 상자
+gui.set_perm_bench = 제작대
+gui.set_perm_processing = 가공대
+gui.set_perm_seat = 좌석
+gui.set_perm_transport = 이동수단
+gui.set_perm_crate_use = 상자 사용
+gui.set_perm_npc_tame = NPC 길들이기
+gui.set_perm_pve_damage = PvE 피해
+gui.set_perm_mob_spawning = 몹 스폰
+gui.set_perm_hostile = 적대적 몹
+gui.set_perm_passive = 수동적 몹
+gui.set_perm_neutral = 중립 몹
+gui.set_perm_pvp = 영토 내 PvP
+gui.set_perm_officers_edit = 간부 편집 가능
+
+# 세력 관계 라벨
+gui.rel_subtitle = 세력 관계 관리 (승인 우회)
+gui.rel_set_new = 새 관계 설정
+gui.rel_btn_ally = 동맹
+gui.rel_btn_neutral = 중립
+gui.rel_btn_enemy = 적
+
+# 구역 페이지 라벨
+gui.zone_sort_name = 이름
+gui.zone_sort_type = 유형
+gui.zone_sort_chunks = 청크
+gui.zone_sort_world = 월드
+gui.zone_count_format = {0}개 {1}구역 (청크 {2}개)
+
+# 구역 지도 라벨
+gui.map_zone_chunk = 구역 청크
+gui.map_empty = 비어있음
+gui.map_other_zone = 다른 구역
+gui.map_faction_claim = 세력 영토
+gui.map_protected = 보호됨
+gui.map_your_pos = 내 위치
+gui.map_click_hint = 클릭하여 청크를 점령/포기하세요
+gui.map_legend_zone_safe = 이 구역 (안전)
+gui.map_legend_zone_war = 이 구역 (전쟁)
+gui.map_legend_other_safe = 다른 SafeZone
+gui.map_legend_other_war = 다른 WarZone
+gui.map_legend_faction = 세력 영토
+gui.map_legend_unclaimed = 미점령
+gui.map_legend_you_here = 현재 위치
+gui.map_action_hint = 좌클릭: 구역에 점령  |  우클릭: 구역에서 포기
+gui.map_done = 완료
+
+# 구역 속성 라벨
+gui.zprop_general = 일반
+gui.zprop_zone_name = 구역 이름
+gui.zprop_zone_type = 구역 유형
+gui.zprop_change_type = 유형 변경
+gui.zprop_notifications = 알림
+gui.zprop_show_entry = 진입 알림 표시
+gui.zprop_upper_title = 상단 제목
+gui.zprop_upper_desc = 상단 제목 (구역 이름 위의 작은 텍스트)
+gui.zprop_lower_title = 하단 제목
+gui.zprop_lower_desc = 하단 제목 (큰 구역 이름 텍스트)
+gui.zprop_edit_flags = 플래그 편집
+gui.zprop_back_to_zones = 구역으로 돌아가기
+gui.save = 저장
+gui.clear = 초기화
+
+# 일괄 경제 라벨
+gui.bulk_header = 전체 세력 금고 조정
+gui.bulk_factions_label = 세력:
+gui.bulk_total_label = 전체 잔액:
+gui.bulk_amount_hint = 금액 (양수: 추가, 음수: 제거):
+gui.bulk_hint = 금고가 있는 모든 세력에 적용됩니다
+gui.bulk_warning_msg = 경고: 이 작업은 모든 세력에 영향을 미치며 되돌릴 수 없습니다.
+gui.bulk_apply_all = 전체 적용
+gui.bulk_operation = 작업
+gui.bulk_add = 추가
+gui.bulk_remove = 제거
+gui.bulk_amount = 금액
+gui.bulk_warning = 이 작업은 모든 세력 금고에 영향을 미칩니다.
+gui.bulk_preview = 미리보기
+
+# 경제 조정 라벨
+gui.ecadj_header = 금고 잔액 조정
+gui.ecadj_faction_label = 세력:
+gui.ecadj_current_balance = 현재 잔액:
+gui.ecadj_amount_hint = 금액 (양수: 추가, 음수: 차감):
+gui.ecadj_preview_hint = 변경 사항을 미리 보려면 숫자를 입력하세요
+gui.ecadj_adjustment = 조정:
+gui.ecadj_set_balance = 잔액 설정
+gui.ecadj_confirm = +/- 확인
+gui.ecadj_operation = 작업
+gui.ecadj_add = 추가
+gui.ecadj_remove = 제거
+gui.ecadj_set_to = 설정값
+gui.ecadj_amount = 금액
+gui.ecadj_new_balance = 새 잔액:
+
+# 버전 페이지 통합 라벨
+gui.ver_hyperperms = HyperPerms
+gui.ver_luckperms = LuckPerms
+gui.ver_vault = VaultUnlocked
+gui.ver_native = Hytale Native
+gui.ver_hyperprotect = HyperProtect
+gui.ver_orbisguard_mixins = OrbisGuard Mixins
+gui.ver_orbisguard_api = OrbisGuard API
+gui.ver_mixin_hooks = Mixin Hooks
+gui.ver_gravestones = Gravestones
+gui.ver_kyuubisoft = KyuubiSoft
+gui.ver_placeholder_api = PlaceholderAPI
+gui.ver_wiflow_papi = WiFlow PAPI
+gui.ver_treasury = 금고
+
+# 전체 포기 확인 모달 라벨
+gui.unclaim_title = 전체 영토 포기
+gui.unclaim_confirm_msg1 = 정말로 전체 영토를 포기하시겠습니까
+gui.unclaim_confirm_msg2 = 의
+gui.unclaim_warning = 이 작업은 되돌릴 수 없습니다!
+gui.unclaim_all = 전체 포기
+
+# 구역 이름 변경 모달 라벨
+gui.zren_title = 구역 이름 변경
+gui.zren_current = 현재:
+gui.zren_new_name = 새 이름:
+
+# 구역 유형 변경 모달 라벨
+gui.ztype_title = 구역 유형 변경
+gui.ztype_zone_label = 구역:
+gui.ztype_current = 현재:
+gui.ztype_will_become = 변경 대상
+gui.ztype_new = 새 유형:
+gui.ztype_warning1 = 구역 유형에 따라 기본 플래그 값이 다릅니다.
+gui.ztype_warning2 = 기존 플래그 설정 처리 방법을 선택하세요:
+gui.ztype_keep_desc = 사용자 지정 재정의 유지
+gui.ztype_keep_flags = 플래그 유지
+gui.ztype_reset_desc = 새 유형 기본값 사용
+gui.ztype_reset_flags = 플래그 초기화
+
+# 구역 생성 마법사 라벨
+gui.czw_title = 구역 생성
+gui.czw_back = < 뒤로
+gui.czw_create = 구역 생성
+gui.czw_zone_type = 구역 유형
+gui.czw_safe_desc = 보호됨, PvP 없음
+gui.czw_war_desc = 전투, PvP 활성화
+gui.czw_zone_name = 구역 이름
+gui.czw_name_desc = 고유한 구역 이름을 입력하세요
+gui.czw_claim_method = 점령 방법
+gui.czw_method_none_desc = 빈 구역 생성
+gui.czw_method_none = 점령 없음
+gui.czw_method_single_desc = 현재 청크
+gui.czw_method_single = 단일 청크
+gui.czw_method_circle_desc = 원형 영역
+gui.czw_method_circle = 원형 반경
+gui.czw_method_square_desc = 사각형 영역
+gui.czw_method_square = 사각형 반경
+gui.czw_method_map_desc = 대화형 청크 편집기
+gui.czw_method_map = 점령 지도 사용
+gui.czw_radius = 반경
+gui.czw_custom_radius = 사용자 지정 (1-50):
+gui.czw_flags = 플래그
+gui.czw_flags_defaults_desc = 구역 유형 기반
+gui.czw_flags_defaults = 기본값 사용
+gui.czw_flags_customize_desc = 생성 후 설정 열기
+gui.czw_flags_customize = 사용자 지정
+
+# ========== 항목 라벨 (세력/플레이어/구역 목록 항목) ==========
+
+# 세력 항목 라벨
+gui.fac_entry_power = 파워
+gui.fac_entry_claims = 영토
+gui.fac_entry_members = 멤버
+gui.fac_entry_created = 생성일:
+gui.fac_entry_home = 홈:
+gui.fac_entry_tp_home = 홈 이동
+gui.fac_entry_view_info = 정보 보기
+gui.fac_entry_members_btn = 멤버
+gui.fac_entry_settings = 설정
+gui.fac_entry_unclaim_all = 전체 포기
+gui.fac_entry_disband = 해산
+
+# 플레이어 항목 라벨
+gui.plr_entry_role = 역할:
+gui.plr_entry_joined = 가입일:
+gui.plr_entry_last_online = 마지막 접속:
+gui.plr_entry_kdr = K/D/R:
+gui.plr_entry_power = 파워:
+gui.plr_entry_uuid = UUID:
+gui.plr_entry_info = 정보
+gui.plr_entry_teleport = 텔레포트
+gui.plr_entry_na = N/A
+gui.plr_entry_unknown = 알 수 없음
+gui.plr_entry_ago = {0} 전
+
+# 구역 항목 라벨
+gui.zone_entry_world = 월드:
+gui.zone_entry_chunks = 청크:
+gui.zone_entry_bounds = 범위:
+gui.zone_entry_created = 생성일:
+gui.zone_entry_edit_map = 지도 편집
+gui.zone_entry_flags = 플래그
+gui.zone_entry_settings = 설정
+gui.zone_entry_delete = 삭제
