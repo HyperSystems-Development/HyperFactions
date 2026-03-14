@@ -1,6 +1,8 @@
 package com.hyperfactions.worldmap;
 
 import com.hyperfactions.api.HyperFactionsAPI;
+import com.hyperfactions.config.ConfigManager;
+import com.hyperfactions.config.modules.WorldMapConfig;
 import com.hyperfactions.manager.ClaimManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.ZoneManager;
@@ -16,6 +18,8 @@ import it.unimi.dsi.fastutil.longs.LongSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Custom world map generator that renders terrain with faction claim overlays.
@@ -25,14 +29,28 @@ import java.util.concurrent.CompletableFuture;
  * <p>Unlike the overlay post-process approach, this method directly renders
  * claim colors as part of the terrain generation, ensuring claim overlays
  * always appear correctly on the map.
+ *
+ * <p>Each instance is per-world: it captures the world's original
+ * {@link WorldMapSettings} and merges them with HyperFactions config overrides,
+ * inheriting values the server admin has not explicitly overridden.
  */
 public class HyperFactionsWorldMap implements IWorldMap {
 
-  /** Singleton instance returned by the provider. */
-  public static final HyperFactionsWorldMap INSTANCE = new HyperFactionsWorldMap();
+  /** The world's original map settings captured before we replaced the generator, or null for legacy mode. */
+  private final @Nullable WorldMapSettings originalSettings;
 
-  private HyperFactionsWorldMap() {
-    // Singleton - use INSTANCE
+  /** Whether BetterMap compatibility mode was active at construction time. */
+  private final boolean betterMapActive;
+
+  /**
+   * Creates a per-world HyperFactions world map generator.
+   *
+   * @param originalSettings the world's original map settings (null for legacy/fallback)
+   * @param betterMapActive  whether BetterMap compatibility is active
+   */
+  public HyperFactionsWorldMap(@Nullable WorldMapSettings originalSettings, boolean betterMapActive) {
+    this.originalSettings = originalSettings;
+    this.betterMapActive = betterMapActive;
   }
 
   /**
@@ -52,15 +70,98 @@ public class HyperFactionsWorldMap implements IWorldMap {
     return HyperFactionsAPI.getZoneManager();
   }
 
-  /** Returns the world map settings. */
+  /**
+   * Returns the world map settings.
+   *
+   * <p>When {@code respectWorldConfig} is enabled and original settings are available,
+   * merges the world's original settings with HyperFactions config overrides.
+   * Otherwise falls back to legacy hardcoded values.
+   */
   @Override
+  @NotNull
   public WorldMapSettings getWorldMapSettings() {
+    WorldMapConfig config = ConfigManager.get().worldMap();
+
+    if (config.isRespectWorldConfig() && originalSettings != null) {
+      return mergeWithOriginal(config);
+    }
+
+    // Legacy fallback: hardcoded settings (pre-0.12 behavior)
     UpdateWorldMapSettings settingsPacket = new UpdateWorldMapSettings();
     settingsPacket.enabled = true;
     settingsPacket.defaultScale = 128.0f;
     settingsPacket.minScale = 64.0f;
     settingsPacket.maxScale = 128.0f;
     return new WorldMapSettings(null, 3.0f, 1.0f, 16, 32, settingsPacket);
+  }
+
+  /**
+   * Merges the world's original settings with HyperFactions config overrides.
+   * Values not overridden in config are inherited from the original settings.
+   *
+   * @param config the world map configuration with optional overrides
+   * @return merged settings
+   */
+  @NotNull
+  private WorldMapSettings mergeWithOriginal(@NotNull WorldMapConfig config) {
+    assert originalSettings != null; // Caller guarantees non-null
+
+    UpdateWorldMapSettings original = originalSettings.getSettingsPacket();
+    UpdateWorldMapSettings merged = new UpdateWorldMapSettings();
+
+    // Always enable — we need the map for claim overlays
+    merged.enabled = true;
+
+    // Inherit biome data from the world's original settings
+    merged.biomeDataMap = original.biomeDataMap;
+
+    // Scale values: use config override if set, otherwise inherit from original
+    merged.defaultScale = config.getOverrideDefaultScale() != null
+        ? config.getOverrideDefaultScale()
+        : original.defaultScale;
+    merged.minScale = config.getOverrideMinScale() != null
+        ? config.getOverrideMinScale()
+        : original.minScale;
+    merged.maxScale = config.getOverrideMaxScale() != null
+        ? config.getOverrideMaxScale()
+        : original.maxScale;
+
+    // Configurable allow* flags: use config override if set, otherwise inherit
+    merged.allowTeleportToCoordinates = config.getOverrideAllowTeleportToCoordinates() != null
+        ? config.getOverrideAllowTeleportToCoordinates()
+        : original.allowTeleportToCoordinates;
+    merged.allowTeleportToMarkers = config.getOverrideAllowTeleportToMarkers() != null
+        ? config.getOverrideAllowTeleportToMarkers()
+        : original.allowTeleportToMarkers;
+    merged.allowCreatingMapMarkers = config.getOverrideAllowCreatingMapMarkers() != null
+        ? config.getOverrideAllowCreatingMapMarkers()
+        : original.allowCreatingMapMarkers;
+
+    // Always-inherited allow* flags (no config override — respect whatever the world set)
+    merged.allowShowOnMapToggle = original.allowShowOnMapToggle;
+    merged.allowCompassTrackingToggle = original.allowCompassTrackingToggle;
+    merged.allowRemovingOtherPlayersMarkers = original.allowRemovingOtherPlayersMarkers;
+
+    // ImageScale: when BetterMap is active, always use the world's original value
+    // so BetterMap's quality system can control it. Otherwise use config override if set.
+    float imageScale;
+    if (betterMapActive) {
+      imageScale = originalSettings.getImageScale();
+    } else if (config.getOverrideImageScale() != null) {
+      imageScale = config.getOverrideImageScale();
+    } else {
+      imageScale = originalSettings.getImageScale();
+    }
+
+    // Remaining WorldMapSettings fields: always inherit from original
+    return new WorldMapSettings(
+        originalSettings.getWorldMapArea(),
+        imageScale,
+        originalSettings.getViewRadiusMultiplier(),
+        originalSettings.getViewRadiusMin(),
+        originalSettings.getViewRadiusMax(),
+        merged
+    );
   }
 
   /** Generate. */
