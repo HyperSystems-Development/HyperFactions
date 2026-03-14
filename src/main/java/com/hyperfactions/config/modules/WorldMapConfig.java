@@ -5,6 +5,7 @@ import com.hyperfactions.config.ModuleConfig;
 import com.hyperfactions.config.ValidationResult;
 import java.nio.file.Path;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Configuration for the world map integration system.
@@ -110,6 +111,21 @@ public class WorldMapConfig extends ModuleConfig {
 
   private boolean showFactionlessToFactionless = true;
 
+  // World config respect (Issue #96)
+  private boolean respectWorldConfig = true;
+
+  // BetterMap compatibility mode: "auto", "always", "never" (Issue #97)
+  private String betterMapCompat = "auto";
+
+  // Optional settings overrides when respectWorldConfig is true (null = inherit from world)
+  private Float overrideDefaultScale = null;
+  private Float overrideMinScale = null;
+  private Float overrideMaxScale = null;
+  private Float overrideImageScale = null;
+  private Boolean overrideAllowTeleportToCoordinates = null;
+  private Boolean overrideAllowTeleportToMarkers = null;
+  private Boolean overrideAllowCreatingMapMarkers = null;
+
   // Performance settings
   private int factionWideRefreshThreshold = 200;  // Above this, use full refresh instead of queuing
 
@@ -168,6 +184,19 @@ public class WorldMapConfig extends ModuleConfig {
     showFactionlessPlayers = false;
     showFactionlessToFactionless = true;
 
+    // World config respect
+    respectWorldConfig = true;
+    betterMapCompat = "auto";
+
+    // Settings overrides (null = inherit from world)
+    overrideDefaultScale = null;
+    overrideMinScale = null;
+    overrideMaxScale = null;
+    overrideImageScale = null;
+    overrideAllowTeleportToCoordinates = null;
+    overrideAllowTeleportToMarkers = null;
+    overrideAllowCreatingMapMarkers = null;
+
     // Performance settings
     factionWideRefreshThreshold = 200;
   }
@@ -219,6 +248,22 @@ public class WorldMapConfig extends ModuleConfig {
     if (hasSection(root, "debounced")) {
       JsonObject debounced = root.getAsJsonObject("debounced");
       debouncedDelaySeconds = getInt(debounced, "delaySeconds", debouncedDelaySeconds);
+    }
+
+    // Load world config respect settings
+    respectWorldConfig = getBool(root, "respectWorldConfig", respectWorldConfig);
+    betterMapCompat = getString(root, "betterMapCompat", betterMapCompat);
+
+    // Load optional settings overrides
+    if (hasSection(root, "settingsOverrides")) {
+      JsonObject overrides = root.getAsJsonObject("settingsOverrides");
+      overrideDefaultScale = getOptionalFloat(overrides, "defaultScale");
+      overrideMinScale = getOptionalFloat(overrides, "minScale");
+      overrideMaxScale = getOptionalFloat(overrides, "maxScale");
+      overrideImageScale = getOptionalFloat(overrides, "imageScale");
+      overrideAllowTeleportToCoordinates = getOptionalBool(overrides, "allowTeleportToCoordinates");
+      overrideAllowTeleportToMarkers = getOptionalBool(overrides, "allowTeleportToMarkers");
+      overrideAllowCreatingMapMarkers = getOptionalBool(overrides, "allowCreatingMapMarkers");
     }
   }
 
@@ -275,6 +320,24 @@ public class WorldMapConfig extends ModuleConfig {
     JsonObject manual = new JsonObject();
     manual.addProperty("_description", "No automatic refresh. Use /f admin map refresh to update manually.");
     root.add("manual", manual);
+
+    // World config respect
+    root.addProperty("respectWorldConfig", respectWorldConfig);
+    root.addProperty("_respectNote", "When true, inherits map settings from world config. Disabled worlds are skipped.");
+    root.addProperty("betterMapCompat", betterMapCompat);
+    root.addProperty("_betterMapNote", "BetterMap compatibility: auto (detect), always (force on), never (force off)");
+
+    // Settings overrides section
+    JsonObject settingsOverrides = new JsonObject();
+    settingsOverrides.addProperty("_description", "Override inherited world settings. Remove a key or set to null to inherit from the world config.");
+    if (overrideDefaultScale != null) settingsOverrides.addProperty("defaultScale", overrideDefaultScale);
+    if (overrideMinScale != null) settingsOverrides.addProperty("minScale", overrideMinScale);
+    if (overrideMaxScale != null) settingsOverrides.addProperty("maxScale", overrideMaxScale);
+    if (overrideImageScale != null) settingsOverrides.addProperty("imageScale", overrideImageScale);
+    if (overrideAllowTeleportToCoordinates != null) settingsOverrides.addProperty("allowTeleportToCoordinates", overrideAllowTeleportToCoordinates);
+    if (overrideAllowTeleportToMarkers != null) settingsOverrides.addProperty("allowTeleportToMarkers", overrideAllowTeleportToMarkers);
+    if (overrideAllowCreatingMapMarkers != null) settingsOverrides.addProperty("allowCreatingMapMarkers", overrideAllowCreatingMapMarkers);
+    root.add("settingsOverrides", settingsOverrides);
   }
 
   /** Validates . */
@@ -440,6 +503,51 @@ public class WorldMapConfig extends ModuleConfig {
 
   /** Sets faction wide refresh threshold. */
   public void setFactionWideRefreshThreshold(int value) { this.factionWideRefreshThreshold = value; }
+
+  // === World Config Respect ===
+
+  /** Checks if world config settings should be respected. */
+  public boolean isRespectWorldConfig() { return respectWorldConfig; }
+
+  /** Sets whether to respect world config settings. */
+  public void setRespectWorldConfig(boolean value) { this.respectWorldConfig = value; }
+
+  /** Gets the BetterMap compatibility mode: "auto", "always", or "never". */
+  @NotNull
+  public String getBetterMapCompat() { return betterMapCompat; }
+
+  /** Sets the BetterMap compatibility mode. */
+  public void setBetterMapCompat(@NotNull String value) { this.betterMapCompat = value; }
+
+  // === Settings Overrides (null = inherit from world) ===
+
+  /** Gets the override for default map scale, or null to inherit. */
+  @Nullable
+  public Float getOverrideDefaultScale() { return overrideDefaultScale; }
+
+  /** Gets the override for minimum map scale, or null to inherit. */
+  @Nullable
+  public Float getOverrideMinScale() { return overrideMinScale; }
+
+  /** Gets the override for maximum map scale, or null to inherit. */
+  @Nullable
+  public Float getOverrideMaxScale() { return overrideMaxScale; }
+
+  /** Gets the override for image scale, or null to inherit. */
+  @Nullable
+  public Float getOverrideImageScale() { return overrideImageScale; }
+
+  /** Gets the override for allowing teleport to coordinates, or null to inherit. */
+  @Nullable
+  public Boolean getOverrideAllowTeleportToCoordinates() { return overrideAllowTeleportToCoordinates; }
+
+  /** Gets the override for allowing teleport to markers, or null to inherit. */
+  @Nullable
+  public Boolean getOverrideAllowTeleportToMarkers() { return overrideAllowTeleportToMarkers; }
+
+  /** Gets the override for allowing map marker creation, or null to inherit. */
+  @Nullable
+  public Boolean getOverrideAllowCreatingMapMarkers() { return overrideAllowCreatingMapMarkers; }
 
   /**
    * Checks if faction tags should be shown on the world map.
