@@ -208,6 +208,8 @@ public final class ConfigSnapshot {
         case "worldmap.incrementalMaxChunksPerBatch" -> cfg.worldMap().setIncrementalMaxChunksPerBatch(toInt(value));
         case "worldmap.debouncedDelaySeconds" -> cfg.worldMap().setDebouncedDelaySeconds(toInt(value));
         case "worldmap.factionWideRefreshThreshold" -> cfg.worldMap().setFactionWideRefreshThreshold(toInt(value));
+        case "worldmap.respectWorldConfig" -> cfg.worldMap().setRespectWorldConfig(toBool(value));
+        case "worldmap.betterMapCompat" -> cfg.worldMap().setBetterMapCompat(toStr(value));
 
         // === DebugConfig ===
         case "debug.enabledByDefault" -> cfg.debug().setEnabledByDefault(toBool(value));
