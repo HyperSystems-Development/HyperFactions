@@ -1,0 +1,95 @@
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+
+Group {
+  LayoutMode: Top;
+  Background: (Color: #0d1520);
+  Padding: (Left: 8, Right: 8, Top: 6, Bottom: 6);
+  Anchor: (Bottom: 4);
+
+  Group #HeaderRow {
+    LayoutMode: Left;
+    Anchor: (Height: 22);
+
+    TextButton #ExpandBtn {
+      Style: $S.@ButtonStyle;
+      Text: ">";
+      Anchor: (Width: 28, Height: 22);
+    }
+
+    Group { Anchor: (Width: 6); }
+
+    Label #BackupNameLabel {
+      Text: "";
+      Style: (FontSize: 11, TextColor: #CCCCCC, RenderBold: true);
+      Anchor: (Width: 260, Height: 22);
+    }
+
+    Label #BackupSizeLabel {
+      Text: "";
+      Style: (FontSize: 10, TextColor: #888888, HorizontalAlignment: End);
+      Anchor: (Width: 80, Height: 22);
+    }
+
+    Label #BackupTypeTag {
+      Text: "";
+      Style: (FontSize: 10, TextColor: #00FFFF, HorizontalAlignment: End);
+      Anchor: (Width: 80, Height: 22);
+    }
+  }
+
+  Group #DetailSection {
+    LayoutMode: Top;
+    Visible: false;
+    Padding: (Left: 34, Top: 4);
+
+    Group #DetailRow1 {
+      LayoutMode: Left;
+      Anchor: (Height: 18);
+
+      Label #DetailTypeLabel {
+        Text: "";
+        Style: (FontSize: 10, TextColor: #888888);
+        Anchor: (Width: 200, Height: 18);
+      }
+
+      Label #DetailCreatedLabel {
+        Text: "";
+        Style: (FontSize: 10, TextColor: #888888);
+        Anchor: (Width: 250, Height: 18);
+      }
+    }
+
+    Label #DetailSizeLabel {
+      Text: "";
+      Style: (FontSize: 10, TextColor: #888888);
+      Anchor: (Height: 18);
+    }
+
+    Label #RestoreWarning {
+      Text: "";
+      Style: (FontSize: 10, TextColor: #FFAA00);
+      Anchor: (Height: 18);
+      Visible: false;
+    }
+
+    Group #ActionRow {
+      LayoutMode: Left;
+      Anchor: (Height: 28, Top: 4);
+
+      TextButton #RestoreBtn {
+        Style: $S.@ButtonStyle;
+        Text: "Restore";
+        Anchor: (Width: 100, Height: 24);
+      }
+
+      Group { Anchor: (Width: 8); }
+
+      TextButton #DeleteBtn {
+        Style: $S.@ButtonStyle;
+        Text: "Delete";
+        Anchor: (Width: 100, Height: 24);
+      }
+    }
+  }
+}

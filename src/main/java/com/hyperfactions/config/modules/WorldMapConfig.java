@@ -391,6 +391,56 @@ public class WorldMapConfig extends ModuleConfig {
     return autoFallbackOnError;
   }
 
+  // === Setters (for admin config editor) ===
+
+  /** Sets show faction tags. */
+  public void setShowFactionTags(boolean value) { this.showFactionTags = value; }
+
+  /** Sets player visibility enabled. */
+  public void setPlayerVisibilityEnabled(boolean value) { this.playerVisibilityEnabled = value; }
+
+  /** Sets show own faction. */
+  public void setShowOwnFaction(boolean value) { this.showOwnFaction = value; }
+
+  /** Sets show allies. */
+  public void setShowAllies(boolean value) { this.showAllies = value; }
+
+  /** Sets show neutrals. */
+  public void setShowNeutrals(boolean value) { this.showNeutrals = value; }
+
+  /** Sets show enemies. */
+  public void setShowEnemies(boolean value) { this.showEnemies = value; }
+
+  /** Sets show factionless players. */
+  public void setShowFactionlessPlayers(boolean value) { this.showFactionlessPlayers = value; }
+
+  /** Sets proximity chunk radius. */
+  public void setProximityChunkRadius(int value) { this.proximityChunkRadius = value; }
+
+  /** Sets proximity batch interval ticks. */
+  public void setProximityBatchIntervalTicks(int value) { this.proximityBatchIntervalTicks = value; }
+
+  /** Sets proximity max chunks per batch. */
+  public void setProximityMaxChunksPerBatch(int value) { this.proximityMaxChunksPerBatch = value; }
+
+  /** Sets incremental batch interval ticks. */
+  public void setIncrementalBatchIntervalTicks(int value) { this.incrementalBatchIntervalTicks = value; }
+
+  /** Sets incremental max chunks per batch. */
+  public void setIncrementalMaxChunksPerBatch(int value) { this.incrementalMaxChunksPerBatch = value; }
+
+  /** Sets debounced delay seconds. */
+  public void setDebouncedDelaySeconds(int value) { this.debouncedDelaySeconds = value; }
+
+  /** Sets auto fallback on error. */
+  public void setAutoFallbackOnError(boolean value) { this.autoFallbackOnError = value; }
+
+  /** Sets show factionless to factionless. */
+  public void setShowFactionlessToFactionless(boolean value) { this.showFactionlessToFactionless = value; }
+
+  /** Sets faction wide refresh threshold. */
+  public void setFactionWideRefreshThreshold(int value) { this.factionWideRefreshThreshold = value; }
+
   /**
    * Checks if faction tags should be shown on the world map.
    * When enabled, claimed chunks display faction tag text in the corner.

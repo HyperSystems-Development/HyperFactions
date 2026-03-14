@@ -1206,6 +1206,28 @@ public class HyperFactions {
   }
 
   /**
+   * Restarts all interval-based runtime systems to pick up config changes.
+   * Called after the admin config editor saves changes.
+   */
+  public void reloadRuntimeSystems() {
+    // Restart periodic tasks (auto-save, mob clear, upkeep, etc.)
+    if (periodicTaskManager != null) {
+      periodicTaskManager.cancelAll();
+      periodicTaskManager.startAll();
+      Logger.info("[Config] Periodic tasks restarted");
+    }
+
+    // Restart worldmap refresh scheduler with new mode/intervals
+    if (worldMapService != null) {
+      worldMapService.initializeScheduler(ConfigManager.get().worldMap());
+      Logger.info("[Config] World map scheduler restarted");
+    }
+
+    // Rebuild world settings resolver
+    ConfigManager.get().getWorldSettingsResolver().rebuild(ConfigManager.get().worlds());
+  }
+
+  /**
    * Gets the map player filter service.
    *
    * @return the map player filter service

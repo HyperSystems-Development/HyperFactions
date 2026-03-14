@@ -122,6 +122,14 @@ public abstract class ConfigFile {
   }
 
   /**
+   * Resets to factory defaults and saves.
+   */
+  public void resetDefaults() {
+    createDefaults();
+    save();
+  }
+
+  /**
    * Loads configuration values from the parsed JSON object.
    *
    * @param root the root JSON object

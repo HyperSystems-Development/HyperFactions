@@ -1,0 +1,13 @@
+Group {
+  LayoutMode: Left;
+  Anchor: (Height: 14, Bottom: 1);
+  Padding: (Left: 6, Right: 4);
+
+  Group { FlexWeight: 1; }
+
+  Label {
+    Text: "Default / Lock";
+    Style: (FontSize: 10, TextColor: #667788, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
+    Anchor: (Width: 80, Right: 10);
+  }
+}

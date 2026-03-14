@@ -1,0 +1,86 @@
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+
+$C.@PageOverlay {
+  $C.@Container {
+    Anchor: (Width: 500, Height: 420);
+
+    #Content {
+      LayoutMode: Top;
+      Padding: (Left: 10, Right: 10, Top: 8, Bottom: 5);
+
+      Label #ModalTitle {
+        Text: "Edit Scaling Tiers";
+        Style: (FontSize: 14, TextColor: #FFFFFF, RenderBold: true);
+        Anchor: (Height: 22, Bottom: 2);
+      }
+
+      Label #ExampleLabel {
+        Text: "";
+        Style: (FontSize: 12, TextColor: #55AAFF);
+        Anchor: (Height: 20, Bottom: 4);
+      }
+
+      Group #HeaderRow {
+        LayoutMode: Left;
+        Anchor: (Height: 20, Bottom: 2);
+        Padding: (Left: 8, Right: 8);
+
+        Label {
+          Text: "Chunk Count";
+          Style: (FontSize: 10, TextColor: #888888, RenderBold: true);
+          Anchor: (Width: 120);
+        }
+
+        Label {
+          Text: "Cost Per Chunk";
+          Style: (FontSize: 10, TextColor: #888888, RenderBold: true);
+          Anchor: (Width: 120);
+        }
+      }
+
+      Group #TierList {
+        FlexWeight: 1;
+        LayoutMode: TopScrolling;
+        ScrollbarStyle: $C.@DefaultScrollbarStyle;
+        Padding: (Left: 2, Right: 2, Top: 2, Bottom: 2);
+
+        Group #TierContainer {
+          LayoutMode: Top;
+        }
+      }
+
+      Group #AddBar {
+        LayoutMode: Left;
+        Anchor: (Height: 30, Top: 4);
+        Padding: (Left: 4, Right: 4);
+
+        TextButton #AddTierBtn {
+          Style: $S.@ButtonStyle;
+          Text: "Add Tier";
+          Anchor: (Width: 100, Height: 26);
+        }
+      }
+
+      Group #ActionBar {
+        LayoutMode: Left;
+        Anchor: (Height: 32, Top: 4);
+        Padding: (Left: 4, Right: 4);
+
+        TextButton #SaveBtn {
+          Style: $S.@CyanButtonStyle;
+          Text: "Save";
+          Anchor: (Width: 100, Height: 26);
+        }
+
+        Group { Anchor: (Width: 8); }
+
+        TextButton #CancelBtn {
+          Style: $S.@ButtonStyle;
+          Text: "Cancel";
+          Anchor: (Width: 100, Height: 26);
+        }
+      }
+    }
+  }
+}

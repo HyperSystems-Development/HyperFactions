@@ -9,6 +9,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+**Admin GUI: Runtime Config Editor ([#40](https://github.com/HyperSystems-Development/HyperFactions/issues/40))**
+- 11-tab config editor covering all HyperFactions settings: Server, Chat, Announcements, Economy, Factions, Faction Perms, Worldmap, Worlds, Backup, Debug, Gravestones
+- Size-adaptive layouts: narrow (520px, 1-col), standard (780px, 2-col), wide (1020px, 4-col) — template switches automatically per tab
+- Inline editing with boolean toggles, integer/double steppers, text fields, color pickers, enum dropdowns, and locale selectors
+- Faction permissions editor with parent/child toggling (disabling parent auto-disables children), Default/Lock checkboxes per flag
+- World overrides editor with add/remove worlds and tri-state per-world settings (Default/Allow/Deny)
+- Upkeep scaling tiers modal with add/remove/reorder tiers, promote/demote disable on first/last, and live cost example
+- Edit session caching — pending changes survive page close/reopen and modal round-trips
+- Input validation with per-field error highlighting, debounced text updates, and save-blocked-on-invalid state
+- Per-tab label fixes: "Requires Faction", "Show to Factionless", shortened section names
+- ConfigSnapshot for applying changes, ConfigValidator for input bounds, ConfigV7→V8 migration
+
+**Admin GUI: Backup Manager ([#41](https://github.com/HyperSystems-Development/HyperFactions/issues/41))**
+- Paginated backup list with expand/collapse detail view per entry
+- Create manual backups with optional custom name
+- Restore backups with two-click confirmation and automatic safety backup
+- Delete backups with two-click confirmation
+- Backup type filter dropdown (All / Hourly / Daily / Weekly / Manual / Migration)
+
+**Admin GUI: Updates Page ([#42](https://github.com/HyperSystems-Development/HyperFactions/issues/42))**
+- Two-column layout: HyperFactions (left) and HyperProtect Mixin (right) with mirrored version info
+- Shows current version, latest version, channel, build date, and update status for both
+- Single "Check for Updates" button checks both simultaneously
+- Download buttons appear when updates are available
+- Changelog display for HyperFactions updates
+- Rollback support with two-click confirmation
+- HyperProtect detection via ProtectionMixinBridge (works even without update checker)
+
 **Split MessageKeys into Domain-Specific Files**
 - Split the monolithic `MessageKeys.java` (2,789 lines, 60 inner classes, ~1,298 constants) into 6 focused domain files:
   - `CommonKeys.java` — shared messages, protection denial, territory notifications, announcements, teleport, chat display

@@ -18,40 +18,96 @@ $C.@PageOverlay {
       LayoutMode: Top;
       Padding: (Left: 15, Right: 15, Top: 10, Bottom: 10);
 
-      Group #PlaceholderContent {
+      Group #HeaderRow {
+        LayoutMode: Left;
+        Anchor: (Height: 36, Bottom: 6);
+
+        Label #BackupCount {
+          Text: "";
+          Style: (FontSize: 13, TextColor: #CCCCCC, RenderBold: true, VerticalAlignment: Center);
+          Anchor: (Width: 260, Height: 32);
+        }
+
+        Label { FlexWeight: 1; }
+
+        TextButton #CreateBackupBtn {
+          Style: $S.@CyanButtonStyle;
+          Text: "Create Backup";
+          Anchor: (Width: 140, Height: 32);
+        }
+      }
+
+      Group #NameInputRow {
+        LayoutMode: Left;
+        Anchor: (Height: 28, Bottom: 6);
+
+        Label #NameLabel {
+          Text: "Name:";
+          Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
+          Anchor: (Width: 50, Height: 28);
+        }
+
+        $C.@TextField #BackupNameInput {
+          Anchor: (Width: 200, Height: 28);
+        }
+
+        Group { FlexWeight: 1; }
+
+        Label #FilterLabel {
+          Text: "Filter:";
+          Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
+          Anchor: (Width: 40, Height: 28);
+        }
+
+        DropdownBox #FilterDropdown {
+          Style: $C.@DefaultDropdownBoxStyle;
+          Anchor: (Width: 120, Height: 26);
+        }
+      }
+
+      Label #StatusMessage {
+        Text: "";
+        Style: (FontSize: 10, TextColor: #888888);
+        Anchor: (Height: 18, Bottom: 4);
+      }
+
+      Group #SeparatorLine {
+        Background: (Color: #333333);
+        Anchor: (Height: 1, Bottom: 6);
+      }
+
+      Group #BackupListContainer {
+        LayoutMode: TopScrolling;
+        ScrollbarStyle: $C.@DefaultScrollbarStyle;
         FlexWeight: 1;
-        LayoutMode: Top;
+      }
 
-        Label {
-          Anchor: (Height: 100);
+      Group #PaginationRow {
+        LayoutMode: Left;
+        Anchor: (Height: 35, Top: 6);
+
+        TextButton #PrevBtn {
+          Style: $S.@ButtonStyle;
+          Text: "< Prev";
+          Anchor: (Width: 80, Height: 26);
+          Visible: false;
         }
 
-        Label #ComingSoon {
-          Text: "Backup Management";
-          Style: (FontSize: 24, TextColor: #00FFFF, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
-          Anchor: (Height: 40);
+        Label { FlexWeight: 1; }
+
+        Label #PageLabel {
+          Text: "";
+          Style: (FontSize: 14, TextColor: #888888, HorizontalAlignment: Center, VerticalAlignment: Center);
+          Anchor: (Width: 60);
         }
 
-        Label #ComingSoonSub {
-          Text: "Coming Soon";
-          Style: (FontSize: 16, TextColor: #888888, HorizontalAlignment: Center, VerticalAlignment: Center);
-          Anchor: (Height: 30);
-        }
+        Label { FlexWeight: 1; }
 
-        Label {
-          Anchor: (Height: 20);
-        }
-
-        Label #Description {
-          Text: "Create, restore, and manage faction data backups.";
-          Style: (FontSize: 12, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
-          Anchor: (Height: 25);
-        }
-
-        Label #Description2 {
-          Text: "Automatic backups are saved to the data/backups folder.";
-          Style: (FontSize: 12, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
-          Anchor: (Height: 25);
+        TextButton #NextBtn {
+          Style: $S.@ButtonStyle;
+          Text: "Next >";
+          Anchor: (Width: 80, Height: 26);
+          Visible: false;
         }
       }
     }

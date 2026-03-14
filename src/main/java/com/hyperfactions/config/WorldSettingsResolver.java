@@ -34,8 +34,7 @@ public class WorldSettingsResolver {
   /** The default policy when no match is found. */
   private boolean defaultAllow = true;
 
-  /** Claim blacklist (always blocked, regardless of per-world settings). */
-  private Set<String> claimBlacklist = new HashSet<>();
+  // claimBlacklist removed in v8 — migrated to per-world claiming=false entries
 
   /** Record for a wildcard pattern with its priority. */
   private record WildcardEntry(String key, Pattern pattern, int wildcardCount, WorldSettings settings) {}
@@ -50,7 +49,6 @@ public class WorldSettingsResolver {
     exactMatches.clear();
     wildcardPatterns.clear();
     defaultAllow = "allow".equals(config.getDefaultPolicy());
-    claimBlacklist = new HashSet<>(config.getClaimBlacklist());
 
     for (Map.Entry<String, WorldSettings> entry : config.getWorlds().entrySet()) {
       String key = entry.getKey();
@@ -71,8 +69,8 @@ public class WorldSettingsResolver {
     // Sort wildcards: fewer wildcards = higher priority (more specific)
     wildcardPatterns.sort(Comparator.comparingInt(WildcardEntry::wildcardCount));
 
-    Logger.debug("[Worlds] Resolver rebuilt: %d exact, %d wildcard, defaultAllow=%s, blacklist=%d",
-        exactMatches.size(), wildcardPatterns.size(), defaultAllow, claimBlacklist.size());
+    Logger.debug("[Worlds] Resolver rebuilt: %d exact, %d wildcard, defaultAllow=%s",
+        exactMatches.size(), wildcardPatterns.size(), defaultAllow);
   }
 
   /**
@@ -109,11 +107,6 @@ public class WorldSettingsResolver {
    * @return true if claiming is allowed
    */
   public boolean isClaimingAllowed(@NotNull String worldName) {
-    // Claim blacklist always takes precedence
-    if (claimBlacklist.contains(worldName)) {
-      return false;
-    }
-
     WorldSettings settings = resolve(worldName);
     if (settings != null && settings.claiming() != null) {
       return settings.claiming();
@@ -180,13 +173,4 @@ public class WorldSettingsResolver {
     return defaultAllow;
   }
 
-  /**
-   * Gets the claim blacklist.
-   *
-   * @return unmodifiable set of blacklisted world names
-   */
-  @NotNull
-  public Set<String> getClaimBlacklist() {
-    return Collections.unmodifiableSet(claimBlacklist);
-  }
 }

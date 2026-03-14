@@ -383,6 +383,18 @@ public class DebugConfig extends ModuleConfig {
     this.sentryEnabled = enabled;
   }
 
+  /** Sets enabled by default. */
+  public void setEnabledByDefault(boolean value) { this.enabledByDefault = value; }
+
+  /** Sets log to console. */
+  public void setLogToConsole(boolean value) { this.logToConsole = value; applyToLogger(); }
+
+  /** Sets sentry debug mode. */
+  public void setSentryDebug(boolean value) { this.sentryDebug = value; }
+
+  /** Sets sentry traces sample rate. */
+  public void setSentryTracesSampleRate(double value) { this.sentryTracesSampleRate = value; }
+
   // === Setters (for runtime toggle) ===
 
   /**

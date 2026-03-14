@@ -196,6 +196,38 @@ public class AnnouncementConfig extends ModuleConfig {
     return territoryNotificationsEnabled;
   }
 
+  // === Setters (for admin config editor) ===
+
+  /** Sets territory notifications enabled. */
+  public void setTerritoryNotificationsEnabled(boolean value) { this.territoryNotificationsEnabled = value; }
+
+  /** Sets wilderness on leave zone enabled. */
+  public void setWildernessOnLeaveZoneEnabled(boolean value) { this.wildernessOnLeaveZoneEnabled = value; }
+
+  /** Sets wilderness on leave claim enabled. */
+  public void setWildernessOnLeaveClaimEnabled(boolean value) { this.wildernessOnLeaveClaimEnabled = value; }
+
+  /** Sets faction created. */
+  public void setFactionCreated(boolean value) { this.factionCreated = value; }
+
+  /** Sets faction disbanded. */
+  public void setFactionDisbanded(boolean value) { this.factionDisbanded = value; }
+
+  /** Sets leadership transfer. */
+  public void setLeadershipTransfer(boolean value) { this.leadershipTransfer = value; }
+
+  /** Sets overclaim. */
+  public void setOverclaim(boolean value) { this.overclaim = value; }
+
+  /** Sets war declared. */
+  public void setWarDeclared(boolean value) { this.warDeclared = value; }
+
+  /** Sets alliance formed. */
+  public void setAllianceFormed(boolean value) { this.allianceFormed = value; }
+
+  /** Sets alliance broken. */
+  public void setAllianceBroken(boolean value) { this.allianceBroken = value; }
+
   // === Wilderness notification getters ===
 
   public boolean isWildernessOnLeaveZoneEnabled() {
@@ -225,4 +257,16 @@ public class AnnouncementConfig extends ModuleConfig {
   public String getWildernessOnLeaveClaimLower() {
     return wildernessOnLeaveClaimLower;
   }
+
+  /** Sets wilderness on leave zone upper text. */
+  public void setWildernessOnLeaveZoneUpper(@NotNull String value) { this.wildernessOnLeaveZoneUpper = value; }
+
+  /** Sets wilderness on leave zone lower text. */
+  public void setWildernessOnLeaveZoneLower(@NotNull String value) { this.wildernessOnLeaveZoneLower = value; }
+
+  /** Sets wilderness on leave claim upper text. */
+  public void setWildernessOnLeaveClaimUpper(@NotNull String value) { this.wildernessOnLeaveClaimUpper = value; }
+
+  /** Sets wilderness on leave claim lower text. */
+  public void setWildernessOnLeaveClaimLower(@NotNull String value) { this.wildernessOnLeaveClaimLower = value; }
 }

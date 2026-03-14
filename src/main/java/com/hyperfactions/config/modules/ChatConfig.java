@@ -326,6 +326,71 @@ public class ChatConfig extends ModuleConfig {
     return historyCleanupIntervalMinutes;
   }
 
+  // === Setters (for admin config editor) ===
+
+  /** Sets format. */
+  public void setFormat(@NotNull String value) { this.format = value; }
+
+  /** Sets tag display. */
+  public void setTagDisplay(@NotNull String value) { this.tagDisplay = value; }
+
+  /** Sets tag format. */
+  public void setTagFormat(@NotNull String value) { this.tagFormat = value; }
+
+  /** Sets no faction tag. */
+  public void setNoFactionTag(@NotNull String value) { this.noFactionTag = value; }
+
+  /** Sets no faction tag color. */
+  public void setNoFactionTagColor(@NotNull String value) { this.noFactionTagColor = value; }
+
+  /** Sets player name color. */
+  public void setPlayerNameColor(@NotNull String value) { this.playerNameColor = value; }
+
+  /** Sets priority. */
+  public void setPriority(@NotNull String value) { this.priority = value; }
+
+  /** Sets relation color own. */
+  public void setRelationColorOwn(@NotNull String value) { this.relationColorOwn = value; }
+
+  /** Sets relation color ally. */
+  public void setRelationColorAlly(@NotNull String value) { this.relationColorAlly = value; }
+
+  /** Sets relation color neutral. */
+  public void setRelationColorNeutral(@NotNull String value) { this.relationColorNeutral = value; }
+
+  /** Sets relation color enemy. */
+  public void setRelationColorEnemy(@NotNull String value) { this.relationColorEnemy = value; }
+
+  /** Sets faction chat color. */
+  public void setFactionChatColor(@NotNull String value) { this.factionChatColor = value; }
+
+  /** Sets faction chat prefix. */
+  public void setFactionChatPrefix(@NotNull String value) { this.factionChatPrefix = value; }
+
+  /** Sets ally chat color. */
+  public void setAllyChatColor(@NotNull String value) { this.allyChatColor = value; }
+
+  /** Sets ally chat prefix. */
+  public void setAllyChatPrefix(@NotNull String value) { this.allyChatPrefix = value; }
+
+  /** Sets sender name color. */
+  public void setSenderNameColor(@NotNull String value) { this.senderNameColor = value; }
+
+  /** Sets message color. */
+  public void setMessageColor(@NotNull String value) { this.messageColor = value; }
+
+  /** Sets history enabled. */
+  public void setHistoryEnabled(boolean value) { this.historyEnabled = value; }
+
+  /** Sets history max messages. */
+  public void setHistoryMaxMessages(int value) { this.historyMaxMessages = value; }
+
+  /** Sets history retention days. */
+  public void setHistoryRetentionDays(int value) { this.historyRetentionDays = value; }
+
+  /** Sets history cleanup interval minutes. */
+  public void setHistoryCleanupIntervalMinutes(int value) { this.historyCleanupIntervalMinutes = value; }
+
   // === Validation ===
 
   /** Validates . */

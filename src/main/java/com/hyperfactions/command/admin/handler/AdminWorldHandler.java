@@ -140,9 +140,6 @@ public class AdminWorldHandler {
       ctx.sendMessage(line);
     }
 
-    if (!config.getClaimBlacklist().isEmpty()) {
-      ctx.sendMessage(msg("  Claim blacklist: " + String.join(", ", config.getClaimBlacklist()), COLOR_GRAY));
-    }
   }
 
   /**
