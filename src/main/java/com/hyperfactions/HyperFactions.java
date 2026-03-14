@@ -40,6 +40,7 @@ import com.hyperfactions.update.UpdateNotificationListener;
 import com.hyperfactions.update.UpdateNotificationPreferences;
 import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.worldmap.BetterMapCompat;
 import com.hyperfactions.worldmap.MapPlayerFilterService;
 import com.hyperfactions.worldmap.WorldMapService;
 import java.io.IOException;
@@ -391,6 +392,9 @@ public class HyperFactions {
     territoryNotifier = new TerritoryNotifier(
       factionManager, claimManager, zoneManager, relationManager, playerStorage
     );
+
+    // Detect BetterMap mod availability for enhanced map integration
+    BetterMapCompat.initialize();
 
     // Initialize world map service (for claim markers on map)
     worldMapService = new WorldMapService(
