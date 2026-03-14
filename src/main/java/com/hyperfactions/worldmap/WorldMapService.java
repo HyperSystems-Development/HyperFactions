@@ -161,13 +161,12 @@ public class WorldMapService {
     if (settings == null) {
       return false;
     }
-    // Check for the DISABLED sentinel instance
-    if (settings == WorldMapSettings.DISABLED) {
-      return true;
-    }
-    // Check if the settings packet has enabled=false
-    UpdateWorldMapSettings packet = settings.getSettingsPacket();
-    return packet != null && !packet.enabled;
+    // Check for the DISABLED sentinel instance.
+    // We only check identity equality with the static DISABLED singleton,
+    // NOT the packet's enabled field — UpdateWorldMapSettings defaults
+    // enabled=false (Java boolean default), so even normal WorldGen worlds
+    // would incorrectly appear disabled if we checked that field.
+    return settings == WorldMapSettings.DISABLED;
   }
 
   /**
