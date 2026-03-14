@@ -154,12 +154,18 @@ public class HyperFactionsWorldMap implements IWorldMap {
     }
 
     // Remaining WorldMapSettings fields: always inherit from original
+    // viewRadiusMultiplier, viewRadiusMin, viewRadiusMax are private with no public getters,
+    // so we use reflection to read them from the original settings
+    float viewRadiusMultiplier = getPrivateFloat(originalSettings, "viewRadiusMultiplier", 1.0f);
+    int viewRadiusMin = getPrivateInt(originalSettings, "viewRadiusMin", 1);
+    int viewRadiusMax = getPrivateInt(originalSettings, "viewRadiusMax", 512);
+
     return new WorldMapSettings(
         originalSettings.getWorldMapArea(),
         imageScale,
-        originalSettings.getViewRadiusMultiplier(),
-        originalSettings.getViewRadiusMin(),
-        originalSettings.getViewRadiusMax(),
+        viewRadiusMultiplier,
+        viewRadiusMin,
+        viewRadiusMax,
         merged
     );
   }
@@ -216,5 +222,37 @@ public class HyperFactionsWorldMap implements IWorldMap {
   @Override
   public void shutdown() {
     // No resources to clean up
+  }
+
+  // === Reflection helpers for private WorldMapSettings fields ===
+
+  /**
+   * Reads a private float field from an object via reflection.
+   * Falls back to the default value if the field is not accessible.
+   */
+  private static float getPrivateFloat(@NotNull Object obj, @NotNull String fieldName, float defaultValue) {
+    try {
+      java.lang.reflect.Field field = obj.getClass().getDeclaredField(fieldName);
+      field.setAccessible(true);
+      return field.getFloat(obj);
+    } catch (Exception e) {
+      Logger.debug("[WorldMap] Could not read field '%s' via reflection, using default %.1f", fieldName, defaultValue);
+      return defaultValue;
+    }
+  }
+
+  /**
+   * Reads a private int field from an object via reflection.
+   * Falls back to the default value if the field is not accessible.
+   */
+  private static int getPrivateInt(@NotNull Object obj, @NotNull String fieldName, int defaultValue) {
+    try {
+      java.lang.reflect.Field field = obj.getClass().getDeclaredField(fieldName);
+      field.setAccessible(true);
+      return field.getInt(obj);
+    } catch (Exception e) {
+      Logger.debug("[WorldMap] Could not read field '%s' via reflection, using default %d", fieldName, defaultValue);
+      return defaultValue;
+    }
   }
 }
