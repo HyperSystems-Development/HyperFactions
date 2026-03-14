@@ -364,6 +364,15 @@ public class WorldMapConfig extends ModuleConfig {
     debouncedDelaySeconds = validateRange(result, "debounced.delaySeconds",
         debouncedDelaySeconds, 1, 60, 5);
 
+    // Validate betterMapCompat value
+    String originalCompat = betterMapCompat;
+    betterMapCompat = betterMapCompat.toLowerCase(java.util.Locale.ROOT);
+    if (!java.util.Set.of("auto", "always", "never").contains(betterMapCompat)) {
+      result.addWarning(getModuleName(), "betterMapCompat",
+          "Invalid value, defaulting to 'auto'", originalCompat, "auto");
+      betterMapCompat = "auto";
+    }
+
     return result;
   }
 

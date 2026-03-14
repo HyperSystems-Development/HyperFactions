@@ -395,6 +395,9 @@ public class HyperFactions {
 
     // Detect BetterMap mod availability for enhanced map integration
     BetterMapCompat.initialize();
+    Logger.debug("[BetterMap] Compat mode: %s (detected=%s, active=%s)",
+        ConfigManager.get().worldMap().getBetterMapCompat(),
+        BetterMapCompat.isDetected(), BetterMapCompat.isActive());
 
     // Initialize world map service (for claim markers on map)
     worldMapService = new WorldMapService(

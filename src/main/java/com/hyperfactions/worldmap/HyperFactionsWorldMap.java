@@ -82,7 +82,8 @@ public class HyperFactionsWorldMap implements IWorldMap {
   public WorldMapSettings getWorldMapSettings() {
     WorldMapConfig config = ConfigManager.get().worldMap();
 
-    if (config.isRespectWorldConfig() && originalSettings != null) {
+    if (config.isRespectWorldConfig() && originalSettings != null
+        && originalSettings.getSettingsPacket() != null) {
       return mergeWithOriginal(config);
     }
 
