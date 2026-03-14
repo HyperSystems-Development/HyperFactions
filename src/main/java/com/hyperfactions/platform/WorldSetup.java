@@ -72,18 +72,7 @@ public class WorldSetup {
             continue;
           }
 
-          // Set our world map generator directly on the WorldMapManager
-          // This is critical - setWorldMapProvider() only affects future loads,
-          // but setGenerator() updates the live WorldMapManager
-          var wmManager = world.getWorldMapManager();
-          Logger.debug("World %s: WorldMapManager=%s, current generator=%s",
-              world.getName(), wmManager, wmManager != null ? wmManager.getGenerator() : "null");
-          wmManager.setGenerator(
-              com.hyperfactions.worldmap.HyperFactionsWorldMap.INSTANCE);
-          Logger.debug("Applied HyperFactions world map generator to existing world: %s (generator now=%s)",
-              world.getName(), wmManager.getGenerator());
-
-          // Also register with WorldMapService to track it
+          // Register with WorldMapService (handles settings capture, disabled check, generator creation)
           hyperFactions.getWorldMapService().registerProviderIfNeeded(world);
 
         } catch (Exception e) {
@@ -187,27 +176,11 @@ public class WorldSetup {
         return;
       }
 
-      // Register our world map provider for this world
+      // Register world map provider (WorldMapService handles all setup)
       boolean worldMapEnabled = ConfigManager.get().isWorldMapMarkersEnabled();
-      Logger.debug("World map markers enabled: %s for world: %s", worldMapEnabled, world.getName());
-
       if (worldMapEnabled) {
-        HyperFactionsWorldMapProvider provider = new HyperFactionsWorldMapProvider();
-        world.getWorldConfig().setWorldMapProvider((IWorldMapProvider) provider);
-        Logger.debug("World map provider set for: %s (provider=%s)", world.getName(), provider.getClass().getName());
-
-        // Also set the live generator directly on the WorldMapManager
-        var wmManager = world.getWorldMapManager();
-        if (wmManager != null) {
-          wmManager.setGenerator(com.hyperfactions.worldmap.HyperFactionsWorldMap.INSTANCE);
-          Logger.debug("World map generator set for: %s (generator=%s)", world.getName(), wmManager.getGenerator());
-        } else {
-          Logger.warn("WorldMapManager is null for world: %s — generator not set", world.getName());
-        }
+        hyperFactions.getWorldMapService().registerProviderIfNeeded(world);
       }
-
-      // Track the world in WorldMapService
-      hyperFactions.getWorldMapService().registerProviderIfNeeded(world);
 
       // Apply spawn suppression to the new world
       hyperFactions.getSpawnSuppressionManager().applyToWorld(world);
