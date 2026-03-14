@@ -9,7 +9,8 @@
   "SoftDependencies": ["HyperPerms", "OrbisGuard", "OrbisGuard-Mixins", "HyperProtect-Mixin", "LuckPerms", "VaultUnlocked"],
   "OptionalDependencies": {
     "HelpChat:PlaceholderAPI": ">= 1.0.2",
-    "com.wiflow:WiFlowPlaceholderAPI": ">= 1.0.3"
+    "com.wiflow:WiFlowPlaceholderAPI": ">= 1.0.3",
+    "dev.ninesliced:BetterMap": ">= 1.3.3"
   },
   "IncludesAssetPack": true
 }
