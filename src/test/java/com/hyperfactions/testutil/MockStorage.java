@@ -1,6 +1,7 @@
 package com.hyperfactions.testutil;
 
 import com.hyperfactions.data.Faction;
+import com.hyperfactions.data.PlayerData;
 import com.hyperfactions.data.PlayerPower;
 import com.hyperfactions.data.Zone;
 import com.hyperfactions.storage.FactionStorage;
@@ -11,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Consumer;
 
 /**
  * In-memory storage implementations for testing.
@@ -98,6 +100,7 @@ public final class MockStorage {
      */
     public static class MockPlayerStorage implements PlayerStorage {
         private final Map<UUID, PlayerPower> players = new ConcurrentHashMap<>();
+        private final Map<UUID, PlayerData> playerData = new ConcurrentHashMap<>();
 
         @Override
         public CompletableFuture<Void> init() {
@@ -107,6 +110,7 @@ public final class MockStorage {
         @Override
         public CompletableFuture<Void> shutdown() {
             players.clear();
+            playerData.clear();
             return CompletableFuture.completedFuture(null);
         }
 
@@ -132,6 +136,35 @@ public final class MockStorage {
             return CompletableFuture.completedFuture(new ArrayList<>(players.values()));
         }
 
+        @Override
+        public CompletableFuture<Set<UUID>> getAllPlayerUuids() {
+            Set<UUID> uuids = new HashSet<>(players.keySet());
+            uuids.addAll(playerData.keySet());
+            return CompletableFuture.completedFuture(uuids);
+        }
+
+        @Override
+        public CompletableFuture<Optional<PlayerData>> loadPlayerData(@NotNull UUID uuid) {
+            return CompletableFuture.completedFuture(Optional.ofNullable(playerData.get(uuid)));
+        }
+
+        @Override
+        public CompletableFuture<Void> savePlayerData(@NotNull PlayerData data) {
+            playerData.put(data.getUuid(), data);
+            return CompletableFuture.completedFuture(null);
+        }
+
+        @Override
+        public CompletableFuture<Void> updatePlayerData(@NotNull UUID uuid, @NotNull Consumer<PlayerData> updater) {
+            PlayerData data = playerData.get(uuid);
+            if (data == null) {
+                data = new PlayerData(uuid);
+                playerData.put(uuid, data);
+            }
+            updater.accept(data);
+            return CompletableFuture.completedFuture(null);
+        }
+
         /**
          * Adds player power directly to storage (for test setup).
          *
@@ -155,6 +188,7 @@ public final class MockStorage {
          */
         public void clear() {
             players.clear();
+            playerData.clear();
         }
 
         /**

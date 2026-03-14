@@ -23,7 +23,7 @@ public final class TestPlayerFactory {
      * @return a new PlayerPower
      */
     public static PlayerPower createPower(@NotNull UUID uuid, double power, double maxPower) {
-        return new PlayerPower(uuid, power, maxPower, 0, System.currentTimeMillis());
+        return new PlayerPower(uuid, power, maxPower, 0, System.currentTimeMillis(), null, false, false);
     }
 
     /**
