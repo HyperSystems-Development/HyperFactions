@@ -102,29 +102,28 @@ $C.@PageOverlay {
 
       Group #ActionBar {
         LayoutMode: Left;
-        Anchor: (Height: 28);
-        Padding: (Left: 4, Right: 4);
+        Anchor: (Height: 40);
 
         TextButton #ResetBtn {
           Style: $S.@RedButtonStyle;
           Text: "Reset Defaults";
-          Anchor: (Width: 150, Height: 26);
+          Anchor: (Width: 150, Height: 32);
         }
 
-        Group { FlexWeight: 1; }
+        Label { FlexWeight: 1; }
 
         TextButton #RevertBtn {
           Style: $S.@ButtonStyle;
           Text: "Revert";
-          Anchor: (Width: 100, Height: 26);
+          Anchor: (Width: 100, Height: 32);
         }
 
-        Group { Anchor: (Width: 8); }
+        Label { FlexWeight: 1; }
 
         TextButton #SaveBtn {
           Style: $S.@CyanButtonStyle;
           Text: "Save";
-          Anchor: (Width: 100, Height: 26);
+          Anchor: (Width: 100, Height: 32);
         }
       }
     }

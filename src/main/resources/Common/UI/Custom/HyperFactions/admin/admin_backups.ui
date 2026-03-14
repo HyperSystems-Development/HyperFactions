@@ -20,20 +20,20 @@ $C.@PageOverlay {
 
       Group #HeaderRow {
         LayoutMode: Left;
-        Anchor: (Height: 32, Bottom: 6);
+        Anchor: (Height: 36, Bottom: 6);
 
         Label #BackupCount {
           Text: "";
-          Style: (FontSize: 13, TextColor: #CCCCCC, RenderBold: true);
-          Anchor: (Width: 260, Height: 28);
+          Style: (FontSize: 13, TextColor: #CCCCCC, RenderBold: true, VerticalAlignment: Center);
+          Anchor: (Width: 260, Height: 32);
         }
 
-        Group { Anchor: (Width: 10); FlexWeight: 1; }
+        Label { FlexWeight: 1; }
 
         TextButton #CreateBackupBtn {
           Style: $S.@CyanButtonStyle;
           Text: "Create Backup";
-          Anchor: (Width: 140, Height: 28);
+          Anchor: (Width: 140, Height: 32);
         }
       }
 
@@ -84,29 +84,29 @@ $C.@PageOverlay {
 
       Group #PaginationRow {
         LayoutMode: Left;
-        Anchor: (Height: 28, Top: 6);
+        Anchor: (Height: 35, Top: 6);
 
         TextButton #PrevBtn {
           Style: $S.@ButtonStyle;
           Text: "< Prev";
-          Anchor: (Width: 80, Height: 24);
+          Anchor: (Width: 80, Height: 26);
           Visible: false;
         }
 
-        Group { FlexWeight: 1; }
+        Label { FlexWeight: 1; }
 
         Label #PageLabel {
           Text: "";
-          Style: (FontSize: 11, TextColor: #888888, HorizontalAlignment: Center);
-          Anchor: (Width: 120, Height: 24);
+          Style: (FontSize: 14, TextColor: #888888, HorizontalAlignment: Center, VerticalAlignment: Center);
+          Anchor: (Width: 60);
         }
 
-        Group { FlexWeight: 1; }
+        Label { FlexWeight: 1; }
 
         TextButton #NextBtn {
           Style: $S.@ButtonStyle;
           Text: "Next >";
-          Anchor: (Width: 80, Height: 24);
+          Anchor: (Width: 80, Height: 26);
           Visible: false;
         }
       }

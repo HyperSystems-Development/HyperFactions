@@ -155,27 +155,27 @@ $C.@PageOverlay {
 
       Group #ActionBar {
         LayoutMode: Left;
-        Anchor: (Height: 32);
+        Anchor: (Height: 40);
 
         TextButton #CheckUpdateBtn {
           Style: $S.@ButtonStyle;
           Text: "Check for Updates";
-          Anchor: (Width: 160, Height: 28);
+          Anchor: (Width: 160, Height: 32);
         }
 
-        Group { FlexWeight: 1; }
+        Label { FlexWeight: 1; }
 
         Label #RestartNote {
           Text: "";
           Style: (FontSize: 10, TextColor: #FFAA00, VerticalAlignment: Center);
-          Anchor: (Width: 200, Height: 28);
+          Anchor: (Width: 200, Height: 32);
           Visible: false;
         }
 
         TextButton #RollbackBtn {
           Style: $S.@RedButtonStyle;
           Text: "Rollback";
-          Anchor: (Width: 120, Height: 28);
+          Anchor: (Width: 120, Height: 32);
           Visible: false;
         }
       }
