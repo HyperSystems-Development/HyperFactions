@@ -829,6 +829,9 @@ public class AdminConfigPage extends InteractiveCustomUIPage<AdminConfigData> {
     setColumn(true);
     addSectionHeader(cmd, loc(AdminGuiKeys.AdminGui.CFG_SEC_MAP_DISPLAY));
     addBooleanSetting(cmd, events, "worldmap.enabled", "World Map Markers", wm.isEnabled());
+    addBooleanSetting(cmd, events, "worldmap.respectWorldConfig", "Respect World Config", wm.isRespectWorldConfig());
+    addEnumSetting(cmd, events, "worldmap.betterMapCompat", "BetterMap Compat", wm.getBetterMapCompat(),
+        "auto", "always", "never");
     addBooleanSetting(cmd, events, "worldmap.showFactionTags", "Show Faction Tags", wm.isShowFactionTags());
     addEnumSetting(cmd, events, "worldmap.refreshMode", "Refresh Mode", wm.getRefreshMode().getConfigName(),
         "proximity", "incremental", "debounced", "immediate", "manual");
