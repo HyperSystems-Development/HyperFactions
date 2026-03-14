@@ -79,6 +79,7 @@ public class WorldSetup {
         } catch (Exception e) {
           Logger.warn("Failed to set world map provider for world %s: %s",
               world.getName(), e.getMessage());
+          ErrorHandler.report("Failed to set world map provider for world " + world.getName(), e);
         }
       }
 
@@ -96,6 +97,7 @@ public class WorldSetup {
           } catch (Exception e) {
             Logger.warn("Failed to register world map for world %s: %s",
                 world.getName(), e.getMessage());
+            ErrorHandler.report("Failed to register world map for world " + world.getName(), e);
           }
         }
         // Apply map player filters after registration
@@ -107,6 +109,7 @@ public class WorldSetup {
 
     } catch (Exception e) {
       Logger.warn("Failed to apply world map provider to existing worlds: %s", e.getMessage());
+      ErrorHandler.report("Failed to apply world map provider to existing worlds", e);
     }
   }
 
