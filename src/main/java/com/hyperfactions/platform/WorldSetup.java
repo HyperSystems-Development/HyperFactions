@@ -72,16 +72,37 @@ public class WorldSetup {
             continue;
           }
 
-          // Register with WorldMapService (handles settings capture, disabled check, generator creation)
-          hyperFactions.getWorldMapService().registerProviderIfNeeded(world);
+          // Set our provider on WorldConfig so the server uses it during world map init
+          world.getWorldConfig().setWorldMapProvider(
+              new com.hyperfactions.worldmap.HyperFactionsWorldMapProvider());
 
         } catch (Exception e) {
-          Logger.warn("Failed to apply world map provider to world %s: %s",
+          Logger.warn("Failed to set world map provider for world %s: %s",
               world.getName(), e.getMessage());
         }
       }
 
-      // Apply map player filters to any already-online players
+      // Schedule delayed registration — WorldMapManager generators are initialized
+      // AFTER plugin enable (during "Getting Hytale Universe ready"), so we need
+      // to wait for them to be ready before capturing original settings
+      hyperFactions.scheduleDelayedTask(60, () -> { // 60 ticks = 2 seconds
+        Logger.debug("[WorldMap] Delayed registration: applying to existing worlds");
+        for (World world : Universe.get().getWorlds().values()) {
+          try {
+            if (world.getWorldConfig().isDeleteOnRemove()) {
+              continue;
+            }
+            hyperFactions.getWorldMapService().registerProviderIfNeeded(world);
+          } catch (Exception e) {
+            Logger.warn("Failed to register world map for world %s: %s",
+                world.getName(), e.getMessage());
+          }
+        }
+        // Apply map player filters after registration
+        hyperFactions.getMapPlayerFilterService().applyToAll();
+      });
+
+      // Also apply filters immediately for any already-online players
       hyperFactions.getMapPlayerFilterService().applyToAll();
 
     } catch (Exception e) {
