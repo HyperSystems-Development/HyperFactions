@@ -10,8 +10,11 @@ HyperFactions uses a modular JSON config system with 11 configuration files.
 | Command | Description |
 |---------|-------------|
 | `/f admin config` | Open the visual config editor GUI |
+| `/f admin config <tab>` | Open config editor to a specific tab |
 | `/f admin reload` | Reload all config files from disk |
 | `/f admin sync` | Synchronize faction data to storage |
+
+**Tab names:** `server` (srv), `chat`, `announcements` (announce, ann), `economy` (eco), `factions` (fac), `factionperms` (facperms, perms), `worldmap` (map), `worlds` (world), `backup`, `debug` (dbg), `gravestones` (graves)
 
 ## Configuration Files
 
@@ -29,7 +32,7 @@ HyperFactions uses a modular JSON config system with 11 configuration files.
 | `worldmap.json` | World map refresh modes |
 | `worlds.json` | Per-world behavior overrides |
 
->[!TIP] The config GUI provides a visual editor with descriptions for every setting. Changes are saved immediately but some require `/f admin reload` to take full effect.
+>[!TIP] The config GUI provides a visual editor for every setting. Changes take effect immediately on save — periodic tasks (auto-save, mob clear, upkeep) and the worldmap scheduler are automatically restarted.
 
 ## Config Location
 

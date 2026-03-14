@@ -1,0 +1,21 @@
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+
+Group {
+  LayoutMode: Left;
+  Anchor: (Height: 24, Bottom: 1);
+  Background: (Color: #0d1520);
+  Padding: (Left: 8, Right: 8);
+
+  Label #EntryLabel {
+    Text: "";
+    Style: (FontSize: 12, TextColor: #CCCCCC, VerticalAlignment: Center);
+    FlexWeight: 1;
+  }
+
+  TextButton #RemoveBtn {
+    Style: $S.@RedButtonStyle;
+    Text: "X";
+    Anchor: (Width: 26, Height: 20);
+  }
+}

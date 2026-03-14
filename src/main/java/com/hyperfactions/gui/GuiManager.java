@@ -517,13 +517,13 @@ public class GuiManager {
         6
     ));
 
-    // Backups page (placeholder)
+    // Backups page
     registry.registerEntry(new AdminPageRegistry.Entry(
         "backups",
         AdminKeys.AdminNav.BACKUPS,
         null,
         (player, ref, store, playerRef, guiManager) ->
-            new AdminBackupsPage(playerRef, guiManager),
+            new AdminBackupsPage(playerRef, guiManager, guiManager.getPlugin().get()),
         true,
         7
     ));
@@ -539,13 +539,13 @@ public class GuiManager {
         8
     ));
 
-    // Updates page (placeholder)
+    // Updates page
     registry.registerEntry(new AdminPageRegistry.Entry(
         "updates",
         AdminKeys.AdminNav.UPDATES,
         null,
         (player, ref, store, playerRef, guiManager) ->
-            new AdminUpdatesPage(playerRef, guiManager),
+            new AdminUpdatesPage(playerRef, guiManager, guiManager.getPlugin().get()),
         true,
         9
     ));
@@ -907,6 +907,18 @@ public class GuiManager {
   public void openAdminConfig(Player player, Ref<EntityStore> ref,
                 Store<EntityStore> store, PlayerRef playerRef) {
     adminPageOpener.openAdminConfig(player, ref, store, playerRef);
+  }
+
+  /** Opens the admin config page to a specific tab. */
+  public void openAdminConfig(Player player, Ref<EntityStore> ref,
+                Store<EntityStore> store, PlayerRef playerRef, String tab) {
+    adminPageOpener.openAdminConfig(player, ref, store, playerRef, tab);
+  }
+
+  /** Opens the scaling tiers modal. */
+  public void openScalingTiersModal(Player player, Ref<EntityStore> ref,
+                Store<EntityStore> store, PlayerRef playerRef) {
+    adminPageOpener.openScalingTiersModal(player, ref, store, playerRef);
   }
 
   /** Opens the admin backups page. */

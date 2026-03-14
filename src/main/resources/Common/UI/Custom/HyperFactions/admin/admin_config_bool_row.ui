@@ -1,0 +1,19 @@
+$C = "../../Common.ui";
+
+Group {
+  LayoutMode: Left;
+  Anchor: (Height: 22, Bottom: 3);
+  Padding: (Left: 6, Right: 4);
+
+  Label #SettingLabel {
+    Text: "";
+    Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+    FlexWeight: 1;
+  }
+
+  $C.@CheckBoxWithLabel #BoolToggle {
+    @Text = "";
+    @Checked = false;
+    Anchor: (Height: 20, Width: 36);
+  }
+}

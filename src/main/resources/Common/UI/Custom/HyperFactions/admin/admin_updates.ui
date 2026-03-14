@@ -15,44 +15,261 @@ $C.@PageOverlay {
     }
 
     #Content {
-      LayoutMode: Top;
+      LayoutMode: TopScrolling;
       Padding: (Left: 15, Right: 15, Top: 10, Bottom: 10);
 
-      Group #PlaceholderContent {
-        FlexWeight: 1;
+      Group #VersionInfoSection {
         LayoutMode: Top;
+        Anchor: (Bottom: 8);
 
-        Label {
-          Anchor: (Height: 100);
+        Label #VersionInfoLabel {
+          Text: "Version Information";
+          Style: (FontSize: 14, TextColor: #00FFFF, RenderBold: true);
+          Anchor: (Height: 22);
         }
 
-        Label #ComingSoon {
-          Text: "Update Center";
-          Style: (FontSize: 24, TextColor: #00FFFF, HorizontalAlignment: Center, VerticalAlignment: Center, RenderBold: true);
-          Anchor: (Height: 40);
+        Group #VersionRow {
+          LayoutMode: Left;
+          Anchor: (Height: 18, Bottom: 4);
+
+          Label #CurrentVersionLabel {
+            Text: "Current:";
+            Style: (FontSize: 11, TextColor: #888888);
+            Anchor: (Width: 70, Height: 18);
+          }
+
+          Label #CurrentVersionValue {
+            Text: "-";
+            Style: (FontSize: 11, TextColor: #CCCCCC);
+            Anchor: (Width: 120, Height: 18);
+          }
+
+          Label #BuildDateLabel {
+            Text: "Built:";
+            Style: (FontSize: 11, TextColor: #888888);
+            Anchor: (Width: 50, Height: 18);
+          }
+
+          Label #BuildDateValue {
+            Text: "-";
+            Style: (FontSize: 11, TextColor: #CCCCCC);
+            Anchor: (Width: 200, Height: 18);
+          }
         }
 
-        Label #ComingSoonSub {
-          Text: "Coming Soon";
-          Style: (FontSize: 16, TextColor: #888888, HorizontalAlignment: Center, VerticalAlignment: Center);
-          Anchor: (Height: 30);
+        Group #ChannelRow {
+          LayoutMode: Left;
+          Anchor: (Height: 18, Bottom: 4);
+
+          Label #ChannelLabel {
+            Text: "Channel:";
+            Style: (FontSize: 11, TextColor: #888888);
+            Anchor: (Width: 70, Height: 18);
+          }
+
+          Label #ChannelValue {
+            Text: "-";
+            Style: (FontSize: 11, TextColor: #CCCCCC);
+            Anchor: (Width: 200, Height: 18);
+          }
+        }
+      }
+
+      Group #SeparatorLine1 {
+        Background: (Color: #333333);
+        Anchor: (Height: 1, Bottom: 8);
+      }
+
+      Group #UpdateStatusSection {
+        LayoutMode: Top;
+        Anchor: (Bottom: 8);
+
+        Label #UpdateStatusLabel {
+          Text: "Update Status";
+          Style: (FontSize: 14, TextColor: #00FFFF, RenderBold: true);
+          Anchor: (Height: 22);
         }
 
-        Label {
-          Anchor: (Height: 20);
+        Group #LatestVersionRow {
+          LayoutMode: Left;
+          Anchor: (Height: 18, Bottom: 4);
+
+          Label #LatestVersionLabel {
+            Text: "Latest:";
+            Style: (FontSize: 11, TextColor: #888888);
+            Anchor: (Width: 70, Height: 18);
+          }
+
+          Label #LatestVersionValue {
+            Text: "-";
+            Style: (FontSize: 11, TextColor: #CCCCCC);
+            Anchor: (Width: 120, Height: 18);
+          }
+
+          Label #PreReleaseTag {
+            Text: "";
+            Style: (FontSize: 10, TextColor: #FFAA00);
+            Anchor: (Width: 100, Height: 18);
+            Visible: false;
+          }
         }
 
-        Label #Description {
-          Text: "Check for updates and view changelog.";
-          Style: (FontSize: 12, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
-          Anchor: (Height: 25);
+        Label #StatusMessage {
+          Text: "";
+          Style: (FontSize: 11, TextColor: #888888);
+          Anchor: (Height: 18, Bottom: 4);
         }
 
-        Label #Description2 {
-          Text: "Visit hypersystems.dev for the latest releases.";
-          Style: (FontSize: 12, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
-          Anchor: (Height: 25);
+        Group #ActionButtons {
+          LayoutMode: Left;
+          Anchor: (Height: 32, Bottom: 4);
+
+          TextButton #CheckUpdateBtn {
+            Style: $C.@SecondaryTextButtonStyle;
+            Text: "Check for Updates";
+            Anchor: (Width: 160, Height: 28);
+          }
+
+          Group { Anchor: (Width: 10); }
+
+          TextButton #DownloadBtn {
+            Style: $C.@DefaultTextButtonStyle;
+            Text: "Download";
+            Anchor: (Width: 160, Height: 28);
+            Visible: false;
+          }
         }
+      }
+
+      Group #ChangelogSection {
+        LayoutMode: Top;
+        Anchor: (Bottom: 8);
+        Visible: false;
+
+        Group #SeparatorLine2 {
+          Background: (Color: #333333);
+          Anchor: (Height: 1, Bottom: 8);
+        }
+
+        Label #ChangelogTitle {
+          Text: "Changelog";
+          Style: (FontSize: 14, TextColor: #00FFFF, RenderBold: true);
+          Anchor: (Height: 22);
+        }
+
+        Group #ChangelogContent {
+          Background: (Color: #0d1520);
+          Padding: (Full: 8);
+          Anchor: (Bottom: 4);
+          LayoutMode: Top;
+
+          Label #ChangelogText {
+            Text: "";
+            Style: (FontSize: 10, TextColor: #AAAAAA);
+            Anchor: (Height: 80);
+          }
+        }
+      }
+
+      Group #SeparatorLine3 {
+        Background: (Color: #333333);
+        Anchor: (Height: 1, Bottom: 8);
+      }
+
+      Group #MixinSection {
+        LayoutMode: Top;
+        Anchor: (Bottom: 8);
+
+        Label #MixinTitle {
+          Text: "HyperProtect Mixin";
+          Style: (FontSize: 14, TextColor: #00FFFF, RenderBold: true);
+          Anchor: (Height: 22);
+        }
+
+        Group #MixinVersionRow {
+          LayoutMode: Left;
+          Anchor: (Height: 18, Bottom: 4);
+
+          Label #MixinVersionLabel {
+            Text: "Version:";
+            Style: (FontSize: 11, TextColor: #888888);
+            Anchor: (Width: 70, Height: 18);
+          }
+
+          Label #MixinVersionValue {
+            Text: "-";
+            Style: (FontSize: 11, TextColor: #CCCCCC);
+            Anchor: (Width: 200, Height: 18);
+          }
+        }
+
+        Label #MixinStatus {
+          Text: "";
+          Style: (FontSize: 11, TextColor: #888888);
+          Anchor: (Height: 18, Bottom: 4);
+        }
+
+        Group #MixinButtons {
+          LayoutMode: Left;
+          Anchor: (Height: 32, Bottom: 4);
+
+          TextButton #CheckMixinBtn {
+            Style: $C.@SecondaryTextButtonStyle;
+            Text: "Check Mixin Update";
+            Anchor: (Width: 180, Height: 28);
+          }
+
+          Group { Anchor: (Width: 10); }
+
+          TextButton #DownloadMixinBtn {
+            Style: $C.@DefaultTextButtonStyle;
+            Text: "Download Mixin";
+            Anchor: (Width: 160, Height: 28);
+            Visible: false;
+          }
+        }
+      }
+
+      Group #SeparatorLine4 {
+        Background: (Color: #333333);
+        Anchor: (Height: 1, Bottom: 8);
+        Visible: false;
+      }
+
+      Group #RollbackSection {
+        LayoutMode: Top;
+        Anchor: (Bottom: 8);
+        Visible: false;
+
+        Label #RollbackTitle {
+          Text: "Rollback";
+          Style: (FontSize: 14, TextColor: #00FFFF, RenderBold: true);
+          Anchor: (Height: 22);
+        }
+
+        Label #RollbackInfo {
+          Text: "";
+          Style: (FontSize: 11, TextColor: #888888);
+          Anchor: (Height: 18, Bottom: 4);
+        }
+
+        Group #RollbackButtons {
+          LayoutMode: Left;
+          Anchor: (Height: 32, Bottom: 4);
+
+          TextButton #RollbackBtn {
+            Style: $C.@SecondaryTextButtonStyle;
+            Text: "Rollback";
+            Anchor: (Width: 160, Height: 28);
+          }
+        }
+      }
+
+      Label #RestartNote {
+        Text: "";
+        Style: (FontSize: 10, TextColor: #FFAA00, HorizontalAlignment: Center);
+        Anchor: (Height: 18);
+        Visible: false;
       }
     }
   }

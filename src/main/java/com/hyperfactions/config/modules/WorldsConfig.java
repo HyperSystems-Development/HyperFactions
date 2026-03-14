@@ -25,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
  *     "events": { "claiming": false, "powerLoss": false, "friendlyFireFaction": true },
  *     "arena_%": { "claiming": false, "powerLoss": false, "friendlyFireFaction": true, "friendlyFireAlly": true }
  *   },
- *   "claimBlacklist": []
  * }
  * </pre>
  */
@@ -53,7 +52,7 @@ public class WorldsConfig extends ModuleConfig {
 
   private final Map<String, WorldSettings> worlds = new LinkedHashMap<>();
 
-  private List<String> claimBlacklist = new ArrayList<>();
+  // claimBlacklist removed in v8 — migrated to per-world claiming=false entries
 
   /** Creates a new WorldsConfig. */
   public WorldsConfig(@NotNull Path filePath) {
@@ -77,14 +76,12 @@ public class WorldsConfig extends ModuleConfig {
     worlds.put("instance-%", new WorldSettings(false, null, null, null));
     // Example entry showing all available options (non-matching name won't affect real worlds)
     worlds.put("example-world-abc", new WorldSettings(true, true, false, false));
-    claimBlacklist = new ArrayList<>();
   }
 
   /** Loads module settings. */
   @Override
   protected void loadModuleSettings(@NotNull JsonObject root) {
     defaultPolicy = getString(root, "defaultPolicy", defaultPolicy);
-    claimBlacklist = getStringList(root, "claimBlacklist");
 
     worlds.clear();
     if (root.has("worlds") && root.get("worlds").isJsonObject()) {
@@ -128,8 +125,6 @@ public class WorldsConfig extends ModuleConfig {
       worldsObj.add(entry.getKey(), worldObj);
     }
     root.add("worlds", worldsObj);
-
-    root.add("claimBlacklist", toJsonArray(claimBlacklist));
   }
 
   // === Getters ===
@@ -140,16 +135,15 @@ public class WorldsConfig extends ModuleConfig {
     return defaultPolicy;
   }
 
+  /** Sets the default policy ("allow" or "deny"). */
+  public void setDefaultPolicy(@NotNull String policy) {
+    this.defaultPolicy = policy;
+  }
+
   /** Returns the worlds. */
   @NotNull
   public Map<String, WorldSettings> getWorlds() {
     return Collections.unmodifiableMap(worlds);
-  }
-
-  /** Returns the claim blacklist. */
-  @NotNull
-  public List<String> getClaimBlacklist() {
-    return claimBlacklist;
   }
 
   /**

@@ -426,6 +426,23 @@ public class EconomyConfig extends ModuleConfig {
     return upkeepScalingTiers;
   }
 
+  // === Setters (for admin config editor) ===
+
+  /** Sets currency name. */
+  public void setCurrencyName(@NotNull String value) { this.currencyName = value; }
+
+  /** Sets currency name plural. */
+  public void setCurrencyNamePlural(@NotNull String value) { this.currencyNamePlural = value; }
+
+  /** Sets currency symbol. */
+  public void setCurrencySymbol(@NotNull String value) { this.currencySymbol = value; }
+
+  /** Sets starting balance. */
+  public void setStartingBalance(@NotNull BigDecimal value) { this.startingBalance = value; }
+
+  /** Sets disband refund to leader. */
+  public void setDisbandRefundToLeader(boolean value) { this.disbandRefundToLeader = value; }
+
   // === Upkeep Setters (for admin GUI / commands) ===
 
   /** Sets upkeep enabled. */
@@ -460,6 +477,33 @@ public class EconomyConfig extends ModuleConfig {
 
   /** Sets upkeep scaling tiers. */
   public void setUpkeepScalingTiers(@NotNull List<ScalingTier> value) { upkeepScalingTiers = value; needsSave = true; }
+
+  /** Sets currency symbol position. */
+  public void setCurrencySymbolPosition(@NotNull String value) { this.currencySymbolPosition = value; }
+
+  /** Sets default max withdraw amount. */
+  public void setDefaultMaxWithdrawAmount(@NotNull BigDecimal value) { this.defaultMaxWithdrawAmount = value; }
+
+  /** Sets default max withdraw per period. */
+  public void setDefaultMaxWithdrawPerPeriod(@NotNull BigDecimal value) { this.defaultMaxWithdrawPerPeriod = value; }
+
+  /** Sets default max transfer amount. */
+  public void setDefaultMaxTransferAmount(@NotNull BigDecimal value) { this.defaultMaxTransferAmount = value; }
+
+  /** Sets default max transfer per period. */
+  public void setDefaultMaxTransferPerPeriod(@NotNull BigDecimal value) { this.defaultMaxTransferPerPeriod = value; }
+
+  /** Sets default limit period hours. */
+  public void setDefaultLimitPeriodHours(int value) { this.defaultLimitPeriodHours = value; }
+
+  /** Sets deposit fee percent. */
+  public void setDepositFeePercent(@NotNull BigDecimal value) { this.depositFeePercent = value; }
+
+  /** Sets withdraw fee percent. */
+  public void setWithdrawFeePercent(@NotNull BigDecimal value) { this.withdrawFeePercent = value; }
+
+  /** Sets transfer fee percent. */
+  public void setTransferFeePercent(@NotNull BigDecimal value) { this.transferFeePercent = value; }
 
   /**
    * Creates a TreasuryLimits instance from the server-configured defaults.

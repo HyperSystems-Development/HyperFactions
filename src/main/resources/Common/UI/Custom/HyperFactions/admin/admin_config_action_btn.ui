@@ -1,0 +1,16 @@
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+
+Group {
+  LayoutMode: Left;
+  Anchor: (Height: 26, Bottom: 2, Top: 2);
+  Padding: (Left: 6, Right: 4);
+
+  Group { FlexWeight: 1; }
+
+  TextButton #ActionBtn {
+    Style: $S.@ButtonStyle;
+    Text: "";
+    Anchor: (Width: 160, Height: 24);
+  }
+}

@@ -303,4 +303,34 @@ public class FactionPermissionsConfig extends ModuleConfig {
   public boolean isPermissionLocked(@NotNull String permissionName) {
     return locks.getOrDefault(permissionName, false);
   }
+
+  /**
+   * Gets the default value of a permission flag.
+   *
+   * @param flag the flag name
+   * @return true if the flag is enabled by default
+   */
+  public boolean getDefault(@NotNull String flag) {
+    return defaults.getOrDefault(flag, false);
+  }
+
+  /**
+   * Sets the default value of a permission flag.
+   *
+   * @param flag  the flag name
+   * @param value true to enable, false to disable
+   */
+  public void setDefault(@NotNull String flag, boolean value) {
+    defaults.put(flag, value);
+  }
+
+  /**
+   * Sets the lock state of a permission flag.
+   *
+   * @param flag   the flag name
+   * @param locked true to lock, false to unlock
+   */
+  public void setLocked(@NotNull String flag, boolean locked) {
+    locks.put(flag, locked);
+  }
 }

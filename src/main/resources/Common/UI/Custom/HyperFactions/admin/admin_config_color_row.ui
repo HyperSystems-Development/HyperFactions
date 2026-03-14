@@ -1,0 +1,33 @@
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+
+Group {
+  LayoutMode: Left;
+  Anchor: (Height: 24, Bottom: 3);
+  Padding: (Left: 6, Right: 4);
+
+  Label #SettingLabel {
+    Text: "";
+    Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+    FlexWeight: 1;
+  }
+
+  ColorPickerDropdownBox #ColorPicker {
+    Style: $C.@DefaultColorPickerDropdownBoxStyle;
+    Anchor: (Width: 28, Height: 24);
+  }
+
+  Group { Anchor: (Width: 4); }
+
+  TextButton #ApplyColorBtn {
+    Style: $S.@ButtonStyle;
+    Text: "Set";
+    Anchor: (Width: 32, Height: 22);
+  }
+
+  Group { Anchor: (Width: 6); }
+
+  $C.@TextField #ColorInput {
+    Anchor: (Width: 100, Height: 22);
+  }
+}

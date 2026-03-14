@@ -1,0 +1,43 @@
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+
+Group {
+  LayoutMode: Left;
+  Anchor: (Height: 26, Bottom: 2);
+  Background: (Color: #0d1520);
+  Padding: (Left: 8, Right: 8);
+
+  $C.@TextField #ChunkInput {
+    Anchor: (Width: 90, Height: 22);
+  }
+
+  Group { Anchor: (Width: 8); }
+
+  $C.@TextField #CostInput {
+    Anchor: (Width: 90, Height: 22);
+  }
+
+  Group { Anchor: (Width: 8); }
+
+  TextButton #UpBtn {
+    Style: $S.@ButtonStyle;
+    Text: "^";
+    Anchor: (Width: 22, Height: 22);
+  }
+
+  Group { Anchor: (Width: 2); }
+
+  TextButton #DownBtn {
+    Style: $S.@ButtonStyle;
+    Text: "v";
+    Anchor: (Width: 22, Height: 22);
+  }
+
+  Group { Anchor: (Width: 6); }
+
+  TextButton #RemoveBtn {
+    Style: $S.@RedButtonStyle;
+    Text: "X";
+    Anchor: (Width: 22, Height: 22);
+  }
+}

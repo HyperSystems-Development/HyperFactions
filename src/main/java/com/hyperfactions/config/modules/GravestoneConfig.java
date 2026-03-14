@@ -170,4 +170,42 @@ public class GravestoneConfig extends ModuleConfig {
   public boolean isAllowLootDuringWar() {
     return allowLootDuringWar;
   }
+
+  // === Setters (for admin config editor) ===
+
+  /** Sets protect in own territory. */
+  public void setProtectInOwnTerritory(boolean value) { this.protectInOwnTerritory = value; }
+
+  /** Sets faction members can access. */
+  public void setFactionMembersCanAccess(boolean value) { this.factionMembersCanAccess = value; }
+
+  /** Sets allies can access. */
+  public void setAlliesCanAccess(boolean value) { this.alliesCanAccess = value; }
+
+  /** Sets protect in safe zone. */
+  public void setProtectInSafeZone(boolean value) { this.protectInSafeZone = value; }
+
+  /** Sets protect in war zone. */
+  public void setProtectInWarZone(boolean value) { this.protectInWarZone = value; }
+
+  /** Sets protect in wilderness. */
+  public void setProtectInWilderness(boolean value) { this.protectInWilderness = value; }
+
+  /** Sets announce death location. */
+  public void setAnnounceDeathLocation(boolean value) { this.announceDeathLocation = value; }
+
+  /** Sets protect in enemy territory. */
+  public void setProtectInEnemyTerritory(boolean value) { this.protectInEnemyTerritory = value; }
+
+  /** Sets protect in neutral territory. */
+  public void setProtectInNeutralTerritory(boolean value) { this.protectInNeutralTerritory = value; }
+
+  /** Sets enemies can loot in own territory. */
+  public void setEnemiesCanLootInOwnTerritory(boolean value) { this.enemiesCanLootInOwnTerritory = value; }
+
+  /** Sets allow loot during raid. */
+  public void setAllowLootDuringRaid(boolean value) { this.allowLootDuringRaid = value; }
+
+  /** Sets allow loot during war. */
+  public void setAllowLootDuringWar(boolean value) { this.allowLootDuringWar = value; }
 }

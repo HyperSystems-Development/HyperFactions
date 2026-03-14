@@ -265,6 +265,30 @@ public class ConfigManager {
   }
 
   /**
+   * Resets all configuration files to factory defaults and saves.
+   */
+  public void resetAllDefaults() {
+    Logger.info("[Config] Resetting all configuration to defaults...");
+
+    factionsConfig.resetDefaults();
+    serverConfig.resetDefaults();
+    backupConfig.resetDefaults();
+    chatConfig.resetDefaults();
+    debugConfig.resetDefaults();
+    economyConfig.resetDefaults();
+    factionPermissionsConfig.resetDefaults();
+    worldMapConfig.resetDefaults();
+    announcementConfig.resetDefaults();
+    gravestoneConfig.resetDefaults();
+    worldsConfig.resetDefaults();
+
+    worldSettingsResolver.rebuild(worldsConfig);
+    validateAll();
+
+    Logger.info("[Config] Configuration reset to defaults");
+  }
+
+  /**
    * Saves all configuration files.
    */
   public void saveAll() {

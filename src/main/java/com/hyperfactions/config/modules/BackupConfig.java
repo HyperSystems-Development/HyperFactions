@@ -131,6 +131,26 @@ public class BackupConfig extends ModuleConfig {
     return shutdownRetention;
   }
 
+  // === Setters (for admin config editor) ===
+
+  /** Sets hourly retention. */
+  public void setHourlyRetention(int value) { this.hourlyRetention = value; }
+
+  /** Sets daily retention. */
+  public void setDailyRetention(int value) { this.dailyRetention = value; }
+
+  /** Sets weekly retention. */
+  public void setWeeklyRetention(int value) { this.weeklyRetention = value; }
+
+  /** Sets manual retention. */
+  public void setManualRetention(int value) { this.manualRetention = value; }
+
+  /** Sets on shutdown. */
+  public void setOnShutdown(boolean value) { this.onShutdown = value; }
+
+  /** Sets shutdown retention. */
+  public void setShutdownRetention(int value) { this.shutdownRetention = value; }
+
   // === Validation ===
 
   /** Validates . */

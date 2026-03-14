@@ -1,0 +1,156 @@
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+$Nav = "admin_nav_bar.ui";
+
+@ConfigTab = MenuItem {
+  Padding: (Left: 10, Right: 10);
+  Style: (
+    Default: (
+      LabelStyle: (FontSize: 11, TextColor: #7c8b99, VerticalAlignment: Center, RenderUppercase: true, RenderBold: true)
+    ),
+    Hovered: (
+      Background: #121a26,
+      LabelStyle: (FontSize: 11, TextColor: #00FFFF, VerticalAlignment: Center, RenderUppercase: true, RenderBold: true)
+    )
+  );
+  SelectedStyle: (
+    Default: (
+      LabelStyle: (FontSize: 11, TextColor: #00FFFF, VerticalAlignment: Center, RenderUppercase: true, RenderBold: true)
+    ),
+    Hovered: (
+      Background: #121a26,
+      LabelStyle: (FontSize: 11, TextColor: #00FFFF, VerticalAlignment: Center, RenderUppercase: true, RenderBold: true)
+    )
+  );
+};
+
+$C.@PageOverlay {
+  $Nav.@HyperFactionsAdminNavBar #HyperFactionsAdminNavBar {}
+
+  Group #TabBar {
+    LayoutMode: Left;
+    Background: #0d1520;
+    Anchor: (Height: 34, Top: 45);
+    Padding: (Left: 6);
+
+    @ConfigTab #TabServer { Text: "Server"; }
+    @ConfigTab #TabChat { Text: "Chat"; }
+    @ConfigTab #TabAnnouncements { Text: "Announce"; }
+    @ConfigTab #TabEconomy { Text: "Economy"; }
+    @ConfigTab #TabFactions { Text: "Factions"; }
+    @ConfigTab #TabFactionPerms { Text: "Fac Perms"; }
+    @ConfigTab #TabWorldmap { Text: "Worldmap"; }
+    @ConfigTab #TabWorlds { Text: "Worlds"; }
+    @ConfigTab #TabBackup { Text: "Backup"; }
+    @ConfigTab #TabDebug { Text: "Debug"; }
+    @ConfigTab #TabGravestones { Text: "Graves"; }
+  }
+
+  $C.@Container {
+    Anchor: (Width: 1020, Height: 640);
+
+    #Title {
+      Group {
+        LayoutMode: Left;
+        Padding: (Left: 15, Right: 15);
+
+        $C.@Title #PageTitle {
+          @Text = "Config: Factions";
+        }
+
+        Group { FlexWeight: 1; }
+
+        Label #StatusLabel {
+          Text: "No changes";
+          Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
+          Anchor: (Width: 160, Height: 30);
+        }
+      }
+    }
+
+    #Content {
+      LayoutMode: Top;
+      Padding: (Left: 10, Right: 10, Top: 4, Bottom: 2);
+
+      Group {
+        FlexWeight: 1;
+        LayoutMode: Left;
+        Padding: (Top: 2, Bottom: 2);
+
+        Group #Col1 {
+          FlexWeight: 1;
+          LayoutMode: TopScrolling;
+          ScrollbarStyle: $C.@TranslucentScrollbarStyle;
+          Padding: (Left: 2, Right: 3, Top: 2, Bottom: 2);
+
+          Group #Col1Container {
+            LayoutMode: Top;
+          }
+        }
+
+        Group #Col2 {
+          FlexWeight: 1;
+          LayoutMode: TopScrolling;
+          ScrollbarStyle: $C.@TranslucentScrollbarStyle;
+          Padding: (Left: 3, Right: 3, Top: 2, Bottom: 2);
+
+          Group #Col2Container {
+            LayoutMode: Top;
+          }
+        }
+
+        Group #Col3 {
+          FlexWeight: 1;
+          LayoutMode: TopScrolling;
+          ScrollbarStyle: $C.@TranslucentScrollbarStyle;
+          Padding: (Left: 3, Right: 3, Top: 2, Bottom: 2);
+
+          Group #Col3Container {
+            LayoutMode: Top;
+          }
+        }
+
+        Group #Col4 {
+          FlexWeight: 1;
+          LayoutMode: TopScrolling;
+          ScrollbarStyle: $C.@TranslucentScrollbarStyle;
+          Padding: (Left: 3, Right: 2, Top: 2, Bottom: 2);
+
+          Group #Col4Container {
+            LayoutMode: Top;
+          }
+        }
+      }
+
+      Group #ActionBar {
+        LayoutMode: Left;
+        Anchor: (Height: 28);
+        Padding: (Left: 4, Right: 4);
+
+        TextButton #ResetBtn {
+          Style: $S.@RedButtonStyle;
+          Text: "Reset Defaults";
+          Anchor: (Width: 150, Height: 26);
+        }
+
+        Group { FlexWeight: 1; }
+
+        TextButton #RevertBtn {
+          Style: $S.@ButtonStyle;
+          Text: "Revert";
+          Anchor: (Width: 100, Height: 26);
+        }
+
+        Group { Anchor: (Width: 8); }
+
+        TextButton #SaveBtn {
+          Style: $S.@CyanButtonStyle;
+          Text: "Save";
+          Anchor: (Width: 100, Height: 26);
+        }
+      }
+    }
+  }
+}
+
+$C.@BackButton {}

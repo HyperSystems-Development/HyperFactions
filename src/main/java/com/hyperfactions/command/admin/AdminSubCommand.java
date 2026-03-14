@@ -264,7 +264,12 @@ public class AdminSubCommand extends AbstractAsyncCommand {
         }
         Player playerEntity = store.getComponent(ref, Player.getComponentType());
         if (playerEntity != null) {
-          hyperFactions.getGuiManager().openAdminConfig(playerEntity, ref, store, player);
+          String tab = subArgs.length > 0 ? subArgs[0] : null;
+          if (tab != null) {
+            hyperFactions.getGuiManager().openAdminConfig(playerEntity, ref, store, player, tab);
+          } else {
+            hyperFactions.getGuiManager().openAdminConfig(playerEntity, ref, store, player);
+          }
         }
       }
       case "backups" -> {

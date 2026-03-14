@@ -657,6 +657,158 @@ public class FactionsConfig extends ModuleConfig {
     return stuckCooldownSeconds;
   }
 
+  // === Setters (for admin config editor) ===
+
+  /** Sets max members. */
+  public void setMaxMembers(int value) { this.maxMembers = value; }
+
+  /** Sets max name length. */
+  public void setMaxNameLength(int value) { this.maxNameLength = value; }
+
+  /** Sets min name length. */
+  public void setMinNameLength(int value) { this.minNameLength = value; }
+
+  /** Sets allow colors. */
+  public void setAllowColors(boolean value) { this.allowColors = value; }
+
+  /** Sets max player power. */
+  public void setMaxPlayerPower(double value) { this.maxPlayerPower = value; }
+
+  /** Sets starting power. */
+  public void setStartingPower(double value) { this.startingPower = value; }
+
+  /** Sets power per claim. */
+  public void setPowerPerClaim(double value) { this.powerPerClaim = value; }
+
+  /** Sets death penalty. */
+  public void setDeathPenalty(double value) { this.deathPenalty = value; }
+
+  /** Sets kill reward. */
+  public void setKillReward(double value) { this.killReward = value; }
+
+  /** Sets kill reward requires faction. */
+  public void setKillRewardRequiresFaction(boolean value) { this.killRewardRequiresFaction = value; }
+
+  /** Sets power loss on mob death. */
+  public void setPowerLossOnMobDeath(boolean value) { this.powerLossOnMobDeath = value; }
+
+  /** Sets power loss on environmental death. */
+  public void setPowerLossOnEnvironmentalDeath(boolean value) { this.powerLossOnEnvironmentalDeath = value; }
+
+  /** Sets regen per minute. */
+  public void setRegenPerMinute(double value) { this.regenPerMinute = value; }
+
+  /** Sets regen when offline. */
+  public void setRegenWhenOffline(boolean value) { this.regenWhenOffline = value; }
+
+  /** Sets hardcore mode. */
+  public void setHardcoreMode(boolean value) { this.hardcoreMode = value; }
+
+  /** Sets max claims. */
+  public void setMaxClaims(int value) { this.maxClaims = value; }
+
+  /** Sets only adjacent. */
+  public void setOnlyAdjacent(boolean value) { this.onlyAdjacent = value; }
+
+  /** Sets prevent disconnect. */
+  public void setPreventDisconnect(boolean value) { this.preventDisconnect = value; }
+
+  /** Sets decay enabled. */
+  public void setDecayEnabled(boolean value) { this.decayEnabled = value; }
+
+  /** Sets decay days inactive. */
+  public void setDecayDaysInactive(int value) { this.decayDaysInactive = value; }
+
+  /** Sets outsider pickup allowed. */
+  public void setOutsiderPickupAllowed(boolean value) { this.outsiderPickupAllowed = value; }
+
+  /** Sets outsider drop allowed. */
+  public void setOutsiderDropAllowed(boolean value) { this.outsiderDropAllowed = value; }
+
+  /** Sets factionless explosions allowed. */
+  public void setFactionlessExplosionsAllowed(boolean value) { this.factionlessExplosionsAllowed = value; }
+
+  /** Sets enemy explosions allowed. */
+  public void setEnemyExplosionsAllowed(boolean value) { this.enemyExplosionsAllowed = value; }
+
+  /** Sets neutral explosions allowed. */
+  public void setNeutralExplosionsAllowed(boolean value) { this.neutralExplosionsAllowed = value; }
+
+  /** Sets fire spread allowed. */
+  public void setFireSpreadAllowed(boolean value) { this.fireSpreadAllowed = value; }
+
+  /** Sets factionless damage allowed. */
+  public void setFactionlessDamageAllowed(boolean value) { this.factionlessDamageAllowed = value; }
+
+  /** Sets enemy damage allowed. */
+  public void setEnemyDamageAllowed(boolean value) { this.enemyDamageAllowed = value; }
+
+  /** Sets neutral damage allowed. */
+  public void setNeutralDamageAllowed(boolean value) { this.neutralDamageAllowed = value; }
+
+  /** Sets tag duration seconds. */
+  public void setTagDurationSeconds(int value) { this.tagDurationSeconds = value; }
+
+  /** Sets ally damage. */
+  public void setAllyDamage(boolean value) { this.allyDamage = value; }
+
+  /** Sets faction damage. */
+  public void setFactionDamage(boolean value) { this.factionDamage = value; }
+
+  /** Sets tagged logout penalty. */
+  public void setTaggedLogoutPenalty(boolean value) { this.taggedLogoutPenalty = value; }
+
+  /** Sets logout power loss. */
+  public void setLogoutPowerLoss(double value) { this.logoutPowerLoss = value; }
+
+  /** Sets neutral attack penalty. */
+  public void setNeutralAttackPenalty(double value) { this.neutralAttackPenalty = value; }
+
+  /** Sets spawn protection enabled. */
+  public void setSpawnProtectionEnabled(boolean value) { this.spawnProtectionEnabled = value; }
+
+  /** Sets spawn protection duration seconds. */
+  public void setSpawnProtectionDurationSeconds(int value) { this.spawnProtectionDurationSeconds = value; }
+
+  /** Sets spawn protection break on attack. */
+  public void setSpawnProtectionBreakOnAttack(boolean value) { this.spawnProtectionBreakOnAttack = value; }
+
+  /** Sets spawn protection break on move. */
+  public void setSpawnProtectionBreakOnMove(boolean value) { this.spawnProtectionBreakOnMove = value; }
+
+  /** Sets max allies. */
+  public void setMaxAllies(int value) { this.maxAllies = value; }
+
+  /** Sets max enemies. */
+  public void setMaxEnemies(int value) { this.maxEnemies = value; }
+
+  /** Sets invite expiration minutes. */
+  public void setInviteExpirationMinutes(int value) { this.inviteExpirationMinutes = value; }
+
+  /** Sets join request expiration hours. */
+  public void setJoinRequestExpirationHours(int value) { this.joinRequestExpirationHours = value; }
+
+  /** Sets stuck min radius. */
+  public void setStuckMinRadius(int value) { this.stuckMinRadius = value; }
+
+  /** Sets stuck radius increase. */
+  public void setStuckRadiusIncrease(int value) { this.stuckRadiusIncrease = value; }
+
+  /** Sets stuck max attempts. */
+  public void setStuckMaxAttempts(int value) { this.stuckMaxAttempts = value; }
+
+  /** Sets stuck warmup seconds. */
+  public void setStuckWarmupSeconds(int value) { this.stuckWarmupSeconds = value; }
+
+  /** Sets stuck cooldown seconds. */
+  public void setStuckCooldownSeconds(int value) { this.stuckCooldownSeconds = value; }
+
+  /** Sets max membership history. */
+  public void setMaxMembershipHistory(int value) { this.maxMembershipHistory = value; }
+
+  /** Sets decay claims per cycle. */
+  public void setDecayClaimsPerCycle(int value) { this.decayClaimsPerCycle = value; }
+
   // === Utility Methods ===
 
   /**

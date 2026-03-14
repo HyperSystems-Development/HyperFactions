@@ -607,6 +607,43 @@ class AdminPageOpener {
   }
 
   /**
+   * Opens the Admin Config page to a specific tab.
+   */
+  public void openAdminConfig(Player player, Ref<EntityStore> ref,
+                Store<EntityStore> store, PlayerRef playerRef, String tab) {
+    Logger.debug("[GUI] Opening AdminConfigPage for %s (tab: %s)", playerRef.getUsername(), tab);
+    try {
+      PageManager pageManager = player.getPageManager();
+      AdminConfigPage page = new AdminConfigPage(playerRef, guiManager, tab);
+      pageManager.openCustomPage(ref, store, page);
+      Logger.debug("[GUI] AdminConfigPage opened successfully");
+    } catch (Exception e) {
+      ErrorHandler.report("[GUI] Failed to open AdminConfigPage", e);
+    }
+  }
+
+  /**
+   * Opens the Scaling Tiers modal for editing upkeep scaling tiers.
+   *
+   * @param player    The Player entity
+   * @param ref       The entity reference
+   * @param store     The entity store
+   * @param playerRef The PlayerRef component
+   */
+  public void openScalingTiersModal(Player player, Ref<EntityStore> ref,
+                Store<EntityStore> store, PlayerRef playerRef) {
+    Logger.debug("[GUI] Opening ScalingTiersModalPage for %s", playerRef.getUsername());
+    try {
+      PageManager pageManager = player.getPageManager();
+      ScalingTiersModalPage page = new ScalingTiersModalPage(playerRef, guiManager);
+      pageManager.openCustomPage(ref, store, page);
+      Logger.debug("[GUI] ScalingTiersModalPage opened successfully");
+    } catch (Exception e) {
+      ErrorHandler.report("[GUI] Failed to open ScalingTiersModalPage", e);
+    }
+  }
+
+  /**
    * Opens the Admin Backups page (placeholder).
    * Requires hyperfactions.admin permission.
    *
@@ -620,7 +657,7 @@ class AdminPageOpener {
     Logger.debug("[GUI] Opening AdminBackupsPage for %s", playerRef.getUsername());
     try {
       PageManager pageManager = player.getPageManager();
-      AdminBackupsPage page = new AdminBackupsPage(playerRef, guiManager);
+      AdminBackupsPage page = new AdminBackupsPage(playerRef, guiManager, guiManager.getPlugin().get());
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminBackupsPage opened successfully");
     } catch (Exception e) {
@@ -668,7 +705,7 @@ class AdminPageOpener {
     Logger.debug("[GUI] Opening AdminUpdatesPage for %s", playerRef.getUsername());
     try {
       PageManager pageManager = player.getPageManager();
-      AdminUpdatesPage page = new AdminUpdatesPage(playerRef, guiManager);
+      AdminUpdatesPage page = new AdminUpdatesPage(playerRef, guiManager, guiManager.getPlugin().get());
       pageManager.openCustomPage(ref, store, page);
       Logger.debug("[GUI] AdminUpdatesPage opened successfully");
     } catch (Exception e) {
