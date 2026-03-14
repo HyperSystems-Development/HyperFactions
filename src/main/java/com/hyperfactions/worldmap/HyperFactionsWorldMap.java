@@ -116,16 +116,19 @@ public class HyperFactionsWorldMap implements IWorldMap {
     // Inherit biome data from the world's original settings
     merged.biomeDataMap = original.biomeDataMap;
 
-    // Scale values: use config override if set, otherwise inherit from original
+    // Scale values: use config override if set, otherwise inherit from original.
+    // IMPORTANT: vanilla UpdateWorldMapSettings has 0.0f defaults (Java float default) —
+    // the server never sets these because the client handles zoom independently.
+    // If the inherited value is 0, fall back to our proven defaults.
     merged.defaultScale = config.getOverrideDefaultScale() != null
         ? config.getOverrideDefaultScale()
-        : original.defaultScale;
+        : (original.defaultScale > 0 ? original.defaultScale : 128.0f);
     merged.minScale = config.getOverrideMinScale() != null
         ? config.getOverrideMinScale()
-        : original.minScale;
+        : (original.minScale > 0 ? original.minScale : 64.0f);
     merged.maxScale = config.getOverrideMaxScale() != null
         ? config.getOverrideMaxScale()
-        : original.maxScale;
+        : (original.maxScale > 0 ? original.maxScale : 128.0f);
 
     // Configurable allow* flags: use config override if set, otherwise inherit
     merged.allowTeleportToCoordinates = config.getOverrideAllowTeleportToCoordinates() != null
