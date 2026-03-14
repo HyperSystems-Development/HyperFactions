@@ -6,7 +6,7 @@ $C.@PageOverlay {
   $Nav.@HyperFactionsAdminNavBar #HyperFactionsAdminNavBar {}
 
   $C.@Container {
-    Anchor: (Width: 600, Height: 470);
+    Anchor: (Width: 700, Height: 470);
 
     #Title {
       $C.@Title #PageTitle {
@@ -15,261 +15,169 @@ $C.@PageOverlay {
     }
 
     #Content {
-      LayoutMode: TopScrolling;
+      LayoutMode: Top;
       Padding: (Left: 15, Right: 15, Top: 10, Bottom: 10);
 
-      Group #VersionInfoSection {
-        LayoutMode: Top;
-        Anchor: (Bottom: 8);
+      Group #ColumnsWrapper {
+        FlexWeight: 1;
+        LayoutMode: Left;
 
-        Label #VersionInfoLabel {
-          Text: "Version Information";
-          Style: (FontSize: 14, TextColor: #00FFFF, RenderBold: true);
-          Anchor: (Height: 22);
-        }
+        Group #HFColumn {
+          FlexWeight: 1;
+          LayoutMode: Top;
+          Padding: (Right: 8);
 
-        Group #VersionRow {
-          LayoutMode: Left;
-          Anchor: (Height: 18, Bottom: 4);
-
-          Label #CurrentVersionLabel {
-            Text: "Current:";
-            Style: (FontSize: 11, TextColor: #888888);
-            Anchor: (Width: 70, Height: 18);
+          Label #HFTitle {
+            Text: "HyperFactions";
+            Style: (FontSize: 13, TextColor: #00FFFF, RenderBold: true);
+            Anchor: (Height: 20, Bottom: 4);
           }
 
-          Label #CurrentVersionValue {
-            Text: "-";
-            Style: (FontSize: 11, TextColor: #CCCCCC);
-            Anchor: (Width: 120, Height: 18);
+          Group { Background: (Color: #334455); Anchor: (Height: 1, Bottom: 6); }
+
+          Group {
+            LayoutMode: Left;
+            Anchor: (Height: 16, Bottom: 3);
+            Label { Text: "Current:"; Style: (FontSize: 11, TextColor: #888888); Anchor: (Width: 60, Height: 16); }
+            Label #HFCurrentVersion { Text: "-"; Style: (FontSize: 11, TextColor: #CCCCCC); FlexWeight: 1; }
           }
 
-          Label #BuildDateLabel {
-            Text: "Built:";
-            Style: (FontSize: 11, TextColor: #888888);
-            Anchor: (Width: 50, Height: 18);
+          Group {
+            LayoutMode: Left;
+            Anchor: (Height: 16, Bottom: 3);
+            Label { Text: "Latest:"; Style: (FontSize: 11, TextColor: #888888); Anchor: (Width: 60, Height: 16); }
+            Label #HFLatestVersion { Text: "-"; Style: (FontSize: 11, TextColor: #CCCCCC); FlexWeight: 1; }
           }
 
-          Label #BuildDateValue {
-            Text: "-";
-            Style: (FontSize: 11, TextColor: #CCCCCC);
-            Anchor: (Width: 200, Height: 18);
-          }
-        }
-
-        Group #ChannelRow {
-          LayoutMode: Left;
-          Anchor: (Height: 18, Bottom: 4);
-
-          Label #ChannelLabel {
-            Text: "Channel:";
-            Style: (FontSize: 11, TextColor: #888888);
-            Anchor: (Width: 70, Height: 18);
+          Group {
+            LayoutMode: Left;
+            Anchor: (Height: 16, Bottom: 3);
+            Label { Text: "Channel:"; Style: (FontSize: 11, TextColor: #888888); Anchor: (Width: 60, Height: 16); }
+            Label #HFChannel { Text: "-"; Style: (FontSize: 11, TextColor: #CCCCCC); FlexWeight: 1; }
           }
 
-          Label #ChannelValue {
-            Text: "-";
-            Style: (FontSize: 11, TextColor: #CCCCCC);
-            Anchor: (Width: 200, Height: 18);
-          }
-        }
-      }
-
-      Group #SeparatorLine1 {
-        Background: (Color: #333333);
-        Anchor: (Height: 1, Bottom: 8);
-      }
-
-      Group #UpdateStatusSection {
-        LayoutMode: Top;
-        Anchor: (Bottom: 8);
-
-        Label #UpdateStatusLabel {
-          Text: "Update Status";
-          Style: (FontSize: 14, TextColor: #00FFFF, RenderBold: true);
-          Anchor: (Height: 22);
-        }
-
-        Group #LatestVersionRow {
-          LayoutMode: Left;
-          Anchor: (Height: 18, Bottom: 4);
-
-          Label #LatestVersionLabel {
-            Text: "Latest:";
-            Style: (FontSize: 11, TextColor: #888888);
-            Anchor: (Width: 70, Height: 18);
+          Group {
+            LayoutMode: Left;
+            Anchor: (Height: 16, Bottom: 3);
+            Label { Text: "Built:"; Style: (FontSize: 11, TextColor: #888888); Anchor: (Width: 60, Height: 16); }
+            Label #HFBuildDate { Text: "-"; Style: (FontSize: 11, TextColor: #CCCCCC); FlexWeight: 1; }
           }
 
-          Label #LatestVersionValue {
-            Text: "-";
-            Style: (FontSize: 11, TextColor: #CCCCCC);
-            Anchor: (Width: 120, Height: 18);
-          }
+          Group { Anchor: (Height: 4); }
 
-          Label #PreReleaseTag {
+          Label #HFStatus {
             Text: "";
-            Style: (FontSize: 10, TextColor: #FFAA00);
-            Anchor: (Width: 100, Height: 18);
-            Visible: false;
+            Style: (FontSize: 11, TextColor: #888888);
+            Anchor: (Height: 16, Bottom: 4);
           }
-        }
-
-        Label #StatusMessage {
-          Text: "";
-          Style: (FontSize: 11, TextColor: #888888);
-          Anchor: (Height: 18, Bottom: 4);
-        }
-
-        Group #ActionButtons {
-          LayoutMode: Left;
-          Anchor: (Height: 32, Bottom: 4);
-
-          TextButton #CheckUpdateBtn {
-            Style: $C.@SecondaryTextButtonStyle;
-            Text: "Check for Updates";
-            Anchor: (Width: 160, Height: 28);
-          }
-
-          Group { Anchor: (Width: 10); }
 
           TextButton #DownloadBtn {
-            Style: $C.@DefaultTextButtonStyle;
+            Style: $S.@CyanButtonStyle;
             Text: "Download";
-            Anchor: (Width: 160, Height: 28);
+            Anchor: (Width: 140, Height: 26);
             Visible: false;
           }
+
+          Group #ChangelogSection {
+            LayoutMode: Top;
+            Visible: false;
+            Anchor: (Top: 6);
+
+            Label {
+              Text: "Changelog";
+              Style: (FontSize: 11, TextColor: #00FFFF, RenderBold: true);
+              Anchor: (Height: 16, Bottom: 3);
+            }
+
+            Group {
+              Background: (Color: #0d1520);
+              Padding: (Full: 6);
+              LayoutMode: Top;
+
+              Label #ChangelogText {
+                Text: "";
+                Style: (FontSize: 9, TextColor: #AAAAAA);
+                Anchor: (Height: 70);
+              }
+            }
+          }
         }
-      }
 
-      Group #ChangelogSection {
-        LayoutMode: Top;
-        Anchor: (Bottom: 8);
-        Visible: false;
-
-        Group #SeparatorLine2 {
-          Background: (Color: #333333);
-          Anchor: (Height: 1, Bottom: 8);
+        Group {
+          Background: (Color: #334455);
+          Anchor: (Width: 1);
         }
 
-        Label #ChangelogTitle {
-          Text: "Changelog";
-          Style: (FontSize: 14, TextColor: #00FFFF, RenderBold: true);
-          Anchor: (Height: 22);
-        }
-
-        Group #ChangelogContent {
-          Background: (Color: #0d1520);
-          Padding: (Full: 8);
-          Anchor: (Bottom: 4);
+        Group #HPColumn {
+          FlexWeight: 1;
           LayoutMode: Top;
+          Padding: (Left: 8);
 
-          Label #ChangelogText {
-            Text: "";
-            Style: (FontSize: 10, TextColor: #AAAAAA);
-            Anchor: (Height: 80);
-          }
-        }
-      }
-
-      Group #SeparatorLine3 {
-        Background: (Color: #333333);
-        Anchor: (Height: 1, Bottom: 8);
-      }
-
-      Group #MixinSection {
-        LayoutMode: Top;
-        Anchor: (Bottom: 8);
-
-        Label #MixinTitle {
-          Text: "HyperProtect Mixin";
-          Style: (FontSize: 14, TextColor: #00FFFF, RenderBold: true);
-          Anchor: (Height: 22);
-        }
-
-        Group #MixinVersionRow {
-          LayoutMode: Left;
-          Anchor: (Height: 18, Bottom: 4);
-
-          Label #MixinVersionLabel {
-            Text: "Version:";
-            Style: (FontSize: 11, TextColor: #888888);
-            Anchor: (Width: 70, Height: 18);
+          Label #HPTitle {
+            Text: "HyperProtect Mixin";
+            Style: (FontSize: 13, TextColor: #00FFFF, RenderBold: true);
+            Anchor: (Height: 20, Bottom: 4);
           }
 
-          Label #MixinVersionValue {
-            Text: "-";
-            Style: (FontSize: 11, TextColor: #CCCCCC);
-            Anchor: (Width: 200, Height: 18);
-          }
-        }
+          Group { Background: (Color: #334455); Anchor: (Height: 1, Bottom: 6); }
 
-        Label #MixinStatus {
-          Text: "";
-          Style: (FontSize: 11, TextColor: #888888);
-          Anchor: (Height: 18, Bottom: 4);
-        }
-
-        Group #MixinButtons {
-          LayoutMode: Left;
-          Anchor: (Height: 32, Bottom: 4);
-
-          TextButton #CheckMixinBtn {
-            Style: $C.@SecondaryTextButtonStyle;
-            Text: "Check Mixin Update";
-            Anchor: (Width: 180, Height: 28);
+          Group {
+            LayoutMode: Left;
+            Anchor: (Height: 16, Bottom: 3);
+            Label { Text: "Current:"; Style: (FontSize: 11, TextColor: #888888); Anchor: (Width: 60, Height: 16); }
+            Label #HPCurrentVersion { Text: "-"; Style: (FontSize: 11, TextColor: #CCCCCC); FlexWeight: 1; }
           }
 
-          Group { Anchor: (Width: 10); }
+          Group {
+            LayoutMode: Left;
+            Anchor: (Height: 16, Bottom: 3);
+            Label { Text: "Latest:"; Style: (FontSize: 11, TextColor: #888888); Anchor: (Width: 60, Height: 16); }
+            Label #HPLatestVersion { Text: "-"; Style: (FontSize: 11, TextColor: #CCCCCC); FlexWeight: 1; }
+          }
+
+          Group {
+            LayoutMode: Left;
+            Anchor: (Height: 16, Bottom: 3);
+            Label { Text: "Status:"; Style: (FontSize: 11, TextColor: #888888); Anchor: (Width: 60, Height: 16); }
+            Label #HPStatus { Text: "-"; Style: (FontSize: 11, TextColor: #CCCCCC); FlexWeight: 1; }
+          }
+
+          Group { Anchor: (Height: 4); }
 
           TextButton #DownloadMixinBtn {
-            Style: $C.@DefaultTextButtonStyle;
+            Style: $S.@CyanButtonStyle;
             Text: "Download Mixin";
-            Anchor: (Width: 160, Height: 28);
+            Anchor: (Width: 140, Height: 26);
             Visible: false;
           }
         }
       }
 
-      Group #SeparatorLine4 {
-        Background: (Color: #333333);
-        Anchor: (Height: 1, Bottom: 8);
-        Visible: false;
-      }
+      Group #ActionBar {
+        LayoutMode: Left;
+        Anchor: (Height: 32);
 
-      Group #RollbackSection {
-        LayoutMode: Top;
-        Anchor: (Bottom: 8);
-        Visible: false;
-
-        Label #RollbackTitle {
-          Text: "Rollback";
-          Style: (FontSize: 14, TextColor: #00FFFF, RenderBold: true);
-          Anchor: (Height: 22);
+        TextButton #CheckUpdateBtn {
+          Style: $S.@ButtonStyle;
+          Text: "Check for Updates";
+          Anchor: (Width: 160, Height: 28);
         }
 
-        Label #RollbackInfo {
+        Group { FlexWeight: 1; }
+
+        Label #RestartNote {
           Text: "";
-          Style: (FontSize: 11, TextColor: #888888);
-          Anchor: (Height: 18, Bottom: 4);
+          Style: (FontSize: 10, TextColor: #FFAA00, VerticalAlignment: Center);
+          Anchor: (Width: 200, Height: 28);
+          Visible: false;
         }
 
-        Group #RollbackButtons {
-          LayoutMode: Left;
-          Anchor: (Height: 32, Bottom: 4);
-
-          TextButton #RollbackBtn {
-            Style: $C.@SecondaryTextButtonStyle;
-            Text: "Rollback";
-            Anchor: (Width: 160, Height: 28);
-          }
+        TextButton #RollbackBtn {
+          Style: $S.@RedButtonStyle;
+          Text: "Rollback";
+          Anchor: (Width: 120, Height: 28);
+          Visible: false;
         }
-      }
-
-      Label #RestartNote {
-        Text: "";
-        Style: (FontSize: 10, TextColor: #FFAA00, HorizontalAlignment: Center);
-        Anchor: (Height: 18);
-        Visible: false;
       }
     }
   }

@@ -17,6 +17,8 @@ import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
+import com.hypixel.hytale.server.core.ui.DropdownEntryInfo;
+import com.hypixel.hytale.server.core.ui.LocalizableString;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
@@ -55,6 +57,10 @@ public class AdminBackupsPage extends InteractiveCustomUIPage<AdminBackupsData> 
 
   private boolean creating = false;
 
+  /** Current filter type — null means "All". */
+  @Nullable
+  private BackupType filterType = null;
+
   /** Creates a new AdminBackupsPage. */
   public AdminBackupsPage(PlayerRef playerRef, GuiManager guiManager, HyperFactions plugin) {
     super(playerRef, CustomPageLifetime.CanDismiss, AdminBackupsData.CODEC);
@@ -84,9 +90,30 @@ public class AdminBackupsPage extends InteractiveCustomUIPage<AdminBackupsData> 
     BackupManager manager = plugin.getBackupManager();
     List<BackupMetadata> allBackups = manager != null ? manager.listBackups() : List.of();
 
+    // Apply filter
+    List<BackupMetadata> filteredBackups = filterType == null ? allBackups
+        : allBackups.stream().filter(b -> b.type() == filterType).toList();
+
+    // Filter dropdown
+    cmd.set("#FilterDropdown.Entries", List.of(
+        new DropdownEntryInfo(LocalizableString.fromString("All"), "all"),
+        new DropdownEntryInfo(LocalizableString.fromString("Hourly"), "hourly"),
+        new DropdownEntryInfo(LocalizableString.fromString("Daily"), "daily"),
+        new DropdownEntryInfo(LocalizableString.fromString("Weekly"), "weekly"),
+        new DropdownEntryInfo(LocalizableString.fromString("Manual"), "manual"),
+        new DropdownEntryInfo(LocalizableString.fromString("Migration"), "migration")
+    ));
+    cmd.set("#FilterDropdown.Value", filterType == null ? "all" : filterType.getPrefix());
+    events.addEventBinding(CustomUIEventBindingType.ValueChanged, "#FilterDropdown",
+        EventData.of("Button", "FilterChanged")
+            .append("@filterValue", "#FilterDropdown.Value"), false);
+
     // Header with count
-    cmd.set("#BackupCount.Text",
-        HFMessages.get(playerRef, AdminGuiKeys.AdminGui.BKP_TOTAL_COUNT, allBackups.size()));
+    String countText = filterType == null
+        ? HFMessages.get(playerRef, AdminGuiKeys.AdminGui.BKP_TOTAL_COUNT, allBackups.size())
+        : HFMessages.get(playerRef, AdminGuiKeys.AdminGui.BKP_TOTAL_COUNT, filteredBackups.size())
+            + " / " + allBackups.size();
+    cmd.set("#BackupCount.Text", countText);
 
     // Create button
     cmd.set("#CreateBackupBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.BKP_BTN_CREATE));
@@ -100,7 +127,7 @@ public class AdminBackupsPage extends InteractiveCustomUIPage<AdminBackupsData> 
     cmd.set("#StatusMessage.Text", statusMessage);
 
     // Pagination calculation
-    int totalPages = Math.max(1, (int) Math.ceil((double) allBackups.size() / BACKUPS_PER_PAGE));
+    int totalPages = Math.max(1, (int) Math.ceil((double) filteredBackups.size() / BACKUPS_PER_PAGE));
     if (currentPage >= totalPages) {
       currentPage = totalPages - 1;
     }
@@ -109,8 +136,8 @@ public class AdminBackupsPage extends InteractiveCustomUIPage<AdminBackupsData> 
     }
 
     int start = currentPage * BACKUPS_PER_PAGE;
-    int end = Math.min(start + BACKUPS_PER_PAGE, allBackups.size());
-    List<BackupMetadata> pageBackups = allBackups.subList(start, end);
+    int end = Math.min(start + BACKUPS_PER_PAGE, filteredBackups.size());
+    List<BackupMetadata> pageBackups = filteredBackups.subList(start, end);
 
     // Clear and rebuild backup list using IndexCards pattern
     cmd.clear("#BackupListContainer");
@@ -258,6 +285,16 @@ public class AdminBackupsPage extends InteractiveCustomUIPage<AdminBackupsData> 
         confirmingRestore = null;
         confirmingDelete = null;
         rebuildOnWorldThread();
+      }
+      case "FilterChanged" -> {
+        if (data.filterValue != null) {
+          filterType = "all".equals(data.filterValue) ? null : BackupType.fromPrefix(data.filterValue);
+          currentPage = 0;
+          expandedBackups.clear();
+          confirmingRestore = null;
+          confirmingDelete = null;
+          rebuildOnWorldThread();
+        }
       }
       case "Back" -> guiManager.closePage(player, ref, store);
       default -> { }

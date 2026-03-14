@@ -1,4 +1,5 @@
 $C = "../../Common.ui";
+$S = "../shared/styles.ui";
 
 Group {
   LayoutMode: Top;
@@ -11,7 +12,7 @@ Group {
     Anchor: (Height: 22);
 
     TextButton #ExpandBtn {
-      Style: $C.@SecondaryTextButtonStyle;
+      Style: $S.@ButtonStyle;
       Text: ">";
       Anchor: (Width: 28, Height: 22);
     }
@@ -77,7 +78,7 @@ Group {
       Anchor: (Height: 28, Top: 4);
 
       TextButton #RestoreBtn {
-        Style: $C.@SecondaryTextButtonStyle;
+        Style: $S.@ButtonStyle;
         Text: "Restore";
         Anchor: (Width: 100, Height: 24);
       }
@@ -85,7 +86,7 @@ Group {
       Group { Anchor: (Width: 8); }
 
       TextButton #DeleteBtn {
-        Style: $C.@SecondaryTextButtonStyle;
+        Style: $S.@ButtonStyle;
         Text: "Delete";
         Anchor: (Width: 100, Height: 24);
       }

@@ -31,7 +31,7 @@ $C.@PageOverlay {
         Group { Anchor: (Width: 10); FlexWeight: 1; }
 
         TextButton #CreateBackupBtn {
-          Style: $C.@DefaultTextButtonStyle;
+          Style: $S.@CyanButtonStyle;
           Text: "Create Backup";
           Anchor: (Width: 140, Height: 28);
         }
@@ -43,18 +43,25 @@ $C.@PageOverlay {
 
         Label #NameLabel {
           Text: "Name:";
-          Style: (FontSize: 11, TextColor: #888888);
+          Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
           Anchor: (Width: 50, Height: 28);
         }
 
-        Group {
-          Background: (Color: #0d1520);
-          Padding: (Left: 6, Right: 6);
-          Anchor: (Width: 250, Height: 28);
+        $C.@TextField #BackupNameInput {
+          Anchor: (Width: 200, Height: 28);
+        }
 
-          $C.@TextField #BackupNameInput {
-            Anchor: (Height: 24);
-          }
+        Group { FlexWeight: 1; }
+
+        Label #FilterLabel {
+          Text: "Filter:";
+          Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
+          Anchor: (Width: 40, Height: 28);
+        }
+
+        DropdownBox #FilterDropdown {
+          Style: $C.@DefaultDropdownBoxStyle;
+          Anchor: (Width: 120, Height: 26);
         }
       }
 
@@ -80,7 +87,7 @@ $C.@PageOverlay {
         Anchor: (Height: 28, Top: 6);
 
         TextButton #PrevBtn {
-          Style: $C.@SecondaryTextButtonStyle;
+          Style: $S.@ButtonStyle;
           Text: "< Prev";
           Anchor: (Width: 80, Height: 24);
           Visible: false;
@@ -97,7 +104,7 @@ $C.@PageOverlay {
         Group { FlexWeight: 1; }
 
         TextButton #NextBtn {
-          Style: $C.@SecondaryTextButtonStyle;
+          Style: $S.@ButtonStyle;
           Text: "Next >";
           Anchor: (Width: 80, Height: 24);
           Visible: false;

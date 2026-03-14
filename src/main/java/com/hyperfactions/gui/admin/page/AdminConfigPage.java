@@ -423,10 +423,6 @@ public class AdminConfigPage extends InteractiveCustomUIPage<AdminConfigData> {
     addColorSetting(cmd, events, "server.prefixBracketColor", "Bracket Color", cfg.server().getPrefixBracketColor());
     addColorSetting(cmd, events, "server.primaryColor", "Primary Color", cfg.getPrimaryColor());
 
-    addSectionHeader(cmd, loc(AdminGuiKeys.AdminGui.CFG_SEC_MIXIN));
-    addBooleanSetting(cmd, events, "server.hyperProtectAutoDownload", "Auto Download", cfg.server().isHyperProtectAutoDownload());
-    addBooleanSetting(cmd, events, "server.hyperProtectAutoUpdate", "Auto Update", cfg.server().isHyperProtectAutoUpdate());
-
     addSectionHeader(cmd, loc(AdminGuiKeys.AdminGui.CFG_SEC_MOB_CLEAR));
     addBooleanSetting(cmd, events, "server.mobClearEnabled", "Mob Clear Enabled", cfg.isMobClearEnabled());
     addIntSetting(cmd, events, "server.mobClearIntervalSeconds", "Clear Interval (sec)", cfg.getMobClearIntervalSeconds());
@@ -448,6 +444,10 @@ public class AdminConfigPage extends InteractiveCustomUIPage<AdminConfigData> {
     addSectionHeader(cmd, loc(AdminGuiKeys.AdminGui.CFG_SEC_UPDATES));
     addBooleanSetting(cmd, events, "server.updateCheckEnabled", "Update Check", cfg.isUpdateCheckEnabled());
     addEnumSetting(cmd, events, "server.releaseChannel", "Release Channel", cfg.getReleaseChannel(), "stable", "prerelease");
+
+    addSectionHeader(cmd, loc(AdminGuiKeys.AdminGui.CFG_SEC_MIXIN));
+    addBooleanSetting(cmd, events, "server.hyperProtectAutoDownload", "Auto Download", cfg.server().isHyperProtectAutoDownload());
+    addBooleanSetting(cmd, events, "server.hyperProtectAutoUpdate", "Auto Update", cfg.server().isHyperProtectAutoUpdate());
   }
 
   // ================================================================

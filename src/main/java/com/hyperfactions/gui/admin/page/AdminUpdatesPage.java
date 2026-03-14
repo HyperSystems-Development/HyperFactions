@@ -7,6 +7,7 @@ import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.admin.AdminNavBarHelper;
 import com.hyperfactions.gui.admin.data.AdminUpdatesData;
+import com.hyperfactions.integration.protection.ProtectionMixinBridge;
 import com.hyperfactions.update.UpdateChecker;
 import com.hyperfactions.util.AdminGuiKeys;
 import com.hyperfactions.util.HFMessages;
@@ -28,11 +29,12 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Admin Updates page - displays version info, update checking,
- * changelog, mixin status, and rollback support.
+ * Admin Updates page — two-column layout showing HyperFactions and HyperProtect Mixin
+ * version info, update status, and download/rollback actions.
  */
 public class AdminUpdatesPage extends InteractiveCustomUIPage<AdminUpdatesData> {
 
@@ -40,38 +42,18 @@ public class AdminUpdatesPage extends InteractiveCustomUIPage<AdminUpdatesData> 
       DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withZone(ZoneId.systemDefault());
 
   private final PlayerRef playerRef;
-
   private final GuiManager guiManager;
-
   private final HyperFactions plugin;
 
-  /** Cached update info from last check. */
-  @Nullable
-  private UpdateChecker.UpdateInfo cachedUpdate;
-
-  /** Cached mixin update info. */
-  @Nullable
-  private UpdateChecker.UpdateInfo cachedMixinUpdate;
-
-  /** Current status message. */
-  private String statusMessage = "";
-
-  /** Current mixin status message. */
-  private String mixinStatusMessage = "";
-
-  /** Prevents double-click during download. */
+  @Nullable private UpdateChecker.UpdateInfo cachedUpdate;
+  @Nullable private UpdateChecker.UpdateInfo cachedMixinUpdate;
+  private String hfStatus = "";
+  private String hpStatus = "";
   private boolean downloading = false;
-
-  /** Prevents double-click during mixin download. */
   private boolean downloadingMixin = false;
-
-  /** Two-click confirmation for rollback. */
   private boolean rollbackConfirm = false;
-
-  /** Whether a restart is needed after download. */
   private boolean restartRequired = false;
 
-  /** Creates a new AdminUpdatesPage. */
   public AdminUpdatesPage(PlayerRef playerRef, GuiManager guiManager, HyperFactions plugin) {
     super(playerRef, CustomPageLifetime.CanDismiss, AdminUpdatesData.CODEC);
     this.playerRef = playerRef;
@@ -79,68 +61,47 @@ public class AdminUpdatesPage extends InteractiveCustomUIPage<AdminUpdatesData> 
     this.plugin = plugin;
   }
 
-  /** Builds the updates page. */
   @Override
   public void build(Ref<EntityStore> ref, UICommandBuilder cmd,
-           UIEventBuilder events, Store<EntityStore> store) {
+                     UIEventBuilder events, Store<EntityStore> store) {
     cmd.append(UIPaths.ADMIN_UPDATES);
-
     AdminNavBarHelper.setupBar(playerRef, "updates", cmd, events);
-
-    // Static labels — set once, persist across sendUpdate(false) calls
     cmd.set("#PageTitle.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_TITLE_UPDATES));
-    buildStaticContent(cmd, events);
-
-    // Dynamic content — changes on each rebuild
     buildDynamicContent(cmd, events);
   }
 
-  /** Sets labels and values that never change after initial build. */
-  private void buildStaticContent(UICommandBuilder cmd, UIEventBuilder events) {
-    // Version Information section
-    cmd.set("#VersionInfoLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_VERSION_INFO));
-    cmd.set("#CurrentVersionLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_CURRENT_VERSION));
-    cmd.set("#CurrentVersionValue.Text", "v" + BuildInfo.VERSION);
-    cmd.set("#BuildDateLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_BUILD_DATE));
-    cmd.set("#BuildDateValue.Text", BUILD_DATE_FORMATTER.format(
-        Instant.ofEpochMilli(BuildInfo.BUILD_TIMESTAMP)));
-    cmd.set("#ChannelLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_CHANNEL));
-    cmd.set("#ChannelValue.Text", ConfigManager.get().getReleaseChannel());
-
-    // Section titles
-    cmd.set("#UpdateStatusLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_UPDATE_STATUS));
-    cmd.set("#LatestVersionLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_LATEST_VERSION));
-    cmd.set("#MixinTitle.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_MIXIN_TITLE));
-    cmd.set("#MixinVersionLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_MIXIN_VERSION));
-
-    // Button labels that don't change
-    cmd.set("#CheckUpdateBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_BTN_CHECK));
-    cmd.set("#CheckMixinBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_MIXIN_CHECK));
+  private void buildDynamicContent(UICommandBuilder cmd, UIEventBuilder events) {
+    buildHyperFactionsColumn(cmd, events);
+    buildHyperProtectColumn(cmd, events);
+    buildActionBar(cmd, events);
   }
 
-  /** Sets only the dynamic values that change between rebuilds. */
-  private void buildDynamicContent(UICommandBuilder cmd, UIEventBuilder events) {
+  // ── HyperFactions column ──────────────────────────────────────────────────
+
+  private void buildHyperFactionsColumn(UICommandBuilder cmd, UIEventBuilder events) {
     UpdateChecker checker = plugin.getUpdateChecker();
 
-    // Pre-populate from cached check if available
+    // Pre-populate from cached check
     if (cachedUpdate == null && checker != null) {
       cachedUpdate = checker.getCachedUpdate();
     }
 
+    cmd.set("#HFCurrentVersion.Text", "v" + BuildInfo.VERSION);
+    cmd.set("#HFChannel.Text", ConfigManager.get().getReleaseChannel());
+    cmd.set("#HFBuildDate.Text", BUILD_DATE_FORMATTER.format(
+        Instant.ofEpochMilli(BuildInfo.BUILD_TIMESTAMP)));
+
     if (cachedUpdate != null) {
-      cmd.set("#LatestVersionValue.Text", "v" + cachedUpdate.version());
+      String latestText = "v" + cachedUpdate.version();
       if (cachedUpdate.isPreRelease()) {
-        cmd.set("#PreReleaseTag.Visible", true);
-        cmd.set("#PreReleaseTag.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_PRE_RELEASE));
-      } else {
-        cmd.set("#PreReleaseTag.Visible", false);
+        latestText += " (pre-release)";
       }
-      if (statusMessage.isEmpty()) {
-        statusMessage = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_STATUS_AVAILABLE,
+      cmd.set("#HFLatestVersion.Text", latestText);
+      if (hfStatus.isEmpty()) {
+        hfStatus = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_STATUS_AVAILABLE,
             cachedUpdate.version());
       }
 
-      // Show download button if update available and not already downloading
       if (!downloading && !restartRequired) {
         cmd.set("#DownloadBtn.Visible", true);
         cmd.set("#DownloadBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_BTN_DOWNLOAD));
@@ -150,85 +111,99 @@ public class AdminUpdatesPage extends InteractiveCustomUIPage<AdminUpdatesData> 
         cmd.set("#DownloadBtn.Visible", false);
       }
 
-      // Show changelog if available
       if (cachedUpdate.changelog() != null && !cachedUpdate.changelog().isEmpty()) {
         cmd.set("#ChangelogSection.Visible", true);
-        cmd.set("#ChangelogTitle.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_CHANGELOG_TITLE));
         String changelog = cachedUpdate.changelog();
-        if (changelog.length() > 500) {
-          changelog = changelog.substring(0, 497) + "...";
-        }
+        if (changelog.length() > 500) changelog = changelog.substring(0, 497) + "...";
         cmd.set("#ChangelogText.Text", changelog);
       } else {
         cmd.set("#ChangelogSection.Visible", false);
       }
     } else {
-      cmd.set("#LatestVersionValue.Text", "-");
-      cmd.set("#PreReleaseTag.Visible", false);
+      cmd.set("#HFLatestVersion.Text", "v" + BuildInfo.VERSION);
       cmd.set("#DownloadBtn.Visible", false);
       cmd.set("#ChangelogSection.Visible", false);
-      if (statusMessage.isEmpty()) {
-        statusMessage = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_STATUS_UP_TO_DATE);
+      if (hfStatus.isEmpty()) {
+        hfStatus = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_STATUS_UP_TO_DATE);
       }
     }
 
-    cmd.set("#StatusMessage.Text", statusMessage);
+    cmd.set("#HFStatus.Text", hfStatus);
+  }
 
-    // Check for Updates button event
+  // ── HyperProtect column ───────────────────────────────────────────────────
+
+  private void buildHyperProtectColumn(UICommandBuilder cmd, UIEventBuilder events) {
+    ProtectionMixinBridge.MixinProvider provider = ProtectionMixinBridge.getProvider();
+    boolean mixinInstalled = provider == ProtectionMixinBridge.MixinProvider.HYPERPROTECT
+        || provider == ProtectionMixinBridge.MixinProvider.BOTH;
+    UpdateChecker mixinChecker = plugin.getHyperProtectUpdateChecker();
+
+    if (mixinInstalled) {
+      String hpVersion = System.getProperty("hyperprotect.bridge.version", "unknown");
+      cmd.set("#HPCurrentVersion.Text", "v" + hpVersion);
+
+      if (cachedMixinUpdate != null) {
+        cmd.set("#HPLatestVersion.Text", "v" + cachedMixinUpdate.version());
+        if (hpStatus.isEmpty()) {
+          hpStatus = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_MIXIN_AVAILABLE,
+              cachedMixinUpdate.version());
+        }
+
+        if (!downloadingMixin && !restartRequired) {
+          cmd.set("#DownloadMixinBtn.Visible", true);
+          cmd.set("#DownloadMixinBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_BTN_DOWNLOAD));
+          events.addEventBinding(CustomUIEventBindingType.Activating, "#DownloadMixinBtn",
+              EventData.of("Button", "DownloadMixin"), false);
+        } else {
+          cmd.set("#DownloadMixinBtn.Visible", false);
+        }
+      } else {
+        cmd.set("#HPLatestVersion.Text", "v" + hpVersion);
+        cmd.set("#DownloadMixinBtn.Visible", false);
+        if (hpStatus.isEmpty()) {
+          hpStatus = mixinChecker != null
+              ? HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_MIXIN_UP_TO_DATE)
+              : "Installed";
+        }
+      }
+    } else {
+      cmd.set("#HPCurrentVersion.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_MIXIN_NOT_INSTALLED));
+      cmd.set("#HPLatestVersion.Text", "-");
+      cmd.set("#DownloadMixinBtn.Visible", false);
+      if (hpStatus.isEmpty()) {
+        hpStatus = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_MIXIN_NOT_INSTALLED);
+      }
+    }
+
+    cmd.set("#HPStatus.Text", hpStatus);
+  }
+
+  // ── Action bar ────────────────────────────────────────────────────────────
+
+  private void buildActionBar(UICommandBuilder cmd, UIEventBuilder events) {
+    // Check for Updates — checks both HF and HP at once
     events.addEventBinding(CustomUIEventBindingType.Activating, "#CheckUpdateBtn",
         EventData.of("Button", "CheckUpdate"), false);
 
-    // Mixin section
-    UpdateChecker mixinChecker = plugin.getHyperProtectUpdateChecker();
-    if (mixinChecker != null) {
-      cmd.set("#MixinVersionValue.Text", "v" + mixinChecker.getCurrentVersion());
-      cmd.set("#MixinStatus.Text", mixinStatusMessage);
-      cmd.set("#CheckMixinBtn.Visible", true);
-
-      events.addEventBinding(CustomUIEventBindingType.Activating, "#CheckMixinBtn",
-          EventData.of("Button", "CheckMixin"), false);
-
-      if (cachedMixinUpdate != null && !downloadingMixin && !restartRequired) {
-        cmd.set("#DownloadMixinBtn.Visible", true);
-        cmd.set("#DownloadMixinBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_BTN_DOWNLOAD));
-        events.addEventBinding(CustomUIEventBindingType.Activating, "#DownloadMixinBtn",
-            EventData.of("Button", "DownloadMixin"), false);
-      } else {
-        cmd.set("#DownloadMixinBtn.Visible", false);
-      }
-    } else {
-      cmd.set("#MixinVersionValue.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_MIXIN_NOT_INSTALLED));
-      cmd.set("#CheckMixinBtn.Visible", false);
-      cmd.set("#DownloadMixinBtn.Visible", false);
-    }
-
-    // Rollback section
+    // Rollback
+    UpdateChecker checker = plugin.getUpdateChecker();
     if (checker != null && checker.isRollbackSafe()) {
       UpdateChecker.RollbackInfo rollbackInfo = checker.getRollbackInfo();
       if (rollbackInfo != null) {
-        cmd.set("#SeparatorLine4.Visible", true);
-        cmd.set("#RollbackSection.Visible", true);
-        cmd.set("#RollbackTitle.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_ROLLBACK_SECTION));
-
-        String rollbackLabel;
-        if (rollbackConfirm) {
-          rollbackLabel = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_ROLLBACK_CONFIRM);
-        } else {
-          rollbackLabel = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_BTN_ROLLBACK)
-              + " v" + rollbackInfo.fromVersion();
-        }
+        cmd.set("#RollbackBtn.Visible", true);
+        String rollbackLabel = rollbackConfirm
+            ? HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_ROLLBACK_CONFIRM)
+            : HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_BTN_ROLLBACK)
+                + " v" + rollbackInfo.fromVersion();
         cmd.set("#RollbackBtn.Text", rollbackLabel);
-        cmd.set("#RollbackInfo.Text",
-            "v" + rollbackInfo.toVersion() + " -> v" + rollbackInfo.fromVersion());
         events.addEventBinding(CustomUIEventBindingType.Activating, "#RollbackBtn",
             EventData.of("Button", "Rollback"), false);
       } else {
-        cmd.set("#SeparatorLine4.Visible", false);
-        cmd.set("#RollbackSection.Visible", false);
+        cmd.set("#RollbackBtn.Visible", false);
       }
     } else {
-      cmd.set("#SeparatorLine4.Visible", false);
-      cmd.set("#RollbackSection.Visible", false);
+      cmd.set("#RollbackBtn.Visible", false);
     }
 
     // Restart note
@@ -240,50 +215,34 @@ public class AdminUpdatesPage extends InteractiveCustomUIPage<AdminUpdatesData> 
     }
   }
 
-  /**
-   * Resolves the player's world for dispatching async results back to the world thread.
-   */
+  // ── Event handling ────────────────────────────────────────────────────────
+
   @Nullable
   private World resolveWorld() {
     UUID worldUuid = playerRef.getWorldUuid();
-    if (worldUuid == null) {
-      return null;
-    }
-    return Universe.get().getWorld(worldUuid);
+    return worldUuid != null ? Universe.get().getWorld(worldUuid) : null;
   }
 
-  private void rebuildOnWorldThread() {
+  private void refresh() {
     UICommandBuilder cmd = new UICommandBuilder();
     UIEventBuilder events = new UIEventBuilder();
     buildDynamicContent(cmd, events);
     sendUpdate(cmd, events, false);
   }
 
-  /** Handles data event. */
   @Override
   public void handleDataEvent(Ref<EntityStore> ref, Store<EntityStore> store,
-                AdminUpdatesData data) {
+                               AdminUpdatesData data) {
     super.handleDataEvent(ref, store, data);
-
     Player player = store.getComponent(ref, Player.getComponentType());
-    PlayerRef playerRef = store.getComponent(ref, PlayerRef.getComponentType());
-
-    if (player == null || playerRef == null) {
-      return;
-    }
-
-    if (AdminNavBarHelper.handleNavEvent(data, player, ref, store, playerRef, guiManager)) {
-      return;
-    }
-
-    if (data.button == null) {
-      return;
-    }
+    PlayerRef pRef = store.getComponent(ref, PlayerRef.getComponentType());
+    if (player == null || pRef == null) return;
+    if (AdminNavBarHelper.handleNavEvent(data, player, ref, store, pRef, guiManager)) return;
+    if (data.button == null) return;
 
     switch (data.button) {
-      case "CheckUpdate" -> handleCheckUpdate();
+      case "CheckUpdate" -> handleCheckAll();
       case "Download" -> handleDownload();
-      case "CheckMixin" -> handleCheckMixin();
       case "DownloadMixin" -> handleDownloadMixin();
       case "Rollback" -> handleRollback(player);
       case "Back" -> guiManager.closePage(player, ref, store);
@@ -291,122 +250,93 @@ public class AdminUpdatesPage extends InteractiveCustomUIPage<AdminUpdatesData> 
     }
   }
 
-  private void handleCheckUpdate() {
+  /** Checks both HF and HP updates simultaneously. */
+  private void handleCheckAll() {
+    hfStatus = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_STATUS_CHECKING);
+    hpStatus = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_STATUS_CHECKING);
+    refresh();
+
     UpdateChecker checker = plugin.getUpdateChecker();
-    if (checker == null) {
-      statusMessage = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_STATUS_FAILED);
-      rebuildOnWorldThread();
-      return;
-    }
+    UpdateChecker mixinChecker = plugin.getHyperProtectUpdateChecker();
 
-    statusMessage = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_STATUS_CHECKING);
-    rebuildOnWorldThread();
+    CompletableFuture<UpdateChecker.UpdateInfo> hfFuture = checker != null
+        ? checker.checkForUpdates(true) : CompletableFuture.completedFuture(null);
+    CompletableFuture<UpdateChecker.UpdateInfo> hpFuture = mixinChecker != null
+        ? mixinChecker.checkForUpdates(true) : CompletableFuture.completedFuture(null);
 
-    checker.checkForUpdates(true).thenAccept(info -> {
+    hfFuture.thenCombine(hpFuture, (hfInfo, hpInfo) -> {
       World world = resolveWorld();
-      if (world == null) {
-        return;
-      }
+      if (world == null) return null;
       world.execute(() -> {
-        cachedUpdate = info;
-        if (info != null) {
-          statusMessage = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_STATUS_AVAILABLE,
-              info.version());
+        cachedUpdate = hfInfo;
+        hfStatus = hfInfo != null
+            ? HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_STATUS_AVAILABLE, hfInfo.version())
+            : HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_STATUS_UP_TO_DATE);
+
+        cachedMixinUpdate = hpInfo;
+        if (mixinChecker != null) {
+          hpStatus = hpInfo != null
+              ? HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_MIXIN_AVAILABLE, hpInfo.version())
+              : HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_MIXIN_UP_TO_DATE);
         } else {
-          statusMessage = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_STATUS_UP_TO_DATE);
+          hpStatus = "";
         }
-        rebuildOnWorldThread();
+        refresh();
       });
+      return null;
     });
   }
 
   private void handleDownload() {
     UpdateChecker checker = plugin.getUpdateChecker();
-    if (checker == null || cachedUpdate == null || downloading) {
-      return;
-    }
+    if (checker == null || cachedUpdate == null || downloading) return;
 
     downloading = true;
-    statusMessage = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_STATUS_DOWNLOADING);
-    rebuildOnWorldThread();
+    hfStatus = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_STATUS_DOWNLOADING);
+    refresh();
 
     checker.downloadUpdate(cachedUpdate).thenAccept(path -> {
       World world = resolveWorld();
-      if (world == null) {
-        downloading = false;
-        return;
-      }
+      if (world == null) { downloading = false; return; }
       world.execute(() -> {
         downloading = false;
         if (path != null) {
-          statusMessage = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_STATUS_DOWNLOADED);
+          hfStatus = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_STATUS_DOWNLOADED);
           restartRequired = true;
           checker.createRollbackMarker(BuildInfo.VERSION, cachedUpdate.version());
           checker.cleanupOldBackups(BuildInfo.VERSION);
           Logger.info("[Updates] %s downloaded update v%s via admin GUI",
               playerRef.getUsername(), cachedUpdate.version());
         } else {
-          statusMessage = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_STATUS_FAILED);
+          hfStatus = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_STATUS_FAILED);
         }
-        rebuildOnWorldThread();
-      });
-    });
-  }
-
-  private void handleCheckMixin() {
-    UpdateChecker mixinChecker = plugin.getHyperProtectUpdateChecker();
-    if (mixinChecker == null) {
-      return;
-    }
-
-    mixinStatusMessage = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_STATUS_CHECKING);
-    rebuildOnWorldThread();
-
-    mixinChecker.checkForUpdates(true).thenAccept(info -> {
-      World world = resolveWorld();
-      if (world == null) {
-        return;
-      }
-      world.execute(() -> {
-        cachedMixinUpdate = info;
-        if (info != null) {
-          mixinStatusMessage = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_MIXIN_AVAILABLE,
-              info.version());
-        } else {
-          mixinStatusMessage = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_MIXIN_UP_TO_DATE);
-        }
-        rebuildOnWorldThread();
+        refresh();
       });
     });
   }
 
   private void handleDownloadMixin() {
     UpdateChecker mixinChecker = plugin.getHyperProtectUpdateChecker();
-    if (mixinChecker == null || cachedMixinUpdate == null || downloadingMixin) {
-      return;
-    }
+    if (mixinChecker == null || cachedMixinUpdate == null || downloadingMixin) return;
 
     downloadingMixin = true;
-    mixinStatusMessage = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_MIXIN_DOWNLOADING);
-    rebuildOnWorldThread();
+    hpStatus = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_MIXIN_DOWNLOADING);
+    refresh();
 
     mixinChecker.downloadUpdate(cachedMixinUpdate).thenAccept(path -> {
       World world = resolveWorld();
-      if (world == null) {
-        downloadingMixin = false;
-        return;
-      }
+      if (world == null) { downloadingMixin = false; return; }
       world.execute(() -> {
         downloadingMixin = false;
         if (path != null) {
-          mixinStatusMessage = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_MIXIN_DOWNLOADED);
+          hpStatus = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_MIXIN_DOWNLOADED);
           restartRequired = true;
           Logger.info("[Updates] %s downloaded mixin update v%s via admin GUI",
               playerRef.getUsername(), cachedMixinUpdate.version());
         } else {
-          mixinStatusMessage = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_MIXIN_FAILED);
+          hpStatus = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_MIXIN_FAILED);
         }
-        rebuildOnWorldThread();
+        refresh();
       });
     });
   }
@@ -414,29 +344,29 @@ public class AdminUpdatesPage extends InteractiveCustomUIPage<AdminUpdatesData> 
   private void handleRollback(Player player) {
     UpdateChecker checker = plugin.getUpdateChecker();
     if (checker == null || !checker.isRollbackSafe()) {
-      statusMessage = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_ROLLBACK_UNSAFE);
-      rebuildOnWorldThread();
+      hfStatus = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_ROLLBACK_UNSAFE);
+      refresh();
       return;
     }
 
     if (!rollbackConfirm) {
       rollbackConfirm = true;
-      rebuildOnWorldThread();
+      refresh();
       return;
     }
 
     rollbackConfirm = false;
     UpdateChecker.RollbackResult result = checker.performRollback();
     if (result.success()) {
-      statusMessage = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_ROLLBACK_SUCCESS,
+      hfStatus = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_ROLLBACK_SUCCESS,
           result.restoredVersion());
       restartRequired = true;
       Logger.info("[Updates] %s rolled back to v%s via admin GUI",
           playerRef.getUsername(), result.restoredVersion());
     } else {
-      statusMessage = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_ROLLBACK_FAILED,
+      hfStatus = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.UPD_ROLLBACK_FAILED,
           result.errorMessage());
     }
-    rebuildOnWorldThread();
+    refresh();
   }
 }

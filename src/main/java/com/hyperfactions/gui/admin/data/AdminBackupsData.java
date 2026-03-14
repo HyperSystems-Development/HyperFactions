@@ -25,6 +25,9 @@ public class AdminBackupsData implements AdminNavAwareData {
   /** Page number for pagination (as String, parsed to int). */
   public int page;
 
+  /** Filter dropdown value for type filtering. */
+  public String filterValue;
+
   /** Codec for serialization/deserialization. */
   public static final BuilderCodec<AdminBackupsData> CODEC = BuilderCodec
       .builder(AdminBackupsData.class, AdminBackupsData::new)
@@ -58,6 +61,11 @@ public class AdminBackupsData implements AdminNavAwareData {
             }
           },
           data -> String.valueOf(data.page)
+      )
+      .addField(
+          new KeyedCodec<>("@filterValue", Codec.STRING),
+          (data, value) -> data.filterValue = value,
+          data -> data.filterValue
       )
       .build();
 
