@@ -83,6 +83,8 @@ public final class ConfigValidator {
       case "worldmap.proximityMaxChunksPerBatch", "worldmap.incrementalMaxChunksPerBatch" -> 1;
       case "worldmap.debouncedDelaySeconds" -> 1;
       case "worldmap.factionWideRefreshThreshold" -> 10;
+      case "worldmap.overrideDefaultScale", "worldmap.overrideMinScale",
+           "worldmap.overrideMaxScale", "worldmap.overrideImageScale" -> 0; // 0 = inherit
       default -> 0;
     };
   }
@@ -133,6 +135,9 @@ public final class ConfigValidator {
       case "worldmap.proximityMaxChunksPerBatch", "worldmap.incrementalMaxChunksPerBatch" -> 500;
       case "worldmap.debouncedDelaySeconds" -> 60;
       case "worldmap.factionWideRefreshThreshold" -> 10000;
+      case "worldmap.overrideDefaultScale", "worldmap.overrideMinScale",
+           "worldmap.overrideMaxScale" -> 512;
+      case "worldmap.overrideImageScale" -> 10;
       default -> 999999;
     };
   }

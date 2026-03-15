@@ -863,6 +863,19 @@ public class AdminConfigPage extends InteractiveCustomUIPage<AdminConfigData> {
     addBooleanSetting(cmd, events, "worldmap.showEnemies", "Show Enemies", wm.isShowEnemies());
     addBooleanSetting(cmd, events, "worldmap.showFactionlessPlayers", "Show Factionless", wm.isShowFactionlessPlayers());
     addBooleanSetting(cmd, events, "worldmap.showFactionlessToFactionless", "Show to Factionless", wm.isShowFactionlessToFactionless());
+
+    // Settings overrides section (0 = inherit from world for scale values)
+    addSectionHeader(cmd, "Map Settings (0 = inherit)");
+    addIntSetting(cmd, events, "worldmap.overrideDefaultScale", "Default Scale", wm.getOverrideDefaultScaleInt());
+    addIntSetting(cmd, events, "worldmap.overrideMinScale", "Min Scale", wm.getOverrideMinScaleInt());
+    addIntSetting(cmd, events, "worldmap.overrideMaxScale", "Max Scale", wm.getOverrideMaxScaleInt());
+    addIntSetting(cmd, events, "worldmap.overrideImageScale", "Image Scale", wm.getOverrideImageScaleInt());
+    addEnumSetting(cmd, events, "worldmap.overrideAllowTeleportToCoordinates", "Teleport to Coords",
+        wm.getOverrideAllowTeleportToCoordinatesStr(), "inherit", "enabled", "disabled");
+    addEnumSetting(cmd, events, "worldmap.overrideAllowTeleportToMarkers", "Teleport to Markers",
+        wm.getOverrideAllowTeleportToMarkersStr(), "inherit", "enabled", "disabled");
+    addEnumSetting(cmd, events, "worldmap.overrideAllowCreatingMapMarkers", "Create Markers",
+        wm.getOverrideAllowCreatingMapMarkersStr(), "inherit", "enabled", "disabled");
   }
 
   // ================================================================

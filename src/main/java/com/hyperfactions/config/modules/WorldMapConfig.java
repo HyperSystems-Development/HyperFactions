@@ -558,6 +558,65 @@ public class WorldMapConfig extends ModuleConfig {
   @Nullable
   public Boolean getOverrideAllowCreatingMapMarkers() { return overrideAllowCreatingMapMarkers; }
 
+  // === Settings Override Setters (for admin GUI) ===
+  // Scale overrides: 0 = inherit from world, positive = override value
+
+  /** Sets the default scale override. 0 = inherit from world. */
+  public void setOverrideDefaultScale(int value) { this.overrideDefaultScale = value > 0 ? (float) value : null; }
+
+  /** Sets the min scale override. 0 = inherit from world. */
+  public void setOverrideMinScale(int value) { this.overrideMinScale = value > 0 ? (float) value : null; }
+
+  /** Sets the max scale override. 0 = inherit from world. */
+  public void setOverrideMaxScale(int value) { this.overrideMaxScale = value > 0 ? (float) value : null; }
+
+  /** Sets the image scale override. 0 = inherit from world. */
+  public void setOverrideImageScale(int value) { this.overrideImageScale = value > 0 ? (float) value : null; }
+
+  /** Gets the effective default scale for GUI display (0 = inherit). */
+  public int getOverrideDefaultScaleInt() { return overrideDefaultScale != null ? overrideDefaultScale.intValue() : 0; }
+
+  /** Gets the effective min scale for GUI display (0 = inherit). */
+  public int getOverrideMinScaleInt() { return overrideMinScale != null ? overrideMinScale.intValue() : 0; }
+
+  /** Gets the effective max scale for GUI display (0 = inherit). */
+  public int getOverrideMaxScaleInt() { return overrideMaxScale != null ? overrideMaxScale.intValue() : 0; }
+
+  /** Gets the effective image scale for GUI display (0 = inherit). */
+  public int getOverrideImageScaleInt() { return overrideImageScale != null ? overrideImageScale.intValue() : 0; }
+
+  // Boolean overrides: "inherit"/"enabled"/"disabled"
+
+  /** Sets allow teleport to coordinates override from GUI string. */
+  public void setOverrideAllowTeleportToCoordinates(String value) {
+    this.overrideAllowTeleportToCoordinates = "enabled".equals(value) ? Boolean.TRUE : "disabled".equals(value) ? Boolean.FALSE : null;
+  }
+
+  /** Sets allow teleport to markers override from GUI string. */
+  public void setOverrideAllowTeleportToMarkers(String value) {
+    this.overrideAllowTeleportToMarkers = "enabled".equals(value) ? Boolean.TRUE : "disabled".equals(value) ? Boolean.FALSE : null;
+  }
+
+  /** Sets allow creating map markers override from GUI string. */
+  public void setOverrideAllowCreatingMapMarkers(String value) {
+    this.overrideAllowCreatingMapMarkers = "enabled".equals(value) ? Boolean.TRUE : "disabled".equals(value) ? Boolean.FALSE : null;
+  }
+
+  /** Gets allow teleport to coordinates as GUI string. */
+  public String getOverrideAllowTeleportToCoordinatesStr() {
+    return overrideAllowTeleportToCoordinates == null ? "inherit" : overrideAllowTeleportToCoordinates ? "enabled" : "disabled";
+  }
+
+  /** Gets allow teleport to markers as GUI string. */
+  public String getOverrideAllowTeleportToMarkersStr() {
+    return overrideAllowTeleportToMarkers == null ? "inherit" : overrideAllowTeleportToMarkers ? "enabled" : "disabled";
+  }
+
+  /** Gets allow creating map markers as GUI string. */
+  public String getOverrideAllowCreatingMapMarkersStr() {
+    return overrideAllowCreatingMapMarkers == null ? "inherit" : overrideAllowCreatingMapMarkers ? "enabled" : "disabled";
+  }
+
   /**
    * Checks if faction tags should be shown on the world map.
    * When enabled, claimed chunks display faction tag text in the corner.
