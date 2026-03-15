@@ -93,14 +93,13 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 | Feature | Status |
 |---------|--------|
 | Block, item, PvP protection | Implemented |
-| [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) (27 hooks, recommended) | Implemented |
+| [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) (28 hooks, recommended) | Implemented |
 | OrbisGuard-Mixins (11 hooks, alternative) | Implemented |
 | Dual-provider auto-detection | Implemented |
 | Mob spawn suppression | Implemented |
 | Mob clearing zone flags | Implemented |
 | Gravestones integration | Implemented |
 | Zone flags (51) | Implemented |
-| Command blocking in zones | Implemented |
 | Sentry error tracking | Implemented |
 
 ### GUI
