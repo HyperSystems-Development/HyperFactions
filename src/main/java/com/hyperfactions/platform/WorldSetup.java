@@ -64,28 +64,13 @@ public class WorldSetup {
       Map<String, World> worlds = Universe.get().getWorlds();
       Logger.debug("Checking %d existing worlds for world map provider setup", worlds.size());
 
-      for (World world : worlds.values()) {
-        try {
-          // Skip temporary worlds
-          if (world.getWorldConfig().isDeleteOnRemove()) {
-            Logger.debug("Skipping temporary world: %s", world.getName());
-            continue;
-          }
-
-          // Set our provider on WorldConfig so the server uses it during world map init
-          world.getWorldConfig().setWorldMapProvider(
-              new com.hyperfactions.worldmap.HyperFactionsWorldMapProvider());
-
-        } catch (Exception e) {
-          Logger.warn("Failed to set world map provider for world %s: %s",
-              world.getName(), e.getMessage());
-          ErrorHandler.report("Failed to set world map provider for world " + world.getName(), e);
-        }
-      }
-
-      // Schedule delayed registration — WorldMapManager generators are initialized
-      // AFTER plugin enable (during "Getting Hytale Universe ready"), so we need
-      // to wait for them to be ready before capturing original settings
+      // DO NOT set our WorldConfig provider here — doing so causes the server
+      // to use our generator during init, preventing us from capturing the
+      // vanilla GeneratorChunkWorldMap settings (imageScale, viewRadius, etc).
+      //
+      // Instead, schedule delayed registration AFTER the server finishes
+      // initializing WorldMapManager generators ("Getting Hytale Universe ready").
+      // The delayed task captures the vanilla settings, then replaces the generator.
       hyperFactions.scheduleDelayedTask(60, () -> { // 60 ticks = 2 seconds
         Logger.debug("[WorldMap] Delayed registration: applying to existing worlds");
         for (World world : Universe.get().getWorlds().values()) {
@@ -104,7 +89,7 @@ public class WorldSetup {
         hyperFactions.getMapPlayerFilterService().applyToAll();
       });
 
-      // Also apply filters immediately for any already-online players
+      // Apply filters immediately for any already-online players
       hyperFactions.getMapPlayerFilterService().applyToAll();
 
     } catch (Exception e) {
