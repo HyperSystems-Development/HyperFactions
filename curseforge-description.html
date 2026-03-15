@@ -5,26 +5,23 @@
 <p>&nbsp;</p>
 <h2>✨ Why HyperFactions?</h2>
 <ul>
-    <li>🖥️ <strong><span style="color: #f0b232;">76 Interactive GUI Pages</span></strong> - Every feature has a polished, interactive GUI. No command memorization needed.</li>
+    <li>🖥️ <strong><span style="color: #f0b232;">70+ Interactive GUI Pages</span></strong> - Every feature has a polished, interactive GUI. No command memorization needed.</li>
     <li>⚡ <strong><span style="color: #f0b232;">Real-Time GUI Updates</span></strong> - When a member joins, a chunk is claimed, or a relation changes, every open GUI refreshes automatically.</li>
     <li>🛡️ <strong><span style="color: #f0b232;">50 Zone Flags</span></strong> - The most granular territory protection available, from PvP and granular friendly fire to mob spawning, transport control, and F-key pickup.</li>
-    <li>📦 <strong><span style="color: #f0b232;">Data Import</span></strong> - Migrating from ElbaphFactions or HyFactions? One command imports your factions, claims, and relations.</li>
+    <li>📦 <strong><span style="color: #f0b232;">Data Import</span></strong> - Migrating from ElbaphFactions, HyFactions, SimpleClaims, or FactionsX? One command imports your factions, claims, and relations.</li>
     <li>⚙️ <strong><span style="color: #f0b232;">Deep Configurability</span></strong> - 11 modular config files covering every aspect of gameplay. Tune it to your server's style.</li>
     <li>🚀 <strong><span style="color: #f0b232;">Active Development</span></strong> - Regular updates with community-driven features. Open source on GitHub.</li>
 </ul>
 <p>&nbsp;</p>
-<h2><span style="color: #f0b232;">🆕 What's New in v0.11.0</span></h2>
+<h2><span style="color: #f0b232;">🆕 What's New in v0.12.0</span></h2>
 <ul>
-    <li>💰 <strong><span style="color: #61afef;">Faction Upkeep System</span></strong> - Automated territory maintenance costs with flat or progressive tiered pricing, grace periods, and auto-pay</li>
-    <li>🐾 <strong><span style="color: #61afef;">Mob Clearing Zone Flags</span></strong> - 4 new flags to periodically remove hostile, passive, and neutral mobs from zones</li>
-    <li>🔍 <strong><span style="color: #61afef;">Sentry Error Tracking</span></strong> - Automatic error reporting with Sentry SDK, admin enable/disable, and source context</li>
-    <li>🗺️ <strong><span style="color: #61afef;">World Map Player &amp; Marker Hiding</span></strong> - Hide enemy/neutral players and shared markers on the world map per faction relation</li>
-    <li>💡 <strong><span style="color: #61afef;">Light Use Zone Flag</span></strong> - Control toggling lanterns, campfires, torches, and lamps in zones</li>
-    <li>🐴 <strong><span style="color: #61afef;">Mount Entry Enforcement</span></strong> - Block mounted players from entering zones, with safe teleport push-back</li>
-    <li>🔧 <strong><span style="color: #61afef;">KyuubiSoft Core Integration</span></strong> - Citizen NPC zone protection with auto-detection</li>
-    <li>🛡️ <strong><span style="color: #61afef;">HyperProtect-Mixin v1.2.0</span></strong> - 7 new hook wrappers for mount, barter, fluid, prefab, projectile, crafting, and map markers</li>
-    <li>💬 <strong><span style="color: #61afef;">Specific Denial Messages</span></strong> - Action-specific protection denial messages with territory context instead of generic text</li>
-    <li>🐛 <strong><span style="color: #61afef;">20+ Bug Fixes</span></strong> - Including SafeZone mount bypass, light use blocking, spawn suppression timing, gravestone loot, and backup race conditions</li>
+    <li>🌍 <strong><span style="color: #61afef;">Built-in Localization (i18n)</span></strong> - 10 languages out of the box: English, German, Spanish, French, Italian, Dutch, Polish, Portuguese, Russian, Filipino. Player language auto-detection with configurable default.</li>
+    <li>⚙️ <strong><span style="color: #61afef;">Admin GUI: Config Editor</span></strong> - Edit all HyperFactions settings in-game with 11 tabs, size-adaptive layouts, boolean toggles, steppers, color pickers, dropdowns, and input validation</li>
+    <li>💾 <strong><span style="color: #61afef;">Admin GUI: Backup Manager</span></strong> - Paginated backup list with create, restore, and delete operations, plus type filtering</li>
+    <li>🔄 <strong><span style="color: #61afef;">Admin GUI: Updates Page</span></strong> - Check for HyperFactions and HyperProtect-Mixin updates, download, and rollback — all from the GUI</li>
+    <li>📦 <strong><span style="color: #61afef;">SimpleClaims &amp; FactionsX Importers</span></strong> - Two new data importers: migrate from SimpleClaims (SQLite or JSON) or FactionsX with full claim, member, and relation import</li>
+    <li>🗺️ <strong><span style="color: #61afef;">BetterMap Compatibility</span></strong> - Per-world WorldMap enable/disable config, claims and zones render correctly on BetterMap-managed worlds</li>
+    <li>🌊 <strong><span style="color: #61afef;">Ocean Claim Visibility Fix</span></strong> - Faction claims in water/ocean are now clearly visible on the world map</li>
 </ul>
 <p>&nbsp;</p>
 <h2><span style="color: #5b8def;">🏰 Core Features</span></h2>
@@ -177,7 +174,7 @@
     <li>⏪ <strong>Rollback support</strong> - <code>/f admin rollback</code> reverts to the previous version before restart</li>
     <li>🐛 <strong>Debug system</strong> - Toggle 7+ debug categories individually for targeted troubleshooting</li>
     <li>⏳ <strong>Claim decay management</strong> - Monitor and manually trigger inactive faction cleanup</li>
-    <li>📦 <strong>Data import</strong> - Migrate from ElbaphFactions or HyFactions with validation reports</li>
+    <li>📦 <strong>Data import</strong> - Migrate from ElbaphFactions, HyFactions, SimpleClaims, or FactionsX with validation reports</li>
     <li>⚡ <strong>Power management</strong> - Per-player power set, adjust, reset, bypass toggles, and bulk faction operations</li>
     <li>💰 <strong>Economy management</strong> - Server-wide treasury overview, per-faction balance adjustment</li>
     <li>👥 <strong>Player browser</strong> - Search and manage all server players with sort and quick actions</li>
@@ -222,6 +219,8 @@
 <ul>
     <li><strong>ElbaphFactions</strong> - Full import of factions, members, claims, relations, and zones</li>
     <li><strong>HyFactions</strong> - Full import with validation reporting</li>
+    <li><strong>SimpleClaims</strong> - Import parties and claims (SQLite or JSON format) with alliance detection</li>
+    <li><strong>FactionsX</strong> - Import factions, claims, zones, player power, and per-role permissions</li>
 </ul>
 <h3>🗺️ Region Protection</h3>
 <ul>
@@ -401,7 +400,7 @@
 }
 
 dependencies {
-    compileOnly 'com.github.HyperSystems-Development:HyperFactions:v0.11.0'
+    compileOnly 'com.github.HyperSystems-Development:HyperFactions:v0.12.0'
 }</pre>
 <p>See the full <a href="https://github.com/HyperSystems-Development/HyperFactions/blob/main/docs/api.md" rel="nofollow">Developer API Reference</a> on GitHub for API usage, event listeners, economy integration, and more.</p>
 <p>&nbsp;</p>
@@ -420,7 +419,7 @@ dependencies {
     </tr>
     <tr>
         <td>⚔️ <strong><a href="https://www.curseforge.com/hytale/mods/hyperfactions">HyperFactions</a></strong></td>
-        <td>Complete faction system with territory, diplomacy, economy, and 65+ GUI pages</td>
+        <td>Complete faction system with territory, diplomacy, economy, and 70+ GUI pages</td>
     </tr>
     <tr>
         <td>🛡️ <strong><a href="https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin">HyperProtect-Mixin</a></strong></td>
