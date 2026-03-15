@@ -1,6 +1,6 @@
 # HyperFactions Protection System
 
-> **Version**: 0.11.0
+> **Version**: 0.12.0
 
 Multi-layered protection controlling block interactions, PvP combat, damage types, and mob spawning based on zones, faction claims, and player relations.
 

@@ -8,7 +8,7 @@ A comprehensive faction management mod for Hytale servers featuring territory cl
 
 ## Overview
 
-HyperFactions transforms your Hytale server into a dynamic faction-based environment where players create factions, claim territories, forge alliances, manage treasuries, and engage in strategic PvP combat. With 76 interactive GUI pages, 46 commands, and deep integration with the HyperSystems ecosystem, it provides a complete faction experience out of the box.
+HyperFactions transforms your Hytale server into a dynamic faction-based environment where players create factions, claim territories, forge alliances, manage treasuries, and engage in strategic PvP combat. With 70+ interactive GUI pages, 46 commands, and deep integration with the HyperSystems ecosystem, it provides a complete faction experience out of the box.
 
 **Main Commands:** `/faction` | `/f` | `/hf`
 
@@ -107,7 +107,7 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 
 | Feature | Status |
 |---------|--------|
-| 76 interactive pages across 3 registries | Implemented |
+| 70+ interactive pages across 3 registries | Implemented |
 | Faction leaderboard | Implemented |
 | Admin dashboard | Implemented |
 | Faction browser with search | Implemented |
@@ -120,12 +120,12 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 |---------|--------|
 | Zone management (SafeZone, WarZone) | Implemented |
 | Backup system (GFS rotation) | Implemented |
-| Data import (ElbaphFactions, HyFactions) | Implemented |
-| Config migration (v1-v7) | Implemented |
+| Data import (ElbaphFactions, HyFactions, SimpleClaims, FactionsX) | Implemented |
+| Config migration (v1-v8) | Implemented |
 | Update checker | Implemented |
-| Admin GUI: Config editor | [Planned #40](https://github.com/HyperSystems-Development/HyperFactions/issues/40) |
-| Admin GUI: Backup manager | [Planned #41](https://github.com/HyperSystems-Development/HyperFactions/issues/41) |
-| Admin GUI: Updates page | [Planned #42](https://github.com/HyperSystems-Development/HyperFactions/issues/42) |
+| Admin GUI: Config editor | Implemented |
+| Admin GUI: Backup manager | Implemented |
+| Admin GUI: Updates page | Implemented |
 
 ### Integrations
 
@@ -156,7 +156,7 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 | Server-managed factions | [Planned #33](https://github.com/HyperSystems-Development/HyperFactions/issues/33) |
 | ~~Relational placeholders~~ | [Done in 0.10.0](https://github.com/HyperSystems-Development/HyperFactions/issues/72) |
 | NPC integrations | [Considering #21](https://github.com/HyperSystems-Development/HyperFactions/issues/21) |
-| Localization | [Planned #19](https://github.com/HyperSystems-Development/HyperFactions/issues/19) |
+| Localization (10 languages) | Implemented |
 | CurseForge updates | [Planned #17](https://github.com/HyperSystems-Development/HyperFactions/issues/17) |
 
 ---

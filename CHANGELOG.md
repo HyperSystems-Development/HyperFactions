@@ -37,6 +37,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rollback support with two-click confirmation
 - HyperProtect detection via ProtectionMixinBridge (works even without update checker)
 
+**SimpleClaims Data Importer ([#99](https://github.com/HyperSystems-Development/HyperFactions/issues/99))**
+- Import faction claims from SimpleClaims, converting claim data to HyperFactions territory
+- Command: `/f admin import simpleclaims [path]`
+
+**FactionsX Data Importer ([#98](https://github.com/HyperSystems-Development/HyperFactions/issues/98))**
+- Import faction data from FactionsX, converting factions, claims, and player data
+- Command: `/f admin import factionsx [path]`
+
+**World Map Config & BetterMap Compatibility ([#102](https://github.com/HyperSystems-Development/HyperFactions/issues/102))**
+- Respect per-world WorldMap enable/disable from world config
+- BetterMap integration: compatible with exploration-based map reveal
+- Claims and zones render correctly on BetterMap-managed worlds
+
+**Built-in Localization (i18n) ([#92](https://github.com/HyperSystems-Development/HyperFactions/issues/92))**
+- 10 languages: en-US, de-DE, es-ES, fr-FR, it-IT, nl-NL, pl-PL, pt-BR, ru-RU, tl-PH
+- ~467 translation entries per locale covering all commands, GUI labels, help content
+- Player language detection with configurable default and per-player override
+- Markdown-based help content system with translation guide
+
 **Split MessageKeys into Domain-Specific Files**
 - Split the monolithic `MessageKeys.java` (2,789 lines, 60 inner classes, ~1,298 constants) into 6 focused domain files:
   - `CommonKeys.java` — shared messages, protection denial, territory notifications, announcements, teleport, chat display
@@ -65,6 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Command-specific permission messages with unique wording (e.g., "to create factions", "to claim territory") kept as-is
 
 ### Fixed
+- **Faction claims in water/ocean nearly invisible on world map** — moved claim overlay to render after water/fluid color ([#90](https://github.com/HyperSystems-Development/HyperFactions/issues/90))
 - **Water/lava disappears in own faction claim** — fluid spread was incorrectly tied to `fireSpreadAllowed` config, causing all fluid to be removed in claims when fire spread was disabled. Fluid spread in faction claims is now always allowed ([#95](https://github.com/HyperSystems-Development/HyperFactions/issues/95))
 
 ## [0.11.1] - 2026-03-11

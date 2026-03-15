@@ -1,6 +1,6 @@
 # HyperFactions GUI System
 
-> **Version**: 0.11.0 | **~76 pages** across **3 registries**
+> **Version**: 0.12.0 | **~70 pages** across **3 registries**
 
 Architecture documentation for the HyperFactions GUI system using Hytale's CustomUI.
 
@@ -677,6 +677,22 @@ Inter-faction transfer search. Browse and search target factions for treasury tr
 
 #### TreasuryTransferConfirmPage
 Transfer confirmation modal. Shows source faction, target faction, amount, and fee (if configured). Requires officer+ permission.
+
+## New Pages in v0.12.0
+
+### Admin Pages
+
+#### AdminConfigPage
+Runtime config editor with 11 tabs: Server, Chat, Announcements, Economy, Factions, Faction Perms, Worldmap, Worlds, Backup, Debug, Gravestones. Size-adaptive layouts (narrow/standard/wide), inline editing with boolean toggles, integer/double steppers, text fields, color pickers, enum dropdowns, and locale selectors. Edit session caching survives page close/reopen. Per-field validation with error highlighting. Uses ConfigSnapshot for applying changes and ConfigValidator for input bounds.
+
+#### AdminBackupsPage
+Paginated backup list with expand/collapse detail view per entry. Create manual backups with optional custom name. Restore with two-click confirmation and automatic safety backup. Delete with two-click confirmation. Backup type filter dropdown (All / Hourly / Daily / Weekly / Manual / Migration).
+
+#### AdminUpdatesPage
+Two-column layout: HyperFactions (left) and HyperProtect Mixin (right). Shows current version, latest version, channel, build date, and update status. Single "Check for Updates" button checks both simultaneously. Download buttons appear when updates are available. Changelog display for HyperFactions updates. Rollback support with two-click confirmation.
+
+#### ScalingTiersModalPage
+Upkeep scaling tiers editor modal opened from AdminConfigPage Economy tab. Add/remove/reorder tiers with promote/demote buttons (disabled on first/last). Live cost example display.
 
 ## Adding New Pages
 
