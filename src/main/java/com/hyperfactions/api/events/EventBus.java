@@ -1,5 +1,6 @@
 package com.hyperfactions.api.events;
 
+import com.hyperfactions.util.ErrorHandler;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
@@ -54,8 +55,7 @@ public final class EventBus {
         try {
           ((Consumer<T>) listener).accept(event);
         } catch (Exception e) {
-          // Log but don't propagate
-          System.err.println("[HyperFactions] Error in event listener: " + e.getMessage());
+          ErrorHandler.report("Event bus listener error", e);
         }
       }
     }

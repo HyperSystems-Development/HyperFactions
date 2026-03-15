@@ -8,6 +8,7 @@ import com.hyperfactions.data.FactionRelation;
 import com.hyperfactions.gui.ActivePageTracker;
 import com.hyperfactions.gui.GuiUpdateService;
 import com.hyperfactions.integration.PermissionManager;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.CommonKeys;
@@ -491,7 +492,7 @@ public class ChatManager {
       try {
         listener.onMessage(message, factionId);
       } catch (Exception e) {
-        Logger.warn("Chat message listener threw exception: %s", e.getMessage());
+        ErrorHandler.report("Chat message listener threw exception", e);
       }
     }
   }

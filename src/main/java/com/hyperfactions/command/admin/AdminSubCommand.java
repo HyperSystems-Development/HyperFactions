@@ -25,7 +25,6 @@ import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.HelpFormatter;
 import com.hyperfactions.util.AdminKeys;
 import com.hyperfactions.util.HelpKeys;
-import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.PlayerResolver;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;

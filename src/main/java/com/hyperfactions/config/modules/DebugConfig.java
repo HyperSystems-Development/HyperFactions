@@ -3,6 +3,7 @@ package com.hyperfactions.config.modules;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.hyperfactions.config.ModuleConfig;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -596,7 +597,7 @@ public class DebugConfig extends ModuleConfig {
       Files.delete(sentryFile);
       Logger.info("[Config] Deleted old config/sentry.json");
     } catch (Exception e) {
-      Logger.warn("[Config] Failed to migrate sentry.json: %s", e.getMessage());
+      ErrorHandler.report("[Config] Failed to migrate sentry.json", e);
     }
   }
 }

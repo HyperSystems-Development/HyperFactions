@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
  */
 public final class SentryIntegration {
 
-  private static boolean initialized = false;
+  private static volatile boolean initialized = false;
 
   /** Buffered errors from before Sentry was initialized. */
   private static final List<BufferedError> preInitErrors = new ArrayList<>();

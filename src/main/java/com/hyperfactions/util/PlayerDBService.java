@@ -90,7 +90,7 @@ public final class PlayerDBService {
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
       } catch (Exception e) {
-        Logger.warn("PlayerDB lookup failed for '%s': %s", name, e.getMessage());
+        ErrorHandler.report("PlayerDB lookup failed for '" + name + "'", e);
       }
       return null;
     });

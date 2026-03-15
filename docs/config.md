@@ -1,6 +1,6 @@
 # HyperFactions Config System
 
-> **Version**: 0.11.0 | **Config version**: 7 | **11 config files**
+> **Version**: 0.12.0 | **Config version**: 8 | **11 config files**
 
 Architecture documentation for the HyperFactions configuration system.
 

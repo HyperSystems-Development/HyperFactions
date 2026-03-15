@@ -1,6 +1,7 @@
 package com.hyperfactions.integration.placeholder;
 
 import com.hyperfactions.HyperFactions;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.lang.reflect.Method;
 import org.jetbrains.annotations.Nullable;
@@ -69,7 +70,7 @@ public final class WiFlowPlaceholderIntegration {
         expansion = null;
       }
     } catch (Exception e) {
-      Logger.warn("Failed to register WiFlow PlaceholderAPI expansion: %s", e.getMessage());
+      ErrorHandler.report("Failed to register WiFlow PlaceholderAPI expansion", e);
       expansion = null;
     }
   }

@@ -106,7 +106,7 @@ public class ConfigV3ToV4Migration implements Migration {
       }
       return root.get("configVersion").getAsInt() == 3;
     } catch (Exception e) {
-      Logger.warn("[Migration] Failed to check config version: %s", e.getMessage());
+      ErrorHandler.report("[Migration] Failed to check config version for V3->V4", e);
       return false;
     }
   }

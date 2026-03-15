@@ -17,6 +17,7 @@ import com.hyperfactions.protection.ecs.PlayerRespawnSystem;
 import com.hyperfactions.protection.ecs.PvPProtectionSystem;
 import com.hyperfactions.protection.ecs.TeleportCancelOnDamageSystem;
 import com.hyperfactions.territory.TerritoryTickingSystem;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.system.ISystem;
 import com.hypixel.hytale.event.EventPriority;
@@ -28,7 +29,7 @@ import com.hypixel.hytale.server.core.event.events.player.PlayerInteractEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerReadyEvent;
 import com.hypixel.hytale.server.core.universe.world.events.AddWorldEvent;
 import com.hypixel.hytale.server.core.universe.world.events.RemoveWorldEvent;
-import java.util.logging.Level;
+
 
 /**
  * Handles registration of all event listeners and ECS systems for HyperFactions.
@@ -169,7 +170,7 @@ public class EventRegistration {
 
       Logger.debug("Registered block, item, and player ECS protection systems");
     } catch (Exception e) {
-      plugin.getLogger().at(Level.WARNING).withCause(e).log("Failed to register block protection systems");
+      ErrorHandler.report("Failed to register block protection systems", e);
     }
   }
 
@@ -186,7 +187,7 @@ public class EventRegistration {
       plugin.getEntityStoreRegistry().registerSystem(new HarvestPickupProtectionSystem(hyperFactions, protectionListener));
       Logger.debug("Registered harvest pickup ECS protection system");
     } catch (Exception e) {
-      plugin.getLogger().at(Level.WARNING).withCause(e).log("Failed to register harvest pickup protection system");
+      ErrorHandler.report("Failed to register harvest pickup protection system", e);
     }
   }
 
@@ -200,7 +201,7 @@ public class EventRegistration {
 
       Logger.debug("Registered teleport cancel-on-damage ECS system");
     } catch (Exception e) {
-      plugin.getLogger().at(Level.WARNING).withCause(e).log("Failed to register teleport systems");
+      ErrorHandler.report("Failed to register teleport systems", e);
     }
   }
 
@@ -218,7 +219,7 @@ public class EventRegistration {
 
       Logger.debug("Registered territory ticking ECS system");
     } catch (Exception e) {
-      plugin.getLogger().at(Level.WARNING).withCause(e).log("Failed to register territory ticking system");
+      ErrorHandler.report("Failed to register territory ticking system", e);
     }
   }
 

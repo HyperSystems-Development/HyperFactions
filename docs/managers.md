@@ -1,6 +1,6 @@
 # HyperFactions Manager Layer
 
-> **Version**: 0.10.0 | **15 core managers** (20 total)
+> **Version**: 0.12.0 | **16 core managers** (22 total)
 
 The manager layer contains all business logic for HyperFactions, organized by domain.
 
@@ -68,6 +68,7 @@ graph TD
 | [EconomyManager](#economymanager) | Faction economy (treasury, transactions) | FactionManager |
 | [AnnouncementManager](#announcementmanager) | Server-wide event broadcasts | None |
 | [SpawnSuppressionManager](#spawnsuppressionmanager) | Mob spawn control in claims/zones | ZoneManager, ClaimManager |
+| [ZoneMobClearManager](#zonemobclearmanager) | Periodic mob clearing in zones | ZoneManager |
 
 ## Initialization Order
 

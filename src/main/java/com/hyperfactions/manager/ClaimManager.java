@@ -10,6 +10,7 @@ import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.integration.protection.OrbisGuardIntegration;
 import com.hyperfactions.util.ChunkUtil;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.GuiKeys;
 import java.util.*;
@@ -125,7 +126,7 @@ public class ClaimManager {
       try {
         notificationCallback.notifyFaction(factionId, message, hexColor);
       } catch (Exception e) {
-        Logger.warn("Failed to notify faction members: %s", e.getMessage());
+        ErrorHandler.report("Failed to notify faction members", e);
       }
     }
   }
@@ -173,7 +174,7 @@ public class ClaimManager {
       try {
         onClaimChangeCallback.run();
       } catch (Exception e) {
-        Logger.warn("Error in claim change callback: %s", e.getMessage());
+        ErrorHandler.report("Error in claim change callback", e);
       }
     }
   }
@@ -194,7 +195,7 @@ public class ClaimManager {
       try {
         onChunkChangeCallback.onChunkChange(worldName, chunkX, chunkZ);
       } catch (Exception e) {
-        Logger.warn("Error in chunk change callback: %s", e.getMessage());
+        ErrorHandler.report("Error in chunk change callback", e);
       }
 
     // Fall back to legacy callback if no chunk-specific callback set
@@ -202,7 +203,7 @@ public class ClaimManager {
       try {
         onClaimChangeCallback.run();
       } catch (Exception e) {
-        Logger.warn("Error in claim change callback: %s", e.getMessage());
+        ErrorHandler.report("Error in claim change callback", e);
       }
     }
 
@@ -211,7 +212,7 @@ public class ClaimManager {
       try {
         onGuiChunkChangeCallback.onChunkChange(worldName, chunkX, chunkZ);
       } catch (Exception e) {
-        Logger.warn("Error in GUI chunk change callback: %s", e.getMessage());
+        ErrorHandler.report("Error in GUI chunk change callback", e);
       }
     }
   }
@@ -619,7 +620,7 @@ public class ClaimManager {
       try {
         onOverclaimCallback.accept(attackerFaction.name(), defenderFaction.name());
       } catch (Exception e) {
-        Logger.warn("Error in overclaim callback: %s", e.getMessage());
+        ErrorHandler.report("Error in overclaim callback", e);
       }
     }
 

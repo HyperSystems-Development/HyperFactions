@@ -1,6 +1,6 @@
 # HyperFactions Developer Documentation
 
-> **Version**: 0.11.0 | **~409 classes** | **69 packages** | **20 managers** | **~46 commands** | **76 permissions**
+> **Version**: 0.12.0 | **~451 classes** | **74 packages** | **22 managers** | **~46 commands** | **76 permissions**
 
 Developer documentation for HyperFactions - a comprehensive faction management plugin for Hytale servers.
 

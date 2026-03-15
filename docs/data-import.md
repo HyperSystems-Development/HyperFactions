@@ -1,6 +1,6 @@
 # HyperFactions Data Import & Migration
 
-> **Version**: 0.10.0 | **Packages**: `com.hyperfactions.importer`, `com.hyperfactions.migration`
+> **Version**: 0.12.0 | **Packages**: `com.hyperfactions.importer`, `com.hyperfactions.migration`
 
 HyperFactions supports importing data from other faction plugins and automatically migrating its own configuration between versions.
 
@@ -10,6 +10,8 @@ HyperFactions supports importing data from other faction plugins and automatical
 
 - [ElbaphFactions Importer](#elbaphfactions-importer)
 - [HyFactions V1 Importer](#hyfactions-v1-importer)
+- [SimpleClaims Importer](#simpleclaims-importer)
+- [FactionsX Importer](#factionsx-importer)
 - [Config Migration System](#config-migration-system)
 - [Pre-Import Backup](#pre-import-backup)
 
@@ -124,6 +126,104 @@ Same flags as ElbaphFactions: `--dry-run`, `--overwrite`, `--no-zones`, `--no-po
 
 ---
 
+## SimpleClaims Importer
+
+**Command**: `/f admin import simpleclaims [path] [flags]`
+**Permission**: `hyperfactions.admin.use`
+
+Imports faction data from the SimpleClaims mod, converting parties and claims to HyperFactions format.
+
+### Data Directory
+
+Default: `mods/SimpleClaims/` (or specify a custom path)
+
+Supports two storage formats (auto-detected):
+
+| Format | File | Contents |
+|--------|------|----------|
+| SQLite | `SimpleClaims.db` | Modern format — parties, claims, name cache in one database |
+| JSON | `Parties.json` | Legacy format — party definitions |
+| JSON | `Claims.json` | Legacy format — territory claims (ChunkY=Z quirk) |
+| JSON | `NameCache.json` | Legacy format — UUID to player name mapping |
+
+### Command Options
+
+| Flag | Description |
+|------|-------------|
+| `--dry-run` | Validate data without importing |
+| `--overwrite` | Overwrite existing factions with matching names |
+| `--no-power` | Skip power assignment |
+
+### Data Mapping
+
+| SimpleClaims | HyperFactions |
+|-------------|---------------|
+| Party name, description, color | Direct mapping (signed RGB integer converted to `#RRGGBB`) |
+| Owner → LEADER, Members → MEMBER | 2 roles only (no officer equivalent) |
+| Claims per dimension | FactionClaim records with world/chunkX/chunkZ |
+| Protection overrides (place, break, interact, pvp) | FactionPermissions outsider flags |
+| Mutual party alliances | ALLY relations (one-way alliances skipped) |
+| Player allies | No equivalent — logged as warnings |
+
+> **Notes:**
+> - SimpleClaims has no power system — all imported players receive the configured max power
+> - No faction home support
+> - No zone (safezone/warzone) support
+> - SQLite format requires the SimpleClaims JAR in the mods folder (for the JDBC driver)
+> - Black or missing colors are replaced with a random color
+
+---
+
+## FactionsX Importer
+
+**Command**: `/f admin import factionsx [path] [flags]`
+**Permission**: `hyperfactions.admin.use`
+
+Imports faction data from the FactionsX mod (by Humblegod666), converting factions, claims, zones, and player data to HyperFactions format.
+
+### Data Directory
+
+Default: `mods/FactionsX/config/` (or specify a custom path)
+
+Expected structure:
+
+| Path | Contents |
+|------|----------|
+| `factions/{UUID}.json` | Individual JSON files per faction |
+| `players/{UUID}.json` | Per-player files (name + power) |
+| `Claims.json` | Territory claims by dimension (ChunkY=Z quirk) |
+| `Zones.json` | SafeZone and WarZone chunks per dimension |
+
+### Command Options
+
+| Flag | Description |
+|------|-------------|
+| `--dry-run` | Validate data without importing |
+| `--overwrite` | Overwrite existing factions with matching names |
+| `--no-zones` | Skip zone import |
+| `--no-power` | Skip power data import |
+
+### Data Mapping
+
+| FactionsX | HyperFactions |
+|-----------|---------------|
+| Faction name, description, color | Direct mapping (color converted to `#RRGGBB`) |
+| Owner (implicit LEADER) + Members | FactionMember records; RECRUIT mapped to MEMBER |
+| Claims per dimension | FactionClaim records with world/chunkX/chunkZ |
+| SafeZones / WarZones | Zone records with type and claim set |
+| Per-player power/maxPower | PlayerPower records (power + max power preserved) |
+| Per-role permissions (Build, Claim, Interact, Invite, Kick) | FactionPermissions flags per role |
+| Home (x/y/z/dimension) | FactionHome with world mapping |
+| Relations (ally/enemy/neutral) | FactionRelation records |
+
+> **Notes:**
+> - Owner is NOT in the Members map — always treated as LEADER implicitly
+> - RECRUIT role is mapped to MEMBER (HyperFactions has 3 roles: LEADER, OFFICER, MEMBER)
+> - Thread-safe: `ReentrantLock` + `AtomicBoolean` prevents concurrent imports
+> - Empty factions (no members) are skipped with a warning
+
+---
+
 ## Config Migration System
 
 HyperFactions automatically migrates configuration files between versions on startup.
@@ -152,6 +252,8 @@ Migrations are applied in sequence. The `MigrationRegistry` builds the chain aut
 | `ConfigV3ToV4Migration` | v3 | v4 | Restructure permissions, add interaction sub-types |
 | `ConfigV4ToV5Migration` | v4 | v5 | Remove `warzonePowerLoss`, add per-zone `power_loss` flag |
 | `ConfigV5ToV6Migration` | v5 | v6 | Split `config.json` into `config/factions.json` + `config/server.json` |
+| `ConfigV6ToV7Migration` | v6 | v7 | Restructure economy config, add upkeep settings |
+| `ConfigV7ToV8Migration` | v7 | v8 | Add localization settings, language config |
 
 **Data Migrations** (run before storage init in `HyperFactions.enable()`):
 

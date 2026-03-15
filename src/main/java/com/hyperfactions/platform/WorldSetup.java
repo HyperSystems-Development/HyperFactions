@@ -14,7 +14,7 @@ import com.hypixel.hytale.server.core.universe.world.worldmap.provider.IWorldMap
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
+
 
 /**
  * Handles world map provider registration, spawn suppression initialization,
@@ -46,7 +46,7 @@ public class WorldSetup {
       );
       Logger.debug("Registered world map provider (ID: %s)", HyperFactionsWorldMapProvider.ID);
     } catch (Exception e) {
-      plugin.getLogger().at(Level.WARNING).withCause(e).log("Failed to register world map provider");
+      ErrorHandler.report("Failed to register world map provider", e);
     }
   }
 
@@ -80,8 +80,6 @@ public class WorldSetup {
             }
             hyperFactions.getWorldMapService().registerProviderIfNeeded(world);
           } catch (Exception e) {
-            Logger.warn("Failed to register world map for world %s: %s",
-                world.getName(), e.getMessage());
             ErrorHandler.report("Failed to register world map for world " + world.getName(), e);
           }
         }
@@ -93,7 +91,6 @@ public class WorldSetup {
       hyperFactions.getMapPlayerFilterService().applyToAll();
 
     } catch (Exception e) {
-      Logger.warn("Failed to apply world map provider to existing worlds: %s", e.getMessage());
       ErrorHandler.report("Failed to apply world map provider to existing worlds", e);
     }
   }
@@ -154,7 +151,7 @@ public class WorldSetup {
         }
       }
     } catch (Exception e) {
-      Logger.warn("Failed to apply spawn suppression to worlds: %s", e.getMessage());
+      ErrorHandler.report("Failed to apply spawn suppression to worlds", e);
     }
     return failedWorlds;
   }
@@ -168,7 +165,7 @@ public class WorldSetup {
       hyperFactions.getZoneMobClearManager().initialize();
       Logger.info("[Startup] Mob clearing initialized");
     } catch (Exception e) {
-      plugin.getLogger().at(Level.WARNING).withCause(e).log("Failed to initialize mob clearing");
+      ErrorHandler.report("Failed to initialize mob clearing", e);
     }
   }
 
@@ -194,9 +191,7 @@ public class WorldSetup {
       // Apply spawn suppression to the new world
       hyperFactions.getSpawnSuppressionManager().applyToWorld(world);
     } catch (Exception e) {
-      plugin.getLogger().at(Level.WARNING).log("Error in AddWorldEvent handler for %s: %s",
-          world.getName(), e.getMessage());
-      ErrorHandler.report(String.format("AddWorldEvent error for %s", world.getName()), e);
+      ErrorHandler.report("AddWorldEvent error for " + world.getName(), e);
     }
   }
 
@@ -208,8 +203,7 @@ public class WorldSetup {
     try {
       hyperFactions.getWorldMapService().unregisterProvider(world.getName());
     } catch (Exception e) {
-      plugin.getLogger().at(Level.WARNING).log("Error in RemoveWorldEvent handler for %s: %s",
-          world.getName(), e.getMessage());
+      ErrorHandler.report("RemoveWorldEvent error for " + world.getName(), e);
     }
   }
 

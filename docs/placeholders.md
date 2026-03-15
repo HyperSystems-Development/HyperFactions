@@ -1,6 +1,6 @@
 # HyperFactions Placeholders
 
-> **Version**: 0.10.0 | **Expansion Identifier**: `factions` | **51 placeholders**
+> **Version**: 0.12.0 | **Expansion Identifier**: `factions` | **51 placeholders**
 
 HyperFactions exposes faction data as placeholders through two placeholder APIs: **PlaceholderAPI (PAPI)** and **WiFlow PlaceholderAPI**. Both APIs support the same set of placeholders with identical behavior.
 

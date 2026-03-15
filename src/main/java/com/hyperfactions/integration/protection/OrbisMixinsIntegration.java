@@ -1,5 +1,6 @@
 package com.hyperfactions.integration.protection;
 
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.world.World;
@@ -164,7 +165,7 @@ public final class OrbisMixinsIntegration {
     } catch (Exception e) {
       mixinsAvailable = false;
       initError = e.getClass().getSimpleName() + ": " + e.getMessage();
-      Logger.warn("Error checking OrbisGuard-Mixins availability: %s", e.getMessage());
+      ErrorHandler.report("Error checking OrbisGuard-Mixins availability", e);
     }
 
     initialized = true;
@@ -436,7 +437,7 @@ public final class OrbisMixinsIntegration {
       Logger.debug("Registered pickup protection hook");
       return true;
     } catch (Exception e) {
-      Logger.warn("Failed to register pickup hook: %s", e.getMessage());
+      ErrorHandler.report("Failed to register pickup hook", e);
       return false;
     }
   }
@@ -512,7 +513,7 @@ public final class OrbisMixinsIntegration {
       Logger.debug("Registered hammer protection hook");
       return true;
     } catch (Exception e) {
-      Logger.warn("Failed to register hammer hook: %s", e.getMessage());
+      ErrorHandler.report("Failed to register hammer hook", e);
       return false;
     }
   }
@@ -631,7 +632,7 @@ public final class OrbisMixinsIntegration {
       Logger.debug("Registered explosion protection hook");
       return true;
     } catch (Exception e) {
-      Logger.warn("Failed to register explosion hook: %s", e.getMessage());
+      ErrorHandler.report("Failed to register explosion hook", e);
       return false;
     }
   }
@@ -706,7 +707,7 @@ public final class OrbisMixinsIntegration {
       Logger.debug("Registered command protection hook");
       return true;
     } catch (Exception e) {
-      Logger.warn("Failed to register command hook: %s", e.getMessage());
+      ErrorHandler.report("Failed to register command hook", e);
       return false;
     }
   }
@@ -829,7 +830,7 @@ public final class OrbisMixinsIntegration {
       Logger.debug("Registered death (keep inventory) hook");
       return true;
     } catch (Exception e) {
-      Logger.warn("Failed to register death hook: %s", e.getMessage());
+      ErrorHandler.report("Failed to register death hook", e);
       return false;
     }
   }
@@ -902,7 +903,7 @@ public final class OrbisMixinsIntegration {
       Logger.debug("Registered durability protection hook");
       return true;
     } catch (Exception e) {
-      Logger.warn("Failed to register durability hook: %s", e.getMessage());
+      ErrorHandler.report("Failed to register durability hook", e);
       return false;
     }
   }
@@ -975,7 +976,7 @@ public final class OrbisMixinsIntegration {
       Logger.debug("Registered use protection hook");
       return true;
     } catch (Exception e) {
-      Logger.warn("Failed to register use hook: %s", e.getMessage());
+      ErrorHandler.report("Failed to register use hook", e);
       return false;
     }
   }
@@ -1048,7 +1049,7 @@ public final class OrbisMixinsIntegration {
       Logger.debug("Registered seat protection hook");
       return true;
     } catch (Exception e) {
-      Logger.warn("Failed to register seat hook: %s", e.getMessage());
+      ErrorHandler.report("Failed to register seat hook", e);
       return false;
     }
   }
@@ -1121,7 +1122,7 @@ public final class OrbisMixinsIntegration {
       Logger.debug("Registered harvest protection hook");
       return true;
     } catch (Exception e) {
-      Logger.warn("Failed to register harvest hook: %s", e.getMessage());
+      ErrorHandler.report("Failed to register harvest hook", e);
       return false;
     }
   }
@@ -1279,7 +1280,7 @@ public final class OrbisMixinsIntegration {
       Logger.debug("Registered place protection hook");
       return true;
     } catch (Exception e) {
-      Logger.warn("Failed to register place hook: %s", e.getMessage());
+      ErrorHandler.report("Failed to register place hook", e);
       return false;
     }
   }
@@ -1352,7 +1353,7 @@ public final class OrbisMixinsIntegration {
       Logger.debug("Registered spawn control hook");
       return true;
     } catch (Exception e) {
-      Logger.warn("Failed to register spawn hook: %s", e.getMessage());
+      ErrorHandler.report("Failed to register spawn hook", e);
       return false;
     }
   }

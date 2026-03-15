@@ -1,6 +1,6 @@
 # HyperFactions Command System
 
-> **Version**: 0.11.0 | **~46 subcommands** across **10 categories**
+> **Version**: 0.12.0 | **~46 subcommands** across **10 categories**
 
 Architecture documentation for the HyperFactions command system.
 
@@ -355,6 +355,11 @@ Admin commands use nested subcommand structure:
 │   ├── list
 │   ├── restore
 │   └── delete
+├── import        # Data import from other faction plugins
+│   ├── elbaphfactions [path] [flags]  # Import from ElbaphFactions
+│   ├── hyfactions [path] [flags]      # Import from HyFactions V1
+│   ├── simpleclaims [path] [flags]    # Import from SimpleClaims
+│   └── factionsx [path] [flags]       # Import from FactionsX
 ├── reload        # Reload config
 ├── update        # Check for updates
 │   ├── mixin     # Check/download HyperProtect-Mixin

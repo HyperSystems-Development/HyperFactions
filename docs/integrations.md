@@ -1,6 +1,6 @@
 # HyperFactions Integration Breakdown
 
-> **Version**: 0.11.0 | **Package**: `com.hyperfactions.integration`
+> **Version**: 0.12.0 | **Package**: `com.hyperfactions.integration`
 
 HyperFactions integrates with external plugins through soft dependencies. All integrations use reflection-based detection and fail-open design — if a dependency is missing, the feature gracefully degrades.
 
@@ -16,7 +16,7 @@ HyperFactions integrates with external plugins through soft dependencies. All in
 - [Protection Mixin Bridge](#protection-mixin-bridge)
 - [HyperProtect-Mixin](#hyperprotect-mixin) (recommended)
 - [OrbisGuard-Mixins](#orbisguard-mixins)
-- [World Map](#world-map)
+- [World Map](#world-map) (incl. BetterMap compatibility)
 - [GravestonePlugin](#gravestoneplugin)
 - [KyuubiSoft Core](#kyuubisoft-core)
 - [Sentry](#sentry)
@@ -469,6 +469,15 @@ Key settings in `config/worldmap.json`:
 - `batchInterval` — Milliseconds between batch updates
 - `maxChunksPerBatch` — Throttle for large updates
 - `showFactionTags` — Display faction names on the map
+
+### BetterMap Compatibility
+
+HyperFactions is compatible with BetterMap's exploration-based map reveal system. When BetterMap is installed:
+
+- Per-world WorldMap enable/disable settings in `config/worlds.json` are respected
+- Claims and zones render correctly on BetterMap-managed worlds
+- The `WorldMapService` checks world config before registering map providers
+- No additional configuration needed — auto-detected at world load
 
 ---
 

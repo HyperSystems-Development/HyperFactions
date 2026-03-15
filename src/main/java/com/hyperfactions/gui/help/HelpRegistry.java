@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -107,7 +108,7 @@ public final class HelpRegistry {
 
       Logger.info("Loaded %d help topics from manifest", topicsById.size());
     } catch (Exception e) {
-      Logger.warn("Failed to load help manifest: %s", e.getMessage());
+      ErrorHandler.report("Failed to load help manifest", e);
     }
   }
 

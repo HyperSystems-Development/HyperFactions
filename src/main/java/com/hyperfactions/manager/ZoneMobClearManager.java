@@ -161,7 +161,6 @@ public class ZoneMobClearManager {
         sweepWorld(world, chunkConfigs);
       }
     } catch (Exception e) {
-      Logger.warn("[MobClear] Sweep failed: %s", e.getMessage());
       ErrorHandler.report("[MobClear] Sweep failed", e);
     }
   }

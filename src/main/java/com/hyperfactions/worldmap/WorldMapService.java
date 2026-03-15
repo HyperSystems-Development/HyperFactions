@@ -148,7 +148,6 @@ public class WorldMapService {
           worldName, currentGeneratorName, betterMapActive);
 
     } catch (Exception e) {
-      Logger.warn("Failed to register world map for world %s: %s", worldName, e.getMessage());
       ErrorHandler.report("[WorldMap] Failed to register world map for world " + worldName, e);
     }
   }
@@ -227,7 +226,6 @@ public class WorldMapService {
         try {
           player.getWorldMapTracker().clear();
         } catch (Exception e) {
-          Logger.warn("Failed to clear world map tracker for player: %s", e.getMessage());
           ErrorHandler.report("[WorldMap] Failed to clear world map tracker for player", e);
         }
       }
@@ -235,7 +233,6 @@ public class WorldMapService {
       Logger.debugWorldMap("Cleared world map images for world: %s (%d players)",
           world.getName(), world.getPlayers().size());
     } catch (Exception e) {
-      Logger.warn("Failed to refresh world map for world %s: %s", world.getName(), e.getMessage());
       ErrorHandler.report("[WorldMap] Failed to refresh world map for world " + world.getName(), e);
     }
   }
@@ -263,7 +260,6 @@ public class WorldMapService {
       }
       Logger.debugWorldMap("Refreshed world maps for %d/%d worlds", refreshed, registeredWorlds.size());
     } catch (Exception e) {
-      Logger.warn("Failed to refresh all world maps: %s", e.getMessage());
       ErrorHandler.report("[WorldMap] Failed to refresh all world maps", e);
     }
   }
@@ -400,13 +396,12 @@ public class WorldMapService {
           try {
             player.getWorldMapTracker().sendSettings(world);
           } catch (Exception e) {
-            Logger.warn("Failed to send map settings to player: %s", e.getMessage());
+            ErrorHandler.report("[WorldMap] Failed to send map settings to player", e);
           }
         }
 
         Logger.debug("[WorldMap] Reapplied settings for world: %s", worldName);
       } catch (Exception e) {
-        Logger.warn("Failed to reapply map settings for world %s: %s", worldName, e.getMessage());
         ErrorHandler.report("[WorldMap] Failed to reapply settings for world " + worldName, e);
       }
     }

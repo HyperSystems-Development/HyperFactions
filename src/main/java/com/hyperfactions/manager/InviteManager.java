@@ -162,7 +162,7 @@ public class InviteManager {
       try {
         onInviteCreated.accept(invite);
       } catch (Exception e) {
-        Logger.warn("Error in invite created callback: %s", e.getMessage());
+        ErrorHandler.report("Error in invite created callback", e);
       }
     }
 
@@ -329,7 +329,7 @@ public class InviteManager {
       try {
         onInviteRemoved.accept(factionId, playerUuid);
       } catch (Exception e) {
-        Logger.warn("Error in invite removed callback: %s", e.getMessage());
+        ErrorHandler.report("Error in invite removed callback", e);
       }
     }
   }
