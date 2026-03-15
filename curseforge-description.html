@@ -7,7 +7,7 @@
 <ul>
     <li>🖥️ <strong><span style="color: #f0b232;">70+ Interactive GUI Pages</span></strong> - Every feature has a polished, interactive GUI. No command memorization needed.</li>
     <li>⚡ <strong><span style="color: #f0b232;">Real-Time GUI Updates</span></strong> - When a member joins, a chunk is claimed, or a relation changes, every open GUI refreshes automatically.</li>
-    <li>🛡️ <strong><span style="color: #f0b232;">50 Zone Flags</span></strong> - The most granular territory protection available, from PvP and granular friendly fire to mob spawning, transport control, and F-key pickup.</li>
+    <li>🛡️ <strong><span style="color: #f0b232;">51 Zone Flags</span></strong> - The most granular territory protection available, from PvP and granular friendly fire to mob spawning, transport control, and F-key pickup.</li>
     <li>📦 <strong><span style="color: #f0b232;">Data Import</span></strong> - Migrating from ElbaphFactions, HyFactions, SimpleClaims, or FactionsX? One command imports your factions, claims, and relations.</li>
     <li>⚙️ <strong><span style="color: #f0b232;">Deep Configurability</span></strong> - 11 modular config files covering every aspect of gameplay. Tune it to your server's style.</li>
     <li>🚀 <strong><span style="color: #f0b232;">Active Development</span></strong> - Regular updates with community-driven features. Open source on GitHub.</li>
@@ -72,9 +72,21 @@
     <li><strong>Relationship-based PvP</strong> - Allies protected, enemies open, configurable per zone</li>
     <li><strong>Overclaim defender alerts</strong> - Faction members get real-time alerts when territory is being taken</li>
 </ul>
+<h3>💰 Faction Economy</h3>
+<ul>
+    <li><strong>Faction treasury</strong> with deposits, withdrawals, inter-faction transfers, and transaction history</li>
+    <li><strong>Upkeep system</strong> - Automated territory maintenance costs with flat or progressive tiered pricing, grace periods, and auto-pay</li>
+    <li><strong>VaultUnlocked integration</strong> - Works with any economy plugin via the standard economy API</li>
+</ul>
+<h3>🌍 Localization</h3>
+<ul>
+    <li><strong>10 languages</strong> built in: English, German, Spanish, French, Italian, Dutch, Polish, Portuguese, Russian, Filipino</li>
+    <li><strong>Player language auto-detection</strong> with configurable default and per-player override</li>
+    <li><strong>~467 translation entries</strong> per locale covering all commands, GUI labels, and help content</li>
+</ul>
 <p>&nbsp;</p>
 <h2><span style="color: #e06c75;">🛡️ Protection System</span></h2>
-<p>HyperFactions provides comprehensive territory protection with <strong><span style="color: #f0b232;">50 configurable zone flags</span></strong> organized into categories:</p>
+<p>HyperFactions provides comprehensive territory protection with <strong><span style="color: #f0b232;">51 configurable zone flags</span></strong> organized into 10 categories:</p>
 <ul>
     <li>⚔️ <strong><span style="color: #e06c75;">Combat (7)</span></strong> - PvP, friendly fire (per-faction/per-ally), projectile damage, PvE damage, mob damage</li>
     <li>🧱 <strong><span style="color: #d19a66;">Building (4)</span></strong> - Build allowed, block place <em>(mixin)</em>, hammer use <em>(mixin)</em>, builder tools <em>(mixin)</em></li>
@@ -85,7 +97,7 @@
     <li>💀 <strong><span style="color: #abb2bf;">Death (2)</span></strong> - Keep inventory <em>(mixin)</em>, power loss</li>
     <li>💥 <strong><span style="color: #e5c07b;">Damage (4)</span></strong> - Fall damage, environmental damage, explosion damage <em>(mixin)</em>, fire spread <em>(mixin)</em></li>
     <li>🚀 <strong><span style="color: #56b6c2;">Transport (3)</span></strong> - Teleporter use <em>(mixin)</em>, portal use <em>(mixin)</em>, mount entry</li>
-    <li>🔗 <strong><span style="color: #d19a66;">Integration (5)</span></strong> - Show on map, command blocking, map visibility, fluid spread <em>(mixin)</em>, mount entry</li>
+    <li>🔗 <strong><span style="color: #d19a66;">Integration (5)</span></strong> - Gravestone access, show on map, essentials homes, essentials warps, essentials kits</li>
 </ul>
 <p>&nbsp;</p>
 <h2><span style="color: #98c379;">🏟️ SafeZones</span> &amp; <span style="color: #e06c75;">WarZones</span></h2>
@@ -121,7 +133,7 @@
 <p>Each event type can be individually enabled or disabled in <code>announcements.json</code>.</p>
 <p>&nbsp;</p>
 <h2><span style="color: #c678dd;">🖥️ Full GUI System</span></h2>
-<p>HyperFactions features <strong><span style="color: #f0b232;">76 interactive GUI pages</span></strong> covering every aspect of gameplay:</p>
+<p>HyperFactions features <strong><span style="color: #f0b232;">70+ interactive GUI pages</span></strong> covering every aspect of gameplay:</p>
 <h3>🎮 Player GUI (<code>/f</code>)</h3>
 <ul>
     <li>📊 <strong>Dashboard</strong> - Power, claims, members, relations, status, and invites at a glance</li>
@@ -196,50 +208,132 @@
 <p>Use with any scoreboard, hologram, or menu plugin that supports PAPI or WiFlow.</p>
 <p>&nbsp;</p>
 <h2><span style="color: #61afef;">🔌 Integrations</span></h2>
-<p><span style="color: #61afef;">⭐&nbsp;<span style="color: #b96ad9;">= Recommended Mod by HyperSystems Team</span></span></p>
-<h3>🔑 Permission Systems</h3>
-<p>HyperFactions supports multiple permission providers with automatic detection:</p>
-<ul>
-    <li>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/hyperperms" rel="nofollow">HyperPerms</a></strong> - Full integration with faction chat prefixes, rank display, and contextual permissions <span style="color: #98c379;">(Recommended)</span></li>
-    <li><strong><a href="https://www.curseforge.com/hytale/mods/luckperms" rel="nofollow">LuckPerms</a></strong> - Granular permission control</li>
-    <li>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/vaultunlocked" rel="nofollow">VaultUnlocked</a></strong> - Chat, economy, and permission compatibility</li>
-    <li><strong>No permission mod</strong> - Works without any permission plugin (configurable allow/deny default)</li>
-</ul>
-<h3>🛡️ Protection Extensions</h3>
-<ul>
-    <li>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/hyxin" rel="nofollow">Hyxin</a></strong> + <strong><a href="https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin" rel="nofollow">HyperProtect-Mixin</a></strong> - <span style="color: #98c379;">Recommended</span> &mdash; 27 protection hooks including F-key pickup, keep inventory, explosion/fire/fluid protection, block placement, transport control, entity damage, mount/barter/projectile control, map marker filtering, and more</li>
-    <li><strong><a href="https://www.curseforge.com/hytale/mods/hyxin" rel="nofollow">Hyxin</a></strong> + <strong><a href="https://www.curseforge.com/hytale/mods/orbisguard-mixins" rel="nofollow">OrbisGuard-Mixins</a></strong> - Alternative &mdash; 11 protection hooks. Both can run simultaneously (HyperFactions auto-detects and routes hooks accordingly)</li>
-</ul>
-<h3>📊 Placeholder Systems</h3>
-<ul>
-    <li>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/placeholder-api" rel="nofollow">PlaceholderAPI</a></strong> - 49 placeholders for scoreboards, chat, and menus</li>
-    <li><strong><a href="https://www.curseforge.com/hytale/mods/wiflows-placeholderapi" rel="nofollow">WiFlow PlaceholderAPI</a></strong> - 47 placeholders in WiFlow format</li>
-</ul>
-<h3>📦 Data Migration</h3>
-<ul>
-    <li><strong>ElbaphFactions</strong> - Full import of factions, members, claims, relations, and zones</li>
-    <li><strong>HyFactions</strong> - Full import with validation reporting</li>
-    <li><strong>SimpleClaims</strong> - Import parties and claims (SQLite or JSON format) with alliance detection</li>
-    <li><strong>FactionsX</strong> - Import factions, claims, zones, player power, and per-role permissions</li>
-</ul>
-<h3>🗺️ Region Protection</h3>
-<ul>
-    <li><strong><a href="https://www.curseforge.com/hytale/mods/orbisguard" rel="nofollow">OrbisGuard</a></strong> - Auto-blocks claims in OG-protected regions, renders OG regions on world map and territory GUI with colored overlays</li>
-</ul>
-<h3>🤝 Direct Mod Integrations</h3>
-<ul>
-    <li>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/hybounty" rel="nofollow">HyBounty</a></strong> &mdash; Place bounties on other players with faction-aware protections against abuse</li>
-    <li>🪦 <strong><a href="https://www.curseforge.com/hytale/mods/gravestones" rel="nofollow">Gravestones</a></strong> &mdash; Faction-aware gravestone protection with per-zone access control, configurable ally/member access, and death location announcements</li>
-    <li>💰 <strong><a href="https://www.curseforge.com/hytale/mods/ecotale" rel="nofollow">Ecotale</a></strong> &mdash; Faction treasury system with deposits, withdrawals, inter-faction transfers, and admin economy tools via VaultUnlocked bridge</li>
-    <li>🏘️ <strong><a href="https://www.curseforge.com/hytale/mods/kyuubisoft-core" rel="nofollow">KyuubiSoft Core</a></strong> &mdash; Citizen NPC zone protection &mdash; auto-detects KyuubiSoft citizens and enforces faction territory rules for NPC dialog interactions</li>
-</ul>
+<p>All integrations use automatic detection and fail-open design. <span style="color: #61afef;">⭐ <span style="color: #b96ad9;">= Recommended</span></span></p>
+<table>
+    <thead>
+    <tr>
+        <th>Mod</th>
+        <th>Category</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/hyperperms" rel="nofollow">HyperPerms</a></strong></td>
+        <td>Permissions</td>
+        <td>Faction chat prefixes, rank display, and contextual permissions</td>
+    </tr>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/luckperms" rel="nofollow">LuckPerms</a></strong></td>
+        <td>Permissions</td>
+        <td>Granular permission control</td>
+    </tr>
+    <tr>
+        <td>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/vaultunlocked" rel="nofollow">VaultUnlocked</a></strong></td>
+        <td>Economy</td>
+        <td>Chat, economy, and permission compatibility layer</td>
+    </tr>
+    <tr>
+        <td>⭐ <strong><a href="https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin" rel="nofollow">HyperProtect-Mixin</a></strong></td>
+        <td>Protection</td>
+        <td>27 mixin hooks — F-key pickup, keep inventory, explosions, fire, fluid, transport, mount, barter, projectile, map markers, and more</td>
+    </tr>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/orbisguard-mixins" rel="nofollow">OrbisGuard-Mixins</a></strong></td>
+        <td>Protection</td>
+        <td>11 mixin hooks (alternative). Both can run simultaneously — auto-detected</td>
+    </tr>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/orbisguard" rel="nofollow">OrbisGuard</a></strong></td>
+        <td>Regions</td>
+        <td>Blocks claims in OG regions, renders OG regions on world map and territory GUI</td>
+    </tr>
+    <tr>
+        <td>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/placeholder-api" rel="nofollow">PlaceholderAPI</a></strong></td>
+        <td>Placeholders</td>
+        <td>49 placeholders for scoreboards, chat, and menus</td>
+    </tr>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/wiflows-placeholderapi" rel="nofollow">WiFlow PlaceholderAPI</a></strong></td>
+        <td>Placeholders</td>
+        <td>47 placeholders in WiFlow format</td>
+    </tr>
+    <tr>
+        <td>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/hybounty" rel="nofollow">HyBounty</a></strong></td>
+        <td>Gameplay</td>
+        <td>Player bounties with faction-aware protections against abuse</td>
+    </tr>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/gravestones" rel="nofollow">Gravestones</a></strong></td>
+        <td>Gameplay</td>
+        <td>Faction-aware gravestone protection, per-zone access, death location announcements</td>
+    </tr>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/ecotale" rel="nofollow">Ecotale</a></strong></td>
+        <td>Economy</td>
+        <td>Faction treasury via VaultUnlocked — deposits, withdrawals, transfers, admin tools</td>
+    </tr>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/kyuubisoft-core" rel="nofollow">KyuubiSoft Core</a></strong></td>
+        <td>NPC</td>
+        <td>Citizen NPC zone protection with auto-detection</td>
+    </tr>
+    </tbody>
+</table>
+<h3>📦 Data Import</h3>
+<table>
+    <thead>
+    <tr>
+        <th>Source</th>
+        <th>What&rsquo;s Imported</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><strong>ElbaphFactions</strong></td>
+        <td>Factions, members, claims, relations, and zones</td>
+    </tr>
+    <tr>
+        <td><strong>HyFactions</strong></td>
+        <td>Factions, members, claims, relations, zones, and power</td>
+    </tr>
+    <tr>
+        <td><strong>SimpleClaims</strong></td>
+        <td>Parties, claims (SQLite or JSON), and mutual alliances</td>
+    </tr>
+    <tr>
+        <td><strong>FactionsX</strong></td>
+        <td>Factions, claims, zones, player power, and per-role permissions</td>
+    </tr>
+    </tbody>
+</table>
 <h3>🔮 Upcoming Integrations</h3>
-<ul>
-    <li>📈 <strong><a href="https://www.curseforge.com/hytale/mods/rpg-leveling-and-stats" rel="nofollow">RPG Leveling</a></strong> - Faction bonuses and level-based perks for faction members <span style="color: #e5c07b;">(Planned)</span></li>
-    <li>🗣️ <strong><a href="https://www.curseforge.com/hytale/mods/npc-dialog" rel="nofollow">NPC Dialog</a></strong> - Faction NPCs and dialog interactions in claimed territory <span style="color: #e5c07b;">(Planned)</span></li>
-    <li>📝 <strong><a href="https://www.curseforge.com/hytale/mods/npc-dialog-npc-quests-maker" rel="nofollow">NPC Quests Maker</a></strong> - Faction quests and mission systems <span style="color: #e5c07b;">(Planned)</span></li>
-    <li>📋 <strong><a href="https://www.curseforge.com/hytale/mods/better-scoreboard" rel="nofollow">BetterScoreBoard</a></strong> - Faction data on the scoreboard HUD <span style="color: #abb2bf;">(Waiting on BetterScoreBoard to support PlaceholderAPI or WiFlow)</span></li>
-</ul>
+<table>
+    <thead>
+    <tr>
+        <th>Mod</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/rpg-leveling-and-stats" rel="nofollow">RPG Leveling</a></strong></td>
+        <td><span style="color: #e5c07b;">Planned</span> &mdash; Faction bonuses and level-based perks</td>
+    </tr>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/npc-dialog" rel="nofollow">NPC Dialog</a></strong></td>
+        <td><span style="color: #e5c07b;">Planned</span> &mdash; Faction NPCs and dialog in claimed territory</td>
+    </tr>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/npc-dialog-npc-quests-maker" rel="nofollow">NPC Quests Maker</a></strong></td>
+        <td><span style="color: #e5c07b;">Planned</span> &mdash; Faction quests and mission systems</td>
+    </tr>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/better-scoreboard" rel="nofollow">BetterScoreBoard</a></strong></td>
+        <td><span style="color: #abb2bf;">Waiting</span> &mdash; Needs PlaceholderAPI or WiFlow support</td>
+    </tr>
+    </tbody>
+</table>
 <p>💡 <strong>Want HyperFactions to integrate with your plugin?</strong> Reach out to <strong>DMehaffy</strong> on <a href="https://discord.com/invite/aZaa5vcFYh" rel="nofollow">Discord</a> to discuss integration opportunities.</p>
 <p>&nbsp;</p>
 <h2><span style="color: #5b8def;">📥 Installation</span></h2>

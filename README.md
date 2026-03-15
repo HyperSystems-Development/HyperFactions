@@ -99,7 +99,7 @@ HyperFactions transforms your Hytale server into a dynamic faction-based environ
 | Mob spawn suppression | Implemented |
 | Mob clearing zone flags | Implemented |
 | Gravestones integration | Implemented |
-| Zone flags (50) | Implemented |
+| Zone flags (51) | Implemented |
 | Command blocking in zones | Implemented |
 | Sentry error tracking | Implemented |
 
