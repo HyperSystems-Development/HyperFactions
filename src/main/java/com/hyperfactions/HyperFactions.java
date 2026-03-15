@@ -1227,7 +1227,9 @@ public class HyperFactions {
     // Restart worldmap refresh scheduler with new mode/intervals
     if (worldMapService != null) {
       worldMapService.initializeScheduler(ConfigManager.get().worldMap());
-      Logger.info("[Config] World map scheduler restarted");
+      // Re-create generators with new config overrides and send updated settings to clients
+      worldMapService.reapplySettings();
+      Logger.info("[Config] World map scheduler restarted and settings reapplied");
     }
 
     // Rebuild world settings resolver

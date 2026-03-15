@@ -364,6 +364,57 @@ public class WorldMapService {
   }
 
   /**
+   * Re-creates generators with current config and sends updated settings to all players.
+   * Call this after config changes (e.g., settings overrides in admin GUI) to apply
+   * new WorldMapSettings without requiring a server restart.
+   *
+   * <p>This re-creates each per-world generator (which re-evaluates config overrides
+   * in {@code getWorldMapSettings()}), installs it on the WorldMapManager, and sends
+   * the updated {@code UpdateWorldMapSettings} packet to every connected player.
+   */
+  public void reapplySettings() {
+    if (!ConfigManager.get().isWorldMapMarkersEnabled()) {
+      return;
+    }
+
+    boolean betterMapActive = BetterMapCompat.isActive();
+
+    for (String worldName : registeredWorlds) {
+      try {
+        World world = com.hypixel.hytale.server.core.universe.Universe.get().getWorld(worldName);
+        if (world == null) {
+          continue;
+        }
+
+        // Re-create generator with same original settings but current config overrides
+        WorldMapSettings origSettings = originalWorldSettings.get(worldName);
+        HyperFactionsWorldMap generator = new HyperFactionsWorldMap(origSettings, betterMapActive);
+        generators.put(worldName, generator);
+
+        // Install on WorldMapManager (calls getWorldMapSettings() to update cached settings)
+        WorldMapManager worldMapManager = world.getWorldMapManager();
+        worldMapManager.setGenerator(generator);
+
+        // Send updated settings packet to all players in this world
+        for (com.hypixel.hytale.server.core.entity.entities.Player player : world.getPlayers()) {
+          try {
+            player.getWorldMapTracker().sendSettings(world);
+          } catch (Exception e) {
+            Logger.warn("Failed to send map settings to player: %s", e.getMessage());
+          }
+        }
+
+        Logger.debug("[WorldMap] Reapplied settings for world: %s", worldName);
+      } catch (Exception e) {
+        Logger.warn("Failed to reapply map settings for world %s: %s", worldName, e.getMessage());
+        ErrorHandler.report("[WorldMap] Failed to reapply settings for world " + worldName, e);
+      }
+    }
+
+    Logger.info("[WorldMap] Reapplied settings to %d worlds", registeredWorlds.size());
+  }
+
+  /**
    * Unregisters the overlay from a world.
    * Note: This restores the original generator if one was wrapped.
    *
