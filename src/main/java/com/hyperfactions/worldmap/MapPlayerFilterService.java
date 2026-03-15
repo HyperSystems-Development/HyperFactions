@@ -173,7 +173,7 @@ public class MapPlayerFilterService {
           cfgShowFactionless, cfgShowFactionlessToFactionless);
 
     } catch (Exception e) {
-      Logger.warn("Failed to apply map player filter: %s", e.getMessage());
+      ErrorHandler.report("[MapFilter] Failed to apply map player filter", e);
     }
   }
 
@@ -268,7 +268,7 @@ public class MapPlayerFilterService {
         factionHiddenPairs.put(viewerUuid, nowHidden);
       }
     } catch (Exception e) {
-      Logger.warn("Failed to update HiddenPlayersManager for viewer: %s", e.getMessage());
+      ErrorHandler.report("[MapFilter] Failed to update HiddenPlayersManager for viewer", e);
     }
   }
 
@@ -289,7 +289,7 @@ public class MapPlayerFilterService {
         hiddenManager.showPlayer(targetUuid);
       }
     } catch (Exception e) {
-      Logger.warn("Failed to clear hidden players for viewer: %s", e.getMessage());
+      ErrorHandler.report("[MapFilter] Failed to clear hidden players for viewer", e);
     }
   }
 
@@ -323,8 +323,6 @@ public class MapPlayerFilterService {
                 applyFilter(player);
               }
             } catch (Exception e) {
-              Logger.warn("Error applying map filters in world %s: %s",
-                  world.getName(), e.getMessage());
               ErrorHandler.report("[MapFilter] Error applying filters in world " + world.getName(), e);
             }
           });
@@ -334,7 +332,6 @@ public class MapPlayerFilterService {
         }
       }
     } catch (Exception e) {
-      Logger.warn("Error applying map filters to all worlds: %s", e.getMessage());
       ErrorHandler.report("[MapFilter] Error applying filters to all worlds", e);
     }
   }
@@ -393,7 +390,6 @@ public class MapPlayerFilterService {
               Logger.debugWorldMap("[MapFilter] resetAll: cleared filters for %d players in %s",
                   players.size(), world.getName());
             } catch (Exception e) {
-              Logger.warn("Error resetting map filters in world: %s", e.getMessage());
               ErrorHandler.report("[MapFilter] Error resetting filters in world " + world.getName(), e);
             }
           });
@@ -403,7 +399,6 @@ public class MapPlayerFilterService {
         }
       }
     } catch (Exception e) {
-      Logger.warn("Error resetting map filters: %s", e.getMessage());
       ErrorHandler.report("[MapFilter] Error resetting filters across all worlds", e);
     }
 

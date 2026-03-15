@@ -4,6 +4,7 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.JoinRequest;
 import com.hyperfactions.data.PendingInvite;
 import com.hyperfactions.manager.FactionManager;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
@@ -219,7 +220,7 @@ public class GuiUpdateService {
         try {
           r.refreshContent();
         } catch (Exception e) {
-          Logger.warn("[GuiUpdate] Error refreshing page for %s: %s", playerUuid, e.getMessage());
+          ErrorHandler.report("[GuiUpdate] Error refreshing page for " + playerUuid, e);
         }
       }
     });

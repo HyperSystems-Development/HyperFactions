@@ -183,7 +183,7 @@ public class JoinRequestManager {
       try {
         onRequestCreated.accept(request);
       } catch (Exception e) {
-        Logger.warn("Error in request created callback: %s", e.getMessage());
+        ErrorHandler.report("Error in request created callback", e);
       }
     }
 
@@ -321,7 +321,7 @@ public class JoinRequestManager {
         try {
           onRequestAccepted.accept(factionId, playerUuid);
         } catch (Exception e) {
-          Logger.warn("Error in request accepted callback: %s", e.getMessage());
+          ErrorHandler.report("Error in request accepted callback", e);
         }
       }
     }
@@ -342,7 +342,7 @@ public class JoinRequestManager {
       try {
         onRequestDeclined.accept(factionId, playerUuid);
       } catch (Exception e) {
-        Logger.warn("Error in request declined callback: %s", e.getMessage());
+        ErrorHandler.report("Error in request declined callback", e);
       }
     }
   }

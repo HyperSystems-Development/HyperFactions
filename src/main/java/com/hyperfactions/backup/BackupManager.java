@@ -443,8 +443,7 @@ public class BackupManager {
               ));
             }
           } catch (Exception e) {
-            Logger.warn("[Backup] Could not read backup metadata for %s: %s",
-              file.getFileName(), e.getMessage());
+            ErrorHandler.report(String.format("[Backup] Could not read backup metadata for %s", file.getFileName()), e);
           }
         }
       }
@@ -556,15 +555,14 @@ public class BackupManager {
           Files.delete(toDelete);
           Logger.debug("[Backup] Rotated out old shutdown backup: %s", toDelete.getFileName());
         } catch (IOException e) {
-          Logger.warn("[Backup] Failed to delete old shutdown backup %s: %s",
-            toDelete.getFileName(), e.getMessage());
+          ErrorHandler.report(String.format("[Backup] Failed to delete old shutdown backup %s", toDelete.getFileName()), e);
         }
       }
 
       int deleted = shutdownBackups.size() - retention;
       Logger.info("[Backup] Cleaned up %d old shutdown backup(s), keeping %d", deleted, retention);
     } catch (IOException e) {
-      Logger.warn("[Backup] Failed to rotate shutdown backups: %s", e.getMessage());
+      ErrorHandler.report("[Backup] Failed to rotate shutdown backups", e);
     }
   }
 

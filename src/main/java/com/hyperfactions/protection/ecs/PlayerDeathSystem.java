@@ -138,7 +138,7 @@ public class PlayerDeathSystem extends RefChangeSystem<EntityStore, DeathCompone
             return;
           }
         } catch (Exception e) {
-          Logger.warn("Zone check failed for %s, defaulting to no power loss: %s", victimUuid, e.getMessage());
+          ErrorHandler.report("Zone check failed for " + victimUuid + ", defaulting to no power loss", e);
           announceDeathLocation(victimUuid, playerRef, store, commandBuffer, ref);
           return;
         }

@@ -2,6 +2,7 @@ package com.hyperfactions.gui.admin;
 
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.config.modules.*;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.math.BigDecimal;
 
@@ -268,7 +269,7 @@ public final class ConfigSnapshot {
         }
       }
     } catch (Exception e) {
-      Logger.warn("[ConfigEditor] Failed to apply change for key '%s': %s", key, e.getMessage());
+      ErrorHandler.report("[ConfigEditor] Failed to apply change for key '" + key + "'", e);
     }
   }
 

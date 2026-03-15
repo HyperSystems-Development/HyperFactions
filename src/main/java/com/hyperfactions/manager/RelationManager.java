@@ -4,6 +4,7 @@ import com.hyperfactions.Permissions;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.*;
 import com.hyperfactions.integration.PermissionManager;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.GuiKeys;
 import java.util.*;
@@ -380,7 +381,7 @@ public class RelationManager {
       try {
         onAllyRequestReceived.accept(targetFactionId, actorFaction.id());
       } catch (Exception e) {
-        Logger.warn("Error in ally request callback: %s", e.getMessage());
+        ErrorHandler.report("Error in ally request callback", e);
       }
     }
 
@@ -434,7 +435,7 @@ public class RelationManager {
       try {
         onAllianceFormed.accept(actorFaction.name(), fromFaction.name());
       } catch (Exception e) {
-        Logger.warn("Error in alliance formed callback: %s", e.getMessage());
+        ErrorHandler.report("Error in alliance formed callback", e);
       }
     }
 
@@ -544,7 +545,7 @@ public class RelationManager {
       try {
         onAllianceBroken.accept(actorFaction.name(), targetFaction.name());
       } catch (Exception e) {
-        Logger.warn("Error in alliance broken callback: %s", e.getMessage());
+        ErrorHandler.report("Error in alliance broken callback", e);
       }
     }
 
@@ -552,7 +553,7 @@ public class RelationManager {
       try {
         onWarDeclared.accept(actorFaction.name(), targetFaction.name());
       } catch (Exception e) {
-        Logger.warn("Error in war declared callback: %s", e.getMessage());
+        ErrorHandler.report("Error in war declared callback", e);
       }
     }
 
@@ -610,7 +611,7 @@ public class RelationManager {
       try {
         onAllianceBroken.accept(actorFaction.name(), targetFaction.name());
       } catch (Exception e) {
-        Logger.warn("Error in alliance broken callback: %s", e.getMessage());
+        ErrorHandler.report("Error in alliance broken callback", e);
       }
     }
 
@@ -648,14 +649,14 @@ public class RelationManager {
       try {
         onRelationChanged.accept(factionId, targetId);
       } catch (Exception e) {
-        Logger.warn("Error in relation changed callback: %s", e.getMessage());
+        ErrorHandler.report("Error in relation changed callback", e);
       }
     }
     if (onRelationChangedForMapFilter != null) {
       try {
         onRelationChangedForMapFilter.accept(factionId, targetId);
       } catch (Exception e) {
-        Logger.warn("Error in map filter relation callback: %s", e.getMessage());
+        ErrorHandler.report("Error in map filter relation callback", e);
       }
     }
   }

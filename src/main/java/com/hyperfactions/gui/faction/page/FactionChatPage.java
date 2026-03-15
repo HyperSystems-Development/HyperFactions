@@ -15,7 +15,7 @@ import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.manager.ChatHistoryManager;
 import com.hyperfactions.manager.ChatManager;
 import com.hyperfactions.manager.FactionManager;
-import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.GuiKeys;
@@ -211,7 +211,7 @@ public class FactionChatPage extends InteractiveCustomUIPage<FactionChatData> im
             .toList();
       }
     } catch (Exception e) {
-      Logger.warn("[FactionChatPage] Failed to load messages: %s", e.getMessage());
+      ErrorHandler.report("Failed to load chat messages", e);
       return List.of();
     }
   }

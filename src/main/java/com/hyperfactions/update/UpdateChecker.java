@@ -280,7 +280,7 @@ public final class UpdateChecker {
             Logger.info("[Update:%s] Backed up current JAR to %s", artifactName, backupFile.getFileName());
           } catch (java.nio.file.FileSystemException e) {
             // Windows locks loaded JARs - can't backup while running
-            Logger.warn("[Update:%s] Could not backup old JAR (file in use). Please delete %s manually after restart.", artifactName, currentJar.getFileName());
+            ErrorHandler.report(String.format("[Update:%s] Could not backup old JAR (file in use): %s", artifactName, currentJar.getFileName()), e);
           }
         }
 
@@ -326,7 +326,7 @@ public final class UpdateChecker {
         backupFiles.add(file);
       }
     } catch (IOException e) {
-      Logger.warn("[Update:%s] Failed to list backup files: %s", artifactName, e.getMessage());
+      ErrorHandler.report(String.format("[Update:%s] Failed to list backup files", artifactName), e);
       return 0;
     }
 
@@ -368,7 +368,7 @@ public final class UpdateChecker {
         deleted++;
         Logger.info("[Update:%s] Cleanup: Removed old backup %s", artifactName, backupFile.getFileName());
       } catch (IOException e) {
-        Logger.warn("[Update:%s] Failed to delete backup %s: %s", artifactName, backupFile.getFileName(), e.getMessage());
+        ErrorHandler.report(String.format("[Update:%s] Failed to delete backup %s", artifactName, backupFile.getFileName()), e);
       }
     }
 
@@ -481,7 +481,7 @@ public final class UpdateChecker {
       Files.writeString(markerFile, content);
       Logger.debug("[Update:%s] Created rollback marker: %s -> %s", artifactName, fromVersion, toVersion);
     } catch (IOException e) {
-      Logger.warn("[Update:%s] Failed to create rollback marker: %s", artifactName, e.getMessage());
+      ErrorHandler.report(String.format("[Update:%s] Failed to create rollback marker", artifactName), e);
     }
   }
 
@@ -496,7 +496,7 @@ public final class UpdateChecker {
         Logger.debug("[Update:%s] Cleared rollback marker (server restarted with new version)", artifactName);
       }
     } catch (IOException e) {
-      Logger.warn("[Update:%s] Failed to clear rollback marker: %s", artifactName, e.getMessage());
+      ErrorHandler.report(String.format("[Update:%s] Failed to clear rollback marker", artifactName), e);
     }
   }
 
@@ -539,7 +539,7 @@ public final class UpdateChecker {
         return new RollbackInfo(fromVersion, toVersion, true);
       }
     } catch (IOException e) {
-      Logger.warn("[Update:%s] Failed to read rollback marker: %s", artifactName, e.getMessage());
+      ErrorHandler.report(String.format("[Update:%s] Failed to read rollback marker", artifactName), e);
     }
 
     return null;
@@ -560,7 +560,7 @@ public final class UpdateChecker {
         backupFiles.add(file);
       }
     } catch (IOException e) {
-      Logger.warn("[Update:%s] Failed to list backup files: %s", artifactName, e.getMessage());
+      ErrorHandler.report(String.format("[Update:%s] Failed to list backup files for findLatestBackup", artifactName), e);
       return null;
     }
 

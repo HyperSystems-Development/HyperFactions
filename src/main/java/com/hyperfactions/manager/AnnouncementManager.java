@@ -2,6 +2,7 @@ package com.hyperfactions.manager;
 
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.config.modules.AnnouncementConfig;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
@@ -168,7 +169,7 @@ public class AnnouncementManager {
         player.sendMessage(messageFactory.apply(player));
       }
     } catch (Exception e) {
-      Logger.warn("Failed to broadcast announcement: %s", e.getMessage());
+      ErrorHandler.report("Failed to broadcast announcement", e);
     }
   }
 }

@@ -80,7 +80,7 @@ public class ConfigV4ToV5Migration implements Migration {
       }
       return root.get("configVersion").getAsInt() == 4;
     } catch (Exception e) {
-      Logger.warn("[Migration] Failed to check config version: %s", e.getMessage());
+      ErrorHandler.report("[Migration] Failed to check config version for V4->V5", e);
       return false;
     }
   }

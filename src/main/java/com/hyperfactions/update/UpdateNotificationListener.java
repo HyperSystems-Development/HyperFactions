@@ -4,6 +4,7 @@ import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.util.AdminKeys;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.event.EventRegistry;
@@ -95,8 +96,7 @@ public final class UpdateNotificationListener {
       try {
         checkAndNotify(playerRef);
       } catch (Exception e) {
-        Logger.warn("[UpdateNotify] Failed to send notification to %s: %s",
-          playerRef.getUsername(), e.getMessage());
+        ErrorHandler.report("[UpdateNotify] Failed to send notification to " + playerRef.getUsername(), e);
       }
     }, NOTIFICATION_DELAY_MS, TimeUnit.MILLISECONDS);
   }

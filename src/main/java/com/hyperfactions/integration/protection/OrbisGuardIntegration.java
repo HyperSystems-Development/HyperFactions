@@ -1,5 +1,6 @@
 package com.hyperfactions.integration.protection;
 
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -119,11 +120,11 @@ public final class OrbisGuardIntegration {
     } catch (NoSuchMethodException e) {
       available = false;
       initError = "OrbisGuard API mismatch: " + e.getMessage();
-      Logger.warn("OrbisGuard API version incompatible: %s", e.getMessage());
+      ErrorHandler.report("OrbisGuard API version incompatible", e);
     } catch (Exception e) {
       available = false;
       initError = e.getClass().getSimpleName() + ": " + e.getMessage();
-      Logger.warn("Error initializing OrbisGuard integration: %s", e.getMessage());
+      ErrorHandler.report("Error initializing OrbisGuard integration", e);
     }
 
     initialized = true;
@@ -182,8 +183,7 @@ public final class OrbisGuardIntegration {
       return false;
 
     } catch (Throwable e) {
-      Logger.warn("Error checking OrbisGuard regions at %s/%d/%d/%d: %s",
-          worldName, x, y, z, e.getMessage());
+      ErrorHandler.report("Error checking OrbisGuard regions", e);
       return false; // Fail-open
     }
   }
@@ -326,7 +326,7 @@ public final class OrbisGuardIntegration {
       return Collections.emptyList();
 
     } catch (Throwable e) {
-      Logger.warn("Error getting OrbisGuard regions for world %s: %s", worldName, e.getMessage());
+      ErrorHandler.report("Error getting OrbisGuard regions for world " + worldName, e);
       return Collections.emptyList();
     }
   }
@@ -368,7 +368,7 @@ public final class OrbisGuardIntegration {
       return result;
 
     } catch (Throwable e) {
-      Logger.warn("Error getting all OrbisGuard regions: %s", e.getMessage());
+      ErrorHandler.report("Error getting all OrbisGuard regions", e);
       return Collections.emptyList();
     }
   }

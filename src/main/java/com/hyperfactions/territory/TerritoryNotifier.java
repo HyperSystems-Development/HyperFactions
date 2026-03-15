@@ -12,6 +12,7 @@ import com.hyperfactions.manager.ZoneManager;
 import com.hyperfactions.storage.PlayerStorage;
 import com.hyperfactions.territory.TerritoryInfo.TerritoryType;
 import com.hyperfactions.util.ChunkUtil;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -186,7 +187,7 @@ public class TerritoryNotifier {
 
     } catch (Exception e) {
       // Fallback to chat message if notification fails
-      Logger.warn("Failed to send territory notification, falling back to chat: %s", e.getMessage());
+      ErrorHandler.report("Failed to send territory notification, falling back to chat", e);
       sendChatFallback(playerRef, territory);
     }
   }
@@ -209,7 +210,7 @@ public class TerritoryNotifier {
 
       playerRef.sendMessage(message);
     } catch (Exception e) {
-      Logger.warn("Failed to send territory chat fallback: %s", e.getMessage());
+      ErrorHandler.report("Failed to send territory chat fallback", e);
     }
   }
 

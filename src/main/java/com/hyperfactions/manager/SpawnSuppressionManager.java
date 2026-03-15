@@ -2,6 +2,7 @@ package com.hyperfactions.manager;
 
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.*;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.fastutil.longs.Long2ObjectConcurrentHashMap;
 import com.hypixel.hytale.builtin.tagset.TagSetPlugin;
@@ -121,7 +122,7 @@ public class SpawnSuppressionManager {
       Logger.debugSpawning("Resolved NPC groups: hostile=%d, passive=%d, neutral=%d",
         hostileGroupIndex, passiveGroupIndex, neutralGroupIndex);
     } catch (Exception e) {
-      Logger.warn("Failed to resolve NPC groups: %s", e.getMessage());
+      ErrorHandler.report("Failed to resolve NPC groups", e);
       groupsResolved = false;
     }
   }

@@ -86,7 +86,7 @@ public class ConfigV7ToV8Migration implements Migration {
       }
       return root.get("configVersion").getAsInt() == 7;
     } catch (Exception e) {
-      Logger.warn("[Migration] Failed to check config version: %s", e.getMessage());
+      ErrorHandler.report("[Migration] Failed to check config version for V7->V8", e);
       return false;
     }
   }

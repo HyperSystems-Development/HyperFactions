@@ -1,6 +1,7 @@
 package com.hyperfactions.integration.placeholder;
 
 import com.hyperfactions.HyperFactions;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import org.jetbrains.annotations.Nullable;
 
@@ -51,7 +52,7 @@ public final class PlaceholderAPIIntegration {
         expansion = null;
       }
     } catch (Exception e) {
-      Logger.warn("Failed to register PlaceholderAPI expansion: %s", e.getMessage());
+      ErrorHandler.report("Failed to register PlaceholderAPI expansion", e);
       expansion = null;
     }
   }
