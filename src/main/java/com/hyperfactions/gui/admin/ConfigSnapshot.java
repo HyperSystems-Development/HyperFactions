@@ -208,6 +208,15 @@ public final class ConfigSnapshot {
         case "worldmap.incrementalMaxChunksPerBatch" -> cfg.worldMap().setIncrementalMaxChunksPerBatch(toInt(value));
         case "worldmap.debouncedDelaySeconds" -> cfg.worldMap().setDebouncedDelaySeconds(toInt(value));
         case "worldmap.factionWideRefreshThreshold" -> cfg.worldMap().setFactionWideRefreshThreshold(toInt(value));
+        case "worldmap.respectWorldConfig" -> cfg.worldMap().setRespectWorldConfig(toBool(value));
+        case "worldmap.betterMapCompat" -> cfg.worldMap().setBetterMapCompat(toStr(value));
+        case "worldmap.overrideDefaultScale" -> cfg.worldMap().setOverrideDefaultScale(toInt(value));
+        case "worldmap.overrideMinScale" -> cfg.worldMap().setOverrideMinScale(toInt(value));
+        case "worldmap.overrideMaxScale" -> cfg.worldMap().setOverrideMaxScale(toInt(value));
+        case "worldmap.overrideImageScale" -> cfg.worldMap().setOverrideImageScale(toInt(value));
+        case "worldmap.overrideAllowTeleportToCoordinates" -> cfg.worldMap().setOverrideAllowTeleportToCoordinates(toStr(value));
+        case "worldmap.overrideAllowTeleportToMarkers" -> cfg.worldMap().setOverrideAllowTeleportToMarkers(toStr(value));
+        case "worldmap.overrideAllowCreatingMapMarkers" -> cfg.worldMap().setOverrideAllowCreatingMapMarkers(toStr(value));
 
         // === DebugConfig ===
         case "debug.enabledByDefault" -> cfg.debug().setEnabledByDefault(toBool(value));
@@ -277,6 +286,8 @@ public final class ConfigSnapshot {
       case "worldmap.proximityBatchIntervalTicks", "worldmap.incrementalBatchIntervalTicks" -> 5;
       case "worldmap.proximityMaxChunksPerBatch", "worldmap.incrementalMaxChunksPerBatch" -> 10;
       case "worldmap.factionWideRefreshThreshold" -> 50;
+      case "worldmap.overrideDefaultScale", "worldmap.overrideMinScale",
+           "worldmap.overrideMaxScale", "worldmap.overrideImageScale" -> 8;
       default -> 1;
     };
   }
