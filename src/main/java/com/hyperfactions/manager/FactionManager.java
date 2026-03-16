@@ -2,10 +2,7 @@ package com.hyperfactions.manager;
 
 import com.hyperfactions.Permissions;
 import com.hyperfactions.api.events.EventBus;
-import com.hyperfactions.api.events.FactionCreateEvent;
-import com.hyperfactions.api.events.FactionDisbandEvent;
-import com.hyperfactions.api.events.FactionHomeEvent;
-import com.hyperfactions.api.events.FactionMemberEvent;
+import com.hyperfactions.api.events.*;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.*;
 import com.hyperfactions.integration.PermissionManager;
@@ -424,6 +421,11 @@ public class FactionManager {
       return FactionResult.NAME_TAKEN;
     }
 
+    // Pre-event: allow external plugins to cancel
+    if (EventBus.publishCancellable(new FactionCreatePreEvent(name, leaderUuid))) {
+      return FactionResult.NO_PERMISSION;
+    }
+
     // Create faction with auto-generated tag
     Faction faction = Faction.create(name, leaderUuid, leaderName);
     String generatedTag = generateUniqueTag(name);
@@ -536,6 +538,11 @@ public class FactionManager {
       return FactionResult.NOT_LEADER;
     }
 
+    // Pre-event: allow external plugins to cancel
+    if (EventBus.publishCancellable(new FactionDisbandPreEvent(faction, actorUuid))) {
+      return FactionResult.NO_PERMISSION;
+    }
+
     // Remove from caches
     factions.remove(factionId);
     nameToFaction.remove(faction.name().toLowerCase());
@@ -582,6 +589,11 @@ public class FactionManager {
 
     if (faction.getMemberCount() >= ConfigManager.get().getMaxMembers()) {
       return FactionResult.FACTION_FULL;
+    }
+
+    // Pre-event: allow external plugins to cancel
+    if (EventBus.publishCancellable(new FactionMemberPreEvent(faction, playerUuid, FactionMemberEvent.Type.JOIN))) {
+      return FactionResult.NO_PERMISSION;
     }
 
     // Add member
@@ -1009,6 +1021,11 @@ public class FactionManager {
     FactionMember actor = faction.getMember(actorUuid);
     if (actor == null || !actor.isOfficerOrHigher()) {
       return FactionResult.NOT_OFFICER;
+    }
+
+    // Pre-event: allow external plugins to cancel
+    if (EventBus.publishCancellable(new FactionHomePreEvent(factionId, home, actorUuid))) {
+      return FactionResult.NO_PERMISSION;
     }
 
     Faction updated = faction.withHome(home)

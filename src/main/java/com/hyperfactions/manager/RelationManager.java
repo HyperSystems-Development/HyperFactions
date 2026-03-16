@@ -1,8 +1,7 @@
 package com.hyperfactions.manager;
 
 import com.hyperfactions.Permissions;
-import com.hyperfactions.api.events.EventBus;
-import com.hyperfactions.api.events.FactionRelationEvent;
+import com.hyperfactions.api.events.*;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.*;
 import com.hyperfactions.integration.PermissionManager;
@@ -425,6 +424,12 @@ public class RelationManager {
     // Capture old relation before change
     RelationType oldRelation = getRelation(actorFaction.id(), fromFactionId);
 
+    // Pre-event: allow external plugins to cancel
+    if (EventBus.publishCancellable(new FactionRelationPreEvent(
+        actorFaction.id(), fromFactionId, oldRelation, RelationType.ALLY, actorUuid))) {
+      return RelationResult.NO_PERMISSION;
+    }
+
     // Set mutual ally relation (both sides get proper actor attribution)
     setRelation(actorFaction.id(), fromFactionId, RelationType.ALLY, actorUuid);
     setRelation(fromFactionId, actorFaction.id(), RelationType.ALLY, requesterUuid);
@@ -544,6 +549,12 @@ public class RelationManager {
     boolean wasAlly = actorFaction.isAlly(targetFactionId);
     RelationType oldRelation = actorFaction.getRelationType(targetFactionId);
 
+    // Pre-event: allow external plugins to cancel
+    if (EventBus.publishCancellable(new FactionRelationPreEvent(
+        actorFaction.id(), targetFactionId, oldRelation, RelationType.ENEMY, actorUuid))) {
+      return RelationResult.NO_PERMISSION;
+    }
+
     setRelation(actorFaction.id(), targetFactionId, RelationType.ENEMY, actorUuid);
 
     EventBus.publish(new FactionRelationEvent(actorFaction.id(), targetFactionId,
@@ -607,6 +618,12 @@ public class RelationManager {
     RelationType currentRelation = actorFaction.getRelationType(targetFactionId);
     if (currentRelation == RelationType.NEUTRAL) {
       return RelationResult.ALREADY_NEUTRAL;
+    }
+
+    // Pre-event: allow external plugins to cancel
+    if (EventBus.publishCancellable(new FactionRelationPreEvent(
+        actorFaction.id(), targetFactionId, currentRelation, RelationType.NEUTRAL, actorUuid))) {
+      return RelationResult.NO_PERMISSION;
     }
 
     // If breaking alliance, update both sides

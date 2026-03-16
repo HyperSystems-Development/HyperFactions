@@ -1,9 +1,7 @@
 package com.hyperfactions.manager;
 
 import com.hyperfactions.Permissions;
-import com.hyperfactions.api.events.EventBus;
-import com.hyperfactions.api.events.FactionClaimEvent;
-import com.hyperfactions.api.events.FactionUnclaimEvent;
+import com.hyperfactions.api.events.*;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.ChunkKey;
 import com.hyperfactions.data.Faction;
@@ -414,6 +412,11 @@ public class ClaimManager {
       if (!hasAdjacentClaim(world, chunkX, chunkZ, faction.id())) {
         return ClaimResult.NOT_ADJACENT;
       }
+    }
+
+    // Pre-event: allow external plugins to cancel
+    if (EventBus.publishCancellable(new FactionClaimPreEvent(faction.id(), playerUuid, world, chunkX, chunkZ))) {
+      return ClaimResult.NO_PERMISSION;
     }
 
     // Create claim
