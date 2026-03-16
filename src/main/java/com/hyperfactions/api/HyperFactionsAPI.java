@@ -7,10 +7,14 @@ import com.hyperfactions.data.PlayerPower;
 import com.hyperfactions.data.RelationType;
 import com.hyperfactions.manager.*;
 import com.hyperfactions.protection.ProtectionChecker;
+import com.hyperfactions.config.ConfigManager;
+import com.hyperfactions.config.modules.ChatConfig;
 import com.hyperfactions.util.HFMessages;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Pattern;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -436,5 +440,199 @@ public final class HyperFactionsAPI {
   @NotNull
   public static Set<String> getSupportedLocales() {
     return HFMessages.getSupportedLocales();
+  }
+
+  // === Chat Color Customization ===
+
+  /** Hex color pattern: #RRGGBB (6 digits). */
+  private static final Pattern HEX_COLOR_PATTERN = Pattern.compile("^#[0-9A-Fa-f]{6}$");
+
+  /** Valid keys for {@link #setChatColors(Map)} and {@link #getChatColors()}. */
+  private static final Set<String> CHAT_COLOR_KEYS = Set.of(
+      "relationOwn", "relationAlly", "relationNeutral", "relationEnemy",
+      "prefixColor", "prefixBracketColor",
+      "playerNameColor", "senderNameColor", "messageColor",
+      "factionChatColor", "allyChatColor",
+      "noFactionTagColor"
+  );
+
+  private static void validateHexColor(@NotNull String hexColor, @NotNull String paramName) {
+    if (!HEX_COLOR_PATTERN.matcher(hexColor).matches()) {
+      throw new IllegalArgumentException(paramName + " must be a valid hex color (#RRGGBB), got: " + hexColor);
+    }
+  }
+
+  /**
+   * Sets a chat relation color by relation name.
+   * Takes effect immediately for all subsequent chat messages.
+   *
+   * @param relation "OWN", "ALLY", "NEUTRAL", or "ENEMY" (case-insensitive)
+   * @param hexColor hex color string in #RRGGBB format (e.g. "#4ade80")
+   * @throws IllegalArgumentException if relation is unknown or hexColor is invalid
+   */
+  public static void setChatRelationColor(@NotNull String relation, @NotNull String hexColor) {
+    validateHexColor(hexColor, "hexColor");
+    ChatConfig chat = ConfigManager.get().chat();
+    switch (relation.toUpperCase()) {
+      case "OWN" -> chat.setRelationColorOwn(hexColor);
+      case "ALLY" -> chat.setRelationColorAlly(hexColor);
+      case "NEUTRAL" -> chat.setRelationColorNeutral(hexColor);
+      case "ENEMY" -> chat.setRelationColorEnemy(hexColor);
+      default -> throw new IllegalArgumentException("Unknown relation: " + relation
+          + ". Valid values: OWN, ALLY, NEUTRAL, ENEMY");
+    }
+  }
+
+  /**
+   * Sets the prefix text color (the text inside the brackets).
+   *
+   * @param hexColor hex color string in #RRGGBB format
+   */
+  public static void setPrefixColor(@NotNull String hexColor) {
+    validateHexColor(hexColor, "hexColor");
+    ConfigManager.get().server().setPrefixColor(hexColor);
+  }
+
+  /**
+   * Sets the prefix bracket color (the [ ] around the prefix).
+   *
+   * @param hexColor hex color string in #RRGGBB format
+   */
+  public static void setPrefixBracketColor(@NotNull String hexColor) {
+    validateHexColor(hexColor, "hexColor");
+    ConfigManager.get().server().setPrefixBracketColor(hexColor);
+  }
+
+  /**
+   * Sets the player name color in public chat.
+   *
+   * @param hexColor hex color string in #RRGGBB format
+   */
+  public static void setPlayerNameColor(@NotNull String hexColor) {
+    validateHexColor(hexColor, "hexColor");
+    ConfigManager.get().chat().setPlayerNameColor(hexColor);
+  }
+
+  /**
+   * Sets the message text color in faction/ally chat.
+   *
+   * @param hexColor hex color string in #RRGGBB format
+   */
+  public static void setMessageColor(@NotNull String hexColor) {
+    validateHexColor(hexColor, "hexColor");
+    ConfigManager.get().chat().setMessageColor(hexColor);
+  }
+
+  /**
+   * Sets the faction chat message color.
+   *
+   * @param hexColor hex color string in #RRGGBB format
+   */
+  public static void setFactionChatColor(@NotNull String hexColor) {
+    validateHexColor(hexColor, "hexColor");
+    ConfigManager.get().chat().setFactionChatColor(hexColor);
+  }
+
+  /**
+   * Sets the ally chat message color.
+   *
+   * @param hexColor hex color string in #RRGGBB format
+   */
+  public static void setAllyChatColor(@NotNull String hexColor) {
+    validateHexColor(hexColor, "hexColor");
+    ConfigManager.get().chat().setAllyChatColor(hexColor);
+  }
+
+  /**
+   * Sets the sender name color in faction/ally chat.
+   *
+   * @param hexColor hex color string in #RRGGBB format
+   */
+  public static void setSenderNameColor(@NotNull String hexColor) {
+    validateHexColor(hexColor, "hexColor");
+    ConfigManager.get().chat().setSenderNameColor(hexColor);
+  }
+
+  /**
+   * Sets the no-faction tag color.
+   *
+   * @param hexColor hex color string in #RRGGBB format
+   */
+  public static void setNoFactionTagColor(@NotNull String hexColor) {
+    validateHexColor(hexColor, "hexColor");
+    ConfigManager.get().chat().setNoFactionTagColor(hexColor);
+  }
+
+  /**
+   * Applies a color theme as a map of property names to hex colors.
+   * Only provided keys are updated; others remain unchanged.
+   * All entries are validated before any are applied (atomic semantics).
+   *
+   * <p>Supported keys:
+   * <ul>
+   *   <li>{@code relationOwn}, {@code relationAlly}, {@code relationNeutral}, {@code relationEnemy}</li>
+   *   <li>{@code prefixColor}, {@code prefixBracketColor}</li>
+   *   <li>{@code playerNameColor}, {@code senderNameColor}, {@code messageColor}</li>
+   *   <li>{@code factionChatColor}, {@code allyChatColor}</li>
+   *   <li>{@code noFactionTagColor}</li>
+   * </ul>
+   *
+   * @param colors map of property name → hex color (#RRGGBB)
+   * @throws IllegalArgumentException if any key is unrecognized or any value is not valid hex
+   */
+  public static void setChatColors(@NotNull Map<String, String> colors) {
+    // Validate all entries before applying any (atomic semantics)
+    for (Map.Entry<String, String> entry : colors.entrySet()) {
+      validateHexColor(entry.getValue(), entry.getKey());
+      if (!CHAT_COLOR_KEYS.contains(entry.getKey())) {
+        throw new IllegalArgumentException("Unknown chat color key: " + entry.getKey()
+            + ". Valid keys: " + CHAT_COLOR_KEYS);
+      }
+    }
+
+    ChatConfig chat = ConfigManager.get().chat();
+    for (Map.Entry<String, String> entry : colors.entrySet()) {
+      switch (entry.getKey()) {
+        case "relationOwn" -> chat.setRelationColorOwn(entry.getValue());
+        case "relationAlly" -> chat.setRelationColorAlly(entry.getValue());
+        case "relationNeutral" -> chat.setRelationColorNeutral(entry.getValue());
+        case "relationEnemy" -> chat.setRelationColorEnemy(entry.getValue());
+        case "prefixColor" -> ConfigManager.get().server().setPrefixColor(entry.getValue());
+        case "prefixBracketColor" -> ConfigManager.get().server().setPrefixBracketColor(entry.getValue());
+        case "playerNameColor" -> chat.setPlayerNameColor(entry.getValue());
+        case "senderNameColor" -> chat.setSenderNameColor(entry.getValue());
+        case "messageColor" -> chat.setMessageColor(entry.getValue());
+        case "factionChatColor" -> chat.setFactionChatColor(entry.getValue());
+        case "allyChatColor" -> chat.setAllyChatColor(entry.getValue());
+        case "noFactionTagColor" -> chat.setNoFactionTagColor(entry.getValue());
+        default -> {} // Already validated above
+      }
+    }
+  }
+
+  /**
+   * Returns the current chat color values as a map.
+   * Keys match those accepted by {@link #setChatColors(Map)}.
+   * Useful for reading current values before applying a theme, enabling restore.
+   *
+   * @return map of property name → current hex color
+   */
+  @NotNull
+  public static Map<String, String> getChatColors() {
+    ChatConfig chat = ConfigManager.get().chat();
+    return Map.ofEntries(
+        Map.entry("relationOwn", chat.getRelationColorOwn()),
+        Map.entry("relationAlly", chat.getRelationColorAlly()),
+        Map.entry("relationNeutral", chat.getRelationColorNeutral()),
+        Map.entry("relationEnemy", chat.getRelationColorEnemy()),
+        Map.entry("prefixColor", ConfigManager.get().server().getPrefixColor()),
+        Map.entry("prefixBracketColor", ConfigManager.get().server().getPrefixBracketColor()),
+        Map.entry("playerNameColor", chat.getPlayerNameColor()),
+        Map.entry("senderNameColor", chat.getSenderNameColor()),
+        Map.entry("messageColor", chat.getMessageColor()),
+        Map.entry("factionChatColor", chat.getFactionChatColor()),
+        Map.entry("allyChatColor", chat.getAllyChatColor()),
+        Map.entry("noFactionTagColor", chat.getNoFactionTagColor())
+    );
   }
 }
