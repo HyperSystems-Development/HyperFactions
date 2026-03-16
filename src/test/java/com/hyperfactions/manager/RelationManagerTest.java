@@ -27,6 +27,7 @@ class RelationManagerTest {
 
     @BeforeEach
     void setUp() {
+        com.hyperfactions.config.ConfigManager.initTestDefaults();
         factionStorage = MockStorage.factionStorage();
         factionManager = new FactionManager(factionStorage);
         relationManager = new RelationManager(factionManager);

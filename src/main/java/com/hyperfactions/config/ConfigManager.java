@@ -68,6 +68,36 @@ public class ConfigManager {
   }
 
   /**
+   * Initializes ConfigManager with default values for all configs.
+   * Uses a temporary directory so no files are actually read from or written to disk.
+   * Intended for unit tests that need ConfigManager to be non-null.
+   *
+   * @return the initialized ConfigManager
+   */
+  @NotNull
+  public static ConfigManager initTestDefaults() {
+    ConfigManager cm = get();
+    Path tempDir;
+    try {
+      tempDir = java.nio.file.Files.createTempDirectory("hf-test-config");
+      tempDir.toFile().deleteOnExit();
+    } catch (java.io.IOException e) {
+      throw new RuntimeException("Failed to create temp config dir for tests", e);
+    }
+    cm.loadAll(tempDir);
+    // In test environments without a permission mod, allow all user-level permissions
+    cm.server().setAllowWithoutPermissionMod(true);
+    return cm;
+  }
+
+  /**
+   * Resets the singleton instance. For testing only.
+   */
+  public static void resetInstance() {
+    instance = null;
+  }
+
+  /**
    * Loads all configuration files.
    *
    * <p>

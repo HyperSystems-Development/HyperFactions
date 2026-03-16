@@ -28,6 +28,7 @@ class PowerManagerTest {
 
     @BeforeEach
     void setUp() {
+        com.hyperfactions.config.ConfigManager.initTestDefaults();
         playerStorage = MockStorage.playerStorage();
         factionStorage = MockStorage.factionStorage();
         factionManager = new FactionManager(factionStorage);
