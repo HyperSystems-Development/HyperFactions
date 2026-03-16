@@ -737,4 +737,28 @@ public final class HyperFactionsAPI {
   public static Set<ChunkKey> getFactionClaims(@NotNull UUID factionId) {
     return getInstance().getClaimManager().getFactionClaims(factionId);
   }
+
+  // === Configuration ===
+
+  /**
+   * Saves all current configuration to disk.
+   * Call after using {@link #setChatColors(Map)} or individual color setters
+   * to persist changes across server restarts.
+   *
+   * <p>If not called, changes remain in-memory only and revert on restart.
+   * This is intentional — it allows temporary runtime theming without
+   * permanently modifying config files.
+   */
+  public static void saveConfig() {
+    ConfigManager.get().saveAll();
+  }
+
+  /**
+   * Reloads all configuration from disk, discarding any unsaved runtime changes.
+   * This will revert any colors set via {@link #setChatColors(Map)} that were
+   * not saved with {@link #saveConfig()}.
+   */
+  public static void reloadConfig() {
+    ConfigManager.get().reloadAll();
+  }
 }
