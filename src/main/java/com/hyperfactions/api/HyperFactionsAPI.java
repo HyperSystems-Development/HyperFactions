@@ -9,6 +9,7 @@ import com.hyperfactions.manager.*;
 import com.hyperfactions.protection.ProtectionChecker;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.config.modules.ChatConfig;
+import com.hyperfactions.data.ChunkKey;
 import com.hyperfactions.util.HFMessages;
 import java.util.Collection;
 import java.util.Map;
@@ -634,5 +635,106 @@ public final class HyperFactionsAPI {
         Map.entry("allyChatColor", chat.getAllyChatColor()),
         Map.entry("noFactionTagColor", chat.getNoFactionTagColor())
     );
+  }
+
+  // === Additional Manager Access ===
+
+  /**
+   * Gets the ChatManager for faction/ally chat operations.
+   *
+   * @return the chat manager
+   */
+  @NotNull
+  public static ChatManager getChatManager() {
+    return getInstance().getChatManager();
+  }
+
+  /**
+   * Gets the EconomyAPI for faction treasury operations.
+   * Returns null if economy is not enabled in config.
+   *
+   * @return the economy API, or null if economy is disabled
+   */
+  @Nullable
+  public static EconomyAPI getEconomyAPI() {
+    EconomyManager econ = getInstance().getEconomyManager();
+    return (econ != null && econ.isEnabled()) ? econ : null;
+  }
+
+  /**
+   * Gets the JoinRequestManager for managing player join requests to factions.
+   *
+   * @return the join request manager
+   */
+  @NotNull
+  public static JoinRequestManager getJoinRequestManager() {
+    return getInstance().getJoinRequestManager();
+  }
+
+  // === Extended Queries ===
+
+  /**
+   * Gets detailed power statistics for a faction.
+   *
+   * @param factionId the faction ID
+   * @return power stats including current/max power, claims, raidability
+   */
+  @NotNull
+  public static PowerManager.FactionPowerStats getFactionPowerStats(@NotNull UUID factionId) {
+    return getInstance().getPowerManager().getFactionPowerStats(factionId);
+  }
+
+  /**
+   * Gets the number of claims a faction holds.
+   *
+   * @param factionId the faction ID
+   * @return the claim count
+   */
+  public static int getFactionClaimCount(@NotNull UUID factionId) {
+    return getInstance().getClaimManager().getFactionClaims(factionId).size();
+  }
+
+  /**
+   * Gets the total number of factions on the server.
+   *
+   * @return the faction count
+   */
+  public static int getFactionCount() {
+    return getInstance().getFactionManager().getFactionCount();
+  }
+
+  /**
+   * Checks if a faction is raidable (power < claims).
+   *
+   * @param factionId the faction ID
+   * @return true if raidable
+   */
+  public static boolean isFactionRaidable(@NotNull UUID factionId) {
+    return getInstance().getPowerManager().isFactionRaidable(factionId);
+  }
+
+  /**
+   * Gets the relation between two players based on their faction membership.
+   * Returns {@link RelationType#NEUTRAL} if either player is not in a faction.
+   *
+   * @param player1 first player UUID
+   * @param player2 second player UUID
+   * @return the relation type, or NEUTRAL if not applicable
+   */
+  @NotNull
+  public static RelationType getPlayerRelation(@NotNull UUID player1, @NotNull UUID player2) {
+    RelationType rel = getInstance().getRelationManager().getPlayerRelation(player1, player2);
+    return rel != null ? rel : RelationType.NEUTRAL;
+  }
+
+  /**
+   * Gets all chunk claims for a faction.
+   *
+   * @param factionId the faction ID
+   * @return unmodifiable set of claimed chunk keys
+   */
+  @NotNull
+  public static Set<ChunkKey> getFactionClaims(@NotNull UUID factionId) {
+    return getInstance().getClaimManager().getFactionClaims(factionId);
   }
 }
