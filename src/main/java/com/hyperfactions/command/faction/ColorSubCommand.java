@@ -2,6 +2,8 @@ package com.hyperfactions.command.faction;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
+import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.FactionRenameEvent;
 import com.hyperfactions.command.FactionCommandContext;
 import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.command.util.CommandUtil;
@@ -103,6 +105,8 @@ public class ColorSubCommand extends FactionSubCommand {
         GuiKeys.LogsGui.MSG_COLOR_CHANGED, hexColor));
 
     hyperFactions.getFactionManager().updateFaction(updated);
+    EventBus.publish(new FactionRenameEvent(faction.id(), FactionRenameEvent.Field.COLOR,
+        faction.color(), hexColor, player.getUuid()));
 
     // Refresh world maps to show new faction color (respects configured refresh mode)
     hyperFactions.getWorldMapService().triggerFactionWideRefresh(faction.id());

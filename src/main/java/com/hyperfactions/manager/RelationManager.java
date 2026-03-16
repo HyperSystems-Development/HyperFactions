@@ -1,6 +1,8 @@
 package com.hyperfactions.manager;
 
 import com.hyperfactions.Permissions;
+import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.FactionRelationEvent;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.*;
 import com.hyperfactions.integration.PermissionManager;
@@ -420,12 +422,18 @@ public class RelationManager {
       return RelationResult.FACTION_NOT_FOUND;
     }
 
+    // Capture old relation before change
+    RelationType oldRelation = getRelation(actorFaction.id(), fromFactionId);
+
     // Set mutual ally relation (both sides get proper actor attribution)
     setRelation(actorFaction.id(), fromFactionId, RelationType.ALLY, actorUuid);
     setRelation(fromFactionId, actorFaction.id(), RelationType.ALLY, requesterUuid);
 
     // Remove pending request
     pending.remove(fromFactionId);
+
+    EventBus.publish(new FactionRelationEvent(actorFaction.id(), fromFactionId,
+        oldRelation, RelationType.ALLY, actorUuid));
 
     Logger.debugRelation("Alliance accepted: faction1=%s, faction2=%s, accepter=%s, requester=%s",
       actorFaction.name(), fromFaction.name(), actorUuid, requesterUuid);
@@ -534,8 +542,12 @@ public class RelationManager {
 
     // Check if breaking an alliance before overwriting
     boolean wasAlly = actorFaction.isAlly(targetFactionId);
+    RelationType oldRelation = actorFaction.getRelationType(targetFactionId);
 
     setRelation(actorFaction.id(), targetFactionId, RelationType.ENEMY, actorUuid);
+
+    EventBus.publish(new FactionRelationEvent(actorFaction.id(), targetFactionId,
+        oldRelation, RelationType.ENEMY, actorUuid));
 
     Logger.debugRelation("Enemy declared: faction=%s, target=%s, actor=%s",
       actorFaction.name(), targetFaction.name(), actorUuid);
@@ -604,6 +616,9 @@ public class RelationManager {
     }
 
     setRelation(actorFaction.id(), targetFactionId, RelationType.NEUTRAL, actorUuid);
+
+    EventBus.publish(new FactionRelationEvent(actorFaction.id(), targetFactionId,
+        currentRelation, RelationType.NEUTRAL, actorUuid));
 
     Logger.info("[Diplomacy] Faction '%s' set '%s' as neutral", actorFaction.name(), targetFaction.name());
 

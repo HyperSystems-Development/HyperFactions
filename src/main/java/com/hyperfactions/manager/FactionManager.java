@@ -4,6 +4,7 @@ import com.hyperfactions.Permissions;
 import com.hyperfactions.api.events.EventBus;
 import com.hyperfactions.api.events.FactionCreateEvent;
 import com.hyperfactions.api.events.FactionDisbandEvent;
+import com.hyperfactions.api.events.FactionHomeEvent;
 import com.hyperfactions.api.events.FactionMemberEvent;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.*;
@@ -1017,6 +1018,7 @@ public class FactionManager {
 
     factions.put(factionId, updated);
     storage.saveFaction(updated);
+    EventBus.publish(new FactionHomeEvent(factionId, home, actorUuid));
 
     return FactionResult.SUCCESS;
   }

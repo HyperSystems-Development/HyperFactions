@@ -1,5 +1,7 @@
 package com.hyperfactions.gui.shared.page;
 
+import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.FactionRenameEvent;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.data.FactionRole;
@@ -160,6 +162,7 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
         if (newTag == null || newTag.trim().isEmpty()) {
           Faction updatedFaction = faction.withTag(null);
           factionManager.updateFaction(updatedFaction);
+          EventBus.publish(new FactionRenameEvent(faction.id(), FactionRenameEvent.Field.TAG, faction.tag(), null, uuid));
 
           // Refresh world maps to remove faction tag (respects configured refresh mode)
           if (worldMapService != null) {
@@ -220,6 +223,7 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
         // Update the faction
         Faction updatedFaction = faction.withTag(newTag);
         factionManager.updateFaction(updatedFaction);
+        EventBus.publish(new FactionRenameEvent(faction.id(), FactionRenameEvent.Field.TAG, faction.tag(), newTag, uuid));
 
         // Refresh world maps to show new faction tag (respects configured refresh mode)
         if (worldMapService != null) {

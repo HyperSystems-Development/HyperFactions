@@ -2,6 +2,8 @@ package com.hyperfactions.command.faction;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
+import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.FactionRenameEvent;
 import com.hyperfactions.command.FactionCommandContext;
 import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.command.util.CommandUtil;
@@ -79,6 +81,8 @@ public class DescSubCommand extends FactionSubCommand {
         description != null ? GuiKeys.LogsGui.MSG_DESC_SET : GuiKeys.LogsGui.MSG_DESC_CLEARED));
 
     hyperFactions.getFactionManager().updateFaction(updated);
+    EventBus.publish(new FactionRenameEvent(faction.id(), FactionRenameEvent.Field.DESCRIPTION,
+        faction.description(), description, player.getUuid()));
 
     if (description != null) {
       ctx.sendMessage(MessageUtil.success(player, CommandKeys.Desc.SET));
