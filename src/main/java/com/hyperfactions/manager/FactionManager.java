@@ -2,6 +2,7 @@ package com.hyperfactions.manager;
 
 import com.hyperfactions.Permissions;
 import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.FactionCreateEvent;
 import com.hyperfactions.api.events.FactionDisbandEvent;
 import com.hyperfactions.api.events.FactionMemberEvent;
 import com.hyperfactions.config.ConfigManager;
@@ -434,6 +435,9 @@ public class FactionManager {
 
     // Save async
     storage.saveFaction(faction);
+
+    // Publish create event
+    EventBus.publish(new FactionCreateEvent(faction, leaderUuid));
 
     // Publish member join event for the creator (so membership history is recorded)
     EventBus.publish(new FactionMemberEvent(faction, leaderUuid, FactionMemberEvent.Type.JOIN));

@@ -1,6 +1,8 @@
 package com.hyperfactions.manager;
 
 import com.hyperfactions.Permissions;
+import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.FactionClaimEvent;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.ChunkKey;
 import com.hyperfactions.data.Faction;
@@ -427,6 +429,7 @@ public class ClaimManager {
 
     Logger.debugClaim("Claim success: chunk=%s, faction=%s, player=%s, claimCount=%d/%d",
       key, faction.name(), playerUuid, updated.getClaimCount(), maxClaims);
+    EventBus.publish(new FactionClaimEvent(updated, playerUuid, world, chunkX, chunkZ));
     notifyChunkChange(world, chunkX, chunkZ);
     return ClaimResult.SUCCESS;
   }
@@ -610,6 +613,7 @@ public class ClaimManager {
     Logger.debugClaim("Overclaim success: chunk=%s, attacker=%s, defender=%s, defenderClaims=%d/%d",
       key, attackerFaction.name(), defenderFaction.name(), defenderFaction.getClaimCount() - 1, defenderMaxClaims);
     Logger.info("[Claims] Faction '%s' overclaimed chunk from '%s'", attackerFaction.name(), defenderFaction.name());
+    EventBus.publish(new FactionClaimEvent(updatedAttacker, playerUuid, world, chunkX, chunkZ));
 
     // Notify defender faction members that they lost territory
     notifyFactionMembers(defenderId,
