@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.hyperfactions.Permissions;
+import com.hyperfactions.api.events.*;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.JoinRequest;
 import com.hyperfactions.integration.PermissionManager;
@@ -187,6 +188,7 @@ public class JoinRequestManager {
       }
     }
 
+    EventBus.publish(new FactionJoinRequestEvent(factionId, playerUuid, FactionJoinRequestEvent.Type.CREATED, message));
     return request;
   }
 
@@ -324,6 +326,8 @@ public class JoinRequestManager {
           ErrorHandler.report("Error in request accepted callback", e);
         }
       }
+
+      EventBus.publish(new FactionJoinRequestEvent(factionId, playerUuid, FactionJoinRequestEvent.Type.ACCEPTED, null));
     }
     return request;
   }
@@ -345,6 +349,8 @@ public class JoinRequestManager {
         ErrorHandler.report("Error in request declined callback", e);
       }
     }
+
+    EventBus.publish(new FactionJoinRequestEvent(factionId, playerUuid, FactionJoinRequestEvent.Type.DECLINED, null));
   }
 
   /**
@@ -432,6 +438,12 @@ public class JoinRequestManager {
 
     for (Map.Entry<UUID, Set<JoinRequest>> entry : requestsByPlayer.entrySet()) {
       int before = entry.getValue().size();
+      // Publish EXPIRED events before removing
+      for (JoinRequest request : entry.getValue()) {
+        if (request.isExpired()) {
+          EventBus.publish(new FactionJoinRequestEvent(request.factionId(), request.playerUuid(), FactionJoinRequestEvent.Type.EXPIRED, null));
+        }
+      }
       entry.getValue().removeIf(JoinRequest::isExpired);
       if (entry.getValue().size() != before) {
         changed = true;

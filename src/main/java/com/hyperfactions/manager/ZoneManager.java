@@ -1,5 +1,6 @@
 package com.hyperfactions.manager;
 
+import com.hyperfactions.api.events.*;
 import com.hyperfactions.data.ChunkKey;
 import com.hyperfactions.data.Zone;
 import com.hyperfactions.data.ZoneFlags;
@@ -409,6 +410,7 @@ public class ZoneManager {
     saveAll();
 
     Logger.info("[Zone] Created empty %s '%s' in %s", type.getDisplayName(), name, world);
+    EventBus.publish(new ZoneCreateEvent(zone.id(), zone.name(), zone.type(), zone.world(), createdBy));
     notifyZoneChange(null); // Empty zone, full refresh for map update
     return ZoneResult.SUCCESS;
   }
@@ -488,6 +490,7 @@ public class ZoneManager {
     }
 
     Logger.info("[Zone] Created %s '%s' with %d chunks in %s", type.getDisplayName(), name, chunks.size(), world);
+    EventBus.publish(new ZoneCreateEvent(zone.id(), zone.name(), zone.type(), zone.world(), createdBy));
 
     // Save and notify
     return saveAll().thenApply(v -> {
@@ -537,6 +540,7 @@ public class ZoneManager {
     saveAll();
 
     Logger.info("[Zone] Created %s '%s' at %d, %d in %s", type.getDisplayName(), name, chunkX, chunkZ, world);
+    EventBus.publish(new ZoneCreateEvent(zone.id(), zone.name(), zone.type(), zone.world(), createdBy));
     notifyZoneChange(Set.of(key));
     return ZoneResult.SUCCESS;
   }
@@ -712,6 +716,12 @@ public class ZoneManager {
       return ZoneResult.NOT_FOUND;
     }
 
+    // Capture zone data before removal for the event
+    UUID removedId = zone.id();
+    String removedName = zone.name();
+    ZoneType removedType = zone.type();
+    String removedWorld = zone.world();
+
     zonesByName.remove(zone.name().toLowerCase());
 
     // Remove all chunk index entries for this zone
@@ -722,7 +732,8 @@ public class ZoneManager {
     // Save async
     saveAll();
 
-    Logger.info("[Zone] Removed %s '%s' with %d chunks", zone.type().getDisplayName(), zone.name(), zone.getChunkCount());
+    Logger.info("[Zone] Removed %s '%s' with %d chunks", removedType.getDisplayName(), removedName, zone.getChunkCount());
+    EventBus.publish(new ZoneRemoveEvent(removedId, removedName, removedType, removedWorld));
     notifyZoneChange(zone.chunks());
     return ZoneResult.SUCCESS;
   }

@@ -1,5 +1,6 @@
 package com.hyperfactions.manager;
 
+import com.hyperfactions.api.events.*;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.PlayerPower;
@@ -174,10 +175,12 @@ public class PowerManager {
    */
   public double setPlayerPower(@NotNull UUID playerUuid, double newPower) {
     PlayerPower power = getPlayerPower(playerUuid);
+    double oldPower = power.power();
     PlayerPower updated = power.withPower(newPower);
     powerCache.put(playerUuid, updated);
     storage.savePlayerPower(updated);
-    Logger.debugPower("Admin set power: player=%s, before=%.2f, after=%.2f", playerUuid, power.power(), updated.power());
+    Logger.debugPower("Admin set power: player=%s, before=%.2f, after=%.2f", playerUuid, oldPower, updated.power());
+    EventBus.publish(new PlayerPowerChangeEvent(playerUuid, oldPower, updated.power(), PlayerPowerChangeEvent.Reason.ADMIN));
     return updated.power();
   }
 
@@ -190,10 +193,12 @@ public class PowerManager {
    */
   public double adjustPlayerPower(@NotNull UUID playerUuid, double delta) {
     PlayerPower power = getPlayerPower(playerUuid);
-    PlayerPower updated = power.withPower(power.power() + delta);
+    double oldPower = power.power();
+    PlayerPower updated = power.withPower(oldPower + delta);
     powerCache.put(playerUuid, updated);
     storage.savePlayerPower(updated);
-    Logger.debugPower("Admin adjust power: player=%s, before=%.2f, delta=%.2f, after=%.2f", playerUuid, power.power(), delta, updated.power());
+    Logger.debugPower("Admin adjust power: player=%s, before=%.2f, delta=%.2f, after=%.2f", playerUuid, oldPower, delta, updated.power());
+    EventBus.publish(new PlayerPowerChangeEvent(playerUuid, oldPower, updated.power(), PlayerPowerChangeEvent.Reason.ADMIN));
     return updated.power();
   }
 
@@ -297,12 +302,14 @@ public class PowerManager {
       return power.power(); // Player power unchanged in hardcore
     }
 
+    double oldPower = power.power();
     PlayerPower updated = power.withDeathPenalty(penalty);
     powerCache.put(playerUuid, updated);
     storage.savePlayerPower(updated);
 
     Logger.debugPower("Death penalty: player=%s, before=%.2f, after=%.2f, penalty=%.2f, max=%.2f",
-      playerUuid, power.power(), updated.power(), penalty, power.maxPower());
+      playerUuid, oldPower, updated.power(), penalty, power.maxPower());
+    EventBus.publish(new PlayerPowerChangeEvent(playerUuid, oldPower, updated.power(), PlayerPowerChangeEvent.Reason.DEATH));
     return updated.power();
   }
 
@@ -324,12 +331,14 @@ public class PowerManager {
     }
 
     // Reuse withDeathPenalty - combat logout is treated as a "virtual death"
+    double oldPower = power.power();
     PlayerPower updated = power.withDeathPenalty(penalty);
     powerCache.put(playerUuid, updated);
     storage.savePlayerPower(updated);
 
     Logger.debugPower("Combat logout penalty: player=%s, before=%.2f, after=%.2f, penalty=%.2f",
-      playerUuid, power.power(), updated.power(), penalty);
+      playerUuid, oldPower, updated.power(), penalty);
+    EventBus.publish(new PlayerPowerChangeEvent(playerUuid, oldPower, updated.power(), PlayerPowerChangeEvent.Reason.COMBAT_LOGOUT));
     return updated.power();
   }
 
@@ -357,12 +366,14 @@ public class PowerManager {
     }
 
     PlayerPower power = getPlayerPower(playerUuid);
+    double oldPower = power.power();
     PlayerPower updated = power.withRegen(reward);
     powerCache.put(playerUuid, updated);
     storage.savePlayerPower(updated);
 
     Logger.debugPower("Kill reward: player=%s, before=%.2f, after=%.2f, reward=%.2f",
-      playerUuid, power.power(), updated.power(), reward);
+      playerUuid, oldPower, updated.power(), reward);
+    EventBus.publish(new PlayerPowerChangeEvent(playerUuid, oldPower, updated.power(), PlayerPowerChangeEvent.Reason.KILL));
     return updated.power();
   }
 
@@ -382,12 +393,14 @@ public class PowerManager {
       return power.power();
     }
 
+    double oldPower = power.power();
     PlayerPower updated = power.withDeathPenalty(penalty);
     powerCache.put(playerUuid, updated);
     storage.savePlayerPower(updated);
 
     Logger.debugPower("Neutral kill penalty: player=%s, before=%.2f, after=%.2f, penalty=%.2f",
-      playerUuid, power.power(), updated.power(), penalty);
+      playerUuid, oldPower, updated.power(), penalty);
+    EventBus.publish(new PlayerPowerChangeEvent(playerUuid, oldPower, updated.power(), PlayerPowerChangeEvent.Reason.NEUTRAL_KILL));
     return updated.power();
   }
 
@@ -403,11 +416,13 @@ public class PowerManager {
       return;
     }
 
+    double oldPower = power.power();
     PlayerPower updated = power.withRegen(amount);
     powerCache.put(playerUuid, updated);
 
     Logger.debugPower("Regen: player=%s, before=%.2f, after=%.2f, amount=%.2f, max=%.2f",
-      playerUuid, power.power(), updated.power(), amount, power.maxPower());
+      playerUuid, oldPower, updated.power(), amount, power.maxPower());
+    EventBus.publish(new PlayerPowerChangeEvent(playerUuid, oldPower, updated.power(), PlayerPowerChangeEvent.Reason.REGEN));
     // Don't save immediately - batch save periodically
   }
 

@@ -1,6 +1,7 @@
 package com.hyperfactions.manager;
 
 import com.hyperfactions.Permissions;
+import com.hyperfactions.api.events.*;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.ChatMessage;
 import com.hyperfactions.data.Faction;
@@ -348,10 +349,20 @@ public class ChatManager {
     }
 
     if (channel == ChatChannel.FACTION) {
+      FactionChatEvent.Channel eventChannel = FactionChatEvent.Channel.FACTION;
+      if (EventBus.publishCancellable(new FactionChatPreEvent(senderUuid, senderFaction.id(), eventChannel, message))) {
+        return true; // Message "handled" but blocked
+      }
       sendFactionMessage(sender, senderFaction, message);
+      EventBus.publish(new FactionChatEvent(senderUuid, senderFaction.id(), eventChannel, message));
       return true;
     } else if (channel == ChatChannel.ALLY) {
+      FactionChatEvent.Channel eventChannel = FactionChatEvent.Channel.ALLY;
+      if (EventBus.publishCancellable(new FactionChatPreEvent(senderUuid, senderFaction.id(), eventChannel, message))) {
+        return true; // Message "handled" but blocked
+      }
       sendAllyMessage(sender, senderFaction, message);
+      EventBus.publish(new FactionChatEvent(senderUuid, senderFaction.id(), eventChannel, message));
       return true;
     }
 
@@ -369,11 +380,17 @@ public class ChatManager {
    */
   public void sendFromGui(@NotNull PlayerRef sender, @NotNull Faction faction,
               @NotNull ChatMessage.Channel channel, @NotNull String message) {
+    FactionChatEvent.Channel eventChannel = (channel == ChatMessage.Channel.FACTION)
+        ? FactionChatEvent.Channel.FACTION : FactionChatEvent.Channel.ALLY;
+    if (EventBus.publishCancellable(new FactionChatPreEvent(sender.getUuid(), faction.id(), eventChannel, message))) {
+      return; // Message blocked by listener
+    }
     if (channel == ChatMessage.Channel.FACTION) {
       sendFactionMessage(sender, faction, message);
     } else {
       sendAllyMessage(sender, faction, message);
     }
+    EventBus.publish(new FactionChatEvent(sender.getUuid(), faction.id(), eventChannel, message));
   }
 
   /**

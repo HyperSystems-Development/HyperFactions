@@ -5,11 +5,14 @@ import com.hyperfactions.api.events.EventBus;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.PlayerPower;
 import com.hyperfactions.data.RelationType;
+import com.hyperfactions.data.Zone;
+import com.hyperfactions.data.ZoneFlags;
 import com.hyperfactions.manager.*;
 import com.hyperfactions.protection.ProtectionChecker;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.config.modules.ChatConfig;
 import com.hyperfactions.data.ChunkKey;
+import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.HFMessages;
 import java.util.Collection;
 import java.util.Map;
@@ -346,6 +349,77 @@ public final class HyperFactionsAPI {
   @NotNull
   public static InviteManager getInviteManager() {
     return getInstance().getInviteManager();
+  }
+
+  // === Faction Home ===
+
+  /**
+   * Checks if a player's faction has a home set.
+   *
+   * @param playerUuid the player's UUID
+   * @return true if the player is in a faction that has a home
+   */
+  public static boolean hasFactionHome(@NotNull UUID playerUuid) {
+    Faction faction = getPlayerFaction(playerUuid);
+    return faction != null && faction.hasHome();
+  }
+
+  /**
+   * Gets the world name of the player's faction home.
+   *
+   * @param playerUuid the player's UUID
+   * @return the world name, or null if no faction or no home
+   */
+  @Nullable
+  public static String getFactionHomeWorld(@NotNull UUID playerUuid) {
+    Faction faction = getPlayerFaction(playerUuid);
+    if (faction == null || !faction.hasHome()) return null;
+    return faction.home().world();
+  }
+
+  /**
+   * Gets the coordinates of the player's faction home.
+   *
+   * @param playerUuid the player's UUID
+   * @return array of [x, y, z, yaw, pitch], or null if no faction or no home
+   */
+  @Nullable
+  public static double[] getFactionHomeCoords(@NotNull UUID playerUuid) {
+    Faction faction = getPlayerFaction(playerUuid);
+    if (faction == null || !faction.hasHome()) return null;
+    Faction.FactionHome home = faction.home();
+    return new double[]{ home.x(), home.y(), home.z(), home.yaw(), home.pitch() };
+  }
+
+  /**
+   * Gets the remaining cooldown in seconds for faction home teleport.
+   *
+   * @param playerUuid the player's UUID
+   * @return remaining seconds, 0 if not on cooldown
+   */
+  public static int getFactionHomeCooldownRemaining(@NotNull UUID playerUuid) {
+    return getInstance().getTeleportManager().getCooldownRemaining(playerUuid);
+  }
+
+  // === Zone Flags ===
+
+  /**
+   * Checks if a zone flag allows an action at the given world coordinates.
+   * Returns true (allowed) if the location is not in a zone.
+   *
+   * @param world    the world name
+   * @param x        the world X coordinate
+   * @param z        the world Z coordinate
+   * @param flagName the zone flag name (use constants from {@link ZoneFlags})
+   * @return true if the action is allowed
+   */
+  public static boolean isZoneFlagAllowed(@NotNull String world, double x, double z,
+                                          @NotNull String flagName) {
+    int chunkX = ChunkUtil.toChunkCoord(x);
+    int chunkZ = ChunkUtil.toChunkCoord(z);
+    Zone zone = getInstance().getZoneManager().getZone(world, chunkX, chunkZ);
+    if (zone == null) return true; // Not in a zone — allow
+    return zone.getEffectiveFlag(flagName);
   }
 
   // === Event System ===

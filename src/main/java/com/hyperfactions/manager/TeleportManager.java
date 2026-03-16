@@ -1,6 +1,7 @@
 package com.hyperfactions.manager;
 
 import com.hyperfactions.Permissions;
+import com.hyperfactions.api.events.*;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.integration.PermissionManager;
@@ -497,6 +498,7 @@ public class TeleportManager {
     if (distSq > 0.25) { // 0.5 blocks
       removePending(playerUuid);
       sendMessage.accept(MessageUtil.error(HFMessages.get((PlayerRef) null, CommonKeys.Teleport.MOVED_CANCELLED)));
+      EventBus.publish(new TeleportCancelledEvent(playerUuid, TeleportCancelledEvent.Reason.MOVED));
       return true;
     }
 
@@ -521,6 +523,7 @@ public class TeleportManager {
     if (pendingTeleports.containsKey(playerUuid)) {
       removePending(playerUuid);
       sendMessage.accept(MessageUtil.error(HFMessages.get((PlayerRef) null, CommonKeys.Teleport.DAMAGE_CANCELLED)));
+      EventBus.publish(new TeleportCancelledEvent(playerUuid, TeleportCancelledEvent.Reason.DAMAGE));
       return true;
     }
 

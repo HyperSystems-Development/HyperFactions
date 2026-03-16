@@ -508,139 +508,146 @@ HyperFactionsAPI.registerEventListener(FactionCreateEvent.class, event -> { ... 
 HyperFactionsAPI.unregisterEventListener(FactionCreateEvent.class, listener);
 ```
 
-### Post-Events
+### Event Reference
 
-Post-events are immutable record classes fired after an action has occurred.
+#### Faction Lifecycle
 
-#### FactionCreateEvent
+| Post-Event | Pre-Event (Cancellable) | Description |
+|------------|------------------------|-------------|
+| `FactionCreateEvent` | `FactionCreatePreEvent` | Faction created |
+| `FactionDisbandEvent` | `FactionDisbandPreEvent` | Faction disbanded |
 
-Fired when a new faction is created.
+**FactionCreateEvent**: `(Faction faction, UUID creatorUuid)`
+**FactionDisbandEvent**: `(Faction faction, @Nullable UUID disbandedBy)` — null for system-initiated
 
-```java
-public record FactionCreateEvent(
-    @NotNull Faction faction,    // The created faction
-    @NotNull UUID creatorUuid    // Player who created it
-)
-```
+#### Membership
 
-#### FactionDisbandEvent
+| Post-Event | Pre-Event (Cancellable) | Description |
+|------------|------------------------|-------------|
+| `FactionMemberEvent` | `FactionMemberPreEvent` | Member join/leave/kick/promote/demote |
+| `FactionInviteEvent` | — | Invite created/accepted/declined/expired |
+| `FactionJoinRequestEvent` | — | Join request created/accepted/declined/expired |
 
-Fired when a faction is disbanded. `disbandedBy` is null for system-initiated disbands (e.g., last member leaves).
+**FactionMemberEvent**: `(Faction faction, UUID playerUuid, Type type)`
+Type: `JOIN`, `LEAVE`, `KICK`, `PROMOTE`, `DEMOTE`
 
-```java
-public record FactionDisbandEvent(
-    @NotNull Faction faction,      // The disbanded faction
-    @Nullable UUID disbandedBy     // Player who disbanded, or null for system
-)
-```
+**FactionInviteEvent**: `(UUID factionId, UUID playerUuid, UUID invitedBy, Type type)`
+Type: `CREATED`, `ACCEPTED`, `DECLINED`, `EXPIRED`
 
-#### FactionClaimEvent
+**FactionJoinRequestEvent**: `(UUID factionId, UUID playerUuid, Type type, @Nullable String message)`
+Type: `CREATED`, `ACCEPTED`, `DECLINED`, `EXPIRED`
 
-Fired when a faction claims a chunk (including overclaim for the attacker).
+#### Territory
 
-```java
-public record FactionClaimEvent(
-    @NotNull Faction faction,    // The claiming faction
-    @NotNull UUID claimedBy,     // Player who claimed
-    @NotNull String world,       // World name
-    int chunkX,                  // Chunk X coordinate
-    int chunkZ                   // Chunk Z coordinate
-)
-```
+| Post-Event | Pre-Event (Cancellable) | Description |
+|------------|------------------------|-------------|
+| `FactionClaimEvent` | `FactionClaimPreEvent` | Chunk claimed |
+| `FactionUnclaimEvent` | `FactionUnclaimPreEvent` | Chunk unclaimed (manual only for pre-event) |
+| `PlayerTerritoryChangeEvent` | — | Player moves between territories |
 
-#### FactionUnclaimEvent
+**FactionClaimEvent**: `(Faction faction, UUID claimedBy, String world, int chunkX, int chunkZ)`
 
-Fired when a faction loses a chunk. The `Reason` enum indicates how the chunk was lost.
+**FactionUnclaimEvent**: `(UUID factionId, String world, int chunkX, int chunkZ, Reason reason, @Nullable UUID actorUuid)`
+Reason: `UNCLAIM`, `DISBAND`, `OVERCLAIM`, `DECAY`
 
-```java
-public record FactionUnclaimEvent(
-    @NotNull UUID factionId,     // Faction that lost the claim
-    @NotNull String world,
-    int chunkX,
-    int chunkZ,
-    @NotNull Reason reason,      // How the claim was lost
-    @Nullable UUID actorUuid     // Player who triggered it (null for system/decay)
-) {
-    public enum Reason {
-        UNCLAIM,    // Player manually unclaimed
-        DISBAND,    // Faction disbanded — all claims released
-        OVERCLAIM,  // Another faction overclaimed this chunk
-        DECAY       // Claim removed due to inactivity decay
-    }
-}
-```
+**FactionUnclaimPreEvent**: `(UUID factionId, UUID playerUuid, String world, int chunkX, int chunkZ)`
+Only fires for manual `/f unclaim` — not for disband/overclaim/decay.
 
-#### FactionMemberEvent
+**PlayerTerritoryChangeEvent**: `(UUID playerUuid, String world, int chunkX, int chunkZ, @Nullable UUID oldFactionId, @Nullable UUID newFactionId)`
+Helper methods: `enteredWilderness()`, `leftWilderness()`
 
-Fired when a player's membership status changes.
+#### Diplomacy
 
-```java
-public record FactionMemberEvent(
-    @NotNull Faction faction,    // The faction
-    @NotNull UUID playerUuid,    // Affected player
-    @NotNull Type type           // Change type
-) {
-    public enum Type {
-        JOIN,     // Player joined the faction
-        LEAVE,    // Player left voluntarily
-        KICK,     // Player was kicked
-        PROMOTE,  // Player was promoted
-        DEMOTE    // Player was demoted
-    }
-}
-```
+| Post-Event | Pre-Event (Cancellable) | Description |
+|------------|------------------------|-------------|
+| `FactionRelationEvent` | `FactionRelationPreEvent` | Relation changed (ally/enemy/neutral) |
 
-#### FactionRelationEvent
+**FactionRelationEvent**: `(UUID factionId1, UUID factionId2, RelationType oldRelation, RelationType newRelation, @Nullable UUID actorUuid)`
+Compact constructor validates `OWN` never appears.
 
-Fired when the diplomatic relation between two factions changes.
+#### Faction Settings
 
-```java
-public record FactionRelationEvent(
-    @NotNull UUID factionId1,
-    @NotNull UUID factionId2,
-    @NotNull RelationType oldRelation,   // Previous relation (ALLY, ENEMY, or NEUTRAL)
-    @NotNull RelationType newRelation,   // New relation (ALLY, ENEMY, or NEUTRAL)
-    @Nullable UUID actorUuid             // Player who triggered the change
-)
-```
+| Post-Event | Pre-Event (Cancellable) | Description |
+|------------|------------------------|-------------|
+| `FactionRenameEvent` | `FactionRenamePreEvent` | Name/tag/description/color changed |
+| `FactionHomeEvent` | `FactionHomePreEvent` | Home set or cleared |
 
-> Note: `RelationType.OWN` will never appear — it represents a player's own faction, not an inter-faction relation. The compact constructor validates this.
+**FactionRenameEvent**: `(UUID factionId, Field field, @Nullable String oldValue, @Nullable String newValue, UUID actorUuid)`
+Field: `NAME`, `TAG`, `DESCRIPTION`, `COLOR`
 
-#### FactionRenameEvent
+**FactionHomeEvent**: `(UUID factionId, @Nullable Faction.FactionHome home, UUID actorUuid)`
+Helper: `isCleared()` — true if home was removed.
 
-Fired when a faction's name, tag, description, or color changes.
+#### Combat
 
-```java
-public record FactionRenameEvent(
-    @NotNull UUID factionId,
-    @NotNull Field field,        // Which field changed
-    @Nullable String oldValue,   // Previous value (null if unset)
-    @Nullable String newValue,   // New value (null if cleared)
-    @NotNull UUID actorUuid      // Player who made the change
-) {
-    public enum Field { NAME, TAG, DESCRIPTION, COLOR }
-}
-```
+| Post-Event | Pre-Event (Cancellable) | Description |
+|------------|------------------------|-------------|
+| `CombatTagEvent` | `CombatTagPreEvent` | Player tagged/tag expired/tag cleared |
+| `CombatLogoutEvent` | — | Tagged player disconnected |
 
-#### FactionHomeEvent
+**CombatTagEvent**: `(UUID playerUuid, Type type, @Nullable UUID taggerUuid, int durationSeconds)`
+Type: `TAGGED`, `EXPIRED`, `CLEARED`
 
-Fired when a faction home is set or cleared.
+**CombatLogoutEvent**: `(UUID playerUuid, int remainingSeconds)`
 
-```java
-public record FactionHomeEvent(
-    @NotNull UUID factionId,
-    @Nullable Faction.FactionHome home,   // New home (null if cleared)
-    @NotNull UUID actorUuid
-) {
-    public boolean isCleared()   // True if the home was removed
-}
-```
+#### Power
 
-### Cancellable Pre-Events
+| Post-Event | Pre-Event (Cancellable) | Description |
+|------------|------------------------|-------------|
+| `PlayerPowerChangeEvent` | — | Player power changed |
 
-Pre-events fire **before** an action occurs and can be cancelled by listeners. When cancelled, the action is aborted and the player receives a denial message.
+**PlayerPowerChangeEvent**: `(UUID playerUuid, double oldPower, double newPower, Reason reason)`
+Reason: `DEATH`, `KILL`, `NEUTRAL_KILL`, `REGEN`, `COMBAT_LOGOUT`, `ADMIN`
+Helper: `delta()` — returns `newPower - oldPower`
 
-All pre-events implement the `Cancellable` interface:
+#### Chat
+
+| Post-Event | Pre-Event (Cancellable) | Description |
+|------------|------------------------|-------------|
+| `FactionChatEvent` | `FactionChatPreEvent` | Message in faction/ally chat |
+
+**FactionChatEvent**: `(UUID senderUuid, UUID factionId, Channel channel, String message)`
+Channel: `FACTION`, `ALLY`
+
+#### Economy
+
+| Post-Event | Pre-Event (Cancellable) | Description |
+|------------|------------------------|-------------|
+| `FactionTransactionEvent` | `FactionTransactionPreEvent` | Treasury transaction |
+
+**FactionTransactionEvent**: `(UUID factionId, TransactionType transactionType, BigDecimal amount, BigDecimal balanceAfter, @Nullable UUID actorUuid, String description)`
+
+Only fires for player-initiated transactions (deposit/withdraw/transfer), not system operations (upkeep, tax).
+
+#### Teleport
+
+| Post-Event | Pre-Event (Cancellable) | Description |
+|------------|------------------------|-------------|
+| `FactionHomeTeleportEvent` | `FactionHomeTeleportPreEvent` | `/f home` teleport |
+| `TeleportCancelledEvent` | — | Warmup teleport cancelled |
+
+**FactionHomeTeleportEvent**: `(UUID playerUuid, UUID factionId, String sourceWorld, double sourceX/Y/Z, String destWorld, double destX/Y/Z, float destYaw, float destPitch)`
+Fires for both instant and warmup-completed teleports.
+
+**FactionHomeTeleportPreEvent**: `(UUID playerUuid, UUID factionId, String sourceWorld, double sourceX/Y/Z, String destWorld, double destX/Y/Z)`
+Fires before the teleport executes. Cancel to prevent.
+
+**TeleportCancelledEvent**: `(UUID playerUuid, Reason reason)`
+Reason: `MOVED`, `DAMAGE`, `COMBAT_TAGGED`, `MANUAL`
+
+#### Zones
+
+| Post-Event | Pre-Event (Cancellable) | Description |
+|------------|------------------------|-------------|
+| `ZoneCreateEvent` | — | Zone created |
+| `ZoneRemoveEvent` | — | Zone removed |
+
+**ZoneCreateEvent**: `(UUID zoneId, String name, ZoneType type, String world, @Nullable UUID createdBy)`
+**ZoneRemoveEvent**: `(UUID zoneId, String name, ZoneType type, String world)`
+
+### Cancellable Interface
+
+All pre-events implement `Cancellable`:
 
 ```java
 public interface Cancellable {
@@ -651,23 +658,26 @@ public interface Cancellable {
 }
 ```
 
-Listeners can provide a custom cancel reason via `setCancelReason()`. If set, it will be available to the manager for custom denial messages.
+Pre-events fire after basic validation but **before** state changes. If cancelled, the action returns `NO_PERMISSION`.
 
-#### Available Pre-Events
+### Complete Pre-Event Reference
 
-| Pre-Event | Fired Before | Fields |
-|-----------|-------------|--------|
+| Pre-Event | Fired Before | Key Fields |
+|-----------|-------------|------------|
 | `FactionCreatePreEvent` | Faction creation | `factionName`, `creatorUuid` |
 | `FactionDisbandPreEvent` | Faction disband | `faction`, `actorUuid` |
-| `FactionMemberPreEvent` | Member join/leave/role change | `faction`, `playerUuid`, `type` |
+| `FactionMemberPreEvent` | Member join/leave/role | `faction`, `playerUuid`, `type` |
 | `FactionClaimPreEvent` | Chunk claim | `factionId`, `playerUuid`, `world`, `chunkX`, `chunkZ` |
+| `FactionUnclaimPreEvent` | Manual unclaim | `factionId`, `playerUuid`, `world`, `chunkX`, `chunkZ` |
 | `FactionRelationPreEvent` | Relation change | `factionId1`, `factionId2`, `oldRelation`, `newRelation`, `actorUuid` |
-| `FactionRenamePreEvent` | Name/tag/desc/color change | `factionId`, `field`, `oldValue`, `newValue`, `actorUuid` |
+| `FactionRenamePreEvent` | Settings change | `factionId`, `field`, `oldValue`, `newValue`, `actorUuid` |
 | `FactionHomePreEvent` | Home set/clear | `factionId`, `home`, `actorUuid` |
+| `CombatTagPreEvent` | Combat tagging | `playerUuid`, `taggerUuid`, `durationSeconds` |
+| `FactionChatPreEvent` | Chat message | `senderUuid`, `factionId`, `channel`, `message` |
+| `FactionTransactionPreEvent` | Treasury transaction | `factionId`, `transactionType`, `amount`, `actorUuid`, `description` |
+| `FactionHomeTeleportPreEvent` | Home teleport | `playerUuid`, `factionId`, source coords, dest coords |
 
-Pre-events fire after basic validation (permission checks, null checks) but **before** any state changes. If cancelled, the action returns `NO_PERMISSION` to the caller.
-
-### Event Examples
+### Examples
 
 #### Listening to Post-Events
 
@@ -676,48 +686,44 @@ import com.hyperfactions.api.events.*;
 
 public class MyPlugin {
 
-    private Consumer<FactionCreateEvent> createListener;
-
     public void onEnable() {
         if (!HyperFactionsAPI.isAvailable()) return;
 
-        createListener = event -> {
-            System.out.println("New faction: " + event.faction().name()
-                + " by " + event.creatorUuid());
-        };
+        // Track faction creation
+        EventBus.register(FactionCreateEvent.class, event ->
+            log("New faction: " + event.faction().name()));
 
-        EventBus.register(FactionCreateEvent.class, createListener);
-        EventBus.register(FactionMemberEvent.class, this::onMemberChange);
-        EventBus.register(FactionRelationEvent.class, this::onRelationChange);
-        EventBus.register(FactionUnclaimEvent.class, this::onUnclaim);
-    }
+        // Track territory movement
+        EventBus.register(PlayerTerritoryChangeEvent.class, event -> {
+            if (event.enteredWilderness()) {
+                log(event.playerUuid() + " entered wilderness");
+            }
+        });
 
-    public void onDisable() {
-        if (createListener != null) {
-            EventBus.unregister(FactionCreateEvent.class, createListener);
-        }
-    }
+        // Track power changes
+        EventBus.register(PlayerPowerChangeEvent.class, event -> {
+            if (event.reason() == PlayerPowerChangeEvent.Reason.DEATH) {
+                log(event.playerUuid() + " lost " + Math.abs(event.delta()) + " power");
+            }
+        });
 
-    private void onMemberChange(FactionMemberEvent event) {
-        switch (event.type()) {
-            case JOIN -> log(event.playerUuid() + " joined " + event.faction().name());
-            case LEAVE -> log(event.playerUuid() + " left " + event.faction().name());
-            case KICK -> log(event.playerUuid() + " was kicked from " + event.faction().name());
-            case PROMOTE -> log(event.playerUuid() + " was promoted in " + event.faction().name());
-            case DEMOTE -> log(event.playerUuid() + " was demoted in " + event.faction().name());
-        }
-    }
+        // Track combat
+        EventBus.register(CombatTagEvent.class, event -> {
+            if (event.type() == CombatTagEvent.Type.TAGGED) {
+                log(event.playerUuid() + " tagged for " + event.durationSeconds() + "s");
+            }
+        });
 
-    private void onRelationChange(FactionRelationEvent event) {
-        log("Relation changed: " + event.factionId1() + " -> " + event.factionId2()
-            + " from " + event.oldRelation() + " to " + event.newRelation());
-    }
+        // Track economy
+        EventBus.register(FactionTransactionEvent.class, event ->
+            log("Transaction: " + event.transactionType() + " " + event.amount()
+                + " for faction " + event.factionId()));
 
-    private void onUnclaim(FactionUnclaimEvent event) {
-        if (event.reason() == FactionUnclaimEvent.Reason.DECAY) {
-            log("Faction " + event.factionId() + " lost chunk to decay at "
-                + event.chunkX() + ", " + event.chunkZ());
-        }
+        // Save back location on /f home (HyperEssentials pattern)
+        EventBus.register(FactionHomeTeleportEvent.class, event -> {
+            saveBackLocation(event.playerUuid(),
+                event.sourceWorld(), event.sourceX(), event.sourceY(), event.sourceZ());
+        });
     }
 }
 ```
@@ -733,19 +739,35 @@ EventBus.register(FactionClaimPreEvent.class, event -> {
     }
 });
 
-// Prevent faction creation with banned words
-EventBus.register(FactionCreatePreEvent.class, event -> {
-    if (containsBannedWord(event.factionName())) {
+// Block combat tagging in lobby areas
+EventBus.register(CombatTagPreEvent.class, event -> {
+    if (isLobbyArea(event.playerUuid())) {
         event.setCancelled(true);
-        event.setCancelReason("Faction name contains a banned word.");
     }
 });
 
-// Block all disbands during an event
-EventBus.register(FactionDisbandPreEvent.class, event -> {
+// Filter faction chat messages
+EventBus.register(FactionChatPreEvent.class, event -> {
+    if (containsProfanity(event.message())) {
+        event.setCancelled(true);
+        event.setCancelReason("Message contains inappropriate language.");
+    }
+});
+
+// Block large treasury withdrawals
+EventBus.register(FactionTransactionPreEvent.class, event -> {
+    if (event.transactionType() == EconomyAPI.TransactionType.WITHDRAW
+        && event.amount().compareTo(BigDecimal.valueOf(10000)) > 0) {
+        event.setCancelled(true);
+        event.setCancelReason("Withdrawals over 10,000 require admin approval.");
+    }
+});
+
+// Prevent /f home during server events
+EventBus.register(FactionHomeTeleportPreEvent.class, event -> {
     if (isServerEventActive()) {
         event.setCancelled(true);
-        event.setCancelReason("Factions cannot be disbanded during the event!");
+        event.setCancelReason("Faction home teleport disabled during the event!");
     }
 });
 ```

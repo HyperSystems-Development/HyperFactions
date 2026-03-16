@@ -1,6 +1,7 @@
 package com.hyperfactions.manager;
 
 import com.hyperfactions.api.EconomyAPI;
+import com.hyperfactions.api.events.*;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionEconomy.TreasuryLimits;
@@ -307,6 +308,11 @@ public class EconomyManager implements EconomyAPI {
     @Nullable UUID actorId,
     @NotNull String description
   ) {
+    // Pre-event fires synchronously before the future chain
+    if (EventBus.publishCancellable(new FactionTransactionPreEvent(factionId, TransactionType.DEPOSIT, amount, actorId, description))) {
+      return CompletableFuture.completedFuture(TransactionResult.NO_PERMISSION);
+    }
+
     return CompletableFuture.supplyAsync(() -> {
       if (amount.compareTo(BigDecimal.ZERO) <= 0) {
         return TransactionResult.INVALID_AMOUNT;
@@ -349,6 +355,7 @@ public class EconomyManager implements EconomyAPI {
       Logger.debugEconomy("Deposit to %s: %s (new balance: %s)",
         faction.name(), formatCurrency(amount), formatCurrency(newBalance));
 
+      EventBus.publish(new FactionTransactionEvent(factionId, TransactionType.DEPOSIT, amount, newBalance, actorId, description));
       return TransactionResult.SUCCESS;
     });
   }
@@ -375,6 +382,11 @@ public class EconomyManager implements EconomyAPI {
     @NotNull String description,
     @NotNull TransactionType transactionType
   ) {
+    // Pre-event fires synchronously before the future chain
+    if (EventBus.publishCancellable(new FactionTransactionPreEvent(factionId, transactionType, amount, actorId, description))) {
+      return CompletableFuture.completedFuture(TransactionResult.NO_PERMISSION);
+    }
+
     return CompletableFuture.supplyAsync(() -> {
       if (amount.compareTo(BigDecimal.ZERO) <= 0) {
         return TransactionResult.INVALID_AMOUNT;
@@ -427,6 +439,7 @@ public class EconomyManager implements EconomyAPI {
       Logger.debugEconomy("Withdrawal from %s: %s (new balance: %s)",
         faction.name(), formatCurrency(amount), formatCurrency(newBalance));
 
+      EventBus.publish(new FactionTransactionEvent(factionId, transactionType, amount, newBalance, actorId, description));
       return TransactionResult.SUCCESS;
     });
   }
@@ -441,6 +454,11 @@ public class EconomyManager implements EconomyAPI {
     @Nullable UUID actorId,
     @NotNull String description
   ) {
+    // Pre-event fires synchronously before the future chain
+    if (EventBus.publishCancellable(new FactionTransactionPreEvent(fromFactionId, TransactionType.TRANSFER_OUT, amount, actorId, description))) {
+      return CompletableFuture.completedFuture(TransactionResult.NO_PERMISSION);
+    }
+
     return CompletableFuture.supplyAsync(() -> {
       if (amount.compareTo(BigDecimal.ZERO) <= 0) {
         return TransactionResult.INVALID_AMOUNT;
@@ -504,6 +522,8 @@ public class EconomyManager implements EconomyAPI {
       Logger.debugEconomy("Transfer from %s to %s: %s",
         fromFaction.name(), toFaction.name(), formatCurrency(amount));
 
+      EventBus.publish(new FactionTransactionEvent(fromFactionId, TransactionType.TRANSFER_OUT, amount, fromNewBalance, actorId, description));
+      EventBus.publish(new FactionTransactionEvent(toFactionId, TransactionType.TRANSFER_IN, amount, toNewBalance, actorId, description));
       return TransactionResult.SUCCESS;
     });
   }
