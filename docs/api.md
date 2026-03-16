@@ -16,9 +16,14 @@ This document is for third-party mod developers who want to hook into HyperFacti
 - [Zones](#zones)
 - [Combat](#combat)
 - [Protection](#protection)
+- [Language / i18n](#language--i18n)
+- [Chat Color Customization](#chat-color-customization)
+- [Configuration](#configuration)
 - [Manager Access](#manager-access)
 - [Economy API](#economy-api)
 - [Event System](#event-system)
+  - [Post-Events](#post-events)
+  - [Cancellable Pre-Events](#cancellable-pre-events)
 
 ---
 
@@ -70,6 +75,7 @@ flowchart LR
     D --> F[Faction Queries]
     D --> G[Event Listeners]
     D --> H[Manager Access]
+    D --> I[Language / Colors]
 ```
 
 ---
@@ -83,16 +89,23 @@ flowchart LR
 | `getPlayerFaction(UUID playerUuid)` | `@Nullable Faction` | Get a player's faction |
 | `isInFaction(UUID playerUuid)` | `boolean` | Check if a player is in any faction |
 | `getAllFactions()` | `Collection<Faction>` | Get all factions |
+| `getFactionCount()` | `int` | Get total number of factions on the server |
+| `getFactionClaimCount(UUID factionId)` | `int` | Get number of claims a faction holds |
+| `getFactionClaims(UUID factionId)` | `Set<ChunkKey>` | Get all chunk claims for a faction |
 
 ### Example
 
 ```java
 Faction faction = HyperFactionsAPI.getPlayerFaction(playerUuid);
 if (faction != null) {
-    String name = faction.getName();
-    UUID leaderId = faction.getLeader();
-    int memberCount = faction.getMembers().size();
+    String name = faction.name();
+    UUID leaderId = faction.getLeaderId();
+    int memberCount = faction.getMemberCount();
+    int claimCount = HyperFactionsAPI.getFactionClaimCount(faction.id());
 }
+
+// Server stats
+int totalFactions = HyperFactionsAPI.getFactionCount();
 ```
 
 ---
@@ -103,6 +116,23 @@ if (faction != null) {
 |--------|---------|-------------|
 | `getPlayerPower(UUID playerUuid)` | `@NotNull PlayerPower` | Get player's power data |
 | `getFactionPower(UUID factionId)` | `double` | Get faction's total power |
+| `getFactionPowerStats(UUID factionId)` | `@NotNull FactionPowerStats` | Get detailed power statistics |
+| `isFactionRaidable(UUID factionId)` | `boolean` | Check if faction is raidable (power < claims) |
+
+### FactionPowerStats Record
+
+```java
+record FactionPowerStats(
+    double currentPower,
+    double maxPower,
+    int currentClaims,
+    int maxClaims
+) {
+    int getPowerPercent()     // Power as percentage (0-100)
+    boolean isRaidable()      // True if currentClaims > maxClaims
+    int getClaimDeficit()     // How many claims over capacity
+}
+```
 
 ### Example
 
@@ -111,7 +141,12 @@ PlayerPower power = HyperFactionsAPI.getPlayerPower(playerUuid);
 double current = power.power();
 double max = power.maxPower();
 
-double factionPower = HyperFactionsAPI.getFactionPower(factionId);
+// Detailed faction power stats
+var stats = HyperFactionsAPI.getFactionPowerStats(factionId);
+if (stats.isRaidable()) {
+    // Faction can be overclaimed!
+    int deficit = stats.getClaimDeficit();
+}
 ```
 
 ---
@@ -122,17 +157,25 @@ double factionPower = HyperFactionsAPI.getFactionPower(factionId);
 |--------|---------|-------------|
 | `getClaimOwner(String world, int chunkX, int chunkZ)` | `@Nullable UUID` | Get faction ID owning a chunk |
 | `isClaimed(String world, int chunkX, int chunkZ)` | `boolean` | Check if a chunk is claimed |
+| `getFactionClaims(UUID factionId)` | `Set<ChunkKey>` | Get all chunks claimed by a faction |
+| `getFactionClaimCount(UUID factionId)` | `int` | Get claim count for a faction |
 
 ### Example
 
 ```java
-// Convert world coordinates to chunk coordinates
-int chunkX = (int) Math.floor(x) >> 4;
-int chunkZ = (int) Math.floor(z) >> 4;
+// Convert world coordinates to chunk coordinates (Hytale uses 32-block chunks)
+int chunkX = (int) Math.floor(x) >> 5;
+int chunkZ = (int) Math.floor(z) >> 5;
 
 UUID owner = HyperFactionsAPI.getClaimOwner("world", chunkX, chunkZ);
 if (owner != null) {
     Faction owningFaction = HyperFactionsAPI.getFaction(owner);
+}
+
+// Get all claims for a faction
+Set<ChunkKey> claims = HyperFactionsAPI.getFactionClaims(factionId);
+for (ChunkKey key : claims) {
+    // key.world(), key.chunkX(), key.chunkZ()
 }
 ```
 
@@ -145,23 +188,20 @@ if (owner != null) {
 | `getRelation(UUID factionId1, UUID factionId2)` | `@NotNull RelationType` | Get relation between two factions |
 | `areAllies(UUID factionId1, UUID factionId2)` | `boolean` | Check if two factions are allied |
 | `areEnemies(UUID factionId1, UUID factionId2)` | `boolean` | Check if two factions are enemies |
+| `getPlayerRelation(UUID player1, UUID player2)` | `@NotNull RelationType` | Get relation between two players via their factions |
 
-`RelationType` values: `ALLY`, `ENEMY`, `NEUTRAL`
+`RelationType` values: `ALLY`, `ENEMY`, `NEUTRAL`, `OWN`
 
 ### Example
 
 ```java
-Faction playerFaction = HyperFactionsAPI.getPlayerFaction(playerUuid);
-Faction targetFaction = HyperFactionsAPI.getPlayerFaction(targetUuid);
+// Faction-level relation
+RelationType relation = HyperFactionsAPI.getRelation(factionId1, factionId2);
 
-if (playerFaction != null && targetFaction != null) {
-    RelationType relation = HyperFactionsAPI.getRelation(
-        playerFaction.getId(), targetFaction.getId()
-    );
-
-    if (relation == RelationType.ALLY) {
-        // Friendly interaction
-    }
+// Player-level shorthand (returns NEUTRAL if either player has no faction)
+RelationType playerRel = HyperFactionsAPI.getPlayerRelation(attackerUuid, defenderUuid);
+if (playerRel.isFriendly()) {
+    // Don't allow friendly fire
 }
 ```
 
@@ -216,6 +256,110 @@ ProtectionChecker checker = HyperFactionsAPI.getProtectionChecker();
 
 ---
 
+## Language / i18n
+
+Control player language preferences for HyperFactions messages. External plugins can sync their language system with HyperFactions so players get a consistent experience.
+
+| Method | Returns | Description |
+|--------|---------|-------------|
+| `setPlayerLanguage(UUID playerUuid, String locale)` | `void` | Set language with immediate effect + async persistence |
+| `getPlayerLanguage(UUID playerUuid)` | `@NotNull String` | Get current language preference (or server default) |
+| `getSupportedLocales()` | `@NotNull Set<String>` | Get all supported locale codes |
+
+**Supported locales**: `en-US`, `es-ES`, `de-DE`, `fr-FR`, `pt-BR`, `ru-RU`, `pl-PL`, `it-IT`, `nl-NL`, `tl-PH`
+
+### Behavior
+
+- `setPlayerLanguage()` takes effect immediately for all subsequent messages and is persisted to `PlayerData` for cross-session retention.
+- Throws `IllegalArgumentException` if the locale is not in `getSupportedLocales()`.
+- `getPlayerLanguage()` returns the explicitly-set preference. For online players with `usePlayerLanguage=true` in config who have no preference set, the actual message language may differ (resolved from client language).
+
+### Example
+
+```java
+// Sync language from your plugin to HyperFactions
+Set<String> supported = HyperFactionsAPI.getSupportedLocales();
+String locale = "pl-PL";
+
+if (supported.contains(locale)) {
+    HyperFactionsAPI.setPlayerLanguage(playerUuid, locale);
+}
+
+// Read current preference
+String current = HyperFactionsAPI.getPlayerLanguage(playerUuid);
+```
+
+---
+
+## Chat Color Customization
+
+Override HyperFactions' chat colors at runtime to match your server's color scheme. Changes take effect immediately for all subsequent messages.
+
+### Granular Setters
+
+| Method | Description |
+|--------|-------------|
+| `setChatRelationColor(String relation, String hexColor)` | Set color for "OWN", "ALLY", "NEUTRAL", or "ENEMY" |
+| `setPrefixColor(String hexColor)` | Set prefix text color (inside brackets) |
+| `setPrefixBracketColor(String hexColor)` | Set bracket color (the `[ ]`) |
+| `setPlayerNameColor(String hexColor)` | Set player name color in public chat |
+| `setMessageColor(String hexColor)` | Set message text color in faction/ally chat |
+| `setFactionChatColor(String hexColor)` | Set faction chat message color |
+| `setAllyChatColor(String hexColor)` | Set ally chat message color |
+| `setSenderNameColor(String hexColor)` | Set sender name color in faction/ally chat |
+| `setNoFactionTagColor(String hexColor)` | Set color for no-faction tag |
+
+All setters validate hex format (`#RRGGBB`) and throw `IllegalArgumentException` on invalid input.
+
+### Bulk Setter / Getter
+
+| Method | Returns | Description |
+|--------|---------|-------------|
+| `setChatColors(Map<String, String> colors)` | `void` | Apply a color theme (only provided keys are updated) |
+| `getChatColors()` | `Map<String, String>` | Read all current color values |
+
+**Supported keys for `setChatColors`**: `relationOwn`, `relationAlly`, `relationNeutral`, `relationEnemy`, `prefixColor`, `prefixBracketColor`, `playerNameColor`, `senderNameColor`, `messageColor`, `factionChatColor`, `allyChatColor`, `noFactionTagColor`
+
+The bulk setter validates all entries before applying any (atomic — no partial updates on error).
+
+### Example
+
+```java
+// Save original colors for restore
+Map<String, String> originalColors = HyperFactionsAPI.getChatColors();
+
+// Apply a shadcn/zinc palette
+HyperFactionsAPI.setChatColors(Map.of(
+    "relationOwn",     "#4ade80",  // green-400
+    "relationAlly",    "#f472b6",  // pink-400
+    "relationEnemy",   "#f87171",  // red-400
+    "relationNeutral", "#a1a1aa",  // zinc-400
+    "prefixColor",     "#38bdf8"   // sky-400
+));
+
+// Or use individual setters
+HyperFactionsAPI.setChatRelationColor("ENEMY", "#f87171");
+
+// Persist to disk (survives restart)
+HyperFactionsAPI.saveConfig();
+
+// Restore original
+HyperFactionsAPI.setChatColors(originalColors);
+```
+
+---
+
+## Configuration
+
+| Method | Description |
+|--------|-------------|
+| `saveConfig()` | Save all current config to disk (persists runtime changes like chat colors) |
+| `reloadConfig()` | Reload config from disk (reverts unsaved runtime changes) |
+
+Color changes via `setChatColors()` and the individual setters are **in-memory only** by default. Call `saveConfig()` to persist them across restarts. This allows temporary runtime theming without permanently modifying config files.
+
+---
+
 ## Manager Access
 
 For advanced use cases, you can access individual managers directly. This gives you full control over faction operations beyond the convenience methods above.
@@ -230,6 +374,9 @@ For advanced use cases, you can access individual managers directly. This gives 
 | `getCombatTagManager()` | `CombatTagManager` | Combat tagging, spawn protection |
 | `getTeleportManager()` | `TeleportManager` | Faction home teleportation |
 | `getInviteManager()` | `InviteManager` | Invite management with expiration |
+| `getChatManager()` | `ChatManager` | Faction/ally chat channels and messaging |
+| `getJoinRequestManager()` | `JoinRequestManager` | Join request management |
+| `getEconomyAPI()` | `@Nullable EconomyAPI` | Economy API (null if economy disabled) |
 
 > **Note**: Manager methods are internal APIs and may change between versions. Prefer the top-level `HyperFactionsAPI` convenience methods where possible.
 
@@ -237,11 +384,11 @@ For advanced use cases, you can access individual managers directly. This gives 
 
 ## Economy API
 
-The `EconomyAPI` interface provides access to faction treasury operations. Obtain the implementation from the `EconomyManager`:
+The `EconomyAPI` interface provides access to faction treasury operations:
 
 ```java
-EconomyAPI economy = HyperFactionsAPI.getInstance().getEconomyManager();
-if (economy.isEnabled()) {
+EconomyAPI economy = HyperFactionsAPI.getEconomyAPI();
+if (economy != null && economy.isEnabled()) {
     double balance = economy.getFactionBalance(factionId);
 }
 ```
@@ -313,7 +460,8 @@ record Transaction(
 ### Example
 
 ```java
-EconomyAPI economy = HyperFactionsAPI.getInstance().getEconomyManager();
+EconomyAPI economy = HyperFactionsAPI.getEconomyAPI();
+if (economy == null) return; // Economy disabled
 
 // Check balance
 double balance = economy.getFactionBalance(factionId);
@@ -339,7 +487,10 @@ economy.transfer(fromFactionId, toFactionId, 1000.0, playerUuid, "Trade payment"
 
 ## Event System
 
-HyperFactions publishes events through a lightweight `EventBus`. Register listeners to react to faction state changes.
+HyperFactions publishes events through a lightweight `EventBus`. Events come in two flavors:
+
+- **Post-events** (records): Inform listeners that something happened. Fire-and-forget.
+- **Pre-events** (cancellable classes): Allow listeners to prevent an action before it occurs.
 
 ### EventBus Methods
 
@@ -347,8 +498,8 @@ HyperFactions publishes events through a lightweight `EventBus`. Register listen
 |--------|-------------|
 | `EventBus.register(Class<T>, Consumer<T>)` | Register a listener for an event type |
 | `EventBus.unregister(Class<T>, Consumer<T>)` | Unregister a listener |
-| `EventBus.publish(T)` | Publish an event (internal use) |
-| `EventBus.clearAll()` | Clear all listeners (internal use) |
+| `EventBus.publish(T)` | Publish a post-event (internal use) |
+| `EventBus.publishCancellable(T)` | Publish a pre-event, returns `true` if cancelled (internal use) |
 
 Convenience methods are also available on `HyperFactionsAPI`:
 
@@ -357,7 +508,9 @@ HyperFactionsAPI.registerEventListener(FactionCreateEvent.class, event -> { ... 
 HyperFactionsAPI.unregisterEventListener(FactionCreateEvent.class, listener);
 ```
 
-### Events
+### Post-Events
+
+Post-events are immutable record classes fired after an action has occurred.
 
 #### FactionCreateEvent
 
@@ -383,7 +536,7 @@ public record FactionDisbandEvent(
 
 #### FactionClaimEvent
 
-Fired when a faction claims a chunk.
+Fired when a faction claims a chunk (including overclaim for the attacker).
 
 ```java
 public record FactionClaimEvent(
@@ -393,6 +546,28 @@ public record FactionClaimEvent(
     int chunkX,                  // Chunk X coordinate
     int chunkZ                   // Chunk Z coordinate
 )
+```
+
+#### FactionUnclaimEvent
+
+Fired when a faction loses a chunk. The `Reason` enum indicates how the chunk was lost.
+
+```java
+public record FactionUnclaimEvent(
+    @NotNull UUID factionId,     // Faction that lost the claim
+    @NotNull String world,
+    int chunkX,
+    int chunkZ,
+    @NotNull Reason reason,      // How the claim was lost
+    @Nullable UUID actorUuid     // Player who triggered it (null for system/decay)
+) {
+    public enum Reason {
+        UNCLAIM,    // Player manually unclaimed
+        DISBAND,    // Faction disbanded — all claims released
+        OVERCLAIM,  // Another faction overclaimed this chunk
+        DECAY       // Claim removed due to inactivity decay
+    }
+}
 ```
 
 #### FactionMemberEvent
@@ -415,7 +590,86 @@ public record FactionMemberEvent(
 }
 ```
 
-### Listener Example
+#### FactionRelationEvent
+
+Fired when the diplomatic relation between two factions changes.
+
+```java
+public record FactionRelationEvent(
+    @NotNull UUID factionId1,
+    @NotNull UUID factionId2,
+    @NotNull RelationType oldRelation,   // Previous relation (ALLY, ENEMY, or NEUTRAL)
+    @NotNull RelationType newRelation,   // New relation (ALLY, ENEMY, or NEUTRAL)
+    @Nullable UUID actorUuid             // Player who triggered the change
+)
+```
+
+> Note: `RelationType.OWN` will never appear — it represents a player's own faction, not an inter-faction relation. The compact constructor validates this.
+
+#### FactionRenameEvent
+
+Fired when a faction's name, tag, description, or color changes.
+
+```java
+public record FactionRenameEvent(
+    @NotNull UUID factionId,
+    @NotNull Field field,        // Which field changed
+    @Nullable String oldValue,   // Previous value (null if unset)
+    @Nullable String newValue,   // New value (null if cleared)
+    @NotNull UUID actorUuid      // Player who made the change
+) {
+    public enum Field { NAME, TAG, DESCRIPTION, COLOR }
+}
+```
+
+#### FactionHomeEvent
+
+Fired when a faction home is set or cleared.
+
+```java
+public record FactionHomeEvent(
+    @NotNull UUID factionId,
+    @Nullable Faction.FactionHome home,   // New home (null if cleared)
+    @NotNull UUID actorUuid
+) {
+    public boolean isCleared()   // True if the home was removed
+}
+```
+
+### Cancellable Pre-Events
+
+Pre-events fire **before** an action occurs and can be cancelled by listeners. When cancelled, the action is aborted and the player receives a denial message.
+
+All pre-events implement the `Cancellable` interface:
+
+```java
+public interface Cancellable {
+    boolean isCancelled();
+    void setCancelled(boolean cancelled);
+    @Nullable String getCancelReason();
+    void setCancelReason(@Nullable String reason);
+}
+```
+
+Listeners can provide a custom cancel reason via `setCancelReason()`. If set, it will be available to the manager for custom denial messages.
+
+#### Available Pre-Events
+
+| Pre-Event | Fired Before | Fields |
+|-----------|-------------|--------|
+| `FactionCreatePreEvent` | Faction creation | `factionName`, `creatorUuid` |
+| `FactionDisbandPreEvent` | Faction disband | `faction`, `actorUuid` |
+| `FactionMemberPreEvent` | Member join/leave/role change | `faction`, `playerUuid`, `type` |
+| `FactionClaimPreEvent` | Chunk claim | `factionId`, `playerUuid`, `world`, `chunkX`, `chunkZ` |
+| `FactionRelationPreEvent` | Relation change | `factionId1`, `factionId2`, `oldRelation`, `newRelation`, `actorUuid` |
+| `FactionRenamePreEvent` | Name/tag/desc/color change | `factionId`, `field`, `oldValue`, `newValue`, `actorUuid` |
+| `FactionHomePreEvent` | Home set/clear | `factionId`, `home`, `actorUuid` |
+
+Pre-events fire after basic validation (permission checks, null checks) but **before** any state changes. If cancelled, the action returns `NO_PERMISSION` to the caller.
+
+### Event Examples
+
+#### Listening to Post-Events
 
 ```java
 import com.hyperfactions.api.events.*;
@@ -428,12 +682,14 @@ public class MyPlugin {
         if (!HyperFactionsAPI.isAvailable()) return;
 
         createListener = event -> {
-            System.out.println("New faction: " + event.faction().getName()
+            System.out.println("New faction: " + event.faction().name()
                 + " by " + event.creatorUuid());
         };
 
         EventBus.register(FactionCreateEvent.class, createListener);
         EventBus.register(FactionMemberEvent.class, this::onMemberChange);
+        EventBus.register(FactionRelationEvent.class, this::onRelationChange);
+        EventBus.register(FactionUnclaimEvent.class, this::onUnclaim);
     }
 
     public void onDisable() {
@@ -444,14 +700,54 @@ public class MyPlugin {
 
     private void onMemberChange(FactionMemberEvent event) {
         switch (event.type()) {
-            case JOIN -> log(event.playerUuid() + " joined " + event.faction().getName());
-            case LEAVE -> log(event.playerUuid() + " left " + event.faction().getName());
-            case KICK -> log(event.playerUuid() + " was kicked from " + event.faction().getName());
-            case PROMOTE -> log(event.playerUuid() + " was promoted in " + event.faction().getName());
-            case DEMOTE -> log(event.playerUuid() + " was demoted in " + event.faction().getName());
+            case JOIN -> log(event.playerUuid() + " joined " + event.faction().name());
+            case LEAVE -> log(event.playerUuid() + " left " + event.faction().name());
+            case KICK -> log(event.playerUuid() + " was kicked from " + event.faction().name());
+            case PROMOTE -> log(event.playerUuid() + " was promoted in " + event.faction().name());
+            case DEMOTE -> log(event.playerUuid() + " was demoted in " + event.faction().name());
+        }
+    }
+
+    private void onRelationChange(FactionRelationEvent event) {
+        log("Relation changed: " + event.factionId1() + " -> " + event.factionId2()
+            + " from " + event.oldRelation() + " to " + event.newRelation());
+    }
+
+    private void onUnclaim(FactionUnclaimEvent event) {
+        if (event.reason() == FactionUnclaimEvent.Reason.DECAY) {
+            log("Faction " + event.factionId() + " lost chunk to decay at "
+                + event.chunkX() + ", " + event.chunkZ());
         }
     }
 }
+```
+
+#### Cancelling Pre-Events
+
+```java
+// Prevent claims in a custom protected area
+EventBus.register(FactionClaimPreEvent.class, event -> {
+    if (isMyProtectedArea(event.world(), event.chunkX(), event.chunkZ())) {
+        event.setCancelled(true);
+        event.setCancelReason("This area is protected by MyPlugin.");
+    }
+});
+
+// Prevent faction creation with banned words
+EventBus.register(FactionCreatePreEvent.class, event -> {
+    if (containsBannedWord(event.factionName())) {
+        event.setCancelled(true);
+        event.setCancelReason("Faction name contains a banned word.");
+    }
+});
+
+// Block all disbands during an event
+EventBus.register(FactionDisbandPreEvent.class, event -> {
+    if (isServerEventActive()) {
+        event.setCancelled(true);
+        event.setCancelReason("Factions cannot be disbanded during the event!");
+    }
+});
 ```
 
 > **Important**: Always unregister listeners in your `onDisable()` to prevent memory leaks. Exceptions in listeners are caught and logged by the EventBus without propagating to other listeners.

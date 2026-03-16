@@ -1,5 +1,7 @@
 package com.hyperfactions.gui.shared.page;
 
+import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.FactionRenameEvent;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.data.FactionRole;
@@ -156,6 +158,7 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
         // Clear the description
         Faction updatedFaction = faction.withDescription(null);
         factionManager.updateFaction(updatedFaction);
+        EventBus.publish(new FactionRenameEvent(faction.id(), FactionRenameEvent.Field.DESCRIPTION, faction.description(), null, uuid));
 
         String msg = HFMessages.get(playerRef, GuiKeys.DescGui.CLEARED);
         if (adminMode) {
@@ -178,6 +181,7 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
         if (newDesc == null || newDesc.trim().isEmpty()) {
           Faction updatedFaction = faction.withDescription(null);
           factionManager.updateFaction(updatedFaction);
+          EventBus.publish(new FactionRenameEvent(faction.id(), FactionRenameEvent.Field.DESCRIPTION, faction.description(), null, uuid));
           String clearMsg = HFMessages.get(playerRef, GuiKeys.DescGui.CLEARED);
           if (adminMode) {
             clearMsg = HFMessages.get(playerRef, CommonKeys.Common.ADMIN_PREFIX) + " " + clearMsg;
@@ -192,6 +196,7 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
 
           Faction updatedFaction = faction.withDescription(newDesc);
           factionManager.updateFaction(updatedFaction);
+          EventBus.publish(new FactionRenameEvent(faction.id(), FactionRenameEvent.Field.DESCRIPTION, faction.description(), newDesc, uuid));
 
           String updateMsg = HFMessages.get(playerRef, GuiKeys.DescGui.UPDATED);
           if (adminMode) {

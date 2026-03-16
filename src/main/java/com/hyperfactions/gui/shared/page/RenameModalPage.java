@@ -1,5 +1,7 @@
 package com.hyperfactions.gui.shared.page;
 
+import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.FactionRenameEvent;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.data.FactionRole;
@@ -187,6 +189,7 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
         String oldName = faction.name();
         Faction updatedFaction = faction.withName(newName);
         factionManager.updateFaction(updatedFaction);
+        EventBus.publish(new FactionRenameEvent(faction.id(), FactionRenameEvent.Field.NAME, oldName, newName, uuid));
 
         // Refresh world maps to show new faction name (respects configured refresh mode)
         if (worldMapService != null) {

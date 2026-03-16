@@ -1,6 +1,7 @@
 package com.hyperfactions.manager;
 
 import com.hyperfactions.Permissions;
+import com.hyperfactions.api.events.*;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.ChunkKey;
 import com.hyperfactions.data.Faction;
@@ -413,6 +414,11 @@ public class ClaimManager {
       }
     }
 
+    // Pre-event: allow external plugins to cancel
+    if (EventBus.publishCancellable(new FactionClaimPreEvent(faction.id(), playerUuid, world, chunkX, chunkZ))) {
+      return ClaimResult.NO_PERMISSION;
+    }
+
     // Create claim
     FactionClaim claim = FactionClaim.create(world, chunkX, chunkZ, playerUuid);
     Faction updated = faction.withClaim(claim)
@@ -427,6 +433,7 @@ public class ClaimManager {
 
     Logger.debugClaim("Claim success: chunk=%s, faction=%s, player=%s, claimCount=%d/%d",
       key, faction.name(), playerUuid, updated.getClaimCount(), maxClaims);
+    EventBus.publish(new FactionClaimEvent(updated, playerUuid, world, chunkX, chunkZ));
     notifyChunkChange(world, chunkX, chunkZ);
     return ClaimResult.SUCCESS;
   }
@@ -511,6 +518,8 @@ public class ClaimManager {
 
     Logger.debugClaim("Unclaim success: chunk=%s, faction=%s, player=%s",
       key, faction.name(), playerUuid);
+    EventBus.publish(new FactionUnclaimEvent(faction.id(), world, chunkX, chunkZ,
+        FactionUnclaimEvent.Reason.UNCLAIM, playerUuid));
     notifyChunkChange(world, chunkX, chunkZ);
     return ClaimResult.SUCCESS;
   }
@@ -610,6 +619,9 @@ public class ClaimManager {
     Logger.debugClaim("Overclaim success: chunk=%s, attacker=%s, defender=%s, defenderClaims=%d/%d",
       key, attackerFaction.name(), defenderFaction.name(), defenderFaction.getClaimCount() - 1, defenderMaxClaims);
     Logger.info("[Claims] Faction '%s' overclaimed chunk from '%s'", attackerFaction.name(), defenderFaction.name());
+    EventBus.publish(new FactionClaimEvent(updatedAttacker, playerUuid, world, chunkX, chunkZ));
+    EventBus.publish(new FactionUnclaimEvent(defenderId, world, chunkX, chunkZ,
+        FactionUnclaimEvent.Reason.OVERCLAIM, playerUuid));
 
     // Notify defender faction members that they lost territory
     notifyFactionMembers(defenderId,
@@ -637,6 +649,10 @@ public class ClaimManager {
     // Get the faction to update its record
     Faction faction = factionManager.getFaction(factionId);
 
+    // Capture claims before removal for event publishing
+    Set<ChunkKey> removedChunks = factionClaimsIndex.containsKey(factionId)
+        ? new HashSet<>(factionClaimsIndex.get(factionId)) : Set.of();
+
     // Remove from main index
     claimIndex.entrySet().removeIf(entry -> entry.getValue().equals(factionId));
     // Remove from reverse index
@@ -650,6 +666,12 @@ public class ClaimManager {
           GuiKeys.LogsGui.MSG_ALL_UNCLAIMED));
       factionManager.updateFaction(updated);
       Logger.debugClaim("Unclaim all: faction=%s, claims removed=%d", faction.name(), faction.getClaimCount());
+    }
+
+    // Publish unclaim events for each removed chunk
+    for (ChunkKey key : removedChunks) {
+      EventBus.publish(new FactionUnclaimEvent(factionId, key.world(), key.chunkX(), key.chunkZ(),
+          FactionUnclaimEvent.Reason.DISBAND, null));
     }
 
     // For bulk operations like unclaimAll, use the legacy callback for full refresh
@@ -859,6 +881,8 @@ public class ClaimManager {
         factionManager.updateFaction(updated);
       }
 
+      EventBus.publish(new FactionUnclaimEvent(factionId, edge.world(), edge.chunkX(), edge.chunkZ(),
+          FactionUnclaimEvent.Reason.DECAY, null));
       notifyChunkChange(edge.world(), edge.chunkX(), edge.chunkZ());
       removed++;
 

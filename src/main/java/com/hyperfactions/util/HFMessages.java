@@ -4,7 +4,11 @@ import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.FactionLog;
 import com.hypixel.hytale.server.core.modules.i18n.I18nModule;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import org.jetbrains.annotations.NotNull;
@@ -39,6 +43,16 @@ public final class HFMessages {
 
   /** Per-player language overrides from PlayerData preferences. */
   private static final Map<UUID, String> languageOverrides = new ConcurrentHashMap<>();
+
+  /** Authoritative list of supported locale codes. Single source of truth. */
+  private static final List<String> SUPPORTED_LOCALES = List.of(
+      "en-US", "es-ES", "de-DE", "fr-FR", "pt-BR",
+      "ru-RU", "pl-PL", "it-IT", "nl-NL", "tl-PH"
+  );
+
+  /** Unmodifiable set view for the public API. */
+  private static final Set<String> SUPPORTED_LOCALES_SET =
+      Collections.unmodifiableSet(new LinkedHashSet<>(SUPPORTED_LOCALES));
 
   private HFMessages() {}
 
@@ -157,6 +171,58 @@ public final class HFMessages {
     }
 
     return serverDefault;
+  }
+
+  /**
+   * Returns an unmodifiable set of the supported locale codes.
+   *
+   * @return set of locale codes (e.g. {"en-US", "pl-PL", "de-DE", ...})
+   */
+  @NotNull
+  public static Set<String> getSupportedLocales() {
+    return SUPPORTED_LOCALES_SET;
+  }
+
+  /**
+   * Returns the ordered list of supported locale codes.
+   * Used by GUI dropdown pages that need deterministic ordering.
+   *
+   * @return ordered list of locale codes
+   */
+  @NotNull
+  public static List<String> getSupportedLocalesList() {
+    return SUPPORTED_LOCALES;
+  }
+
+  /**
+   * Checks if a locale code is supported.
+   *
+   * @param locale the locale code to check
+   * @return true if supported
+   */
+  public static boolean isLocaleSupported(@NotNull String locale) {
+    return SUPPORTED_LOCALES_SET.contains(locale);
+  }
+
+  /**
+   * Gets the language preference for a player by UUID.
+   * Checks the in-memory override map (set by API or loaded from PlayerData),
+   * then falls back to server default language.
+   *
+   * <p>Note: This does NOT resolve the player's client language, only the
+   * explicit preference. For full resolution including client language,
+   * use {@link #getLanguageFor(PlayerRef)} with an active PlayerRef.
+   *
+   * @param uuid the player's UUID
+   * @return the language preference or server default
+   */
+  @NotNull
+  public static String getLanguageForUuid(@NotNull UUID uuid) {
+    String override = languageOverrides.get(uuid);
+    if (override != null) {
+      return override;
+    }
+    return ConfigManager.get().getDefaultLanguage();
   }
 
   /**

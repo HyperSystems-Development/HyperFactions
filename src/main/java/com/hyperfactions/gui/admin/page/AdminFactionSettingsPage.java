@@ -1,5 +1,7 @@
 package com.hyperfactions.gui.admin.page;
 
+import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.FactionRenameEvent;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionPermissions;
@@ -439,6 +441,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
 
     Faction updatedFaction = faction.withColor(hexColor);
     factionManager.updateFaction(updatedFaction);
+    EventBus.publish(new FactionRenameEvent(faction.id(), FactionRenameEvent.Field.COLOR, faction.color(), hexColor, playerRef.getUuid()));
 
     player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.SET_COLOR_CHANGED, hexColor));
 

@@ -7,8 +7,15 @@ import com.hyperfactions.data.PlayerPower;
 import com.hyperfactions.data.RelationType;
 import com.hyperfactions.manager.*;
 import com.hyperfactions.protection.ProtectionChecker;
+import com.hyperfactions.config.ConfigManager;
+import com.hyperfactions.config.modules.ChatConfig;
+import com.hyperfactions.data.ChunkKey;
+import com.hyperfactions.util.HFMessages;
 import java.util.Collection;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+import java.util.regex.Pattern;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -374,8 +381,384 @@ public final class HyperFactionsAPI {
    * @param listener   the listener
    * @param {@code <T>}        the event type
    */
-  public static <T> void unregisterEventListener(@NotNull Class<T> eventClass, 
+  public static <T> void unregisterEventListener(@NotNull Class<T> eventClass,
                           @NotNull java.util.function.Consumer<T> listener) {
     EventBus.unregister(eventClass, listener);
+  }
+
+  // === Language / i18n ===
+
+  /**
+   * Sets the language for a player with immediate effect and persistence.
+   * The change takes effect immediately for all subsequent messages and is
+   * saved to PlayerData for persistence across sessions.
+   *
+   * @param playerUuid the player's UUID
+   * @param locale     the locale code (e.g. "pl-PL", "en-US")
+   * @throws IllegalArgumentException if locale is null, empty, or not in {@link #getSupportedLocales()}
+   * @see #getSupportedLocales()
+   */
+  public static void setPlayerLanguage(@NotNull UUID playerUuid, @NotNull String locale) {
+    if (locale.isEmpty()) {
+      throw new IllegalArgumentException("Locale cannot be empty");
+    }
+    if (!HFMessages.isLocaleSupported(locale)) {
+      throw new IllegalArgumentException("Unsupported locale: " + locale
+          + ". Supported: " + HFMessages.getSupportedLocales());
+    }
+    // Immediate in-memory effect
+    HFMessages.setLanguageOverride(playerUuid, locale);
+    // Persist to PlayerData asynchronously
+    getInstance().getPlayerStorage().updatePlayerData(playerUuid, data ->
+        data.setLanguagePreference(locale));
+  }
+
+  /**
+   * Gets the current language preference for a player.
+   * Returns the explicitly-set preference (via API or player settings), or the
+   * server default language if no preference is set.
+   *
+   * <p>Note: For online players who haven't set a preference but have
+   * {@code usePlayerLanguage=true} in config, the actual message language may
+   * differ (resolved from client language). This method returns the stored
+   * preference only, not the fully-resolved effective language.
+   *
+   * @param playerUuid the player's UUID
+   * @return the language preference or server default (e.g. "en-US")
+   */
+  @NotNull
+  public static String getPlayerLanguage(@NotNull UUID playerUuid) {
+    return HFMessages.getLanguageForUuid(playerUuid);
+  }
+
+  /**
+   * Returns the set of locale codes supported by HyperFactions.
+   * External plugins can use this to validate locale codes before calling
+   * {@link #setPlayerLanguage(UUID, String)}.
+   *
+   * @return unmodifiable set of locale codes (e.g. {"en-US", "pl-PL", "de-DE", ...})
+   */
+  @NotNull
+  public static Set<String> getSupportedLocales() {
+    return HFMessages.getSupportedLocales();
+  }
+
+  // === Chat Color Customization ===
+
+  /** Hex color pattern: #RRGGBB (6 digits). */
+  private static final Pattern HEX_COLOR_PATTERN = Pattern.compile("^#[0-9A-Fa-f]{6}$");
+
+  /** Valid keys for {@link #setChatColors(Map)} and {@link #getChatColors()}. */
+  private static final Set<String> CHAT_COLOR_KEYS = Set.of(
+      "relationOwn", "relationAlly", "relationNeutral", "relationEnemy",
+      "prefixColor", "prefixBracketColor",
+      "playerNameColor", "senderNameColor", "messageColor",
+      "factionChatColor", "allyChatColor",
+      "noFactionTagColor"
+  );
+
+  private static void validateHexColor(@NotNull String hexColor, @NotNull String paramName) {
+    if (!HEX_COLOR_PATTERN.matcher(hexColor).matches()) {
+      throw new IllegalArgumentException(paramName + " must be a valid hex color (#RRGGBB), got: " + hexColor);
+    }
+  }
+
+  /**
+   * Sets a chat relation color by relation name.
+   * Takes effect immediately for all subsequent chat messages.
+   *
+   * @param relation "OWN", "ALLY", "NEUTRAL", or "ENEMY" (case-insensitive)
+   * @param hexColor hex color string in #RRGGBB format (e.g. "#4ade80")
+   * @throws IllegalArgumentException if relation is unknown or hexColor is invalid
+   */
+  public static void setChatRelationColor(@NotNull String relation, @NotNull String hexColor) {
+    validateHexColor(hexColor, "hexColor");
+    ChatConfig chat = ConfigManager.get().chat();
+    switch (relation.toUpperCase()) {
+      case "OWN" -> chat.setRelationColorOwn(hexColor);
+      case "ALLY" -> chat.setRelationColorAlly(hexColor);
+      case "NEUTRAL" -> chat.setRelationColorNeutral(hexColor);
+      case "ENEMY" -> chat.setRelationColorEnemy(hexColor);
+      default -> throw new IllegalArgumentException("Unknown relation: " + relation
+          + ". Valid values: OWN, ALLY, NEUTRAL, ENEMY");
+    }
+  }
+
+  /**
+   * Sets the prefix text color (the text inside the brackets).
+   *
+   * @param hexColor hex color string in #RRGGBB format
+   */
+  public static void setPrefixColor(@NotNull String hexColor) {
+    validateHexColor(hexColor, "hexColor");
+    ConfigManager.get().server().setPrefixColor(hexColor);
+  }
+
+  /**
+   * Sets the prefix bracket color (the [ ] around the prefix).
+   *
+   * @param hexColor hex color string in #RRGGBB format
+   */
+  public static void setPrefixBracketColor(@NotNull String hexColor) {
+    validateHexColor(hexColor, "hexColor");
+    ConfigManager.get().server().setPrefixBracketColor(hexColor);
+  }
+
+  /**
+   * Sets the player name color in public chat.
+   *
+   * @param hexColor hex color string in #RRGGBB format
+   */
+  public static void setPlayerNameColor(@NotNull String hexColor) {
+    validateHexColor(hexColor, "hexColor");
+    ConfigManager.get().chat().setPlayerNameColor(hexColor);
+  }
+
+  /**
+   * Sets the message text color in faction/ally chat.
+   *
+   * @param hexColor hex color string in #RRGGBB format
+   */
+  public static void setMessageColor(@NotNull String hexColor) {
+    validateHexColor(hexColor, "hexColor");
+    ConfigManager.get().chat().setMessageColor(hexColor);
+  }
+
+  /**
+   * Sets the faction chat message color.
+   *
+   * @param hexColor hex color string in #RRGGBB format
+   */
+  public static void setFactionChatColor(@NotNull String hexColor) {
+    validateHexColor(hexColor, "hexColor");
+    ConfigManager.get().chat().setFactionChatColor(hexColor);
+  }
+
+  /**
+   * Sets the ally chat message color.
+   *
+   * @param hexColor hex color string in #RRGGBB format
+   */
+  public static void setAllyChatColor(@NotNull String hexColor) {
+    validateHexColor(hexColor, "hexColor");
+    ConfigManager.get().chat().setAllyChatColor(hexColor);
+  }
+
+  /**
+   * Sets the sender name color in faction/ally chat.
+   *
+   * @param hexColor hex color string in #RRGGBB format
+   */
+  public static void setSenderNameColor(@NotNull String hexColor) {
+    validateHexColor(hexColor, "hexColor");
+    ConfigManager.get().chat().setSenderNameColor(hexColor);
+  }
+
+  /**
+   * Sets the no-faction tag color.
+   *
+   * @param hexColor hex color string in #RRGGBB format
+   */
+  public static void setNoFactionTagColor(@NotNull String hexColor) {
+    validateHexColor(hexColor, "hexColor");
+    ConfigManager.get().chat().setNoFactionTagColor(hexColor);
+  }
+
+  /**
+   * Applies a color theme as a map of property names to hex colors.
+   * Only provided keys are updated; others remain unchanged.
+   * All entries are validated before any are applied (atomic semantics).
+   *
+   * <p>Supported keys:
+   * <ul>
+   *   <li>{@code relationOwn}, {@code relationAlly}, {@code relationNeutral}, {@code relationEnemy}</li>
+   *   <li>{@code prefixColor}, {@code prefixBracketColor}</li>
+   *   <li>{@code playerNameColor}, {@code senderNameColor}, {@code messageColor}</li>
+   *   <li>{@code factionChatColor}, {@code allyChatColor}</li>
+   *   <li>{@code noFactionTagColor}</li>
+   * </ul>
+   *
+   * @param colors map of property name → hex color (#RRGGBB)
+   * @throws IllegalArgumentException if any key is unrecognized or any value is not valid hex
+   */
+  public static void setChatColors(@NotNull Map<String, String> colors) {
+    // Validate all entries before applying any (atomic semantics)
+    for (Map.Entry<String, String> entry : colors.entrySet()) {
+      validateHexColor(entry.getValue(), entry.getKey());
+      if (!CHAT_COLOR_KEYS.contains(entry.getKey())) {
+        throw new IllegalArgumentException("Unknown chat color key: " + entry.getKey()
+            + ". Valid keys: " + CHAT_COLOR_KEYS);
+      }
+    }
+
+    ChatConfig chat = ConfigManager.get().chat();
+    for (Map.Entry<String, String> entry : colors.entrySet()) {
+      switch (entry.getKey()) {
+        case "relationOwn" -> chat.setRelationColorOwn(entry.getValue());
+        case "relationAlly" -> chat.setRelationColorAlly(entry.getValue());
+        case "relationNeutral" -> chat.setRelationColorNeutral(entry.getValue());
+        case "relationEnemy" -> chat.setRelationColorEnemy(entry.getValue());
+        case "prefixColor" -> ConfigManager.get().server().setPrefixColor(entry.getValue());
+        case "prefixBracketColor" -> ConfigManager.get().server().setPrefixBracketColor(entry.getValue());
+        case "playerNameColor" -> chat.setPlayerNameColor(entry.getValue());
+        case "senderNameColor" -> chat.setSenderNameColor(entry.getValue());
+        case "messageColor" -> chat.setMessageColor(entry.getValue());
+        case "factionChatColor" -> chat.setFactionChatColor(entry.getValue());
+        case "allyChatColor" -> chat.setAllyChatColor(entry.getValue());
+        case "noFactionTagColor" -> chat.setNoFactionTagColor(entry.getValue());
+        default -> {} // Already validated above
+      }
+    }
+  }
+
+  /**
+   * Returns the current chat color values as a map.
+   * Keys match those accepted by {@link #setChatColors(Map)}.
+   * Useful for reading current values before applying a theme, enabling restore.
+   *
+   * @return map of property name → current hex color
+   */
+  @NotNull
+  public static Map<String, String> getChatColors() {
+    ChatConfig chat = ConfigManager.get().chat();
+    return Map.ofEntries(
+        Map.entry("relationOwn", chat.getRelationColorOwn()),
+        Map.entry("relationAlly", chat.getRelationColorAlly()),
+        Map.entry("relationNeutral", chat.getRelationColorNeutral()),
+        Map.entry("relationEnemy", chat.getRelationColorEnemy()),
+        Map.entry("prefixColor", ConfigManager.get().server().getPrefixColor()),
+        Map.entry("prefixBracketColor", ConfigManager.get().server().getPrefixBracketColor()),
+        Map.entry("playerNameColor", chat.getPlayerNameColor()),
+        Map.entry("senderNameColor", chat.getSenderNameColor()),
+        Map.entry("messageColor", chat.getMessageColor()),
+        Map.entry("factionChatColor", chat.getFactionChatColor()),
+        Map.entry("allyChatColor", chat.getAllyChatColor()),
+        Map.entry("noFactionTagColor", chat.getNoFactionTagColor())
+    );
+  }
+
+  // === Additional Manager Access ===
+
+  /**
+   * Gets the ChatManager for faction/ally chat operations.
+   *
+   * @return the chat manager
+   */
+  @NotNull
+  public static ChatManager getChatManager() {
+    return getInstance().getChatManager();
+  }
+
+  /**
+   * Gets the EconomyAPI for faction treasury operations.
+   * Returns null if economy is not enabled in config.
+   *
+   * @return the economy API, or null if economy is disabled
+   */
+  @Nullable
+  public static EconomyAPI getEconomyAPI() {
+    EconomyManager econ = getInstance().getEconomyManager();
+    return (econ != null && econ.isEnabled()) ? econ : null;
+  }
+
+  /**
+   * Gets the JoinRequestManager for managing player join requests to factions.
+   *
+   * @return the join request manager
+   */
+  @NotNull
+  public static JoinRequestManager getJoinRequestManager() {
+    return getInstance().getJoinRequestManager();
+  }
+
+  // === Extended Queries ===
+
+  /**
+   * Gets detailed power statistics for a faction.
+   *
+   * @param factionId the faction ID
+   * @return power stats including current/max power, claims, raidability
+   */
+  @NotNull
+  public static PowerManager.FactionPowerStats getFactionPowerStats(@NotNull UUID factionId) {
+    return getInstance().getPowerManager().getFactionPowerStats(factionId);
+  }
+
+  /**
+   * Gets the number of claims a faction holds.
+   *
+   * @param factionId the faction ID
+   * @return the claim count
+   */
+  public static int getFactionClaimCount(@NotNull UUID factionId) {
+    return getInstance().getClaimManager().getFactionClaims(factionId).size();
+  }
+
+  /**
+   * Gets the total number of factions on the server.
+   *
+   * @return the faction count
+   */
+  public static int getFactionCount() {
+    return getInstance().getFactionManager().getFactionCount();
+  }
+
+  /**
+   * Checks if a faction is raidable (power < claims).
+   *
+   * @param factionId the faction ID
+   * @return true if raidable
+   */
+  public static boolean isFactionRaidable(@NotNull UUID factionId) {
+    return getInstance().getPowerManager().isFactionRaidable(factionId);
+  }
+
+  /**
+   * Gets the relation between two players based on their faction membership.
+   * Returns {@link RelationType#NEUTRAL} if either player is not in a faction.
+   *
+   * @param player1 first player UUID
+   * @param player2 second player UUID
+   * @return the relation type, or NEUTRAL if not applicable
+   */
+  @NotNull
+  public static RelationType getPlayerRelation(@NotNull UUID player1, @NotNull UUID player2) {
+    RelationType rel = getInstance().getRelationManager().getPlayerRelation(player1, player2);
+    return rel != null ? rel : RelationType.NEUTRAL;
+  }
+
+  /**
+   * Gets all chunk claims for a faction.
+   *
+   * @param factionId the faction ID
+   * @return unmodifiable set of claimed chunk keys
+   */
+  @NotNull
+  public static Set<ChunkKey> getFactionClaims(@NotNull UUID factionId) {
+    return getInstance().getClaimManager().getFactionClaims(factionId);
+  }
+
+  // === Configuration ===
+
+  /**
+   * Saves all current configuration to disk.
+   * Call after using {@link #setChatColors(Map)} or individual color setters
+   * to persist changes across server restarts.
+   *
+   * <p>If not called, changes remain in-memory only and revert on restart.
+   * This is intentional — it allows temporary runtime theming without
+   * permanently modifying config files.
+   */
+  public static void saveConfig() {
+    ConfigManager.get().saveAll();
+  }
+
+  /**
+   * Reloads all configuration from disk, discarding any unsaved runtime changes.
+   * This will revert any colors set via {@link #setChatColors(Map)} that were
+   * not saved with {@link #saveConfig()}.
+   */
+  public static void reloadConfig() {
+    ConfigManager.get().reloadAll();
   }
 }

@@ -2,6 +2,8 @@ package com.hyperfactions.command.faction;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
+import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.FactionRenameEvent;
 import com.hyperfactions.command.FactionCommandContext;
 import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.command.util.CommandUtil;
@@ -99,6 +101,8 @@ public class RenameSubCommand extends FactionSubCommand {
         GuiKeys.LogsGui.MSG_RENAMED, oldName, newName));
 
     hyperFactions.getFactionManager().updateFaction(updated);
+    EventBus.publish(new FactionRenameEvent(faction.id(), FactionRenameEvent.Field.NAME,
+        oldName, newName, player.getUuid()));
 
     // Refresh world maps to show new faction name (respects configured refresh mode)
     if (hyperFactions.getWorldMapService() != null) {

@@ -62,6 +62,32 @@ public final class EventBus {
   }
 
   /**
+   * Publishes a cancellable event to all registered listeners.
+   * Returns true if the event was cancelled by any listener.
+   *
+   * @param event the cancellable event
+   * @param <T>   the event type (must implement Cancellable)
+   * @return true if cancelled
+   */
+  @SuppressWarnings("unchecked")
+  public static <T extends Cancellable> boolean publishCancellable(@NotNull T event) {
+    List<Consumer<?>> list = listeners.get(event.getClass());
+    if (list != null) {
+      for (Consumer<?> listener : list) {
+        try {
+          ((Consumer<T>) listener).accept(event);
+          if (event.isCancelled()) {
+            return true;
+          }
+        } catch (Exception e) {
+          ErrorHandler.report("Event bus listener error", e);
+        }
+      }
+    }
+    return event.isCancelled();
+  }
+
+  /**
    * Clears all listeners.
    */
   public static void clearAll() {

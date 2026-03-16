@@ -2,6 +2,8 @@ package com.hyperfactions.gui.faction.page;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
+import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.FactionRenameEvent;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionMember;
@@ -515,6 +517,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
 
     Faction updatedFaction = faction.withColor(hexColor);
     factionManager.updateFaction(updatedFaction);
+    EventBus.publish(new FactionRenameEvent(faction.id(), FactionRenameEvent.Field.COLOR, faction.color(), hexColor, playerRef.getUuid()));
 
     var worldMapService = hyperFactions.getWorldMapService();
     if (worldMapService != null) {

@@ -1224,10 +1224,10 @@ public class AdminConfigPage extends InteractiveCustomUIPage<AdminConfigData> {
     incrementRowIdx();
   }
 
-  private static final List<String> AVAILABLE_LOCALES = List.of(
-      "en-US", "es-ES", "de-DE", "fr-FR", "pt-BR",
-      "ru-RU", "pl-PL", "it-IT", "nl-NL", "tl-PH"
-  );
+  /** Available locale codes — delegates to HFMessages single source of truth. */
+  private static List<String> availableLocales() {
+    return HFMessages.getSupportedLocalesList();
+  }
 
   private static String nativeDisplayName(String localeCode) {
     Locale locale = Locale.forLanguageTag(localeCode);
@@ -1252,7 +1252,7 @@ public class AdminConfigPage extends InteractiveCustomUIPage<AdminConfigData> {
     cmd.set(idx + " #SettingLabel.Text", label);
     cmd.set(idx + " #SettingLabel.Style.TextColor", color);
     cmd.set(idx + " #EnumSelect.Entries",
-        AVAILABLE_LOCALES.stream()
+        availableLocales().stream()
             .map(code -> new DropdownEntryInfo(LocalizableString.fromString(nativeDisplayName(code)), code))
             .toList());
     cmd.set(idx + " #EnumSelect.Value", effectiveValue);

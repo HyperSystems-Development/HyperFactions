@@ -38,19 +38,10 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
 
   private static final String PAGE_ID = "player_settings";
 
-  /** Available locale codes. New locales are added here as translations are completed. */
-  private static final List<String> AVAILABLE_LOCALES = List.of(
-      "en-US",
-      "es-ES",
-      "de-DE",
-      "fr-FR",
-      "pt-BR",
-      "ru-RU",
-      "pl-PL",
-      "it-IT",
-      "nl-NL",
-      "tl-PH"
-  );
+  /** Available locale codes — delegates to HFMessages single source of truth. */
+  private static List<String> availableLocales() {
+    return HFMessages.getSupportedLocalesList();
+  }
 
   /**
    * Returns a compact native display name for a locale code (e.g. "es-ES" → "Español (ES)").
@@ -156,14 +147,14 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
 
     // Language dropdown — display names in native language
     List<DropdownEntryInfo> localeEntries = new java.util.ArrayList<>();
-    for (String code : AVAILABLE_LOCALES) {
+    for (String code : availableLocales()) {
       localeEntries.add(new DropdownEntryInfo(
           LocalizableString.fromString(nativeDisplayName(code)),
           code));
     }
     cmd.set("#LanguageDropdown.Entries", localeEntries);
-    String selectedLocale = (languagePreference != null && AVAILABLE_LOCALES.contains(languagePreference))
-        ? languagePreference : AVAILABLE_LOCALES.get(0);
+    String selectedLocale = (languagePreference != null && availableLocales().contains(languagePreference))
+        ? languagePreference : availableLocales().get(0);
     cmd.set("#LanguageDropdown.Value", selectedLocale);
 
     // Disable dropdown when auto-detect is on
@@ -281,7 +272,7 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
 
       case "LanguageChanged" -> {
         // Dropdown value is the locale code string (e.g. "en-US")
-        if (data.language != null && AVAILABLE_LOCALES.contains(data.language)) {
+        if (data.language != null && availableLocales().contains(data.language)) {
           languagePreference = data.language;
           savePreference(uuid, d -> d.setLanguagePreference(languagePreference));
           HFMessages.setLanguageOverride(uuid, languagePreference);
