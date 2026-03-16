@@ -7,7 +7,9 @@ import com.hyperfactions.data.PlayerPower;
 import com.hyperfactions.data.RelationType;
 import com.hyperfactions.manager.*;
 import com.hyperfactions.protection.ProtectionChecker;
+import com.hyperfactions.util.HFMessages;
 import java.util.Collection;
+import java.util.Set;
 import java.util.UUID;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -374,8 +376,65 @@ public final class HyperFactionsAPI {
    * @param listener   the listener
    * @param {@code <T>}        the event type
    */
-  public static <T> void unregisterEventListener(@NotNull Class<T> eventClass, 
+  public static <T> void unregisterEventListener(@NotNull Class<T> eventClass,
                           @NotNull java.util.function.Consumer<T> listener) {
     EventBus.unregister(eventClass, listener);
+  }
+
+  // === Language / i18n ===
+
+  /**
+   * Sets the language for a player with immediate effect and persistence.
+   * The change takes effect immediately for all subsequent messages and is
+   * saved to PlayerData for persistence across sessions.
+   *
+   * @param playerUuid the player's UUID
+   * @param locale     the locale code (e.g. "pl-PL", "en-US")
+   * @throws IllegalArgumentException if locale is null, empty, or not in {@link #getSupportedLocales()}
+   * @see #getSupportedLocales()
+   */
+  public static void setPlayerLanguage(@NotNull UUID playerUuid, @NotNull String locale) {
+    if (locale.isEmpty()) {
+      throw new IllegalArgumentException("Locale cannot be empty");
+    }
+    if (!HFMessages.isLocaleSupported(locale)) {
+      throw new IllegalArgumentException("Unsupported locale: " + locale
+          + ". Supported: " + HFMessages.getSupportedLocales());
+    }
+    // Immediate in-memory effect
+    HFMessages.setLanguageOverride(playerUuid, locale);
+    // Persist to PlayerData asynchronously
+    getInstance().getPlayerStorage().updatePlayerData(playerUuid, data ->
+        data.setLanguagePreference(locale));
+  }
+
+  /**
+   * Gets the current language preference for a player.
+   * Returns the explicitly-set preference (via API or player settings), or the
+   * server default language if no preference is set.
+   *
+   * <p>Note: For online players who haven't set a preference but have
+   * {@code usePlayerLanguage=true} in config, the actual message language may
+   * differ (resolved from client language). This method returns the stored
+   * preference only, not the fully-resolved effective language.
+   *
+   * @param playerUuid the player's UUID
+   * @return the language preference or server default (e.g. "en-US")
+   */
+  @NotNull
+  public static String getPlayerLanguage(@NotNull UUID playerUuid) {
+    return HFMessages.getLanguageForUuid(playerUuid);
+  }
+
+  /**
+   * Returns the set of locale codes supported by HyperFactions.
+   * External plugins can use this to validate locale codes before calling
+   * {@link #setPlayerLanguage(UUID, String)}.
+   *
+   * @return unmodifiable set of locale codes (e.g. {"en-US", "pl-PL", "de-DE", ...})
+   */
+  @NotNull
+  public static Set<String> getSupportedLocales() {
+    return HFMessages.getSupportedLocales();
   }
 }
