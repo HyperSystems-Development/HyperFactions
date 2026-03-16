@@ -493,6 +493,11 @@ public class ClaimManager {
       }
     }
 
+    // Pre-event: allow external plugins to cancel
+    if (EventBus.publishCancellable(new FactionUnclaimPreEvent(faction.id(), playerUuid, world, chunkX, chunkZ))) {
+      return ClaimResult.NO_PERMISSION;
+    }
+
     // Check if unclaiming would disconnect territory
     if (ConfigManager.get().isPreventDisconnect()) {
       if (wouldDisconnectClaims(faction.id(), key)) {

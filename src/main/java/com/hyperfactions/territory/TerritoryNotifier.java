@@ -1,5 +1,7 @@
 package com.hyperfactions.territory;
 
+import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.PlayerTerritoryChangeEvent;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.ChunkKey;
 import com.hyperfactions.data.Faction;
@@ -102,6 +104,12 @@ public class TerritoryNotifier {
       if (currentTerritory.type() == TerritoryType.WILDERNESS && previousTerritory != null) {
         notifyTerritory = buildWildernessFromConfig(previousTerritory);
       }
+
+      // Publish territory change event
+      EventBus.publish(new PlayerTerritoryChangeEvent(
+          playerUuid, world, chunkX, chunkZ,
+          previousTerritory != null ? previousTerritory.factionId() : null,
+          currentTerritory.factionId()));
 
       // Update stored territory
       previousTerritories.put(playerUuid, currentTerritory);

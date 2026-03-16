@@ -1,5 +1,6 @@
 package com.hyperfactions.manager;
 
+import com.hyperfactions.api.events.*;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.CombatTag;
 import com.hyperfactions.protection.SpawnProtection;
@@ -158,18 +159,27 @@ public class CombatTagManager {
    */
   @NotNull
   public CombatTag tagPlayer(@NotNull UUID playerUuid, int durationSeconds) {
+    // Pre-event: allow external plugins to cancel
+    if (EventBus.publishCancellable(new CombatTagPreEvent(playerUuid, null, durationSeconds))) {
+      // Return existing tag or create a dummy expired one — tag was blocked
+      CombatTag existing2 = tags.get(playerUuid);
+      return existing2 != null ? existing2 : CombatTag.create(playerUuid, 0);
+    }
+
     CombatTag existing = tags.get(playerUuid);
 
     // Refresh if already tagged
     if (existing != null && !existing.isExpired()) {
       CombatTag refreshed = existing.refresh(durationSeconds);
       tags.put(playerUuid, refreshed);
+      EventBus.publish(new CombatTagEvent(playerUuid, CombatTagEvent.Type.TAGGED, null, durationSeconds));
       return refreshed;
     }
 
     // New tag
     CombatTag tag = CombatTag.create(playerUuid, durationSeconds);
     tags.put(playerUuid, tag);
+    EventBus.publish(new CombatTagEvent(playerUuid, CombatTagEvent.Type.TAGGED, null, durationSeconds));
     return tag;
   }
 
@@ -181,8 +191,18 @@ public class CombatTagManager {
    */
   public void tagCombat(@NotNull UUID attacker, @NotNull UUID defender) {
     int duration = ConfigManager.get().getTagDurationSeconds();
-    tagPlayer(attacker);
-    tagPlayer(defender);
+
+    // Pre-events for each combatant (if cancelled, skip that player's tag)
+    boolean attackerCancelled = EventBus.publishCancellable(new CombatTagPreEvent(attacker, defender, duration));
+    boolean defenderCancelled = EventBus.publishCancellable(new CombatTagPreEvent(defender, attacker, duration));
+
+    if (!attackerCancelled) {
+      tagPlayer(attacker);
+    }
+    if (!defenderCancelled) {
+      tagPlayer(defender);
+    }
+
     lastAttacker.put(defender, attacker);
     Logger.debugCombat("Combat tag: attacker=%s, defender=%s, duration=%ds",
       attacker, defender, duration);
@@ -244,6 +264,7 @@ public class CombatTagManager {
     tags.remove(playerUuid);
     lastAttacker.remove(playerUuid);
     lastDamageType.remove(playerUuid);
+    EventBus.publish(new CombatTagEvent(playerUuid, CombatTagEvent.Type.CLEARED, null, 0));
   }
 
   /**
@@ -258,11 +279,13 @@ public class CombatTagManager {
     lastAttacker.remove(playerUuid);
     lastDamageType.remove(playerUuid);
     if (tag != null && !tag.isExpired()) {
+      int remainingSeconds = tag.getRemainingSeconds();
       Logger.debugCombat("Combat logout: player=%s, remainingSeconds=%d, penaltyEnabled=%b",
-        playerUuid, tag.getRemainingSeconds(), ConfigManager.get().isTaggedLogoutPenalty());
+        playerUuid, remainingSeconds, ConfigManager.get().isTaggedLogoutPenalty());
       if (ConfigManager.get().isTaggedLogoutPenalty() && onCombatLogout != null) {
         onCombatLogout.accept(playerUuid);
       }
+      EventBus.publish(new CombatLogoutEvent(playerUuid, remainingSeconds));
       return true;
     }
     return false;
@@ -282,6 +305,7 @@ public class CombatTagManager {
         if (onTagExpired != null) {
           onTagExpired.accept(playerUuid);
         }
+        EventBus.publish(new CombatTagEvent(playerUuid, CombatTagEvent.Type.EXPIRED, null, 0));
       }
     }
   }
