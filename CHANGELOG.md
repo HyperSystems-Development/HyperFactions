@@ -76,6 +76,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added ~467 new entries per locale file across all 10 supported languages (en-US, de-DE, es-ES, fr-FR, it-IT, nl-NL, pl-PL, pt-BR, ru-RU, tl-PH)
 - Covers all split key files (help commands, GUI labels, admin GUI) plus newly localized strings
 
+**API Expansion ([#106](https://github.com/HyperSystems-Development/HyperFactions/issues/106))**
+- Comprehensive event system: 20 post-events and 11 cancellable pre-events covering all major faction operations
+- `Cancellable` interface for pre-events with `setCancelReason()` for custom denial messages
+- Language/i18n API methods: `setPlayerLanguage()`, `getPlayerLanguage()`, `getSupportedLocales()`
+- Chat color customization API: `setChatColor()`, `setChatColors()`, `getChatColors()`
+- Manager accessor methods: `getChatManager()`, `getEconomyAPI()`, `getJoinRequestManager()`
+- Extended query methods: `getFactionPowerStats()`, `getFactionClaimCount()`, `getFactionCount()`, `isFactionRaidable()`, `getPlayerRelation()`
+- Config persistence API: `ConfigManager.saveConfig()` and `ConfigManager.reloadConfig()`
+
+**HyperEssentials Integration APIs ([#107](https://github.com/HyperSystems-Development/HyperFactions/issues/107))**
+- New API methods for essentials integration: `hasFactionHome()`, `getFactionHomeWorld()`, `getFactionHomeCoords()`, `getFactionHomeCooldownRemaining()`, `isZoneFlagAllowed()`
+- `ESSENTIALS_BACK` zone flag — controls whether /back teleportation works in zones (defaults to allowed)
+- `FactionHomeTeleportEvent` and `FactionHomeTeleportPreEvent` events for home teleport tracking
+
 ### Changed
 
 **Consolidate Duplicate Message Keys**

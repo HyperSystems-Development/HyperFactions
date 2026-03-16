@@ -40,6 +40,7 @@ graph TD
     IM[InviteManager]
     JRM[JoinRequestManager]
     CoM[ConfirmationManager]
+    CHM[ChatHistoryManager]
 
     style FM fill:#2563eb,color:#fff
     style CM fill:#2563eb,color:#fff
@@ -68,6 +69,7 @@ graph TD
 | [EconomyManager](#economymanager) | Faction economy (treasury, transactions) | FactionManager |
 | [AnnouncementManager](#announcementmanager) | Server-wide event broadcasts | None |
 | [SpawnSuppressionManager](#spawnsuppressionmanager) | Mob spawn control in claims/zones | ZoneManager, ClaimManager |
+| [ChatHistoryManager](#chathistorymanager) | Faction chat history persistence | ChatHistoryStorage |
 | [ZoneMobClearManager](#zonemobclearmanager) | Periodic mob clearing in zones | ZoneManager |
 
 ## Initialization Order
@@ -90,11 +92,16 @@ zoneManager = new ZoneManager(zoneStorage, claimManager);
 // 4. Chat manager needs FactionManager + RelationManager
 chatManager = new ChatManager(factionManager, relationManager, playerLookup);
 
-// 5. Standalone managers (no manager dependencies)
+// 5. Economy and chat history (storage-backed)
+economyManager = new EconomyManager(economyStorage, factionManager);
+chatHistoryManager = new ChatHistoryManager(chatHistoryStorage);
+
+// 6. Standalone managers (no manager dependencies)
 combatTagManager = new CombatTagManager();
 inviteManager = new InviteManager(dataDir);
 joinRequestManager = new JoinRequestManager(dataDir);
 confirmationManager = new ConfirmationManager();
+zoneMobClearManager = new ZoneMobClearManager(zoneManager);
 ```
 
 ---

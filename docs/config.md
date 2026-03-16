@@ -13,7 +13,7 @@ HyperFactions uses a modular JSON-based configuration system with:
 - **ServerConfig** - Server behavior settings in `config/server.json` (includes `configVersion`)
 - **Module Configs** - 8 feature-specific configs in `config/` subdirectory
 - **Validation** - Automatic validation with warnings and auto-correction
-- **Migration** - Automatic config migration (v1→v2→v3→v4→v5→v6→v7) with backup/rollback
+- **Migration** - Automatic config migration (v1→v2→v3→v4→v5→v6→v7→v8) with backup/rollback
 
 > **Note:** `CoreConfig` and `config.json` are deprecated. The V5→V6 migration splits `config.json` into `config/factions.json` and `config/server.json`, then deletes `config.json`. New installs create only the split files. If migration fails, the plugin falls back to loading from the legacy `config.json`.
 
@@ -26,7 +26,7 @@ ConfigManager (singleton)
      │        │
      │        └─► Roles, Faction, Power, Claims, Combat, Relations, Invites, Stuck
      │
-     ├─► ServerConfig (config/server.json, configVersion: 7)
+     ├─► ServerConfig (config/server.json, configVersion: 8)
      │        │
      │        └─► Teleport, AutoSave, Messages, GUI, Permissions, Updates
      │
@@ -77,7 +77,7 @@ ConfigManager (singleton)
 
 ## Config Migration
 
-Configuration is automatically migrated on startup. See [Data Import & Migration](data-import.md#config-migration-system) for the full migration chain (v1→v2→v3→v4→v5→v6→v7).
+Configuration is automatically migrated on startup. See [Data Import & Migration](data-import.md#config-migration-system) for the full migration chain (v1→v2→v3→v4→v5→v6→v7→v8).
 
 ### V5→V6: Config Split
 
@@ -102,6 +102,14 @@ The V6→V7 migration adds economy upkeep fields and removes deprecated world ma
 1. **Adds** upkeep configuration fields to `config/economy.json` (upkeep interval, rates, and thresholds)
 2. **Removes** deprecated `worldMap` section from `config/server.json` (world map settings moved to `config/worldmap.json` in earlier versions)
 3. **Sets** `configVersion` to 7 in `config/server.json`
+
+### V7→V8: Config Editor & Localization
+
+The V7→V8 migration adds fields required by the runtime config editor and localization system:
+
+1. **Adds** localization configuration fields to `config/server.json` (default locale, player language detection settings)
+2. **Adds** any missing config keys required by the admin GUI config editor
+3. **Sets** `configVersion` to 8 in `config/server.json`
 
 ## Key Classes
 
@@ -690,7 +698,7 @@ On first run, all config files are created with defaults:
 
 1. `config/` directory created
 2. `config/factions.json` created with faction gameplay defaults
-3. `config/server.json` created with server behavior defaults (including `configVersion: 7`)
+3. `config/server.json` created with server behavior defaults (including `configVersion: 8`)
 4. Module configs created with their defaults
 5. All files are pretty-printed JSON
 

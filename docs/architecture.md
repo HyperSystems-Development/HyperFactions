@@ -1,6 +1,6 @@
 # HyperFactions Architecture
 
-> **Version**: 0.12.0 | **451 classes** across **74 packages**
+> **Version**: 0.12.0 | **480 classes** across **74 packages**
 
 ## Overview
 
@@ -13,10 +13,10 @@ block-beta
     B["Core Layer — Central coordinator"]
     C["Integration Layer — Permissions, PAPI, OrbisGuard, HyperProtect-Mixin, World Map"]
     D["API Layer — Public API, EventBus, EconomyAPI"]
-    E["Manager Layer — 15 domain managers"]
+    E["Manager Layer — 16 domain managers"]
     F["Storage Layer — Async JSON persistence"]
-    G["Command Layer — 43 subcommands"]
-    H["GUI Layer — 40+ CustomUI pages"]
+    G["Command Layer — ~46 subcommands"]
+    H["GUI Layer — ~76 CustomUI pages"]
     I["Protection Layer — ECS handlers + protection mixin hooks"]
 ```
 
@@ -24,10 +24,10 @@ block-beta
 2. **Core Layer** - Central coordinator and manager initialization
 3. **Integration Layer** - Permission chain, PAPI, WiFlow, OrbisGuard, HyperProtect-Mixin, world map
 4. **API Layer** - Public API for third-party mods, EventBus, EconomyAPI
-5. **Manager Layer** - Business logic organized by domain (15 managers)
+5. **Manager Layer** - Business logic organized by domain (16 managers)
 6. **Storage Layer** - Async JSON persistence with interfaces
-7. **Command Layer** - Subcommand-based dispatcher pattern (43 subcommands)
-8. **GUI Layer** - CustomUI pages with registry-based navigation (40+ pages)
+7. **Command Layer** - Subcommand-based dispatcher pattern (~46 subcommands)
+8. **GUI Layer** - CustomUI pages with registry-based navigation (~76 pages)
 9. **Protection Layer** - ECS event handlers + protection mixin hooks (HyperProtect-Mixin / OrbisGuard-Mixins)
 
 ## Package Structure
@@ -49,7 +49,7 @@ src/main/java/com/hyperfactions/
 │   ├── PeriodicTaskManager.java    # Scheduled task management
 │   └── MembershipHistoryHandler.java # Member join/leave tracking
 │
-├── manager/                        # Business logic layer (14 managers)
+├── manager/                        # Business logic layer (16 managers)
 │   ├── FactionManager.java         # Faction CRUD, membership, roles
 │   ├── ClaimManager.java           # Territory claim/unclaim operations
 │   ├── PowerManager.java           # Player power, regeneration, penalties
@@ -63,7 +63,9 @@ src/main/java/com/hyperfactions/
 │   ├── ConfirmationManager.java    # Text-mode command confirmations
 │   ├── EconomyManager.java         # Faction economy (treasury, transactions)
 │   ├── AnnouncementManager.java    # Server-wide event broadcasts
-│   └── SpawnSuppressionManager.java # Mob spawn control in claims/zones
+│   ├── SpawnSuppressionManager.java # Mob spawn control in claims/zones
+│   ├── ChatHistoryManager.java     # Faction chat history persistence
+│   └── ZoneMobClearManager.java    # Periodic mob clearing in zones
 │
 ├── command/                        # Command system
 │   ├── FactionCommand.java         # Main /f dispatcher
@@ -80,7 +82,10 @@ src/main/java/com/hyperfactions/
 │   │       ├── AdminUpdateHandler.java
 │   │       ├── AdminIntegrationHandler.java
 │   │       ├── AdminPowerHandler.java
-│   │       └── AdminMapDecayHandler.java
+│   │       ├── AdminMapDecayHandler.java
+│   │       ├── AdminEconomyHandler.java
+│   │       ├── AdminTestHandler.java
+│   │       └── AdminWorldHandler.java
 │   ├── faction/                    # Faction management (create, disband, etc.)
 │   ├── member/                     # Membership (invite, kick, promote, etc.)
 │   ├── territory/                  # Territory (claim, unclaim, overclaim)
@@ -88,7 +93,8 @@ src/main/java/com/hyperfactions/
 │   ├── relation/                   # Diplomacy (ally, enemy, neutral)
 │   ├── info/                       # Information (list, map, who, power)
 │   ├── social/                     # Social (request, invites, chat)
-│   └── ui/                         # UI commands (gui, settings)
+│   ├── ui/                         # UI commands (gui, settings)
+│   └── economy/                   # Economy commands (money, balance, deposit, withdraw)
 │
 ├── gui/                            # CustomUI system
 │   ├── GuiManager.java             # Central GUI coordinator (registration + delegation)
@@ -174,7 +180,9 @@ src/main/java/com/hyperfactions/
 │       ├── EconomyConfig.java
 │       ├── FactionPermissionsConfig.java
 │       ├── AnnouncementConfig.java     # Announcement toggles
-│       └── WorldMapConfig.java         # World map refresh modes
+│       ├── WorldMapConfig.java         # World map refresh modes
+│       ├── GravestoneConfig.java         # Gravestone integration settings
+│       └── WorldsConfig.java             # Per-world behavior overrides
 │
 ├── storage/                        # Persistence layer
 │   ├── FactionStorage.java         # Faction storage interface
@@ -184,7 +192,9 @@ src/main/java/com/hyperfactions/
 │   └── json/                       # JSON implementations
 │       ├── JsonFactionStorage.java
 │       ├── JsonPlayerStorage.java
-│       └── JsonZoneStorage.java
+│       ├── JsonZoneStorage.java
+│       ├── ChatHistoryStorage.java       # Chat history storage interface
+│       └── JsonEconomyStorage.java       # Economy/treasury storage
 │
 ├── data/                           # Data models (Java records)
 │   ├── Faction.java                # Faction entity (mutable, builder)
@@ -194,7 +204,7 @@ src/main/java/com/hyperfactions/
 │   ├── FactionRelation.java        # Relation record
 │   ├── FactionPermissions.java     # Territory permissions record
 │   ├── FactionLog.java             # Activity log entry
-│   ├── FactionEconomy.java         # Economy data (future)
+│   ├── FactionEconomy.java         # Economy data
 │   ├── PlayerPower.java            # Player power record
 │   ├── Zone.java                   # SafeZone/WarZone entity
 │   ├── ZoneType.java               # SAFE, WAR enum
@@ -208,12 +218,11 @@ src/main/java/com/hyperfactions/
 ├── api/                            # Public API
 │   ├── HyperFactionsAPI.java       # API entry point
 │   ├── EconomyAPI.java             # Economy integration
-│   └── events/                     # Custom events
+│   └── events/                     # Custom events (32 event classes)
 │       ├── EventBus.java           # Internal event bus
-│       ├── FactionCreateEvent.java
-│       ├── FactionDisbandEvent.java
-│       ├── FactionClaimEvent.java
-│       └── FactionMemberEvent.java
+│       ├── Cancellable.java        # Pre-event cancellation interface
+│       ├── (20 post-event records)
+│       └── (11 cancellable pre-events)
 │
 ├── integration/                    # External integrations
 │   ├── PermissionManager.java      # Unified permission chain
@@ -227,15 +236,17 @@ src/main/java/com/hyperfactions/
 │   │   └── VaultUnlockedProvider.java    # VaultUnlocked permission provider
 │   ├── protection/                 # Protection integrations
 │   │   ├── ProtectionMixinBridge.java    # Dual-provider mixin detection facade
-│   │   ├── HyperProtectIntegration.java  # HyperProtect-Mixin bridge (20 hooks)
+│   │   ├── HyperProtectIntegration.java  # HyperProtect-Mixin bridge (28 hooks)
 │   │   ├── OrbisMixinsIntegration.java   # OrbisGuard-Mixins hooks (11 hooks)
 │   │   ├── OrbisGuardIntegration.java    # OG region conflict detection
-│   │   └── GravestoneIntegration.java    # Gravestone access control
+│   │   ├── GravestoneIntegration.java    # Gravestone access control
+│   │   ├── SentryIntegration.java        # Sentry error tracking
+│   │   └── KyuubiSoftIntegration.java    # KyuubiSoft NPC protection
 │   └── placeholder/                # Placeholder integrations (PAPI, WiFlow)
 │       ├── PlaceholderAPIIntegration.java
-│       ├── HyperFactionsExpansion.java   # 33 placeholders
+│       ├── HyperFactionsExpansion.java   # 51 placeholders
 │       ├── WiFlowPlaceholderIntegration.java
-│       └── WiFlowExpansion.java          # 33 placeholders
+│       └── WiFlowExpansion.java          # 47 placeholders
 │
 ├── backup/                         # Backup system
 │   ├── BackupManager.java          # GFS backup orchestration
@@ -269,11 +280,22 @@ src/main/java/com/hyperfactions/
 │   ├── MigrationResult.java        # Result record
 │   ├── MigrationOptions.java       # Execution options
 │   ├── MigrationType.java          # CONFIG, DATA, SCHEMA enum
-│   └── migrations/config/          # Concrete migrations (v1→v2→v3→v4)
+│   └── migrations/config/          # Concrete migrations (v1→v8)
 │
 ├── importer/                       # Data import from other plugins
 │   ├── elbaphfactions/             # ElbaphFactions importer
-│   └── hyfactions/                 # HyFactions V1 importer
+│   ├── hyfactions/                 # HyFactions V1 importer
+│   ├── simpleclaims/             # SimpleClaims importer
+│   └── factionsx/                # FactionsX importer
+│
+├── messages/                      # i18n message keys
+│   ├── HFMessages.java            # Message lookup and formatting
+│   ├── CommonKeys.java            # Shared message keys
+│   ├── CommandKeys.java           # Command message keys
+│   ├── HelpKeys.java              # Help system keys
+│   ├── AdminKeys.java             # Admin command keys
+│   ├── GuiKeys.java               # GUI page keys
+│   └── AdminGuiKeys.java          # Admin GUI keys
 │
 ├── listener/                       # Event listeners
 │
@@ -338,6 +360,11 @@ inviteManager = new InviteManager(dataDir);
 joinRequestManager = new JoinRequestManager(dataDir);
 announcementManager = new AnnouncementManager(onlinePlayersSupplier);
 spawnSuppressionManager = new SpawnSuppressionManager(zoneManager, claimManager);
+chatHistoryManager = new ChatHistoryManager(chatHistoryStorage);
+chatManager = new ChatManager(factionManager, relationManager, playerLookup);
+confirmationManager = new ConfirmationManager();
+economyManager = new EconomyManager(economyStorage, factionManager);
+zoneMobClearManager = new ZoneMobClearManager(zoneManager);
 ```
 
 ### Permission Constants: Permissions.java

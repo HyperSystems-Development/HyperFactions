@@ -39,7 +39,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'com.github.HyperSystems-Development:HyperFactions:v0.8.1'
+    compileOnly 'com.github.HyperSystems-Development:HyperFactions:v0.12.0'
 }
 ```
 
@@ -48,7 +48,7 @@ Add the soft dependency in your `manifest.json`:
 ```json
 {
   "optionalDependencies": {
-    "HyperSystems:HyperFactions": "0.8.1"
+    "HyperSystems:HyperFactions": "0.12.0"
   }
 }
 ```

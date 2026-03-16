@@ -1,6 +1,6 @@
 # HyperFactions Storage Layer
 
-> **Version**: 0.10.0
+> **Version**: 0.12.0
 
 Architecture documentation for the HyperFactions data persistence system.
 
@@ -15,9 +15,9 @@ HyperFactions uses an interface-based storage layer with:
 - **Auto-Save** - Periodic saves with configurable interval
 - **Safe-Save** - Atomic writes with SHA-256 checksums, backup recovery, `.bak` auto-cleanup
 - **Per-UUID Locking** - `JsonPlayerStorage` uses per-UUID locks to prevent concurrent load-modify-save race conditions (e.g., simultaneous deaths losing kill/death increments)
-- **Migration Support** - Automatic config (v1→v6) and data (v0→v1) format upgrades
+- **Migration Support** - Automatic config (v1→v8) and data (v0→v1) format upgrades
 - **Backup System** - GFS rotation with hourly/daily/weekly/manual/migration types
-- **Import Directories** - Data import from ElbaphFactions and HyFactions
+- **Import Directories** - Data import from ElbaphFactions, HyFactions, SimpleClaims, and FactionsX
 
 ## Architecture
 

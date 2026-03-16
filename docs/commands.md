@@ -330,7 +330,6 @@ if (result == ClaimResult.NO_PERMISSION) {
 - `AdminInfoHandler` - Admin info/who commands (open admin GUIs directly)
 - `AdminWorldHandler` - Per-world settings management (list/info/set/reset)
 - `AdminEconomyHandler` - Economy management, treasury adjustments, and upkeep control
-- `AdminSentryHandler` - Sentry error tracking integration management
 
 Admin commands use nested subcommand structure:
 
