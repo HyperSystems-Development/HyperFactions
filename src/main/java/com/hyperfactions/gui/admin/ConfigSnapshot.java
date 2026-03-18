@@ -156,6 +156,13 @@ public final class ConfigSnapshot {
         case "announce.warDeclared" -> cfg.announcements().setWarDeclared(toBool(value));
         case "announce.allianceFormed" -> cfg.announcements().setAllianceFormed(toBool(value));
         case "announce.allianceBroken" -> cfg.announcements().setAllianceBroken(toBool(value));
+        case "announce.factionCreatedColor" -> cfg.announcements().setFactionCreatedColor(toStr(value));
+        case "announce.factionDisbandedColor" -> cfg.announcements().setFactionDisbandedColor(toStr(value));
+        case "announce.leadershipTransferColor" -> cfg.announcements().setLeadershipTransferColor(toStr(value));
+        case "announce.overclaimColor" -> cfg.announcements().setOverclaimColor(toStr(value));
+        case "announce.warDeclaredColor" -> cfg.announcements().setWarDeclaredColor(toStr(value));
+        case "announce.allianceFormedColor" -> cfg.announcements().setAllianceFormedColor(toStr(value));
+        case "announce.allianceBrokenColor" -> cfg.announcements().setAllianceBrokenColor(toStr(value));
         case "announce.wildernessOnLeaveZoneEnabled" -> cfg.announcements().setWildernessOnLeaveZoneEnabled(toBool(value));
         case "announce.wildernessOnLeaveZoneUpper" -> cfg.announcements().setWildernessOnLeaveZoneUpper(toStr(value));
         case "announce.wildernessOnLeaveZoneLower" -> cfg.announcements().setWildernessOnLeaveZoneLower(toStr(value));

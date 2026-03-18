@@ -2,9 +2,8 @@ package com.hyperfactions.manager;
 
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.config.modules.AnnouncementConfig;
-import com.hyperfactions.util.ErrorHandler;
-import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import java.util.Collection;
@@ -40,7 +39,7 @@ public class AnnouncementManager {
       return;
     }
 
-    broadcastSuccess(CommonKeys.ServerAnnounce.FACTION_CREATED, leaderName, factionName);
+    broadcastInfo(CommonKeys.ServerAnnounce.FACTION_CREATED, config.getFactionCreatedColor(), leaderName, factionName);
   }
 
   /**
@@ -54,7 +53,7 @@ public class AnnouncementManager {
       return;
     }
 
-    broadcastError(CommonKeys.ServerAnnounce.FACTION_DISBANDED, factionName);
+    broadcastInfo(CommonKeys.ServerAnnounce.FACTION_DISBANDED, config.getFactionDisbandedColor(), factionName);
   }
 
   /**
@@ -71,7 +70,7 @@ public class AnnouncementManager {
       return;
     }
 
-    broadcastInfo(CommonKeys.ServerAnnounce.LEADERSHIP_TRANSFER, MessageUtil.COLOR_GOLD, newLeader, factionName);
+    broadcastInfo(CommonKeys.ServerAnnounce.LEADERSHIP_TRANSFER, config.getLeadershipTransferColor(), newLeader, factionName);
   }
 
   /**
@@ -86,7 +85,7 @@ public class AnnouncementManager {
       return;
     }
 
-    broadcastError(CommonKeys.ServerAnnounce.OVERCLAIM, attackerFaction, defenderFaction);
+    broadcastInfo(CommonKeys.ServerAnnounce.OVERCLAIM, config.getOverclaimColor(), attackerFaction, defenderFaction);
   }
 
   /**
@@ -101,7 +100,7 @@ public class AnnouncementManager {
       return;
     }
 
-    broadcastError(CommonKeys.ServerAnnounce.WAR_DECLARED, declaringFaction, targetFaction);
+    broadcastInfo(CommonKeys.ServerAnnounce.WAR_DECLARED, config.getWarDeclaredColor(), declaringFaction, targetFaction);
   }
 
   /**
@@ -116,7 +115,7 @@ public class AnnouncementManager {
       return;
     }
 
-    broadcastSuccess(CommonKeys.ServerAnnounce.ALLIANCE_FORMED, faction1, faction2);
+    broadcastInfo(CommonKeys.ServerAnnounce.ALLIANCE_FORMED, config.getAllianceFormedColor(), faction1, faction2);
   }
 
   /**
@@ -131,21 +130,7 @@ public class AnnouncementManager {
       return;
     }
 
-    broadcastInfo(CommonKeys.ServerAnnounce.ALLIANCE_BROKEN, MessageUtil.COLOR_GOLD, faction1, faction2);
-  }
-
-  /**
-   * Broadcasts a success-styled message to all online players, resolving i18n per-player.
-   */
-  private void broadcastSuccess(@NotNull String key, Object... args) {
-    broadcast(player -> MessageUtil.success(player, key, args));
-  }
-
-  /**
-   * Broadcasts an error-styled message to all online players, resolving i18n per-player.
-   */
-  private void broadcastError(@NotNull String key, Object... args) {
-    broadcast(player -> MessageUtil.error(player, key, args));
+    broadcastInfo(CommonKeys.ServerAnnounce.ALLIANCE_BROKEN, config.getAllianceBrokenColor(), faction1, faction2);
   }
 
   /**

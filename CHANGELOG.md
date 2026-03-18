@@ -90,6 +90,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `ESSENTIALS_BACK` zone flag — controls whether /back teleportation works in zones (defaults to allowed)
 - `FactionHomeTeleportEvent` and `FactionHomeTeleportPreEvent` events for home teleport tracking
 
+**Configurable Announcement Colors**
+- 7 per-event color settings in `AnnouncementConfig`: `factionCreatedColor`, `factionDisbandedColor`, `leadershipTransferColor`, `overclaimColor`, `warDeclaredColor`, `allianceFormedColor`, `allianceBrokenColor`
+- Colors stored in `announcements.json` under a `"colors"` section, loaded/saved with defaults matching previous hardcoded values
+- `AnnouncementManager` reads colors from config instead of using hardcoded `broadcastSuccess`/`broadcastError` calls
+- Admin GUI: color picker for each event in the Announcements config tab
+
+**Zone & Power Query API Methods**
+- `HyperFactionsAPI.getZone(world, chunkX, chunkZ)` — returns the zone at a chunk position
+- `HyperFactionsAPI.getZoneByName(name)` — returns zone by name (case-insensitive)
+- `HyperFactionsAPI.getAllZones()` — returns all zones as an unmodifiable collection
+- `HyperFactionsAPI.getZonesByType(type)` — returns zones filtered by type (SAFE/WAR)
+- `HyperFactionsAPI.isHardcoreMode()` — returns whether hardcore power mode is enabled
+- `HyperFactionsAPI.getFactionHardcorePower(factionId)` — returns faction's hardcore power pool value
+
 **Per-World Max Claims**
 - New `maxClaims` per-world setting in `worlds.json` — limits how many claims a single faction can hold in a specific world
 - `null` or `0` = use global limit, `>0` = per-faction per-world hard cap

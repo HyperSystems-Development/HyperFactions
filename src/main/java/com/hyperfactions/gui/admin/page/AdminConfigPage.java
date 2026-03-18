@@ -496,12 +496,19 @@ public class AdminConfigPage extends InteractiveCustomUIPage<AdminConfigData> {
     setColumn(true);
     addSectionHeader(cmd, loc(AdminGuiKeys.AdminGui.CFG_SEC_ANNOUNCE));
     addBooleanSetting(cmd, events, "announce.factionCreated", "Faction Created", cfg.announcements().isFactionCreated());
+    addColorSetting(cmd, events, "announce.factionCreatedColor", "Created Color", cfg.announcements().getFactionCreatedColor());
     addBooleanSetting(cmd, events, "announce.factionDisbanded", "Faction Disbanded", cfg.announcements().isFactionDisbanded());
+    addColorSetting(cmd, events, "announce.factionDisbandedColor", "Disbanded Color", cfg.announcements().getFactionDisbandedColor());
     addBooleanSetting(cmd, events, "announce.leadershipTransfer", "Leadership Transfer", cfg.announcements().isLeadershipTransfer());
+    addColorSetting(cmd, events, "announce.leadershipTransferColor", "Transfer Color", cfg.announcements().getLeadershipTransferColor());
     addBooleanSetting(cmd, events, "announce.overclaim", "Overclaim", cfg.announcements().isOverclaim());
+    addColorSetting(cmd, events, "announce.overclaimColor", "Overclaim Color", cfg.announcements().getOverclaimColor());
     addBooleanSetting(cmd, events, "announce.warDeclared", "War Declared", cfg.announcements().isWarDeclared());
+    addColorSetting(cmd, events, "announce.warDeclaredColor", "War Color", cfg.announcements().getWarDeclaredColor());
     addBooleanSetting(cmd, events, "announce.allianceFormed", "Alliance Formed", cfg.announcements().isAllianceFormed());
+    addColorSetting(cmd, events, "announce.allianceFormedColor", "Formed Color", cfg.announcements().getAllianceFormedColor());
     addBooleanSetting(cmd, events, "announce.allianceBroken", "Alliance Broken", cfg.announcements().isAllianceBroken());
+    addColorSetting(cmd, events, "announce.allianceBrokenColor", "Broken Color", cfg.announcements().getAllianceBrokenColor());
 
     setColumn(false);
     addSectionHeader(cmd, loc(AdminGuiKeys.AdminGui.CFG_SEC_TERRITORY_NOTIFY));

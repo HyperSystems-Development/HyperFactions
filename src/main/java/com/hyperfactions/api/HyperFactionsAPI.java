@@ -7,6 +7,7 @@ import com.hyperfactions.data.PlayerPower;
 import com.hyperfactions.data.RelationType;
 import com.hyperfactions.data.Zone;
 import com.hyperfactions.data.ZoneFlags;
+import com.hyperfactions.data.ZoneType;
 import com.hyperfactions.manager.*;
 import com.hyperfactions.protection.ProtectionChecker;
 import com.hyperfactions.config.ConfigManager;
@@ -15,6 +16,7 @@ import com.hyperfactions.data.ChunkKey;
 import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.HFMessages;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -143,6 +145,33 @@ public final class HyperFactionsAPI {
     return getInstance().getPowerManager().getFactionPower(factionId);
   }
 
+  /**
+   * Checks whether hardcore power mode is enabled.
+   * In hardcore mode, faction power is a shared pool rather than the sum of
+   * individual member power values.
+   *
+   * @return true if hardcore mode is enabled
+   */
+  public static boolean isHardcoreMode() {
+    return ConfigManager.get().isHardcoreMode();
+  }
+
+  /**
+   * Gets a faction's hardcore power pool value.
+   * Only meaningful when {@link #isHardcoreMode()} returns true.
+   *
+   * @param factionId the faction ID
+   * @return the faction's hardcore power, or -1 if the faction is not found
+   */
+  public static double getFactionHardcorePower(@NotNull UUID factionId) {
+    Faction faction = getInstance().getFactionManager().getFaction(factionId);
+    if (faction == null) {
+      return -1;
+    }
+    Double hp = faction.hardcorePower();
+    return hp != null ? hp : -1;
+  }
+
   // === Claims ===
 
   /**
@@ -230,6 +259,56 @@ public final class HyperFactionsAPI {
    */
   public static boolean isInWarZone(@NotNull String world, int chunkX, int chunkZ) {
     return getInstance().getZoneManager().isInWarZone(world, chunkX, chunkZ);
+  }
+
+  /**
+   * Gets the zone at a chunk position.
+   *
+   * @param world  the world name
+   * @param chunkX the chunk X
+   * @param chunkZ the chunk Z
+   * @return the zone, or null if the location is not in a zone
+   */
+  @Nullable
+  public static Zone getZone(@NotNull String world, int chunkX, int chunkZ) {
+    return getInstance().getZoneManager().getZone(world, chunkX, chunkZ);
+  }
+
+  /**
+   * Gets a zone by name (case-insensitive).
+   *
+   * @param name the zone name
+   * @return the zone, or null if not found
+   */
+  @Nullable
+  public static Zone getZoneByName(@NotNull String name) {
+    return getInstance().getZoneManager().getZoneByName(name);
+  }
+
+  /**
+   * Gets all zones.
+   *
+   * @return unmodifiable collection of all zones
+   */
+  @NotNull
+  public static Collection<Zone> getAllZones() {
+    return getInstance().getZoneManager().getAllZones();
+  }
+
+  /**
+   * Gets all zones of a specific type.
+   *
+   * @param type the zone type name ("SAFE" or "WAR", case-insensitive)
+   * @return list of zones matching the type, or empty list if type is invalid
+   */
+  @NotNull
+  public static List<Zone> getZonesByType(@NotNull String type) {
+    try {
+      ZoneType zoneType = ZoneType.valueOf(type.toUpperCase());
+      return getInstance().getZoneManager().getZonesByType(zoneType);
+    } catch (IllegalArgumentException e) {
+      return List.of();
+    }
   }
 
   // === Combat ===
