@@ -52,6 +52,8 @@ public class ConfigManager {
 
   private final WorldSettingsResolver worldSettingsResolver = new WorldSettingsResolver();
 
+  private final Object worldSettingsLock = new Object();
+
   private ConfigManager() {}
 
   /**
@@ -674,6 +676,21 @@ public class ConfigManager {
       return worldSettingsResolver.isPowerLossEnabled(worldName);
     }
     return true;
+  }
+
+  /**
+   * Gets the per-world max claims limit for a world.
+   * Returns null if no per-world limit is set (use global config).
+   *
+   * @param worldName the world name
+   * @return the max claims limit, or null for no per-world limit
+   */
+  @org.jetbrains.annotations.Nullable
+  public Integer getWorldMaxClaims(@NotNull String worldName) {
+    if (worldsConfig != null && worldsConfig.isEnabled()) {
+      return worldSettingsResolver.getMaxClaimsInWorld(worldName);
+    }
+    return null;
   }
 
   // Combat (from factions config)
@@ -1318,5 +1335,42 @@ public class ConfigManager {
   /** Checks if permission locked. */
   public boolean isPermissionLocked(@NotNull String permissionName) {
     return factionPermissionsConfig.isPermissionLocked(permissionName);
+  }
+
+  // === World Settings API ===
+
+  /**
+   * Registers or updates per-world settings for the given world key.
+   * Upsert semantics: skips save if settings are identical to existing.
+   * Thread-safe.
+   *
+   * @param worldKey the world name or wildcard pattern
+   * @param settings the settings to apply
+   */
+  public void registerWorldSettings(@NotNull String worldKey,
+      @NotNull com.hyperfactions.config.modules.WorldsConfig.WorldSettings settings) {
+    synchronized (worldSettingsLock) {
+      com.hyperfactions.config.modules.WorldsConfig.WorldSettings existing = worldsConfig.getWorldSettings(worldKey);
+      if (settings.equals(existing)) return;
+      worldsConfig.setWorldSettings(worldKey, settings);
+      worldsConfig.save();
+      worldSettingsResolver.rebuild(worldsConfig);
+    }
+  }
+
+  /**
+   * Removes per-world settings for the given key and persists.
+   * Thread-safe.
+   *
+   * @param worldKey the world key to remove
+   * @return true if settings were removed
+   */
+  public boolean removeExternalWorldSettings(@NotNull String worldKey) {
+    synchronized (worldSettingsLock) {
+      if (!worldsConfig.removeWorldSettings(worldKey)) return false;
+      worldsConfig.save();
+      worldSettingsResolver.rebuild(worldsConfig);
+      return true;
+    }
   }
 }

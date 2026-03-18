@@ -198,6 +198,7 @@ Territory claiming and chunk ownership tracking.
 | `overclaim(playerUuid, world, chunkX, chunkZ)` | `territory.overclaim` | `ClaimResult` |
 | `getClaimOwner(world, chunkX, chunkZ)` | - | `UUID` (factionId) |
 | `getClaimCount(factionId)` | - | `int` |
+| `countFactionClaimsInWorld(factionId, world)` | - | `int` |
 | `getFactionClaims(factionId)` | - | `List<FactionClaim>` |
 
 ### Result Enum
@@ -212,6 +213,7 @@ public enum ClaimResult {
     ALREADY_YOURS,
     INSUFFICIENT_POWER,
     MAX_CLAIMS_REACHED,
+    WORLD_MAX_CLAIMS_REACHED,
     ADJACENT_REQUIRED,
     WORLD_BLACKLISTED,
     NOT_IN_WHITELIST,
@@ -219,6 +221,8 @@ public enum ClaimResult {
     ZONE_CONFLICT
 }
 ```
+
+`WORLD_MAX_CLAIMS_REACHED` is returned when the faction has hit the per-world claim cap configured in `worlds.json` (the `maxClaims` setting). This is checked in both the `claim()` and `overclaim()` flows using the `countFactionClaimsInWorld()` helper, which counts existing claims for a faction in a specific world.
 
 ### Debounce
 

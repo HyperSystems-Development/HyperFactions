@@ -330,7 +330,7 @@ Territory settings:
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| `maxClaims` | int | 100 | Hard limit per faction |
+| `maxClaims` | int | 100 | Global hard limit per faction (can be overridden per-world via `worlds.json`) |
 | `onlyAdjacent` | bool | false | Require adjacent claims |
 | `decayEnabled` | bool | true | Enable claim decay |
 | `decayDaysInactive` | int | 30 | Days before decay starts |
@@ -564,7 +564,7 @@ Per-world behavior overrides in `config/worlds.json`:
 | `claimBlacklist` | array | [] | Worlds where claiming is unconditionally blocked |
 | `worlds` | object | `{}` | Per-world setting overrides (keyed by world name or wildcard pattern) |
 
-Per-world settings (4 per entry):
+Per-world settings (5 per entry):
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
@@ -572,6 +572,7 @@ Per-world settings (4 per entry):
 | `powerLoss` | bool | true | Whether power loss applies in this world |
 | `friendlyFireFaction` | bool | *(from global config)* | Same-faction PvP override |
 | `friendlyFireAlly` | bool | *(from global config)* | Ally PvP override |
+| `maxClaims` | Integer | null | Maximum claims a faction can hold in this world. `null` or `0` = use global limit, `>0` = per-faction per-world hard cap |
 
 **Wildcard support**: Use `%` as a wildcard in world names (e.g., `arena_%` matches `arena_1`, `arena_pvp`). Priority resolution: exact name match > wildcard patterns (fewer wildcards = higher priority) > default policy.
 
@@ -584,7 +585,8 @@ Per-world settings (4 per entry):
   "claimBlacklist": ["lobby"],
   "worlds": {
     "arena_%": { "claiming": false, "powerLoss": false },
-    "instance-%": { "claiming": false }
+    "instance-%": { "claiming": false },
+    "events": { "claiming": true, "powerLoss": false, "maxClaims": 5 }
   }
 }
 ```

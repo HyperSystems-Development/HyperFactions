@@ -37,15 +37,17 @@ public class WorldsConfig extends ModuleConfig {
    * @param powerLoss          whether power loss on death applies (null = use default)
    * @param friendlyFireFaction whether faction-on-faction friendly fire is allowed (null = use default)
    * @param friendlyFireAlly   whether ally-on-ally friendly fire is allowed (null = use default)
+   * @param maxClaims          per-world max claims limit (null/0 = use global limit)
    */
   public record WorldSettings(
       Boolean claiming,
       Boolean powerLoss,
       Boolean friendlyFireFaction,
-      Boolean friendlyFireAlly
+      Boolean friendlyFireAlly,
+      Integer maxClaims
   ) {
     /** Default settings — all null means defer to global config. */
-    public static final WorldSettings DEFAULTS = new WorldSettings(null, null, null, null);
+    public static final WorldSettings DEFAULTS = new WorldSettings(null, null, null, null, null);
   }
 
   private String defaultPolicy = "allow";
@@ -73,9 +75,9 @@ public class WorldsConfig extends ModuleConfig {
     defaultPolicy = "allow";
     worlds.clear();
     // Block claiming in temporary instance worlds (power loss defers to global config)
-    worlds.put("instance-%", new WorldSettings(false, null, null, null));
+    worlds.put("instance-%", new WorldSettings(false, null, null, null, null));
     // Example entry showing all available options (non-matching name won't affect real worlds)
-    worlds.put("example-world-abc", new WorldSettings(true, true, false, false));
+    worlds.put("example-world-abc", new WorldSettings(true, true, false, false, null));
   }
 
   /** Loads module settings. */
@@ -93,7 +95,8 @@ public class WorldsConfig extends ModuleConfig {
               getNullableBool(worldObj, "claiming"),
               getNullableBool(worldObj, "powerLoss"),
               getNullableBool(worldObj, "friendlyFireFaction"),
-              getNullableBool(worldObj, "friendlyFireAlly")
+              getNullableBool(worldObj, "friendlyFireAlly"),
+              getNullableInt(worldObj, "maxClaims")
           );
           worlds.put(entry.getKey(), settings);
         }
@@ -121,6 +124,9 @@ public class WorldsConfig extends ModuleConfig {
       }
       if (s.friendlyFireAlly() != null) {
         worldObj.addProperty("friendlyFireAlly", s.friendlyFireAlly());
+      }
+      if (s.maxClaims() != null && s.maxClaims() > 0) {
+        worldObj.addProperty("maxClaims", s.maxClaims());
       }
       worldsObj.add(entry.getKey(), worldObj);
     }
@@ -189,6 +195,16 @@ public class WorldsConfig extends ModuleConfig {
       defaultPolicy = "allow";
     }
 
+    for (Map.Entry<String, WorldSettings> entry : worlds.entrySet()) {
+      WorldSettings ws = entry.getValue();
+      if (ws.maxClaims() != null && ws.maxClaims() < 0) {
+        result.addWarning("worlds", entry.getKey() + ".maxClaims",
+            "must be >= 0", ws.maxClaims(), null);
+        worlds.put(entry.getKey(), new WorldSettings(ws.claiming(), ws.powerLoss(),
+            ws.friendlyFireFaction(), ws.friendlyFireAlly(), null));
+      }
+    }
+
     return result;
   }
 
@@ -201,6 +217,17 @@ public class WorldsConfig extends ModuleConfig {
   private Boolean getNullableBool(@NotNull JsonObject obj, @NotNull String key) {
     if (obj.has(key) && !obj.get(key).isJsonNull()) {
       return obj.get(key).getAsBoolean();
+    }
+    return null;
+  }
+
+  /**
+   * Gets a nullable Integer from a JSON object.
+   * Returns null if the key doesn't exist or is null.
+   */
+  private Integer getNullableInt(@NotNull JsonObject obj, @NotNull String key) {
+    if (obj.has(key) && !obj.get(key).isJsonNull()) {
+      return obj.get(key).getAsInt();
     }
     return null;
   }

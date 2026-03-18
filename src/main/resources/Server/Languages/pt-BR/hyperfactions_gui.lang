@@ -738,6 +738,8 @@ map.overclaim_already_yours = Você já possui este chunk.
 map.overclaim_ally = Você não pode conquistar território aliado.
 map.overclaim_has_power = Esta facção tem poder suficiente para defender seu território.
 map.overclaim_max = Você atingiu o limite máximo de reivindicações.
+map.claim_world_max = Limite de reivindicações do mundo atingido ({0}).
+map.overclaim_world_max = Limite de reivindicações do mundo atingido ({0}).
 map.overclaim_failed = Falha ao conquistar chunk.
 # ========== Página de Criação de Facção ==========
 create.title = Crie Sua Facção

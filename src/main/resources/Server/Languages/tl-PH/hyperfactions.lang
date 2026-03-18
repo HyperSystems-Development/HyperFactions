@@ -107,6 +107,7 @@ cmd.claim.success = Na-claim ang chunk sa {0}, {1}!
 cmd.claim.not_officer = Dapat ikaw ay isang opisyal upang mag-claim ng lupa.
 cmd.claim.already_claimed = Ang chunk na ito ay naka-claim na.
 cmd.claim.max_claims = Naabot na ng iyong paksyon ang maximum na claim. Kumuha ng higit pang kapangyarihan!
+cmd.claim.world_max_claims = Naabot na ng iyong paksyon ang maximum na claim ({0}) na pinapayagan sa mundong ito.
 cmd.claim.not_adjacent = Dapat kang mag-claim na katabi ng umiiral na teritoryo.
 cmd.claim.world_not_allowed = Hindi pinapayagan ang pag-claim sa mundong ito.
 cmd.claim.orbisguard = Ang lugar na ito ay protektado ng OrbisGuard.

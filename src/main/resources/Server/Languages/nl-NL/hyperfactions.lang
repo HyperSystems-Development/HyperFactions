@@ -107,6 +107,7 @@ cmd.claim.success = Gebied geclaimd op {0}, {1}!
 cmd.claim.not_officer = Je moet een officier zijn om land te claimen.
 cmd.claim.already_claimed = Dit gebied is al geclaimd.
 cmd.claim.max_claims = Je factie heeft het maximum aantal gebieden bereikt. Krijg meer kracht!
+cmd.claim.world_max_claims = Je factie heeft het maximum aantal gebieden ({0}) bereikt dat in deze wereld is toegestaan.
 cmd.claim.not_adjacent = Je moet aangrenzend aan bestaand territorium claimen.
 cmd.claim.world_not_allowed = Claimen is niet toegestaan in deze wereld.
 cmd.claim.orbisguard = Dit gebied wordt beschermd door OrbisGuard.

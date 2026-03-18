@@ -579,6 +579,7 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
       case ALREADY_CLAIMED_OTHER -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, GuiKeys.MapGui.CLAIM_ALREADY_CLAIMED)).color("#FF5555"));
       case NOT_ADJACENT -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, GuiKeys.MapGui.CLAIM_NOT_ADJACENT)).color("#FF5555"));
       case MAX_CLAIMS_REACHED -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, GuiKeys.MapGui.CLAIM_MAX)).color("#FF5555"));
+      case WORLD_MAX_CLAIMS_REACHED -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, GuiKeys.MapGui.CLAIM_WORLD_MAX)).color("#FF5555"));
       case WORLD_NOT_ALLOWED -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, GuiKeys.MapGui.CLAIM_WORLD_NOT_ALLOWED)).color("#FF5555"));
       case ORBISGUARD_PROTECTED -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, GuiKeys.MapGui.CLAIM_ORBISGUARD)).color("#FF5555"));
       default -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, GuiKeys.MapGui.CLAIM_FAILED)).color("#FF5555"));
@@ -624,6 +625,7 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
       case ALREADY_CLAIMED_ALLY -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, GuiKeys.MapGui.OVERCLAIM_ALLY)).color("#FF5555"));
       case TARGET_HAS_POWER -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, GuiKeys.MapGui.OVERCLAIM_HAS_POWER)).color("#FF5555"));
       case MAX_CLAIMS_REACHED -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, GuiKeys.MapGui.OVERCLAIM_MAX)).color("#FF5555"));
+      case WORLD_MAX_CLAIMS_REACHED -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, GuiKeys.MapGui.OVERCLAIM_WORLD_MAX)).color("#FF5555"));
       default -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, GuiKeys.MapGui.OVERCLAIM_FAILED)).color("#FF5555"));
     };
 

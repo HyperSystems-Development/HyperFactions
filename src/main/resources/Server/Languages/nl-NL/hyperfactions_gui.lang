@@ -738,6 +738,8 @@ map.overclaim_already_yours = Je bezit dit gebied al.
 map.overclaim_ally = Je kunt bondgenootterritorium niet overnemen.
 map.overclaim_has_power = Deze factie heeft genoeg kracht om hun territorium te verdedigen.
 map.overclaim_max = Je hebt het maximale aantal claims bereikt.
+map.claim_world_max = Wereldclaimlimiet bereikt ({0}).
+map.overclaim_world_max = Wereldclaimlimiet bereikt ({0}).
 map.overclaim_failed = Overnemen mislukt.
 # ========== Factie Aanmaken Pagina ==========
 create.title = Maak Jouw Factie

@@ -107,6 +107,7 @@ cmd.claim.success = Chunk reclamado en {0}, {1}!
 cmd.claim.not_officer = Debes ser oficial para reclamar territorio.
 cmd.claim.already_claimed = Este chunk ya esta reclamado.
 cmd.claim.max_claims = Tu faccion alcanzo el maximo de reclamos. Consigue mas poder!
+cmd.claim.world_max_claims = Tu faccion ha alcanzado el maximo de reclamos ({0}) permitidos en este mundo.
 cmd.claim.not_adjacent = Debes reclamar junto a territorio existente.
 cmd.claim.world_not_allowed = No se permite reclamar en este mundo.
 cmd.claim.orbisguard = Esta area esta protegida por OrbisGuard.

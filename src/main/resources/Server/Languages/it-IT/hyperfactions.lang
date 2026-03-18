@@ -107,6 +107,7 @@ cmd.claim.success = Chunk rivendicato a {0}, {1}!
 cmd.claim.not_officer = Devi essere un ufficiale per rivendicare territori.
 cmd.claim.already_claimed = Questo chunk è già rivendicato.
 cmd.claim.max_claims = La tua fazione ha raggiunto il massimo di territori. Ottieni più potere!
+cmd.claim.world_max_claims = La tua fazione ha raggiunto il massimo di territori ({0}) consentiti in questo mondo.
 cmd.claim.not_adjacent = Devi rivendicare un chunk adiacente al territorio esistente.
 cmd.claim.world_not_allowed = La rivendicazione non è permessa in questo mondo.
 cmd.claim.orbisguard = Quest'area è protetta da OrbisGuard.

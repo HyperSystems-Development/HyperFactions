@@ -86,6 +86,7 @@ public class OverclaimSubCommand extends FactionSubCommand {
       case ALREADY_CLAIMED_ALLY -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.OVERCLAIM_ALLY));
       case TARGET_HAS_POWER -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.TARGET_HAS_POWER));
       case MAX_CLAIMS_REACHED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.MAX_CLAIMS));
+      case WORLD_MAX_CLAIMS_REACHED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.WORLD_MAX_CLAIMS));
       default -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.OVERCLAIM_FAILED));
     }
   }

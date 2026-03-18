@@ -130,6 +130,9 @@ public class AdminWorldHandler {
       if (settings.friendlyFireAlly() != null) {
         parts.add("ffAlly=" + boolStr(settings.friendlyFireAlly()));
       }
+      if (settings.maxClaims() != null && settings.maxClaims() > 0) {
+        parts.add("maxClaims=" + settings.maxClaims());
+      }
 
       if (parts.isEmpty()) {
         line = line.insert(msg("(no overrides)", COLOR_GRAY));
@@ -167,6 +170,8 @@ public class AdminWorldHandler {
     ctx.sendMessage(msg("  Power loss: " + boolStr(powerLoss), COLOR_WHITE));
     ctx.sendMessage(msg("  Faction FF: " + (ffFaction != null ? boolStr(ffFaction) : "global (" + boolStr(config.isFactionDamage()) + ")"), COLOR_WHITE));
     ctx.sendMessage(msg("  Ally FF: " + (ffAlly != null ? boolStr(ffAlly) : "global (" + boolStr(config.isAllyDamage()) + ")"), COLOR_WHITE));
+    Integer maxClaims = resolved != null ? resolved.maxClaims() : null;
+    ctx.sendMessage(msg("  Max claims: " + (maxClaims != null && maxClaims > 0 ? maxClaims : "unlimited (global)"), COLOR_WHITE));
 
     if (resolved != null) {
       ctx.sendMessage(msg("  Source: per-world override", COLOR_GRAY));
@@ -181,14 +186,49 @@ public class AdminWorldHandler {
    */
   private void handleSet(CommandContext ctx, @Nullable PlayerRef player, String[] args) {
     if (args.length < 3) {
-      ctx.sendMessage(prefix().insert(msg("Usage: /f admin world set <world> <setting> <true|false>", COLOR_RED)));
-      ctx.sendMessage(msg("  Settings: claiming, powerLoss, friendlyFireFaction, friendlyFireAlly", COLOR_GRAY));
+      ctx.sendMessage(prefix().insert(msg("Usage: /f admin world set <world> <setting> <value>", COLOR_RED)));
+      ctx.sendMessage(msg("  Settings: claiming, powerLoss, friendlyFireFaction, friendlyFireAlly, maxClaims", COLOR_GRAY));
       return;
     }
 
     String worldKey = args[0];
     String setting = args[1].toLowerCase();
     String valueStr = args[2].toLowerCase();
+
+    // Handle integer settings
+    if (setting.equals("maxclaims")) {
+        WorldsConfig config = ConfigManager.get().worlds();
+        WorldSettings current = config.getWorldSettings(worldKey);
+        if (current == null) {
+            current = WorldSettings.DEFAULTS;
+        }
+
+        Integer maxClaimsVal;
+        if (valueStr.equals("default") || valueStr.equals("null") || valueStr.equals("0")) {
+            maxClaimsVal = null;
+        } else {
+            try {
+                maxClaimsVal = Integer.parseInt(valueStr);
+            } catch (NumberFormatException e) {
+                ctx.sendMessage(prefix().insert(msg("maxClaims must be a number, 'default', or '0'.", COLOR_RED)));
+                return;
+            }
+            if (maxClaimsVal < 0) {
+                ctx.sendMessage(prefix().insert(msg("maxClaims cannot be negative.", COLOR_RED)));
+                return;
+            }
+        }
+
+        WorldSettings updated = new WorldSettings(current.claiming(), current.powerLoss(),
+            current.friendlyFireFaction(), current.friendlyFireAlly(), maxClaimsVal);
+        config.setWorldSettings(worldKey, updated);
+        config.save();
+        ConfigManager.get().getWorldSettingsResolver().rebuild(config);
+
+        String displayVal = maxClaimsVal != null ? String.valueOf(maxClaimsVal) : "unlimited";
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.WORLD_SET, "maxClaims", displayVal, worldKey), COLOR_GREEN)));
+        return;
+    }
 
     if (!valueStr.equals("true") && !valueStr.equals("false")) {
       ctx.sendMessage(prefix().insert(msg("Value must be 'true' or 'false'.", COLOR_RED)));
@@ -203,13 +243,13 @@ public class AdminWorldHandler {
     }
 
     WorldSettings updated = switch (setting) {
-      case "claiming" -> new WorldSettings(value, current.powerLoss(), current.friendlyFireFaction(), current.friendlyFireAlly());
-      case "powerloss" -> new WorldSettings(current.claiming(), value, current.friendlyFireFaction(), current.friendlyFireAlly());
-      case "friendlyfirefaction", "fffaction" -> new WorldSettings(current.claiming(), current.powerLoss(), value, current.friendlyFireAlly());
-      case "friendlyfireally", "ffally" -> new WorldSettings(current.claiming(), current.powerLoss(), current.friendlyFireFaction(), value);
+      case "claiming" -> new WorldSettings(value, current.powerLoss(), current.friendlyFireFaction(), current.friendlyFireAlly(), current.maxClaims());
+      case "powerloss" -> new WorldSettings(current.claiming(), value, current.friendlyFireFaction(), current.friendlyFireAlly(), current.maxClaims());
+      case "friendlyfirefaction", "fffaction" -> new WorldSettings(current.claiming(), current.powerLoss(), value, current.friendlyFireAlly(), current.maxClaims());
+      case "friendlyfireally", "ffally" -> new WorldSettings(current.claiming(), current.powerLoss(), current.friendlyFireFaction(), value, current.maxClaims());
       default -> {
         ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.WORLD_UNKNOWN_SETTING, setting), COLOR_RED)));
-        ctx.sendMessage(msg("  Settings: claiming, powerLoss, friendlyFireFaction, friendlyFireAlly", COLOR_GRAY));
+        ctx.sendMessage(msg("  Settings: claiming, powerLoss, friendlyFireFaction, friendlyFireAlly, maxClaims", COLOR_GRAY));
         yield null;
       }
     };

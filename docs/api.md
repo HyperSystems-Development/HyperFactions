@@ -18,6 +18,7 @@ This document is for third-party mod developers who want to hook into HyperFacti
 - [Protection](#protection)
 - [Language / i18n](#language--i18n)
 - [Chat Color Customization](#chat-color-customization)
+- [World Settings](#world-settings)
 - [Configuration](#configuration)
 - [Manager Access](#manager-access)
 - [Economy API](#economy-api)
@@ -346,6 +347,60 @@ HyperFactionsAPI.saveConfig();
 // Restore original
 HyperFactionsAPI.setChatColors(originalColors);
 ```
+
+---
+
+## World Settings
+
+Manage per-world behavior overrides at runtime. Other plugins can register, query, and remove world settings programmatically. Changes are persisted to `worlds.json` immediately.
+
+### Methods
+
+| Method | Returns | Description |
+|--------|---------|-------------|
+| `registerWorldSettings(String worldKey, WorldsConfig.WorldSettings settings)` | `void` | Upsert world settings — creates or replaces the entry for `worldKey`, persists to disk. Thread-safe. |
+| `getWorldSettings(String worldName)` | `@Nullable WorldsConfig.WorldSettings` | Resolve settings for a world name, including wildcard pattern matching (exact match > wildcards > null). |
+| `getConfiguredWorldSettings(String worldKey)` | `@Nullable WorldsConfig.WorldSettings` | Get settings for an exact key only (no pattern matching). Returns null if the key is not configured. |
+| `removeWorldSettings(String worldKey)` | `void` | Remove the entry for `worldKey` and persist the change. No-op if key does not exist. |
+
+### WorldSettings Record
+
+`WorldsConfig.WorldSettings` is a record with 5 fields. Any field set to `null` inherits from global config:
+
+```java
+record WorldSettings(
+    @Nullable Boolean claiming,           // Allow claiming in this world
+    @Nullable Boolean powerLoss,          // Apply power loss in this world
+    @Nullable Boolean friendlyFireFaction, // Same-faction PvP override
+    @Nullable Boolean friendlyFireAlly,    // Ally PvP override
+    @Nullable Integer maxClaims            // Per-faction claim cap (null/0 = use global)
+)
+```
+
+### Example
+
+```java
+// Register world settings from another mod
+WorldsConfig.WorldSettings eventSettings = new WorldsConfig.WorldSettings(
+    true,   // claiming allowed
+    false,  // no power loss
+    null,   // faction FF: use global
+    null,   // ally FF: use global
+    5       // max 5 claims per faction
+);
+HyperFactionsAPI.registerWorldSettings("events", eventSettings);
+
+// Query resolved settings (includes pattern matching)
+WorldsConfig.WorldSettings resolved = HyperFactionsAPI.getWorldSettings("events");
+
+// Query exact key only (no pattern matching)
+WorldsConfig.WorldSettings exact = HyperFactionsAPI.getConfiguredWorldSettings("events");
+
+// Remove settings
+HyperFactionsAPI.removeWorldSettings("events");
+```
+
+> **Note:** `registerWorldSettings()` uses upsert semantics — if the key already exists, the entry is replaced. All mutations are thread-safe and persisted to `worlds.json` immediately.
 
 ---
 

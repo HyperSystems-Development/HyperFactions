@@ -812,6 +812,59 @@ public final class HyperFactionsAPI {
     return getInstance().getClaimManager().getFactionClaims(factionId);
   }
 
+  // === World Settings ===
+
+  /**
+   * Registers or updates per-world settings for the given world key.
+   * Upsert semantics: skips save if settings are identical to existing.
+   * Settings are persisted to worlds.json immediately.
+   * Thread-safe — can be called from any thread.
+   *
+   * @param worldKey the world name or wildcard pattern (e.g., "events", "instance_%")
+   * @param settings the settings to apply (null fields = inherit from global config)
+   */
+  public static void registerWorldSettings(@NotNull String worldKey,
+      @NotNull com.hyperfactions.config.modules.WorldsConfig.WorldSettings settings) {
+    ConfigManager.get().registerWorldSettings(worldKey, settings);
+  }
+
+  /**
+   * Gets the resolved settings for a world (through pattern matching).
+   * Returns null if no specific settings exist for this world.
+   *
+   * @param worldName the world name
+   * @return resolved settings, or null for default policy
+   */
+  @Nullable
+  public static com.hyperfactions.config.modules.WorldsConfig.WorldSettings getWorldSettings(
+      @NotNull String worldName) {
+    return ConfigManager.get().getWorldSettingsResolver().resolve(worldName);
+  }
+
+  /**
+   * Gets the raw configured settings for an exact world key.
+   * Does NOT do pattern matching — returns settings only if the exact key exists.
+   *
+   * @param worldKey the exact world key
+   * @return the settings, or null if not configured
+   */
+  @Nullable
+  public static com.hyperfactions.config.modules.WorldsConfig.WorldSettings getConfiguredWorldSettings(
+      @NotNull String worldKey) {
+    return ConfigManager.get().worlds().getWorldSettings(worldKey);
+  }
+
+  /**
+   * Removes per-world settings for the given key and persists.
+   * Thread-safe.
+   *
+   * @param worldKey the world key to remove
+   * @return true if settings were removed
+   */
+  public static boolean removeWorldSettings(@NotNull String worldKey) {
+    return ConfigManager.get().removeExternalWorldSettings(worldKey);
+  }
+
   // === Configuration ===
 
   /**

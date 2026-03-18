@@ -107,6 +107,7 @@ cmd.claim.success = Chunk reivindicado em {0}, {1}!
 cmd.claim.not_officer = Você precisa ser oficial para reivindicar território.
 cmd.claim.already_claimed = Este chunk já está reivindicado.
 cmd.claim.max_claims = Sua facção atingiu o máximo de reivindicações. Consiga mais poder!
+cmd.claim.world_max_claims = Sua facção atingiu o máximo de reivindicações ({0}) permitidas neste mundo.
 cmd.claim.not_adjacent = Você deve reivindicar adjacente ao território existente.
 cmd.claim.world_not_allowed = Reivindicações não são permitidas neste mundo.
 cmd.claim.orbisguard = Esta área é protegida pelo OrbisGuard.

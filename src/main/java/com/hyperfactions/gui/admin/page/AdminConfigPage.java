@@ -1644,10 +1644,10 @@ public class AdminConfigPage extends InteractiveCustomUIPage<AdminConfigData> {
     WorldsConfig.WorldSettings current = overrides.getOrDefault(worldKey, WorldsConfig.WorldSettings.DEFAULTS);
     Boolean val = triStateFromString(value);
     WorldsConfig.WorldSettings updated = switch (setting) {
-      case "claiming" -> new WorldsConfig.WorldSettings(val, current.powerLoss(), current.friendlyFireFaction(), current.friendlyFireAlly());
-      case "powerLoss" -> new WorldsConfig.WorldSettings(current.claiming(), val, current.friendlyFireFaction(), current.friendlyFireAlly());
-      case "friendlyFireFaction" -> new WorldsConfig.WorldSettings(current.claiming(), current.powerLoss(), val, current.friendlyFireAlly());
-      case "friendlyFireAlly" -> new WorldsConfig.WorldSettings(current.claiming(), current.powerLoss(), current.friendlyFireFaction(), val);
+      case "claiming" -> new WorldsConfig.WorldSettings(val, current.powerLoss(), current.friendlyFireFaction(), current.friendlyFireAlly(), current.maxClaims());
+      case "powerLoss" -> new WorldsConfig.WorldSettings(current.claiming(), val, current.friendlyFireFaction(), current.friendlyFireAlly(), current.maxClaims());
+      case "friendlyFireFaction" -> new WorldsConfig.WorldSettings(current.claiming(), current.powerLoss(), val, current.friendlyFireAlly(), current.maxClaims());
+      case "friendlyFireAlly" -> new WorldsConfig.WorldSettings(current.claiming(), current.powerLoss(), current.friendlyFireFaction(), val, current.maxClaims());
       default -> current;
     };
     overrides.put(worldKey, updated);

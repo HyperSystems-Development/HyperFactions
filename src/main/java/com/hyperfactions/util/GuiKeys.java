@@ -950,6 +950,7 @@ public final class GuiKeys {
     public static final String CLAIM_ALREADY_CLAIMED = "hyperfactions_gui.map.claim_already_claimed";
     public static final String CLAIM_NOT_ADJACENT = "hyperfactions_gui.map.claim_not_adjacent";
     public static final String CLAIM_MAX = "hyperfactions_gui.map.claim_max";
+    public static final String CLAIM_WORLD_MAX = "hyperfactions_gui.map.claim_world_max";
     public static final String CLAIM_WORLD_NOT_ALLOWED = "hyperfactions_gui.map.claim_world_not_allowed";
     public static final String CLAIM_ORBISGUARD = "hyperfactions_gui.map.claim_orbisguard";
     public static final String CLAIM_FAILED = "hyperfactions_gui.map.claim_failed";
@@ -969,6 +970,7 @@ public final class GuiKeys {
     public static final String OVERCLAIM_ALLY = "hyperfactions_gui.map.overclaim_ally";
     public static final String OVERCLAIM_HAS_POWER = "hyperfactions_gui.map.overclaim_has_power";
     public static final String OVERCLAIM_MAX = "hyperfactions_gui.map.overclaim_max";
+    public static final String OVERCLAIM_WORLD_MAX = "hyperfactions_gui.map.overclaim_world_max";
     public static final String OVERCLAIM_FAILED = "hyperfactions_gui.map.overclaim_failed";
 
     private MapGui() {}

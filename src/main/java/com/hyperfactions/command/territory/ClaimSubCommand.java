@@ -115,6 +115,7 @@ public class ClaimSubCommand extends FactionSubCommand {
       case ALREADY_CLAIMED_SELF -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.ALREADY_YOURS));
       case ALREADY_CLAIMED_OTHER -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.ALREADY_CLAIMED));
       case MAX_CLAIMS_REACHED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.MAX_CLAIMS));
+      case WORLD_MAX_CLAIMS_REACHED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.WORLD_MAX_CLAIMS));
       case NOT_ADJACENT -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.NOT_CONNECTED));
       case WORLD_NOT_ALLOWED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.WORLD_NOT_ALLOWED));
       case ORBISGUARD_PROTECTED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.ORBISGUARD));

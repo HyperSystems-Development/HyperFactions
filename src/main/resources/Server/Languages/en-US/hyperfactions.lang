@@ -107,6 +107,7 @@ cmd.claim.success = Claimed chunk at {0}, {1}!
 cmd.claim.not_officer = You must be an officer to claim land.
 cmd.claim.already_claimed = This chunk is already claimed.
 cmd.claim.max_claims = Your faction has reached max claims. Get more power!
+cmd.claim.world_max_claims = Your faction has reached the maximum claims ({0}) allowed in this world.
 cmd.claim.not_adjacent = You must claim adjacent to existing territory.
 cmd.claim.world_not_allowed = Claiming is not allowed in this world.
 cmd.claim.orbisguard = This area is protected by OrbisGuard.

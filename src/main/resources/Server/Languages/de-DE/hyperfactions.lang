@@ -107,6 +107,7 @@ cmd.claim.success = Chunk bei {0}, {1} beansprucht!
 cmd.claim.not_officer = Sie müssen ein Offizier sein, um Land zu beanspruchen.
 cmd.claim.already_claimed = Dieser Chunk ist bereits beansprucht.
 cmd.claim.max_claims = Ihre Fraktion hat die maximale Anzahl an Gebietsansprüchen erreicht. Erhalten Sie mehr Macht!
+cmd.claim.world_max_claims = Ihre Fraktion hat die maximale Anzahl an Gebietsansprüchen ({0}) in dieser Welt erreicht.
 cmd.claim.not_adjacent = Sie müssen angrenzend an bestehendes Territorium beanspruchen.
 cmd.claim.world_not_allowed = Beanspruchung ist in dieser Welt nicht erlaubt.
 cmd.claim.orbisguard = Dieses Gebiet ist durch OrbisGuard geschützt.
