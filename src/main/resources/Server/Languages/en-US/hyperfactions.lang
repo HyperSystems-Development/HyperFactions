@@ -114,6 +114,7 @@ cmd.claim.orbisguard = This area is protected by OrbisGuard.
 cmd.claim.zone_protected = This chunk is in a safezone or warzone.
 cmd.claim.insufficient_power = Your faction doesn't have enough power to claim more land.
 cmd.claim.failed = Failed to claim chunk.
+cmd.claim.world_overclaimed = Your faction has {0} claims in {1} (limit: {2}). Consider unclaiming excess territory.
 
 # ========== Commands - Invite ==========
 cmd.invite.no_permission = You don't have permission to invite players.

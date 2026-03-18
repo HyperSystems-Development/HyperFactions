@@ -114,6 +114,7 @@ cmd.claim.orbisguard = Esta area esta protegida por OrbisGuard.
 cmd.claim.zone_protected = Este chunk esta en una zona segura o de guerra.
 cmd.claim.insufficient_power = Tu faccion no tiene suficiente poder para reclamar mas territorio.
 cmd.claim.failed = No se pudo reclamar el chunk.
+cmd.claim.world_overclaimed = Tu faccion tiene {0} reclamos en {1} (limite: {2}). Considera liberar territorio excedente.
 
 # ========== Comandos - Invitar ==========
 cmd.invite.no_permission = No tienes permiso para invitar jugadores.

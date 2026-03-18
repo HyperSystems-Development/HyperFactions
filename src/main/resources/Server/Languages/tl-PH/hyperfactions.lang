@@ -114,6 +114,7 @@ cmd.claim.orbisguard = Ang lugar na ito ay protektado ng OrbisGuard.
 cmd.claim.zone_protected = Ang chunk na ito ay nasa safezone o warzone.
 cmd.claim.insufficient_power = Kulang ang kapangyarihan ng iyong paksyon upang mag-claim ng higit pang lupa.
 cmd.claim.failed = Nabigo ang pag-claim ng chunk.
+cmd.claim.world_overclaimed = Ang iyong paksyon ay may {0} na mga claim sa {1} (limitasyon: {2}). Isaalang-alang ang pag-unclaim ng sobrang teritoryo.
 
 # ========== Mga Utos - Imbitahan ==========
 cmd.invite.no_permission = Wala kang pahintulot na mag-imbita ng mga manlalaro.

@@ -114,6 +114,7 @@ cmd.claim.orbisguard = Dit gebied wordt beschermd door OrbisGuard.
 cmd.claim.zone_protected = Dit gebied bevindt zich in een SafeZone of WarZone.
 cmd.claim.insufficient_power = Je factie heeft niet genoeg kracht om meer land te claimen.
 cmd.claim.failed = Gebied claimen mislukt.
+cmd.claim.world_overclaimed = Je factie heeft {0} claims in {1} (limiet: {2}). Overweeg om overtollig gebied vrij te geven.
 
 # ========== Commando's - Uitnodigen ==========
 cmd.invite.no_permission = Je hebt geen toestemming om spelers uit te nodigen.

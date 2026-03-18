@@ -114,6 +114,7 @@ cmd.claim.orbisguard = Dieses Gebiet ist durch OrbisGuard geschützt.
 cmd.claim.zone_protected = Dieser Chunk befindet sich in einer SafeZone oder WarZone.
 cmd.claim.insufficient_power = Ihre Fraktion hat nicht genug Macht, um mehr Land zu beanspruchen.
 cmd.claim.failed = Chunk konnte nicht beansprucht werden.
+cmd.claim.world_overclaimed = Ihre Fraktion hat {0} Gebietsansprüche in {1} (Limit: {2}). Erwägen Sie, überschüssiges Gebiet freizugeben.
 
 # ========== Befehle - Einladen ==========
 cmd.invite.no_permission = Sie haben keine Berechtigung, Spieler einzuladen.

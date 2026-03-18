@@ -2,6 +2,7 @@ package com.hyperfactions.command.territory;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
+import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.command.FactionCommandContext;
 import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.command.util.CommandUtil;
@@ -115,7 +116,10 @@ public class ClaimSubCommand extends FactionSubCommand {
       case ALREADY_CLAIMED_SELF -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.ALREADY_YOURS));
       case ALREADY_CLAIMED_OTHER -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.ALREADY_CLAIMED));
       case MAX_CLAIMS_REACHED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.MAX_CLAIMS));
-      case WORLD_MAX_CLAIMS_REACHED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.WORLD_MAX_CLAIMS));
+      case WORLD_MAX_CLAIMS_REACHED -> {
+        Integer wmc = ConfigManager.get().getWorldMaxClaims(currentWorld.getName());
+        ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.WORLD_MAX_CLAIMS, wmc != null ? wmc : "?"));
+      }
       case NOT_ADJACENT -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.NOT_CONNECTED));
       case WORLD_NOT_ALLOWED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.WORLD_NOT_ALLOWED));
       case ORBISGUARD_PROTECTED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.ORBISGUARD));

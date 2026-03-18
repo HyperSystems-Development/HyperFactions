@@ -693,6 +693,12 @@ public class ConfigManager {
     return null;
   }
 
+  /** Returns the worlds config, or null if not loaded. */
+  @org.jetbrains.annotations.Nullable
+  public WorldsConfig getWorldsConfig() {
+    return worldsConfig;
+  }
+
   // Combat (from factions config)
   /** Returns the tag duration seconds. */
   public int getTagDurationSeconds() {

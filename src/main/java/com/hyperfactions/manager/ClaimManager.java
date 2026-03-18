@@ -767,7 +767,7 @@ public class ClaimManager {
    * @param world     the world name
    * @return the number of claims in that world
    */
-  int countFactionClaimsInWorld(@NotNull UUID factionId, @NotNull String world) {
+  public int countFactionClaimsInWorld(@NotNull UUID factionId, @NotNull String world) {
     Set<ChunkKey> claims = factionClaimsIndex.get(factionId);
     if (claims == null) return 0;
     return (int) claims.stream().filter(ck -> ck.world().equals(world)).count();

@@ -114,6 +114,7 @@ cmd.claim.orbisguard = Эта область защищена OrbisGuard.
 cmd.claim.zone_protected = Этот чанк находится в SafeZone или WarZone.
 cmd.claim.insufficient_power = У вашей фракции недостаточно Силы для захвата новых территорий.
 cmd.claim.failed = Не удалось захватить чанк.
+cmd.claim.world_overclaimed = Ваша фракция имеет {0} захваченных чанков в {1} (лимит: {2}). Рассмотрите возможность освобождения лишней территории.
 
 # ========== Команды - Приглашение ==========
 cmd.invite.no_permission = У вас нет прав приглашать игроков.

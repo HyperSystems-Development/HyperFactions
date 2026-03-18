@@ -114,6 +114,7 @@ cmd.claim.orbisguard = Ten obszar jest chroniony przez OrbisGuard.
 cmd.claim.zone_protected = Ten chunk znajduje się w strefie bezpiecznej lub wojennej.
 cmd.claim.insufficient_power = Twoja frakcja nie ma wystarczająco mocy, aby zająć więcej terenu.
 cmd.claim.failed = Nie udało się zająć chunka.
+cmd.claim.world_overclaimed = Twoja frakcja ma {0} zajętych chunków w {1} (limit: {2}). Rozważ zwolnienie nadmiarowego terytorium.
 
 # ========== Komendy - Zaproszenia ==========
 cmd.invite.no_permission = Nie masz uprawnień do zapraszania graczy.
