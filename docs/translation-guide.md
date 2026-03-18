@@ -23,23 +23,25 @@ This guide explains how to contribute translations for HyperFactions.
 | es-ES  | Spanish (Spain)       | Complete      |
 | de-DE  | German                | Untranslated  |
 | fr-FR  | French                | Untranslated  |
-| ja-JP  | Japanese              | Untranslated  |
+| it-IT  | Italian               | Untranslated  |
+| nl-NL  | Dutch                 | Untranslated  |
+| pl-PL  | Polish                | Untranslated  |
 | pt-BR  | Brazilian Portuguese  | Untranslated  |
 | ru-RU  | Russian               | Untranslated  |
-| tr-TR  | Turkish               | Untranslated  |
-| zh-CN  | Simplified Chinese    | Untranslated  |
+| tl-PH  | Filipino (Tagalog)    | Untranslated  |
 
 ## File Structure
 
-### .lang Files (Commands, GUI, Admin)
+### .lang Files (Commands, GUI, Admin, Help)
 
 Located at `src/main/resources/Server/Languages/<locale>/`:
 
 | File                       | Content                          | Key Count |
 |----------------------------|----------------------------------|-----------|
-| `hyperfactions.lang`       | Commands, errors, common strings | ~450      |
-| `hyperfactions_gui.lang`   | GUI labels, buttons, nav         | ~440      |
-| `hyperfactions_admin.lang` | Admin GUI strings                | ~260      |
+| `hyperfactions.lang`       | Commands, errors, common strings | ~800      |
+| `hyperfactions_gui.lang`   | GUI labels, buttons, nav         | ~830      |
+| `hyperfactions_admin.lang` | Admin GUI strings                | ~840      |
+| `hyperfactions_help.lang`  | Help system content (auto-generated) | varies |
 
 ### .lang File Format
 

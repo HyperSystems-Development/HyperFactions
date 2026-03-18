@@ -9,7 +9,7 @@ Multi-layered protection controlling block interactions, PvP combat, damage type
 | Question | Document |
 |----------|----------|
 | How do faction claim permissions work? | [protection-claims.md](protection-claims.md) |
-| What are all 53 faction permission flags? | [protection-claims.md § Faction Permissions](protection-claims.md#faction-permissions-53-flags) |
+| What are all 57 faction permission flags? | [protection-claims.md § Faction Permissions](protection-claims.md#faction-permissions-57-flags) |
 | What config options affect claims? (`config/factions.json`) | [protection-claims.md § Server-Wide Configuration](protection-claims.md#server-wide-configuration) |
 | What are the zone flags and defaults? | [protection-zones.md](protection-zones.md) |
 | Which features need a mixin installed? | [protection-claims.md § Mixin-Dependent](protection-claims.md#mixin-dependent-claim-protections) |
@@ -24,8 +24,8 @@ Multi-layered protection controlling block interactions, PvP combat, damage type
 
 | Document | Audience | Contents |
 |----------|----------|----------|
-| **[protection-claims.md](protection-claims.md)** | Admins + Devs | 53 faction permission flags, defaults, parent-child hierarchy, check flows, config, server locks, GUI, mixin comparison, bug-prone areas |
-| **[protection-zones.md](protection-zones.md)** | Admins + Devs | 50 zone flags, SafeZone/WarZone defaults, mixin-dependent flags, zone-exclusive features |
+| **[protection-claims.md](protection-claims.md)** | Admins + Devs | 57 faction permission flags, defaults, parent-child hierarchy, check flows, config, server locks, GUI, mixin comparison, bug-prone areas |
+| **[protection-zones.md](protection-zones.md)** | Admins + Devs | 52 zone flags, SafeZone/WarZone defaults, mixin-dependent flags, zone-exclusive features |
 | **[protection-global.md](protection-global.md)** | Admins + Devs | Wilderness, explosions, fire spread, keep inventory, spawn protection, combat tags, death/power loss, bypass permissions, multi-world, integrations |
 | **[protection-systems.md](protection-systems.md)** | Developers | Architecture, ECS systems, mixin bridge, hook slots, codec replacements, damage pipeline, debug tools, class reference |
 
@@ -66,8 +66,8 @@ flowchart TD
 Zone > Claim > Wilderness
 ```
 
-1. **Zones** — Admin SafeZone/WarZone flags (50 flags). Always checked first.
-2. **Claims** — Faction permissions by role/relation (53 flags). Checked only when NOT in a zone.
+1. **Zones** — Admin SafeZone/WarZone flags (52 flags). Always checked first.
+2. **Claims** — Faction permissions by role/relation (57 flags). Checked only when NOT in a zone.
 3. **Wilderness** — No protection. All interactions allowed.
 
 ## Known Gaps (Bug Triage)
@@ -76,7 +76,7 @@ These are documented in detail in [protection-claims.md § Bug-Prone Areas](prot
 
 - **6 protections are zone-only** with no claim equivalent (keep inventory, durability, fall/environmental/projectile/mob damage)
 - **Explosion 3-way combined check** — explosion hooks lack player context, so all 3 explosion flags are OR'd together (not per-source)
-- **Backward-compat accessors bypass parent-child logic** — named methods like `outsiderBreak()` use `getRaw()` instead of `get()`
+- **Removed backward-compat accessors** — only `pvpEnabled()` and `officersCanEdit()` convenience methods remain, both use `get()` with parent-child logic
 
 ### Resolved in v0.10.0
 

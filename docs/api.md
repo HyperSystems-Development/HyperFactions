@@ -11,11 +11,16 @@ This document is for third-party mod developers who want to hook into HyperFacti
 - [Getting Started](#getting-started)
 - [Faction Queries](#faction-queries)
 - [Power System](#power-system)
+  - [Hardcore Power Mode](#hardcore-power-mode)
 - [Territory](#territory)
 - [Relations](#relations)
 - [Zones](#zones)
+  - [Zone Queries](#zone-queries)
+  - [Zone Flags](#zone-flags)
+  - [Zone Settings](#zone-settings)
 - [Combat](#combat)
 - [Protection](#protection)
+  - [ProtectionChecker.InteractionType](#protectioncheckerinteractiontype)
 - [Language / i18n](#language--i18n)
 - [Chat Color Customization](#chat-color-customization)
 - [World Settings](#world-settings)
@@ -119,6 +124,8 @@ int totalFactions = HyperFactionsAPI.getFactionCount();
 | `getFactionPower(UUID factionId)` | `double` | Get faction's total power |
 | `getFactionPowerStats(UUID factionId)` | `@NotNull FactionPowerStats` | Get detailed power statistics |
 | `isFactionRaidable(UUID factionId)` | `boolean` | Check if faction is raidable (power < claims) |
+| `isHardcoreMode()` | `boolean` | Check if hardcore power mode is enabled |
+| `getFactionHardcorePower(UUID factionId)` | `double` | Get faction's hardcore power pool (-1 if not found) |
 
 ### FactionPowerStats Record
 
@@ -135,6 +142,15 @@ record FactionPowerStats(
 }
 ```
 
+### Hardcore Power Mode
+
+When `isHardcoreMode()` is true, faction power works differently:
+
+- **Normal mode**: Faction power = sum of all members' individual power. Each member has their own power that regenerates independently.
+- **Hardcore mode**: Faction power is a single shared pool. Power loss from deaths is deducted from the pool, and regeneration is applied to the pool as a whole (only while at least one member is online, unless `regenWhenOffline` is enabled).
+
+Use `getFactionHardcorePower()` to read the hardcore pool value directly. In hardcore mode, `getFactionPower()` automatically returns the hardcore pool value instead of the member sum.
+
 ### Example
 
 ```java
@@ -147,6 +163,12 @@ var stats = HyperFactionsAPI.getFactionPowerStats(factionId);
 if (stats.isRaidable()) {
     // Faction can be overclaimed!
     int deficit = stats.getClaimDeficit();
+}
+
+// Hardcore mode check
+if (HyperFactionsAPI.isHardcoreMode()) {
+    double hardcorePower = HyperFactionsAPI.getFactionHardcorePower(factionId);
+    // hardcorePower is the shared pool value (-1 if faction not found)
 }
 ```
 
@@ -210,10 +232,71 @@ if (playerRel.isFriendly()) {
 
 ## Zones
 
+### Zone Queries
+
 | Method | Returns | Description |
 |--------|---------|-------------|
 | `isInSafeZone(String world, int chunkX, int chunkZ)` | `boolean` | Check if chunk is in a SafeZone |
 | `isInWarZone(String world, int chunkX, int chunkZ)` | `boolean` | Check if chunk is in a WarZone |
+| `getZone(String world, int chunkX, int chunkZ)` | `@Nullable Zone` | Get the zone at a chunk position |
+| `getZoneByName(String name)` | `@Nullable Zone` | Get zone by name (case-insensitive) |
+| `getAllZones()` | `Collection<Zone>` | Get all zones (unmodifiable) |
+| `getZonesByType(String type)` | `List<Zone>` | Get zones by type ("SAFE" or "WAR") |
+| `isZoneFlagAllowed(String world, double x, double z, String flagName)` | `boolean` | Check if a zone flag allows an action at world coordinates |
+
+### Zone Flags
+
+Zones have boolean flags that control behavior within their boundaries. Flags use a parent-child hierarchy -- child flags only take effect when their parent is enabled.
+
+Use `isZoneFlagAllowed()` to check flags at world coordinates, or get a `Zone` object and call `zone.getEffectiveFlag(flagName)` directly.
+
+**Flag Categories:**
+
+| Category | Flags |
+|----------|-------|
+| Combat (7) | `pvp_enabled`, `friendly_fire`, `friendly_fire_faction`, `friendly_fire_ally`, `projectile_damage`, `mob_damage`, `pve_damage` |
+| Damage (4) | `fall_damage`, `environmental_damage`, `explosion_damage`\*, `fire_spread`\* |
+| Death (2) | `keep_inventory`\*, `power_loss` |
+| Building (4) | `build_allowed`, `block_place`\*, `hammer_use`\*, `builder_tools_use`\* |
+| Interaction (13) | `block_interact`, `door_use`, `container_use`, `bench_use`, `processing_use`, `seat_use`, `mount_use`\*, `light_use`, `npc_use`, `npc_tame`\*, `npc_interact`, `crate_pickup`\*, `crate_place`\* |
+| Transport (3) | `teleporter_use`\*, `portal_use`\*, `mount_entry` |
+| Items (4) | `item_drop`, `item_pickup`, `item_pickup_manual`\*, `invincible_items`\* |
+| Spawning (5) | `mob_spawning`, `hostile_mob_spawning`, `passive_mob_spawning`, `neutral_mob_spawning`, `npc_spawning`\* |
+| Mob Clearing (4) | `mob_clear`, `hostile_mob_clear`, `passive_mob_clear`, `neutral_mob_clear` |
+| Integration (6) | `gravestone_access`, `show_on_map`, `essentials_homes`, `essentials_warps`, `essentials_kits`, `essentials_back` |
+
+\* Requires [HyperProtect-Mixin](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) to function. Without the mixin, these flags have no effect.
+
+Flag constants are available in `com.hyperfactions.data.ZoneFlags` (e.g., `ZoneFlags.PVP_ENABLED`, `ZoneFlags.BUILD_ALLOWED`).
+
+### Zone Settings
+
+Zones also support string-valued settings (non-boolean):
+
+| Setting | Values | Default | Description |
+|---------|--------|---------|-------------|
+| `map_visibility` | `faction`, `ally`, `all` | `faction` | Which players are visible on the world map in this zone (requires `show_on_map` flag enabled) |
+
+### Example
+
+```java
+// Check if a location is in any zone
+Zone zone = HyperFactionsAPI.getZone("world", chunkX, chunkZ);
+if (zone != null) {
+    String name = zone.name();
+    boolean isSafe = zone.isSafeZone();
+    boolean pvp = zone.getEffectiveFlag(ZoneFlags.PVP_ENABLED);
+}
+
+// Check a flag at world coordinates (returns true if not in a zone)
+boolean canBuild = HyperFactionsAPI.isZoneFlagAllowed("world", x, z, ZoneFlags.BUILD_ALLOWED);
+
+// Get all SafeZones
+List<Zone> safeZones = HyperFactionsAPI.getZonesByType("SAFE");
+
+// Find a zone by name
+Zone spawn = HyperFactionsAPI.getZoneByName("spawn");
+```
 
 ---
 
@@ -240,7 +323,32 @@ if (HyperFactionsAPI.isCombatTagged(playerUuid)) {
 | `canBuild(UUID playerUuid, String world, double x, double z)` | `boolean` | Check build permission at coordinates |
 | `getProtectionChecker()` | `@NotNull ProtectionChecker` | Get the protection checker for advanced checks |
 
-The `ProtectionChecker` provides fine-grained checks for different interaction types (BUILD, INTERACT, CONTAINER, DOOR, BENCH, PROCESSING, SEAT, DAMAGE, USE).
+The `ProtectionChecker` provides fine-grained checks for different interaction types via the `InteractionType` enum:
+
+### ProtectionChecker.InteractionType
+
+| Value | Description |
+|-------|-------------|
+| `BUILD` | Place/break blocks |
+| `INTERACT` | General block interaction (fallback) |
+| `CONTAINER` | Open chests, backpacks, etc. |
+| `DOOR` | Use doors/gates |
+| `BENCH` | Crafting tables |
+| `PROCESSING` | Furnaces/smelters |
+| `SEAT` | Seats/chairs |
+| `LIGHT` | Lights/lanterns/campfires |
+| `DAMAGE` | Damage entities (not players) |
+| `USE` | Use items (fallback) |
+| `TELEPORTER` | Use teleporter blocks |
+| `PORTAL` | Use portal blocks |
+| `CRATE_PICKUP` | Capture crate entity pickup |
+| `CRATE_PLACE` | Capture crate entity release |
+| `NPC_TAME` | F-key NPC taming |
+| `NPC_INTERACT` | NPC shops/dialogue interaction |
+| `MOUNT` | Mount/ride entities |
+| `PVE_DAMAGE` | Damage non-player entities (mobs) |
+| `ITEM_DROP` | Drop items |
+| `ITEM_PICKUP` | Pick up items |
 
 ### Example
 
@@ -439,12 +547,12 @@ For advanced use cases, you can access individual managers directly. This gives 
 
 ## Economy API
 
-The `EconomyAPI` interface provides access to faction treasury operations:
+The `EconomyAPI` interface provides access to faction treasury operations. All monetary values use `BigDecimal` for precision.
 
 ```java
 EconomyAPI economy = HyperFactionsAPI.getEconomyAPI();
 if (economy != null && economy.isEnabled()) {
-    double balance = economy.getFactionBalance(factionId);
+    BigDecimal balance = economy.getFactionBalance(factionId);
 }
 ```
 
@@ -461,6 +569,7 @@ All mutating operations return `CompletableFuture<TransactionResult>`:
 | `PLAYER_NOT_FOUND` | Player does not exist |
 | `NOT_IN_FACTION` | Player is not in the faction |
 | `NO_PERMISSION` | Actor lacks permission |
+| `LIMIT_EXCEEDED` | Transaction exceeds configured limit |
 | `ERROR` | Unexpected error |
 
 ### Transaction Types
@@ -476,37 +585,38 @@ All mutating operations return `CompletableFuture<TransactionResult>`:
 | `WAR_COST` | Cost of declaring war |
 | `RAID_COST` | Cost of raiding |
 | `SPOILS` | War/raid spoils |
+| `PLAYER_TRANSFER_OUT` | Player-to-faction-treasury transfer (e.g., `/f deposit`) |
 | `ADMIN_ADJUSTMENT` | Admin balance modification |
 
 ### Balance & History Methods
 
 | Method | Returns | Description |
 |--------|---------|-------------|
-| `getFactionBalance(UUID factionId)` | `double` | Get treasury balance (0.0 if not found) |
-| `hasFunds(UUID factionId, double amount)` | `boolean` | Check if faction has sufficient funds |
+| `getFactionBalance(UUID factionId)` | `BigDecimal` | Get treasury balance (`BigDecimal.ZERO` if not found) |
+| `hasFunds(UUID factionId, BigDecimal amount)` | `boolean` | Check if faction has sufficient funds |
 | `getTransactionHistory(UUID factionId, int limit)` | `List<Transaction>` | Get recent transactions (newest first) |
 | `getCurrencyName()` | `String` | Singular currency name (e.g., "dollar") |
 | `getCurrencyNamePlural()` | `String` | Plural currency name (e.g., "dollars") |
-| `formatCurrency(double amount)` | `String` | Formatted string (e.g., "$1,234.56") |
+| `formatCurrency(BigDecimal amount)` | `String` | Formatted string (e.g., "$1,234.56") |
 | `isEnabled()` | `boolean` | Whether economy is available |
 
 ### Mutating Methods
 
 | Method | Returns | Description |
 |--------|---------|-------------|
-| `deposit(UUID factionId, double amount, UUID actorId, String desc)` | `CompletableFuture<TransactionResult>` | Deposit into treasury |
-| `withdraw(UUID factionId, double amount, UUID actorId, String desc)` | `CompletableFuture<TransactionResult>` | Withdraw from treasury |
-| `transfer(UUID from, UUID to, double amount, UUID actorId, String desc)` | `CompletableFuture<TransactionResult>` | Transfer between factions |
+| `deposit(UUID factionId, BigDecimal amount, UUID actorId, String desc)` | `CompletableFuture<TransactionResult>` | Deposit into treasury |
+| `withdraw(UUID factionId, BigDecimal amount, UUID actorId, String desc)` | `CompletableFuture<TransactionResult>` | Withdraw from treasury |
+| `transfer(UUID from, UUID to, BigDecimal amount, UUID actorId, String desc)` | `CompletableFuture<TransactionResult>` | Transfer between factions |
 
 ### Transaction Record
 
 ```java
 record Transaction(
-    @NotNull UUID factionId,     // Faction involved
-    @Nullable UUID actorId,      // Player who initiated (null for system)
+    @NotNull UUID factionId,       // Faction involved
+    @Nullable UUID actorId,        // Player who initiated (null for system)
     @NotNull TransactionType type,
-    double amount,
-    double balanceAfter,
+    @NotNull BigDecimal amount,
+    @NotNull BigDecimal balanceAfter,
     long timestamp,
     @NotNull String description
 )
@@ -519,18 +629,20 @@ EconomyAPI economy = HyperFactionsAPI.getEconomyAPI();
 if (economy == null) return; // Economy disabled
 
 // Check balance
-double balance = economy.getFactionBalance(factionId);
+BigDecimal balance = economy.getFactionBalance(factionId);
 
 // Deposit with async result
-economy.deposit(factionId, 500.0, playerUuid, "Quest reward")
+BigDecimal depositAmount = BigDecimal.valueOf(500);
+economy.deposit(factionId, depositAmount, playerUuid, "Quest reward")
     .thenAccept(result -> {
         if (result == TransactionResult.SUCCESS) {
-            player.sendMessage("Deposited " + economy.formatCurrency(500.0));
+            player.sendMessage("Deposited " + economy.formatCurrency(depositAmount));
         }
     });
 
 // Transfer between factions
-economy.transfer(fromFactionId, toFactionId, 1000.0, playerUuid, "Trade payment")
+BigDecimal transferAmount = BigDecimal.valueOf(1000);
+economy.transfer(fromFactionId, toFactionId, transferAmount, playerUuid, "Trade payment")
     .thenAccept(result -> {
         if (result == TransactionResult.INSUFFICIENT_FUNDS) {
             player.sendMessage("Not enough funds!");

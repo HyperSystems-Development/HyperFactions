@@ -39,10 +39,12 @@ All placeholders return a value even when the player has no faction. This ensure
 
 | Type | Default | Examples |
 |------|---------|----------|
-| Text placeholders | `""` (empty string) | `name`, `tag`, `display`, `color`, `role`, `role_display`, `role_short`, `description`, `leader`, `leader_id`, `open`, `created` |
-| Numeric placeholders | `"0"` or `"0.0"` | `faction_power`, `faction_maxpower`, `faction_power_percent`, `land`, `land_max`, `members`, `members_online`, `allies`, `enemies`, `neutrals`, `relations` |
+| Text placeholders | `""` (empty string) | `name`, `tag`, `display`, `color`, `role`, `role_display`, `role_short`, `description`, `leader`, `leader_id`, `created` |
+| Open placeholder | `""` (empty string) | `open` (returns `""` when factionless, NOT `"false"`) |
+| Numeric placeholders | `"0"` or `"0.0"` | `faction_power` (`"0.0"`), `faction_maxpower` (`"0.0"`), `faction_power_percent` (`"0"`), `land` (`"0"`), `land_max` (`"0"`), `members` (`"0"`), `members_online` (`"0"`), `allies` (`"0"`), `enemies` (`"0"`), `neutrals` (`"0"`), `relations` (`"0"`) |
 | Boolean placeholders | `"false"` | `raidable` |
 | Home placeholders | `""` (empty string) | `home_world`, `home_x`, `home_y`, `home_z`, `home_coords`, `home_yaw`, `home_pitch` |
+| Treasury placeholders | See below | `treasury_balance`, `treasury_balance_raw`, `treasury_autopay`, `treasury_limit` |
 
 ### Placeholders That Always Return Meaningful Data
 
@@ -73,10 +75,10 @@ All placeholders return a value even when the player has no faction. This ensure
 | `description` | Faction description text | String or `""` | `The best faction` |
 | `leader` | Faction leader's username | String or `""` | `Steve` |
 | `leader_id` | Faction leader's UUID | UUID string or `""` | `d4e5f6a7-...` |
-| `open` | Whether faction accepts join requests | `"false"` if no faction | `true` |
+| `open` | Whether faction accepts join requests | `""` if no faction | `true` |
 | `created` | Faction creation date | `yyyy-MM-dd` or `""` | `2025-01-15` |
-| `name_colored` | Faction name with hex color prefix | String or `""` | `#FF5555Warriors` |
-| `tag_colored` | Faction tag with hex color prefix | String or `""` | `#FF5555WAR` |
+| `name_colored` | Faction name with hex color prefix (`&#RRGGBB` format) | String or `""` | `&#FF5555Warriors` |
+| `tag_colored` | Faction tag with hex color prefix (`&#RRGGBB` format) | String or `""` | `&#FF5555WAR` |
 | `name_colored_legacy` | Faction name with legacy `&X` color code | String or `""` | `&cWarriors` |
 | `tag_colored_legacy` | Faction tag with legacy `&X` color code | String or `""` | `&cWAR` |
 | `color_legacy` | Nearest legacy `&X` color code from hex color | String or `""` | `&c` |
@@ -102,8 +104,8 @@ The `display` placeholder respects the `chatTagDisplay` config setting:
 | `power` | Player's current power (1 decimal) | Always present | `8.5` |
 | `maxpower` | Player's max power (1 decimal) | Always present | `10.0` |
 | `power_percent` | Player's power as percentage | Always present | `85` |
-| `faction_power` | Faction's total power (1 decimal) | `"0"` if no faction | `42.5` |
-| `faction_maxpower` | Faction's max power (1 decimal) | `"0"` if no faction | `50.0` |
+| `faction_power` | Faction's total power (1 decimal) | `"0.0"` if no faction | `42.5` |
+| `faction_maxpower` | Faction's max power (1 decimal) | `"0.0"` if no faction | `50.0` |
 | `faction_power_percent` | Faction's power as percentage | `"0"` if no faction | `85` |
 | `raidable` | Whether faction is raidable (power < land) | `"false"` if no faction | `false` |
 
@@ -143,12 +145,12 @@ The `display` placeholder respects the `chatTagDisplay` config setting:
 | Placeholder | Description | Returns | Example |
 |-------------|-------------|---------|---------|
 | `home_world` | World name of faction home | String or `""` | `world` |
-| `home_x` | X coordinate (2 decimals) | `"0"` if no faction | `123.45` |
-| `home_y` | Y coordinate (2 decimals) | `"0"` if no faction | `64.00` |
-| `home_z` | Z coordinate (2 decimals) | `"0"` if no faction | `-456.78` |
-| `home_coords` | Combined X, Y, Z (2 decimals) | String or `""` | `123.45, 64.00, -456.78` |
-| `home_yaw` | Yaw angle (2 decimals) | `"0"` if no faction | `90.00` |
-| `home_pitch` | Pitch angle (2 decimals) | `"0"` if no faction | `0.00` |
+| `home_x` | X coordinate (2 decimals) | `""` if no faction/home | `123.45` |
+| `home_y` | Y coordinate (2 decimals) | `""` if no faction/home | `64.00` |
+| `home_z` | Z coordinate (2 decimals) | `""` if no faction/home | `-456.78` |
+| `home_coords` | Combined X, Y, Z (2 decimals) | `""` if no faction/home | `123.45, 64.00, -456.78` |
+| `home_yaw` | Yaw angle (2 decimals) | `""` if no faction/home | `90.00` |
+| `home_pitch` | Pitch angle (2 decimals) | `""` if no faction/home | `0.00` |
 
 All home placeholders return `""` (empty string) if the player has no faction or the faction has no home set.
 
@@ -175,10 +177,10 @@ All home placeholders return `""` (empty string) if the player has no faction or
 
 | Placeholder | Description | Returns | Example |
 |-------------|-------------|---------|---------|
-| `treasury_balance` | Faction treasury balance (formatted via EconomyManager) | String or `""` | `$1,234.56` |
-| `treasury_balance_raw` | Raw treasury balance (BigDecimal, scale 2) | String or `""` | `1234.56` |
-| `treasury_autopay` | Whether auto-pay is enabled | String or `""` | `true` |
-| `treasury_limit` | Maximum treasury limit | String or `""` | `100000.00` |
+| `treasury_balance` | Faction treasury balance (formatted via EconomyManager) | `""` if no faction or no economy | `$1,234.56` |
+| `treasury_balance_raw` | Raw treasury balance (BigDecimal, scale 2) | `"0.00"` if no faction or no economy | `1234.56` |
+| `treasury_autopay` | Whether auto-pay is enabled | `"false"` if no faction or no economy | `true` |
+| `treasury_limit` | Maximum treasury limit | Always `"Unlimited"` (hardcoded) | `Unlimited` |
 
 ---
 
@@ -293,8 +295,8 @@ Both expansions use `persist() = true`, which means they survive plugin reloads 
 
 ### Territory Coordinate Handling
 
-- **PAPI**: Uses `TransformComponent` from the player's ECS entity to get world position, then converts to chunk coordinates via `>> 4`
-- **WiFlow**: Uses `PlaceholderContext.getPosX()/getPosZ()` (block coordinates) and converts to chunk coordinates via `>> 4`
+- **PAPI**: Uses `TransformComponent` from the player's ECS entity to get world position, then converts to chunk coordinates via `ChunkUtil.toChunkCoord()` which uses `>> 5` (32-block chunks, correct for Hytale)
+- **WiFlow**: Uses `PlaceholderContext.getPosX()/getPosZ()` (block coordinates) and converts to chunk coordinates via `>> 4` (16-block chunks). **Note**: This is a known bug — WiFlow territory placeholders use the wrong chunk shift and will return incorrect results. The correct shift for Hytale is `>> 5`.
 
 ---
 
@@ -317,10 +319,10 @@ Complete side-by-side table of every placeholder in both formats.
 | 10 | `%factions_description%` | `{factions_description}` | Faction description | `The best faction` |
 | 11 | `%factions_leader%` | `{factions_leader}` | Leader's username | `Steve` |
 | 12 | `%factions_leader_id%` | `{factions_leader_id}` | Leader's UUID | `d4e5f6a7-...` |
-| 13 | `%factions_open%` | `{factions_open}` | Open status | `true` |
+| 13 | `%factions_open%` | `{factions_open}` | Open status (`""` if factionless) | `true` |
 | 14 | `%factions_created%` | `{factions_created}` | Creation date | `2025-01-15` |
-| 15 | `%factions_name_colored%` | `{factions_name_colored}` | Faction name with hex color | `#FF5555Warriors` |
-| 16 | `%factions_tag_colored%` | `{factions_tag_colored}` | Faction tag with hex color | `#FF5555WAR` |
+| 15 | `%factions_name_colored%` | `{factions_name_colored}` | Faction name with hex color | `&#FF5555Warriors` |
+| 16 | `%factions_tag_colored%` | `{factions_tag_colored}` | Faction tag with hex color | `&#FF5555WAR` |
 | 17 | `%factions_name_colored_legacy%` | `{factions_name_colored_legacy}` | Name with legacy color | `&cWarriors` |
 | 18 | `%factions_tag_colored_legacy%` | `{factions_tag_colored_legacy}` | Tag with legacy color | `&cWAR` |
 | 19 | `%factions_color_legacy%` | `{factions_color_legacy}` | Nearest legacy color code | `&c` |
@@ -354,9 +356,9 @@ Complete side-by-side table of every placeholder in both formats.
 | 43 | `%factions_relations%` | `{factions_relations}` | Total relation count | `7` |
 | | **Treasury** | | | |
 | 44 | `%factions_treasury_balance%` | `{factions_treasury_balance}` | Treasury balance (formatted) | `$1,234.56` |
-| 45 | `%factions_treasury_balance_raw%` | `{factions_treasury_balance_raw}` | Treasury balance (raw) | `1234.56` |
-| 46 | `%factions_treasury_autopay%` | `{factions_treasury_autopay}` | Auto-pay enabled | `true` |
-| 47 | `%factions_treasury_limit%` | `{factions_treasury_limit}` | Treasury limit | `100000.00` |
+| 45 | `%factions_treasury_balance_raw%` | `{factions_treasury_balance_raw}` | Treasury balance (raw, `"0.00"` default) | `1234.56` |
+| 46 | `%factions_treasury_autopay%` | `{factions_treasury_autopay}` | Auto-pay enabled (`"false"` default) | `true` |
+| 47 | `%factions_treasury_limit%` | `{factions_treasury_limit}` | Treasury limit (always `"Unlimited"`) | `Unlimited` |
 | | **Relational (PAPI Only)** | | | |
 | 48 | `%rel_factions_relation%` | *(PAPI only)* | Relation between two players | `ALLY` |
 | 49 | `%rel_factions_relation_color%` | *(PAPI only)* | Relation hex color | `#FF5555` |

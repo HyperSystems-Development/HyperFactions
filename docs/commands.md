@@ -1,6 +1,6 @@
 # HyperFactions Command System
 
-> **Version**: 0.12.0 | **~46 subcommands** across **10 categories**
+> **Version**: 0.12.0 | **~50 subcommands** across **10 categories**
 
 Architecture documentation for the HyperFactions command system.
 
@@ -22,9 +22,10 @@ FactionCommand (dispatcher): /f, /hf, /faction, /hyperfactions
      │        ├─► command/relation/    (4 subcommands: ally, enemy, neutral, relations)
      │        ├─► command/info/        (8 subcommands: info, list, map, members, who, power, leaderboard, logs)
      │        ├─► command/social/      (3 subcommands: request, invites, chat)
+     │        ├─► command/economy/     (4 top-level + 1 router: money, balance, deposit, withdraw)
      │        ├─► command/ui/          (2 subcommands: gui, settings)
      │        ├─► HelpSubCommand       (1 subcommand: help)
-     │        └─► command/admin/       (25+ admin subcommands with nested routing)
+     │        └─► command/admin/       (30+ admin subcommands with nested routing)
      │
      └─► FactionCommandContext (execution state, --text flag)
 ```
@@ -190,11 +191,12 @@ command/
 │   ├── InvitesSubCommand.java
 │   └── ChatSubCommand.java
 │
-├── economy/                    # Economy
-│   ├── MoneySubCommand.java
-│   ├── BalanceSubCommand.java
-│   ├── DepositSubCommand.java
-│   └── WithdrawSubCommand.java
+├── economy/                    # Economy (conditional: treasury enabled)
+│   ├── MoneySubCommand.java        # Router: /f money <sub> (aliases: treasury, econ)
+│   ├── TreasuryCommandHandler.java # Shared handler for balance/deposit/withdraw/transfer/log
+│   ├── BalanceSubCommand.java      # Top-level shortcut: /f balance (alias: bal)
+│   ├── DepositSubCommand.java      # Top-level shortcut: /f deposit (alias: dep)
+│   └── WithdrawSubCommand.java     # Top-level shortcut: /f withdraw (alias: wd)
 │
 ├── ui/                         # UI commands
 │   ├── GuiSubCommand.java
@@ -211,25 +213,27 @@ command/
         ├── AdminIntegrationHandler.java
         ├── AdminPowerHandler.java
         ├── AdminMapDecayHandler.java
-        ├── AdminInfoHandler.java
+        ├── AdminTestHandler.java
         ├── AdminWorldHandler.java
         └── AdminEconomyHandler.java
 ```
 
 ### Category Summary
 
-| Category | Commands | Permission Prefix |
-|----------|----------|-------------------|
-| faction | create, disband, rename, desc, color, open, close | `hyperfactions.faction.*` |
-| member | invite, accept, leave, kick, promote, demote, transfer | `hyperfactions.member.*` |
-| territory | claim, unclaim, overclaim, stuck | `hyperfactions.territory.*` |
-| teleport | home, sethome, delhome | `hyperfactions.teleport.*` |
-| economy | money, balance, deposit, withdraw | `hyperfactions.economy.*` |
-| relation | ally, enemy, neutral, relations | `hyperfactions.relation.*` |
-| info | info, list, map, members, who, power, leaderboard, logs, help | `hyperfactions.info.*` |
-| social | request, invites, chat | `hyperfactions.member.*`, `hyperfactions.chat.*` |
-| ui | gui, settings | `hyperfactions.use` |
-| admin | zone, backup, reload, debug, bypass, info, who, version, log, world | `hyperfactions.admin.*` |
+| Category | Commands | Aliases | Permission Prefix |
+|----------|----------|---------|-------------------|
+| faction | create, disband, rename, desc, color, open, close | desc→`description` | `hyperfactions.faction.*` |
+| member | invite, accept, leave, kick, promote, demote, transfer | accept→`join` | `hyperfactions.member.*` |
+| territory | claim, unclaim, overclaim, stuck | | `hyperfactions.territory.*` |
+| teleport | home, sethome, delhome | | `hyperfactions.teleport.*` |
+| economy | money, balance, deposit, withdraw | money→`treasury`,`econ`; balance→`bal`; deposit→`dep`; withdraw→`wd` | `hyperfactions.economy.*` |
+| relation | ally, enemy, neutral, relations | | `hyperfactions.relation.*` |
+| info | info, list, map, members, who, power, leaderboard, logs, help | info→`show`; list→`browse`; leaderboard→`top`; logs→`log`,`activity`; help→`?` | `hyperfactions.info.*` |
+| social | request, invites, chat | chat→`c` | `hyperfactions.member.*`, `hyperfactions.chat.*` |
+| ui | gui, settings | gui→`menu` | `hyperfactions.use` |
+| admin | zone, backup, reload, sync, rollback, debug, test, info, who, version, log, world, economy, power, sentry, decay, map, factions, config, backups, integrations, integration, safezone, warzone, removezone, zoneflag, clearhistory | log→`logs`,`activitylog`; zone→`zones`; economy→`econ`,`treasury`; world→`worlds` | `hyperfactions.admin.*` |
+
+**Note:** Economy commands (money, balance, deposit, withdraw) are only registered when treasury is enabled.
 
 ### Notable Command Behaviors
 
@@ -239,9 +243,11 @@ command/
 
 **`/f stuck`** — Teleports the player to a random safe unclaimed chunk. Walks outward in a random direction from the player's position, increasing the search radius on each failed attempt. Configurable via `stuckMinRadius`, `stuckRadiusIncrease`, and `stuckMaxAttempts` in config.json. Uses the faction teleport warmup/cooldown system.
 
-**`/f info [faction] --text`** — Text mode shows ally/enemy counts and bidirectional relation status. Displays "They consider you" and "You consider them" lines using `RelationManager.getEffectiveRelation()` for accurate bidirectional awareness. Color-coded: green for ally, red for enemy, gray for neutral.
+**`/f info [faction] --text`** (alias `/f show`) — Text mode shows ally/enemy counts and bidirectional relation status. Displays "They consider you" and "You consider them" lines using `RelationManager.getEffectiveRelation()` for accurate bidirectional awareness. Color-coded: green for ally, red for enemy, gray for neutral.
 
 **`/f claim` / `/f unclaim`** — 500ms per-player debounce prevents double-execution from rapid command dispatch.
+
+**`/f money <sub>`** (aliases `/f treasury`, `/f econ`) — Router command for treasury operations. Subcommands: `balance`/`bal`, `deposit`/`dep`, `withdraw`/`wd`, `transfer`/`send`, `log`/`history`. Top-level shortcuts (`/f balance`, `/f deposit`, `/f withdraw`) also exist with their own aliases. All economy commands are only registered when treasury is enabled (`hyperFactions.isTreasuryEnabled()`). Both the router and shortcuts delegate to `TreasuryCommandHandler`.
 
 ## Subcommand Implementation Pattern
 
@@ -319,69 +325,133 @@ if (result == ClaimResult.NO_PERMISSION) {
 
 `AdminSubCommand` acts as a router that delegates to specialized handler classes in `command/admin/handler/`:
 
-- `AdminZoneHandler` - Zone create/delete/claim/unclaim/radius/list/notify/title/properties, zoneflag, safezone, warzone
+- `AdminZoneHandler` - Zone create/delete/rename/info/claim/unclaim/radius/list/notify/title, zoneflag, safezone, warzone, removezone
 - `AdminBackupHandler` - Backup create/list/restore/delete
-- `AdminDebugHandler` - Debug toggle, trace, diagnostics
+- `AdminDebugHandler` - Debug toggle/status/power/claim/protection/combat/relation
 - `AdminImportHandler` - Data import from other faction plugins
-- `AdminUpdateHandler` - Update check and notification
-- `AdminIntegrationHandler` - Integration status reporting
-- `AdminPowerHandler` - Power set/reset/modify
-- `AdminMapDecayHandler` - Map decay management
-- `AdminInfoHandler` - Admin info/who commands (open admin GUIs directly)
+- `AdminUpdateHandler` - Update check/download for HyperFactions and HyperProtect-Mixin, rollback
+- `AdminIntegrationHandler` - Integration status reporting (hyperperms, luckperms, vaultunlocked, native, orbisguard, mixins, gravestones, kyuubisoft, papi, wiflow)
+- `AdminPowerHandler` - Power set/add/remove/reset/setmax/resetmax/noloss/nodecay/faction/info, clearhistory
+- `AdminMapDecayHandler` - Map refresh/status, claim decay run/check/status
+- `AdminTestHandler` - Test commands: gui, sentry, md/markdown
 - `AdminWorldHandler` - Per-world settings management (list/info/set/reset)
-- `AdminEconomyHandler` - Economy management, treasury adjustments, and upkeep control
+- `AdminEconomyHandler` - Economy management: balance/set/add/take/total/reset, upkeep trigger
+
+Admin commands handled directly in `AdminSubCommand` (no separate handler):
+- `reload` - Reload config
+- `sync` - Sync factions from disk
+- `sentry` - Sentry status/enable/disable
+- `version` - Version and integration info
+- `info [faction]` - Open admin faction info GUI
+- `who [player]` - Open admin player info GUI
+- `log` / `logs` / `activitylog` - Open admin activity log GUI
+- `factions` - Open admin factions list GUI
+- `config [tab]` - Open admin config GUI
+- `backups` - Open admin backups GUI
 
 Admin commands use nested subcommand structure:
 
 ```
 /f admin
-├── zone          # Zone management
-│   ├── create
-│   ├── delete
-│   ├── claim
-│   ├── unclaim
-│   ├── radius
+├── zone (alias: zones)  # Zone management (no args: open GUI for players, list for console)
+│   ├── create <safe|war> <name>
+│   ├── delete <name>
+│   ├── rename <current-name> <new-name>
+│   ├── info [name]                        # By name or current chunk
+│   ├── claim <name>                       # Claim current chunk for zone (player-only)
+│   ├── unclaim                            # Unclaim current chunk (player-only)
+│   ├── radius <name> <radius> [circle|square]  # Claim radius 1-20 chunks (player-only)
 │   ├── list
-│   ├── notify <zone> <true|false>      # Toggle zone entry/leave notifications
-│   ├── title <zone> upper|lower <text|clear>  # Customize zone title text
-│   └── properties <zone>               # Open zone properties GUI
-├── zoneflag      # Zone flag management
-├── safezone      # Quick SafeZone creation
-├── warzone       # Quick WarZone creation
-├── bypass        # Toggle admin bypass (persists across restarts)
-├── backup        # Backup management
+│   ├── notify <zone> <true|false>         # Toggle zone entry/leave notifications
+│   └── title <zone> upper|lower <text|clear>  # Customize zone title text
+├── zoneflag <flag> <true|false|clear>     # Zone flag management at current chunk (player-only)
+├── safezone [name]   # Quick SafeZone creation at current chunk (player-only)
+├── warzone [name]    # Quick WarZone creation at current chunk (player-only)
+├── removezone        # Remove zone from current chunk (player-only)
+├── backup            # Backup management
 │   ├── create
 │   ├── list
 │   ├── restore
 │   └── delete
-├── import        # Data import from other faction plugins
+├── import            # Data import from other faction plugins
 │   ├── elbaphfactions [path] [flags]  # Import from ElbaphFactions
 │   ├── hyfactions [path] [flags]      # Import from HyFactions V1
 │   ├── simpleclaims [path] [flags]    # Import from SimpleClaims
 │   └── factionsx [path] [flags]       # Import from FactionsX
-├── reload        # Reload config
-├── update        # Check for updates
-│   ├── mixin     # Check/download HyperProtect-Mixin
+├── reload            # Reload config
+├── sync              # Re-read faction data from disk
+├── update            # Check/download HyperFactions update
+│   ├── mixin         # Check/download HyperProtect-Mixin update
 │   └── toggle-mixin-download  # Toggle HP-Mixin auto-download
-├── info [faction]   # Open admin faction info GUI
-├── who [player]     # Open admin player info GUI
-├── version          # Show version and integration status
-├── log              # Open admin activity log GUI
-├── world            # Per-world settings management
+├── rollback          # Rollback to previous version (safe only before server restart)
+├── factions          # Open admin factions list GUI (player-only)
+├── config [tab]      # Open admin config GUI (player-only)
+├── backups           # Open admin backups GUI (player-only)
+├── info [faction]    # Open admin faction info GUI (player-only)
+├── who [player]      # Open admin player info GUI (player-only)
+├── version           # Show version and integration status (GUI for players, text for console)
+├── log (aliases: logs, activitylog)  # Open admin activity log GUI (player-only)
+├── power             # Player power management
+│   ├── set <player> <amount>
+│   ├── add <player> <amount>
+│   ├── remove <player> <amount>
+│   ├── reset <player>
+│   ├── setmax <player> <amount>
+│   ├── resetmax <player>
+│   ├── noloss <player>              # Toggle power loss immunity
+│   ├── nodecay <player>             # Toggle claim decay exemption
+│   ├── faction <name> set|add|remove|reset [amount]  # Bulk power for all faction members
+│   └── info <player>                # Show detailed power info
+├── clearhistory <player>  # Clear player membership history
+├── economy (aliases: econ, treasury)  # Economy management
+│   ├── balance <faction>
+│   ├── set <faction> <amount>
+│   ├── add <faction> <amount>
+│   ├── take <faction> <amount>       # (alias: remove)
+│   ├── total                         # Server-wide economy totals
+│   ├── reset <faction>
+│   └── upkeep                        # Manually trigger upkeep collection
+├── world (alias: worlds)  # Per-world settings management
 │   ├── list         # List all world overrides
-│   ├── info <world> # Show settings for a world
-│   ├── set <world> <key> <value>  # Set a per-world setting (keys: claiming, powerLoss, friendlyFireFaction, friendlyFireAlly, maxClaims)
-│   │                              # maxClaims takes an integer (e.g., /f admin world set events maxClaims 5)
-│   │                              # Use "maxClaims default" or "maxClaims 0" to clear per-world limit (inherit global)
-│   └── reset <world>              # Reset world to defaults
-├── economy       # Economy management
-│   └── upkeep    # Upkeep system control
-├── sentry        # Sentry error tracking status
-├── sentrytest    # Send test event to Sentry
-├── integration   # Integration management
-│   └── kyuubisoft  # KyuubiSoft Core integration details
-└── debug         # Debug commands
+│   ├── info <world> # Show effective settings for a world
+│   ├── set <world> <key> <value>  # Set a per-world setting
+│   │                              # Keys: claiming, powerLoss, friendlyFireFaction (alias: fffaction),
+│   │                              #        friendlyFireAlly (alias: ffally), maxClaims
+│   │                              # Boolean keys accept true/false; maxClaims accepts integer, "default", or "0"
+│   └── reset <world>              # Reset world to defaults (alias: remove)
+├── decay             # Claim decay management
+│   ├── (no args)     # Show decay status
+│   ├── run           # Manually trigger decay check (alias: trigger)
+│   └── check <faction>  # Check decay status for a specific faction
+├── map               # World map management
+│   ├── status        # Show map service status and statistics
+│   └── refresh       # Force full map refresh
+├── sentry            # Sentry error tracking
+│   ├── (no args)     # Show status
+│   ├── enable        # Enable Sentry (aliases: optin, on)
+│   └── disable       # Disable Sentry (aliases: optout, off)
+├── test              # Test/diagnostic commands
+│   ├── gui           # Open button test page (player-only)
+│   ├── sentry        # Send test event to Sentry
+│   └── md            # Open markdown test page (player-only, alias: markdown)
+├── integrations      # Show all integration statuses
+├── integration <name>  # Detailed integration info
+│   └── Available: hyperperms, luckperms, vaultunlocked, native, hyperprotect,
+│                  orbisguard, mixins, gravestones, kyuubisoft, papi, wiflow
+├── debug             # Debug commands
+│   ├── toggle <category|all> [on|off]  # Toggle debug logging
+│   │   Categories: power, claim, combat, protection, relation, territory,
+│   │               worldmap, interaction, mixin, spawning, integration, economy
+│   ├── status        # Show data counts and debug logging status
+│   ├── power <player>      # Debug player power (placeholder)
+│   ├── claim [x z]         # Debug claim at position (player-only)
+│   ├── protection <player> # Debug protection (placeholder)
+│   ├── combat <player>     # Debug combat (placeholder)
+│   └── relation <faction1> <faction2>  # Debug relation (placeholder)
+└── help (alias: ?)   # Show admin command help
 ```
+
+**Note:** `/f admin bypass` is NOT currently dispatched as a command. Admin bypass is managed through the admin GUI.
 
 ## Message Formatting
 

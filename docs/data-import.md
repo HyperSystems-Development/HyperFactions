@@ -26,7 +26,7 @@ Imports faction data from ElbaphFactions, converting its data format to HyperFac
 
 ### Data Directory
 
-Default: `mods/ElbaphFactions/data/` (or specify a custom path)
+Default: `mods/ElbaphFactions` (or specify a custom path)
 
 Expected files:
 
@@ -90,17 +90,17 @@ Imports faction data from HyFactions V1, the predecessor format with individual 
 
 ### Data Directory
 
-Default: `mods/HyFactions/data/` (or specify a custom path)
+Default: `mods/Kaws_Hyfaction` (or specify a custom path)
 
-Expected structure:
+Expected structure (files are inside a `config/` subdirectory):
 
 | Path | Contents |
 |------|----------|
-| `faction/` | Individual JSON files per faction |
-| `Claims.json` | Claims with dimension support |
-| `SafeZones.json` | SafeZone definitions |
-| `WarZones.json` | WarZone definitions |
-| `NameCache.json` | UUID to player name mapping |
+| `config/faction/` | Individual JSON files per faction |
+| `config/Claims.json` | Claims with dimension support |
+| `config/SafeZones.json` | SafeZone definitions |
+| `config/WarZones.json` | WarZone definitions |
+| `config/NameCache.json` | UUID to player name mapping |
 
 ### Command Options
 
@@ -135,7 +135,7 @@ Imports faction data from the SimpleClaims mod, converting parties and claims to
 
 ### Data Directory
 
-Default: `mods/SimpleClaims/` (or specify a custom path)
+Default: `Server/universe/SimpleClaims` (or specify a custom path)
 
 Supports two storage formats (auto-detected):
 
@@ -183,16 +183,16 @@ Imports faction data from the FactionsX mod (by Humblegod666), converting factio
 
 ### Data Directory
 
-Default: `mods/FactionsX/config/` (or specify a custom path)
+Default: `mods/FactionsX` (or specify a custom path)
 
-Expected structure:
+Expected structure (files are inside a `config/` subdirectory):
 
 | Path | Contents |
 |------|----------|
-| `factions/{UUID}.json` | Individual JSON files per faction |
-| `players/{UUID}.json` | Per-player files (name + power) |
-| `Claims.json` | Territory claims by dimension (ChunkY=Z quirk) |
-| `Zones.json` | SafeZone and WarZone chunks per dimension |
+| `config/factions/{UUID}.json` | Individual JSON files per faction |
+| `config/players/{UUID}.json` | Per-player files (name + power) |
+| `config/Claims.json` | Territory claims by dimension (ChunkY=Z quirk) |
+| `config/Zones.json` | SafeZone and WarZone chunks per dimension |
 
 ### Command Options
 
@@ -252,14 +252,15 @@ Migrations are applied in sequence. The `MigrationRegistry` builds the chain aut
 | `ConfigV3ToV4Migration` | v3 | v4 | Restructure permissions, add interaction sub-types |
 | `ConfigV4ToV5Migration` | v4 | v5 | Remove `warzonePowerLoss`, add per-zone `power_loss` flag |
 | `ConfigV5ToV6Migration` | v5 | v6 | Split `config.json` into `config/factions.json` + `config/server.json` |
-| `ConfigV6ToV7Migration` | v6 | v7 | Restructure economy config, add upkeep settings |
-| `ConfigV7ToV8Migration` | v7 | v8 | Add localization settings, language config |
+| `ConfigV6ToV7Migration` | v6 | v7 | Migrate updater URLs, remove worldMap section, restructure economy.json |
+| `ConfigV7ToV8Migration` | v7 | v8 | Convert claimBlacklist entries to per-world settings with claiming disabled |
 
 **Data Migrations** (run before storage init in `HyperFactions.enable()`):
 
 | Migration | From | To | Description |
 |-----------|------|----|-------------|
 | `DataV0ToV1Migration` | v0 | v1 | Move data files into `data/` subdirectory |
+| `DataV1ToV2Migration` | v1 | v2 | Move hardcore power data from standalone file into per-faction data files |
 
 ### DataV0ToV1Migration
 
@@ -307,7 +308,7 @@ Before each migration:
 
 When `ConfigManager` loads configuration:
 1. Reads `configVersion` from `config.json`
-2. Checks `MigrationRegistry.hasPendingMigrations()`
+2. Checks `MigrationRegistry.hasPendingMigrations(type, dataDir)`
 3. If migrations are needed, runs `MigrationRunner.runAll()` automatically
 4. Logs all migration results with success/failure/warnings
 
@@ -317,7 +318,7 @@ When `ConfigManager` loads configuration:
 
 Before any import operation, a backup is automatically created:
 
-- Type: `MIGRATION` (exempt from auto-rotation)
+- Type: `MANUAL` (exempt from auto-rotation)
 - Contents: All faction data, player data, zones, and configuration
 - Format: ZIP archive with full directory structure
 - Location: `backups/` directory under the plugin data folder

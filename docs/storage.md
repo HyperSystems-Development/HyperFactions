@@ -11,11 +11,11 @@ HyperFactions uses an interface-based storage layer with:
 - **Storage Interfaces** - Abstract contracts for data operations
 - **JSON Implementations** - File-based storage with pretty-printed JSON
 - **Async Operations** - All I/O returns `CompletableFuture` for non-blocking
-- **Data Models** - Java records for immutable data structures
+- **Data Models** - Java records for immutable data structures (Faction, Zone, PlayerPower, ChunkKey) and mutable PlayerData class
 - **Auto-Save** - Periodic saves with configurable interval
 - **Safe-Save** - Atomic writes with SHA-256 checksums, backup recovery, `.bak` auto-cleanup
 - **Per-UUID Locking** - `JsonPlayerStorage` uses per-UUID locks to prevent concurrent load-modify-save race conditions (e.g., simultaneous deaths losing kill/death increments)
-- **Migration Support** - Automatic config (v1→v8) and data (v0→v1) format upgrades
+- **Migration Support** - Automatic config (v1→v8) and data (v0→v1, v1→v2) format upgrades
 - **Backup System** - GFS rotation with hourly/daily/weekly/manual/migration types
 - **Import Directories** - Data import from ElbaphFactions, HyFactions, SimpleClaims, and FactionsX
 
@@ -30,8 +30,8 @@ ZoneStorage    ────────────────► JsonZoneStora
       │                                  │
       └──────── Data Models ◄────────────┘
                     │
-           Faction, PlayerPower,
-           Zone, FactionClaim, etc.
+           Faction, PlayerPower, PlayerData,
+           Zone, FactionClaim, ChunkKey, etc.
 
 Backup System
       │
@@ -201,10 +201,26 @@ public interface PlayerStorage {
     CompletableFuture<Void> init();
     CompletableFuture<Void> shutdown();
 
-    CompletableFuture<Optional<PlayerPower>> loadPlayerPower(UUID playerUuid);
+    // Power-only operations (delegates to PlayerData internally)
+    CompletableFuture<Optional<PlayerPower>> loadPlayerPower(UUID uuid);
     CompletableFuture<Void> savePlayerPower(PlayerPower power);
-    CompletableFuture<Void> deletePlayerPower(UUID playerUuid);
+    CompletableFuture<Void> deletePlayerPower(UUID uuid);
     CompletableFuture<Collection<PlayerPower>> loadAllPlayerPower();
+
+    // UUID discovery
+    CompletableFuture<Set<UUID>> getAllPlayerUuids();
+
+    // Full player data operations (power + history + stats + preferences)
+    CompletableFuture<Optional<PlayerData>> loadPlayerData(UUID uuid);
+    CompletableFuture<Void> savePlayerData(PlayerData data);
+
+    /**
+     * Atomically loads player data, applies the updater, and saves.
+     * Thread-safe: concurrent updates to the same player are serialized.
+     *
+     * @param updater a Consumer that modifies the player data in place
+     */
+    CompletableFuture<Void> updatePlayerData(UUID uuid, Consumer<PlayerData> updater);
 }
 ```
 
@@ -284,15 +300,17 @@ public class JsonPlayerStorage implements PlayerStorage {
     /**
      * Atomically update player data under a per-UUID lock.
      * Prevents lost updates from concurrent deaths/kills.
+     * Note: updater is a Consumer that modifies PlayerData in place (mutable class).
      */
-    public CompletableFuture<Void> updatePlayerData(UUID uuid, UnaryOperator<PlayerData> updater) {
+    public CompletableFuture<Void> updatePlayerData(UUID uuid, Consumer<PlayerData> updater) {
         return CompletableFuture.runAsync(() -> {
             ReentrantLock lock = playerLocks.computeIfAbsent(uuid, k -> new ReentrantLock());
             lock.lock();
             try {
                 PlayerData data = loadPlayerDataSync(uuid);
-                PlayerData updated = updater.apply(data);
-                savePlayerDataSync(updated);
+                if (data == null) data = new PlayerData(uuid);
+                updater.accept(data);   // Mutates in place
+                savePlayerDataSync(data);
             } finally {
                 lock.unlock();
             }
@@ -329,29 +347,30 @@ public class JsonZoneStorage implements ZoneStorage {
 
 [`data/Faction.java`](../src/main/java/com/hyperfactions/data/Faction.java)
 
-Mutable entity with builder-style setters:
+Immutable record with `with*()` copy methods for updates:
 
 ```java
-public class Faction {
-    private final UUID id;
-    private String name;
-    private String description;
-    private String tag;
-    private String color;
-    private long createdAt;
-    private boolean open;
-    private FactionHome home;
-    private final List<FactionMember> members;
-    private final List<FactionClaim> claims;
-    private final List<FactionRelation> relations;
-    private final List<FactionLog> logs;
-    private FactionPermissions permissions;
-
-    // Getters and builder-style setters
-    public Faction setName(String name) {
-        this.name = name;
-        return this;
-    }
+public record Faction(
+    UUID id,
+    String name,
+    @Nullable String description,
+    @Nullable String tag,
+    String color,                           // Hex string, e.g., "#55FFFF"
+    long createdAt,
+    @Nullable FactionHome home,
+    Map<UUID, FactionMember> members,       // Map, not List
+    Set<FactionClaim> claims,               // Set, not List
+    Map<UUID, FactionRelation> relations,   // Map keyed by target faction UUID
+    List<FactionLog> logs,
+    boolean open,
+    @Nullable FactionPermissions permissions,
+    @Nullable Double hardcorePower          // Hardcore mode faction power pool
+) {
+    // Compact constructor: copies collections to immutable, auto-migrates legacy color codes
+    // Update methods return new Faction instances:
+    //   withName(), withDescription(), withTag(), withColor(), withOpen()
+    //   withMember(), withoutMember(), withClaim(), withoutClaimAt()
+    //   withRelation(), withHome(), withLog(), withPermissions(), withHardcorePower()
 }
 ```
 
@@ -363,9 +382,10 @@ public class Faction {
   "name": "Warriors",
   "description": "A mighty faction",
   "tag": "WAR",
-  "color": "c",
+  "color": "#55FFFF",
   "createdAt": 1706745600000,
   "open": false,
+  "hardcorePower": null,
   "home": {
     "world": "world",
     "x": 100.5,
@@ -376,15 +396,15 @@ public class Faction {
     "setAt": 1706745600000,
     "setBy": "player-uuid"
   },
-  "members": [
-    {
+  "members": {
+    "player-uuid": {
       "uuid": "player-uuid",
       "username": "PlayerName",
       "role": "LEADER",
       "joinedAt": 1706745600000,
       "lastOnline": 1706832000000
     }
-  ],
+  },
   "claims": [
     {
       "world": "world",
@@ -394,13 +414,13 @@ public class Faction {
       "claimedBy": "player-uuid"
     }
   ],
-  "relations": [
-    {
-      "targetFactionId": "other-uuid",
+  "relations": {
+    "other-faction-uuid": {
+      "targetFactionId": "other-faction-uuid",
       "type": "ALLY",
       "since": 1706745600000
     }
-  ],
+  },
   "logs": [
     {
       "type": "MEMBER_JOIN",
@@ -416,6 +436,8 @@ public class Faction {
   }
 }
 ```
+
+> **Note**: `color` is stored as a hex string (e.g., `"#55FFFF"`). Legacy single-char codes (e.g., `"c"`) are auto-migrated to hex on load. `members` and `relations` are serialized as maps keyed by UUID.
 
 ### FactionMember
 
@@ -453,19 +475,86 @@ public record PlayerPower(
     double power,
     double maxPower,
     long lastDeath,
-    long lastRegen
-) {}
+    long lastRegen,
+    @Nullable Double maxPowerOverride,   // Per-player max power override (null = use global config)
+    boolean powerLossDisabled,            // Absolute bypass: never loses power from any source
+    boolean claimDecayExempt             // Treated as always online for claim decay
+) {
+    // getEffectiveMaxPower() returns override if set, else maxPower
+    // withPower(), withDeathPenalty(), withRegen(), withMaxPower()
+    // withMaxPowerOverride(), withPowerLossDisabled(), withClaimDecayExempt()
+}
 ```
 
-**JSON Structure** (`players/{uuid}.json`):
+> **Note**: `PlayerPower` is the immutable power-only record. Actual on-disk storage uses the mutable `PlayerData` class which wraps power fields plus kill/death stats, membership history, preferences, and admin bypass state. `PlayerPower` is extracted from `PlayerData` via `toPower()`.
+
+**JSON Structure** (`players/{uuid}.json`) — stored as `PlayerData`:
 
 ```json
 {
   "uuid": "550e8400-e29b-41d4-a716-446655440000",
+  "username": "PlayerName",
   "power": 15.5,
   "maxPower": 20.0,
   "lastDeath": 1706745600000,
-  "lastRegen": 1706832000000
+  "lastRegen": 1706832000000,
+  "kills": 5,
+  "deaths": 2,
+  "firstJoined": 1706745600000,
+  "lastOnline": 1706832000000,
+  "maxPowerOverride": null,
+  "powerLossDisabled": false,
+  "claimDecayExempt": false,
+  "adminBypassEnabled": false,
+  "languagePreference": null,
+  "territoryAlertsEnabled": true,
+  "deathAnnouncementsEnabled": true,
+  "powerNotificationsEnabled": true,
+  "membershipHistory": []
+}
+```
+
+### PlayerData
+
+[`data/PlayerData.java`](../src/main/java/com/hyperfactions/data/PlayerData.java)
+
+Mutable class combining power fields with extended player data. Stored on disk in `data/players/{uuid}.json`:
+
+```java
+public class PlayerData {
+    private UUID uuid;
+    private String username;
+
+    // Power fields (same as PlayerPower record)
+    private double power;
+    private double maxPower;
+    private long lastDeath;
+    private long lastRegen;
+    private Double maxPowerOverride;
+    private boolean powerLossDisabled;
+    private boolean claimDecayExempt;
+
+    // Stats
+    private int kills;
+    private int deaths;
+    private long firstJoined;
+    private long lastOnline;
+
+    // History
+    private List<MembershipRecord> membershipHistory;
+
+    // Admin state
+    private boolean adminBypassEnabled;
+
+    // Player preferences (i18n + notifications)
+    private String languagePreference;
+    private boolean territoryAlertsEnabled = true;
+    private boolean deathAnnouncementsEnabled = true;
+    private boolean powerNotificationsEnabled = true;
+
+    // Conversion: toPower() -> PlayerPower, updatePower(PlayerPower) <- PlayerPower
+    // Membership: addRecord(), closeActiveRecord(), getActiveRecord(), updateHighestRole()
+    // Stats: incrementKills(), incrementDeaths()
 }
 ```
 
@@ -474,15 +563,25 @@ public record PlayerPower(
 [`data/Zone.java`](../src/main/java/com/hyperfactions/data/Zone.java)
 
 ```java
-public class Zone {
-    private final UUID id;
-    private String name;
-    private ZoneType type;
-    private String world;
-    private final Set<ChunkKey> chunks;
-    private long createdAt;
-    private UUID createdBy;
-    private final Map<String, Boolean> flags;
+public record Zone(
+    UUID id,
+    String name,
+    ZoneType type,
+    String world,
+    Set<ChunkKey> chunks,
+    long createdAt,
+    UUID createdBy,
+    @Nullable Map<String, Boolean> flags,           // Boolean flags (null = use zone type defaults)
+    @Nullable Map<String, String> settings,         // String-valued settings for enum/selection options
+    @Nullable Boolean notifyOnEntry,                // Show entry notification (null/true = show)
+    @Nullable String notifyTitleUpper,              // Custom upper title text (null = default)
+    @Nullable String notifyTitleLower               // Custom lower title text (null = default)
+) {
+    // Compact constructor ensures chunks is immutable
+    // withChunk(), withoutChunk(), withName(), withFlag(), withoutFlag()
+    // withSetting(), withoutSetting(), withNotifyOnEntry(), withNotifyTitleUpper/Lower()
+    // getEffectiveFlag() considers parent-child flag enforcement and zone type defaults
+    // getEffectiveSetting() considers zone type defaults
 }
 ```
 
@@ -504,7 +603,11 @@ public class Zone {
     "flags": {
       "pvp_enabled": false,
       "build_allowed": false
-    }
+    },
+    "settings": null,
+    "notifyOnEntry": true,
+    "notifyTitleUpper": null,
+    "notifyTitleLower": null
   }
 ]
 ```
@@ -516,19 +619,27 @@ public class Zone {
 Immutable identifier for a chunk:
 
 ```java
-public record ChunkKey(String world, int x, int z) {
+/**
+ * Note: Hytale uses 32-block chunks (shift by 5), not 16-block chunks.
+ */
+public record ChunkKey(
+    String world,
+    int chunkX,    // NOT "x" — field name is "chunkX"
+    int chunkZ     // NOT "z" — field name is "chunkZ"
+) {
+    private static final int CHUNK_SIZE = 32;
+    private static final int CHUNK_SHIFT = 5;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(world, x, z);
+    public static ChunkKey fromWorldCoords(String world, double x, double z) {
+        return new ChunkKey(world, (int) Math.floor(x) >> CHUNK_SHIFT, (int) Math.floor(z) >> CHUNK_SHIFT);
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ChunkKey other)) return false;
-        return x == other.x && z == other.z && world.equals(other.world);
+    public static ChunkKey fromBlockCoords(String world, int blockX, int blockZ) {
+        return new ChunkKey(world, blockX >> CHUNK_SHIFT, blockZ >> CHUNK_SHIFT);
     }
+
+    // Navigation: north(), south(), east(), west()
+    // Utility: isAdjacentTo(), getCenterX(), getCenterZ(), getMinBlockX(), etc.
 }
 ```
 
@@ -655,6 +766,12 @@ Moves data files from the plugin root into a `data/` subdirectory. The migration
 
 **Detection:** Runs when `data/.version` doesn't exist AND at least one old-path item exists.
 
+### Data Format Migration (v1→v2)
+
+[`migration/migrations/data/DataV1ToV2Migration.java`](../src/main/java/com/hyperfactions/migration/migrations/data/DataV1ToV2Migration.java)
+
+Second data migration step. Also handled by MigrationRunner.
+
 ### Zone Format Migration
 
 [`migration/MigrationRunner.java`](../src/main/java/com/hyperfactions/migration/MigrationRunner.java)
@@ -691,22 +808,36 @@ Migration is detected and run automatically on load.
 Monitors storage system health:
 
 ```java
-public class StorageHealth {
+public final class StorageHealth {
 
-    private final AtomicLong lastSaveTime = new AtomicLong();
-    private final AtomicInteger failedSaves = new AtomicInteger();
+    private static final StorageHealth INSTANCE = new StorageHealth();
 
-    public void recordSave() {
-        lastSaveTime.set(System.currentTimeMillis());
-    }
+    /** Time window for rate calculation — 5 minutes. */
+    private static final long RATE_WINDOW_MS = 5 * 60 * 1000;
 
-    public void recordFailure() {
-        failedSaves.incrementAndGet();
-    }
+    private final AtomicLong totalSuccesses = new AtomicLong(0);
+    private final AtomicLong totalFailures = new AtomicLong(0);
 
+    /** Timestamped writes for rate calculation. */
+    private final LinkedList<TimestampedWrite> recentWrites = new LinkedList<>();
+
+    /** Per-file success/failure counts. */
+    private final Map<String, AtomicLong> successCounts = new ConcurrentHashMap<>();
+    private final Map<String, AtomicLong> failureCounts = new ConcurrentHashMap<>();
+
+    public void recordSuccess(String filePath) { ... }
+    public void recordFailure(String filePath, String error) { ... }
+
+    /**
+     * Returns false if the recent failure rate exceeds 10%
+     * (rate-based, not consecutive-failure-based).
+     */
     public boolean isHealthy() {
-        // Check if saves are succeeding
-        return failedSaves.get() < MAX_CONSECUTIVE_FAILURES;
+        return getRecentFailureRate() < 0.10;
+    }
+
+    public double getRecentFailureRate() {
+        // Calculates failures / total writes in the 5-minute window
     }
 }
 ```
@@ -798,9 +929,12 @@ JSON files can be manually edited while the server is stopped:
 | PlayerPower | [`data/PlayerPower.java`](../src/main/java/com/hyperfactions/data/PlayerPower.java) |
 | Zone | [`data/Zone.java`](../src/main/java/com/hyperfactions/data/Zone.java) |
 | ChunkKey | [`data/ChunkKey.java`](../src/main/java/com/hyperfactions/data/ChunkKey.java) |
+| PlayerData | [`data/PlayerData.java`](../src/main/java/com/hyperfactions/data/PlayerData.java) |
 | ChatHistoryStorage | [`storage/ChatHistoryStorage.java`](../src/main/java/com/hyperfactions/storage/ChatHistoryStorage.java) |
 | JsonChatHistoryStorage | [`storage/json/JsonChatHistoryStorage.java`](../src/main/java/com/hyperfactions/storage/json/JsonChatHistoryStorage.java) |
 | JsonEconomyStorage | [`storage/JsonEconomyStorage.java`](../src/main/java/com/hyperfactions/storage/JsonEconomyStorage.java) |
 | StorageUtils | [`storage/StorageUtils.java`](../src/main/java/com/hyperfactions/storage/StorageUtils.java) |
 | DataV0ToV1Migration | [`migration/migrations/data/DataV0ToV1Migration.java`](../src/main/java/com/hyperfactions/migration/migrations/data/DataV0ToV1Migration.java) |
+| DataV1ToV2Migration | [`migration/migrations/data/DataV1ToV2Migration.java`](../src/main/java/com/hyperfactions/migration/migrations/data/DataV1ToV2Migration.java) |
+| MigrationRunner | [`migration/MigrationRunner.java`](../src/main/java/com/hyperfactions/migration/MigrationRunner.java) |
 | BackupManager | [`backup/BackupManager.java`](../src/main/java/com/hyperfactions/backup/BackupManager.java) |

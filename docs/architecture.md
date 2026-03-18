@@ -1,6 +1,6 @@
 # HyperFactions Architecture
 
-> **Version**: 0.12.0 | **480 classes** across **74 packages**
+> **Version**: 0.12.0 | **480 classes** across **72 packages**
 
 ## Overview
 
@@ -11,9 +11,9 @@ block-beta
     columns 1
     A["Platform Layer — Hytale plugin lifecycle"]
     B["Core Layer — Central coordinator"]
-    C["Integration Layer — Permissions, PAPI, OrbisGuard, HyperProtect-Mixin, World Map"]
+    C["Integration Layer — Permissions, PAPI, OrbisGuard, HyperProtect-Mixin, Economy, World Map"]
     D["API Layer — Public API, EventBus, EconomyAPI"]
-    E["Manager Layer — 16 domain managers"]
+    E["Manager Layer — 17 domain managers + caches"]
     F["Storage Layer — Async JSON persistence"]
     G["Command Layer — ~46 subcommands"]
     H["GUI Layer — ~76 CustomUI pages"]
@@ -22,9 +22,9 @@ block-beta
 
 1. **Platform Layer** - Hytale plugin lifecycle and event registration
 2. **Core Layer** - Central coordinator and manager initialization
-3. **Integration Layer** - Permission chain, PAPI, WiFlow, OrbisGuard, HyperProtect-Mixin, world map
+3. **Integration Layer** - Permission chain, PAPI, WiFlow, OrbisGuard, HyperProtect-Mixin, Vault economy, world map
 4. **API Layer** - Public API for third-party mods, EventBus, EconomyAPI
-5. **Manager Layer** - Business logic organized by domain (16 managers)
+5. **Manager Layer** - Business logic organized by domain (17 managers + caches)
 6. **Storage Layer** - Async JSON persistence with interfaces
 7. **Command Layer** - Subcommand-based dispatcher pattern (~46 subcommands)
 8. **GUI Layer** - CustomUI pages with registry-based navigation (~76 pages)
@@ -38,6 +38,9 @@ src/main/java/com/hyperfactions/
 ├── Permissions.java                # Permission node constants
 ├── BuildInfo.java                  # Auto-generated at build time
 │
+├── build/                          # Build-time code generation
+│   └── HelpLangGenerator.java     # Generates help language files
+│
 ├── platform/                       # Hytale plugin entry point
 │   ├── HyperFactionsPlugin.java    # JavaPlugin lifecycle
 │   ├── EventRegistration.java      # Event listener registration
@@ -49,7 +52,7 @@ src/main/java/com/hyperfactions/
 │   ├── PeriodicTaskManager.java    # Scheduled task management
 │   └── MembershipHistoryHandler.java # Member join/leave tracking
 │
-├── manager/                        # Business logic layer (16 managers)
+├── manager/                        # Business logic layer (17 managers + caches)
 │   ├── FactionManager.java         # Faction CRUD, membership, roles
 │   ├── ClaimManager.java           # Territory claim/unclaim operations
 │   ├── PowerManager.java           # Player power, regeneration, penalties
@@ -65,7 +68,8 @@ src/main/java/com/hyperfactions/
 │   ├── AnnouncementManager.java    # Server-wide event broadcasts
 │   ├── SpawnSuppressionManager.java # Mob spawn control in claims/zones
 │   ├── ChatHistoryManager.java     # Faction chat history persistence
-│   └── ZoneMobClearManager.java    # Periodic mob clearing in zones
+│   ├── ZoneMobClearManager.java    # Periodic mob clearing in zones
+│   └── FactionKDCache.java         # Faction kill/death ratio cache
 │
 ├── command/                        # Command system
 │   ├── FactionCommand.java         # Main /f dispatcher
@@ -96,6 +100,9 @@ src/main/java/com/hyperfactions/
 │   ├── ui/                         # UI commands (gui, settings)
 │   └── economy/                   # Economy commands (money, balance, deposit, withdraw)
 │
+├── economy/                        # Economy processing
+│   └── UpkeepProcessor.java       # Faction upkeep cost processing
+│
 ├── gui/                            # CustomUI system
 │   ├── GuiManager.java             # Central GUI coordinator (registration + delegation)
 │   ├── FactionPageOpener.java      # Faction page opening methods (35 methods)
@@ -103,6 +110,7 @@ src/main/java/com/hyperfactions/
 │   ├── NewPlayerPageOpener.java    # New player page opening methods (8 methods)
 │   ├── UIPaths.java                # Centralized UI template path constants
 │   ├── GuiType.java                # Page type enumeration
+│   ├── GuiColors.java              # GUI color constants
 │   ├── ActivePageTracker.java      # Live data refresh tracking
 │   ├── RefreshablePage.java        # Refreshable page interface
 │   ├── GuiUpdateService.java       # GUI update coordination
@@ -115,6 +123,8 @@ src/main/java/com/hyperfactions/
 │   ├── admin/                      # Admin pages
 │   │   ├── AdminPageRegistry.java
 │   │   ├── AdminNavBarHelper.java
+│   │   ├── ConfigSnapshot.java     # Config snapshot for diff tracking
+│   │   ├── ConfigValidator.java    # Config value validation
 │   │   ├── page/                   # Admin page implementations
 │   │   └── data/                   # Admin data models
 │   ├── newplayer/                  # New player flow
@@ -131,16 +141,27 @@ src/main/java/com/hyperfactions/
 │   ├── help/                       # Help system
 │   │   ├── HelpCategory.java
 │   │   ├── HelpTopic.java
+│   │   ├── HelpEntry.java          # Help entry record
+│   │   ├── HelpMessages.java       # Help message formatting
+│   │   ├── HelpRichText.java       # Rich text rendering for help
 │   │   ├── HelpRegistry.java
 │   │   ├── data/HelpPageData.java
 │   │   └── page/HelpMainPage.java
 │   └── test/                       # Test pages
-│       └── ButtonTestPage.java
+│       ├── ButtonTestPage.java
+│       └── MarkdownTestPage.java
 │
 ├── protection/                     # Territory protection
 │   ├── ProtectionChecker.java      # Central protection logic
 │   ├── ProtectionListener.java     # Event coordination
 │   ├── SpawnProtection.java        # Respawn protection tracking
+│   ├── ProtectionMessageDebounce.java # Debounce repeated denial messages
+│   ├── NpcInteractionProtectionHandler.java # NPC interaction protection
+│   ├── MobCleanupManager.java      # Mob cleanup in protected areas
+│   ├── interactions/                # Custom interaction protection handlers
+│   │   ├── HyperFactionsHarvestCropInteraction.java
+│   │   ├── HyperFactionsPlaceFluidInteraction.java
+│   │   └── HyperFactionsRefillContainerInteraction.java
 │   ├── ecs/                        # ECS event handlers
 │   │   ├── BlockPlaceProtectionSystem.java
 │   │   ├── BlockBreakProtectionSystem.java
@@ -171,30 +192,36 @@ src/main/java/com/hyperfactions/
 │   ├── ConfigManager.java          # Central config coordinator
 │   ├── ConfigFile.java             # Base config file class
 │   ├── CoreConfig.java             # Main config.json
+│   ├── HyperFactionsConfig.java    # Top-level config wrapper
 │   ├── ModuleConfig.java           # Module config base
 │   ├── ValidationResult.java       # Validation tracking
+│   ├── WorldSettingsResolver.java  # Per-world settings resolution
 │   └── modules/                    # Module configs (config/ subdir)
 │       ├── BackupConfig.java
 │       ├── ChatConfig.java
 │       ├── DebugConfig.java
 │       ├── EconomyConfig.java
+│       ├── FactionsConfig.java         # Core factions behavior settings
 │       ├── FactionPermissionsConfig.java
 │       ├── AnnouncementConfig.java     # Announcement toggles
+│       ├── ServerConfig.java           # Server-level settings
 │       ├── WorldMapConfig.java         # World map refresh modes
-│       ├── GravestoneConfig.java         # Gravestone integration settings
-│       └── WorldsConfig.java             # Per-world behavior overrides
+│       ├── GravestoneConfig.java       # Gravestone integration settings
+│       └── WorldsConfig.java          # Per-world behavior overrides
 │
 ├── storage/                        # Persistence layer
 │   ├── FactionStorage.java         # Faction storage interface
 │   ├── PlayerStorage.java          # Player power storage interface
 │   ├── ZoneStorage.java            # Zone storage interface
+│   ├── ChatHistoryStorage.java     # Chat history storage interface
+│   ├── JsonEconomyStorage.java     # Economy/treasury storage
 │   ├── StorageHealth.java          # Storage health monitoring
+│   ├── StorageUtils.java           # Storage utility helpers
 │   └── json/                       # JSON implementations
 │       ├── JsonFactionStorage.java
 │       ├── JsonPlayerStorage.java
 │       ├── JsonZoneStorage.java
-│       ├── ChatHistoryStorage.java       # Chat history storage interface
-│       └── JsonEconomyStorage.java       # Economy/treasury storage
+│       └── JsonChatHistoryStorage.java   # JSON chat history impl
 │
 ├── data/                           # Data models (Java records)
 │   ├── Faction.java                # Faction entity (mutable, builder)
@@ -205,7 +232,11 @@ src/main/java/com/hyperfactions/
 │   ├── FactionPermissions.java     # Territory permissions record
 │   ├── FactionLog.java             # Activity log entry
 │   ├── FactionEconomy.java         # Economy data
+│   ├── FactionChatHistory.java     # Chat history data model
 │   ├── PlayerPower.java            # Player power record
+│   ├── PlayerData.java             # Player data record
+│   ├── ChatMessage.java            # Chat message record
+│   ├── MembershipRecord.java       # Membership join/leave history
 │   ├── Zone.java                   # SafeZone/WarZone entity
 │   ├── ZoneType.java               # SAFE, WAR enum
 │   ├── ZoneFlags.java              # Zone flag constants
@@ -228,19 +259,21 @@ src/main/java/com/hyperfactions/
 │   ├── PermissionManager.java      # Unified permission chain
 │   ├── PermissionProvider.java     # Provider interface
 │   ├── PermissionRegistrar.java    # Provider registration
+│   ├── SentryIntegration.java      # Sentry error tracking
 │   ├── permissions/                # Permission provider implementations
 │   │   ├── HyperPermsIntegration.java    # HyperPerms soft dependency
 │   │   ├── HyperPermsProviderAdapter.java
 │   │   ├── HytaleNativeProvider.java     # Hytale native permissions
 │   │   ├── LuckPermsProvider.java        # LuckPerms permission provider
 │   │   └── VaultUnlockedProvider.java    # VaultUnlocked permission provider
+│   ├── economy/                    # Economy integrations
+│   │   └── VaultEconomyProvider.java     # VaultUnlocked economy bridge
 │   ├── protection/                 # Protection integrations
 │   │   ├── ProtectionMixinBridge.java    # Dual-provider mixin detection facade
 │   │   ├── HyperProtectIntegration.java  # HyperProtect-Mixin bridge (28 hooks)
 │   │   ├── OrbisMixinsIntegration.java   # OrbisGuard-Mixins hooks (11 hooks)
 │   │   ├── OrbisGuardIntegration.java    # OG region conflict detection
 │   │   ├── GravestoneIntegration.java    # Gravestone access control
-│   │   ├── SentryIntegration.java        # Sentry error tracking
 │   │   └── KyuubiSoftIntegration.java    # KyuubiSoft NPC protection
 │   └── placeholder/                # Placeholder integrations (PAPI, WiFlow)
 │       ├── PlaceholderAPIIntegration.java
@@ -267,10 +300,14 @@ src/main/java/com/hyperfactions/
 │   ├── WorldMapService.java        # Registration + refresh coordination
 │   ├── HyperFactionsWorldMap.java  # Custom map generator
 │   ├── HyperFactionsWorldMapProvider.java # Map provider impl
-│   └── WorldMapRefreshScheduler.java # 5 refresh modes
+│   ├── WorldMapRefreshScheduler.java # 5 refresh modes
+│   ├── ClaimImageBuilder.java      # Claim overlay image generation
+│   ├── MapPlayerFilterService.java # Player visibility filtering on map
+│   └── BetterMapCompat.java        # BetterMap mod compatibility
 │
 ├── chat/                           # Chat formatting
 │   ├── ChatContext.java            # Chat channel state
+│   ├── FactionChatFormatter.java   # Faction chat message formatting
 │   └── PublicChatListener.java     # Faction tag formatting
 │
 ├── migration/                      # Data migrations
@@ -280,36 +317,47 @@ src/main/java/com/hyperfactions/
 │   ├── MigrationResult.java        # Result record
 │   ├── MigrationOptions.java       # Execution options
 │   ├── MigrationType.java          # CONFIG, DATA, SCHEMA enum
-│   └── migrations/config/          # Concrete migrations (v1→v8)
+│   └── migrations/                 # Concrete migrations
+│       ├── config/                 # Config migrations (v1→v8)
+│       └── data/                   # Data migrations (v0→v2)
 │
 ├── importer/                       # Data import from other plugins
-│   ├── elbaphfactions/             # ElbaphFactions importer
-│   ├── hyfactions/                 # HyFactions V1 importer
-│   ├── simpleclaims/             # SimpleClaims importer
-│   └── factionsx/                # FactionsX importer
-│
-├── messages/                      # i18n message keys
-│   ├── HFMessages.java            # Message lookup and formatting
-│   ├── CommonKeys.java            # Shared message keys
-│   ├── CommandKeys.java           # Command message keys
-│   ├── HelpKeys.java              # Help system keys
-│   ├── AdminKeys.java             # Admin command keys
-│   ├── GuiKeys.java               # GUI page keys
-│   └── AdminGuiKeys.java          # Admin GUI keys
+│   ├── ImportResult.java           # Import result record
+│   ├── ImportValidationReport.java # Import validation reporting
+│   ├── ElbaphFactionsImporter.java # ElbaphFactions importer entry
+│   ├── HyFactionsImporter.java    # HyFactions V1 importer entry
+│   ├── SimpleClaimsImporter.java  # SimpleClaims importer entry
+│   ├── FactionsXImporter.java     # FactionsX importer entry
+│   ├── elbaphfactions/             # ElbaphFactions data models
+│   ├── hyfactions/                 # HyFactions V1 data models
+│   ├── simpleclaims/              # SimpleClaims data models
+│   └── factionsx/                 # FactionsX data models
 │
 ├── listener/                       # Event listeners
+│   └── PlayerListener.java        # Player event handling
 │
 ├── debug/                          # Debug utilities
 │   ├── ClaimTrace.java
 │   └── PowerTrace.java
 │
-└── util/                           # Utilities
+└── util/                           # Utilities and i18n message keys
     ├── Logger.java                 # Logging with debug categories
+    ├── ErrorHandler.java           # Centralized error handling
     ├── MessageUtil.java            # Message composition helpers
+    ├── HFMessages.java             # Message lookup and formatting
+    ├── CommonKeys.java             # Shared message keys
+    ├── CommandKeys.java            # Command message keys
+    ├── HelpKeys.java               # Help system keys
+    ├── AdminKeys.java              # Admin command keys
+    ├── GuiKeys.java                # GUI page keys
+    ├── AdminGuiKeys.java           # Admin GUI keys
     ├── UuidUtil.java               # UUID parsing and validation
     ├── ChunkUtil.java              # Chunk coordinate math
     ├── TimeUtil.java               # Duration formatting
+    ├── UiUtil.java                 # UI utility helpers
     ├── LegacyColorParser.java      # Legacy color code parsing
+    ├── PlayerDBService.java        # Player database lookups
+    ├── PlayerResolver.java         # Player name/UUID resolution
     ├── CommandHelp.java            # Help text generation
     └── HelpFormatter.java          # Help formatting
 ```

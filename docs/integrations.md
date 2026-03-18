@@ -38,14 +38,18 @@ graph TD
     HF --> KS[KyuubiSoft Core]
     HF --> SN[Sentry]
     HF --> HPC[HyperPerms Context]
+    HF --> VE[VaultEconomy]
 
     PM --> VU[VaultUnlocked]
     PM --> HPP[HyperPerms]
     PM --> LP[LuckPerms]
+    PM --> HN[HytaleNative]
+
+    VE --> VU
 
     PMB -->|auto-detect| HPM[HyperProtect-Mixin]
     PMB -->|auto-detect| OGM[OrbisGuard-Mixins]
-    HPM -->|bridge slots| HPHooks[27 Hook Wrappers]
+    HPM -->|bridge slots| HPHooks[28 Hook Wrappers]
     OGM -->|System.getProperties| OGHooks[11 Hook Callbacks]
 
     style HF fill:#2563eb,color:#fff
@@ -61,6 +65,7 @@ graph TD
     style KS fill:#059669,color:#fff
     style SN fill:#362d59,color:#fff
     style HPC fill:#7c3aed,color:#fff
+    style VE fill:#d97706,color:#fff
 ```
 
 All integrations share these design principles:
@@ -81,9 +86,10 @@ HyperFactions uses a chain-of-responsibility pattern to check permissions across
 
 | Priority | Provider | Detection |
 |----------|----------|-----------|
-| 1 | VaultUnlocked | Reflection: `at.helpch.vaultunlocked.api.*` |
-| 2 | HyperPerms | Reflection: `com.hyperperms.api.*` |
-| 3 | LuckPerms | Reflection: `net.luckperms.api.*` |
+| 1 | VaultUnlocked | Reflection: `net.milkbowl.vault2.helper.TriState` then `net.cfh.vault.VaultUnlocked` |
+| 2 | HyperPerms | Reflection: `com.hyperperms.HyperPermsBootstrap` |
+| 3 | LuckPerms | Reflection: `net.luckperms.api.LuckPermsProvider` |
+| 4 | HytaleNative | Direct: `PermissionsModule.get()` (delegates to any plugin registered with `PermissionsModule.addProvider()`) |
 
 ### PermissionProvider Interface
 
@@ -152,6 +158,32 @@ When no provider can answer:
 | `hyperfactions.limit.*` | Always denied (config defaults used instead) |
 | User-level permissions | Configurable via `allowWithoutPermissionMod` |
 
+### PermissionRegistrar
+
+**Class**: [`PermissionRegistrar.java`](../src/main/java/com/hyperfactions/integration/PermissionRegistrar.java)
+**Purpose**: Registers all HyperFactions permission nodes with LuckPerms' internal `PermissionRegistry` for web editor autocomplete and discovery.
+
+LuckPerms can't auto-discover HyperFactions permissions because they use internal subcommand routing rather than Hytale's command system. `PermissionRegistrar.registerWithLuckPerms()` inserts all permission nodes (including wildcards) directly into LuckPerms' registry via reflection. Fails silently if LuckPerms is not installed.
+
+### VaultEconomyProvider
+
+**Package**: `com.hyperfactions.integration.economy`
+**Class**: [`VaultEconomyProvider.java`](../src/main/java/com/hyperfactions/integration/economy/VaultEconomyProvider.java)
+**Purpose**: Economy provider for VaultUnlocked (Vault2 Economy API) — enables faction economy features (bank, costs)
+
+Uses reflection to access `net.cfh.vault.VaultUnlocked.economy()` and the `net.milkbowl.vault2.economy.Economy` interface. Supports lazy initialization (VaultUnlocked may load after HyperFactions). Provides `getBalance`, `has`, `withdraw`, and `deposit` operations via `BigDecimal`-based API.
+
+### PlaceholderAPIIntegration / WiFlowPlaceholderIntegration
+
+**Package**: `com.hyperfactions.integration.placeholder`
+
+Wrapper classes that handle runtime detection and registration of the placeholder expansions:
+
+- **`PlaceholderAPIIntegration`**: Detects `at.helpch.placeholderapi.PlaceholderAPI` via `Class.forName()`, creates and registers `HyperFactionsExpansion`
+- **`WiFlowPlaceholderIntegration`**: Detects `com.wiflow.placeholderapi.WiFlowPlaceholderAPI` via `Class.forName()`, creates `WiFlowExpansion` reflectively to avoid compile-time dependency
+
+Both provide `init(HyperFactions)`, `shutdown()`, and `isAvailable()` methods.
+
 ---
 
 ## PlaceholderAPI (PAPI)
@@ -188,7 +220,7 @@ When OrbisGuard is installed, HyperFactions checks for protective regions before
 
 1. On startup, HyperFactions attempts to load `com.orbisguard.api.OrbisGuardAPI` via reflection
 2. If found, it caches `MethodHandle` references for region container access
-3. During claim attempts, `isChunkProtected(world, chunkX, chunkZ)` checks the chunk center for regions
+3. During claim attempts, `isChunkProtected(world, chunkX, chunkZ)` first tries `canCreateClaim()` (full overlap detection), falling back to multi-point checks (4 corners + center at Y=64)
 4. If regions are found, the claim is denied with an appropriate message
 
 ### Methods
@@ -197,9 +229,9 @@ When OrbisGuard is installed, HyperFactions checks for protective regions before
 |--------|-------------|
 | `isAvailable()` | Whether OrbisGuard is installed |
 | `hasProtectiveRegions(world, x, y, z)` | Check for regions at exact coordinates |
-| `isChunkProtected(world, chunkX, chunkZ)` | Check chunk center (block X/Z + 8, Y=64) |
+| `isChunkProtected(world, chunkX, chunkZ)` | Prefers `canCreateClaim()` for full overlap detection; falls back to 5-point check (4 corners + center at block X/Z + 16, Y=64) |
 
-> **Note**: Checks only the chunk center for performance. Region checks are fail-open — if OrbisGuard errors, claims proceed normally.
+> **Note**: Hytale uses 32-block chunks (shift by 5). The preferred `canCreateClaim` API checks corners, center, and full overlap. The fallback checks 5 points. Region checks are fail-open — if OrbisGuard errors, claims proceed normally.
 
 ---
 
@@ -215,15 +247,21 @@ HyperFactions supports two mixin providers for extended protection coverage: **[
 
 | Mode | Condition | Behavior |
 |------|-----------|----------|
-| `HYPERPROTECT` | Only HyperProtect-Mixin installed | All 27 HP hooks registered (standalone) |
+| `HYPERPROTECT` | Only HyperProtect-Mixin installed | All 28 HP hooks registered (standalone) |
 | `ORBISGUARD` | Only OrbisGuard-Mixins installed | All 11 OG hooks registered |
-| `BOTH` | Both installed | OG handles its 11 features + HP handles 5 unique features |
+| `BOTH` | Both installed | OG handles its 11 features + HP handles 19 unique hooks (block_break + 10 base unique + 7 v1.2.0 unique + format_handle) |
 | `NONE` | Neither installed | Graceful degradation — ECS-based protection only |
 
 ### Detection Logic
 
-1. **HyperProtect-Mixin**: Checks system properties (`hyperprotect.bridge.active`, `hyperprotect.intercept.*`), falls back to JAR file detection in `earlyplugins/`
-2. **OrbisGuard-Mixins**: Checks system properties (`orbisguard.mixins.loaded`, `orbisguard.mixin.*.loaded`)
+1. **HyperProtect-Mixin** (6 signals, tried in order):
+   1. `PresenceMarker` — mixin-injected `PluginManager.isHyperProtectLoaded()` method (most reliable)
+   2. System property `hyperprotect.mixins.active` (set in `onLoad`)
+   3. System property `hyperprotect.bridge.active` (set in `onLoad`)
+   4. Intercept properties (`hyperprotect.intercept.block_break`, `hyperprotect.intercept.block_place`)
+   5. Bridge array existence (`hyperprotect.bridge` in `System.getProperties()`)
+   6. JAR file scan in `earlyplugins/` directory (fallback)
+2. **OrbisGuard-Mixins**: Checks system properties (`orbisguard.mixins.loaded`, `orbisguard.mixin.*.loaded`) or JAR scan in `earlyplugins/`
 
 ### Initialization
 
@@ -241,9 +279,10 @@ private void initializeProtectionMixins() {
 
 When both systems are installed simultaneously:
 
-1. HyperProtect-Mixin's `HyperProtectConfigPlugin` automatically disables 17 conflicting mixins
-2. OrbisGuard handles its 11 features with hook chaining (preserves OG's region checks)
-3. HyperProtect provides 5 unique features not covered by OG (teleporter, portal, container_open, entity_damage, respawn)
+1. HyperProtect-Mixin's `HyperProtectConfigPlugin` disables conflicting mixins (e.g., explosion, fire_spread, pickup, death, durability, mob_spawn, container_access, command)
+2. OrbisGuard handles its 11 features via its hook registry (preserves OG's region checks)
+3. HyperProtect registers 19 hooks at HP bridge slots for features its remaining active mixins cover: block_break (via SimpleBlockInteractionGate), teleporter, portal, interaction_log, entity_damage, container_open, block_place, hammer, use, seat, respawn, crafting_resource, map_marker_filter, fluid_spread, prefab_spawn, projectile_launch, mount, barter_trade (plus format_handle)
+4. Some features (hammer, use, seat, block_place) are handled by BOTH systems simultaneously via different code paths (defense-in-depth)
 
 ### Admin Commands
 
@@ -261,7 +300,7 @@ When both systems are installed simultaneously:
 
 > **Install**: Download from [CurseForge](https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin) or [GitHub](https://github.com/HyperSystems-Development/HyperProtect-Mixin) and place in `earlyplugins/`
 
-HyperProtect-Mixin is the preferred mixin for HyperFactions. It provides 30 hook slots (27 used by HyperFactions) covering all protection scenarios including features not available in OrbisGuard-Mixins (teleporter/portal blocking, entity damage, container access, respawn override, mount/barter/fluid/prefab/projectile/crafting/map-marker control). It uses an `AtomicReferenceArray` at `System.getProperties().get("hyperprotect.bridge")` for cross-classloader communication.
+HyperProtect-Mixin is the preferred mixin for HyperFactions. It provides 30 hook slots (28 used by HyperFactions, slots 13-14 reserved) covering all protection scenarios including features not available in OrbisGuard-Mixins (teleporter/portal blocking, entity damage, container access/open, respawn override, mount/barter/fluid/prefab/projectile/crafting/map-marker control). It uses an `AtomicReferenceArray` at `System.getProperties().get("hyperprotect.bridge")` for cross-classloader communication.
 
 **v1.2.0 additions**: 7 new hook wrappers (MountHook, BarterTradeHook, FluidSpreadHook, PrefabSpawnHook, ProjectileLaunchHook, CraftingResourceHook, MapMarkerFilterHook), NPC role context (`hyperprotect.context.npc_role`), and block type context (`hyperprotect.context.block_id`, `hyperprotect.context.block_state`) for targeted protection decisions.
 
@@ -274,7 +313,7 @@ HyperProtect-Mixin is the preferred mixin for HyperFactions. It provides 30 hook
 | 2 | `DENY_SILENT` | Denied — no message sent |
 | 3 | `DENY_MOD_HANDLES` | Denied — consumer mod (HyperFactions) sends the message |
 
-### Hook Slots (30 total, 27 used)
+### Hook Slots (30 total, 28 used)
 
 | Slot | Feature | Purpose |
 |------|---------|---------|
@@ -299,13 +338,13 @@ HyperProtect-Mixin is the preferred mixin for HyperFactions. It provides 30 hook
 | 20 | `use` | Block interaction (campfire, lantern) |
 | 21 | `seat` | Seat/mount seating |
 | 22 | `respawn` | Custom respawn location override |
-| 23 | `mount` | Mount/dismount protection |
-| 24 | `barter_trade` | Barter trade protection |
+| 23 | `crafting_resource` | Crafting resource access |
+| 24 | `map_marker_filter` | Map marker visibility filtering |
 | 25 | `fluid_spread` | Fluid spread blocking |
 | 26 | `prefab_spawn` | Prefab spawn control |
 | 27 | `projectile_launch` | Projectile launch blocking |
-| 28 | `crafting_resource` | Crafting resource access |
-| 29 | `map_marker_filter` | Map marker visibility filtering |
+| 28 | `mount` | Mount/dismount protection |
+| 29 | `barter_trade` | Barter trade protection |
 
 ### Return Conventions
 
@@ -322,11 +361,19 @@ These features are **only available** with HyperProtect-Mixin (not OrbisGuard-Mi
 | Teleporter blocking | Prevents teleporter use in protected zones/territory |
 | Portal blocking | Prevents portal use in protected zones/territory |
 | Container open | Prevents opening containers in protected areas |
+| Container access | Controls crafting bench/container access |
 | Entity damage | PvP and entity damage interception via mixin |
 | Respawn override | Custom respawn location based on faction home/zone |
 | Fire spread | Blocks fire spread in claimed/zoned territory |
 | Builder tools | Protects against builder tool paste in protected areas |
 | Interaction logging | Filters interaction logs in protected areas |
+| Crafting resource | Controls crafting resource access (v1.2.0) |
+| Map marker filter | Filters map marker visibility (v1.2.0) |
+| Fluid spread | Blocks fluid spread in protected areas (v1.2.0) |
+| Prefab spawn | Controls prefab spawn behavior (v1.2.0) |
+| Projectile launch | Blocks projectile launching in protected areas (v1.2.0) |
+| Mount | Mount/dismount protection (v1.2.0) |
+| Barter trade | Barter trade protection (v1.2.0) |
 
 ### Auto-Download & Auto-Update
 
@@ -578,7 +625,7 @@ GravestonePlugin is fully optional:
 
 HyperFactions integrates with [KyuubiSoft Core](https://kyuubisoft.com) for citizen/NPC zone protection.
 
-**Detection:** Reflection-based auto-detection at startup. If `com.kyuubisoft.core.KyuubiSoftCore` class is found, HyperFactions registers a `CitizenDialogInterceptor` via dynamic proxy.
+**Detection:** Reflection-based auto-detection at startup. If `com.kyuubisoft.core.api.CoreAPI` class is found and `CoreAPI.isAvailable()` returns true, HyperFactions registers a `CitizenDialogInterceptor` via dynamic proxy.
 
 **Behavior:**
 - When a player attempts to interact with a KyuubiSoft citizen NPC in claimed territory, the interceptor checks faction permissions
@@ -604,8 +651,8 @@ HyperFactions optionally integrates with Sentry for server-side error tracking. 
 
 ### How It Works
 
-1. On startup, HyperFactions checks for a Sentry DSN in the configuration
-2. If configured, the Sentry SDK is initialized with server metadata (version, world count, player count)
+1. On startup, HyperFactions checks for a Sentry DSN in the `DebugConfig` (sentry section of `config/debug.json`)
+2. If configured, the Sentry SDK is initialized with server metadata (version, server name, max players, MOTD, installed mods)
 3. Errors are captured with contextual tags (faction ID, player UUID, protection result, etc.)
 4. Breadcrumbs track recent operations leading up to errors
 
@@ -622,7 +669,9 @@ Sentry is fully optional. If no DSN is configured or the Sentry SDK is unavailab
 
 ## HyperPerms Context
 
-When HyperPerms is installed, HyperFactions registers context keys that enable contextual permission grants. For example, you can give members extra permissions only when they're in their own faction's territory.
+> **Status**: Planned — context key registration is not yet implemented in the codebase. The context keys and examples below describe the intended design.
+
+When HyperPerms is installed, HyperFactions will register context keys that enable contextual permission grants. For example, admins could give members extra permissions only when they're in their own faction's territory.
 
 ### Context Keys
 

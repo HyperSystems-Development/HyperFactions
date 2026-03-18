@@ -4,6 +4,8 @@ Reference for content authors writing HyperFactions help topics.
 
 Help files are located at `src/main/resources/Server/Languages/{locale}/help/{category}/{topic}.md` and compiled into `.lang` files and `help-manifest.json` at build time by `HelpLangGenerator`.
 
+Player help categories are processed in order: `welcome`, `your_faction`, `power_land`, `diplomacy`, `combat`, `economy`, `quick_ref`. Admin help files are located under `help/admin/{category}/{topic}.md` with categories: `admin_overview`, `admin_factions`, `admin_zones`, `admin_power`, `admin_economy`, `admin_config`, `admin_maintenance`, `admin_reference`.
+
 ## Frontmatter
 
 Every topic file starts with YAML frontmatter:
@@ -24,6 +26,7 @@ commands: gui, menu, create
 
 | Syntax | Type | Default Color | Style |
 |---|---|---|---|
+| `# Title` | Topic title | — | Used as the topic title (not rendered as a content line) |
 | Plain text | TEXT | #CCCCCC | normal |
 | `## Heading` | HEADING | #00AAAA | bold |
 | `` `command` `` | COMMAND | #FFFF55 | bold |
@@ -36,7 +39,7 @@ commands: gui, menu, create
 | `**bold text**` | BOLD | #CCCCCC, bold |
 | `*italic text*` | ITALIC | #CCCCCC, italic |
 
-Bold and italic are **whole-line only**. You cannot mix bold/italic within a line (`some **bold** here` does NOT work — the entire line must be wrapped).
+At the **build-time markdown level**, bold and italic are detected as whole-line patterns (the entire line must be wrapped in `**...**` or `*...*` for `BOLD` / `ITALIC` entry types). However, the **runtime renderer** (`HelpRichText`) parses inline `**bold**`, `` `code` ``, and `*italic*` markers within any text line and applies formatting via `TextSpans`. This means inline mixing like `some **bold** here` works at render time for TEXT entries, even though the markdown-to-lang generator treats it as plain text.
 
 ### Lists
 
@@ -171,7 +174,7 @@ as many chunks as it has power.
 
 ## Formatting Limitations
 
-1. **Whole-line only** — Bold, italic, commands, callouts, and colors apply to entire lines. No inline mixing (e.g., `some **bold** here` won't work).
+1. **Whole-line detection at build time** — At the markdown-to-lang build stage, bold, italic, commands, callouts, and colors are detected as whole-line patterns. However, the runtime renderer (`HelpRichText`) supports inline `**bold**`, `` `code` ``, and `*italic*` within any TEXT line via `TextSpans`.
 2. **No underline** — Hytale Labels have no underline property.
 3. **No nested formatting** — Cannot combine bold + color on the same line through markdown syntax. Colors override the template default; bold/italic are separate templates.
 4. **Single-level lists** — No nested/indented sub-lists.

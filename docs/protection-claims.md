@@ -12,21 +12,21 @@ Faction claims are chunk-based territory owned by factions via `/f claim`. Prote
 Zone > Claim > Wilderness
 ```
 
-- **Zone**: Admin SafeZone/WarZone with 40 flags — checked first, overrides claims
-- **Claim**: Faction territory with 53 permission flags — checked only when NOT in a zone
+- **Zone**: Admin SafeZone/WarZone with 52 flags — checked first, overrides claims
+- **Claim**: Faction territory with 57 permission flags — checked only when NOT in a zone
 - **Wilderness**: Unclaimed land — no protection, all interactions allowed
 
-Source: `ProtectionChecker.canInteractChunk()` lines 142–287
+Source: `ProtectionChecker.canInteractChunk()`
 
 ---
 
-## Faction Permissions (53 Flags)
+## Faction Permissions (57 Flags)
 
 Source: [`FactionPermissions.java`](../src/main/java/com/hyperfactions/data/FactionPermissions.java) `ALL_FLAGS` constant
 
-### Per-Level Interaction Flags (4 levels x 11 = 44 flags)
+### Per-Level Interaction Flags (4 levels x 12 = 48 flags)
 
-Each level has the same 11 flag suffixes. Flag name = `{level}{Suffix}` (e.g., `memberBreak`, `allyDoorUse`).
+Each level has the same 12 flag suffixes. Flag name = `{level}{Suffix}` (e.g., `memberBreak`, `allyDoorUse`).
 
 | Suffix | Controls | Parent |
 |--------|----------|--------|
@@ -41,6 +41,7 @@ Each level has the same 11 flag suffixes. Flag name = `{level}{Suffix}` (e.g., `
 | `TransportUse` | Teleporters and portals | `{level}Interact` |
 | `CrateUse` | Capture crate pickup and placement (mixin) | — |
 | `NpcTame` | F-key NPC taming (mixin) | — |
+| `PveDamage` | Damage non-player entities (mobs) | — |
 
 **Levels**: `outsider`, `ally`, `member`, `officer`
 
@@ -59,8 +60,9 @@ Each level has the same 11 flag suffixes. Flag name = `{level}{Suffix}` (e.g., `
 | `TransportUse` | false | **true** | **true** | **true** |
 | `CrateUse` | false | false | **true** | **true** |
 | `NpcTame` | false | false | **true** | **true** |
+| `PveDamage` | false | **true** | **true** | **true** |
 
-**Summary**: Members/officers get full access. Allies can interact, use doors/seats/transport but cannot break/place/access containers/benches/furnaces/crates/taming. Outsiders are denied everything.
+**Summary**: Members/officers get full access. Allies can interact, use doors/seats/transport, and damage mobs but cannot break/place/access containers/benches/furnaces/crates/taming. Outsiders are denied everything.
 
 ### Mob Spawning Flags (4 flags)
 
@@ -92,12 +94,12 @@ Treasury flags are exposed in the **TreasurySettingsPage** GUI (accessible via `
 
 ## Parent-Child Flag Hierarchy
 
-Source: `FactionPermissions.getParentFlag()` lines 363–378, `get()` lines 292–298
+Source: `FactionPermissions.getParentFlag()`, `get()`
 
 When a flag has a parent, `FactionPermissions.get()` checks the parent first. If the parent is `false`, the child returns `false` **regardless of its stored value**.
 
 ```java
-// FactionPermissions.get() — line 292
+// FactionPermissions.get()
 public boolean get(@NotNull String flagName) {
     String parent = getParentFlag(flagName);
     if (parent != null && !getRaw(parent)) {
@@ -141,11 +143,11 @@ The GUI handles this correctly by disabling child toggles when the parent is off
 
 ## Interaction Check Flow
 
-Source: `ProtectionChecker.canInteractChunk()` lines 142–287
+Source: `ProtectionChecker.canInteractChunk()`
 
 When a player performs any action in claimed territory, this is the exact check order:
 
-### Step 1: Admin Bypass (lines 145–155)
+### Step 1: Admin Bypass
 
 ```
 Is player admin? (has "hyperfactions.admin.use")
@@ -157,36 +159,36 @@ Is player admin? (has "hyperfactions.admin.use")
 
 **Key**: Admins do NOT use standard bypass permissions. Only the explicit toggle matters.
 
-### Step 2: Standard Bypass Permissions (lines 157–171)
+### Step 2: Standard Bypass Permissions
 
 Non-admin players only. Checked by interaction type:
 
 | InteractionType | Bypass Permission |
 |-----------------|-------------------|
 | BUILD | `hyperfactions.bypass.build` |
-| INTERACT, DOOR, BENCH, PROCESSING, SEAT, TELEPORTER, PORTAL | `hyperfactions.bypass.interact` |
+| INTERACT, DOOR, BENCH, PROCESSING, SEAT, LIGHT, MOUNT, TELEPORTER, PORTAL, CRATE_PICKUP, CRATE_PLACE, NPC_TAME, NPC_INTERACT, ITEM_DROP, ITEM_PICKUP | `hyperfactions.bypass.interact` |
 | CONTAINER | `hyperfactions.bypass.container` |
-| DAMAGE | `hyperfactions.bypass.damage` |
+| DAMAGE, PVE_DAMAGE | `hyperfactions.bypass.damage` |
 | USE | `hyperfactions.bypass.use` |
 
 Wildcard `hyperfactions.bypass.*` bypasses all types. If granted → `ALLOWED_BYPASS`.
 
-### Step 3: Zone Check (lines 173–209)
+### Step 3: Zone Check
 
 If the chunk is in a zone, zone flags take precedence:
 - Zone flag disabled → `DENIED_SAFEZONE` or `DENIED_WARZONE`
 - WarZone with flag allowed → `ALLOWED_WARZONE` (returns immediately, skips claim checks)
 - SafeZone with flag allowed → falls through to claim check below
 
-### Step 4: Claim Ownership (lines 211–217)
+### Step 4: Claim Ownership
 
 ```
 claimManager.getClaimOwner(world, chunkX, chunkZ)
-  → NULL: ALLOWED_WILDERNESS (anyone can interact)
+  → NULL: ALLOWED_WILDERNESS or ALLOWED_SAFEZONE (if in SafeZone)
   → UUID: Continue to faction permission checks
 ```
 
-### Step 5: Same Faction (lines 231–252)
+### Step 5: Same Faction
 
 Player is in the owning faction. Role determines which flag level is checked:
 
@@ -200,7 +202,7 @@ boolean isOfficerOrLeader = factionMember.role().getLevel() >= FactionRole.OFFIC
 If the appropriate flag denies the action → `DENIED_NO_PERMISSION`.
 If allowed → `ALLOWED_OWN_CLAIM`.
 
-### Step 6: Ally Check (lines 254–267)
+### Step 6: Ally Check
 
 Player has a faction and that faction has `ALLY` relation with claim owner:
 
@@ -208,14 +210,14 @@ Player has a faction and that faction has `ALLY` relation with claim owner:
 - If allowed → `ALLOWED_ALLY_CLAIM`
 - If denied → `DENIED_NO_PERMISSION`
 
-### Step 7: Outsider Check (lines 269–272)
+### Step 7: Outsider Check
 
 Player is not in the owning faction and not allied:
 
 - Check `outsider{Suffix}` flags
 - If allowed → `ALLOWED`
 
-### Step 8: Default Deny (lines 274–286)
+### Step 8: Default Deny
 
 If outsider flags deny the action:
 - Player is `ENEMY` → `DENIED_ENEMY_CLAIM`
@@ -225,7 +227,7 @@ If outsider flags deny the action:
 
 ## InteractionType to Flag Mapping
 
-Source: `ProtectionChecker.checkPermission()` lines 298–310
+Source: `ProtectionChecker.checkPermission()`
 
 When the checker evaluates a faction permission, it maps the action type to specific flag name(s):
 
@@ -239,19 +241,30 @@ When the checker evaluates a faction permission, it maps the action type to spec
 | `BENCH` | `{level}BenchUse` | Child of Interact |
 | `PROCESSING` | `{level}ProcessingUse` | Child of Interact |
 | `SEAT` | `{level}SeatUse` | Child of Interact |
+| `LIGHT` | `{level}Interact` | Shares general interact permission |
 | `TELEPORTER` | `{level}TransportUse` | Child of Interact |
 | `PORTAL` | `{level}TransportUse` | Child of Interact |
+| `CRATE_PICKUP` | `{level}CrateUse` | Capture crate pickup |
+| `CRATE_PLACE` | `{level}CrateUse` | Capture crate release |
+| `NPC_TAME` | `{level}NpcTame` | F-key NPC taming |
+| `NPC_INTERACT` | `{level}NpcInteract` | NPC shops/dialogue (note: no matching FactionPermissions flag) |
+| `MOUNT` | `{level}SeatUse` | Shares seat permission |
+| `PVE_DAMAGE` | `{level}PveDamage` | Mob/entity damage by player |
 | `DAMAGE` | Hardcoded: non-outsiders always allowed | Outsiders always denied |
+| `ITEM_DROP` | `{level}Interact` | Shares general interact permission |
+| `ITEM_PICKUP` | `{level}Interact` | Shares general interact permission |
 
 **BUILD note**: `checkPermission()` uses `perms.get(level + "Break") || perms.get(level + "Place")`. This means having EITHER break OR place permission allows the BUILD interaction type. This is because the ECS systems may route both break and place events through the same BUILD type.
 
-**DAMAGE note**: Entity damage (non-player) uses `!"outsider".equals(level)` — members, officers, and allies can always damage entities in claims. Outsiders cannot. There is no configurable flag for this.
+**DAMAGE note**: Entity damage (non-player, via `DAMAGE` type) uses `!"outsider".equals(level)` — members, officers, and allies can always damage entities in claims. Outsiders cannot. There is no configurable flag for this. For explicit PvE damage control, the `PVE_DAMAGE` type checks `{level}PveDamage` which IS a configurable per-level flag.
+
+**NPC_INTERACT note**: The `checkPermission()` method checks `{level}NpcInteract` but there is no `NpcInteract` suffix in `FactionPermissions.LEVEL_SUFFIXES`. This means `perms.get(level + "NpcInteract")` returns `false` (unknown flag defaults to false). NPC interaction in claims is effectively always denied unless bypassed.
 
 ---
 
 ## Faction Roles
 
-Source: [`FactionRole.java`](../src/main/java/com/hyperfactions/data/FactionRole.java) lines 8–11
+Source: [`FactionRole.java`](../src/main/java/com/hyperfactions/data/FactionRole.java)
 
 | Role | Level | Permission Check Level |
 |------|-------|------------------------|
@@ -265,17 +278,18 @@ Leaders and officers both use `officer{Suffix}` flags. There are no separate lea
 
 ## PvP in Claimed Territory
 
-Source: `ProtectionChecker.canDamagePlayerChunk()` lines 354–449
+Source: `ProtectionChecker.canDamagePlayerChunk()`
 
 ### Check Order
 
-1. **Spawn protection** (line 360): Defender has spawn protection → `DENIED_SPAWN_PROTECTED`
-2. **Break attacker spawn protection** (line 365): If config `spawnProtection.breakOnAttack=true` and attacker has spawn protection, it's cleared
-3. **Zone PvP** (lines 369–408): If in a zone, zone flags override (including friendly fire hierarchy)
-4. **Territory PvP flag** (lines 412–426): Claim owner's `pvpEnabled` faction permission checked. If false → `DENIED_TERRITORY_NO_PVP`
-5. **Same faction** (lines 428–433): `ConfigManager.isFactionDamage(world)` — per-world override support. If false → `DENIED_SAME_FACTION`
-6. **Ally check** (lines 435–443): `ConfigManager.isAllyDamage(world)` — per-world override support. If false → `DENIED_ALLY`
-7. **Default allow** (line 448): `ALLOWED`
+1. **Spawn protection**: Defender has spawn protection → `DENIED_SPAWN_PROTECTED`
+2. **Break attacker spawn protection**: If config `spawnProtection.breakOnAttack=true` and attacker has spawn protection, it's cleared
+3. **Zone PvP**: If in a zone, zone flags override (including friendly fire hierarchy)
+4. **Territory PvP flag**: Claim owner's `pvpEnabled` faction permission checked. If false → `DENIED_TERRITORY_NO_PVP`
+5. **Same faction**: `ConfigManager.isFactionDamage(world)` — per-world override support. If false → `DENIED_SAME_FACTION`
+6. **Ally check**: `ConfigManager.isAllyDamage(world)` — per-world override support. If false → `DENIED_ALLY`
+7. **Outsider PvP damage config**: In claimed territory, outsider damage is checked against 3 config flags: `factionlessDamageAllowed`, `enemyDamageAllowed`, `neutralDamageAllowed`. If the attacker's relation type is denied → `DENIED_TERRITORY_NO_PVP`
+8. **Default allow**: `ALLOWED`
 
 ### PvP Configuration Layers
 
@@ -291,7 +305,7 @@ Source: `ProtectionChecker.canDamagePlayerChunk()` lines 354–449
 
 ## Item Pickup in Claims
 
-Source: `ProtectionChecker.canPickupItem()` lines 517–583
+Source: `ProtectionChecker.canPickupItem()`
 
 Pickup checks are **faction-relationship-based**, not permission-flag-based:
 
@@ -324,7 +338,7 @@ Source: `ProtectionChecker.shouldBlockSpawn()` (see protection-systems.md for li
 
 ### FactionsConfig (`config/factions.json`)
 
-Source: [`FactionsConfig.java`](../src/main/java/com/hyperfactions/config/FactionsConfig.java)
+Source: [`FactionsConfig.java`](../src/main/java/com/hyperfactions/config/modules/FactionsConfig.java)
 
 #### Claim Settings
 
@@ -401,22 +415,26 @@ Server-wide defaults for **new factions**. Also the value used when a flag is lo
     "outsider": {
       "break": false, "place": false, "interact": false,
       "doorUse": false, "containerUse": false, "benchUse": false,
-      "processingUse": false, "seatUse": false, "transportUse": false
+      "processingUse": false, "seatUse": false, "transportUse": false,
+      "crateUse": false, "npcTame": false, "pveDamage": false
     },
     "ally": {
       "break": false, "place": false, "interact": true,
       "doorUse": true, "containerUse": false, "benchUse": false,
-      "processingUse": false, "seatUse": true, "transportUse": true
+      "processingUse": false, "seatUse": true, "transportUse": true,
+      "crateUse": false, "npcTame": false, "pveDamage": true
     },
     "member": {
       "break": true, "place": true, "interact": true,
       "doorUse": true, "containerUse": true, "benchUse": true,
-      "processingUse": true, "seatUse": true, "transportUse": true
+      "processingUse": true, "seatUse": true, "transportUse": true,
+      "crateUse": true, "npcTame": true, "pveDamage": true
     },
     "officer": {
       "break": true, "place": true, "interact": true,
       "doorUse": true, "containerUse": true, "benchUse": true,
-      "processingUse": true, "seatUse": true, "transportUse": true
+      "processingUse": true, "seatUse": true, "transportUse": true,
+      "crateUse": true, "npcTame": true, "pveDamage": true
     },
     "mobSpawning": {
       "enabled": true, "hostile": true,
@@ -464,7 +482,7 @@ All locks default to `false` (unlocked).
 
 #### Lock Resolution
 
-Source: `FactionPermissionsConfig.getEffectiveFactionPermissions()` lines 163–173
+Source: `FactionPermissionsConfig.getEffectiveFactionPermissions()`
 
 ```java
 public FactionPermissions getEffectiveFactionPermissions(FactionPermissions factionPerms) {
@@ -492,8 +510,8 @@ Source: [`FactionSettingsPage.java`](../src/main/java/com/hyperfactions/gui/fact
 
 - **Command**: `/f settings`
 - **Required role**: Officer or higher (role level >= 2)
-- **Officers see**: All 42 flags (36 per-level + 4 mob spawning + pvpEnabled + officersCanEdit as disabled)
-- **Leaders see**: All 42 flags including `officersCanEdit` as editable
+- **Officers see**: All 54 flags (48 per-level + 4 mob spawning + pvpEnabled + officersCanEdit as disabled)
+- **Leaders see**: All 54 flags including `officersCanEdit` as editable
 - **Treasury flags**: 3 treasury flags (`treasuryDeposit`, `treasuryWithdraw`, `treasuryTransfer`) are exposed in the **TreasurySettingsPage** GUI (accessible via `/f treasury settings` or `/f settings` treasury tab)
 
 ### No CLI Command
@@ -552,8 +570,8 @@ These protections work in admin zones but have **no faction permission or config
 
 | Feature | Zone Support | Claim Support | Source |
 |---------|-------------|---------------|--------|
-| Keep inventory on death | `KEEP_INVENTORY` zone flag | **None** — returns `false` | `shouldKeepInventory()` line 940–952 |
-| Durability prevention | `INVINCIBLE_ITEMS` zone flag | **None** — returns `false` | `shouldPreventDurability()` line 960–972 |
+| Keep inventory on death | `KEEP_INVENTORY` zone flag | **None** — returns `false` | `shouldKeepInventory()` |
+| Durability prevention | `INVINCIBLE_ITEMS` zone flag | **None** — returns `false` | `shouldPreventDurability()` |
 | Item drop prevention | `ITEM_DROP` zone flag | **Partial** — `outsiderDropAllowed` config | `ItemDropProtectionSystem` |
 | Fall damage prevention | `FALL_DAMAGE` zone flag | **None** — zone-only | `FallDamageProtection` |
 | Environmental damage prevention | `ENVIRONMENTAL_DAMAGE` zone flag | **None** — zone-only | `EnvironmentalDamageProtection` |
@@ -566,7 +584,7 @@ These protections work in admin zones but have **no faction permission or config
 |-------|---------|--------|
 | **Pickup vs Drop** | Item PICKUP checks faction relationships + `outsiderPickupAllowed` config. Item DROP checks zone flags + `outsiderDropAllowed` config. | `canPickupItem()` vs `ItemDropProtectionSystem` |
 | **Explosion source attribution (KNOWN LIMITATION)** | Explosion hooks do not provide a player UUID, so `shouldBlockExplosion()` cannot determine the source faction. Instead it performs a combined 3-way check: if ANY of `factionlessExplosionsAllowed`, `enemyExplosionsAllowed`, or `neutralExplosionsAllowed` is true, explosions are allowed. All three must be false to block. This is a platform limitation, not a bug. | `shouldBlockExplosion()` |
-| **DAMAGE type for outsiders** | Outsider entity damage (non-player) is now controlled by 3 config flags: `factionlessDamageAllowed`, `enemyDamageAllowed`, `neutralDamageAllowed` in `config/factions.json`. | `checkPermission()` |
+| **DAMAGE type for outsiders** | The `DAMAGE` InteractionType (non-player entity damage) is hardcoded: non-outsiders always allowed, outsiders always denied. For configurable PvE damage, the `PVE_DAMAGE` type checks `{level}PveDamage` flags. The 3 config flags (`factionlessDamageAllowed`, `enemyDamageAllowed`, `neutralDamageAllowed`) control outsider **PvP** damage in claims, not entity damage. | `checkPermission()`, `canDamagePlayerChunk()` |
 
 ### Config vs Faction Permission Confusion
 
@@ -574,24 +592,27 @@ Some claim protections are per-faction (toggleable by officers), others are serv
 
 | Protection | Control Type | Who Controls |
 |------------|-------------|--------------|
-| Block interactions | **Faction permission** (45 flags) | Faction officers via GUI |
+| Block interactions | **Faction permission** (48 per-level flags) | Faction officers via GUI |
 | PvP in territory | **Faction permission** (`pvpEnabled`) | Faction officers via GUI |
 | Mob spawning | **Faction permission** (4 flags) | Faction officers via GUI |
 | Same-faction PvP | **Server config** (`combat.factionDamage`) | Server admin via `config/factions.json` |
 | Ally PvP | **Server config** (`combat.allyDamage`) | Server admin via `config/factions.json` |
 | Explosions | **Server config** (3-way: `claims.factionlessExplosionsAllowed`, `claims.enemyExplosionsAllowed`, `claims.neutralExplosionsAllowed`) | Server admin via `config/factions.json` |
 | Fire spread | **Server config** (`claims.fireSpreadAllowed`) | Server admin via `config/factions.json` |
-| Outsider entity damage | **Server config** (3-way: `claims.factionlessDamageAllowed`, `claims.enemyDamageAllowed`, `claims.neutralDamageAllowed`) | Server admin via `config/factions.json` |
+| Outsider PvP damage | **Server config** (3-way: `claims.factionlessDamageAllowed`, `claims.enemyDamageAllowed`, `claims.neutralDamageAllowed`) | Server admin via `config/factions.json` |
 | Item pickup | **Server config** (`claims.outsiderPickupAllowed`) | Server admin via `config/factions.json` |
 | Item drop | **Server config** (`claims.outsiderDropAllowed`) + zone flags | Server admin via `config/factions.json` / zone admins |
 | Keep inventory | **Zone-only** (no claim protection) | Zone admins only |
 | Durability | **Zone-only** (no claim protection) | Zone admins only |
 
-### Backward-Compatibility Accessor Methods
+### Accessor Methods
 
-Source: `FactionPermissions.java` lines 498–515
+Only two convenience accessor methods remain on `FactionPermissions`:
 
-The `outsiderBreak()`, `memberInteract()`, etc. accessor methods use `getRaw()` — they **bypass parent-child logic**. Code using these accessors instead of `get()` will not respect the parent-child hierarchy. The main `checkPermission()` in ProtectionChecker correctly uses `get()`, but any external code using the named accessors should be verified.
+- `pvpEnabled()` — calls `get(PVP_ENABLED)` (uses parent-child logic)
+- `officersCanEdit()` — calls `get(OFFICERS_CAN_EDIT)` (uses parent-child logic)
+
+All per-level accessor methods (e.g., `outsiderBreak()`, `memberInteract()`) have been removed. The main `checkPermission()` in ProtectionChecker uses `get()` for all flag lookups, which correctly applies parent-child resolution.
 
 ---
 
@@ -604,7 +625,7 @@ The `outsiderBreak()`, `memberInteract()`, etc. accessor methods use `getRaw()` 
 | ProtectionChecker | [`protection/ProtectionChecker.java`](../src/main/java/com/hyperfactions/protection/ProtectionChecker.java) |
 | FactionPermissionsConfig | [`config/modules/FactionPermissionsConfig.java`](../src/main/java/com/hyperfactions/config/modules/FactionPermissionsConfig.java) |
 | CoreConfig (deprecated) | [`config/CoreConfig.java`](../src/main/java/com/hyperfactions/config/CoreConfig.java) |
-| FactionsConfig | [`config/FactionsConfig.java`](../src/main/java/com/hyperfactions/config/FactionsConfig.java) |
-| ServerConfig | [`config/ServerConfig.java`](../src/main/java/com/hyperfactions/config/ServerConfig.java) |
+| FactionsConfig | [`config/modules/FactionsConfig.java`](../src/main/java/com/hyperfactions/config/modules/FactionsConfig.java) |
+| ServerConfig | [`config/modules/ServerConfig.java`](../src/main/java/com/hyperfactions/config/modules/ServerConfig.java) |
 | ConfigManager | [`config/ConfigManager.java`](../src/main/java/com/hyperfactions/config/ConfigManager.java) |
 | FactionSettingsPage | [`gui/faction/page/FactionSettingsPage.java`](../src/main/java/com/hyperfactions/gui/faction/page/FactionSettingsPage.java) |
