@@ -738,6 +738,8 @@ map.overclaim_already_yours = Już posiadasz ten chunk.
 map.overclaim_ally = Nie możesz przejąć terytorium sojusznika.
 map.overclaim_has_power = Ta frakcja ma wystarczająco mocy, aby obronić swoje terytorium.
 map.overclaim_max = Osiągnąłeś maksymalny limit terenów.
+map.claim_world_max = Osiągnięto limit terenów świata ({0}).
+map.overclaim_world_max = Osiągnięto limit terenów świata ({0}).
 map.overclaim_failed = Nie udało się przejąć chunka.
 # ========== Strona tworzenia frakcji ==========
 create.title = Utwórz swoją frakcję

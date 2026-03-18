@@ -107,12 +107,14 @@ cmd.claim.success = Zajęto chunk na {0}, {1}!
 cmd.claim.not_officer = Musisz być oficerem, aby zajmować teren.
 cmd.claim.already_claimed = Ten chunk jest już zajęty.
 cmd.claim.max_claims = Twoja frakcja osiągnęła maksymalną liczbę terenów. Zdobądź więcej mocy!
+cmd.claim.world_max_claims = Twoja frakcja osiągnęła maksymalną liczbę terenów ({0}) dozwolonych w tym świecie.
 cmd.claim.not_adjacent = Musisz zajmować teren przylegający do istniejącego terytorium.
 cmd.claim.world_not_allowed = Zajmowanie terenu jest niedozwolone w tym świecie.
 cmd.claim.orbisguard = Ten obszar jest chroniony przez OrbisGuard.
 cmd.claim.zone_protected = Ten chunk znajduje się w strefie bezpiecznej lub wojennej.
 cmd.claim.insufficient_power = Twoja frakcja nie ma wystarczająco mocy, aby zająć więcej terenu.
 cmd.claim.failed = Nie udało się zająć chunka.
+cmd.claim.world_overclaimed = Twoja frakcja ma {0} zajętych chunków w {1} (limit: {2}). Rozważ zwolnienie nadmiarowego terytorium.
 
 # ========== Komendy - Zaproszenia ==========
 cmd.invite.no_permission = Nie masz uprawnień do zapraszania graczy.

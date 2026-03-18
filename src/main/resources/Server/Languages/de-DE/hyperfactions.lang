@@ -107,12 +107,14 @@ cmd.claim.success = Chunk bei {0}, {1} beansprucht!
 cmd.claim.not_officer = Sie müssen ein Offizier sein, um Land zu beanspruchen.
 cmd.claim.already_claimed = Dieser Chunk ist bereits beansprucht.
 cmd.claim.max_claims = Ihre Fraktion hat die maximale Anzahl an Gebietsansprüchen erreicht. Erhalten Sie mehr Macht!
+cmd.claim.world_max_claims = Ihre Fraktion hat die maximale Anzahl an Gebietsansprüchen ({0}) in dieser Welt erreicht.
 cmd.claim.not_adjacent = Sie müssen angrenzend an bestehendes Territorium beanspruchen.
 cmd.claim.world_not_allowed = Beanspruchung ist in dieser Welt nicht erlaubt.
 cmd.claim.orbisguard = Dieses Gebiet ist durch OrbisGuard geschützt.
 cmd.claim.zone_protected = Dieser Chunk befindet sich in einer SafeZone oder WarZone.
 cmd.claim.insufficient_power = Ihre Fraktion hat nicht genug Macht, um mehr Land zu beanspruchen.
 cmd.claim.failed = Chunk konnte nicht beansprucht werden.
+cmd.claim.world_overclaimed = Ihre Fraktion hat {0} Gebietsansprüche in {1} (Limit: {2}). Erwägen Sie, überschüssiges Gebiet freizugeben.
 
 # ========== Befehle - Einladen ==========
 cmd.invite.no_permission = Sie haben keine Berechtigung, Spieler einzuladen.

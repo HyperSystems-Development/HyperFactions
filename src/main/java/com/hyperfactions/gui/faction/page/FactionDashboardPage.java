@@ -724,6 +724,10 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
       case ALREADY_CLAIMED_SELF -> player.sendMessage(MessageUtil.info(playerRef, CommandKeys.Claim.ALREADY_YOURS, MessageUtil.COLOR_GOLD));
       case ALREADY_CLAIMED_OTHER, ALREADY_CLAIMED_ALLY, ALREADY_CLAIMED_ENEMY -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.ALREADY_CLAIMED));
       case MAX_CLAIMS_REACHED -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.MAX_CLAIMS));
+      case WORLD_MAX_CLAIMS_REACHED -> {
+        Integer wmc = ConfigManager.get().getWorldMaxClaims(world.getName());
+        player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.WORLD_MAX_CLAIMS, wmc != null ? wmc : "?"));
+      }
       case WORLD_NOT_ALLOWED -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.WORLD_NOT_ALLOWED));
       case NOT_ADJACENT -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.NOT_CONNECTED));
       case INSUFFICIENT_POWER -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.INSUFFICIENT_POWER));

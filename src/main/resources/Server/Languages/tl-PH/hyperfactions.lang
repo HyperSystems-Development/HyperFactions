@@ -107,12 +107,14 @@ cmd.claim.success = Na-claim ang chunk sa {0}, {1}!
 cmd.claim.not_officer = Dapat ikaw ay isang opisyal upang mag-claim ng lupa.
 cmd.claim.already_claimed = Ang chunk na ito ay naka-claim na.
 cmd.claim.max_claims = Naabot na ng iyong paksyon ang maximum na claim. Kumuha ng higit pang kapangyarihan!
+cmd.claim.world_max_claims = Naabot na ng iyong paksyon ang maximum na claim ({0}) na pinapayagan sa mundong ito.
 cmd.claim.not_adjacent = Dapat kang mag-claim na katabi ng umiiral na teritoryo.
 cmd.claim.world_not_allowed = Hindi pinapayagan ang pag-claim sa mundong ito.
 cmd.claim.orbisguard = Ang lugar na ito ay protektado ng OrbisGuard.
 cmd.claim.zone_protected = Ang chunk na ito ay nasa safezone o warzone.
 cmd.claim.insufficient_power = Kulang ang kapangyarihan ng iyong paksyon upang mag-claim ng higit pang lupa.
 cmd.claim.failed = Nabigo ang pag-claim ng chunk.
+cmd.claim.world_overclaimed = Ang iyong paksyon ay may {0} na mga claim sa {1} (limitasyon: {2}). Isaalang-alang ang pag-unclaim ng sobrang teritoryo.
 
 # ========== Mga Utos - Imbitahan ==========
 cmd.invite.no_permission = Wala kang pahintulot na mag-imbita ng mga manlalaro.

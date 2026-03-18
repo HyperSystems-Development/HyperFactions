@@ -2,6 +2,7 @@ package com.hyperfactions.command.territory;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
+import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.command.FactionCommandContext;
 import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.command.util.CommandUtil;
@@ -86,6 +87,10 @@ public class OverclaimSubCommand extends FactionSubCommand {
       case ALREADY_CLAIMED_ALLY -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.OVERCLAIM_ALLY));
       case TARGET_HAS_POWER -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.TARGET_HAS_POWER));
       case MAX_CLAIMS_REACHED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.MAX_CLAIMS));
+      case WORLD_MAX_CLAIMS_REACHED -> {
+        Integer wmc = ConfigManager.get().getWorldMaxClaims(currentWorld.getName());
+        ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.WORLD_MAX_CLAIMS, wmc != null ? wmc : "?"));
+      }
       default -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.OVERCLAIM_FAILED));
     }
   }

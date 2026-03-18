@@ -958,6 +958,23 @@ public class AdminConfigPage extends InteractiveCustomUIPage<AdminConfigData> {
             EventData.of("Button", "WorldSettingChanged").append("SettingKey", settingKey)
                 .append("@enumValue", settingIdx + " #TristateSelect.Value"), false);
       }
+
+      // Max Claims (integer setting — 0 = use global limit)
+      String maxClaimsKey = "worlds.override." + worldKey + ".maxClaims";
+      int maxClaimsVal = ws.maxClaims() != null ? ws.maxClaims() : 0;
+      String settingsContainer = idx + " #WorldSettings";
+      cmd.append(settingsContainer, UIPaths.ADMIN_CONFIG_NUM_ROW);
+      String mcIdx = settingsContainer + "[" + settings.length + "]";
+      cmd.set(mcIdx + " #SettingLabel.Text", "Max Claims");
+      cmd.set(mcIdx + " #SettingLabel.Style.TextColor", "#CCCCCC");
+      cmd.set(mcIdx + " #NumInput.Value", String.valueOf(maxClaimsVal));
+      events.addEventBinding(CustomUIEventBindingType.Activating, mcIdx + " #DecBtn",
+          EventData.of("Button", "WorldMaxClaimsDec").append("SettingKey", maxClaimsKey), false);
+      events.addEventBinding(CustomUIEventBindingType.Activating, mcIdx + " #IncBtn",
+          EventData.of("Button", "WorldMaxClaimsInc").append("SettingKey", maxClaimsKey), false);
+      events.addEventBinding(CustomUIEventBindingType.ValueChanged, mcIdx + " #NumInput",
+          EventData.of("Button", "WorldMaxClaimsInput").append("SettingKey", maxClaimsKey)
+              .append("@numInput", mcIdx + " #NumInput.Value"), false);
     }
 
     incrementRowIdx();
@@ -1443,6 +1460,27 @@ public class AdminConfigPage extends InteractiveCustomUIPage<AdminConfigData> {
           }
         }
 
+        case "WorldMaxClaimsInc" -> {
+          if (data.settingKey != null) {
+            handleWorldMaxClaimsIncrement(data.settingKey, true);
+            refresh(ref, store);
+          }
+        }
+
+        case "WorldMaxClaimsDec" -> {
+          if (data.settingKey != null) {
+            handleWorldMaxClaimsIncrement(data.settingKey, false);
+            refresh(ref, store);
+          }
+        }
+
+        case "WorldMaxClaimsInput" -> {
+          if (data.settingKey != null && data.numInput != null) {
+            handleWorldMaxClaimsInput(data.settingKey, data.numInput);
+            refresh(ref, store);
+          }
+        }
+
         case "Save" -> {
           if (!invalidFields.isEmpty()) {
             // Can't save with invalid fields
@@ -1644,12 +1682,53 @@ public class AdminConfigPage extends InteractiveCustomUIPage<AdminConfigData> {
     WorldsConfig.WorldSettings current = overrides.getOrDefault(worldKey, WorldsConfig.WorldSettings.DEFAULTS);
     Boolean val = triStateFromString(value);
     WorldsConfig.WorldSettings updated = switch (setting) {
-      case "claiming" -> new WorldsConfig.WorldSettings(val, current.powerLoss(), current.friendlyFireFaction(), current.friendlyFireAlly());
-      case "powerLoss" -> new WorldsConfig.WorldSettings(current.claiming(), val, current.friendlyFireFaction(), current.friendlyFireAlly());
-      case "friendlyFireFaction" -> new WorldsConfig.WorldSettings(current.claiming(), current.powerLoss(), val, current.friendlyFireAlly());
-      case "friendlyFireAlly" -> new WorldsConfig.WorldSettings(current.claiming(), current.powerLoss(), current.friendlyFireFaction(), val);
+      case "claiming" -> new WorldsConfig.WorldSettings(val, current.powerLoss(), current.friendlyFireFaction(), current.friendlyFireAlly(), current.maxClaims());
+      case "powerLoss" -> new WorldsConfig.WorldSettings(current.claiming(), val, current.friendlyFireFaction(), current.friendlyFireAlly(), current.maxClaims());
+      case "friendlyFireFaction" -> new WorldsConfig.WorldSettings(current.claiming(), current.powerLoss(), val, current.friendlyFireAlly(), current.maxClaims());
+      case "friendlyFireAlly" -> new WorldsConfig.WorldSettings(current.claiming(), current.powerLoss(), current.friendlyFireFaction(), val, current.maxClaims());
       default -> current;
     };
+    overrides.put(worldKey, updated);
+  }
+
+  private void handleWorldMaxClaimsIncrement(String key, boolean increment) {
+    String remainder = key.substring("worlds.override.".length());
+    int dot = remainder.lastIndexOf('.');
+    if (dot <= 0) return;
+    String worldKey = remainder.substring(0, dot);
+
+    LinkedHashMap<String, WorldsConfig.WorldSettings> overrides = ensurePendingWorldOverrides();
+    WorldsConfig.WorldSettings current = overrides.getOrDefault(worldKey, WorldsConfig.WorldSettings.DEFAULTS);
+    int val = current.maxClaims() != null ? current.maxClaims() : 0;
+    val = increment ? val + 1 : val - 1;
+    if (val < 0) val = 0;
+
+    WorldsConfig.WorldSettings updated = new WorldsConfig.WorldSettings(
+        current.claiming(), current.powerLoss(), current.friendlyFireFaction(),
+        current.friendlyFireAlly(), val == 0 ? null : val);
+    overrides.put(worldKey, updated);
+  }
+
+  private void handleWorldMaxClaimsInput(String key, String input) {
+    String remainder = key.substring("worlds.override.".length());
+    int dot = remainder.lastIndexOf('.');
+    if (dot <= 0) return;
+    String worldKey = remainder.substring(0, dot);
+
+    LinkedHashMap<String, WorldsConfig.WorldSettings> overrides = ensurePendingWorldOverrides();
+    WorldsConfig.WorldSettings current = overrides.getOrDefault(worldKey, WorldsConfig.WorldSettings.DEFAULTS);
+
+    Integer val = null;
+    if (input != null && !input.isBlank()) {
+      try {
+        int parsed = Integer.parseInt(input.trim());
+        if (parsed > 0) val = parsed;
+      } catch (NumberFormatException ignored) {}
+    }
+
+    WorldsConfig.WorldSettings updated = new WorldsConfig.WorldSettings(
+        current.claiming(), current.powerLoss(), current.friendlyFireFaction(),
+        current.friendlyFireAlly(), val);
     overrides.put(worldKey, updated);
   }
 

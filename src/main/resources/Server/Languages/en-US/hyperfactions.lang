@@ -107,12 +107,14 @@ cmd.claim.success = Claimed chunk at {0}, {1}!
 cmd.claim.not_officer = You must be an officer to claim land.
 cmd.claim.already_claimed = This chunk is already claimed.
 cmd.claim.max_claims = Your faction has reached max claims. Get more power!
+cmd.claim.world_max_claims = Your faction has reached the maximum claims ({0}) allowed in this world.
 cmd.claim.not_adjacent = You must claim adjacent to existing territory.
 cmd.claim.world_not_allowed = Claiming is not allowed in this world.
 cmd.claim.orbisguard = This area is protected by OrbisGuard.
 cmd.claim.zone_protected = This chunk is in a safezone or warzone.
 cmd.claim.insufficient_power = Your faction doesn't have enough power to claim more land.
 cmd.claim.failed = Failed to claim chunk.
+cmd.claim.world_overclaimed = Your faction has {0} claims in {1} (limit: {2}). Consider unclaiming excess territory.
 
 # ========== Commands - Invite ==========
 cmd.invite.no_permission = You don't have permission to invite players.

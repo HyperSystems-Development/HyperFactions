@@ -255,6 +255,7 @@ public class ClaimManager {
     ALREADY_CLAIMED_ENEMY,
     NOT_ADJACENT,
     MAX_CLAIMS_REACHED,
+    WORLD_MAX_CLAIMS_REACHED,
     INSUFFICIENT_POWER,
     WORLD_NOT_ALLOWED,
     CHUNK_NOT_CLAIMED,
@@ -404,6 +405,13 @@ public class ClaimManager {
     int maxClaims = ConfigManager.get().calculateMaxClaims(factionPower);
     if (faction.getClaimCount() >= maxClaims) {
       return ClaimResult.MAX_CLAIMS_REACHED;
+    }
+
+    // Check per-world max claims
+    Integer worldMaxClaims = ConfigManager.get().getWorldMaxClaims(world);
+    if (worldMaxClaims != null && worldMaxClaims > 0
+        && countFactionClaimsInWorld(faction.id(), world) >= worldMaxClaims) {
+      return ClaimResult.WORLD_MAX_CLAIMS_REACHED;
     }
 
     // Check adjacency if required
@@ -591,6 +599,13 @@ public class ClaimManager {
       return ClaimResult.MAX_CLAIMS_REACHED;
     }
 
+    // Check per-world max claims for attacker
+    Integer worldMaxClaims = ConfigManager.get().getWorldMaxClaims(world);
+    if (worldMaxClaims != null && worldMaxClaims > 0
+        && countFactionClaimsInWorld(attackerFaction.id(), world) >= worldMaxClaims) {
+      return ClaimResult.WORLD_MAX_CLAIMS_REACHED;
+    }
+
     // Remove from defender
     Faction updatedDefender = defenderFaction.withoutClaimAt(world, chunkX, chunkZ)
       .withLog(FactionLog.create(FactionLog.LogType.OVERCLAIM,
@@ -743,6 +758,19 @@ public class ClaimManager {
 
     // Return unmodifiable view to prevent external modification
     return Collections.unmodifiableSet(claims);
+  }
+
+  /**
+   * Counts the number of claims a faction has in a specific world.
+   *
+   * @param factionId the faction ID
+   * @param world     the world name
+   * @return the number of claims in that world
+   */
+  public int countFactionClaimsInWorld(@NotNull UUID factionId, @NotNull String world) {
+    Set<ChunkKey> claims = factionClaimsIndex.get(factionId);
+    if (claims == null) return 0;
+    return (int) claims.stream().filter(ck -> ck.world().equals(world)).count();
   }
 
   /**

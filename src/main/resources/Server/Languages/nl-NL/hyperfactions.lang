@@ -107,12 +107,14 @@ cmd.claim.success = Gebied geclaimd op {0}, {1}!
 cmd.claim.not_officer = Je moet een officier zijn om land te claimen.
 cmd.claim.already_claimed = Dit gebied is al geclaimd.
 cmd.claim.max_claims = Je factie heeft het maximum aantal gebieden bereikt. Krijg meer kracht!
+cmd.claim.world_max_claims = Je factie heeft het maximum aantal gebieden ({0}) bereikt dat in deze wereld is toegestaan.
 cmd.claim.not_adjacent = Je moet aangrenzend aan bestaand territorium claimen.
 cmd.claim.world_not_allowed = Claimen is niet toegestaan in deze wereld.
 cmd.claim.orbisguard = Dit gebied wordt beschermd door OrbisGuard.
 cmd.claim.zone_protected = Dit gebied bevindt zich in een SafeZone of WarZone.
 cmd.claim.insufficient_power = Je factie heeft niet genoeg kracht om meer land te claimen.
 cmd.claim.failed = Gebied claimen mislukt.
+cmd.claim.world_overclaimed = Je factie heeft {0} claims in {1} (limiet: {2}). Overweeg om overtollig gebied vrij te geven.
 
 # ========== Commando's - Uitnodigen ==========
 cmd.invite.no_permission = Je hebt geen toestemming om spelers uit te nodigen.

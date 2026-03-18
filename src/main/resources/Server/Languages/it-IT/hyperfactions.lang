@@ -107,12 +107,14 @@ cmd.claim.success = Chunk rivendicato a {0}, {1}!
 cmd.claim.not_officer = Devi essere un ufficiale per rivendicare territori.
 cmd.claim.already_claimed = Questo chunk è già rivendicato.
 cmd.claim.max_claims = La tua fazione ha raggiunto il massimo di territori. Ottieni più potere!
+cmd.claim.world_max_claims = La tua fazione ha raggiunto il massimo di territori ({0}) consentiti in questo mondo.
 cmd.claim.not_adjacent = Devi rivendicare un chunk adiacente al territorio esistente.
 cmd.claim.world_not_allowed = La rivendicazione non è permessa in questo mondo.
 cmd.claim.orbisguard = Quest'area è protetta da OrbisGuard.
 cmd.claim.zone_protected = Questo chunk si trova in una SafeZone o WarZone.
 cmd.claim.insufficient_power = La tua fazione non ha abbastanza potere per rivendicare altro territorio.
 cmd.claim.failed = Impossibile rivendicare il chunk.
+cmd.claim.world_overclaimed = La tua fazione ha {0} rivendicazioni in {1} (limite: {2}). Considera di liberare il territorio in eccesso.
 
 # ========== Comandi - Invito ==========
 cmd.invite.no_permission = Non hai il permesso di invitare giocatori.

@@ -738,6 +738,8 @@ map.overclaim_already_yours = Sie besitzen diesen Chunk bereits.
 map.overclaim_ally = Sie können verbündetes Territorium nicht überbeanspruchen.
 map.overclaim_has_power = Diese Fraktion hat genug Macht, um ihr Territorium zu verteidigen.
 map.overclaim_max = Sie haben Ihr maximales Gebietslimit erreicht.
+map.claim_world_max = Welt-Gebietslimit erreicht ({0}).
+map.overclaim_world_max = Welt-Gebietslimit erreicht ({0}).
 map.overclaim_failed = Überbeanspruchung des Chunks fehlgeschlagen.
 # ========== Fraktion erstellen ==========
 create.title = Erstellen Sie Ihre Fraktion

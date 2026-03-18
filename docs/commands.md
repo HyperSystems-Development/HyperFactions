@@ -370,7 +370,9 @@ Admin commands use nested subcommand structure:
 ├── world            # Per-world settings management
 │   ├── list         # List all world overrides
 │   ├── info <world> # Show settings for a world
-│   ├── set <world> <key> <value>  # Set a per-world setting
+│   ├── set <world> <key> <value>  # Set a per-world setting (keys: claiming, powerLoss, friendlyFireFaction, friendlyFireAlly, maxClaims)
+│   │                              # maxClaims takes an integer (e.g., /f admin world set events maxClaims 5)
+│   │                              # Use "maxClaims default" or "maxClaims 0" to clear per-world limit (inherit global)
 │   └── reset <world>              # Reset world to defaults
 ├── economy       # Economy management
 │   └── upkeep    # Upkeep system control

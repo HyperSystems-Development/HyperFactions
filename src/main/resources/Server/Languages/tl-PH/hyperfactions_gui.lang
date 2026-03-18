@@ -738,6 +738,8 @@ map.overclaim_already_yours = Pagmamay-ari mo na ang chunk na ito.
 map.overclaim_ally = Hindi mo maaaring i-overclaim ang teritoryo ng kakampi.
 map.overclaim_has_power = Ang paksyon na ito ay may sapat na kapangyarihan upang ipagtanggol ang kanilang teritoryo.
 map.overclaim_max = Naabot mo na ang maximum na claim limit.
+map.claim_world_max = Naabot ang claim limit ng mundo ({0}).
+map.overclaim_world_max = Naabot ang claim limit ng mundo ({0}).
 map.overclaim_failed = Nabigo ang pag-overclaim ng chunk.
 # ========== Pahina ng Paggawa ng Paksyon ==========
 create.title = Gumawa ng Iyong Paksyon

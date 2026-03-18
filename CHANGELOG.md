@@ -90,6 +90,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `ESSENTIALS_BACK` zone flag — controls whether /back teleportation works in zones (defaults to allowed)
 - `FactionHomeTeleportEvent` and `FactionHomeTeleportPreEvent` events for home teleport tracking
 
+**Per-World Max Claims**
+- New `maxClaims` per-world setting in `worlds.json` — limits how many claims a single faction can hold in a specific world
+- `null` or `0` = use global limit, `>0` = per-faction per-world hard cap
+- Enforced in both `/f claim` and `/f overclaim` flows
+- Admin commands: `/f admin world set <world> maxclaims <value>`, supports `default`/`0` to clear
+- New `WORLD_MAX_CLAIMS_REACHED` claim result handled in all consumer sites (commands, GUI map, dashboard)
+- Localized error messages in all 10 locales
+
+**World Settings API**
+- `HyperFactionsAPI.registerWorldSettings(worldKey, settings)` — upsert with persistence, thread-safe
+- `HyperFactionsAPI.getWorldSettings(worldName)` — resolved through wildcard pattern matching
+- `HyperFactionsAPI.getConfiguredWorldSettings(worldKey)` — exact key match, no pattern resolution
+- `HyperFactionsAPI.removeWorldSettings(worldKey)` — removes and persists
+- `WorldSettingsResolver` made thread-safe with volatile fields and copy-on-write rebuild
+
 ### Changed
 
 **Consolidate Duplicate Message Keys**

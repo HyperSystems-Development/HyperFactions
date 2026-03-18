@@ -198,10 +198,12 @@ public final class CommandKeys {
     public static final String NOT_OFFICER = "hyperfactions.cmd.claim.not_officer";
     public static final String NOT_CONNECTED = "hyperfactions.cmd.claim.not_adjacent";
     public static final String MAX_CLAIMS = "hyperfactions.cmd.claim.max_claims";
+    public static final String WORLD_MAX_CLAIMS = "hyperfactions.cmd.claim.world_max_claims";
     public static final String WORLD_NOT_ALLOWED = "hyperfactions.cmd.claim.world_not_allowed";
     public static final String ORBISGUARD = "hyperfactions.cmd.claim.orbisguard";
     public static final String ZONE_PROTECTED = "hyperfactions.cmd.claim.zone_protected";
     public static final String FAILED = "hyperfactions.cmd.claim.failed";
+    public static final String WORLD_OVERCLAIMED = "hyperfactions.cmd.claim.world_overclaimed";
     // Unclaim
     public static final String UNCLAIM_NO_PERMISSION = "hyperfactions.cmd.unclaim.no_permission";
     public static final String UNCLAIMED = "hyperfactions.cmd.unclaim.success";

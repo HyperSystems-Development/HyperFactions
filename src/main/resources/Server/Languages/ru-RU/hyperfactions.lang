@@ -107,12 +107,14 @@ cmd.claim.success = Чанк захвачен в {0}, {1}!
 cmd.claim.not_officer = Вы должны быть Офицером, чтобы захватывать территорию.
 cmd.claim.already_claimed = Этот чанк уже захвачен.
 cmd.claim.max_claims = Ваша фракция достигла предела территорий. Получите больше Силы!
+cmd.claim.world_max_claims = Ваша фракция достигла предела территорий ({0}) в этом мире.
 cmd.claim.not_adjacent = Вы можете захватывать только территории, смежные с вашими.
 cmd.claim.world_not_allowed = Захват территории в этом мире запрещён.
 cmd.claim.orbisguard = Эта область защищена OrbisGuard.
 cmd.claim.zone_protected = Этот чанк находится в SafeZone или WarZone.
 cmd.claim.insufficient_power = У вашей фракции недостаточно Силы для захвата новых территорий.
 cmd.claim.failed = Не удалось захватить чанк.
+cmd.claim.world_overclaimed = Ваша фракция имеет {0} захваченных чанков в {1} (лимит: {2}). Рассмотрите возможность освобождения лишней территории.
 
 # ========== Команды - Приглашение ==========
 cmd.invite.no_permission = У вас нет прав приглашать игроков.
