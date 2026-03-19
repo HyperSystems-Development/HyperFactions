@@ -1,10 +1,13 @@
 package com.hyperfactions.manager;
 
 import com.hyperfactions.Permissions;
+import com.hyperfactions.api.events.*;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.*;
 import com.hyperfactions.integration.PermissionManager;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.GuiKeys;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
@@ -379,7 +382,7 @@ public class RelationManager {
       try {
         onAllyRequestReceived.accept(targetFactionId, actorFaction.id());
       } catch (Exception e) {
-        Logger.warn("Error in ally request callback: %s", e.getMessage());
+        ErrorHandler.report("Error in ally request callback", e);
       }
     }
 
@@ -418,12 +421,24 @@ public class RelationManager {
       return RelationResult.FACTION_NOT_FOUND;
     }
 
+    // Capture old relation before change
+    RelationType oldRelation = getRelation(actorFaction.id(), fromFactionId);
+
+    // Pre-event: allow external plugins to cancel
+    if (EventBus.publishCancellable(new FactionRelationPreEvent(
+        actorFaction.id(), fromFactionId, oldRelation, RelationType.ALLY, actorUuid))) {
+      return RelationResult.NO_PERMISSION;
+    }
+
     // Set mutual ally relation (both sides get proper actor attribution)
     setRelation(actorFaction.id(), fromFactionId, RelationType.ALLY, actorUuid);
     setRelation(fromFactionId, actorFaction.id(), RelationType.ALLY, requesterUuid);
 
     // Remove pending request
     pending.remove(fromFactionId);
+
+    EventBus.publish(new FactionRelationEvent(actorFaction.id(), fromFactionId,
+        oldRelation, RelationType.ALLY, actorUuid));
 
     Logger.debugRelation("Alliance accepted: faction1=%s, faction2=%s, accepter=%s, requester=%s",
       actorFaction.name(), fromFaction.name(), actorUuid, requesterUuid);
@@ -433,7 +448,7 @@ public class RelationManager {
       try {
         onAllianceFormed.accept(actorFaction.name(), fromFaction.name());
       } catch (Exception e) {
-        Logger.warn("Error in alliance formed callback: %s", e.getMessage());
+        ErrorHandler.report("Error in alliance formed callback", e);
       }
     }
 
@@ -532,8 +547,18 @@ public class RelationManager {
 
     // Check if breaking an alliance before overwriting
     boolean wasAlly = actorFaction.isAlly(targetFactionId);
+    RelationType oldRelation = actorFaction.getRelationType(targetFactionId);
+
+    // Pre-event: allow external plugins to cancel
+    if (EventBus.publishCancellable(new FactionRelationPreEvent(
+        actorFaction.id(), targetFactionId, oldRelation, RelationType.ENEMY, actorUuid))) {
+      return RelationResult.NO_PERMISSION;
+    }
 
     setRelation(actorFaction.id(), targetFactionId, RelationType.ENEMY, actorUuid);
+
+    EventBus.publish(new FactionRelationEvent(actorFaction.id(), targetFactionId,
+        oldRelation, RelationType.ENEMY, actorUuid));
 
     Logger.debugRelation("Enemy declared: faction=%s, target=%s, actor=%s",
       actorFaction.name(), targetFaction.name(), actorUuid);
@@ -543,7 +568,7 @@ public class RelationManager {
       try {
         onAllianceBroken.accept(actorFaction.name(), targetFaction.name());
       } catch (Exception e) {
-        Logger.warn("Error in alliance broken callback: %s", e.getMessage());
+        ErrorHandler.report("Error in alliance broken callback", e);
       }
     }
 
@@ -551,7 +576,7 @@ public class RelationManager {
       try {
         onWarDeclared.accept(actorFaction.name(), targetFaction.name());
       } catch (Exception e) {
-        Logger.warn("Error in war declared callback: %s", e.getMessage());
+        ErrorHandler.report("Error in war declared callback", e);
       }
     }
 
@@ -595,6 +620,12 @@ public class RelationManager {
       return RelationResult.ALREADY_NEUTRAL;
     }
 
+    // Pre-event: allow external plugins to cancel
+    if (EventBus.publishCancellable(new FactionRelationPreEvent(
+        actorFaction.id(), targetFactionId, currentRelation, RelationType.NEUTRAL, actorUuid))) {
+      return RelationResult.NO_PERMISSION;
+    }
+
     // If breaking alliance, update both sides
     boolean wasAlly = currentRelation == RelationType.ALLY;
     if (wasAlly) {
@@ -603,13 +634,16 @@ public class RelationManager {
 
     setRelation(actorFaction.id(), targetFactionId, RelationType.NEUTRAL, actorUuid);
 
+    EventBus.publish(new FactionRelationEvent(actorFaction.id(), targetFactionId,
+        currentRelation, RelationType.NEUTRAL, actorUuid));
+
     Logger.info("[Diplomacy] Faction '%s' set '%s' as neutral", actorFaction.name(), targetFaction.name());
 
     if (wasAlly && onAllianceBroken != null) {
       try {
         onAllianceBroken.accept(actorFaction.name(), targetFaction.name());
       } catch (Exception e) {
-        Logger.warn("Error in alliance broken callback: %s", e.getMessage());
+        ErrorHandler.report("Error in alliance broken callback", e);
       }
     }
 
@@ -638,7 +672,8 @@ public class RelationManager {
     };
 
     Faction updated = faction.withRelation(relation)
-      .withLog(FactionLog.create(logType, "Set " + targetName + " as " + type.getDisplayName(), actorUuid));
+      .withLog(FactionLog.create(logType, "Set " + targetName + " as " + type.getDisplayName(), actorUuid,
+          GuiKeys.LogsGui.MSG_RELATION_SET, targetName, type.getDisplayName()));
 
     factionManager.updateFaction(updated);
 
@@ -646,14 +681,14 @@ public class RelationManager {
       try {
         onRelationChanged.accept(factionId, targetId);
       } catch (Exception e) {
-        Logger.warn("Error in relation changed callback: %s", e.getMessage());
+        ErrorHandler.report("Error in relation changed callback", e);
       }
     }
     if (onRelationChangedForMapFilter != null) {
       try {
         onRelationChangedForMapFilter.accept(factionId, targetId);
       } catch (Exception e) {
-        Logger.warn("Error in map filter relation callback: %s", e.getMessage());
+        ErrorHandler.report("Error in map filter relation callback", e);
       }
     }
   }

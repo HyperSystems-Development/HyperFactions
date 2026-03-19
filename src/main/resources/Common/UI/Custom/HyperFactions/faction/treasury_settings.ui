@@ -10,7 +10,7 @@ $C.@PageOverlay {
 
     #Title {
       Group {
-        $C.@Title {
+        $C.@Title #TreasurySettingsTitle {
           @Text = "Treasury Settings";
         }
       }
@@ -21,7 +21,7 @@ $C.@PageOverlay {
       Padding: (Left: 20, Right: 20, Top: 10, Bottom: 10);
 
       // === Officer Permissions Section ===
-      Label {
+      Label #OfficerPermissionsHeader {
         Text: "OFFICER PERMISSIONS";
         Style: (FontSize: 10, TextColor: #00AAAA, RenderBold: true, RenderUppercase: true);
         Anchor: (Height: 18, Bottom: 4);
@@ -61,7 +61,7 @@ $C.@PageOverlay {
       }
 
       // === Limits Section ===
-      Label {
+      Label #LimitsHeader {
         Text: "WITHDRAWAL AND TRANSFER LIMITS";
         Style: (FontSize: 10, TextColor: #00AAAA, RenderBold: true, RenderUppercase: true);
         Anchor: (Height: 18, Bottom: 4);
@@ -76,7 +76,7 @@ $C.@PageOverlay {
         Group {
           LayoutMode: Left;
           Anchor: (Height: 28, Bottom: 4);
-          Label {
+          Label #MaxWithdrawLabel {
             Text: "Max per withdrawal:";
             Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
             Anchor: (Width: 200);
@@ -90,7 +90,7 @@ $C.@PageOverlay {
         Group {
           LayoutMode: Left;
           Anchor: (Height: 28, Bottom: 4);
-          Label {
+          Label #MaxWithdrawPeriodLabel {
             Text: "Max withdrawals per period:";
             Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
             Anchor: (Width: 200);
@@ -104,7 +104,7 @@ $C.@PageOverlay {
         Group {
           LayoutMode: Left;
           Anchor: (Height: 28, Bottom: 4);
-          Label {
+          Label #MaxTransferLabel {
             Text: "Max per transfer:";
             Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
             Anchor: (Width: 200);
@@ -118,7 +118,7 @@ $C.@PageOverlay {
         Group {
           LayoutMode: Left;
           Anchor: (Height: 28, Bottom: 4);
-          Label {
+          Label #MaxTransferPeriodLabel {
             Text: "Max transfers per period:";
             Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
             Anchor: (Width: 200);
@@ -132,7 +132,7 @@ $C.@PageOverlay {
         Group {
           LayoutMode: Left;
           Anchor: (Height: 28);
-          Label {
+          Label #PeriodHoursLabel {
             Text: "Limit period (hours):";
             Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
             Anchor: (Width: 200);
@@ -144,7 +144,7 @@ $C.@PageOverlay {
         }
       }
 
-      Label {
+      Label #NoLimitHintLabel {
         Text: "Set to 0 for no limit";
         Style: (FontSize: 9, TextColor: #555555);
         Anchor: (Height: 14, Bottom: 10);
@@ -156,7 +156,7 @@ $C.@PageOverlay {
         LayoutMode: Top;
         Anchor: (Bottom: 10);
 
-        Label {
+        Label #UpkeepSettingsHeader {
           Text: "UPKEEP SETTINGS";
           Style: (FontSize: 10, TextColor: #00AAAA, RenderBold: true, RenderUppercase: true);
           Anchor: (Height: 18, Bottom: 4);

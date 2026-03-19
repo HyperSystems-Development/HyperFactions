@@ -13,13 +13,15 @@ import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.manager.RelationManager;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.UuidUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.ui.Value;
@@ -102,6 +104,14 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
     // Load the main template
     cmd.append(UIPaths.FACTION_RELATIONS);
 
+    // Localize static labels
+    cmd.set("#RelationsTitle.Text", HFMessages.get(playerRef, GuiKeys.RelationsGui.TITLE));
+    cmd.set("#TabRelations.Text", HFMessages.get(playerRef, GuiKeys.RelationsGui.TAB_RELATIONS));
+    cmd.set("#TabPending.Text", HFMessages.get(playerRef, GuiKeys.RelationsGui.TAB_PENDING));
+    cmd.set("#SetRelationBtn.Text", HFMessages.get(playerRef, GuiKeys.RelationsGui.SET_RELATION_BTN));
+    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.PREV));
+    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.NEXT));
+
     // Setup navigation bar
     NavBarHelper.setupBar(playerRef, faction, PAGE_ID, cmd, events);
 
@@ -168,9 +178,9 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
     };
 
     // Count
-    String countText = items.size() + " " + switch (currentTab) {
-      case RELATIONS -> items.size() == 1 ? "relation" : "relations";
-      case PENDING -> items.size() == 1 ? "request" : "requests";
+    String countText = switch (currentTab) {
+      case RELATIONS -> HFMessages.get(playerRef, GuiKeys.RelationsGui.RELATION_COUNT, items.size());
+      case PENDING -> HFMessages.get(playerRef, GuiKeys.RelationsGui.REQUEST_COUNT, items.size());
     };
     cmd.set("#ItemCount.Text", countText);
 
@@ -201,7 +211,7 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
     }
 
     // Pagination
-    cmd.set("#PageInfo.Text", (currentPage + 1) + "/" + totalPages);
+    cmd.set("#PageInfo.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.PAGE_FORMAT, currentPage + 1, totalPages));
 
     if (currentPage > 0) {
       events.addEventBinding(
@@ -236,7 +246,7 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
         Faction other = factionManager.getFaction(relation.targetFactionId());
         if (other != null) {
           FactionMember leader = other.getLeader();
-          String leaderName = leader != null ? leader.username() : "Unknown";
+          String leaderName = leader != null ? leader.username() : HFMessages.get(playerRef, CommonKeys.Common.UNKNOWN);
           String typeText = relation.type() == RelationType.ALLY ? "Ally" : "Enemy";
           PowerManager.FactionPowerStats stats = powerManager.getFactionPowerStats(other.id());
           items.add(new RelationItem(
@@ -272,7 +282,7 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
       Faction requester = factionManager.getFaction(requesterId);
       if (requester != null) {
         FactionMember leader = requester.getLeader();
-        String leaderName = leader != null ? leader.username() : "Unknown";
+        String leaderName = leader != null ? leader.username() : HFMessages.get(playerRef, CommonKeys.Common.UNKNOWN);
         PowerManager.FactionPowerStats stats = powerManager.getFactionPowerStats(requester.id());
         items.add(new RelationItem(
             requester.id(),
@@ -296,7 +306,7 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
       Faction target = factionManager.getFaction(targetId);
       if (target != null) {
         FactionMember leader = target.getLeader();
-        String leaderName = leader != null ? leader.username() : "Unknown";
+        String leaderName = leader != null ? leader.username() : HFMessages.get(playerRef, CommonKeys.Common.UNKNOWN);
         PowerManager.FactionPowerStats stats = powerManager.getFactionPowerStats(target.id());
         items.add(new RelationItem(
             target.id(),
@@ -330,12 +340,26 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
     String idx = "#IndexCards[" + index + "]";
 
+    // Localize entry labels and buttons
+    cmd.set(idx + " #MemberLabel.Text", HFMessages.get(playerRef, GuiKeys.RelationsGui.LABEL_MEMBERS));
+    cmd.set(idx + " #PowerLabel.Text", HFMessages.get(playerRef, GuiKeys.RelationsGui.LABEL_POWER));
+    cmd.set(idx + " #SinceLabel.Text", HFMessages.get(playerRef, GuiKeys.RelationsGui.LABEL_SINCE));
+    cmd.set(idx + " #ClaimsLabel.Text", HFMessages.get(playerRef, GuiKeys.RelationsGui.LABEL_CLAIMS));
+    cmd.set(idx + " #DirectionLabel.Text", HFMessages.get(playerRef, GuiKeys.RelationsGui.LABEL_DIRECTION));
+    cmd.set(idx + " #ViewBtn.Text", HFMessages.get(playerRef, GuiKeys.RelationsGui.BTN_VIEW));
+    cmd.set(idx + " #NeutralBtn.Text", HFMessages.get(playerRef, GuiKeys.RelationsGui.BTN_NEUTRAL));
+    cmd.set(idx + " #EnemyBtn.Text", HFMessages.get(playerRef, GuiKeys.RelationsGui.BTN_ENEMY));
+    cmd.set(idx + " #AllyBtn.Text", HFMessages.get(playerRef, GuiKeys.RelationsGui.BTN_ALLY));
+    cmd.set(idx + " #AcceptBtn.Text", HFMessages.get(playerRef, GuiKeys.RelationsGui.BTN_ACCEPT));
+    cmd.set(idx + " #DeclineBtn.Text", HFMessages.get(playerRef, GuiKeys.RelationsGui.BTN_DECLINE));
+    cmd.set(idx + " #CancelBtn.Text", HFMessages.get(playerRef, GuiKeys.RelationsGui.BTN_CANCEL));
+
     // === Header info ===
     cmd.set(idx + " #FactionName.Text", item.factionName);
-    cmd.set(idx + " #LeaderName.Text", "Leader: " + item.leaderName);
+    cmd.set(idx + " #LeaderName.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.LEADER_LABEL, item.leaderName));
 
     // Relation type badge with appropriate color
-    cmd.set(idx + " #RelationType.Text", item.type);
+    cmd.set(idx + " #RelationType.Text", localizeType(item.type));
     String typeColor = switch (item.type) {
       case "Ally" -> "#00AAFF";
       case "Enemy" -> "#FF5555";
@@ -387,7 +411,9 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
       cmd.set(idx + " #PendingRow.Visible", isPending);
 
       if (isPending) {
-        String direction = item.isIncoming ? "Incoming request" : "Outgoing request";
+        String direction = item.isIncoming
+            ? HFMessages.get(playerRef, GuiKeys.RelationsGui.INCOMING_REQUEST)
+            : HFMessages.get(playerRef, GuiKeys.RelationsGui.OUTGOING_REQUEST);
         cmd.set(idx + " #DirectionValue.Text", direction);
         cmd.set(idx + " #DirectionValue.Style.TextColor",
             item.isIncoming ? "#FFAA00" : "#88AAFF");
@@ -519,9 +545,9 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
   private String getEmptyMessage(boolean canManage) {
     return switch (currentTab) {
       case RELATIONS -> canManage
-          ? "No relations yet. Click + SET RELATION to add allies or enemies."
-          : "No relations yet.";
-      case PENDING -> "No pending ally requests.";
+          ? HFMessages.get(playerRef, GuiKeys.RelationsGui.EMPTY_RELATIONS_HINT)
+          : HFMessages.get(playerRef, GuiKeys.RelationsGui.EMPTY_RELATIONS);
+      case PENDING -> HFMessages.get(playerRef, GuiKeys.RelationsGui.EMPTY_PENDING);
     };
   }
 
@@ -531,12 +557,22 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
         Instant.now()
     );
     if (daysSince == 0) {
-      return "Today";
+      return HFMessages.get(playerRef, GuiKeys.RelationsGui.TODAY);
     } else if (daysSince == 1) {
-      return "1 day ago";
+      return HFMessages.get(playerRef, GuiKeys.RelationsGui.ONE_DAY_AGO);
     } else {
-      return daysSince + " days ago";
+      return HFMessages.get(playerRef, GuiKeys.RelationsGui.DAYS_AGO, daysSince);
     }
+  }
+
+  private String localizeType(String type) {
+    return switch (type) {
+      case "Ally" -> HFMessages.get(playerRef, GuiKeys.RelationsGui.TYPE_ALLY);
+      case "Enemy" -> HFMessages.get(playerRef, GuiKeys.RelationsGui.TYPE_ENEMY);
+      case "Incoming" -> HFMessages.get(playerRef, GuiKeys.RelationsGui.TYPE_INCOMING);
+      case "Outgoing" -> HFMessages.get(playerRef, GuiKeys.RelationsGui.TYPE_OUTGOING);
+      default -> type;
+    };
   }
 
   private record RelationItem(UUID factionId, String factionName, String leaderName,
@@ -635,7 +671,7 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
     UUID targetId = UuidUtil.parseOrNull(data.factionId);
     if (targetId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction."));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
       sendUpdate();
       return;
     }
@@ -643,7 +679,7 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
     if (targetFaction != null) {
       guiManager.openFactionInfo(player, ref, store, playerRef, targetFaction, "relations");
     } else {
-      player.sendMessage(MessageUtil.errorText("Faction no longer exists."));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.PlayerInfoGui.FACTION_GONE));
       sendUpdate();
     }
   }
@@ -655,15 +691,15 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
     UUID targetId = UuidUtil.parseOrNull(data.factionId);
     if (targetId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction."));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
       return;
     }
     UUID actorUuid = playerRef.getUuid();
     RelationManager.RelationResult result = relationManager.setNeutral(actorUuid, targetId);
     if (result == RelationManager.RelationResult.SUCCESS) {
-      player.sendMessage(Message.raw("Now neutral with " + data.factionName + ".").color("#888888"));
+      player.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.NOW_NEUTRAL, "#888888", data.factionName));
     } else {
-      player.sendMessage(MessageUtil.errorText("Failed: " + result));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.FAILED, result));
     }
     rebuildList(canManage);
   }
@@ -675,15 +711,15 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
     UUID targetId = UuidUtil.parseOrNull(data.factionId);
     if (targetId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction."));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
       return;
     }
     UUID actorUuid = playerRef.getUuid();
     RelationManager.RelationResult result = relationManager.setEnemy(actorUuid, targetId);
     if (result == RelationManager.RelationResult.SUCCESS) {
-      player.sendMessage(MessageUtil.errorText("Now enemies with " + data.factionName + "!"));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.NOW_ENEMIES, data.factionName));
     } else {
-      player.sendMessage(MessageUtil.errorText("Failed: " + result));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.FAILED, result));
     }
     rebuildList(canManage);
   }
@@ -695,21 +731,21 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
     UUID targetId = UuidUtil.parseOrNull(data.factionId);
     if (targetId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction."));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
       return;
     }
     UUID actorUuid = playerRef.getUuid();
     RelationManager.RelationResult result = relationManager.requestAlly(actorUuid, targetId);
     if (result == RelationManager.RelationResult.REQUEST_SENT) {
-      player.sendMessage(Message.raw("Alliance request sent to " + data.factionName + ".").color("#00AAFF"));
+      player.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.REQUEST_SENT, "#00AAFF", data.factionName));
       // Switch to pending tab to show the new request
       currentTab = Tab.PENDING;
       currentPage = 0;
       expandedItems.clear();
     } else if (result == RelationManager.RelationResult.REQUEST_ACCEPTED) {
-      player.sendMessage(Message.raw("Now allied with " + data.factionName + "!").color("#00AAFF"));
+      player.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.NOW_ALLIED, "#00AAFF", data.factionName));
     } else {
-      player.sendMessage(MessageUtil.errorText("Failed: " + result));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.FAILED, result));
     }
     rebuildList(canManage);
   }
@@ -721,15 +757,15 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
     UUID requesterId = UuidUtil.parseOrNull(data.factionId);
     if (requesterId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction."));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
       return;
     }
     UUID actorUuid = playerRef.getUuid();
     RelationManager.RelationResult result = relationManager.acceptAlly(actorUuid, requesterId);
     if (result == RelationManager.RelationResult.REQUEST_ACCEPTED) {
-      player.sendMessage(Message.raw("Now allied with " + data.factionName + "!").color("#00AAFF"));
+      player.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.NOW_ALLIED, "#00AAFF", data.factionName));
     } else {
-      player.sendMessage(MessageUtil.errorText("Failed: " + result));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.FAILED, result));
     }
     rebuildList(canManage);
   }
@@ -741,14 +777,14 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
     UUID requesterId = UuidUtil.parseOrNull(data.factionId);
     if (requesterId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction."));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
       return;
     }
     UUID actorUuid = playerRef.getUuid();
     // No direct decline method - use setEnemy then setNeutral to clear the request
     relationManager.setEnemy(actorUuid, requesterId);
     relationManager.setNeutral(actorUuid, requesterId);
-    player.sendMessage(Message.raw("Ally request from " + data.factionName + " declined.").color("#888888"));
+    player.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.REQUEST_DECLINED, "#888888", data.factionName));
     rebuildList(canManage);
   }
 
@@ -759,15 +795,15 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
     UUID targetId = UuidUtil.parseOrNull(data.factionId);
     if (targetId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction."));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
       return;
     }
     UUID actorUuid = playerRef.getUuid();
     RelationManager.RelationResult result = relationManager.cancelRequest(actorUuid, targetId);
     if (result == RelationManager.RelationResult.SUCCESS) {
-      player.sendMessage(Message.raw("Ally request to " + data.factionName + " cancelled.").color("#888888"));
+      player.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.REQUEST_CANCELLED, "#888888", data.factionName));
     } else {
-      player.sendMessage(MessageUtil.errorText("Failed: " + result));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.FAILED, result));
     }
 
     // Stay on pending tab (Bug 7 fix)

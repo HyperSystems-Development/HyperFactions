@@ -29,7 +29,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
+
 
 /**
  * Main Hytale plugin class for HyperFactions.
@@ -203,7 +203,7 @@ public class HyperFactionsPlugin extends JavaPlugin {
         hyperFactions.shutdownKyuubiSoftIntegration();
       }
     } catch (Exception e) {
-      getLogger().at(java.util.logging.Level.WARNING).withCause(e).log("Failed to shutdown KyuubiSoft integration");
+      ErrorHandler.report("Failed to shutdown KyuubiSoft integration", e);
     }
 
     // Clean up territory ticking system
@@ -301,7 +301,7 @@ public class HyperFactionsPlugin extends JavaPlugin {
       getCommandRegistry().registerCommand(new FactionCommand(hyperFactions, this));
       Logger.debug("Registered command: /faction (/f, /hf)");
     } catch (Exception e) {
-      getLogger().at(Level.SEVERE).withCause(e).log("Failed to register commands");
+      ErrorHandler.report("Failed to register commands", e);
     }
   }
 
@@ -337,7 +337,7 @@ public class HyperFactionsPlugin extends JavaPlugin {
         Logger.debug("Registered interaction codecs (fluid place/pickup) — crop harvest handled by mixin system");
       }
     } catch (Exception e) {
-      getLogger().at(Level.WARNING).log("Failed to register interaction codecs: %s", e.getMessage());
+      ErrorHandler.report("Failed to register interaction codecs", e);
     }
   }
 

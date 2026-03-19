@@ -2,6 +2,8 @@ package com.hyperfactions.command.faction;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
+import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.FactionRenameEvent;
 import com.hyperfactions.command.FactionCommandContext;
 import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.command.util.CommandUtil;
@@ -10,6 +12,10 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionLog;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -39,7 +45,7 @@ public class RenameSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.RENAME)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.NO_PERMISSION));
       return;
     }
 
@@ -50,7 +56,7 @@ public class RenameSubCommand extends FactionSubCommand {
 
     FactionMember member = faction.getMember(player.getUuid());
     if (member == null || !member.isLeader()) {
-      ctx.sendMessage(prefix().insert(msg("Only the leader can rename the faction.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rename.NOT_LEADER));
       return;
     }
 
@@ -68,7 +74,7 @@ public class RenameSubCommand extends FactionSubCommand {
 
     // Text mode requires args
     if (!fctx.hasArgs()) {
-      ctx.sendMessage(prefix().insert(msg("Usage: /f rename <name>", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rename.USAGE));
       return;
     }
 
@@ -76,35 +82,35 @@ public class RenameSubCommand extends FactionSubCommand {
     ConfigManager config = ConfigManager.get();
 
     if (newName.length() < config.getMinNameLength()) {
-      ctx.sendMessage(prefix().insert(msg("Name is too short (min " + config.getMinNameLength() + " chars).", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rename.TOO_SHORT, config.getMinNameLength()));
       return;
     }
     if (newName.length() > config.getMaxNameLength()) {
-      ctx.sendMessage(prefix().insert(msg("Name is too long (max " + config.getMaxNameLength() + " chars).", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rename.TOO_LONG, config.getMaxNameLength()));
       return;
     }
     if (hyperFactions.getFactionManager().isNameTaken(newName) && !newName.equalsIgnoreCase(faction.name())) {
-      ctx.sendMessage(prefix().insert(msg("That name is already taken.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rename.NAME_TAKEN));
       return;
     }
 
     String oldName = faction.name();
     Faction updated = faction.withName(newName)
       .withLog(FactionLog.create(FactionLog.LogType.SETTINGS_CHANGE,
-        "Renamed from '" + oldName + "' to '" + newName + "'", player.getUuid()));
+        "Renamed from '" + oldName + "' to '" + newName + "'", player.getUuid(),
+        GuiKeys.LogsGui.MSG_RENAMED, oldName, newName));
 
     hyperFactions.getFactionManager().updateFaction(updated);
+    EventBus.publish(new FactionRenameEvent(faction.id(), FactionRenameEvent.Field.NAME,
+        oldName, newName, player.getUuid()));
 
     // Refresh world maps to show new faction name (respects configured refresh mode)
     if (hyperFactions.getWorldMapService() != null) {
       hyperFactions.getWorldMapService().triggerFactionWideRefresh(faction.id());
     }
 
-    ctx.sendMessage(prefix().insert(msg("Faction renamed to ", COLOR_GREEN))
-      .insert(msg(newName, COLOR_CYAN)).insert(msg("!", COLOR_GREEN)));
-    broadcastToFaction(faction.id(), prefix().insert(msg(player.getUsername(), COLOR_YELLOW))
-      .insert(msg(" renamed the faction to ", COLOR_GREEN))
-      .insert(msg(newName, COLOR_CYAN)));
+    ctx.sendMessage(MessageUtil.success(player, CommandKeys.Rename.SUCCESS, newName));
+    broadcastToFaction(faction.id(), MessageUtil.success(player, CommandKeys.Rename.BROADCAST, player.getUsername(), newName));
 
     // After action, open settings page if not text mode
     if (fctx.shouldOpenGuiAfterAction()) {

@@ -9,7 +9,7 @@ $C.@PageOverlay {
 
     #Title {
       Group {
-        $C.@Title {
+        $C.@Title #PageTitle {
           @Text = "Edit Description";
         }
       }
@@ -24,7 +24,7 @@ $C.@PageOverlay {
         Anchor: (Height: 36, Bottom: 10);
         LayoutMode: Left;
 
-        Label {
+        Label #CurrentLabel {
           Text: "Current:";
           Style: (FontSize: 12, TextColor: #888888, VerticalAlignment: Center);
           Anchor: (Width: 70);
@@ -38,7 +38,7 @@ $C.@PageOverlay {
       }
 
       // New description input
-      Label {
+      Label #NewDescLabel {
         Text: "New Description:";
         Style: (FontSize: 12, TextColor: #888888);
         Anchor: (Height: 24, Bottom: 4);

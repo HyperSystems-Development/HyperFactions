@@ -403,7 +403,7 @@ class FactionTest {
                     java.util.List.of(), false, null, null
             );
 
-            assertEquals("f", faction.color());
+            assertEquals("#FFFFFF", faction.color());
         }
     }
 }

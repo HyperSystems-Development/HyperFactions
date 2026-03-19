@@ -1,6 +1,7 @@
 package com.hyperfactions.data;
 
 import com.hyperfactions.util.LegacyColorParser;
+import com.hyperfactions.util.GuiKeys;
 import java.util.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -74,7 +75,8 @@ public record Faction(
     members.put(leaderUuid, leader);
 
     List<FactionLog> logs = new ArrayList<>();
-    logs.add(FactionLog.create(FactionLog.LogType.MEMBER_JOIN, leaderName + " created the faction", leaderUuid));
+    logs.add(FactionLog.create(FactionLog.LogType.MEMBER_JOIN, leaderName + " created the faction", leaderUuid,
+        GuiKeys.LogsGui.MSG_FACTION_CREATED, leaderName));
 
     return new Faction(
       UUID.randomUUID(),

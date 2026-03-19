@@ -45,6 +45,8 @@ public final class UIPaths {
 
   public static final String ERROR_PAGE = BASE + "shared/error_page.ui";
 
+  public static final String PLAYER_SETTINGS = BASE + "shared/player_settings.ui";
+
   public static final String INVITE_NOTIFICATION = BASE + "shared/invite_notification.ui";
 
   public static final String DISBAND_CONFIRM = BASE + "shared/disband_confirm.ui";
@@ -172,6 +174,24 @@ public final class UIPaths {
 
   public static final String HELP_SPACER = BASE + "help/help_spacer.ui";
 
+  public static final String HELP_LINE_BOLD = BASE + "help/help_line_bold.ui";
+
+  public static final String HELP_LINE_ITALIC = BASE + "help/help_line_italic.ui";
+
+  public static final String HELP_LINE_LIST = BASE + "help/help_line_list.ui";
+
+  public static final String HELP_SEPARATOR = BASE + "help/help_separator.ui";
+
+  public static final String HELP_LINE_CALLOUT = BASE + "help/help_line_callout.ui";
+
+  public static final String HELP_TABLE_HEADER = BASE + "help/help_table_header.ui";
+
+  public static final String HELP_TABLE_ROW = BASE + "help/help_table_row.ui";
+
+  public static final String HELP_TABLE_CELL = BASE + "help/help_table_cell.ui";
+
+  public static final String HELP_TABLE_HEADER_CELL = BASE + "help/help_table_header_cell.ui";
+
   // ── Admin pages ─────────────────────────────────────────────────────────
   public static final String ADMIN_MAIN = BASE + "admin/admin_main.ui";
 
@@ -183,13 +203,53 @@ public final class UIPaths {
 
   public static final String ADMIN_ACTIONS = BASE + "admin/admin_actions.ui";
 
-  public static final String ADMIN_CONFIG = BASE + "admin/admin_config.ui";
+  public static final String ADMIN_CONFIG_NARROW = BASE + "admin/admin_config_narrow.ui";
+
+  public static final String ADMIN_CONFIG_STANDARD = BASE + "admin/admin_config_standard.ui";
+
+  public static final String ADMIN_CONFIG_WIDE = BASE + "admin/admin_config_wide.ui";
+
+  public static final String ADMIN_CONFIG_BOOL_ROW = BASE + "admin/admin_config_bool_row.ui";
+
+  public static final String ADMIN_CONFIG_NUM_ROW = BASE + "admin/admin_config_num_row.ui";
+
+  public static final String ADMIN_CONFIG_SECTION = BASE + "admin/admin_config_section.ui";
+
+  public static final String ADMIN_CONFIG_ENUM_ROW = BASE + "admin/admin_config_enum_row.ui";
+
+  public static final String ADMIN_CONFIG_STR_ROW = BASE + "admin/admin_config_str_row.ui";
+
+  public static final String ADMIN_CONFIG_COLOR_ROW = BASE + "admin/admin_config_color_row.ui";
+
+  public static final String ADMIN_CONFIG_ACTION_BTN = BASE + "admin/admin_config_action_btn.ui";
+
+  public static final String ADMIN_CONFIG_STR_WIDE_ROW = BASE + "admin/admin_config_str_wide_row.ui";
+
+  public static final String ADMIN_CONFIG_FACPERM_HEADER = BASE + "admin/admin_config_facperm_header.ui";
+
+  public static final String ADMIN_CONFIG_FACPERM_ROW = BASE + "admin/admin_config_facperm_row.ui";
+
+  public static final String ADMIN_CONFIG_FACPERM_CHILD_ROW = BASE + "admin/admin_config_facperm_child_row.ui";
+
+  public static final String ADMIN_CONFIG_SCALING_MODAL = BASE + "admin/admin_config_scaling_modal.ui";
+
+  public static final String ADMIN_CONFIG_SCALING_ENTRY = BASE + "admin/admin_config_scaling_entry.ui";
+
+  public static final String ADMIN_CONFIG_ADD_ROW = BASE + "admin/admin_config_add_row.ui";
+
+  public static final String ADMIN_CONFIG_TRISTATE_ROW = BASE + "admin/admin_config_tristate_row.ui";
+
+  public static final String ADMIN_CONFIG_BLACKLIST_ENTRY = BASE + "admin/admin_config_blacklist_entry.ui";
+
+  public static final String ADMIN_CONFIG_WORLD_ENTRY = BASE + "admin/admin_config_world_entry.ui";
 
   public static final String ADMIN_VERSION = BASE + "admin/admin_version.ui";
 
   public static final String ADMIN_UPDATES = BASE + "admin/admin_updates.ui";
 
   public static final String ADMIN_BACKUPS = BASE + "admin/admin_backups.ui";
+
+  public static final String ADMIN_BACKUP_ENTRY = BASE + "admin/admin_backup_entry.ui";
 
   public static final String ADMIN_FACTIONS = BASE + "admin/admin_factions.ui";
 
@@ -253,4 +313,6 @@ public final class UIPaths {
 
   // ── Test ────────────────────────────────────────────────────────────────
   public static final String BUTTON_TEST = BASE + "test/button_test.ui";
+
+  public static final String MARKDOWN_TEST = BASE + "test/markdown_test.ui";
 }

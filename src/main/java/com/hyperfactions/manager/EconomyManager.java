@@ -1,6 +1,7 @@
 package com.hyperfactions.manager;
 
 import com.hyperfactions.api.EconomyAPI;
+import com.hyperfactions.api.events.*;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionEconomy.TreasuryLimits;
@@ -9,6 +10,7 @@ import com.hyperfactions.data.FactionLog;
 import com.hyperfactions.integration.economy.VaultEconomyProvider;
 import com.hyperfactions.storage.JsonEconomyStorage;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.GuiKeys;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
@@ -306,6 +308,11 @@ public class EconomyManager implements EconomyAPI {
     @Nullable UUID actorId,
     @NotNull String description
   ) {
+    // Pre-event fires synchronously before the future chain
+    if (EventBus.publishCancellable(new FactionTransactionPreEvent(factionId, TransactionType.DEPOSIT, amount, actorId, description))) {
+      return CompletableFuture.completedFuture(TransactionResult.NO_PERMISSION);
+    }
+
     return CompletableFuture.supplyAsync(() -> {
       if (amount.compareTo(BigDecimal.ZERO) <= 0) {
         return TransactionResult.INVALID_AMOUNT;
@@ -340,13 +347,15 @@ public class EconomyManager implements EconomyAPI {
       String logMessage = String.format("Deposit: %s (+%s)",
         formatCurrency(newBalance), formatCurrency(amount));
       Faction updatedFaction = faction.withLog(
-        FactionLog.create(FactionLog.LogType.ECONOMY, logMessage, actorId)
+        FactionLog.create(FactionLog.LogType.ECONOMY, logMessage, actorId,
+            GuiKeys.LogsGui.MSG_DEPOSIT, formatCurrency(newBalance), formatCurrency(amount))
       );
       factionManager.updateFaction(updatedFaction);
 
       Logger.debugEconomy("Deposit to %s: %s (new balance: %s)",
         faction.name(), formatCurrency(amount), formatCurrency(newBalance));
 
+      EventBus.publish(new FactionTransactionEvent(factionId, TransactionType.DEPOSIT, amount, newBalance, actorId, description));
       return TransactionResult.SUCCESS;
     });
   }
@@ -373,6 +382,11 @@ public class EconomyManager implements EconomyAPI {
     @NotNull String description,
     @NotNull TransactionType transactionType
   ) {
+    // Pre-event fires synchronously before the future chain
+    if (EventBus.publishCancellable(new FactionTransactionPreEvent(factionId, transactionType, amount, actorId, description))) {
+      return CompletableFuture.completedFuture(TransactionResult.NO_PERMISSION);
+    }
+
     return CompletableFuture.supplyAsync(() -> {
       if (amount.compareTo(BigDecimal.ZERO) <= 0) {
         return TransactionResult.INVALID_AMOUNT;
@@ -417,13 +431,15 @@ public class EconomyManager implements EconomyAPI {
       String logMessage = String.format("Withdrawal: %s (-%s)",
         formatCurrency(newBalance), formatCurrency(amount));
       Faction updatedFaction = faction.withLog(
-        FactionLog.create(FactionLog.LogType.ECONOMY, logMessage, actorId)
+        FactionLog.create(FactionLog.LogType.ECONOMY, logMessage, actorId,
+            GuiKeys.LogsGui.MSG_WITHDRAWAL, formatCurrency(newBalance), formatCurrency(amount))
       );
       factionManager.updateFaction(updatedFaction);
 
       Logger.debugEconomy("Withdrawal from %s: %s (new balance: %s)",
         faction.name(), formatCurrency(amount), formatCurrency(newBalance));
 
+      EventBus.publish(new FactionTransactionEvent(factionId, transactionType, amount, newBalance, actorId, description));
       return TransactionResult.SUCCESS;
     });
   }
@@ -438,6 +454,11 @@ public class EconomyManager implements EconomyAPI {
     @Nullable UUID actorId,
     @NotNull String description
   ) {
+    // Pre-event fires synchronously before the future chain
+    if (EventBus.publishCancellable(new FactionTransactionPreEvent(fromFactionId, TransactionType.TRANSFER_OUT, amount, actorId, description))) {
+      return CompletableFuture.completedFuture(TransactionResult.NO_PERMISSION);
+    }
+
     return CompletableFuture.supplyAsync(() -> {
       if (amount.compareTo(BigDecimal.ZERO) <= 0) {
         return TransactionResult.INVALID_AMOUNT;
@@ -501,6 +522,8 @@ public class EconomyManager implements EconomyAPI {
       Logger.debugEconomy("Transfer from %s to %s: %s",
         fromFaction.name(), toFaction.name(), formatCurrency(amount));
 
+      EventBus.publish(new FactionTransactionEvent(fromFactionId, TransactionType.TRANSFER_OUT, amount, fromNewBalance, actorId, description));
+      EventBus.publish(new FactionTransactionEvent(toFactionId, TransactionType.TRANSFER_IN, amount, toNewBalance, actorId, description));
       return TransactionResult.SUCCESS;
     });
   }
@@ -636,8 +659,11 @@ public class EconomyManager implements EconomyAPI {
       String logMessage = String.format("Admin %s: %s (balance: %s)",
           amount.compareTo(BigDecimal.ZERO) >= 0 ? "added" : "deducted",
           formatCurrency(amount.abs()), formatCurrency(newBalance));
+      String msgKey = amount.compareTo(BigDecimal.ZERO) >= 0
+          ? GuiKeys.LogsGui.MSG_ADMIN_ECON_ADDED : GuiKeys.LogsGui.MSG_ADMIN_ECON_DEDUCTED;
       Faction updatedFaction = faction.withLog(
-          FactionLog.create(FactionLog.LogType.ECONOMY, logMessage, adminId)
+          FactionLog.create(FactionLog.LogType.ECONOMY, logMessage, adminId,
+              msgKey, formatCurrency(amount.abs()), formatCurrency(newBalance))
       );
       factionManager.updateFaction(updatedFaction);
 
@@ -692,7 +718,8 @@ public class EconomyManager implements EconomyAPI {
       String logMessage = String.format("Admin set balance to %s (was %s)",
           formatCurrency(newBalance), formatCurrency(oldBalance));
       Faction updatedFaction = faction.withLog(
-          FactionLog.create(FactionLog.LogType.ECONOMY, logMessage, adminId)
+          FactionLog.create(FactionLog.LogType.ECONOMY, logMessage, adminId,
+              GuiKeys.LogsGui.MSG_ADMIN_ECON_SET, formatCurrency(newBalance), formatCurrency(oldBalance))
       );
       factionManager.updateFaction(updatedFaction);
 

@@ -101,7 +101,7 @@ public class ConfigV6ToV7Migration implements Migration {
       }
       return root.get("configVersion").getAsInt() == 6;
     } catch (Exception e) {
-      Logger.warn("[Migration] Failed to check config version: %s", e.getMessage());
+      ErrorHandler.report("[Migration] Failed to check config version for V6->V7", e);
       return false;
     }
   }
@@ -227,7 +227,7 @@ public class ConfigV6ToV7Migration implements Migration {
         } catch (Exception e) {
           warnings.add("Failed to restructure economy.json: " + e.getMessage()
               + " (will be auto-fixed on next save)");
-          Logger.warn("[Migration] Failed to restructure economy.json: %s", e.getMessage());
+          ErrorHandler.report("[Migration] Failed to restructure economy.json", e);
         }
       }
 

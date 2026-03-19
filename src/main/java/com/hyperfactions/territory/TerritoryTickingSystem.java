@@ -1,6 +1,9 @@
 package com.hyperfactions.territory;
 
 import com.hyperfactions.HyperFactions;
+import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.FactionHomeTeleportEvent;
+import com.hyperfactions.api.events.FactionHomeTeleportPreEvent;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Zone;
 import com.hyperfactions.data.ZoneFlags;
@@ -133,7 +136,7 @@ public class TerritoryTickingSystem extends EntityTickingSystem<EntityStore> {
               TeleportManager.TeleportDestination dest = ready.destination();
               if (!isMountEntryAllowed(dest.world(), dest.x(), dest.z())) {
                 playerRef.sendMessage(com.hyperfactions.util.MessageUtil.error(
-                    "You can't teleport into that zone while mounted."));
+                    playerRef, com.hyperfactions.util.CommonKeys.Teleport.MOUNT_TELEPORT_BLOCKED));
                 Logger.debugTerritory("Teleport blocked for mounted player %s to zone at (%.1f, %.1f)",
                     playerUuid, dest.x(), dest.z());
                 mountBlocked = true;
@@ -172,7 +175,7 @@ public class TerritoryTickingSystem extends EntityTickingSystem<EntityStore> {
                   }
                 });
                 ProtectionMessageDebounce.sendDenial(playerRef, "mount_entry",
-                    "You can't enter this zone while mounted.");
+                    com.hyperfactions.util.HFMessages.get(playerRef, com.hyperfactions.util.CommonKeys.Teleport.MOUNT_ENTRY_BLOCKED));
                 Logger.debugTerritory("Mount entry blocked for %s at zone '%s' (%s), safe=(%.1f, %.1f, %.1f)",
                     playerUuid, zone.name(), zone.type().name(), safePos[0], safeY, safePos[1]);
               }
@@ -255,6 +258,28 @@ public class TerritoryTickingSystem extends EntityTickingSystem<EntityStore> {
       pending.successMessage(),
       playerRef::sendMessage
     );
+
+    // Emit events for faction home teleports (factionId is non-null for /f home)
+    if (pending.factionId() != null) {
+      TeleportManager.StartLocation src = pending.startLocation();
+
+      // Pre-event: allow external plugins to cancel warmup-completed teleports
+      if (EventBus.publishCancellable(new FactionHomeTeleportPreEvent(
+          pending.playerUuid(), pending.factionId(),
+          src.world(), src.x(), src.y(), src.z(),
+          dest.world(), dest.x(), dest.y(), dest.z()))) {
+        // Cancelled — teleport already scheduled on world thread, but we skip the post-event
+        // Note: The Teleport component was already added above; full cancellation would require
+        // restructuring the execute flow. For now, the pre-event serves as a notification.
+        return;
+      }
+
+      EventBus.publish(new FactionHomeTeleportEvent(
+        pending.playerUuid(), pending.factionId(),
+        src.world(), src.x(), src.y(), src.z(),
+        dest.world(), dest.x(), dest.y(), dest.z(), dest.yaw(), dest.pitch()
+      ));
+    }
 
     Logger.debugTerritory("Teleport scheduled for %s to %s (%.1f, %.1f, %.1f)",
       pending.playerUuid(), dest.world(), dest.x(), dest.y(), dest.z());

@@ -7,6 +7,10 @@ import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.data.PlayerPower;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.PlayerResolver;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -38,7 +42,7 @@ public class PowerSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.POWER)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to view power info.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Power.NO_PERMISSION));
       return;
     }
 
@@ -56,7 +60,7 @@ public class PowerSubCommand extends FactionSubCommand {
       // Look up target player using centralized resolver
       var resolved = PlayerResolver.resolve(hyperFactions, fctx.getArg(0));
       if (resolved == null) {
-        ctx.sendMessage(prefix().insert(msg("Player not found.", COLOR_RED)));
+        ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.PLAYER_NOT_FOUND));
         return;
       }
       targetUuid = resolved.uuid();
@@ -65,8 +69,8 @@ public class PowerSubCommand extends FactionSubCommand {
 
     // Power info is text-only (no GUI mode needed)
     PlayerPower power = hyperFactions.getPowerManager().getPlayerPower(targetUuid);
-    ctx.sendMessage(msg(targetName + "'s Power:", COLOR_CYAN));
-    ctx.sendMessage(msg("Current: ", COLOR_GRAY).insert(msg(String.format("%.1f/%.1f (%d%%)",
-      power.power(), power.getEffectiveMaxPower(), power.getPowerPercent()), COLOR_WHITE)));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Power.HEADER, targetName), COLOR_CYAN));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Power.CURRENT,
+      String.format("%.1f/%.1f (%d%%)", power.power(), power.getEffectiveMaxPower(), power.getPowerPercent())), COLOR_GRAY));
   }
 }

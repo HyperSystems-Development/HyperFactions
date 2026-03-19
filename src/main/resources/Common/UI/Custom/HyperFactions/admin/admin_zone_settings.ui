@@ -16,7 +16,7 @@ $C.@PageOverlay {
 
     #Title {
       Group {
-        $C.@Title {
+        $C.@Title #PageTitle {
           @Text = "Admin: Zone Settings";
         }
       }
@@ -77,14 +77,14 @@ $C.@PageOverlay {
 
             Group {
               Anchor: (Height: 18, Bottom: 0);
-              Label {
+              Label #CatCombat {
                 Text: "Combat";
                 Style: (FontSize: 11, TextColor: #00AAAA, RenderBold: true);
               }
             }
             Group {
               Anchor: (Height: 12, Bottom: 4);
-              Label {
+              Label #CatCombatSub {
                 Text: "(children only apply when parent ON)";
                 Style: (FontSize: 8, TextColor: #666666);
               }
@@ -250,7 +250,7 @@ $C.@PageOverlay {
 
             Group {
               Anchor: (Height: 18, Bottom: 4);
-              Label {
+              Label #CatDamage {
                 Text: "Damage";
                 Style: (FontSize: 11, TextColor: #00AAAA, RenderBold: true);
               }
@@ -350,7 +350,7 @@ $C.@PageOverlay {
 
             Group {
               Anchor: (Height: 18, Bottom: 4);
-              Label {
+              Label #CatDeath {
                 Text: "Death";
                 Style: (FontSize: 11, TextColor: #00AAAA, RenderBold: true);
               }
@@ -415,14 +415,14 @@ $C.@PageOverlay {
 
             Group {
               Anchor: (Height: 18, Bottom: 0);
-              Label {
+              Label #CatBuilding {
                 Text: "Building";
                 Style: (FontSize: 11, TextColor: #00AAAA, RenderBold: true);
               }
             }
             Group {
               Anchor: (Height: 12, Bottom: 4);
-              Label {
+              Label #CatBuildingSub {
                 Text: "(children only apply when parent ON)";
                 Style: (FontSize: 8, TextColor: #666666);
               }
@@ -525,14 +525,14 @@ $C.@PageOverlay {
 
             Group {
               Anchor: (Height: 18, Bottom: 0);
-              Label {
+              Label #CatInteraction {
                 Text: "Interaction";
                 Style: (FontSize: 11, TextColor: #00AAAA, RenderBold: true);
               }
             }
             Group {
               Anchor: (Height: 12, Bottom: 4);
-              Label {
+              Label #CatInteractionSub {
                 Text: "(children only apply when parent ON)";
                 Style: (FontSize: 8, TextColor: #666666);
               }
@@ -837,7 +837,7 @@ $C.@PageOverlay {
 
             Group {
               Anchor: (Height: 18, Bottom: 4);
-              Label {
+              Label #CatTransport {
                 Text: "Transport";
                 Style: (FontSize: 11, TextColor: #00AAAA, RenderBold: true);
               }
@@ -916,7 +916,7 @@ $C.@PageOverlay {
 
             Group {
               Anchor: (Height: 18, Bottom: 4);
-              Label {
+              Label #CatItems {
                 Text: "Items";
                 Style: (FontSize: 11, TextColor: #00AAAA, RenderBold: true);
               }
@@ -1016,14 +1016,14 @@ $C.@PageOverlay {
 
             Group {
               Anchor: (Height: 18, Bottom: 0);
-              Label {
+              Label #CatSpawning {
                 Text: "Mob Spawning";
                 Style: (FontSize: 11, TextColor: #00AAAA, RenderBold: true);
               }
             }
             Group {
               Anchor: (Height: 12, Bottom: 4);
-              Label {
+              Label #CatSpawningSub {
                 Text: "(children only apply when parent ON)";
                 Style: (FontSize: 8, TextColor: #666666);
               }
@@ -1148,14 +1148,14 @@ $C.@PageOverlay {
 
             Group {
               Anchor: (Height: 18, Bottom: 0);
-              Label {
+              Label #CatMobClear {
                 Text: "Mob Clearing";
                 Style: (FontSize: 11, TextColor: #00AAAA, RenderBold: true);
               }
             }
             Group {
               Anchor: (Height: 12, Bottom: 4);
-              Label {
+              Label #CatMobClearSub {
                 Text: "(children only apply when parent ON)";
                 Style: (FontSize: 8, TextColor: #666666);
               }

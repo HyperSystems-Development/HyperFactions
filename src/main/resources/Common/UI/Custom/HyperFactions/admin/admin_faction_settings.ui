@@ -15,7 +15,7 @@ $C.@PageOverlay {
 
     #Title {
       Group {
-        $C.@Title {
+        $C.@Title #PageTitle {
           @Text = "Admin: Faction Settings";
         }
       }
@@ -30,7 +30,7 @@ $C.@PageOverlay {
         Anchor: (Height: 32, Bottom: 8);
         LayoutMode: Left;
 
-        Label {
+        Label #EditingLabel {
           Text: "Editing:";
           Style: (FontSize: 13, TextColor: #AAAAAA, VerticalAlignment: Center);
         }
@@ -44,7 +44,7 @@ $C.@PageOverlay {
 
         Label { FlexWeight: 1; }
 
-        Label {
+        Label #AdminOverrideLabel {
           Text: "[Admin Override]";
           Style: (FontSize: 10, TextColor: #FFAA00, VerticalAlignment: Center);
         }
@@ -69,7 +69,7 @@ $C.@PageOverlay {
           Padding: (Left: 0, Right: 8, Top: 0, Bottom: 0);
 
           // --- General ---
-          Label {
+          Label #SectionGeneral {
             Text: "General";
             Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
             Anchor: (Height: 18, Bottom: 4);
@@ -90,7 +90,7 @@ $C.@PageOverlay {
               Anchor: (Height: 32, Bottom: 4);
               LayoutMode: Left;
 
-              Label {
+              Label #NameLabel {
                 Text: "Name:";
                 Style: (FontSize: 12, TextColor: #888888, VerticalAlignment: Center);
                 Anchor: (Width: 60);
@@ -112,7 +112,7 @@ $C.@PageOverlay {
               Anchor: (Height: 32, Bottom: 4);
               LayoutMode: Left;
 
-              Label {
+              Label #TagLabel {
                 Text: "Tag:";
                 Style: (FontSize: 12, TextColor: #888888, VerticalAlignment: Center);
                 Anchor: (Width: 60);
@@ -134,7 +134,7 @@ $C.@PageOverlay {
               Anchor: (Height: 32);
               LayoutMode: Left;
 
-              Label {
+              Label #DescLabel {
                 Text: "Desc:";
                 Style: (FontSize: 12, TextColor: #888888, VerticalAlignment: Center);
                 Anchor: (Width: 60);
@@ -153,7 +153,7 @@ $C.@PageOverlay {
           }
 
           // --- Recruitment ---
-          Label {
+          Label #SectionRecruitment {
             Text: "Recruitment";
             Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
             Anchor: (Height: 18, Bottom: 4);
@@ -173,7 +173,7 @@ $C.@PageOverlay {
               Anchor: (Height: 32);
               LayoutMode: Left;
 
-              Label {
+              Label #StatusLabel {
                 Text: "Status:";
                 Style: (FontSize: 12, TextColor: #888888, VerticalAlignment: Center);
                 Anchor: (Width: 60);
@@ -187,7 +187,7 @@ $C.@PageOverlay {
           }
 
           // --- Home Location ---
-          Label {
+          Label #SectionHome {
             Text: "Home Location";
             Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
             Anchor: (Height: 18, Bottom: 4);
@@ -207,7 +207,7 @@ $C.@PageOverlay {
               Anchor: (Height: 28, Bottom: 4);
               LayoutMode: Left;
 
-              Label {
+              Label #LocationLabel {
                 Text: "Location:";
                 Style: (FontSize: 12, TextColor: #888888, VerticalAlignment: Center);
                 Anchor: (Width: 60);
@@ -236,7 +236,7 @@ $C.@PageOverlay {
             LayoutMode: Top;
             Anchor: (Bottom: 8);
 
-            Label {
+            Label #SectionDangerZone {
               Text: "Danger Zone";
               Style: (FontSize: 11, TextColor: #FF5555, RenderBold: true);
               Anchor: (Height: 18, Bottom: 4);
@@ -251,7 +251,7 @@ $C.@PageOverlay {
               Padding: (Left: 12, Right: 12, Top: 8, Bottom: 8);
               LayoutMode: Top;
 
-              Label {
+              Label #IrreversibleWarning {
                 Text: "This action is irreversible.";
                 Style: (FontSize: 10, TextColor: #AA5555);
                 Anchor: (Height: 18, Bottom: 4);
@@ -281,20 +281,20 @@ $C.@PageOverlay {
 
           // Lock hint
           Group {
-            Anchor: (Height: 22, Bottom: 6);
+            Anchor: (Height: 32, Bottom: 6);
             Background: (Color: #1a1a2a);
-            Padding: (Left: 8, Right: 8, Top: 0, Bottom: 0);
+            Padding: (Left: 8, Right: 8, Top: 4, Bottom: 4);
             LayoutMode: Left;
 
-            Label {
+            Label #LockHint {
               Text: "Some options may be locked by the server and won't accept changes.";
-              Style: (FontSize: 9, TextColor: #555577, VerticalAlignment: Center);
+              Style: (FontSize: 9, TextColor: #555577, VerticalAlignment: Center, Wrap: true);
               FlexWeight: 1;
             }
           }
 
           // ---- TERRITORY PERMISSIONS ----
-          Label {
+          Label #SectionTerritoryPerms {
             Text: "Territory Permissions";
             Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
             Anchor: (Height: 18, Bottom: 4);
@@ -317,22 +317,22 @@ $C.@PageOverlay {
               Padding: (Left: 6, Right: 6);
 
               Label { Anchor: (Width: 122); }
-              Label {
+              Label #ColOutsider {
                 Text: "Out";
                 Style: (FontSize: 9, TextColor: #AAAAAA, RenderBold: true);
                 Anchor: (Width: 52);
               }
-              Label {
+              Label #ColAlly {
                 Text: "Ally";
                 Style: (FontSize: 9, TextColor: #55FF55, RenderBold: true);
                 Anchor: (Width: 52);
               }
-              Label {
+              Label #ColMember {
                 Text: "Mem";
                 Style: (FontSize: 9, TextColor: #00FFFF, RenderBold: true);
                 Anchor: (Width: 52);
               }
-              Label {
+              Label #ColOfficer {
                 Text: "Off";
                 Style: (FontSize: 9, TextColor: #FFD700, RenderBold: true);
                 Anchor: (Width: 52);
@@ -340,7 +340,7 @@ $C.@PageOverlay {
             }
 
             // ---- BUILDING category ----
-            Label {
+            Label #CatBuilding {
               Text: "BUILDING";
               Style: (FontSize: 9, TextColor: #666688, RenderBold: true);
               Anchor: (Height: 16, Bottom: 2);
@@ -353,7 +353,7 @@ $C.@PageOverlay {
               Background: (Color: #0d1520);
               Padding: (Left: 6, Right: 6);
 
-              Label {
+              Label #PermBreak {
                 Text: "Break";
                 Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
                 Anchor: (Width: 114);
@@ -371,7 +371,7 @@ $C.@PageOverlay {
               Background: (Color: #111a28);
               Padding: (Left: 6, Right: 6);
 
-              Label {
+              Label #PermPlace {
                 Text: "Place";
                 Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
                 Anchor: (Width: 114);
@@ -383,12 +383,12 @@ $C.@PageOverlay {
             }
 
             // ---- INTERACTION category ----
-            Label {
+            Label #CatInteraction {
               Text: "INTERACTION";
               Style: (FontSize: 9, TextColor: #666688, RenderBold: true);
               Anchor: (Height: 16, Bottom: 2);
             }
-            Label {
+            Label #CatInteractionSub {
               Text: "(children disabled when All is off)";
               Style: (FontSize: 8, TextColor: #555566);
               Anchor: (Height: 12, Bottom: 2);
@@ -401,7 +401,7 @@ $C.@PageOverlay {
               Background: (Color: #0d1520);
               Padding: (Left: 6, Right: 6);
 
-              Label {
+              Label #PermAll {
                 Text: "All";
                 Style: (FontSize: 11, TextColor: #CCCCCC, RenderBold: true, VerticalAlignment: Center);
                 Anchor: (Width: 114);
@@ -419,7 +419,7 @@ $C.@PageOverlay {
               Background: (Color: #0a1018);
               Padding: (Left: 18, Right: 6);
 
-              Label {
+              Label #PermDoor {
                 Text: "Door";
                 Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
                 Anchor: (Width: 102);
@@ -437,7 +437,7 @@ $C.@PageOverlay {
               Background: (Color: #0a1018);
               Padding: (Left: 18, Right: 6);
 
-              Label {
+              Label #PermChest {
                 Text: "Chest";
                 Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
                 Anchor: (Width: 102);
@@ -455,7 +455,7 @@ $C.@PageOverlay {
               Background: (Color: #0a1018);
               Padding: (Left: 18, Right: 6);
 
-              Label {
+              Label #PermBench {
                 Text: "Bench";
                 Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
                 Anchor: (Width: 102);
@@ -473,7 +473,7 @@ $C.@PageOverlay {
               Background: (Color: #0a1018);
               Padding: (Left: 18, Right: 6);
 
-              Label {
+              Label #PermProcessing {
                 Text: "Processing";
                 Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
                 Anchor: (Width: 102);
@@ -491,7 +491,7 @@ $C.@PageOverlay {
               Background: (Color: #0a1018);
               Padding: (Left: 18, Right: 6);
 
-              Label {
+              Label #PermSeat {
                 Text: "Seat";
                 Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
                 Anchor: (Width: 102);
@@ -509,7 +509,7 @@ $C.@PageOverlay {
               Background: (Color: #0a1018);
               Padding: (Left: 18, Right: 6);
 
-              Label {
+              Label #PermTransport {
                 Text: "Transport";
                 Style: (FontSize: 10, TextColor: #AAAAAA, VerticalAlignment: Center);
                 Anchor: (Width: 102);
@@ -521,7 +521,7 @@ $C.@PageOverlay {
             }
 
             // ---- OTHER PERMISSIONS category ----
-            Label {
+            Label #CatOther {
               Text: "OTHER";
               Style: (FontSize: 9, TextColor: #666688, RenderBold: true);
               Anchor: (Height: 16, Bottom: 2, Top: 6);
@@ -534,7 +534,7 @@ $C.@PageOverlay {
               Background: (Color: #0d1520);
               Padding: (Left: 6, Right: 6);
 
-              Label {
+              Label #PermCrateUse {
                 Text: "Crate Use";
                 Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
                 Anchor: (Width: 114);
@@ -552,7 +552,7 @@ $C.@PageOverlay {
               Background: (Color: #111a28);
               Padding: (Left: 6, Right: 6);
 
-              Label {
+              Label #PermNpcTame {
                 Text: "NPC Tame";
                 Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
                 Anchor: (Width: 114);
@@ -570,7 +570,7 @@ $C.@PageOverlay {
               Background: (Color: #0d1520);
               Padding: (Left: 6, Right: 6);
 
-              Label {
+              Label #PermPveDamage {
                 Text: "PvE Damage";
                 Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
                 Anchor: (Width: 114);
@@ -596,7 +596,7 @@ $C.@PageOverlay {
           Padding: (Left: 8, Right: 0, Top: 0, Bottom: 0);
 
           // --- Appearance ---
-          Label {
+          Label #SectionAppearance {
             Text: "Appearance";
             Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
             Anchor: (Height: 18, Bottom: 4);
@@ -617,7 +617,7 @@ $C.@PageOverlay {
               Anchor: (Height: 28, Bottom: 4);
               LayoutMode: Left;
 
-              Label {
+              Label #ColorLabel {
                 Text: "Color:";
                 Style: (FontSize: 12, TextColor: #888888, VerticalAlignment: Center);
                 Anchor: (Width: 42);
@@ -650,12 +650,12 @@ $C.@PageOverlay {
           }
 
           // --- Mob Spawning ---
-          Label {
+          Label #SectionMobSpawning {
             Text: "Mob Spawning";
             Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
             Anchor: (Height: 18, Bottom: 2);
           }
-          Label {
+          Label #SectionMobSpawningSub {
             Text: "(children disabled when master is off)";
             Style: (FontSize: 8, TextColor: #666666);
             Anchor: (Height: 12, Bottom: 4);
@@ -678,7 +678,7 @@ $C.@PageOverlay {
               Background: (Color: #0d1520);
               Padding: (Left: 6, Right: 6);
 
-              Label {
+              Label #PermMobSpawning {
                 Text: "Mob Spawning";
                 Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
                 Anchor: (Width: 120);
@@ -697,7 +697,7 @@ $C.@PageOverlay {
               Background: (Color: #0a1018);
               Padding: (Left: 18, Right: 6);
 
-              Label {
+              Label #PermHostile {
                 Text: "Hostile Mobs";
                 Style: (FontSize: 10, TextColor: #FF5555, VerticalAlignment: Center);
                 Anchor: (Width: 108);
@@ -716,7 +716,7 @@ $C.@PageOverlay {
               Background: (Color: #0a1018);
               Padding: (Left: 18, Right: 6);
 
-              Label {
+              Label #PermPassive {
                 Text: "Passive Mobs";
                 Style: (FontSize: 10, TextColor: #55FF55, VerticalAlignment: Center);
                 Anchor: (Width: 108);
@@ -735,7 +735,7 @@ $C.@PageOverlay {
               Background: (Color: #0a1018);
               Padding: (Left: 18, Right: 6);
 
-              Label {
+              Label #PermNeutral {
                 Text: "Neutral Mobs";
                 Style: (FontSize: 10, TextColor: #FFFF55, VerticalAlignment: Center);
                 Anchor: (Width: 108);
@@ -749,7 +749,7 @@ $C.@PageOverlay {
           }
 
           // --- Faction Settings ---
-          Label {
+          Label #SectionFactionSettings {
             Text: "Faction Settings";
             Style: (FontSize: 11, TextColor: #888888, RenderBold: true);
             Anchor: (Height: 18, Bottom: 4);
@@ -772,7 +772,7 @@ $C.@PageOverlay {
               Background: (Color: #0d1520);
               Padding: (Left: 6, Right: 6);
 
-              Label {
+              Label #PermPvP {
                 Text: "PvP in Territory";
                 Style: (FontSize: 11, TextColor: #AAAAAA, VerticalAlignment: Center);
                 Anchor: (Width: 120);
@@ -796,7 +796,7 @@ $C.@PageOverlay {
               Background: (Color: #111a28);
               Padding: (Left: 6, Right: 6);
 
-              Label {
+              Label #PermOfficersEdit {
                 Text: "Officers can edit";
                 Style: (FontSize: 11, TextColor: #AAAAAA, VerticalAlignment: Center);
                 Anchor: (Width: 120);

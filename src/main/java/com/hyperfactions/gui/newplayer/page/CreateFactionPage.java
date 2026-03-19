@@ -9,6 +9,9 @@ import com.hyperfactions.gui.newplayer.NewPlayerNavBarHelper;
 import com.hyperfactions.gui.newplayer.data.NewPlayerPageData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -78,17 +81,64 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
     // Setup navigation bar
     NewPlayerNavBarHelper.setupBar(playerRef, PAGE_ID, cmd, events);
 
+    // Localize static labels — page title and section headers
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, GuiKeys.CreateGui.TITLE));
+    cmd.set("#SectionPreview.Text", HFMessages.get(playerRef, GuiKeys.CreateGui.SECTION_PREVIEW));
+    cmd.set("#NamePrefix.Text", HFMessages.get(playerRef, GuiKeys.CreateGui.NAME_PREFIX));
+    cmd.set("#SectionBasicInfo.Text", HFMessages.get(playerRef, GuiKeys.CreateGui.SECTION_BASIC_INFO));
+    cmd.set("#FactionNameLabel.Text", HFMessages.get(playerRef, GuiKeys.CreateGui.FACTION_NAME_LABEL));
+    cmd.set("#TagLabel.Text", HFMessages.get(playerRef, GuiKeys.CreateGui.TAG_LABEL));
+    cmd.set("#SectionDetails.Text", HFMessages.get(playerRef, GuiKeys.CreateGui.SECTION_DETAILS));
+    cmd.set("#DescLabel.Text", HFMessages.get(playerRef, GuiKeys.CreateGui.DESC_LABEL));
+    cmd.set("#RecruitmentLabel.Text", HFMessages.get(playerRef, GuiKeys.CreateGui.RECRUITMENT_LABEL));
+
+    // Localize middle column — territory permissions (reuse SettingsGui keys)
+    cmd.set("#LockHint.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.LOCK_HINT));
+    cmd.set("#TerritoryPermissionsLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.TERRITORY_PERMISSIONS));
+    cmd.set("#ColOut.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.COL_OUT));
+    cmd.set("#ColAlly.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.COL_ALLY));
+    cmd.set("#ColMem.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.COL_MEM));
+    cmd.set("#ColOff.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.COL_OFF));
+    cmd.set("#CatBuilding.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.CAT_BUILDING));
+    cmd.set("#PermBreak.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_BREAK));
+    cmd.set("#PermPlace.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_PLACE));
+    cmd.set("#CatInteraction.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.CAT_INTERACTION));
+    cmd.set("#InteractionHint.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.INTERACTION_HINT));
+    cmd.set("#PermAll.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_ALL));
+    cmd.set("#PermDoor.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_DOOR));
+    cmd.set("#PermChest.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_CHEST));
+    cmd.set("#PermBench.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_BENCH));
+    cmd.set("#PermProcessing.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_PROCESSING));
+    cmd.set("#PermSeat.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_SEAT));
+    cmd.set("#PermTransport.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_TRANSPORT));
+    cmd.set("#CatOther.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.CAT_OTHER));
+    cmd.set("#PermCrate.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_CRATE));
+    cmd.set("#PermNpcTame.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_NPC_TAME));
+    cmd.set("#PermPve.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_PVE));
+
+    // Localize right column — faction color, mob spawning, combat
+    cmd.set("#SectionFactionColor.Text", HFMessages.get(playerRef, GuiKeys.CreateGui.SECTION_FACTION_COLOR));
+    cmd.set("#SectionMobSpawning.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.MOB_SPAWNING));
+    cmd.set("#MobSpawningHint.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.MOB_SPAWNING_HINT));
+    cmd.set("#MobSpawningLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.MOB_SPAWNING_LABEL));
+    cmd.set("#HostileMobsLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.HOSTILE_MOBS));
+    cmd.set("#PassiveMobsLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PASSIVE_MOBS));
+    cmd.set("#NeutralMobsLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.NEUTRAL_MOBS));
+    cmd.set("#SectionCombat.Text", HFMessages.get(playerRef, GuiKeys.CreateGui.SECTION_COMBAT));
+    cmd.set("#PvPLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PVP_IN_TERRITORY));
+    cmd.set("#CreateBtn.Text", HFMessages.get(playerRef, GuiKeys.CreateGui.CREATE_BTN));
+
     // Set default ColorPicker value (cyan)
     cmd.set("#FactionColorPicker.Value", DEFAULT_COLOR);
 
     // Set preview defaults
-    cmd.set("#PreviewName.TextSpans", Message.raw("Your Faction Name").color(DEFAULT_COLOR));
-    cmd.set("#PreviewLeader.Text", "Leader: " + playerRef.getUsername());
+    cmd.set("#PreviewName.TextSpans", Message.raw(HFMessages.get(playerRef, GuiKeys.CreateGui.PREVIEW_NAME)).color(DEFAULT_COLOR));
+    cmd.set("#PreviewLeader.Text", HFMessages.get(playerRef, GuiKeys.CreateGui.LEADER_PREFIX, playerRef.getUsername()));
 
     // Recruitment dropdown
     cmd.set("#RecruitmentDropdown.Entries", List.of(
-        new DropdownEntryInfo(LocalizableString.fromString("Invite Only"), "INVITE_ONLY"),
-        new DropdownEntryInfo(LocalizableString.fromString("Open"), "OPEN")
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_INVITE_ONLY)), "INVITE_ONLY"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_OPEN)), "OPEN")
     ));
     cmd.set("#RecruitmentDropdown.Value", openRecruitment ? "OPEN" : "INVITE_ONLY");
 
@@ -166,7 +216,7 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
 
     // PvP toggle
     buildPermissionToggle(cmd, events, "PvPToggle", "pvpEnabled", perms.pvpEnabled(), config, false);
-    cmd.set("#PvPStatus.Text", perms.pvpEnabled() ? "Enabled" : "Disabled");
+    cmd.set("#PvPStatus.Text", perms.pvpEnabled() ? HFMessages.get(playerRef, GuiKeys.SettingsGui.PVP_ENABLED) : HFMessages.get(playerRef, GuiKeys.SettingsGui.PVP_DISABLED));
     cmd.set("#PvPStatus.Style.TextColor", perms.pvpEnabled() ? "#55FF55" : "#FF5555");
   }
 
@@ -233,7 +283,7 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
     String hex = extractHex(data.inputColor);
     String name = data.inputName != null ? data.inputName : "";
     String tag = data.inputTag != null ? data.inputTag : "";
-    String previewText = !name.isEmpty() ? name : "Your Faction Name";
+    String previewText = !name.isEmpty() ? name : HFMessages.get(playerRef, GuiKeys.CreateGui.PREVIEW_NAME);
     if (!tag.isEmpty()) {
       previewText += " [" + tag + "]";
     }
@@ -287,26 +337,26 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
 
     // Validate faction name
     if (name.isEmpty()) {
-      player.sendMessage(MessageUtil.errorText("Please enter a faction name."));
+      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.ENTER_NAME));
       sendUpdate();
       return;
     }
 
     if (name.length() < MIN_NAME_LENGTH) {
-      player.sendMessage(MessageUtil.errorText("Faction name must be at least " + MIN_NAME_LENGTH + " characters."));
+      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.NAME_TOO_SHORT, MIN_NAME_LENGTH));
       sendUpdate();
       return;
     }
 
     if (name.length() > MAX_NAME_LENGTH) {
-      player.sendMessage(MessageUtil.errorText("Faction name cannot exceed " + MAX_NAME_LENGTH + " characters."));
+      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.NAME_TOO_LONG, MAX_NAME_LENGTH));
       sendUpdate();
       return;
     }
 
     // Check if name is already taken
     if (factionManager.getFactionByName(name) != null) {
-      player.sendMessage(MessageUtil.errorText("A faction with this name already exists."));
+      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.NAME_TAKEN));
       sendUpdate();
       return;
     }
@@ -314,13 +364,13 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
     // Validate tag format if provided
     if (!tag.isEmpty()) {
       if (tag.length() < MIN_TAG_LENGTH || tag.length() > MAX_TAG_LENGTH) {
-        player.sendMessage(MessageUtil.errorText("Faction tag must be " + MIN_TAG_LENGTH + "-" + MAX_TAG_LENGTH + " characters."));
+        player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.TAG_LENGTH, MIN_TAG_LENGTH, MAX_TAG_LENGTH));
         sendUpdate();
         return;
       }
 
       if (!tag.matches("^[a-zA-Z0-9]+$")) {
-        player.sendMessage(MessageUtil.errorText("Faction tag can only contain letters and numbers."));
+        player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.TAG_FORMAT));
         sendUpdate();
         return;
       }
@@ -333,14 +383,14 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
 
     // Validate description length
     if (description.length() > MAX_DESCRIPTION_LENGTH) {
-      player.sendMessage(MessageUtil.errorText("Description cannot exceed " + MAX_DESCRIPTION_LENGTH + " characters."));
+      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.DESC_TOO_LONG, MAX_DESCRIPTION_LENGTH));
       sendUpdate();
       return;
     }
 
     // Check if player is already in a faction
     if (factionManager.isInFaction(playerRef.getUuid())) {
-      player.sendMessage(MessageUtil.errorText("You are already in a faction."));
+      player.sendMessage(MessageUtil.errorText(playerRef, CommonKeys.Common.ALREADY_IN_FACTION));
       sendUpdate();
       return;
     }
@@ -376,11 +426,7 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
 
           factionManager.updateFaction(updated);
 
-          player.sendMessage(
-              Message.raw("Faction ").color("#55FF55")
-                  .insert(Message.raw(name).color("#00FFFF"))
-                  .insert(Message.raw(" created successfully!").color("#55FF55"))
-          );
+          player.sendMessage(MessageUtil.successText(playerRef, GuiKeys.CreateGui.CREATED, name));
 
           // Open faction dashboard
           Faction freshFaction = factionManager.getFaction(updated.id());
@@ -390,28 +436,28 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
             guiManager.openFactionMain(player, ref, store, playerRef);
           }
         } else {
-          player.sendMessage(MessageUtil.text("Faction created but could not open dashboard.", MessageUtil.COLOR_GOLD));
+          player.sendMessage(MessageUtil.text(playerRef, GuiKeys.CreateGui.CREATED_NO_DASHBOARD, MessageUtil.COLOR_GOLD));
           guiManager.openFactionMain(player, ref, store, playerRef);
         }
       }
 
       case ALREADY_IN_FACTION -> {
-        player.sendMessage(MessageUtil.errorText("You are already in a faction."));
+        player.sendMessage(MessageUtil.errorText(playerRef, CommonKeys.Common.ALREADY_IN_FACTION));
         sendUpdate();
       }
 
       case NAME_TAKEN -> {
-        player.sendMessage(MessageUtil.errorText("A faction with this name already exists."));
+        player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.NAME_TAKEN));
         sendUpdate();
       }
 
       case NAME_TOO_SHORT, NAME_TOO_LONG -> {
-        player.sendMessage(MessageUtil.errorText("Invalid faction name."));
+        player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.INVALID_NAME));
         sendUpdate();
       }
 
       default -> {
-        player.sendMessage(MessageUtil.errorText("Could not create faction."));
+        player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.CREATE_FAILED));
         sendUpdate();
       }
     }

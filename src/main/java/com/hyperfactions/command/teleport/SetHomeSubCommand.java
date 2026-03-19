@@ -8,6 +8,8 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.ChunkUtil;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.math.vector.Vector3d;
@@ -40,12 +42,12 @@ public class SetHomeSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.SETHOME)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to set faction home.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.SETHOME_NO_PERMISSION));
       return;
     }
 
     if (!ConfigManager.get().isWorldAllowed(currentWorld.getName())) {
-      ctx.sendMessage(prefix().insert(msg("Cannot set home in this world.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.SETHOME_WORLD_NOT_ALLOWED));
       return;
     }
 
@@ -66,7 +68,7 @@ public class SetHomeSubCommand extends FactionSubCommand {
     UUID claimOwner = hyperFactions.getClaimManager().getClaimOwner(currentWorld.getName(), chunkX, chunkZ);
 
     if (claimOwner == null || !claimOwner.equals(faction.id())) {
-      ctx.sendMessage(prefix().insert(msg("You can only set home in your faction's territory.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.NOT_IN_TERRITORY));
       return;
     }
 
@@ -78,13 +80,12 @@ public class SetHomeSubCommand extends FactionSubCommand {
     FactionManager.FactionResult result = hyperFactions.getFactionManager().setHome(faction.id(), home, player.getUuid());
 
     if (result == FactionManager.FactionResult.SUCCESS) {
-      ctx.sendMessage(prefix().insert(msg("Faction home set!", COLOR_GREEN)));
-      broadcastToFaction(faction.id(), prefix().insert(msg(player.getUsername(), COLOR_YELLOW))
-        .insert(msg(" set the faction home.", COLOR_GREEN)));
+      ctx.sendMessage(MessageUtil.success(player, CommandKeys.Home.SET));
+      broadcastToFaction(faction.id(), MessageUtil.success(player, CommandKeys.Home.SETHOME_BROADCAST, player.getUsername()));
     } else if (result == FactionManager.FactionResult.NOT_OFFICER) {
-      ctx.sendMessage(prefix().insert(msg("You must be an officer to set the home.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.SETHOME_NOT_OFFICER));
     } else {
-      ctx.sendMessage(prefix().insert(msg("Failed to set home.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.SETHOME_FAILED));
     }
   }
 }

@@ -13,6 +13,8 @@ import com.hyperfactions.manager.ConfirmationManager.ConfirmationType;
 import com.hyperfactions.manager.ConfirmationManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -43,7 +45,7 @@ public class LeaveSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.LEAVE)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to leave factions.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Leave.NO_PERMISSION));
       return;
     }
 
@@ -78,10 +80,9 @@ public class LeaveSubCommand extends FactionSubCommand {
 
     switch (confirmResult) {
       case NEEDS_CONFIRMATION, EXPIRED_RECREATED -> {
-        ctx.sendMessage(prefix().insert(msg("Are you sure you want to leave your faction?", COLOR_YELLOW)));
-        ctx.sendMessage(prefix().insert(msg("Type ", COLOR_YELLOW))
-          .insert(msg("/f leave --text", COLOR_WHITE))
-          .insert(msg(" again within " + confirmManager.getTimeoutSeconds() + " seconds to confirm.", COLOR_YELLOW)));
+        ctx.sendMessage(MessageUtil.info(player, CommandKeys.Leave.CONFIRM_PROMPT, COLOR_YELLOW));
+        ctx.sendMessage(MessageUtil.info(player, CommandKeys.Leave.CONFIRM_INSTRUCTION, COLOR_YELLOW,
+          confirmManager.getTimeoutSeconds()));
       }
       case CONFIRMED -> {
         UUID factionId = faction.id();
@@ -89,15 +90,14 @@ public class LeaveSubCommand extends FactionSubCommand {
           factionId, player.getUuid(), player.getUuid(), false
         );
         if (result == FactionManager.FactionResult.SUCCESS) {
-          ctx.sendMessage(prefix().insert(msg("You have left your faction.", COLOR_GREEN)));
-          broadcastToFaction(factionId, prefix().insert(msg(player.getUsername(), COLOR_YELLOW))
-            .insert(msg(" has left the faction.", COLOR_RED)));
+          ctx.sendMessage(MessageUtil.success(player, CommandKeys.Leave.SUCCESS));
+          broadcastToFaction(factionId, MessageUtil.error(player, CommandKeys.Leave.BROADCAST, player.getUsername()));
         } else {
-          ctx.sendMessage(prefix().insert(msg("Failed to leave faction.", COLOR_RED)));
+          ctx.sendMessage(MessageUtil.error(player, CommandKeys.Leave.FAILED));
         }
       }
       case DIFFERENT_ACTION -> {
-        ctx.sendMessage(prefix().insert(msg("Previous confirmation cancelled. Type again to confirm leave.", COLOR_YELLOW)));
+        ctx.sendMessage(MessageUtil.info(player, CommandKeys.Leave.CANCELLED, COLOR_YELLOW));
       }
       default -> throw new IllegalStateException("Unexpected value");
     }

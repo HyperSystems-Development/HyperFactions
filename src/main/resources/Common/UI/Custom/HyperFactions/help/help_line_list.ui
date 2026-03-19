@@ -1,0 +1,11 @@
+// Help content line - list item with left indent (wrapping)
+
+Group {
+  Padding: (Left: 12, Top: 1, Bottom: 1);
+
+  Label #Text {
+    Text: "";
+    Style: (FontSize: 11, TextColor: #CCCCCC, Wrap: true, VerticalAlignment: Center);
+    Anchor: (Left: 0, Right: 0);
+  }
+}

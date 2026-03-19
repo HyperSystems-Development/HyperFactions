@@ -9,7 +9,10 @@ import com.hyperfactions.gui.faction.data.PlayerInfoData;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.storage.PlayerStorage;
+import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.TimeUtil;
 import com.hyperfactions.util.UuidUtil;
@@ -17,7 +20,6 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.ui.builder.EventData;
@@ -103,13 +105,32 @@ public class PlayerInfoPage extends InteractiveCustomUIPage<PlayerInfoData> {
     // Load the player info template
     cmd.append(UIPaths.PLAYER_INFO);
 
+    // === Static labels ===
+    cmd.set("#PageTitle.Text", HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.TITLE));
+    cmd.set("#FirstJoinedLabel.Text", HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.FIRST_JOINED_LABEL));
+    cmd.set("#LastOnlineLabel.Text", HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.LAST_ONLINE_LABEL));
+    cmd.set("#FactionLabel.Text", HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.FACTION_LABEL));
+    cmd.set("#RoleLabel.Text", HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.ROLE_LABEL));
+    cmd.set("#JoinedLabel.Text", HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.JOINED_LABEL_STATIC));
+    cmd.set("#NoFactionLabel.Text", HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.NOT_IN_FACTION));
+    cmd.set("#PowerHeader.Text", HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.POWER_HEADER));
+    cmd.set("#PowerSubtitle.Text", HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.CURRENT_MAX));
+    cmd.set("#CombatHeader.Text", HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.COMBAT_HEADER));
+    cmd.set("#CombatSubtitle.Text", HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.KILLS_DEATHS));
+    cmd.set("#KDRHeader.Text", HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.KDR_HEADER));
+    cmd.set("#MembershipHistoryLabel.Text", HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.MEMBERSHIP_HISTORY));
+    cmd.set("#ViewFactionBtn.Text", HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.VIEW_FACTION_BTN));
+    cmd.set("#BackBtn.Text", HFMessages.get(viewerRef, CommonKeys.Common.BACK));
+
     // === Header ===
     cmd.set("#PlayerName.Text", targetPlayerName);
 
     // Check if target is online
     PlayerRef targetRef = Universe.get().getPlayer(targetPlayerUuid);
     boolean isOnline = targetRef != null && targetRef.isValid();
-    cmd.set("#OnlineIndicator.Text", isOnline ? "Online" : "Offline");
+    cmd.set("#OnlineIndicator.Text", isOnline
+        ? HFMessages.get(viewerRef, CommonKeys.Common.ONLINE)
+        : HFMessages.get(viewerRef, CommonKeys.Common.OFFLINE));
     cmd.set("#OnlineIndicator.Style.TextColor", GuiColors.forOnlineStatus(isOnline));
 
     // === First Joined / Last Online ===
@@ -117,15 +138,15 @@ public class PlayerInfoPage extends InteractiveCustomUIPage<PlayerInfoData> {
     if (cachedPlayerData != null && cachedPlayerData.getFirstJoined() > 0) {
       cmd.set("#FirstJoinedValue.Text", TimeUtil.formatDate(cachedPlayerData.getFirstJoined()));
     } else {
-      cmd.set("#FirstJoinedValue.Text", "Unknown");
+      cmd.set("#FirstJoinedValue.Text", HFMessages.get(viewerRef, CommonKeys.Common.UNKNOWN));
     }
     if (isOnline) {
-      cmd.set("#LastOnlineValue.Text", "Now");
+      cmd.set("#LastOnlineValue.Text", HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.NOW));
       cmd.set("#LastOnlineValue.Style.TextColor", "#55FF55");
     } else if (cachedPlayerData != null && cachedPlayerData.getLastOnline() > 0) {
       cmd.set("#LastOnlineValue.Text", TimeUtil.formatRelative(cachedPlayerData.getLastOnline()));
     } else {
-      cmd.set("#LastOnlineValue.Text", "Unknown");
+      cmd.set("#LastOnlineValue.Text", HFMessages.get(viewerRef, CommonKeys.Common.UNKNOWN));
     }
 
     // === Faction Section ===
@@ -200,7 +221,7 @@ public class PlayerInfoPage extends InteractiveCustomUIPage<PlayerInfoData> {
       List<MembershipRecord> history = new java.util.ArrayList<>(cachedPlayerData.getMembershipHistory());
       Collections.reverse(history);
 
-      cmd.set("#HistoryCount.Text", history.size() + " records");
+      cmd.set("#HistoryCount.Text", HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.HISTORY_COUNT, history.size()));
       cmd.appendInline("#HistoryList", "Group #HistoryCards { LayoutMode: Top; }");
 
       for (int i = 0; i < history.size(); i++) {
@@ -210,8 +231,10 @@ public class PlayerInfoPage extends InteractiveCustomUIPage<PlayerInfoData> {
 
         cmd.set(idx + " #HFactionName.Text", rec.factionName());
         cmd.set(idx + " #HRole.Text", ConfigManager.get().getRoleDisplayName(rec.highestRole()));
-        cmd.set(idx + " #HJoined.Text", "Joined: " + TimeUtil.formatDate(rec.joinedAt()));
-        cmd.set(idx + " #HLeft.Text", rec.isActive() ? "Current" : "Left: " + TimeUtil.formatDate(rec.leftAt()));
+        cmd.set(idx + " #HJoined.Text", HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.JOINED_LABEL, TimeUtil.formatDate(rec.joinedAt())));
+        cmd.set(idx + " #HLeft.Text", rec.isActive()
+            ? HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.CURRENT)
+            : HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.LEFT_LABEL, TimeUtil.formatDate(rec.leftAt())));
         cmd.set(idx + " #HReason.Text", formatReason(rec.reason()));
         cmd.set(idx + " #HReason.Style.TextColor", GuiColors.forLeaveReason(rec.reason()));
         cmd.set(idx + " #RoleBar.Background.Color", GuiColors.forRole(rec.highestRole()));
@@ -219,7 +242,7 @@ public class PlayerInfoPage extends InteractiveCustomUIPage<PlayerInfoData> {
     } else {
       cmd.set("#HistoryCount.Text", "");
       cmd.appendInline("#HistoryList",
-          "Label { Text: \"No membership history\"; Style: (FontSize: 11, TextColor: #555555); }");
+          "Label { Text: \"" + HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.NO_HISTORY) + "\"; Style: (FontSize: 11, TextColor: #555555); }");
     }
 
     // Back button
@@ -249,7 +272,7 @@ public class PlayerInfoPage extends InteractiveCustomUIPage<PlayerInfoData> {
         if (data.playerUuid != null) {
           UUID factionId = UuidUtil.parseOrNull(data.playerUuid);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid faction ID."));
+            player.sendMessage(MessageUtil.error(viewerRef, CommonKeys.Common.INVALID_ID));
             return;
           }
 
@@ -258,7 +281,7 @@ public class PlayerInfoPage extends InteractiveCustomUIPage<PlayerInfoData> {
             guiManager.openFactionInfoFromPlayerInfo(player, ref, store, playerRef, faction,
                 targetPlayerUuid, targetPlayerName, sourcePage);
           } else {
-            player.sendMessage(MessageUtil.errorText("Faction no longer exists."));
+            player.sendMessage(MessageUtil.error(viewerRef, GuiKeys.PlayerInfoGui.FACTION_GONE));
           }
         }
       }
@@ -300,10 +323,10 @@ public class PlayerInfoPage extends InteractiveCustomUIPage<PlayerInfoData> {
 
   private String formatReason(MembershipRecord.LeaveReason reason) {
     return switch (reason) {
-      case ACTIVE -> "ACTIVE";
-      case LEFT -> "LEFT";
-      case KICKED -> "KICKED";
-      case DISBANDED -> "DISBANDED";
+      case ACTIVE -> HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.REASON_ACTIVE);
+      case LEFT -> HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.REASON_LEFT);
+      case KICKED -> HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.REASON_KICKED);
+      case DISBANDED -> HFMessages.get(viewerRef, GuiKeys.PlayerInfoGui.REASON_DISBANDED);
     };
   }
 }

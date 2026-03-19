@@ -1,5 +1,10 @@
 package com.hyperfactions.gui.admin.page;
 
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.AdminGuiKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
+
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionLog;
@@ -79,11 +84,44 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
     // Setup admin nav bar
     AdminNavBarHelper.setupBar(playerRef, "factions", cmd, events);
 
+    // Localize page title
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_TITLE_FACTION_INFO));
+
+    // Localize stat card labels
+    cmd.set("#PowerCardLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_POWER));
+    cmd.set("#PowerSubLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_CURRENT_MAX));
+    cmd.set("#ClaimsCardLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_CLAIMS));
+    cmd.set("#ClaimsSubLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_CLAIMED_MAX));
+    cmd.set("#MembersCardLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_MEMBERS));
+    cmd.set("#RelationsCardLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_RELATIONS));
+    cmd.set("#RelationsSubLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_ALLY_ENEMY));
+    cmd.set("#StatusCardLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_STATUS));
+    cmd.set("#InfoCardLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_INFO));
+    cmd.set("#TreasurySubLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_TREASURY_BALANCE));
+
+    // Localize section headers
+    cmd.set("#LeadershipHeader.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_LEADERSHIP));
+    cmd.set("#LeaderLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_LEADER_LABEL));
+    cmd.set("#OfficersLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_OFFICERS_LABEL));
+    cmd.set("#PowerMgmtHeader.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_POWER_MANAGEMENT));
+    cmd.set("#EconMgmtHeader.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_ECON_MGMT));
+    cmd.set("#DangerZoneHeader.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_DANGER_ZONE));
+
+    // Localize button labels
+    cmd.set("#PowerResetAll.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_RESET_ALL_POWER));
+    cmd.set("#EconAdjustBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_ECON_ADJUST));
+    cmd.set("#EconViewLogBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_VIEW_TREASURY));
+    cmd.set("#DisbandBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_DISBAND));
+    cmd.set("#ViewMembersBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_VIEW_MEMBERS));
+    cmd.set("#ViewRelationsBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_VIEW_RELATIONS));
+    cmd.set("#ViewSettingsBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_FAC_VIEW_SETTINGS));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, CommonKeys.Common.BACK));
+
     // Get the faction
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {
-      cmd.set("#FactionName.Text", "Faction Not Found");
-      cmd.set("#FactionDescription.Text", "This faction no longer exists.");
+      cmd.set("#FactionName.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.FACTION_NOT_FOUND_LABEL));
+      cmd.set("#FactionDescription.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.INFO_FACTION_GONE));
       return;
     }
 
@@ -101,10 +139,10 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
     // Description
     String description = faction.description();
     cmd.set("#FactionDescription.Text",
-        description != null && !description.isEmpty() ? description : "No description set.");
+        description != null && !description.isEmpty() ? description : HFMessages.get(playerRef, CommonKeys.Common.NO_DESCRIPTION));
 
     // Open/Closed status indicator
-    cmd.set("#StatusIndicator.Text", faction.open() ? "Open" : "Invite Only");
+    cmd.set("#StatusIndicator.Text", faction.open() ? HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_OPEN) : HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_INVITE_ONLY));
 
     // === Stats Section ===
     PowerManager.FactionPowerStats powerStats = powerManager.getFactionPowerStats(faction.id());
@@ -121,7 +159,7 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
     cmd.set("#MembersValue.Text", String.format("%d / %d", memberCount, maxMembers));
 
     // Recruitment status
-    cmd.set("#RecruitmentValue.Text", faction.open() ? "Open" : "Invite Only");
+    cmd.set("#RecruitmentValue.Text", faction.open() ? HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_OPEN) : HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_INVITE_ONLY));
 
     // Founded date
     cmd.set("#FoundedValue.Text", TimeUtil.formatRelative(faction.createdAt()));
@@ -134,28 +172,28 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
 
     // Raidable status
     if (powerStats.isRaidable()) {
-      cmd.set("#RaidableValue.Text", "Raidable");
+      cmd.set("#RaidableValue.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.RAIDABLE));
     } else {
-      cmd.set("#RaidableValue.Text", "Protected");
+      cmd.set("#RaidableValue.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.PROTECTED));
     }
 
     // === Leadership Section ===
     FactionMember leader = faction.getLeader();
-    cmd.set("#LeaderName.Text", leader != null ? leader.username() : "Unknown");
+    cmd.set("#LeaderName.Text", leader != null ? leader.username() : HFMessages.get(playerRef, CommonKeys.Common.UNKNOWN));
 
     // Officers
     List<FactionMember> officers = faction.getMembersSorted().stream()
         .filter(m -> m.role() == FactionRole.OFFICER)
         .toList();
     if (officers.isEmpty()) {
-      cmd.set("#OfficersValue.Text", "None");
+      cmd.set("#OfficersValue.Text", HFMessages.get(playerRef, CommonKeys.Common.NONE));
     } else {
       String officerNames = officers.stream()
           .map(FactionMember::username)
           .limit(3)
           .collect(Collectors.joining(", "));
       if (officers.size() > 3) {
-        officerNames += " +" + (officers.size() - 3) + " more";
+        officerNames += " " + HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_INFO_MORE, officers.size() - 3);
       }
       cmd.set("#OfficersValue.Text", officerNames);
     }
@@ -290,7 +328,8 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
             }
             Faction updated = faction.withLog(FactionLog.create(FactionLog.LogType.ADMIN_POWER,
                 "Admin adjusted all " + faction.getMemberCount() + " members' power by " + String.format("%.1f", delta),
-                playerRef.getUuid()));
+                playerRef.getUuid(),
+                GuiKeys.LogsGui.MSG_ADMIN_POWER_ADJUSTED_ALL, String.valueOf(faction.getMemberCount()), String.format("%.1f", delta)));
             factionManager.updateFaction(updated);
             // Rebuild page to show updated stats
             guiManager.openAdminFactionInfo(player, ref, store, playerRef, factionId);
@@ -306,7 +345,8 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
           }
           Faction updated = faction.withLog(FactionLog.create(FactionLog.LogType.ADMIN_POWER,
               "Admin reset power for all " + faction.getMemberCount() + " members",
-              playerRef.getUuid()));
+              playerRef.getUuid(),
+              GuiKeys.LogsGui.MSG_ADMIN_POWER_RESET_ALL, String.valueOf(faction.getMemberCount())));
           factionManager.updateFaction(updated);
           guiManager.openAdminFactionInfo(player, ref, store, playerRef, factionId);
         }

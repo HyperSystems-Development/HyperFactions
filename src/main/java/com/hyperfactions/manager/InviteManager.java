@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.hyperfactions.Permissions;
+import com.hyperfactions.api.events.*;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.PendingInvite;
 import com.hyperfactions.integration.PermissionManager;
@@ -162,10 +163,11 @@ public class InviteManager {
       try {
         onInviteCreated.accept(invite);
       } catch (Exception e) {
-        Logger.warn("Error in invite created callback: %s", e.getMessage());
+        ErrorHandler.report("Error in invite created callback", e);
       }
     }
 
+    EventBus.publish(new FactionInviteEvent(factionId, playerUuid, invitedBy, FactionInviteEvent.Type.CREATED));
     return invite;
   }
 
@@ -329,7 +331,7 @@ public class InviteManager {
       try {
         onInviteRemoved.accept(factionId, playerUuid);
       } catch (Exception e) {
-        Logger.warn("Error in invite removed callback: %s", e.getMessage());
+        ErrorHandler.report("Error in invite removed callback", e);
       }
     }
   }
@@ -403,6 +405,12 @@ public class InviteManager {
 
     for (Map.Entry<UUID, Set<PendingInvite>> entry : invitesByPlayer.entrySet()) {
       int before = entry.getValue().size();
+      // Publish EXPIRED events before removing
+      for (PendingInvite invite : entry.getValue()) {
+        if (invite.isExpired()) {
+          EventBus.publish(new FactionInviteEvent(invite.factionId(), invite.playerUuid(), invite.invitedBy(), FactionInviteEvent.Type.EXPIRED));
+        }
+      }
       entry.getValue().removeIf(PendingInvite::isExpired);
       if (entry.getValue().size() != before) {
         changed = true;

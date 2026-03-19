@@ -8,6 +8,8 @@ import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.RelationManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -38,7 +40,7 @@ public class EnemySubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.ENEMY)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to declare enemies.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.ENEMY_NO_PERMISSION));
       return;
     }
 
@@ -60,27 +62,26 @@ public class EnemySubCommand extends FactionSubCommand {
     }
 
     if (!fctx.hasArgs()) {
-      ctx.sendMessage(prefix().insert(msg("Usage: /f enemy <faction>", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.ENEMY_USAGE));
       return;
     }
 
     String factionName = fctx.joinArgs();
     Faction targetFaction = hyperFactions.getFactionManager().getFactionByName(factionName);
     if (targetFaction == null) {
-      ctx.sendMessage(prefix().insert(msg("Faction '" + factionName + "' not found.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.FACTION_NOT_FOUND));
       return;
     }
 
     RelationManager.RelationResult result = hyperFactions.getRelationManager().setEnemy(player.getUuid(), targetFaction.id());
 
     switch (result) {
-      case SUCCESS -> ctx.sendMessage(prefix().insert(msg(targetFaction.name(), COLOR_RED))
-        .insert(msg(" is now your enemy!", COLOR_RED)));
-      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error("You are not in a faction."));
-      case NOT_OFFICER -> ctx.sendMessage(prefix().insert(msg("You must be an officer to manage relations.", COLOR_RED)));
-      case ALREADY_ENEMY -> ctx.sendMessage(prefix().insert(msg("You are already enemies with that faction.", COLOR_RED)));
-      case ENEMY_LIMIT_REACHED -> ctx.sendMessage(prefix().insert(msg("You have reached the maximum number of enemies.", COLOR_RED)));
-      default -> ctx.sendMessage(prefix().insert(msg("Failed to set enemy.", COLOR_RED)));
+      case SUCCESS -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.ENEMY_DECLARED, targetFaction.name()));
+      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.NOT_IN_FACTION));
+      case NOT_OFFICER -> ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.MUST_BE_OFFICER));
+      case ALREADY_ENEMY -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.ALREADY_ENEMY));
+      case ENEMY_LIMIT_REACHED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.MAX_ENEMIES));
+      default -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.ENEMY_FAILED));
     }
   }
 }

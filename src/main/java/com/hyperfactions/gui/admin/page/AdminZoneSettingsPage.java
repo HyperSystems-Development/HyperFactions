@@ -9,6 +9,8 @@ import com.hyperfactions.gui.admin.data.AdminZoneSettingsData;
 import com.hyperfactions.integration.protection.ProtectionMixinBridge;
 import com.hyperfactions.manager.ZoneManager;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.AdminGuiKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -97,10 +99,31 @@ public class AdminZoneSettingsPage extends InteractiveCustomUIPage<AdminZoneSett
     // Setup admin nav bar
     AdminNavBarHelper.setupBar(playerRef, "zones", cmd, events);
 
+    // Localize labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_TITLE_ZONE_SETTINGS));
+    cmd.set("#CatCombat.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZSET_CAT_COMBAT));
+    cmd.set("#CatDamage.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZSET_CAT_DAMAGE));
+    cmd.set("#CatDeath.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZSET_CAT_DEATH));
+    cmd.set("#CatBuilding.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZSET_CAT_BUILDING));
+    cmd.set("#CatInteraction.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZSET_CAT_INTERACTION));
+    cmd.set("#CatTransport.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZSET_CAT_TRANSPORT));
+    cmd.set("#CatItems.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZSET_CAT_ITEMS));
+    cmd.set("#CatSpawning.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZSET_CAT_SPAWNING));
+    cmd.set("#CatMobClear.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZSET_CAT_MOB_CLEAR));
+    String childrenHint = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZSET_CHILDREN_HINT);
+    cmd.set("#CatCombatSub.Text", childrenHint);
+    cmd.set("#CatBuildingSub.Text", childrenHint);
+    cmd.set("#CatInteractionSub.Text", childrenHint);
+    cmd.set("#CatSpawningSub.Text", childrenHint);
+    cmd.set("#CatMobClearSub.Text", childrenHint);
+    cmd.set("#ResetBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZSET_RESET_DEFAULTS));
+    cmd.set("#IntegrationFlagsBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZSET_INTEGRATION_FLAGS));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZSET_BACK_TO_ZONES));
+
     // Get the zone
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      cmd.set("#ZoneName.Text", "Zone Not Found");
+      cmd.set("#ZoneName.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ZINT_ZONE_NOT_FOUND));
       cmd.set("#FlagsContainer.Visible", false);
       return;
     }
@@ -108,7 +131,7 @@ public class AdminZoneSettingsPage extends InteractiveCustomUIPage<AdminZoneSett
     // Zone info header
     cmd.set("#ZoneName.Text", zone.name());
     cmd.set("#ZoneType.Text", zone.type().name());
-    cmd.set("#ZoneChunks.Text", zone.getChunkCount() + " chunks");
+    cmd.set("#ZoneChunks.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZSET_CHUNKS, zone.getChunkCount()));
 
     // Type indicator color
     String typeColor = zone.isSafeZone() ? "#55FF55" : "#FF5555";
@@ -153,7 +176,7 @@ public class AdminZoneSettingsPage extends InteractiveCustomUIPage<AdminZoneSett
 
     // Back button - text depends on back target
     if ("settings".equals(backTarget)) {
-      cmd.set("#BackBtn.Text", "Back to Settings");
+      cmd.set("#BackBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_BACK_TO_SETTINGS));
     }
     events.addEventBinding(
         CustomUIEventBindingType.Activating,
@@ -205,9 +228,8 @@ public class AdminZoneSettingsPage extends InteractiveCustomUIPage<AdminZoneSett
       spawnConflict = true;
     }
 
-    // Flag name (display name from ZoneFlags)
-    String displayName = ZoneFlags.getDisplayName(flagName);
-    cmd.set(idx + "Name.Text", displayName);
+    // Flag name (localized display name via i18n)
+    cmd.set(idx + "Name.Text", HFMessages.get(playerRef, ZoneFlags.getDisplayNameKey(flagName)));
 
     // Set checkbox value via child selector
     // When parent is off, show children as unchecked for clearer visual state
@@ -218,16 +240,16 @@ public class AdminZoneSettingsPage extends InteractiveCustomUIPage<AdminZoneSett
 
     // Default indicator (shows "(default)" or "(custom)" or "(mixin)" or "(conflict)")
     if (spawnConflict) {
-      cmd.set(idx + "Default.Text", "(conflict)");
+      cmd.set(idx + "Default.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_CONFLICT));
       cmd.set(idx + "Default.Style.TextColor", "#FF5555");
     } else if (mixinUnavailable) {
-      cmd.set(idx + "Default.Text", "(mixin)");
+      cmd.set(idx + "Default.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_MIXIN));
       cmd.set(idx + "Default.Style.TextColor", "#FF5555");
     } else if (isDefault) {
-      cmd.set(idx + "Default.Text", "(default)");
+      cmd.set(idx + "Default.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ZINT_DEFAULT));
       cmd.set(idx + "Default.Style.TextColor", "#555555");
     } else {
-      cmd.set(idx + "Default.Text", "(custom)");
+      cmd.set(idx + "Default.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ZINT_CUSTOM));
       cmd.set(idx + "Default.Style.TextColor", "#FFAA00");
     }
 
@@ -311,14 +333,14 @@ public class AdminZoneSettingsPage extends InteractiveCustomUIPage<AdminZoneSett
   private void handleToggleFlag(Player player, AdminZoneSettingsData data) {
     String flagName = data.flag;
     if (flagName == null || !ZoneFlags.isValidFlag(flagName)) {
-      player.sendMessage(MessageUtil.adminError("Invalid flag."));
+      player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_INVALID_FLAG));
       sendUpdate();
       return;
     }
 
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.adminError("Zone not found."));
+      player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_ZONE_NOT_FOUND));
       sendUpdate();
       return;
     }
@@ -346,9 +368,9 @@ public class AdminZoneSettingsPage extends InteractiveCustomUIPage<AdminZoneSett
     ZoneManager.ZoneResult result = zoneManager.clearAllZoneFlags(zoneId);
 
     if (result == ZoneManager.ZoneResult.SUCCESS) {
-      player.sendMessage(MessageUtil.adminSuccess("Reset all flags to defaults."));
+      player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_RESET_ALL));
     } else {
-      player.sendMessage(MessageUtil.adminError("Failed to reset flags: " + result));
+      player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_RESET_FAILED, result));
     }
 
     rebuildPage();

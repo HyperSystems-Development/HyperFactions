@@ -26,6 +26,10 @@ import com.hyperfactions.manager.JoinRequestManager;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.manager.TeleportManager;
 import com.hyperfactions.util.ChunkUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -106,7 +110,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     if (currentFaction == null) {
       // Faction was deleted - show error
       cmd.append(UIPaths.ERROR_PAGE);
-      cmd.set("#ErrorMessage.Text", "Your faction no longer exists.");
+      cmd.set("#ErrorMessage.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.FACTION_GONE));
       return;
     }
 
@@ -118,6 +122,29 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
 
     // Load the main template
     cmd.append(UIPaths.FACTION_DASHBOARD);
+
+    // Localize static labels
+    cmd.set("#DashboardTitle.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.TITLE));
+    cmd.set("#PowerLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.POWER_LABEL));
+    cmd.set("#ClaimsLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.LAND_LABEL));
+    cmd.set("#MembersLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.MEMBERS_LABEL));
+    cmd.set("#RelationsLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.RELATIONS_LABEL));
+    cmd.set("#AllyEnemyLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.ALLY_ENEMY_LABEL));
+    cmd.set("#StatusLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.STATUS_LABEL));
+    cmd.set("#InvitesLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.INVITES_LABEL));
+    cmd.set("#SentRequestsLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.SENT_REQUESTS_LABEL));
+    cmd.set("#TreasuryLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.TREASURY_LABEL));
+    cmd.set("#UpkeepLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.UPKEEP_LABEL));
+    cmd.set("#PerCycleLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.PER_CYCLE));
+    cmd.set("#YourWalletLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.YOUR_WALLET));
+    cmd.set("#PersonalBalanceLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.PERSONAL_BALANCE));
+    cmd.set("#QuickActionsLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.QUICK_ACTIONS));
+    cmd.set("#TeleportLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.TELEPORT_LABEL));
+    cmd.set("#TerritoryLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.TERRITORY_LABEL));
+    cmd.set("#ChannelLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.CHANNEL_LABEL));
+    cmd.set("#MembershipLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.MEMBERSHIP_LABEL));
+    cmd.set("#RecentActivityLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.RECENT_ACTIVITY));
+    cmd.set("#ViewLogsBtn.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.VIEW_ALL));
 
     // Setup navigation bar
     setupNavBar(cmd, events);
@@ -182,14 +209,14 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     int maxClaims = stats.maxClaims();
     int available = Math.max(0, maxClaims - claimCount);
     cmd.set("#ClaimsValue.Text", claimCount + " / " + maxClaims);
-    cmd.set("#ClaimsAvailable.Text", available + " available");
+    cmd.set("#ClaimsAvailable.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.AVAILABLE, available));
 
     // Check if faction is raidable (at risk of overclaiming)
     boolean isRaidable = claimCount > maxClaims;
     if (isRaidable) {
       // Show warning - claims exceed power limit
       cmd.set("#ClaimsValue.Style.TextColor", "#FF5555");
-      cmd.set("#ClaimsAvailable.Text", "At Risk!");
+      cmd.set("#ClaimsAvailable.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.AT_RISK));
       cmd.set("#ClaimsAvailable.Style.TextColor", "#FF5555");
     }
 
@@ -197,7 +224,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     int totalMembers = currentFaction.members().size();
     int onlineCount = countOnlineMembers(currentFaction);
     cmd.set("#MembersValue.Text", String.valueOf(totalMembers));
-    cmd.set("#MembersOnline.Text", onlineCount + " online");
+    cmd.set("#MembersOnline.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.ONLINE_COUNT, onlineCount));
 
     // Row 2: Relations, Status, Invites
 
@@ -216,10 +243,10 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
 
     // Status stat - Open/Invite Only
     if (currentFaction.open()) {
-      cmd.set("#StatusValue.Text", "Open");
+      cmd.set("#StatusValue.Text", HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_OPEN));
       cmd.set("#StatusValue.Style.TextColor", "#55FF55");
     } else {
-      cmd.set("#StatusValue.Text", "Invite");
+      cmd.set("#StatusValue.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.STATUS_INVITE));
       cmd.set("#StatusValue.Style.TextColor", "#FFAA00");
     }
     cmd.set("#StatusDesc.Text", "");
@@ -257,14 +284,14 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
         FactionEconomy fEcon = econ.getEconomy(currentFaction.id());
         if (fEcon != null && fEcon.upkeepGraceStartTimestamp() > 0) {
           cmd.set("#UpkeepValue.Style.TextColor", "#FF5555");
-          cmd.set("#UpkeepSubtext.Text", "IN GRACE");
-          cmd.set("#UpkeepSubtext.Style.TextColor", "#FF5555");
+          cmd.set("#PerCycleLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.IN_GRACE));
+          cmd.set("#PerCycleLabel.Style.TextColor", "#FF5555");
         } else if (fEcon != null && fEcon.lastUpkeepTimestamp() > 0) {
           long intervalMs = ConfigManager.get().getUpkeepIntervalHours() * 3600_000L;
           long remaining = Math.max(0, (fEcon.lastUpkeepTimestamp() + intervalMs) - System.currentTimeMillis());
-          cmd.set("#UpkeepSubtext.Text", "in " + com.hyperfactions.economy.UpkeepProcessor.formatDuration(remaining));
+          cmd.set("#PerCycleLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.UPKEEP_IN, com.hyperfactions.economy.UpkeepProcessor.formatDuration(remaining)));
         } else {
-          cmd.set("#UpkeepSubtext.Text", billableChunks + " billable chunks");
+          cmd.set("#PerCycleLabel.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.BILLABLE_CHUNKS, billableChunks));
         }
 
         // Color based on affordability
@@ -279,7 +306,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
         java.math.BigDecimal walletBalance = econ.getVaultProvider().getBalanceBigDecimal(viewerUuid);
         cmd.set("#WalletBalance.Text", econ.formatCurrencyCompact(walletBalance));
       } catch (Exception e) {
-        cmd.set("#WalletBalance.Text", "N/A");
+        cmd.set("#WalletBalance.Text", HFMessages.get(playerRef, CommonKeys.Common.NA));
       }
     }
   }
@@ -303,7 +330,9 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     if ((faction.hasHome() || isOfficerPlus)
         && PermissionManager.get().hasPermission(viewerUuid, Permissions.HOME)) {
       cmd.append("#HomeBtnContainer", UIPaths.DASHBOARD_ACTION_BTN);
-      cmd.set("#HomeBtnContainer #ActionBtn.Text", faction.hasHome() ? "Home" : "Set Home");
+      cmd.set("#HomeBtnContainer #ActionBtn.Text", faction.hasHome()
+          ? HFMessages.get(playerRef, GuiKeys.DashboardGui.BTN_HOME)
+          : HFMessages.get(playerRef, GuiKeys.DashboardGui.BTN_SET_HOME));
       cmd.set("#HomeBtnContainer #ActionBtn.Style",
           Value.ref(UIPaths.STYLES, "CyanButtonStyle"));
       events.addEventBinding(
@@ -319,7 +348,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     // CLAIM button - only for officers+ with CLAIM permission
     if (isOfficerPlus && PermissionManager.get().hasPermission(viewerUuid, Permissions.CLAIM)) {
       cmd.append("#ClaimBtnContainer", UIPaths.DASHBOARD_ACTION_BTN);
-      cmd.set("#ClaimBtnContainer #ActionBtn.Text", "Claim");
+      cmd.set("#ClaimBtnContainer #ActionBtn.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.BTN_CLAIM));
       cmd.set("#ClaimBtnContainer #ActionBtn.Style",
           Value.ref(UIPaths.STYLES, "GreenButtonStyle"));
       events.addEventBinding(
@@ -337,10 +366,11 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
         || PermissionManager.get().hasPermission(viewerUuid, Permissions.CHAT_ALLY)) {
       ChatManager chatManager = plugin.getChatManager();
       ChatManager.ChatChannel currentChannel = chatManager.getChannel(viewerUuid);
-      String display = "Chat: " + ChatManager.getChannelDisplay(currentChannel);
+      String channelDisplay = ChatManager.getChannelDisplay(currentChannel);
 
       cmd.append("#ChatModeBtnContainer", UIPaths.DASHBOARD_ACTION_BTN);
-      cmd.set("#ChatModeBtnContainer #ActionBtn.Text", display);
+      cmd.set("#ChatModeBtnContainer #ActionBtn.Text",
+          HFMessages.get(playerRef, GuiKeys.DashboardGui.CHAT_PREFIX, channelDisplay));
       events.addEventBinding(
           CustomUIEventBindingType.Activating,
           "#ChatModeBtnContainer #ActionBtn",
@@ -354,7 +384,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     // LEAVE button - flat red background for danger action
     if (PermissionManager.get().hasPermission(viewerUuid, Permissions.LEAVE)) {
       cmd.append("#LeaveBtnContainer", UIPaths.DASHBOARD_ACTION_BTN);
-      cmd.set("#LeaveBtnContainer #ActionBtn.Text", "Leave");
+      cmd.set("#LeaveBtnContainer #ActionBtn.Text", HFMessages.get(playerRef, GuiKeys.DashboardGui.BTN_LEAVE));
       cmd.set("#LeaveBtnContainer #ActionBtn.Style",
           Value.ref(UIPaths.STYLES, "FlatRedButtonStyle"));
       events.addEventBinding(
@@ -382,8 +412,9 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     int displayCount = Math.min(ACTIVITY_ENTRIES, logs.size());
 
     if (displayCount == 0) {
+      String noActivityText = HFMessages.get(playerRef, GuiKeys.DashboardGui.NO_ACTIVITY);
       cmd.appendInline("#ActivityFeed",
-          "Label { Text: \"No recent activity.\"; Style: (FontSize: 11, TextColor: #555555); "
+          "Label { Text: \"" + noActivityText + "\"; Style: (FontSize: 11, TextColor: #555555); "
           + "Anchor: (Height: 26); }");
       return;
     }
@@ -393,8 +424,9 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
       String idx = "#ActivityFeed[" + i + "]";
 
       cmd.append("#ActivityFeed", UIPaths.ACTIVITY_ENTRY);
-      cmd.set(idx + " #ActivityType.Text", log.type().getDisplayName().toUpperCase());
-      cmd.set(idx + " #ActivityMessage.Text", log.message());
+      cmd.set(idx + " #ActivityType.Text",
+          HFMessages.get(playerRef, GuiKeys.LogsGui.typeKey(log.type().name())).toUpperCase());
+      cmd.set(idx + " #ActivityMessage.Text", HFMessages.resolveLogMessage(playerRef, log));
       cmd.set(idx + " #ActivityTime.Text", formatTimeAgo(log.timestamp()));
     }
   }
@@ -404,16 +436,16 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     long diff = now - timestamp;
 
     if (diff < TimeUnit.MINUTES.toMillis(1)) {
-      return "now";
+      return HFMessages.get(playerRef, GuiKeys.DashboardGui.TIME_NOW);
     } else if (diff < TimeUnit.HOURS.toMillis(1)) {
       long minutes = TimeUnit.MILLISECONDS.toMinutes(diff);
-      return minutes + "m ago";
+      return HFMessages.get(playerRef, GuiKeys.DashboardGui.TIME_MINUTES, minutes);
     } else if (diff < TimeUnit.DAYS.toMillis(1)) {
       long hours = TimeUnit.MILLISECONDS.toHours(diff);
-      return hours + "h ago";
+      return HFMessages.get(playerRef, GuiKeys.DashboardGui.TIME_HOURS, hours);
     } else {
       long days = TimeUnit.MILLISECONDS.toDays(diff);
-      return days + "d ago";
+      return HFMessages.get(playerRef, GuiKeys.DashboardGui.TIME_DAYS, days);
     }
   }
 
@@ -441,7 +473,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
 
     // Verify still in faction
     if (currentFaction == null) {
-      player.sendMessage(MessageUtil.errorText("You are no longer in a faction."));
+      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.NOT_IN_FACTION));
       guiManager.openFactionMain(player, ref, store, playerRef);
       return;
     }
@@ -462,7 +494,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
           if (isOfficerPlus) {
             handleSetHomeAction(player, ref, store, uuid, currentFaction);
           } else {
-            player.sendMessage(MessageUtil.errorText("Your faction has no home set. Ask an officer to set one."));
+            player.sendMessage(MessageUtil.error(playerRef, GuiKeys.DashboardGui.NO_HOME_HINT));
             sendUpdate();
           }
         } else {
@@ -472,7 +504,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
 
       case "Claim" -> {
         if (!isOfficerPlus || !PermissionManager.get().hasPermission(uuid, Permissions.CLAIM)) {
-          player.sendMessage(MessageUtil.errorText("Only officers can claim territory."));
+          player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.NOT_OFFICER));
           sendUpdate();
           return;
         }
@@ -484,9 +516,9 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
         ChatManager.ToggleResult chatResult = chatManager.cycleChannelChecked(uuid);
         if (chatResult.isSuccess() && chatResult.channel() != null) {
           String display = ChatManager.getChannelDisplay(chatResult.channel());
-          String color = ChatManager.getChannelColor(chatResult.channel());
-          player.sendMessage(Message.raw("Chat mode: ").color("#AAAAAA")
-              .insert(Message.raw(display).color(color)));
+          player.sendMessage(Message.raw(
+              HFMessages.get(playerRef, GuiKeys.DashboardGui.CHAT_MODE_SET, display))
+              .color("#AAAAAA"));
         }
         rebuild();
       }
@@ -515,7 +547,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
   private void handleHomeAction(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
                  UUID uuid, Faction faction) {
     if (!faction.hasHome()) {
-      player.sendMessage(MessageUtil.errorText("Your faction has no home set."));
+      player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Home.NO_HOME));
       sendUpdate();
       return;
     }
@@ -523,7 +555,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     // Get player's current location for start location
     TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
     if (transform == null) {
-      player.sendMessage(MessageUtil.errorText("Could not determine your location."));
+      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.LOCATION_ERROR));
       sendUpdate();
       return;
     }
@@ -531,7 +563,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     Vector3d pos = transform.getPosition();
     World world = player.getWorld();
     if (world == null) {
-      player.sendMessage(MessageUtil.errorText("Could not determine your world."));
+      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.WORLD_ERROR));
       sendUpdate();
       return;
     }
@@ -586,10 +618,10 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
 
   private void handleTeleportResult(Player player, TeleportManager.TeleportResult result) {
     switch (result) {
-      case NOT_IN_FACTION -> player.sendMessage(MessageUtil.errorText("You are not in a faction."));
-      case NO_HOME -> player.sendMessage(MessageUtil.errorText("Your faction has no home set."));
-      case COMBAT_TAGGED -> player.sendMessage(MessageUtil.errorText("You cannot teleport while in combat!"));
-      case SUCCESS_INSTANT -> player.sendMessage(MessageUtil.successText("Teleported to faction home!"));
+      case NOT_IN_FACTION -> player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.NOT_IN_FACTION));
+      case NO_HOME -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Home.NO_HOME));
+      case COMBAT_TAGGED -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Home.COMBAT_TAGGED));
+      case SUCCESS_INSTANT -> player.sendMessage(MessageUtil.success(playerRef, CommandKeys.Home.TELEPORTED));
       case ON_COOLDOWN, SUCCESS_WARMUP -> {} // Message sent by TeleportManager
       default -> {}
     }
@@ -600,14 +632,14 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     // Get player's current location
     TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
     if (transform == null) {
-      player.sendMessage(MessageUtil.errorText("Could not determine your location."));
+      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.LOCATION_ERROR));
       sendUpdate();
       return;
     }
 
     World world = player.getWorld();
     if (world == null) {
-      player.sendMessage(MessageUtil.errorText("Could not determine your world."));
+      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.WORLD_ERROR));
       sendUpdate();
       return;
     }
@@ -619,7 +651,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     // Check if in faction territory
     UUID owner = claimManager.getClaimOwner(world.getName(), chunkX, chunkZ);
     if (owner == null || !owner.equals(faction.id())) {
-      player.sendMessage(MessageUtil.errorText("You can only set home in your faction's territory."));
+      player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Home.NOT_IN_TERRITORY));
       sendUpdate();
       return;
     }
@@ -644,7 +676,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     Faction updated = faction.withHome(home);
     factionManager.updateFaction(updated);
 
-    player.sendMessage(MessageUtil.successText("Faction home set!"));
+    player.sendMessage(MessageUtil.success(playerRef, CommandKeys.Home.SET));
 
     // Refresh dashboard
     Faction fresh = factionManager.getFaction(faction.id());
@@ -658,14 +690,14 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     // Get player's current chunk
     TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
     if (transform == null) {
-      player.sendMessage(MessageUtil.errorText("Could not determine your location."));
+      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.LOCATION_ERROR));
       sendUpdate();
       return;
     }
 
     World world = player.getWorld();
     if (world == null) {
-      player.sendMessage(MessageUtil.errorText("Could not determine your world."));
+      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.WORLD_ERROR));
       sendUpdate();
       return;
     }
@@ -679,27 +711,28 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
 
     switch (result) {
       case SUCCESS -> {
-        player.sendMessage(
-            Message.raw("Claimed chunk at (").color("#55FF55")
-                .insert(Message.raw(chunkX + ", " + chunkZ).color("#AAAAAA"))
-                .insert(Message.raw(")").color("#55FF55"))
-        );
+        player.sendMessage(MessageUtil.success(playerRef,
+            GuiKeys.DashboardGui.CLAIM_SUCCESS, chunkX, chunkZ));
         // Refresh dashboard with updated faction data
         Faction fresh = factionManager.getFaction(faction.id());
         if (fresh != null) {
           guiManager.openFactionDashboard(player, ref, store, playerRef, fresh);
         }
       }
-      case NOT_IN_FACTION -> player.sendMessage(MessageUtil.errorText("You are not in a faction."));
-      case NOT_OFFICER -> player.sendMessage(MessageUtil.errorText("Only officers can claim land."));
-      case ALREADY_CLAIMED_SELF -> player.sendMessage(MessageUtil.text("This chunk is already claimed by your faction.", MessageUtil.COLOR_GOLD));
-      case ALREADY_CLAIMED_OTHER, ALREADY_CLAIMED_ALLY, ALREADY_CLAIMED_ENEMY -> player.sendMessage(MessageUtil.errorText("This chunk is claimed by another faction."));
-      case MAX_CLAIMS_REACHED -> player.sendMessage(MessageUtil.errorText("Your faction has reached its claim limit."));
-      case WORLD_NOT_ALLOWED -> player.sendMessage(MessageUtil.errorText("Claiming is not allowed in this world."));
-      case NOT_ADJACENT -> player.sendMessage(MessageUtil.errorText("You can only claim chunks adjacent to existing claims."));
-      case INSUFFICIENT_POWER -> player.sendMessage(MessageUtil.errorText("Your faction doesn't have enough power to claim more land."));
-      case ORBISGUARD_PROTECTED -> player.sendMessage(MessageUtil.errorText("This area is protected by OrbisGuard."));
-      default -> player.sendMessage(MessageUtil.errorText("Could not claim this chunk."));
+      case NOT_IN_FACTION -> player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.NOT_IN_FACTION));
+      case NOT_OFFICER -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.NOT_OFFICER));
+      case ALREADY_CLAIMED_SELF -> player.sendMessage(MessageUtil.info(playerRef, CommandKeys.Claim.ALREADY_YOURS, MessageUtil.COLOR_GOLD));
+      case ALREADY_CLAIMED_OTHER, ALREADY_CLAIMED_ALLY, ALREADY_CLAIMED_ENEMY -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.ALREADY_CLAIMED));
+      case MAX_CLAIMS_REACHED -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.MAX_CLAIMS));
+      case WORLD_MAX_CLAIMS_REACHED -> {
+        Integer wmc = ConfigManager.get().getWorldMaxClaims(world.getName());
+        player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.WORLD_MAX_CLAIMS, wmc != null ? wmc : "?"));
+      }
+      case WORLD_NOT_ALLOWED -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.WORLD_NOT_ALLOWED));
+      case NOT_ADJACENT -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.NOT_CONNECTED));
+      case INSUFFICIENT_POWER -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.INSUFFICIENT_POWER));
+      case ORBISGUARD_PROTECTED -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.ORBISGUARD));
+      default -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.FAILED));
     }
   }
 

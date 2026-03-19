@@ -2,14 +2,13 @@ package com.hyperfactions.manager;
 
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.config.modules.AnnouncementConfig;
-import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.MessageUtil;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import java.util.Collection;
 import java.util.function.Supplier;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Broadcasts server-wide announcements for significant faction events.
@@ -40,7 +39,7 @@ public class AnnouncementManager {
       return;
     }
 
-    broadcast(MessageUtil.info(leaderName + " has founded the faction " + factionName + "!", MessageUtil.COLOR_GREEN));
+    broadcastInfo(CommonKeys.ServerAnnounce.FACTION_CREATED, config.getFactionCreatedColor(), leaderName, factionName);
   }
 
   /**
@@ -54,7 +53,7 @@ public class AnnouncementManager {
       return;
     }
 
-    broadcast(MessageUtil.error("The faction " + factionName + " has been disbanded!"));
+    broadcastInfo(CommonKeys.ServerAnnounce.FACTION_DISBANDED, config.getFactionDisbandedColor(), factionName);
   }
 
   /**
@@ -71,7 +70,7 @@ public class AnnouncementManager {
       return;
     }
 
-    broadcast(MessageUtil.info(newLeader + " is now the leader of " + factionName + "!", MessageUtil.COLOR_GOLD));
+    broadcastInfo(CommonKeys.ServerAnnounce.LEADERSHIP_TRANSFER, config.getLeadershipTransferColor(), newLeader, factionName);
   }
 
   /**
@@ -86,7 +85,7 @@ public class AnnouncementManager {
       return;
     }
 
-    broadcast(MessageUtil.error(attackerFaction + " has overclaimed territory from " + defenderFaction + "!"));
+    broadcastInfo(CommonKeys.ServerAnnounce.OVERCLAIM, config.getOverclaimColor(), attackerFaction, defenderFaction);
   }
 
   /**
@@ -101,7 +100,7 @@ public class AnnouncementManager {
       return;
     }
 
-    broadcast(MessageUtil.error(declaringFaction + " has declared war on " + targetFaction + "!"));
+    broadcastInfo(CommonKeys.ServerAnnounce.WAR_DECLARED, config.getWarDeclaredColor(), declaringFaction, targetFaction);
   }
 
   /**
@@ -116,7 +115,7 @@ public class AnnouncementManager {
       return;
     }
 
-    broadcast(MessageUtil.info(faction1 + " and " + faction2 + " are now allies!", MessageUtil.COLOR_GREEN));
+    broadcastInfo(CommonKeys.ServerAnnounce.ALLIANCE_FORMED, config.getAllianceFormedColor(), faction1, faction2);
   }
 
   /**
@@ -131,20 +130,20 @@ public class AnnouncementManager {
       return;
     }
 
-    broadcast(MessageUtil.info(faction1 + " and " + faction2 + " are no longer allies!", MessageUtil.COLOR_GOLD));
+    broadcastInfo(CommonKeys.ServerAnnounce.ALLIANCE_BROKEN, config.getAllianceBrokenColor(), faction1, faction2);
   }
 
   /**
-   * Builds a formatted announcement message using the configured prefix from config.json.
+   * Broadcasts an info-styled message to all online players, resolving i18n per-player.
    */
-  private Message buildMessage(@NotNull String text, @NotNull String color) {
-    return MessageUtil.info(text, color);
+  private void broadcastInfo(@NotNull String key, @NotNull String color, Object... args) {
+    broadcast(player -> MessageUtil.info(player, key, color, args));
   }
 
   /**
-   * Broadcasts a message to all online players.
+   * Broadcasts a per-player resolved message to all online players.
    */
-  private void broadcast(@NotNull Message message) {
+  private void broadcast(@NotNull java.util.function.Function<PlayerRef, com.hypixel.hytale.server.core.Message> messageFactory) {
     try {
       Collection<PlayerRef> players = onlinePlayersSupplier.get();
       if (players == null) {
@@ -152,10 +151,10 @@ public class AnnouncementManager {
       }
 
       for (PlayerRef player : players) {
-        player.sendMessage(message);
+        player.sendMessage(messageFactory.apply(player));
       }
     } catch (Exception e) {
-      Logger.warn("Failed to broadcast announcement: %s", e.getMessage());
+      ErrorHandler.report("Failed to broadcast announcement", e);
     }
   }
 }

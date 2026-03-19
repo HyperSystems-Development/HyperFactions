@@ -7,10 +7,13 @@ import com.hyperfactions.manager.ClaimManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.RelationManager;
 import com.hyperfactions.manager.ZoneManager;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
+import com.hypixel.hytale.protocol.packets.worldmap.UpdateWorldMapSettings;
 import com.hypixel.hytale.server.core.universe.world.World;
 import com.hypixel.hytale.server.core.universe.world.worldmap.IWorldMap;
 import com.hypixel.hytale.server.core.universe.world.worldmap.WorldMapManager;
+import com.hypixel.hytale.server.core.universe.world.worldmap.WorldMapSettings;
 import com.hypixel.hytale.server.core.universe.world.worldmap.provider.IWorldMapProvider;
 import java.util.Set;
 import java.util.UUID;
@@ -39,6 +42,12 @@ public class WorldMapService {
 
   /** Refresh scheduler for optimized map updates. */
   private WorldMapRefreshScheduler refreshScheduler;
+
+  /** Original world settings captured before replacing the generator, keyed by world name. */
+  private final ConcurrentHashMap<String, WorldMapSettings> originalWorldSettings = new ConcurrentHashMap<>();
+
+  /** Per-world generator instances for re-registration on refresh. */
+  private final ConcurrentHashMap<String, HyperFactionsWorldMap> generators = new ConcurrentHashMap<>();
 
   /** Creates a new WorldMapService. */
   public WorldMapService(
@@ -101,26 +110,75 @@ public class WorldMapService {
     }
 
     try {
-      // Log current generator before replacing
       WorldMapManager worldMapManager = world.getWorldMapManager();
-      IWorldMap currentGenerator = worldMapManager.getGenerator();
-      String currentGeneratorName = currentGenerator != null ? currentGenerator.getClass().getSimpleName() : "null";
+
+      // Capture original settings BEFORE replacing the generator
+      WorldMapSettings currentSettings = worldMapManager.getWorldMapSettings();
+      String currentGeneratorName = worldMapManager.getGenerator() != null
+          ? worldMapManager.getGenerator().getClass().getSimpleName() : "null";
       Logger.debugWorldMap("World map generator BEFORE: world=%s, generator=%s", worldName, currentGeneratorName);
 
+      // Respect disabled worlds (Issue #96)
+      if (ConfigManager.get().worldMap().isRespectWorldConfig() && isWorldMapDisabled(currentSettings)) {
+        Logger.debug("[WorldMap] World '%s' has map disabled in world config — skipping registration", worldName);
+        return;
+      }
+
+      // Store original settings for reference
+      if (currentSettings != null) {
+        originalWorldSettings.put(worldName, currentSettings);
+        Logger.debugWorldMap("Captured original settings for world: %s", worldName);
+      }
+
+      // Create per-world generator with original settings
+      boolean betterMapActive = BetterMapCompat.isActive();
+      HyperFactionsWorldMap generator = new HyperFactionsWorldMap(currentSettings, betterMapActive);
+
       // Set our generator directly on the WorldMapManager
-      // This is the key fix - setGenerator() updates the live generator,
-      // whereas setWorldMapProvider() only affects future world loads
-      worldMapManager.setGenerator(HyperFactionsWorldMap.INSTANCE);
+      worldMapManager.setGenerator(generator);
 
       // Also set the provider on WorldConfig for consistency (future loads)
       world.getWorldConfig().setWorldMapProvider(new HyperFactionsWorldMapProvider());
 
+      // Track for refresh/re-registration
+      generators.put(worldName, generator);
       registeredWorlds.add(worldName);
-      Logger.debug("Registered world map for world: %s (replaced %s)", worldName, currentGeneratorName);
+
+      Logger.debug("Registered world map for world: %s (replaced %s, betterMap=%s)",
+          worldName, currentGeneratorName, betterMapActive);
 
     } catch (Exception e) {
-      Logger.warn("Failed to register world map for world %s: %s", worldName, e.getMessage());
+      ErrorHandler.report("[WorldMap] Failed to register world map for world " + worldName, e);
     }
+  }
+
+  /**
+   * Checks if the world's map settings indicate the map is disabled.
+   *
+   * @param settings the world's current settings
+   * @return true if the world map is disabled
+   */
+  private boolean isWorldMapDisabled(@Nullable WorldMapSettings settings) {
+    if (settings == null) {
+      return false;
+    }
+    // Check for the DISABLED sentinel instance.
+    // We only check identity equality with the static DISABLED singleton,
+    // NOT the packet's enabled field — UpdateWorldMapSettings defaults
+    // enabled=false (Java boolean default), so even normal WorldGen worlds
+    // would incorrectly appear disabled if we checked that field.
+    return settings == WorldMapSettings.DISABLED;
+  }
+
+  /**
+   * Gets the original world settings captured before registration.
+   *
+   * @param worldName the world name
+   * @return the original settings, or null if not captured
+   */
+  @Nullable
+  public WorldMapSettings getOriginalSettings(@NotNull String worldName) {
+    return originalWorldSettings.get(worldName);
   }
 
   /**
@@ -143,8 +201,20 @@ public class WorldMapService {
       if (!isOurGenerator) {
         String generatorName = currentGenerator != null ? currentGenerator.getClass().getName() : "null";
         Logger.warn("[WorldMap] Generator overwritten! Expected HyperFactionsWorldMap but found: %s", generatorName);
-        Logger.warn("[WorldMap] Another mod replaced our world map generator. Re-registering...");
-        worldMapManager.setGenerator(HyperFactionsWorldMap.INSTANCE);
+
+        // Re-register using stored generator (preserves original settings)
+        HyperFactionsWorldMap storedGenerator = generators.get(world.getName());
+        if (storedGenerator != null) {
+          worldMapManager.setGenerator(storedGenerator);
+          Logger.warn("[WorldMap] Re-registered stored generator for world: %s", world.getName());
+        } else {
+          // Fallback: create new instance
+          WorldMapSettings origSettings = originalWorldSettings.get(world.getName());
+          HyperFactionsWorldMap newGenerator = new HyperFactionsWorldMap(origSettings, BetterMapCompat.isActive());
+          worldMapManager.setGenerator(newGenerator);
+          generators.put(world.getName(), newGenerator);
+          Logger.warn("[WorldMap] Created new generator for world: %s", world.getName());
+        }
       }
 
       // Clear cached images on server to force regeneration with new claim data
@@ -156,14 +226,14 @@ public class WorldMapService {
         try {
           player.getWorldMapTracker().clear();
         } catch (Exception e) {
-          Logger.warn("Failed to clear world map tracker for player: %s", e.getMessage());
+          ErrorHandler.report("[WorldMap] Failed to clear world map tracker for player", e);
         }
       }
 
       Logger.debugWorldMap("Cleared world map images for world: %s (%d players)",
           world.getName(), world.getPlayers().size());
     } catch (Exception e) {
-      Logger.warn("Failed to refresh world map for world %s: %s", world.getName(), e.getMessage());
+      ErrorHandler.report("[WorldMap] Failed to refresh world map for world " + world.getName(), e);
     }
   }
 
@@ -190,7 +260,7 @@ public class WorldMapService {
       }
       Logger.debugWorldMap("Refreshed world maps for %d/%d worlds", refreshed, registeredWorlds.size());
     } catch (Exception e) {
-      Logger.warn("Failed to refresh all world maps: %s", e.getMessage());
+      ErrorHandler.report("[WorldMap] Failed to refresh all world maps", e);
     }
   }
 
@@ -290,6 +360,56 @@ public class WorldMapService {
   }
 
   /**
+   * Re-creates generators with current config and sends updated settings to all players.
+   * Call this after config changes (e.g., settings overrides in admin GUI) to apply
+   * new WorldMapSettings without requiring a server restart.
+   *
+   * <p>This re-creates each per-world generator (which re-evaluates config overrides
+   * in {@code getWorldMapSettings()}), installs it on the WorldMapManager, and sends
+   * the updated {@code UpdateWorldMapSettings} packet to every connected player.
+   */
+  public void reapplySettings() {
+    if (!ConfigManager.get().isWorldMapMarkersEnabled()) {
+      return;
+    }
+
+    boolean betterMapActive = BetterMapCompat.isActive();
+
+    for (String worldName : registeredWorlds) {
+      try {
+        World world = com.hypixel.hytale.server.core.universe.Universe.get().getWorld(worldName);
+        if (world == null) {
+          continue;
+        }
+
+        // Re-create generator with same original settings but current config overrides
+        WorldMapSettings origSettings = originalWorldSettings.get(worldName);
+        HyperFactionsWorldMap generator = new HyperFactionsWorldMap(origSettings, betterMapActive);
+        generators.put(worldName, generator);
+
+        // Install on WorldMapManager (calls getWorldMapSettings() to update cached settings)
+        WorldMapManager worldMapManager = world.getWorldMapManager();
+        worldMapManager.setGenerator(generator);
+
+        // Send updated settings packet to all players in this world
+        for (com.hypixel.hytale.server.core.entity.entities.Player player : world.getPlayers()) {
+          try {
+            player.getWorldMapTracker().sendSettings(world);
+          } catch (Exception e) {
+            ErrorHandler.report("[WorldMap] Failed to send map settings to player", e);
+          }
+        }
+
+        Logger.debug("[WorldMap] Reapplied settings for world: %s", worldName);
+      } catch (Exception e) {
+        ErrorHandler.report("[WorldMap] Failed to reapply settings for world " + worldName, e);
+      }
+    }
+
+    Logger.info("[WorldMap] Reapplied settings to %d worlds", registeredWorlds.size());
+  }
+
+  /**
    * Unregisters the overlay from a world.
    * Note: This restores the original generator if one was wrapped.
    *
@@ -297,6 +417,8 @@ public class WorldMapService {
    */
   public void unregisterProvider(@NotNull String worldName) {
     registeredWorlds.remove(worldName);
+    originalWorldSettings.remove(worldName);
+    generators.remove(worldName);
   }
 
   /**
@@ -319,5 +441,7 @@ public class WorldMapService {
       refreshScheduler = null;
     }
     registeredWorlds.clear();
+    originalWorldSettings.clear();
+    generators.clear();
   }
 }

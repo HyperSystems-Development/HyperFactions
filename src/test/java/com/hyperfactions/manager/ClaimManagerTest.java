@@ -1,5 +1,6 @@
 package com.hyperfactions.manager;
 
+import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.ChunkKey;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.ClaimManager.ClaimResult;
@@ -30,6 +31,7 @@ class ClaimManagerTest {
 
     @BeforeEach
     void setUp() {
+        ConfigManager.initTestDefaults();
         factionStorage = MockStorage.factionStorage();
         playerStorage = MockStorage.playerStorage();
         factionManager = new FactionManager(factionStorage);
@@ -78,8 +80,10 @@ class ClaimManagerTest {
             setupFactionWithPower(faction, leader, 20.0);
             assertEquals(1, claimManager.getTotalClaimCount());
 
-            // Clear storage and rebuild
+            // Recreate with empty storage and rebuild
             factionStorage.clear();
+            factionManager = new FactionManager(factionStorage);
+            claimManager = new ClaimManager(factionManager, powerManager);
             factionManager.loadAll().join();
             claimManager.buildIndex();
 
@@ -347,7 +351,7 @@ class ClaimManagerTest {
             Faction faction = TestFactionFactory.builder()
                     .addLeader(leader, "Leader")
                     .addClaim("world", 5, 5, leader)
-                    .home("world", 80.0, 64.0, 80.0, leader) // Block 80 = chunk 5
+                    .home("world", 160.0, 64.0, 160.0, leader) // Block 160 = chunk 5 (160 >> 5)
                     .build();
             setupFactionWithPower(faction, leader, 20.0);
 

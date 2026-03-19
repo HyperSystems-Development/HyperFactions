@@ -8,7 +8,7 @@ Cross-cutting protection concerns that span zones, claims, and wilderness. For z
 
 ## Wilderness Behavior
 
-Source: `ProtectionChecker.canInteractChunk()` line 214–216
+Source: `ProtectionChecker.canInteractChunk()`
 
 **Wilderness** = any chunk that is NOT in a zone AND NOT claimed by a faction.
 
@@ -24,7 +24,7 @@ There is no configuration to protect wilderness areas. If wilderness protection 
 
 ## Explosion Protection Matrix
 
-Source: `ProtectionChecker.shouldBlockExplosion()` lines 880–899
+Source: `ProtectionChecker.shouldBlockExplosion()`
 
 | Location | Behavior | Source of Truth |
 |----------|----------|-----------------|
@@ -40,7 +40,7 @@ Source: `ProtectionChecker.shouldBlockExplosion()` lines 880–899
 
 ## Fire Spread Protection Matrix
 
-Source: `ProtectionChecker.shouldBlockFireSpread()` lines 911–930
+Source: `ProtectionChecker.shouldBlockFireSpread()`
 
 | Location | Behavior | Configurable? |
 |----------|----------|---------------|
@@ -58,7 +58,7 @@ Source: `ProtectionChecker.shouldBlockFireSpread()` lines 911–930
 
 ### Keep Inventory on Death
 
-Source: `ProtectionChecker.shouldKeepInventory()` lines 940–952
+Source: `ProtectionChecker.shouldKeepInventory()`
 
 | Location | Behavior |
 |----------|----------|
@@ -70,7 +70,7 @@ No faction permission or config controls keep-inventory in claims.
 
 ### Durability Prevention
 
-Source: `ProtectionChecker.shouldPreventDurability()` lines 960–972
+Source: `ProtectionChecker.shouldPreventDurability()`
 
 | Location | Behavior |
 |----------|----------|
@@ -86,7 +86,7 @@ No faction permission or config controls durability in claims.
 
 ## Spawn Protection
 
-Source: `ProtectionChecker.canDamagePlayerChunk()` lines 359–367, [`SpawnProtection.java`](../src/main/java/com/hyperfactions/protection/SpawnProtection.java)
+Source: `ProtectionChecker.canDamagePlayerChunk()`, [`SpawnProtection.java`](../src/main/java/com/hyperfactions/protection/SpawnProtection.java)
 
 Temporary immunity after respawning. Applies everywhere (zones, claims, wilderness).
 
@@ -107,7 +107,7 @@ Temporary immunity after respawning. Applies everywhere (zones, claims, wilderne
 
 ### Check Priority
 
-Spawn protection is checked **first** in PvP checks (line 360), before zone or claim checks:
+Spawn protection is checked **first** in PvP checks, before zone or claim checks:
 
 ```
 canDamagePlayerChunk():
@@ -134,9 +134,12 @@ Source: `CombatTagManager` (referenced in `ProtectionChecker`)
 
 ### Command Blocking (Combat Tag Only)
 
-Source: `ProtectionChecker.checkCommandBlock()` lines 988–1029
+Source: `ProtectionChecker.checkCommandBlock()`
 
-Commands can be blocked for combat-tagged players. This is **not zone-flag-based** and **not claim-based** — it only checks combat tag state.
+Commands can be blocked for combat-tagged players. The check includes:
+1. **Admin bypass** — if admin bypass toggle is ON, commands are never blocked
+2. **Bypass permission** — `hyperfactions.bypass.command` or `hyperfactions.bypass.*` allows all commands
+3. **Combat tag check** — tagged players are blocked from teleport commands (`/f home`, `/home`, `/spawn`, `/tp`, `/tpa`)
 
 ---
 
@@ -191,23 +194,24 @@ Source: [`DamageProtectionHandler.java`](../src/main/java/com/hyperfactions/prot
 
 ## Bypass Permissions
 
-Source: `ProtectionChecker.canInteractChunk()` lines 157–171
+Source: `ProtectionChecker.canInteractChunk()`
 
 ### Standard Bypass Permissions (Non-Admin)
 
 | Permission | Bypasses |
 |------------|----------|
 | `hyperfactions.bypass.build` | Block place/break protection |
-| `hyperfactions.bypass.interact` | Door, bench, processing, seat, teleporter, portal protection |
+| `hyperfactions.bypass.interact` | Door, bench, processing, seat, light, mount, teleporter, portal, crate, NPC tame, NPC interact, item drop, item pickup protection |
 | `hyperfactions.bypass.container` | Chest/storage access protection |
-| `hyperfactions.bypass.damage` | Entity damage protection |
-| `hyperfactions.bypass.use` | Item use protection |
-| `hyperfactions.bypass.pickup` | Item pickup protection (auto + F-key) |
+| `hyperfactions.bypass.damage` | Entity damage protection (DAMAGE and PVE_DAMAGE) |
+| `hyperfactions.bypass.use` | Item use protection (USE type) |
+| `hyperfactions.bypass.pickup` | Item pickup protection in `canPickupItem()` (auto + F-key) |
+| `hyperfactions.bypass.command` | Combat tag command blocking |
 | `hyperfactions.bypass.*` | All of the above |
 
 ### Admin Bypass (Separate Mechanism)
 
-Source: `ProtectionChecker.canInteractChunk()` lines 145–156
+Source: `ProtectionChecker.canInteractChunk()`
 
 - Requires `hyperfactions.admin.use` permission
 - Must explicitly toggle ON via `/f admin bypass`
@@ -253,15 +257,29 @@ Some combat settings support per-world overrides via `ConfigManager`:
 
 Per-world overrides require the `WorldsConfig` module (`config/worlds.json`). If not enabled, the global config value is used.
 
-### Outsider Entity Damage Settings
+### Outsider PvP Damage Settings
 
-Three additional damage flags in `config/factions.json` under the `claims` section control whether outsiders can deal entity damage inside claimed territory:
+Three damage flags in `config/factions.json` under the `claims` section control whether outsiders can deal **PvP damage** to other players inside claimed territory. These are checked in `canDamagePlayerChunk()` after faction/ally checks, only when the attacker is not the claim owner:
 
 | Key | Type | Default | Behavior |
 |-----|------|---------|----------|
-| `factionlessDamageAllowed` | bool | false | Allow factionless players to damage entities in claims |
-| `enemyDamageAllowed` | bool | false | Allow enemy faction members to damage entities in claims |
-| `neutralDamageAllowed` | bool | false | Allow neutral faction members to damage entities in claims |
+| `claims.factionlessDamageAllowed` | bool | **true** | Allow factionless players to PvP in claims |
+| `claims.enemyDamageAllowed` | bool | **true** | Allow enemy faction members to PvP in claims |
+| `claims.neutralDamageAllowed` | bool | **true** | Allow neutral faction members to PvP in claims |
+
+**Note**: These control **PvP** damage (player-vs-player), not entity damage. Entity damage by outsiders uses the `DAMAGE` InteractionType which is hardcoded to deny outsiders, or the `PVE_DAMAGE` type which uses per-level `{level}PveDamage` faction permission flags.
+
+### Fluid Spread Protection
+
+Source: `ProtectionChecker.shouldBlockFluidSpread()`
+
+| Location | Behavior | Configurable? |
+|----------|----------|---------------|
+| **Zone** | Reuses `fire_spread` zone flag — if fire spread is blocked, fluid spread is also blocked | Yes (zone flag) |
+| **Claim** | Always allowed — fluid is intentionally placed by players | No |
+| **Wilderness** | Always allowed | N/A |
+
+**Mixin required**: HyperProtect-Mixin slot 25 (FluidSpread hook).
 
 ---
 
@@ -302,6 +320,6 @@ When GravestonePlugin is installed:
 | OrbisGuardIntegration | [`integration/protection/OrbisGuardIntegration.java`](../src/main/java/com/hyperfactions/integration/protection/OrbisGuardIntegration.java) |
 | GravestoneIntegration | [`integration/protection/GravestoneIntegration.java`](../src/main/java/com/hyperfactions/integration/protection/GravestoneIntegration.java) |
 | CoreConfig *(deprecated)* | [`config/CoreConfig.java`](../src/main/java/com/hyperfactions/config/CoreConfig.java) |
-| FactionsConfig | [`config/FactionsConfig.java`](../src/main/java/com/hyperfactions/config/FactionsConfig.java) |
-| ServerConfig | [`config/ServerConfig.java`](../src/main/java/com/hyperfactions/config/ServerConfig.java) |
+| FactionsConfig | [`config/modules/FactionsConfig.java`](../src/main/java/com/hyperfactions/config/modules/FactionsConfig.java) |
+| ServerConfig | [`config/modules/ServerConfig.java`](../src/main/java/com/hyperfactions/config/modules/ServerConfig.java) |
 | ConfigManager | [`config/ConfigManager.java`](../src/main/java/com/hyperfactions/config/ConfigManager.java) |

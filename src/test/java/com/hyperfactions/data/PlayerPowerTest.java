@@ -67,7 +67,7 @@ class PlayerPowerTest {
         @Test
         @DisplayName("preserves other fields when updating power")
         void withPower_preservesOtherFields() {
-            PlayerPower power = new PlayerPower(TEST_UUID, 10.0, 20.0, 12345L, 67890L);
+            PlayerPower power = new PlayerPower(TEST_UUID, 10.0, 20.0, 12345L, 67890L, null, false, false);
             PlayerPower updated = power.withPower(15.0);
 
             assertEquals(TEST_UUID, updated.uuid());
@@ -137,7 +137,7 @@ class PlayerPowerTest {
         @Test
         @DisplayName("updates lastRegen timestamp")
         void withRegen_updatesLastRegen() {
-            PlayerPower power = new PlayerPower(TEST_UUID, 10.0, 20.0, 0, 0);
+            PlayerPower power = new PlayerPower(TEST_UUID, 10.0, 20.0, 0, 0, null, false, false);
             long before = System.currentTimeMillis();
             PlayerPower updated = power.withRegen(1.0);
             long after = System.currentTimeMillis();
@@ -188,17 +188,17 @@ class PlayerPowerTest {
         @Test
         @DisplayName("floors power correctly")
         void getPowerInt_floorsCorrectly() {
-            PlayerPower power = new PlayerPower(TEST_UUID, 15.7, 20.0, 0, 0);
+            PlayerPower power = new PlayerPower(TEST_UUID, 15.7, 20.0, 0, 0, null, false, false);
             assertEquals(15, power.getPowerInt());
 
-            PlayerPower power2 = new PlayerPower(TEST_UUID, 15.2, 20.0, 0, 0);
+            PlayerPower power2 = new PlayerPower(TEST_UUID, 15.2, 20.0, 0, 0, null, false, false);
             assertEquals(15, power2.getPowerInt());
         }
 
         @Test
         @DisplayName("floors max power correctly")
         void getMaxPowerInt_floorsCorrectly() {
-            PlayerPower power = new PlayerPower(TEST_UUID, 10.0, 25.9, 0, 0);
+            PlayerPower power = new PlayerPower(TEST_UUID, 10.0, 25.9, 0, 0, null, false, false);
             assertEquals(25, power.getMaxPowerInt());
         }
     }
@@ -210,7 +210,7 @@ class PlayerPowerTest {
         @Test
         @DisplayName("returns true when power equals max")
         void isAtMax_trueWhenAtMax() {
-            PlayerPower power = new PlayerPower(TEST_UUID, 20.0, 20.0, 0, 0);
+            PlayerPower power = new PlayerPower(TEST_UUID, 20.0, 20.0, 0, 0, null, false, false);
             assertTrue(power.isAtMax());
         }
 
@@ -218,14 +218,14 @@ class PlayerPowerTest {
         @DisplayName("returns true when power exceeds max (edge case)")
         void isAtMax_trueWhenAboveMax() {
             // Direct construction can bypass clamping for edge case testing
-            PlayerPower power = new PlayerPower(TEST_UUID, 25.0, 20.0, 0, 0);
+            PlayerPower power = new PlayerPower(TEST_UUID, 25.0, 20.0, 0, 0, null, false, false);
             assertTrue(power.isAtMax());
         }
 
         @Test
         @DisplayName("returns false when power is below max")
         void isAtMax_falseWhenBelow() {
-            PlayerPower power = new PlayerPower(TEST_UUID, 19.9, 20.0, 0, 0);
+            PlayerPower power = new PlayerPower(TEST_UUID, 19.9, 20.0, 0, 0, null, false, false);
             assertFalse(power.isAtMax());
         }
     }
@@ -237,27 +237,27 @@ class PlayerPowerTest {
         @Test
         @DisplayName("calculates percentage correctly")
         void getPowerPercent_calculatesCorrectly() {
-            PlayerPower power = new PlayerPower(TEST_UUID, 10.0, 20.0, 0, 0);
+            PlayerPower power = new PlayerPower(TEST_UUID, 10.0, 20.0, 0, 0, null, false, false);
             assertEquals(50, power.getPowerPercent());
 
-            PlayerPower power2 = new PlayerPower(TEST_UUID, 15.0, 20.0, 0, 0);
+            PlayerPower power2 = new PlayerPower(TEST_UUID, 15.0, 20.0, 0, 0, null, false, false);
             assertEquals(75, power2.getPowerPercent());
 
-            PlayerPower power3 = new PlayerPower(TEST_UUID, 20.0, 20.0, 0, 0);
+            PlayerPower power3 = new PlayerPower(TEST_UUID, 20.0, 20.0, 0, 0, null, false, false);
             assertEquals(100, power3.getPowerPercent());
         }
 
         @Test
         @DisplayName("returns zero when max power is zero")
         void getPowerPercent_handlesZeroMax() {
-            PlayerPower power = new PlayerPower(TEST_UUID, 0.0, 0.0, 0, 0);
+            PlayerPower power = new PlayerPower(TEST_UUID, 0.0, 0.0, 0, 0, null, false, false);
             assertEquals(0, power.getPowerPercent());
         }
 
         @Test
         @DisplayName("returns zero when max power is negative")
         void getPowerPercent_handlesNegativeMax() {
-            PlayerPower power = new PlayerPower(TEST_UUID, 5.0, -10.0, 0, 0);
+            PlayerPower power = new PlayerPower(TEST_UUID, 5.0, -10.0, 0, 0, null, false, false);
             assertEquals(0, power.getPowerPercent());
         }
 
@@ -265,7 +265,7 @@ class PlayerPowerTest {
         @DisplayName("rounds to nearest integer")
         void getPowerPercent_roundsCorrectly() {
             // 7.5 / 20 = 0.375 = 37.5% -> rounds to 38
-            PlayerPower power = new PlayerPower(TEST_UUID, 7.5, 20.0, 0, 0);
+            PlayerPower power = new PlayerPower(TEST_UUID, 7.5, 20.0, 0, 0, null, false, false);
             assertEquals(38, power.getPowerPercent());
         }
     }

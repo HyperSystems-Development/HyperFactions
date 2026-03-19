@@ -6,45 +6,44 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Represents a command help entry for display in help messages.
  *
- * @param command     the command syntax (e.g., "/f create {@code <name>}")
- * @param description the command description
- * @param section     optional section name for grouping (null for no section)
+ * <p>The {@code descriptionKey} and {@code sectionKey} fields store i18n message keys
+ * that are resolved at display time by {@link HelpFormatter} via {@link HFMessages}.
+ *
+ * @param command        the command syntax (e.g., "/f create {@code <name>}")
+ * @param descriptionKey the i18n key for the command description
+ * @param sectionKey     optional i18n key for the section name (null for no section)
+ * @param sortOrder      controls display ordering (lower values first)
  */
 public record CommandHelp(
   @NotNull String command,
-  @NotNull String description,
-  @Nullable String section
+  @NotNull String descriptionKey,
+  @Nullable String sectionKey,
+  int sortOrder
 ) implements Comparable<CommandHelp> {
 
   /**
-   * Creates a command help entry without a section.
+   * Creates a command help entry without a section (sortOrder 0).
    */
-  public CommandHelp(@NotNull String command, @NotNull String description) {
-    this(command, description, null);
+  public CommandHelp(@NotNull String command, @NotNull String descriptionKey) {
+    this(command, descriptionKey, null, 0);
   }
 
   /**
-   * Compares by section (nulls first), then by command.
+   * Creates a command help entry with a section (sortOrder 0).
+   */
+  public CommandHelp(@NotNull String command, @NotNull String descriptionKey, @Nullable String sectionKey) {
+    this(command, descriptionKey, sectionKey, 0);
+  }
+
+  /**
+   * Compares by sortOrder first, then by command name within same order.
    */
   @Override
   public int compareTo(@NotNull CommandHelp other) {
-    // Null sections first
-    if (this.section == null && other.section != null) {
-      return -1;
+    int orderCmp = Integer.compare(this.sortOrder, other.sortOrder);
+    if (orderCmp != 0) {
+      return orderCmp;
     }
-    if (this.section != null && other.section == null) {
-      return 1;
-    }
-
-    // Both null or both non-null: compare sections
-    if (this.section != null && other.section != null) {
-      int sectionCmp = this.section.compareTo(other.section);
-      if (sectionCmp != 0) {
-        return sectionCmp;
-      }
-    }
-
-    // Same section: compare commands
     return this.command.compareTo(other.command);
   }
 }

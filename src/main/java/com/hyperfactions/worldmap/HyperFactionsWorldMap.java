@@ -1,6 +1,8 @@
 package com.hyperfactions.worldmap;
 
 import com.hyperfactions.api.HyperFactionsAPI;
+import com.hyperfactions.config.ConfigManager;
+import com.hyperfactions.config.modules.WorldMapConfig;
 import com.hyperfactions.manager.ClaimManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.ZoneManager;
@@ -16,6 +18,8 @@ import it.unimi.dsi.fastutil.longs.LongSet;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Custom world map generator that renders terrain with faction claim overlays.
@@ -25,14 +29,28 @@ import java.util.concurrent.CompletableFuture;
  * <p>Unlike the overlay post-process approach, this method directly renders
  * claim colors as part of the terrain generation, ensuring claim overlays
  * always appear correctly on the map.
+ *
+ * <p>Each instance is per-world: it captures the world's original
+ * {@link WorldMapSettings} and merges them with HyperFactions config overrides,
+ * inheriting values the server admin has not explicitly overridden.
  */
 public class HyperFactionsWorldMap implements IWorldMap {
 
-  /** Singleton instance returned by the provider. */
-  public static final HyperFactionsWorldMap INSTANCE = new HyperFactionsWorldMap();
+  /** The world's original map settings captured before we replaced the generator, or null for legacy mode. */
+  private final @Nullable WorldMapSettings originalSettings;
 
-  private HyperFactionsWorldMap() {
-    // Singleton - use INSTANCE
+  /** Whether BetterMap compatibility mode was active at construction time. */
+  private final boolean betterMapActive;
+
+  /**
+   * Creates a per-world HyperFactions world map generator.
+   *
+   * @param originalSettings the world's original map settings (null for legacy/fallback)
+   * @param betterMapActive  whether BetterMap compatibility is active
+   */
+  public HyperFactionsWorldMap(@Nullable WorldMapSettings originalSettings, boolean betterMapActive) {
+    this.originalSettings = originalSettings;
+    this.betterMapActive = betterMapActive;
   }
 
   /**
@@ -52,15 +70,108 @@ public class HyperFactionsWorldMap implements IWorldMap {
     return HyperFactionsAPI.getZoneManager();
   }
 
-  /** Returns the world map settings. */
+  /**
+   * Returns the world map settings.
+   *
+   * <p>When {@code respectWorldConfig} is enabled and original settings are available,
+   * merges the world's original settings with HyperFactions config overrides.
+   * Otherwise falls back to legacy hardcoded values.
+   */
   @Override
+  @NotNull
   public WorldMapSettings getWorldMapSettings() {
+    WorldMapConfig config = ConfigManager.get().worldMap();
+
+    if (config.isRespectWorldConfig() && originalSettings != null
+        && originalSettings.getSettingsPacket() != null) {
+      return mergeWithOriginal(config);
+    }
+
+    // Legacy fallback: hardcoded settings (pre-0.12 behavior)
     UpdateWorldMapSettings settingsPacket = new UpdateWorldMapSettings();
     settingsPacket.enabled = true;
     settingsPacket.defaultScale = 128.0f;
     settingsPacket.minScale = 64.0f;
     settingsPacket.maxScale = 128.0f;
     return new WorldMapSettings(null, 3.0f, 1.0f, 16, 32, settingsPacket);
+  }
+
+  /**
+   * Merges the world's original settings with HyperFactions config overrides.
+   * Values not overridden in config are inherited from the original settings.
+   *
+   * @param config the world map configuration with optional overrides
+   * @return merged settings
+   */
+  @NotNull
+  private WorldMapSettings mergeWithOriginal(@NotNull WorldMapConfig config) {
+    assert originalSettings != null; // Caller guarantees non-null
+
+    UpdateWorldMapSettings original = originalSettings.getSettingsPacket();
+    UpdateWorldMapSettings merged = new UpdateWorldMapSettings();
+
+    // Always enable — we need the map for claim overlays
+    merged.enabled = true;
+
+    // Inherit biome data from the world's original settings
+    merged.biomeDataMap = original.biomeDataMap;
+
+    // Scale values: use config override if set, otherwise inherit from original.
+    // IMPORTANT: vanilla UpdateWorldMapSettings has 0.0f defaults (Java float default) —
+    // the server never sets these because the client handles zoom independently.
+    // If the inherited value is 0, fall back to our proven defaults.
+    merged.defaultScale = config.getOverrideDefaultScale() != null
+        ? config.getOverrideDefaultScale()
+        : (original.defaultScale > 0 ? original.defaultScale : 128.0f);
+    merged.minScale = config.getOverrideMinScale() != null
+        ? config.getOverrideMinScale()
+        : (original.minScale > 0 ? original.minScale : 64.0f);
+    merged.maxScale = config.getOverrideMaxScale() != null
+        ? config.getOverrideMaxScale()
+        : (original.maxScale > 0 ? original.maxScale : 128.0f);
+
+    // Configurable allow* flags: use config override if set, otherwise inherit
+    merged.allowTeleportToCoordinates = config.getOverrideAllowTeleportToCoordinates() != null
+        ? config.getOverrideAllowTeleportToCoordinates()
+        : original.allowTeleportToCoordinates;
+    merged.allowTeleportToMarkers = config.getOverrideAllowTeleportToMarkers() != null
+        ? config.getOverrideAllowTeleportToMarkers()
+        : original.allowTeleportToMarkers;
+    merged.allowCreatingMapMarkers = config.getOverrideAllowCreatingMapMarkers() != null
+        ? config.getOverrideAllowCreatingMapMarkers()
+        : original.allowCreatingMapMarkers;
+
+    // Always-inherited allow* flags (no config override — respect whatever the world set)
+    merged.allowShowOnMapToggle = original.allowShowOnMapToggle;
+    merged.allowCompassTrackingToggle = original.allowCompassTrackingToggle;
+    merged.allowRemovingOtherPlayersMarkers = original.allowRemovingOtherPlayersMarkers;
+
+    // ImageScale: when BetterMap is active, always use the world's original value
+    // so BetterMap's quality system can control it. Otherwise use config override if set.
+    float imageScale;
+    if (betterMapActive) {
+      imageScale = originalSettings.getImageScale();
+    } else if (config.getOverrideImageScale() != null) {
+      imageScale = config.getOverrideImageScale();
+    } else {
+      imageScale = originalSettings.getImageScale();
+    }
+
+    // Remaining WorldMapSettings fields: always inherit from original
+    // viewRadiusMultiplier, viewRadiusMin, viewRadiusMax are private with no public getters,
+    // so we use reflection to read them from the original settings
+    float viewRadiusMultiplier = getPrivateFloat(originalSettings, "viewRadiusMultiplier", 1.0f);
+    int viewRadiusMin = getPrivateInt(originalSettings, "viewRadiusMin", 1);
+    int viewRadiusMax = getPrivateInt(originalSettings, "viewRadiusMax", 512);
+
+    return new WorldMapSettings(
+        originalSettings.getWorldMapArea(),
+        imageScale,
+        viewRadiusMultiplier,
+        viewRadiusMin,
+        viewRadiusMax,
+        merged
+    );
   }
 
   /** Generate. */
@@ -115,5 +226,37 @@ public class HyperFactionsWorldMap implements IWorldMap {
   @Override
   public void shutdown() {
     // No resources to clean up
+  }
+
+  // === Reflection helpers for private WorldMapSettings fields ===
+
+  /**
+   * Reads a private float field from an object via reflection.
+   * Falls back to the default value if the field is not accessible.
+   */
+  private static float getPrivateFloat(@NotNull Object obj, @NotNull String fieldName, float defaultValue) {
+    try {
+      java.lang.reflect.Field field = obj.getClass().getDeclaredField(fieldName);
+      field.setAccessible(true);
+      return field.getFloat(obj);
+    } catch (Exception e) {
+      Logger.debug("[WorldMap] Could not read field '%s' via reflection, using default %.1f", fieldName, defaultValue);
+      return defaultValue;
+    }
+  }
+
+  /**
+   * Reads a private int field from an object via reflection.
+   * Falls back to the default value if the field is not accessible.
+   */
+  private static int getPrivateInt(@NotNull Object obj, @NotNull String fieldName, int defaultValue) {
+    try {
+      java.lang.reflect.Field field = obj.getClass().getDeclaredField(fieldName);
+      field.setAccessible(true);
+      return field.getInt(obj);
+    } catch (Exception e) {
+      Logger.debug("[WorldMap] Could not read field '%s' via reflection, using default %d", fieldName, defaultValue);
+      return defaultValue;
+    }
   }
 }

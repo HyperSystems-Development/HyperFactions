@@ -1,5 +1,7 @@
 package com.hyperfactions.territory;
 
+import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.PlayerTerritoryChangeEvent;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.ChunkKey;
 import com.hyperfactions.data.Faction;
@@ -9,13 +11,16 @@ import com.hyperfactions.manager.ClaimManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.RelationManager;
 import com.hyperfactions.manager.ZoneManager;
+import com.hyperfactions.storage.PlayerStorage;
 import com.hyperfactions.territory.TerritoryInfo.TerritoryType;
 import com.hyperfactions.util.ChunkUtil;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.util.EventTitleUtil;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import org.jetbrains.annotations.NotNull;
@@ -35,22 +40,29 @@ public class TerritoryNotifier {
 
   private final RelationManager relationManager;
 
+  private final PlayerStorage playerStorage;
+
   // Tracks the previous territory for each player
   private final Map<UUID, TerritoryInfo> previousTerritories = new ConcurrentHashMap<>();
 
   // Tracks the last chunk for each player (to detect chunk changes)
   private final Map<UUID, ChunkKey> lastChunks = new ConcurrentHashMap<>();
 
+  // Players who have disabled territory alerts (opt-out set)
+  private final Set<UUID> alertsDisabledPlayers = ConcurrentHashMap.newKeySet();
+
   /** Creates a new TerritoryNotifier. */
   public TerritoryNotifier(
       @NotNull FactionManager factionManager,
       @NotNull ClaimManager claimManager,
       @NotNull ZoneManager zoneManager,
-      @NotNull RelationManager relationManager) {
+      @NotNull RelationManager relationManager,
+      @NotNull PlayerStorage playerStorage) {
     this.factionManager = factionManager;
     this.claimManager = claimManager;
     this.zoneManager = zoneManager;
     this.relationManager = relationManager;
+    this.playerStorage = playerStorage;
   }
 
   /**
@@ -92,6 +104,12 @@ public class TerritoryNotifier {
       if (currentTerritory.type() == TerritoryType.WILDERNESS && previousTerritory != null) {
         notifyTerritory = buildWildernessFromConfig(previousTerritory);
       }
+
+      // Publish territory change event
+      EventBus.publish(new PlayerTerritoryChangeEvent(
+          playerUuid, world, chunkX, chunkZ,
+          previousTerritory != null ? previousTerritory.factionId() : null,
+          currentTerritory.factionId()));
 
       // Update stored territory
       previousTerritories.put(playerUuid, currentTerritory);
@@ -135,19 +153,26 @@ public class TerritoryNotifier {
    * @param territory the territory info
    */
   private void sendTerritoryNotification(@NotNull PlayerRef playerRef, @NotNull TerritoryInfo territory) {
+    // Check player preference — respect opt-out
+    if (alertsDisabledPlayers.contains(playerRef.getUuid())) {
+      Logger.debugTerritory("Territory notification suppressed for %s: player disabled alerts",
+          playerRef.getUsername());
+      return;
+    }
+
     if (!territory.isNotificationEnabled()) {
       Logger.debugTerritory("Notification suppressed for %s: %s",
-          playerRef.getUsername(), territory.getPrimaryText());
+          playerRef.getUsername(), territory.getPrimaryText(playerRef));
       return;
     }
 
     try {
       // Build primary message (territory name)
-      Message primaryMessage = Message.raw(territory.getPrimaryText())
+      Message primaryMessage = Message.raw(territory.getPrimaryText(playerRef))
           .color(territory.getDisplayColor());
 
       // Build secondary message (territory type description)
-      String secondaryText = territory.getSecondaryText();
+      String secondaryText = territory.getSecondaryText(playerRef);
       Message secondaryMessage = secondaryText != null
           ? Message.raw(secondaryText).color("#AAAAAA")
           : Message.raw("");
@@ -166,11 +191,11 @@ public class TerritoryNotifier {
       );
 
       Logger.debugTerritory("Sent territory notification to %s: %s",
-          playerRef.getUsername(), territory.getPrimaryText());
+          playerRef.getUsername(), territory.getPrimaryText(playerRef));
 
     } catch (Exception e) {
       // Fallback to chat message if notification fails
-      Logger.warn("Failed to send territory notification, falling back to chat: %s", e.getMessage());
+      ErrorHandler.report("Failed to send territory notification, falling back to chat", e);
       sendChatFallback(playerRef, territory);
     }
   }
@@ -183,8 +208,8 @@ public class TerritoryNotifier {
    */
   private void sendChatFallback(@NotNull PlayerRef playerRef, @NotNull TerritoryInfo territory) {
     try {
-      String secondaryText = territory.getSecondaryText();
-      Message message = Message.raw("~ " + territory.getPrimaryText())
+      String secondaryText = territory.getSecondaryText(playerRef);
+      Message message = Message.raw("~ " + territory.getPrimaryText(playerRef))
           .color(territory.getDisplayColor());
 
       if (secondaryText != null) {
@@ -193,7 +218,7 @@ public class TerritoryNotifier {
 
       playerRef.sendMessage(message);
     } catch (Exception e) {
-      Logger.warn("Failed to send territory chat fallback: %s", e.getMessage());
+      ErrorHandler.report("Failed to send territory chat fallback", e);
     }
   }
 
@@ -270,6 +295,16 @@ public class TerritoryNotifier {
     }
 
     UUID playerUuid = playerRef.getUuid();
+
+    // Load territory alert preference
+    playerStorage.loadPlayerData(playerUuid).thenAccept(opt -> {
+      opt.ifPresent(data -> {
+        if (!data.isTerritoryAlertsEnabled()) {
+          alertsDisabledPlayers.add(playerUuid);
+        }
+      });
+    });
+
     int chunkX = ChunkUtil.toChunkCoord(x);
     int chunkZ = ChunkUtil.toChunkCoord(z);
 
@@ -293,6 +328,7 @@ public class TerritoryNotifier {
   public void onPlayerDisconnect(@NotNull UUID playerUuid) {
     previousTerritories.remove(playerUuid);
     lastChunks.remove(playerUuid);
+    alertsDisabledPlayers.remove(playerUuid);
   }
 
   /**
@@ -318,11 +354,27 @@ public class TerritoryNotifier {
   }
 
   /**
+   * Updates the cached territory alerts preference for a player.
+   * Called from PlayerSettingsPage when the preference is toggled.
+   *
+   * @param playerUuid the player's UUID
+   * @param enabled    whether territory alerts are enabled
+   */
+  public void setTerritoryAlertsEnabled(@NotNull UUID playerUuid, boolean enabled) {
+    if (enabled) {
+      alertsDisabledPlayers.remove(playerUuid);
+    } else {
+      alertsDisabledPlayers.add(playerUuid);
+    }
+  }
+
+  /**
    * Clears all tracking data.
    * Called on plugin shutdown.
    */
   public void shutdown() {
     previousTerritories.clear();
     lastChunks.clear();
+    alertsDisabledPlayers.clear();
   }
 }

@@ -11,6 +11,7 @@ import com.hyperfactions.command.admin.handler.AdminImportHandler;
 import com.hyperfactions.command.admin.handler.AdminIntegrationHandler;
 import com.hyperfactions.command.admin.handler.AdminMapDecayHandler;
 import com.hyperfactions.command.admin.handler.AdminPowerHandler;
+import com.hyperfactions.command.admin.handler.AdminTestHandler;
 import com.hyperfactions.command.admin.handler.AdminUpdateHandler;
 import com.hyperfactions.command.admin.handler.AdminWorldHandler;
 import com.hyperfactions.command.admin.handler.AdminZoneHandler;
@@ -20,7 +21,10 @@ import com.hyperfactions.gui.admin.page.AdminPlayerInfoPage;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.CommandHelp;
+import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.HelpFormatter;
+import com.hyperfactions.util.AdminKeys;
+import com.hyperfactions.util.HelpKeys;
 import com.hyperfactions.util.PlayerResolver;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -73,6 +77,8 @@ public class AdminSubCommand extends AbstractAsyncCommand {
 
   private final AdminMapDecayHandler mapDecayHandler;
 
+  private final AdminTestHandler testHandler;
+
   private final AdminWorldHandler worldHandler;
 
   /** Creates a new AdminSubCommand. */
@@ -92,6 +98,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
     this.powerHandler = new AdminPowerHandler(hyperFactions, plugin);
     this.economyHandler = new AdminEconomyHandler(hyperFactions);
     this.mapDecayHandler = new AdminMapDecayHandler(hyperFactions);
+    this.testHandler = new AdminTestHandler(hyperFactions);
     this.worldHandler = new AdminWorldHandler(hyperFactions);
   }
 
@@ -118,7 +125,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
 
   private boolean requirePlayer(CommandContext ctx, boolean isPlayer) {
     if (!isPlayer) {
-      ctx.sendMessage(prefix().insert(msg("This command can only be used by a player.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.PLAYER_ONLY), COLOR_RED)));
       return false;
     }
     return true;
@@ -147,7 +154,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
       // (same pattern as AbstractPlayerCommand)
       Ref<EntityStore> ref = ctx.senderAsPlayerRef();
       if (ref == null || !ref.isValid()) {
-        ctx.sendMessage(prefix().insert(msg("Player context unavailable.", COLOR_RED)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.PLAYER_CONTEXT), COLOR_RED)));
         return CompletableFuture.completedFuture(null);
       }
       Store<EntityStore> store = ref.getStore();
@@ -156,7 +163,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
       return runAsync(ctx, () -> {
         PlayerRef player = store.getComponent(ref, PlayerRef.getComponentType());
         if (player == null) {
-          ctx.sendMessage(prefix().insert(msg("Could not find player entity.", COLOR_RED)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.ENTITY_NOT_FOUND), COLOR_RED)));
           return;
         }
         dispatchCommand(ctx, store, ref, player, currentWorld, true);
@@ -177,7 +184,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
                 @Nullable World currentWorld, boolean isPlayer) {
 
     if (!hasPermission(player, Permissions.ADMIN)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.NO_PERMISSION), COLOR_RED)));
       return;
     }
 
@@ -186,11 +193,11 @@ public class AdminSubCommand extends AbstractAsyncCommand {
     // No args - open admin GUI (player) or show help (console)
     if (args.length == 0) {
       if (!isPlayer) {
-        showAdminHelp(ctx);
+        showAdminHelp(ctx, player);
       } else {
         Player playerEntity = store.getComponent(ref, Player.getComponentType());
         if (playerEntity == null) {
-          ctx.sendMessage(prefix().insert(msg("Could not find player entity.", COLOR_RED)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.ENTITY_NOT_FOUND), COLOR_RED)));
         } else {
           hyperFactions.getGuiManager().openAdminMain(playerEntity, ref, store, player);
         }
@@ -202,7 +209,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
 
     // Show help for admin commands
     if (adminCmd.equals("help") || adminCmd.equals("?")) {
-      showAdminHelp(ctx);
+      showAdminHelp(ctx, player);
       return;
     }
 
@@ -233,7 +240,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
       case "update" -> updateHandler.handleAdminUpdate(ctx, senderUuid, subArgs);
       case "rollback" -> updateHandler.handleAdminRollback(ctx);
       case "backup" -> backupHandler.handleAdminBackup(ctx, player, senderUuid, subArgs);
-      case "import" -> importHandler.handleAdminImport(ctx, subArgs);
+      case "import" -> importHandler.handleAdminImport(ctx, player, subArgs);
       case "debug" -> debugHandler.handleDebug(ctx, store, ref, player, currentWorld, subArgs);
       case "decay" -> mapDecayHandler.handleAdminDecay(ctx, player, subArgs);
       case "map" -> mapDecayHandler.handleAdminMap(ctx, player, subArgs);
@@ -256,7 +263,12 @@ public class AdminSubCommand extends AbstractAsyncCommand {
         }
         Player playerEntity = store.getComponent(ref, Player.getComponentType());
         if (playerEntity != null) {
-          hyperFactions.getGuiManager().openAdminConfig(playerEntity, ref, store, player);
+          String tab = subArgs.length > 0 ? subArgs[0] : null;
+          if (tab != null) {
+            hyperFactions.getGuiManager().openAdminConfig(playerEntity, ref, store, player, tab);
+          } else {
+            hyperFactions.getGuiManager().openAdminConfig(playerEntity, ref, store, player);
+          }
         }
       }
       case "backups" -> {
@@ -268,15 +280,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
           hyperFactions.getGuiManager().openAdminBackups(playerEntity, ref, store, player);
         }
       }
-      case "testgui" -> {
-        if (!requirePlayer(ctx, isPlayer)) {
-          break;
-        }
-        Player playerEntity = store.getComponent(ref, Player.getComponentType());
-        if (playerEntity != null) {
-          hyperFactions.getGuiManager().openButtonTestPage(playerEntity, ref, store, player);
-        }
-      }
+      case "test" -> testHandler.handleTest(ctx, store, ref, player, subArgs, isPlayer);
       case "safezone" -> { if (requirePlayer(ctx, isPlayer)) zoneHandler.handleSafezone(ctx, player, currentWorld, chunkX, chunkZ, args); }
       case "warzone" -> { if (requirePlayer(ctx, isPlayer)) zoneHandler.handleWarzone(ctx, player, currentWorld, chunkX, chunkZ, args); }
       case "removezone" -> { if (requirePlayer(ctx, isPlayer)) zoneHandler.handleRemovezone(ctx, currentWorld, chunkX, chunkZ); }
@@ -287,7 +291,6 @@ public class AdminSubCommand extends AbstractAsyncCommand {
       case "world", "worlds" -> worldHandler.handleAdminWorld(ctx, player, subArgs);
       case "version" -> handleVersion(ctx, store, ref, player, isPlayer);
       case "sentry" -> handleSentry(ctx, subArgs);
-      case "sentrytest" -> handleSentryTest(ctx);
       case "log", "logs", "activitylog" -> {
         if (!requirePlayer(ctx, isPlayer)) {
           break;
@@ -309,7 +312,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
           faction = hyperFactions.getFactionManager().getPlayerFaction(player.getUuid());
         }
         if (faction == null) {
-          ctx.sendMessage(prefix().insert(msg("Faction not found.", COLOR_RED)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.FACTION_NOT_FOUND, factionName != null ? factionName : ""), COLOR_RED)));
           break;
         }
         Player playerEntity = store.getComponent(ref, Player.getComponentType());
@@ -327,7 +330,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
         if (targetName != null) {
           var resolved = PlayerResolver.resolve(hyperFactions, targetName);
           if (resolved == null) {
-            ctx.sendMessage(prefix().insert(msg("Player not found.", COLOR_RED)));
+            ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.PLAYER_NOT_FOUND, targetName), COLOR_RED)));
             break;
           }
           targetUuid = resolved.uuid();
@@ -344,47 +347,49 @@ public class AdminSubCommand extends AbstractAsyncCommand {
               AdminPlayerInfoPage.Origin.PLAYERS_LIST);
         }
       }
-      default -> ctx.sendMessage(prefix().insert(msg("Unknown admin command. Use /f admin help", COLOR_RED)));
+      default -> ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.UNKNOWN_COMMAND), COLOR_RED)));
     }
   }
 
-  private void showAdminHelp(CommandContext ctx) {
+  private void showAdminHelp(CommandContext ctx, @Nullable PlayerRef player) {
     List<CommandHelp> commands = new ArrayList<>();
-    commands.add(new CommandHelp("/f admin", "Open admin dashboard GUI"));
-    commands.add(new CommandHelp("/f admin factions", "Manage all factions"));
-    commands.add(new CommandHelp("/f admin zone", "Zone management"));
-    commands.add(new CommandHelp("/f admin config", "Server configuration"));
-    commands.add(new CommandHelp("/f admin backup", "Backup management"));
-    commands.add(new CommandHelp("/f admin import", "Import from other plugins"));
-    commands.add(new CommandHelp("/f admin update", "Check for & download updates"));
-    commands.add(new CommandHelp("/f admin update mixin", "Update HyperProtect-Mixin"));
-    commands.add(new CommandHelp("/f admin update toggle-mixin-download", "Toggle HP-Mixin auto-download"));
-    commands.add(new CommandHelp("/f admin rollback", "Rollback to previous version"));
-    commands.add(new CommandHelp("/f admin reload", "Reload configuration"));
-    commands.add(new CommandHelp("/f admin sync", "Sync data from disk"));
-    commands.add(new CommandHelp("/f admin debug", "Debug commands"));
-    commands.add(new CommandHelp("/f admin decay", "Claim decay management"));
-    commands.add(new CommandHelp("/f admin map", "World map management"));
-    commands.add(new CommandHelp("/f admin safezone [name]", "Create SafeZone + claim chunk"));
-    commands.add(new CommandHelp("/f admin warzone [name]", "Create WarZone + claim chunk"));
-    commands.add(new CommandHelp("/f admin removezone", "Unclaim chunk from zone"));
-    commands.add(new CommandHelp("/f admin zoneflag <flag> <value>", "Set zone flag"));
-    commands.add(new CommandHelp("/f admin integrations", "Summary of all integrations"));
-    commands.add(new CommandHelp("/f admin integration <name>", "Detailed integration status"));
-    commands.add(new CommandHelp("/f admin clearhistory <player>", "Clear player membership history"));
-    commands.add(new CommandHelp("/f admin power", "Admin power management"));
-    commands.add(new CommandHelp("/f admin economy", "Economy/treasury management"));
-    commands.add(new CommandHelp("/f admin economy upkeep", "Manually trigger upkeep collection"));
-    commands.add(new CommandHelp("/f admin info [faction]", "View admin faction info GUI"));
-    commands.add(new CommandHelp("/f admin who [player]", "View admin player info GUI"));
-    commands.add(new CommandHelp("/f admin log", "View global activity log"));
-    commands.add(new CommandHelp("/f admin world", "Per-world settings management"));
-    commands.add(new CommandHelp("/f admin version", "View mod version and integration status"));
-    commands.add(new CommandHelp("/f admin sentry", "View Sentry status"));
-    commands.add(new CommandHelp("/f admin sentry disable", "Opt out of Sentry error reporting"));
-    commands.add(new CommandHelp("/f admin sentry enable", "Opt in to Sentry error reporting"));
-    commands.add(new CommandHelp("/f admin sentrytest", "Send a test error to Sentry"));
-    ctx.sendMessage(HelpFormatter.buildHelp("Admin Commands", "Server administration", commands, null));
+    commands.add(new CommandHelp("/f admin", HelpKeys.Help.ADMIN_CMD_DASHBOARD));
+    commands.add(new CommandHelp("/f admin factions", HelpKeys.Help.ADMIN_CMD_FACTIONS));
+    commands.add(new CommandHelp("/f admin zone", HelpKeys.Help.ADMIN_CMD_ZONE));
+    commands.add(new CommandHelp("/f admin config", HelpKeys.Help.ADMIN_CMD_CONFIG));
+    commands.add(new CommandHelp("/f admin backup", HelpKeys.Help.ADMIN_CMD_BACKUP));
+    commands.add(new CommandHelp("/f admin import", HelpKeys.Help.ADMIN_CMD_IMPORT));
+    commands.add(new CommandHelp("/f admin update", HelpKeys.Help.ADMIN_CMD_UPDATE));
+    commands.add(new CommandHelp("/f admin update mixin", HelpKeys.Help.ADMIN_CMD_UPDATE_MIXIN));
+    commands.add(new CommandHelp("/f admin update toggle-mixin-download", HelpKeys.Help.ADMIN_CMD_UPDATE_TOGGLE));
+    commands.add(new CommandHelp("/f admin rollback", HelpKeys.Help.ADMIN_CMD_ROLLBACK));
+    commands.add(new CommandHelp("/f admin reload", HelpKeys.Help.ADMIN_CMD_RELOAD));
+    commands.add(new CommandHelp("/f admin sync", HelpKeys.Help.ADMIN_CMD_SYNC));
+    commands.add(new CommandHelp("/f admin debug", HelpKeys.Help.ADMIN_CMD_DEBUG));
+    commands.add(new CommandHelp("/f admin decay", HelpKeys.Help.ADMIN_CMD_DECAY));
+    commands.add(new CommandHelp("/f admin map", HelpKeys.Help.ADMIN_CMD_MAP));
+    commands.add(new CommandHelp("/f admin safezone [name]", HelpKeys.Help.ADMIN_CMD_SAFEZONE));
+    commands.add(new CommandHelp("/f admin warzone [name]", HelpKeys.Help.ADMIN_CMD_WARZONE));
+    commands.add(new CommandHelp("/f admin removezone", HelpKeys.Help.ADMIN_CMD_REMOVEZONE));
+    commands.add(new CommandHelp("/f admin zoneflag <flag> <value>", HelpKeys.Help.ADMIN_CMD_ZONEFLAG));
+    commands.add(new CommandHelp("/f admin integrations", HelpKeys.Help.ADMIN_CMD_INTEGRATIONS));
+    commands.add(new CommandHelp("/f admin integration <name>", HelpKeys.Help.ADMIN_CMD_INTEGRATION));
+    commands.add(new CommandHelp("/f admin clearhistory <player>", HelpKeys.Help.ADMIN_CMD_CLEARHISTORY));
+    commands.add(new CommandHelp("/f admin power", HelpKeys.Help.ADMIN_CMD_POWER));
+    commands.add(new CommandHelp("/f admin economy", HelpKeys.Help.ADMIN_CMD_ECONOMY));
+    commands.add(new CommandHelp("/f admin economy upkeep", HelpKeys.Help.ADMIN_CMD_ECONOMY_UPKEEP));
+    commands.add(new CommandHelp("/f admin info [faction]", HelpKeys.Help.ADMIN_CMD_INFO));
+    commands.add(new CommandHelp("/f admin who [player]", HelpKeys.Help.ADMIN_CMD_WHO));
+    commands.add(new CommandHelp("/f admin log", HelpKeys.Help.ADMIN_CMD_LOG));
+    commands.add(new CommandHelp("/f admin world", HelpKeys.Help.ADMIN_CMD_WORLD));
+    commands.add(new CommandHelp("/f admin version", HelpKeys.Help.ADMIN_CMD_VERSION));
+    commands.add(new CommandHelp("/f admin sentry", HelpKeys.Help.ADMIN_CMD_SENTRY));
+    commands.add(new CommandHelp("/f admin sentry disable", HelpKeys.Help.ADMIN_CMD_SENTRY_DISABLE));
+    commands.add(new CommandHelp("/f admin sentry enable", HelpKeys.Help.ADMIN_CMD_SENTRY_ENABLE));
+    commands.add(new CommandHelp("/f admin test gui", HelpKeys.Help.ADMIN_CMD_TEST_GUI));
+    commands.add(new CommandHelp("/f admin test sentry", HelpKeys.Help.ADMIN_CMD_TEST_SENTRY));
+    commands.add(new CommandHelp("/f admin test md", HelpKeys.Help.ADMIN_CMD_TEST_MD));
+    ctx.sendMessage(HelpFormatter.buildHelp(HelpKeys.Help.ADMIN_TITLE, HelpKeys.Help.ADMIN_DESCRIPTION, commands, null, player));
   }
 
   // === Version ===
@@ -401,12 +406,17 @@ public class AdminSubCommand extends AbstractAsyncCommand {
       // Console output — mirrors the integration handler format
       integrationHandler.handleIntegrations(ctx);
       ctx.sendMessage(msg("", COLOR_GRAY));
-      ctx.sendMessage(prefix().insert(msg("Version Info", COLOR_CYAN)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.VERSION_TITLE), COLOR_CYAN)));
       ctx.sendMessage(msg("  HyperFactions: v" + HyperFactions.VERSION, COLOR_WHITE));
       String serverVersion = com.hypixel.hytale.common.util.java.ManifestUtil.getVersion();
-      ctx.sendMessage(msg("  Hytale Server: " + (serverVersion != null ? serverVersion : "Unknown"), COLOR_WHITE));
-      ctx.sendMessage(msg("  Java: " + System.getProperty("java.version", "Unknown"), COLOR_WHITE));
-      ctx.sendMessage(msg("  Treasury: " + (hyperFactions.isTreasuryEnabled() ? "Active" : "Not Found"),
+      ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.VERSION_SERVER,
+          serverVersion != null ? serverVersion : "Unknown"), COLOR_WHITE));
+      ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.VERSION_JAVA,
+          System.getProperty("java.version", "Unknown")), COLOR_WHITE));
+      String treasuryStatus = hyperFactions.isTreasuryEnabled()
+          ? HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.VERSION_ACTIVE)
+          : HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.VERSION_NOT_FOUND);
+      ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.VERSION_TREASURY, treasuryStatus),
           hyperFactions.isTreasuryEnabled() ? COLOR_GREEN : COLOR_GRAY));
     }
   }
@@ -419,11 +429,11 @@ public class AdminSubCommand extends AbstractAsyncCommand {
       // Show status
       boolean configEnabled = debugConfig.isSentryEnabled();
       boolean running = SentryIntegration.isInitialized();
-      ctx.sendMessage(prefix().insert(msg("Sentry Error Reporting", COLOR_CYAN)));
-      ctx.sendMessage(msg("  Config: " + (configEnabled ? "enabled" : "disabled"),
-          configEnabled ? COLOR_GREEN : COLOR_GRAY));
-      ctx.sendMessage(msg("  Status: " + (running ? "active" : "inactive"),
-          running ? COLOR_GREEN : COLOR_GRAY));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.SENTRY_HEADER), COLOR_CYAN)));
+      ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.SENTRY_CONFIG,
+          configEnabled ? "enabled" : "disabled"), configEnabled ? COLOR_GREEN : COLOR_GRAY));
+      ctx.sendMessage(msg("  " + HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.SENTRY_STATUS,
+          running ? "active" : "inactive"), running ? COLOR_GREEN : COLOR_GRAY));
       ctx.sendMessage(msg("  DSN: " + debugConfig.getSentryDsn(), COLOR_GRAY));
       ctx.sendMessage(msg("  Environment: " + debugConfig.getSentryEnvironment(), COLOR_GRAY));
       return;
@@ -432,17 +442,17 @@ public class AdminSubCommand extends AbstractAsyncCommand {
     switch (args[0].toLowerCase()) {
       case "disable", "optout", "off" -> {
         if (!debugConfig.isSentryEnabled()) {
-          ctx.sendMessage(prefix().insert(msg("Sentry is already disabled.", COLOR_YELLOW)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.SENTRY_ALREADY_DISABLED), COLOR_YELLOW)));
           return;
         }
         debugConfig.setSentryEnabled(false);
         debugConfig.save();
         SentryIntegration.close();
-        ctx.sendMessage(prefix().insert(msg("Sentry disabled and config saved. Error reporting is now off.", COLOR_GREEN)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.SENTRY_DISABLED), COLOR_GREEN)));
       }
       case "enable", "optin", "on" -> {
         if (debugConfig.isSentryEnabled()) {
-          ctx.sendMessage(prefix().insert(msg("Sentry is already enabled.", COLOR_YELLOW)));
+          ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.SENTRY_ALREADY_ENABLED), COLOR_YELLOW)));
           return;
         }
         debugConfig.setSentryEnabled(true);
@@ -451,56 +461,37 @@ public class AdminSubCommand extends AbstractAsyncCommand {
         if (!SentryIntegration.isInitialized()) {
           SentryIntegration.init(debugConfig);
         }
-        ctx.sendMessage(prefix().insert(msg("Sentry enabled and config saved. Error reporting is now on.", COLOR_GREEN)));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.SENTRY_ENABLED), COLOR_GREEN)));
       }
-      default -> ctx.sendMessage(prefix().insert(msg("Usage: /f admin sentry [disable|enable]", COLOR_RED)));
-    }
-  }
-
-  // === Sentry Test ===
-  private void handleSentryTest(CommandContext ctx) {
-    if (!SentryIntegration.isInitialized()) {
-      ctx.sendMessage(prefix().insert(msg("Sentry is not initialized. Check config/debug.json", COLOR_RED)));
-      return;
-    }
-
-    boolean sent = SentryIntegration.sendTestEvent();
-    if (sent) {
-      ctx.sendMessage(prefix().insert(msg("Test error sent to Sentry. Check your Sentry dashboard.", COLOR_GREEN)));
-    } else {
-      ctx.sendMessage(prefix().insert(msg("Failed to send test event.", COLOR_RED)));
+      default -> ctx.sendMessage(prefix().insert(msg(HFMessages.get((PlayerRef) null, AdminKeys.AdminCmd.SENTRY_USAGE), COLOR_RED)));
     }
   }
 
   // === Reload ===
   private void handleReload(CommandContext ctx, PlayerRef player) {
     if (!hasPermission(player, Permissions.ADMIN)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.NO_PERMISSION), COLOR_RED)));
       return;
     }
 
     plugin.reloadConfig();
-    ctx.sendMessage(prefix().insert(msg("Configuration reloaded.", COLOR_GREEN)));
+    ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.CONFIG_RELOADED), COLOR_GREEN)));
   }
 
   // === Sync ===
   private void handleSync(CommandContext ctx, PlayerRef player) {
     if (!hasPermission(player, Permissions.ADMIN)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.NO_PERMISSION), COLOR_RED)));
       return;
     }
 
-    ctx.sendMessage(prefix().insert(msg("Syncing faction data from disk...", COLOR_CYAN)));
+    ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.SYNC_START), COLOR_CYAN)));
 
     hyperFactions.getFactionManager().syncFromDisk().thenAccept(result -> {
-      ctx.sendMessage(prefix().insert(Message.join(
-        msg("Sync complete: ", COLOR_GREEN),
-        msg(result.factionsUpdated() + " factions updated, ", COLOR_GRAY),
-        msg(result.membersAdded() + " members added, ", COLOR_GRAY),
-        msg(result.membersUpdated() + " members updated.", COLOR_GRAY)
-      )));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.SYNC_COMPLETE,
+          result.factionsUpdated(), result.membersAdded(), result.membersUpdated()), COLOR_GREEN)));
     }).exceptionally(e -> {
-      ctx.sendMessage(prefix().insert(msg("Sync failed: " + e.getMessage(), COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.SYNC_FAILED, e.getMessage()), COLOR_RED)));
       return null;
     });
   }

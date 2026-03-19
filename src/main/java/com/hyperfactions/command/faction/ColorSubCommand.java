@@ -2,6 +2,8 @@ package com.hyperfactions.command.faction;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
+import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.FactionRenameEvent;
 import com.hyperfactions.command.FactionCommandContext;
 import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.command.util.CommandUtil;
@@ -10,8 +12,14 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionLog;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
+import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -39,7 +47,7 @@ public class ColorSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.COLOR)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.NO_PERMISSION));
       return;
     }
 
@@ -50,12 +58,12 @@ public class ColorSubCommand extends FactionSubCommand {
 
     FactionMember member = faction.getMember(player.getUuid());
     if (member == null || !member.isOfficerOrHigher()) {
-      ctx.sendMessage(prefix().insert(msg("You must be an officer to change the color.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Color.NOT_OFFICER));
       return;
     }
 
     if (!ConfigManager.get().isAllowColors()) {
-      ctx.sendMessage(prefix().insert(msg("Faction colors are disabled.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Color.COLORS_DISABLED));
       return;
     }
 
@@ -73,8 +81,8 @@ public class ColorSubCommand extends FactionSubCommand {
 
     // Text mode requires args
     if (!fctx.hasArgs()) {
-      ctx.sendMessage(prefix().insert(msg("Usage: /f color <code|#hex>", COLOR_RED)));
-      ctx.sendMessage(msg("Valid codes: 0-9, a-f or #RRGGBB hex", COLOR_GRAY));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Color.USAGE));
+      ctx.sendMessage(Message.raw(HFMessages.get(player, CommandKeys.Color.USAGE_HINT)).color(COLOR_GRAY));
       return;
     }
 
@@ -87,22 +95,26 @@ public class ColorSubCommand extends FactionSubCommand {
       // Legacy color code - convert to hex
       hexColor = com.hyperfactions.util.LegacyColorParser.codeToHex(colorInput.charAt(0));
     } else {
-      ctx.sendMessage(prefix().insert(msg("Invalid color. Use 0-9, a-f, or #RRGGBB.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Color.INVALID));
       return;
     }
 
     Faction updated = faction.withColor(hexColor)
       .withLog(FactionLog.create(FactionLog.LogType.SETTINGS_CHANGE,
-        "Color changed to '" + hexColor + "'", player.getUuid()));
+        "Color changed to '" + hexColor + "'", player.getUuid(),
+        GuiKeys.LogsGui.MSG_COLOR_CHANGED, hexColor));
 
     hyperFactions.getFactionManager().updateFaction(updated);
+    EventBus.publish(new FactionRenameEvent(faction.id(), FactionRenameEvent.Field.COLOR,
+        faction.color(), hexColor, player.getUuid()));
 
     // Refresh world maps to show new faction color (respects configured refresh mode)
     hyperFactions.getWorldMapService().triggerFactionWideRefresh(faction.id());
 
-    ctx.sendMessage(prefix().insert(msg("Faction color updated to ", COLOR_GREEN))
-      .insert(msg("this color", null).color(hexColor))
-      .insert(msg("!", COLOR_GREEN)));
+    // Show success with the actual color swatch
+    ctx.sendMessage(MessageUtil.prefix().insert(
+      Message.raw(HFMessages.get(player, CommandKeys.Color.SUCCESS) + " ").color(COLOR_GREEN))
+      .insert(Message.raw("\u2588\u2588").color(hexColor)));
 
     // After action, open settings page if not text mode
     if (fctx.shouldOpenGuiAfterAction()) {

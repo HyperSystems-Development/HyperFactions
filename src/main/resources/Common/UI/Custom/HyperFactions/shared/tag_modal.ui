@@ -10,7 +10,7 @@ $C.@PageOverlay {
 
     #Title {
       Group {
-        $C.@Title {
+        $C.@Title #PageTitle {
           @Text = "Edit Tag";
         }
       }
@@ -25,7 +25,7 @@ $C.@PageOverlay {
         Anchor: (Height: 28, Bottom: 10);
         LayoutMode: Left;
 
-        Label {
+        Label #CurrentLabel {
           Text: "Current:";
           Style: (FontSize: 12, TextColor: #888888, VerticalAlignment: Center);
           Anchor: (Width: 70);
@@ -39,7 +39,7 @@ $C.@PageOverlay {
       }
 
       // Instructions
-      Label {
+      Label #TagInstructions {
         Text: "Tag (1-5 chars, letters and numbers only):";
         Style: (FontSize: 12, TextColor: #888888);
         Anchor: (Height: 24, Bottom: 4);
@@ -51,7 +51,7 @@ $C.@PageOverlay {
       }
 
       // Help text
-      Label {
+      Label #TagHelpText {
         Text: "Tags appear in chat and on the map";
         Style: (FontSize: 10, TextColor: #555555, HorizontalAlignment: Center);
         Anchor: (Height: 16, Bottom: 10);

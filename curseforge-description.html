@@ -5,26 +5,23 @@
 <p>&nbsp;</p>
 <h2>✨ Why HyperFactions?</h2>
 <ul>
-    <li>🖥️ <strong><span style="color: #f0b232;">76 Interactive GUI Pages</span></strong> - Every feature has a polished, interactive GUI. No command memorization needed.</li>
-    <li>⚡ <strong><span style="color: #f0b232;">Real-Time GUI Updates</span></strong> - When a member joins, a chunk is claimed, or a relation changes, every open GUI refreshes automatically.</li>
-    <li>🛡️ <strong><span style="color: #f0b232;">50 Zone Flags</span></strong> - The most granular territory protection available, from PvP and granular friendly fire to mob spawning, transport control, and F-key pickup.</li>
-    <li>📦 <strong><span style="color: #f0b232;">Data Import</span></strong> - Migrating from ElbaphFactions or HyFactions? One command imports your factions, claims, and relations.</li>
-    <li>⚙️ <strong><span style="color: #f0b232;">Deep Configurability</span></strong> - 11 modular config files covering every aspect of gameplay. Tune it to your server's style.</li>
-    <li>🚀 <strong><span style="color: #f0b232;">Active Development</span></strong> - Regular updates with community-driven features. Open source on GitHub.</li>
+    <li><strong><span style="color: #f0b232;">70+ Interactive GUI Pages</span></strong> - Every feature has a polished, interactive GUI. No command memorization needed.</li>
+    <li><strong><span style="color: #f0b232;">Real-Time GUI Updates</span></strong> - When a member joins, a chunk is claimed, or a relation changes, every open GUI refreshes automatically.</li>
+    <li><strong><span style="color: #f0b232;">51 Zone Flags</span></strong> - The most granular territory protection available, from PvP and granular friendly fire to mob spawning, transport control, and F-key pickup.</li>
+    <li><strong><span style="color: #f0b232;">Data Import</span></strong> - Migrating from ElbaphFactions, HyFactions, SimpleClaims, or FactionsX? One command imports your factions, claims, and relations.</li>
+    <li><strong><span style="color: #f0b232;">Deep Configurability</span></strong> - 11 modular config files covering every aspect of gameplay. Tune it to your server's style.</li>
+    <li><strong><span style="color: #f0b232;">Active Development</span></strong> - Regular updates with community-driven features. Open source on GitHub.</li>
 </ul>
 <p>&nbsp;</p>
-<h2><span style="color: #f0b232;">🆕 What's New in v0.11.0</span></h2>
+<h2><span style="color: #f0b232;">🆕 What's New in v0.12.0</span></h2>
 <ul>
-    <li>💰 <strong><span style="color: #61afef;">Faction Upkeep System</span></strong> - Automated territory maintenance costs with flat or progressive tiered pricing, grace periods, and auto-pay</li>
-    <li>🐾 <strong><span style="color: #61afef;">Mob Clearing Zone Flags</span></strong> - 4 new flags to periodically remove hostile, passive, and neutral mobs from zones</li>
-    <li>🔍 <strong><span style="color: #61afef;">Sentry Error Tracking</span></strong> - Automatic error reporting with Sentry SDK, admin enable/disable, and source context</li>
-    <li>🗺️ <strong><span style="color: #61afef;">World Map Player &amp; Marker Hiding</span></strong> - Hide enemy/neutral players and shared markers on the world map per faction relation</li>
-    <li>💡 <strong><span style="color: #61afef;">Light Use Zone Flag</span></strong> - Control toggling lanterns, campfires, torches, and lamps in zones</li>
-    <li>🐴 <strong><span style="color: #61afef;">Mount Entry Enforcement</span></strong> - Block mounted players from entering zones, with safe teleport push-back</li>
-    <li>🔧 <strong><span style="color: #61afef;">KyuubiSoft Core Integration</span></strong> - Citizen NPC zone protection with auto-detection</li>
-    <li>🛡️ <strong><span style="color: #61afef;">HyperProtect-Mixin v1.2.0</span></strong> - 7 new hook wrappers for mount, barter, fluid, prefab, projectile, crafting, and map markers</li>
-    <li>💬 <strong><span style="color: #61afef;">Specific Denial Messages</span></strong> - Action-specific protection denial messages with territory context instead of generic text</li>
-    <li>🐛 <strong><span style="color: #61afef;">20+ Bug Fixes</span></strong> - Including SafeZone mount bypass, light use blocking, spawn suppression timing, gravestone loot, and backup race conditions</li>
+    <li><strong><span style="color: #61afef;">Built-in Localization (i18n)</span></strong> - 10 languages out of the box: English, German, Spanish, French, Italian, Dutch, Polish, Portuguese, Russian, Filipino. Player language auto-detection with configurable default.</li>
+    <li><strong><span style="color: #61afef;">Admin GUI: Config Editor</span></strong> - Edit all HyperFactions settings in-game with 11 tabs, size-adaptive layouts, boolean toggles, steppers, color pickers, dropdowns, and input validation</li>
+    <li><strong><span style="color: #61afef;">Admin GUI: Backup Manager</span></strong> - Paginated backup list with create, restore, and delete operations, plus type filtering</li>
+    <li><strong><span style="color: #61afef;">Admin GUI: Updates Page</span></strong> - Check for HyperFactions and HyperProtect-Mixin updates, download, and rollback — all from the GUI</li>
+    <li><strong><span style="color: #61afef;">SimpleClaims &amp; FactionsX Importers</span></strong> - Two new data importers: migrate from SimpleClaims (SQLite or JSON) or FactionsX with full claim, member, and relation import</li>
+    <li><strong><span style="color: #61afef;">BetterMap Compatibility</span></strong> - Per-world WorldMap enable/disable config, claims and zones render correctly on BetterMap-managed worlds</li>
+    <li><strong><span style="color: #61afef;">Ocean Claim Visibility Fix</span></strong> - Faction claims in water/ocean are now clearly visible on the world map</li>
 </ul>
 <p>&nbsp;</p>
 <h2><span style="color: #5b8def;">🏰 Core Features</span></h2>
@@ -75,9 +72,21 @@
     <li><strong>Relationship-based PvP</strong> - Allies protected, enemies open, configurable per zone</li>
     <li><strong>Overclaim defender alerts</strong> - Faction members get real-time alerts when territory is being taken</li>
 </ul>
+<h3>💰 Faction Economy</h3>
+<ul>
+    <li><strong>Faction treasury</strong> with deposits, withdrawals, inter-faction transfers, and transaction history</li>
+    <li><strong>Upkeep system</strong> - Automated territory maintenance costs with flat or progressive tiered pricing, grace periods, and auto-pay</li>
+    <li><strong>VaultUnlocked integration</strong> - Works with any economy plugin via the standard economy API</li>
+</ul>
+<h3>🌍 Localization</h3>
+<ul>
+    <li><strong>10 languages</strong> built in: English, German, Spanish, French, Italian, Dutch, Polish, Portuguese, Russian, Filipino</li>
+    <li><strong>Player language auto-detection</strong> with configurable default and per-player override</li>
+    <li><strong>~467 translation entries</strong> per locale covering all commands, GUI labels, and help content</li>
+</ul>
 <p>&nbsp;</p>
 <h2><span style="color: #e06c75;">🛡️ Protection System</span></h2>
-<p>HyperFactions provides comprehensive territory protection with <strong><span style="color: #f0b232;">50 configurable zone flags</span></strong> organized into categories:</p>
+<p>HyperFactions provides comprehensive territory protection with <strong><span style="color: #f0b232;">51 configurable zone flags</span></strong> organized into 10 categories:</p>
 <ul>
     <li>⚔️ <strong><span style="color: #e06c75;">Combat (7)</span></strong> - PvP, friendly fire (per-faction/per-ally), projectile damage, PvE damage, mob damage</li>
     <li>🧱 <strong><span style="color: #d19a66;">Building (4)</span></strong> - Build allowed, block place <em>(mixin)</em>, hammer use <em>(mixin)</em>, builder tools <em>(mixin)</em></li>
@@ -88,7 +97,7 @@
     <li>💀 <strong><span style="color: #abb2bf;">Death (2)</span></strong> - Keep inventory <em>(mixin)</em>, power loss</li>
     <li>💥 <strong><span style="color: #e5c07b;">Damage (4)</span></strong> - Fall damage, environmental damage, explosion damage <em>(mixin)</em>, fire spread <em>(mixin)</em></li>
     <li>🚀 <strong><span style="color: #56b6c2;">Transport (3)</span></strong> - Teleporter use <em>(mixin)</em>, portal use <em>(mixin)</em>, mount entry</li>
-    <li>🔗 <strong><span style="color: #d19a66;">Integration (5)</span></strong> - Show on map, command blocking, map visibility, fluid spread <em>(mixin)</em>, mount entry</li>
+    <li>🔗 <strong><span style="color: #d19a66;">Integration (5)</span></strong> - Gravestone access, show on map, essentials homes, essentials warps, essentials kits</li>
 </ul>
 <p>&nbsp;</p>
 <h2><span style="color: #98c379;">🏟️ SafeZones</span> &amp; <span style="color: #e06c75;">WarZones</span></h2>
@@ -96,70 +105,70 @@
 <ul>
     <li>🟢 <strong><span style="color: #98c379;">SafeZones</span></strong> - No PvP, no mob spawning, keep inventory on death. Perfect for spawn areas and markets.</li>
     <li>🔴 <strong><span style="color: #e06c75;">WarZones</span></strong> - Full PvP with no power loss on death. Ideal for arenas and events.</li>
-    <li>🗺️ <strong>Visual map indicators</strong> - SafeZones appear <span style="color: #56b6c2;">teal</span>, WarZones appear <span style="color: #c678dd;">purple</span> on all maps</li>
-    <li>🔧 <strong>Per-flag customization</strong> - Override any default on a per-zone basis</li>
-    <li>🐾 <strong>Mob spawn control</strong> - Integrated with Hytale's native spawn suppression system for reliable mob blocking</li>
-    <li>✏️ <strong>Zone creation wizard</strong> - Create zones by claiming single chunks, circular radius, square radius, or using the visual map</li>
+    <li><strong>Visual map indicators</strong> - SafeZones appear <span style="color: #56b6c2;">teal</span>, WarZones appear <span style="color: #c678dd;">purple</span> on all maps</li>
+    <li><strong>Per-flag customization</strong> - Override any default on a per-zone basis</li>
+    <li><strong>Mob spawn control</strong> - Integrated with Hytale's native spawn suppression system for reliable mob blocking</li>
+    <li><strong>Zone creation wizard</strong> - Create zones by claiming single chunks, circular radius, square radius, or using the visual map</li>
 </ul>
 <p>&nbsp;</p>
 <h2><span style="color: #61afef;">💬 Faction &amp; Alliance Chat</span></h2>
 <ul>
-    <li>🔄 <strong>Toggle mode</strong> - <code>/f c</code> cycles between Public, Faction, and Ally chat</li>
-    <li>🎯 <strong>Direct set</strong> - <code>/f c f</code> for faction, <code>/f c a</code> for ally, <code>/f c off</code> for public</li>
-    <li>📜 <strong>Chat history GUI</strong> - Browse past faction and ally messages in a dedicated GUI page with tabs</li>
-    <li>🎨 <strong>Custom formatting</strong> - Configurable colors and prefixes for each channel</li>
-    <li>🔒 <strong>Secure messaging</strong> - Only faction/allied members can see private messages</li>
-    <li>💾 <strong>Persistent history</strong> - Chat messages saved to disk, viewable even after restart</li>
+    <li><strong>Toggle mode</strong> - <code>/f c</code> cycles between Public, Faction, and Ally chat</li>
+    <li><strong>Direct set</strong> - <code>/f c f</code> for faction, <code>/f c a</code> for ally, <code>/f c off</code> for public</li>
+    <li><strong>Chat history GUI</strong> - Browse past faction and ally messages in a dedicated GUI page with tabs</li>
+    <li><strong>Custom formatting</strong> - Configurable colors and prefixes for each channel</li>
+    <li><strong>Secure messaging</strong> - Only faction/allied members can see private messages</li>
+    <li><strong>Persistent history</strong> - Chat messages saved to disk, viewable even after restart</li>
 </ul>
 <p>&nbsp;</p>
 <h2><span style="color: #d19a66;">📢 Server-Wide Announcements</span></h2>
 <p>Major faction events are broadcast to all online players with configurable toggles:</p>
 <ul>
-    <li>🏗️ Faction created / disbanded</li>
-    <li>👑 Leadership transferred</li>
-    <li>⚔️ Territory overclaimed</li>
-    <li>🔥 War declared</li>
-    <li>🤝 Alliance formed / broken</li>
+    <li>Faction created / disbanded</li>
+    <li>Leadership transferred</li>
+    <li>Territory overclaimed</li>
+    <li>War declared</li>
+    <li>Alliance formed / broken</li>
 </ul>
 <p>Each event type can be individually enabled or disabled in <code>announcements.json</code>.</p>
 <p>&nbsp;</p>
 <h2><span style="color: #c678dd;">🖥️ Full GUI System</span></h2>
-<p>HyperFactions features <strong><span style="color: #f0b232;">76 interactive GUI pages</span></strong> covering every aspect of gameplay:</p>
+<p>HyperFactions features <strong><span style="color: #f0b232;">70+ interactive GUI pages</span></strong> covering every aspect of gameplay:</p>
 <h3>🎮 Player GUI (<code>/f</code>)</h3>
 <ul>
-    <li>📊 <strong>Dashboard</strong> - Power, claims, members, relations, status, and invites at a glance</li>
-    <li>🗺️ <strong>Territory Map</strong> - Interactive chunk map with click-to-claim and visual legend</li>
-    <li>👥 <strong>Members</strong> - Expandable member list with promote, demote, kick, and transfer actions</li>
-    <li>🤝 <strong>Relations</strong> - Browse factions and manage diplomacy with ally/enemy/neutral buttons</li>
-    <li>⚙️ <strong>Settings</strong> - Two-column settings page with faction details, territory permissions, mob spawning controls, and appearance editing</li>
-    <li>💬 <strong>Chat History</strong> - Faction and ally chat logs with tab switching</li>
-    <li>✉️ <strong>Invites</strong> - Manage sent invitations and incoming join requests</li>
-    <li>📋 <strong>Logs</strong> - View faction activity history</li>
-    <li>💰 <strong>Treasury</strong> - Manage faction funds with deposits, withdrawals, transfers, and transaction history</li>
-    <li>👤 <strong>Player Info</strong> - View any player's faction membership, power stats, combat record, and history</li>
-    <li>❓ <strong>Help</strong> - Guide-first Help Center with 7 categories, sidebar navigation, and verified command reference</li>
+    <li><strong>Dashboard</strong> - Power, claims, members, relations, status, and invites at a glance</li>
+    <li><strong>Territory Map</strong> - Interactive chunk map with click-to-claim and visual legend</li>
+    <li><strong>Members</strong> - Expandable member list with promote, demote, kick, and transfer actions</li>
+    <li><strong>Relations</strong> - Browse factions and manage diplomacy with ally/enemy/neutral buttons</li>
+    <li><strong>Settings</strong> - Two-column settings page with faction details, territory permissions, mob spawning controls, and appearance editing</li>
+    <li><strong>Chat History</strong> - Faction and ally chat logs with tab switching</li>
+    <li><strong>Invites</strong> - Manage sent invitations and incoming join requests</li>
+    <li><strong>Logs</strong> - View faction activity history</li>
+    <li><strong>Treasury</strong> - Manage faction funds with deposits, withdrawals, transfers, and transaction history</li>
+    <li><strong>Player Info</strong> - View any player's faction membership, power stats, combat record, and history</li>
+    <li><strong>Help</strong> - Guide-first Help Center with 7 categories, sidebar navigation, and verified command reference</li>
 </ul>
 <h3>🆕 New Player GUI</h3>
 <ul>
-    <li>🔍 <strong>Faction Browser</strong> - Search, sort, and view all server factions</li>
-    <li>✨ <strong>Create Faction Wizard</strong> - Single-page creation with preview, color picker, and permission defaults</li>
-    <li>🗺️ <strong>World Map</strong> - See claimed territory before joining a faction</li>
+    <li><strong>Faction Browser</strong> - Search, sort, and view all server factions</li>
+    <li><strong>Create Faction Wizard</strong> - Single-page creation with preview, color picker, and permission defaults</li>
+    <li><strong>World Map</strong> - See claimed territory before joining a faction</li>
 </ul>
 <h3>🔐 Admin GUI (<code>/f admin</code>)</h3>
 <ul>
-    <li>📊 <strong>Dashboard</strong> - Server statistics overview</li>
-    <li>🏰 <strong>Faction Management</strong> - Browse, edit, and delete any faction</li>
-    <li>🏟️ <strong>Zone Management</strong> - Create, configure, and map SafeZones and WarZones</li>
-    <li>⚙️ <strong>Configuration</strong> - Runtime settings adjustment</li>
-    <li>👥 <strong>Players</strong> - Browse all players with search, sort, power stats, and quick actions</li>
-    <li>💰 <strong>Economy</strong> - Server economy overview, per-faction treasury adjustment, sortable faction balance list</li>
-    <li>⚡ <strong>Power Management</strong> - Set, adjust, reset player power with bypass toggles and bulk operations</li>
-    <li>📋 <strong>Activity Log</strong> - Server-wide faction activity browser with type, player, and time filters</li>
-    <li>ℹ️ <strong>Version Info</strong> - Mod version, server version, and integration status for all 12 supported mods</li>
-    <li>⚡ <strong>Actions</strong> - Global quick actions (K/D reset, bulk operations)</li>
-    <li>🏟️ <strong>Zone Properties</strong> - Consolidated zone name, type, and notification editing</li>
-    <li>💾 <strong>Backups</strong> - Backup management and restore</li>
-    <li>🔄 <strong>Updates</strong> - Check and install updates from within the game</li>
+    <li><strong>Dashboard</strong> - Server statistics overview</li>
+    <li><strong>Faction Management</strong> - Browse, edit, and delete any faction</li>
+    <li><strong>Zone Management</strong> - Create, configure, and map SafeZones and WarZones</li>
+    <li><strong>Configuration</strong> - Runtime settings adjustment</li>
+    <li><strong>Players</strong> - Browse all players with search, sort, power stats, and quick actions</li>
+    <li><strong>Economy</strong> - Server economy overview, per-faction treasury adjustment, sortable faction balance list</li>
+    <li><strong>Power Management</strong> - Set, adjust, reset player power with bypass toggles and bulk operations</li>
+    <li><strong>Activity Log</strong> - Server-wide faction activity browser with type, player, and time filters</li>
+    <li><strong>Version Info</strong> - Mod version, server version, and integration status for all 12 supported mods</li>
+    <li><strong>Actions</strong> - Global quick actions (K/D reset, bulk operations)</li>
+    <li><strong>Zone Properties</strong> - Consolidated zone name, type, and notification editing</li>
+    <li><strong>Backups</strong> - Backup management and restore</li>
+    <li><strong>Updates</strong> - Check and install updates from within the game</li>
 </ul>
 <h3>🧠 Smart GUI Behavior</h3>
 <ul>
@@ -170,77 +179,161 @@
 <p>&nbsp;</p>
 <h2><span style="color: #56b6c2;">🔧 Admin Tools</span></h2>
 <ul>
-    <li>🖥️ <strong>Full admin GUI</strong> with dedicated navigation and management pages</li>
-    <li>👁️ <strong>Bypass mode</strong> - Toggle admin bypass to modify any territory</li>
-    <li>💾 <strong>Automatic backups</strong> - Configurable backup schedule with retention rotation</li>
-    <li>🛡️ <strong>Pre-update backups</strong> - Data automatically backed up before installing updates</li>
-    <li>⏪ <strong>Rollback support</strong> - <code>/f admin rollback</code> reverts to the previous version before restart</li>
-    <li>🐛 <strong>Debug system</strong> - Toggle 7+ debug categories individually for targeted troubleshooting</li>
-    <li>⏳ <strong>Claim decay management</strong> - Monitor and manually trigger inactive faction cleanup</li>
-    <li>📦 <strong>Data import</strong> - Migrate from ElbaphFactions or HyFactions with validation reports</li>
-    <li>⚡ <strong>Power management</strong> - Per-player power set, adjust, reset, bypass toggles, and bulk faction operations</li>
-    <li>💰 <strong>Economy management</strong> - Server-wide treasury overview, per-faction balance adjustment</li>
-    <li>👥 <strong>Player browser</strong> - Search and manage all server players with sort and quick actions</li>
-    <li>🔃 <strong>Config hot-reload</strong> - <code>/f admin reload</code> reloads all configuration without restart</li>
-    <li>🔒 <strong>Persistent admin bypass</strong> - Admin bypass state survives server restarts</li>
-    <li>ℹ️ <strong>Version info</strong> - <code>/f admin version</code> to check mod version and integration status</li>
+    <li><strong>Full admin GUI</strong> with dedicated navigation and management pages</li>
+    <li><strong>Bypass mode</strong> - Toggle admin bypass to modify any territory</li>
+    <li><strong>Automatic backups</strong> - Configurable backup schedule with retention rotation</li>
+    <li><strong>Pre-update backups</strong> - Data automatically backed up before installing updates</li>
+    <li><strong>Rollback support</strong> - <code>/f admin rollback</code> reverts to the previous version before restart</li>
+    <li><strong>Debug system</strong> - Toggle 7+ debug categories individually for targeted troubleshooting</li>
+    <li><strong>Claim decay management</strong> - Monitor and manually trigger inactive faction cleanup</li>
+    <li><strong>Data import</strong> - Migrate from ElbaphFactions, HyFactions, SimpleClaims, or FactionsX with validation reports</li>
+    <li><strong>Power management</strong> - Per-player power set, adjust, reset, bypass toggles, and bulk faction operations</li>
+    <li><strong>Economy management</strong> - Server-wide treasury overview, per-faction balance adjustment</li>
+    <li><strong>Player browser</strong> - Search and manage all server players with sort and quick actions</li>
+    <li><strong>Config hot-reload</strong> - <code>/f admin reload</code> reloads all configuration without restart</li>
+    <li><strong>Persistent admin bypass</strong> - Admin bypass state survives server restarts</li>
+    <li><strong>Version info</strong> - <code>/f admin version</code> to check mod version and integration status</li>
 </ul>
 <p>&nbsp;</p>
 <h2><span style="color: #98c379;">📊 PlaceholderAPI Support</span></h2>
 <p>HyperFactions provides <strong><span style="color: #f0b232;">49 placeholders</span></strong> for both PlaceholderAPI (PAPI) and WiFlow PlaceholderAPI, covering:</p>
 <ul>
-    <li>🏰 Faction info (name, tag, description, color, member count)</li>
-    <li>👤 Player role and status (rank, is_owner, is_officer, has_faction)</li>
-    <li>⚡ Power data (player power, max power, faction power, percentage)</li>
-    <li>🗺️ Territory data (claims, max claims, territory owner, territory type)</li>
-    <li>🏠 Home coordinates and status</li>
-    <li>🤝 Relation counts and config values</li>
+    <li>Faction info (name, tag, description, color, member count)</li>
+    <li>Player role and status (rank, is_owner, is_officer, has_faction)</li>
+    <li>Power data (player power, max power, faction power, percentage)</li>
+    <li>Territory data (claims, max claims, territory owner, territory type)</li>
+    <li>Home coordinates and status</li>
+    <li>Relation counts and config values</li>
 </ul>
 <p>Use with any scoreboard, hologram, or menu plugin that supports PAPI or WiFlow.</p>
 <p>&nbsp;</p>
 <h2><span style="color: #61afef;">🔌 Integrations</span></h2>
-<p><span style="color: #61afef;">⭐&nbsp;<span style="color: #b96ad9;">= Recommended Mod by HyperSystems Team</span></span></p>
-<h3>🔑 Permission Systems</h3>
-<p>HyperFactions supports multiple permission providers with automatic detection:</p>
-<ul>
-    <li>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/hyperperms" rel="nofollow">HyperPerms</a></strong> - Full integration with faction chat prefixes, rank display, and contextual permissions <span style="color: #98c379;">(Recommended)</span></li>
-    <li><strong><a href="https://www.curseforge.com/hytale/mods/luckperms" rel="nofollow">LuckPerms</a></strong> - Granular permission control</li>
-    <li>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/vaultunlocked" rel="nofollow">VaultUnlocked</a></strong> - Chat, economy, and permission compatibility</li>
-    <li><strong>No permission mod</strong> - Works without any permission plugin (configurable allow/deny default)</li>
-</ul>
-<h3>🛡️ Protection Extensions</h3>
-<ul>
-    <li>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/hyxin" rel="nofollow">Hyxin</a></strong> + <strong><a href="https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin" rel="nofollow">HyperProtect-Mixin</a></strong> - <span style="color: #98c379;">Recommended</span> &mdash; 27 protection hooks including F-key pickup, keep inventory, explosion/fire/fluid protection, block placement, transport control, entity damage, mount/barter/projectile control, map marker filtering, and more</li>
-    <li><strong><a href="https://www.curseforge.com/hytale/mods/hyxin" rel="nofollow">Hyxin</a></strong> + <strong><a href="https://www.curseforge.com/hytale/mods/orbisguard-mixins" rel="nofollow">OrbisGuard-Mixins</a></strong> - Alternative &mdash; 11 protection hooks. Both can run simultaneously (HyperFactions auto-detects and routes hooks accordingly)</li>
-</ul>
-<h3>📊 Placeholder Systems</h3>
-<ul>
-    <li>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/placeholder-api" rel="nofollow">PlaceholderAPI</a></strong> - 49 placeholders for scoreboards, chat, and menus</li>
-    <li><strong><a href="https://www.curseforge.com/hytale/mods/wiflows-placeholderapi" rel="nofollow">WiFlow PlaceholderAPI</a></strong> - 47 placeholders in WiFlow format</li>
-</ul>
-<h3>📦 Data Migration</h3>
-<ul>
-    <li><strong>ElbaphFactions</strong> - Full import of factions, members, claims, relations, and zones</li>
-    <li><strong>HyFactions</strong> - Full import with validation reporting</li>
-</ul>
-<h3>🗺️ Region Protection</h3>
-<ul>
-    <li><strong><a href="https://www.curseforge.com/hytale/mods/orbisguard" rel="nofollow">OrbisGuard</a></strong> - Auto-blocks claims in OG-protected regions, renders OG regions on world map and territory GUI with colored overlays</li>
-</ul>
-<h3>🤝 Direct Mod Integrations</h3>
-<ul>
-    <li>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/hybounty" rel="nofollow">HyBounty</a></strong> &mdash; Place bounties on other players with faction-aware protections against abuse</li>
-    <li>🪦 <strong><a href="https://www.curseforge.com/hytale/mods/gravestones" rel="nofollow">Gravestones</a></strong> &mdash; Faction-aware gravestone protection with per-zone access control, configurable ally/member access, and death location announcements</li>
-    <li>💰 <strong><a href="https://www.curseforge.com/hytale/mods/ecotale" rel="nofollow">Ecotale</a></strong> &mdash; Faction treasury system with deposits, withdrawals, inter-faction transfers, and admin economy tools via VaultUnlocked bridge</li>
-    <li>🏘️ <strong><a href="https://www.curseforge.com/hytale/mods/kyuubisoft-core" rel="nofollow">KyuubiSoft Core</a></strong> &mdash; Citizen NPC zone protection &mdash; auto-detects KyuubiSoft citizens and enforces faction territory rules for NPC dialog interactions</li>
-</ul>
+<p>All integrations use automatic detection and fail-open design. <span style="color: #61afef;">⭐ <span style="color: #b96ad9;">= Recommended</span></span></p>
+<table>
+    <thead>
+    <tr>
+        <th>Mod</th>
+        <th>Category</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/hyperperms" rel="nofollow">HyperPerms</a></strong></td>
+        <td>Permissions</td>
+        <td>Faction chat prefixes, rank display, and contextual permissions</td>
+    </tr>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/luckperms" rel="nofollow">LuckPerms</a></strong></td>
+        <td>Permissions</td>
+        <td>Granular permission control</td>
+    </tr>
+    <tr>
+        <td>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/vaultunlocked" rel="nofollow">VaultUnlocked</a></strong></td>
+        <td>Economy</td>
+        <td>Chat, economy, and permission compatibility layer</td>
+    </tr>
+    <tr>
+        <td>⭐ <strong><a href="https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin" rel="nofollow">HyperProtect-Mixin</a></strong></td>
+        <td>Protection</td>
+        <td>28 mixin hooks — F-key pickup, keep inventory, explosions, fire, fluid, transport, mount, barter, projectile, map markers, and more</td>
+    </tr>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/orbisguard-mixins" rel="nofollow">OrbisGuard-Mixins</a></strong></td>
+        <td>Protection</td>
+        <td>11 mixin hooks (alternative). Both can run simultaneously — auto-detected</td>
+    </tr>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/orbisguard" rel="nofollow">OrbisGuard</a></strong></td>
+        <td>Regions</td>
+        <td>Blocks claims in OG regions, renders OG regions on world map and territory GUI</td>
+    </tr>
+    <tr>
+        <td>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/placeholder-api" rel="nofollow">PlaceholderAPI</a></strong></td>
+        <td>Placeholders</td>
+        <td>49 placeholders for scoreboards, chat, and menus</td>
+    </tr>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/wiflows-placeholderapi" rel="nofollow">WiFlow PlaceholderAPI</a></strong></td>
+        <td>Placeholders</td>
+        <td>47 placeholders in WiFlow format</td>
+    </tr>
+    <tr>
+        <td>⭐ <strong><a href="https://www.curseforge.com/hytale/mods/hybounty" rel="nofollow">HyBounty</a></strong></td>
+        <td>Gameplay</td>
+        <td>Player bounties with faction-aware protections against abuse</td>
+    </tr>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/gravestones" rel="nofollow">Gravestones</a></strong></td>
+        <td>Gameplay</td>
+        <td>Faction-aware gravestone protection, per-zone access, death location announcements</td>
+    </tr>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/ecotale" rel="nofollow">Ecotale</a></strong></td>
+        <td>Economy</td>
+        <td>Faction treasury via VaultUnlocked — deposits, withdrawals, transfers, admin tools</td>
+    </tr>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/kyuubisoft-core" rel="nofollow">KyuubiSoft Core</a></strong></td>
+        <td>NPC</td>
+        <td>Citizen NPC zone protection with auto-detection</td>
+    </tr>
+    </tbody>
+</table>
+<h3>📦 Data Import</h3>
+<table>
+    <thead>
+    <tr>
+        <th>Source</th>
+        <th>What&rsquo;s Imported</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><strong>ElbaphFactions</strong></td>
+        <td>Factions, members, claims, relations, and zones</td>
+    </tr>
+    <tr>
+        <td><strong>HyFactions</strong></td>
+        <td>Factions, members, claims, relations, zones, and power</td>
+    </tr>
+    <tr>
+        <td><strong>SimpleClaims</strong></td>
+        <td>Parties, claims (SQLite or JSON), and mutual alliances</td>
+    </tr>
+    <tr>
+        <td><strong>FactionsX</strong></td>
+        <td>Factions, claims, zones, player power, and per-role permissions</td>
+    </tr>
+    </tbody>
+</table>
 <h3>🔮 Upcoming Integrations</h3>
-<ul>
-    <li>📈 <strong><a href="https://www.curseforge.com/hytale/mods/rpg-leveling-and-stats" rel="nofollow">RPG Leveling</a></strong> - Faction bonuses and level-based perks for faction members <span style="color: #e5c07b;">(Planned)</span></li>
-    <li>🗣️ <strong><a href="https://www.curseforge.com/hytale/mods/npc-dialog" rel="nofollow">NPC Dialog</a></strong> - Faction NPCs and dialog interactions in claimed territory <span style="color: #e5c07b;">(Planned)</span></li>
-    <li>📝 <strong><a href="https://www.curseforge.com/hytale/mods/npc-dialog-npc-quests-maker" rel="nofollow">NPC Quests Maker</a></strong> - Faction quests and mission systems <span style="color: #e5c07b;">(Planned)</span></li>
-    <li>📋 <strong><a href="https://www.curseforge.com/hytale/mods/better-scoreboard" rel="nofollow">BetterScoreBoard</a></strong> - Faction data on the scoreboard HUD <span style="color: #abb2bf;">(Waiting on BetterScoreBoard to support PlaceholderAPI or WiFlow)</span></li>
-</ul>
+<table>
+    <thead>
+    <tr>
+        <th>Mod</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/rpg-leveling-and-stats" rel="nofollow">RPG Leveling</a></strong></td>
+        <td><span style="color: #e5c07b;">Planned</span> &mdash; Faction bonuses and level-based perks</td>
+    </tr>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/npc-dialog" rel="nofollow">NPC Dialog</a></strong></td>
+        <td><span style="color: #e5c07b;">Planned</span> &mdash; Faction NPCs and dialog in claimed territory</td>
+    </tr>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/npc-dialog-npc-quests-maker" rel="nofollow">NPC Quests Maker</a></strong></td>
+        <td><span style="color: #e5c07b;">Planned</span> &mdash; Faction quests and mission systems</td>
+    </tr>
+    <tr>
+        <td><strong><a href="https://www.curseforge.com/hytale/mods/better-scoreboard" rel="nofollow">BetterScoreBoard</a></strong></td>
+        <td><span style="color: #abb2bf;">Waiting</span> &mdash; Needs PlaceholderAPI or WiFlow support</td>
+    </tr>
+    </tbody>
+</table>
 <p>💡 <strong>Want HyperFactions to integrate with your plugin?</strong> Reach out to <strong>DMehaffy</strong> on <a href="https://discord.com/invite/aZaa5vcFYh" rel="nofollow">Discord</a> to discuss integration opportunities.</p>
 <p>&nbsp;</p>
 <h2><span style="color: #5b8def;">📥 Installation</span></h2>
@@ -401,7 +494,7 @@
 }
 
 dependencies {
-    compileOnly 'com.github.HyperSystems-Development:HyperFactions:v0.11.0'
+    compileOnly 'com.github.HyperSystems-Development:HyperFactions:v0.12.0'
 }</pre>
 <p>See the full <a href="https://github.com/HyperSystems-Development/HyperFactions/blob/main/docs/api.md" rel="nofollow">Developer API Reference</a> on GitHub for API usage, event listeners, economy integration, and more.</p>
 <p>&nbsp;</p>
@@ -420,7 +513,7 @@ dependencies {
     </tr>
     <tr>
         <td>⚔️ <strong><a href="https://www.curseforge.com/hytale/mods/hyperfactions">HyperFactions</a></strong></td>
-        <td>Complete faction system with territory, diplomacy, economy, and 65+ GUI pages</td>
+        <td>Complete faction system with territory, diplomacy, economy, and 70+ GUI pages</td>
     </tr>
     <tr>
         <td>🛡️ <strong><a href="https://www.curseforge.com/hytale/bootstrap/hyperprotect-mixin">HyperProtect-Mixin</a></strong></td>
@@ -447,11 +540,11 @@ dependencies {
 <p>&nbsp;</p>
 <h2>🔗 Links</h2>
 <ul>
-    <li>🌐 <a href="https://www.hypersystems.dev/" rel="nofollow">HyperSystems Website</a></li>
-    <li>📖 <a href="https://www.hypersystems.dev/plugins/hyperfactions/wiki" rel="nofollow">Documentation &amp; Wiki</a></li>
-    <li>💻 <a href="https://github.com/HyperSystems-Development/HyperFactions" rel="nofollow">GitHub Repository</a></li>
-    <li>🐛 <a href="https://github.com/HyperSystems-Development/HyperFactions/issues" rel="nofollow">Issue Tracker</a></li>
-    <li>💬 <a href="https://discord.com/invite/aZaa5vcFYh" rel="nofollow">Discord</a></li>
+    <li><a href="https://www.hypersystems.dev/" rel="nofollow">HyperSystems Website</a></li>
+    <li><a href="https://www.hypersystems.dev/plugins/hyperfactions/wiki" rel="nofollow">Documentation &amp; Wiki</a></li>
+    <li><a href="https://github.com/HyperSystems-Development/HyperFactions" rel="nofollow">GitHub Repository</a></li>
+    <li><a href="https://github.com/HyperSystems-Development/HyperFactions/issues" rel="nofollow">Issue Tracker</a></li>
+    <li><a href="https://discord.com/invite/aZaa5vcFYh" rel="nofollow">Discord</a></li>
 </ul>
 <p>&nbsp;</p>
-<p><em>Part of the <a href="https://www.hypersystems.dev/" rel="nofollow">HyperSystems</a> suite &mdash; built for Hytale, open source, and actively maintained. ⚡</em></p>
+<p><em>Part of the <a href="https://www.hypersystems.dev/" rel="nofollow">HyperSystems</a> suite &mdash; built for Hytale, open source, and actively maintained.</em></p>

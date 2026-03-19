@@ -12,6 +12,8 @@ import com.hyperfactions.manager.ConfirmationManager.ConfirmationType;
 import com.hyperfactions.manager.ConfirmationManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -42,7 +44,7 @@ public class DisbandSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.DISBAND)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to disband factions.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Disband.NO_PERMISSION));
       return;
     }
 
@@ -54,7 +56,7 @@ public class DisbandSubCommand extends FactionSubCommand {
     // Check if leader
     FactionMember member = faction.getMember(player.getUuid());
     if (member == null || !member.isLeader()) {
-      ctx.sendMessage(prefix().insert(msg("Only the faction leader can disband.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Disband.NOT_LEADER));
       return;
     }
 
@@ -78,10 +80,8 @@ public class DisbandSubCommand extends FactionSubCommand {
 
     switch (confirmResult) {
       case NEEDS_CONFIRMATION, EXPIRED_RECREATED -> {
-        ctx.sendMessage(prefix().insert(msg("Are you sure you want to disband your faction?", COLOR_YELLOW)));
-        ctx.sendMessage(prefix().insert(msg("Type ", COLOR_YELLOW))
-          .insert(msg("/f disband --text", COLOR_WHITE))
-          .insert(msg(" again within " + confirmManager.getTimeoutSeconds() + " seconds to confirm.", COLOR_YELLOW)));
+        ctx.sendMessage(MessageUtil.info(player, CommandKeys.Disband.CONFIRM_PROMPT, COLOR_YELLOW));
+        ctx.sendMessage(MessageUtil.info(player, CommandKeys.Disband.CONFIRM_INSTRUCTION, COLOR_YELLOW, confirmManager.getTimeoutSeconds()));
       }
       case CONFIRMED -> {
         UUID factionId = faction.id();
@@ -93,13 +93,13 @@ public class DisbandSubCommand extends FactionSubCommand {
           hyperFactions.getInviteManager().clearFactionInvites(factionId);
           hyperFactions.getJoinRequestManager().clearFactionRequests(factionId);
           hyperFactions.getRelationManager().clearAllRelations(factionId);
-          ctx.sendMessage(prefix().insert(msg("Your faction has been disbanded.", COLOR_GREEN)));
+          ctx.sendMessage(MessageUtil.success(player, CommandKeys.Disband.SUCCESS));
         } else {
-          ctx.sendMessage(prefix().insert(msg("Failed to disband faction.", COLOR_RED)));
+          ctx.sendMessage(MessageUtil.error(player, CommandKeys.Disband.FAILED));
         }
       }
       case DIFFERENT_ACTION -> {
-        ctx.sendMessage(prefix().insert(msg("Previous confirmation cancelled. Type again to confirm disband.", COLOR_YELLOW)));
+        ctx.sendMessage(MessageUtil.info(player, CommandKeys.Disband.CANCELLED, COLOR_YELLOW));
       }
       default -> throw new IllegalStateException("Unexpected value");
     }

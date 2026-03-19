@@ -6,6 +6,8 @@ import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.ChatManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -68,7 +70,7 @@ public class ChatSubCommand extends FactionSubCommand {
           yield new ChatManager.ToggleResult(ChatManager.ChatResult.SUCCESS, ChatManager.ChatChannel.NORMAL);
         }
         default -> {
-          ctx.sendMessage(prefix().insert(msg("Usage: /f c [f|a|off]", COLOR_RED)));
+          ctx.sendMessage(MessageUtil.error(player, CommandKeys.Chat.USAGE));
           yield null;
         }
       };
@@ -79,7 +81,7 @@ public class ChatSubCommand extends FactionSubCommand {
     }
 
     if (!result.isSuccess()) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission for that chat mode.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Chat.NO_PERMISSION));
       return;
     }
 
@@ -87,8 +89,6 @@ public class ChatSubCommand extends FactionSubCommand {
     String display = ChatManager.getChannelDisplay(channel);
     String color = ChatManager.getChannelColor(channel);
 
-    ctx.sendMessage(prefix()
-        .insert(msg("Chat mode set to ", COLOR_GRAY))
-        .insert(msg(display, color)));
+    ctx.sendMessage(MessageUtil.info(player, CommandKeys.Chat.MODE_SET, color, display));
   }
 }

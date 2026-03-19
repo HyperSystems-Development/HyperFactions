@@ -8,6 +8,9 @@ import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -37,7 +40,7 @@ public class CreateSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.CREATE)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to create factions.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Create.NO_PERMISSION));
       return;
     }
 
@@ -55,7 +58,7 @@ public class CreateSubCommand extends FactionSubCommand {
 
     // Text mode or with args: create directly
     if (!fctx.hasArgs()) {
-      ctx.sendMessage(prefix().insert(msg("Usage: /f create <name>", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Create.USAGE));
       return;
     }
 
@@ -66,8 +69,7 @@ public class CreateSubCommand extends FactionSubCommand {
 
     switch (result) {
       case SUCCESS -> {
-        ctx.sendMessage(prefix().insert(msg("Faction '", COLOR_GREEN))
-          .insert(msg(name, COLOR_CYAN)).insert(msg("' created!", COLOR_GREEN)));
+        ctx.sendMessage(MessageUtil.success(player, CommandKeys.Create.SUCCESS, name));
         // Open dashboard after creation (if not text mode)
         if (!fctx.isTextMode()) {
           Player playerEntity = store.getComponent(ref, Player.getComponentType());
@@ -80,18 +82,16 @@ public class CreateSubCommand extends FactionSubCommand {
       case ALREADY_IN_FACTION -> {
         Faction existingFaction = hyperFactions.getFactionManager().getPlayerFaction(player.getUuid());
         if (existingFaction != null) {
-          ctx.sendMessage(prefix().insert(msg("You are already in ", COLOR_RED))
-            .insert(msg(existingFaction.name(), COLOR_CYAN))
-            .insert(msg(".", COLOR_RED)));
-          ctx.sendMessage(prefix().insert(msg("Use /f leave first if you want to create a new faction.", COLOR_YELLOW)));
+          ctx.sendMessage(MessageUtil.error(player, CommandKeys.Create.ALREADY_IN_NAMED, existingFaction.name()));
+          ctx.sendMessage(MessageUtil.info(player, CommandKeys.Create.USE_LEAVE_FIRST, COLOR_YELLOW));
         } else {
-          ctx.sendMessage(prefix().insert(msg("You are already in a faction.", COLOR_RED)));
+          ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.ALREADY_IN_FACTION));
         }
       }
-      case NAME_TAKEN -> ctx.sendMessage(prefix().insert(msg("That faction name is already taken.", COLOR_RED)));
-      case NAME_TOO_SHORT -> ctx.sendMessage(prefix().insert(msg("Faction name is too short.", COLOR_RED)));
-      case NAME_TOO_LONG -> ctx.sendMessage(prefix().insert(msg("Faction name is too long.", COLOR_RED)));
-      default -> ctx.sendMessage(prefix().insert(msg("Failed to create faction.", COLOR_RED)));
+      case NAME_TAKEN -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Create.NAME_TAKEN));
+      case NAME_TOO_SHORT -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Create.NAME_TOO_SHORT));
+      case NAME_TOO_LONG -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Create.NAME_TOO_LONG));
+      default -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Create.FAILED));
     }
   }
 }

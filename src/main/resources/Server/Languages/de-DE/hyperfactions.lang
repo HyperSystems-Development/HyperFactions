@@ -1,0 +1,922 @@
+# HyperFactions - Deutsche Übersetzungen
+# Format: key = value (oder key = "quoted value")
+# Hinweis: Schlüssel werden automatisch mit "hyperfactions." durch Hytales I18nModule vorangestellt
+# Platzhalter: {0}, {1}, etc.
+
+# ========== Allgemein ==========
+common.no_permission = Sie haben keine Berechtigung, das zu tun.
+common.not_in_faction = Sie sind in keiner Fraktion.
+common.already_in_faction = Sie sind bereits in einer Fraktion.
+common.player_not_found = Spieler nicht gefunden.
+common.faction_not_found = Fraktion nicht gefunden.
+common.player_not_online = Dieser Spieler ist nicht online.
+common.must_be_leader = Nur der Fraktionsanführer kann das tun.
+common.must_be_officer = Sie müssen ein Offizier oder Anführer sein, um das zu tun.
+common.combat_tagged = Sie können das nicht tun, während Sie im Kampf markiert sind.
+common.cancel = Abbrechen
+common.confirm = Bestätigen
+common.save = Speichern
+common.close = Schließen
+common.clear = Leeren
+common.back = Zurück
+common.leave = Verlassen
+common.transfer = Übertragen
+common.disband = Auflösen
+common.world_fallback = Welt
+common.yes = Ja
+common.no = Nein
+common.loading = Laden...
+common.online = Online
+common.offline = Offline
+common.enabled = Aktiviert
+common.disabled = Deaktiviert
+common.none = Keine
+common.page = Seite {0} von {1}
+common.unknown = Unbekannt
+common.error_generic = Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.
+common.gui_fallback = GUI konnte nicht geöffnet werden. Verwenden Sie /f help für Befehle.
+common.admin_prefix = [Admin]
+common.location_error = Ihr Standort konnte nicht ermittelt werden.
+common.world_error = Ihre Welt konnte nicht ermittelt werden.
+common.invalid_id = Ungültige Fraktions-ID.
+common.na = N/A
+
+# ========== Befehle - Erstellen ==========
+cmd.create.no_permission = Sie haben keine Berechtigung, Fraktionen zu erstellen.
+cmd.create.usage = Verwendung: /f create <Name>
+cmd.create.success = Fraktion '{0}' erstellt!
+cmd.create.already_in_named = Sie sind bereits in {0}.
+cmd.create.use_leave_first = Verwenden Sie zuerst /f leave, wenn Sie eine neue Fraktion erstellen möchten.
+cmd.create.name_taken = Dieser Fraktionsname ist bereits vergeben.
+cmd.create.name_too_short = Fraktionsname ist zu kurz.
+cmd.create.name_too_long = Fraktionsname ist zu lang.
+cmd.create.failed = Fraktion konnte nicht erstellt werden.
+
+# ========== Befehle - Auflösen ==========
+cmd.disband.no_permission = Sie haben keine Berechtigung, Fraktionen aufzulösen.
+cmd.disband.not_leader = Nur der Fraktionsanführer kann auflösen.
+cmd.disband.confirm_prompt = Sind Sie sicher, dass Sie Ihre Fraktion auflösen möchten?
+cmd.disband.confirm_instruction = Geben Sie innerhalb von {0} Sekunden erneut /f disband --text ein, um zu bestätigen.
+cmd.disband.success = Ihre Fraktion wurde aufgelöst.
+cmd.disband.failed = Fraktion konnte nicht aufgelöst werden.
+cmd.disband.cancelled = Vorherige Bestätigung abgebrochen. Geben Sie den Befehl erneut ein, um die Auflösung zu bestätigen.
+
+# ========== Befehle - Umbenennen ==========
+cmd.rename.no_permission = Sie haben keine Berechtigung.
+cmd.rename.not_leader = Nur der Anführer kann die Fraktion umbenennen.
+cmd.rename.usage = Verwendung: /f rename <Name>
+cmd.rename.too_short = Name ist zu kurz (min. {0} Zeichen).
+cmd.rename.too_long = Name ist zu lang (max. {0} Zeichen).
+cmd.rename.name_taken = Dieser Name ist bereits vergeben.
+cmd.rename.success = Fraktion umbenannt zu {0}!
+cmd.rename.broadcast = {0} hat die Fraktion in {1} umbenannt
+
+# ========== Befehle - Beschreibung ==========
+cmd.desc.no_permission = Sie haben keine Berechtigung.
+cmd.desc.not_officer = Sie müssen ein Offizier sein, um die Beschreibung festzulegen.
+cmd.desc.set = Fraktionsbeschreibung festgelegt!
+cmd.desc.cleared = Fraktionsbeschreibung gelöscht.
+
+# ========== Befehle - Öffnen / Schließen ==========
+cmd.open.no_permission = Sie haben keine Berechtigung.
+cmd.open.not_leader = Nur der Anführer kann diese Einstellung ändern.
+cmd.open.already_open = Ihre Fraktion ist bereits offen.
+cmd.open.success = Ihre Fraktion ist jetzt offen! Jeder kann mit /f join beitreten.
+cmd.open.broadcast = {0} hat die Fraktion für öffentlichen Beitritt geöffnet.
+cmd.close.no_permission = Sie haben keine Berechtigung.
+cmd.close.not_leader = Nur der Anführer kann diese Einstellung ändern.
+cmd.close.already_closed = Ihre Fraktion ist bereits geschlossen.
+cmd.close.success = Ihre Fraktion ist jetzt nur auf Einladung zugänglich.
+cmd.close.broadcast = {0} hat die Fraktion auf Einladung beschränkt.
+
+# ========== Befehle - Farbe ==========
+cmd.color.no_permission = Sie haben keine Berechtigung.
+cmd.color.not_officer = Sie müssen ein Offizier sein, um die Farbe zu ändern.
+cmd.color.colors_disabled = Fraktionsfarben sind deaktiviert.
+cmd.color.usage = Verwendung: /f color <Code|#hex>
+cmd.color.usage_hint = Gültige Codes: 0-9, a-f oder #RRGGBB Hex
+cmd.color.invalid = Ungültige Farbe. Verwenden Sie 0-9, a-f oder #RRGGBB.
+cmd.color.success = Fraktionsfarbe aktualisiert!
+
+# ========== Befehle - Beanspruchen ==========
+cmd.claim.no_permission = Sie haben keine Berechtigung, Territorium zu beanspruchen.
+cmd.claim.already_yours = Ihre Fraktion besitzt diesen Chunk bereits.
+cmd.claim.cannot_claim_ally = Sie können verbündetes Territorium nicht beanspruchen.
+cmd.claim.already_claimed_hint = Dieser Chunk ist beansprucht. Verwenden Sie /f overclaim, wenn sie plünderbar sind.
+cmd.claim.success = Chunk bei {0}, {1} beansprucht!
+cmd.claim.not_officer = Sie müssen ein Offizier sein, um Land zu beanspruchen.
+cmd.claim.already_claimed = Dieser Chunk ist bereits beansprucht.
+cmd.claim.max_claims = Ihre Fraktion hat die maximale Anzahl an Gebietsansprüchen erreicht. Erhalten Sie mehr Macht!
+cmd.claim.world_max_claims = Ihre Fraktion hat die maximale Anzahl an Gebietsansprüchen ({0}) in dieser Welt erreicht.
+cmd.claim.not_adjacent = Sie müssen angrenzend an bestehendes Territorium beanspruchen.
+cmd.claim.world_not_allowed = Beanspruchung ist in dieser Welt nicht erlaubt.
+cmd.claim.orbisguard = Dieses Gebiet ist durch OrbisGuard geschützt.
+cmd.claim.zone_protected = Dieser Chunk befindet sich in einer SafeZone oder WarZone.
+cmd.claim.insufficient_power = Ihre Fraktion hat nicht genug Macht, um mehr Land zu beanspruchen.
+cmd.claim.failed = Chunk konnte nicht beansprucht werden.
+cmd.claim.world_overclaimed = Ihre Fraktion hat {0} Gebietsansprüche in {1} (Limit: {2}). Erwägen Sie, überschüssiges Gebiet freizugeben.
+
+# ========== Befehle - Einladen ==========
+cmd.invite.no_permission = Sie haben keine Berechtigung, Spieler einzuladen.
+cmd.invite.not_officer = Sie müssen ein Offizier sein, um Spieler einzuladen.
+cmd.invite.usage = Verwendung: /f invite <Spieler>
+cmd.invite.player_not_found = Spieler '{0}' nicht gefunden oder offline.
+cmd.invite.target_in_faction = Dieser Spieler ist bereits in einer Fraktion.
+cmd.invite.sent = {0} zu Ihrer Fraktion eingeladen.
+cmd.invite.received = Sie wurden eingeladen, {0} beizutreten!
+cmd.invite.accept_hint = Geben Sie /f accept {0} ein, um beizutreten.
+
+# ========== Befehle - Annehmen / Beitreten ==========
+cmd.join.no_permission = Sie haben keine Berechtigung, Fraktionen beizutreten.
+cmd.join.already_in_named = Sie sind bereits in {0}.
+cmd.join.use_leave_hint = Verwenden Sie zuerst /f leave, wenn Sie einer anderen Fraktion beitreten möchten.
+cmd.join.no_invites = Sie haben keine ausstehenden Einladungen.
+cmd.join.faction_not_found = Fraktion '{0}' nicht gefunden.
+cmd.join.not_invited = Sie haben keine Einladung von dieser Fraktion.
+cmd.join.faction_gone = Diese Fraktion existiert nicht mehr.
+cmd.join.success = Sie sind {0} beigetreten!
+cmd.join.broadcast = {0} ist der Fraktion beigetreten!
+cmd.join.faction_full = Diese Fraktion ist voll.
+cmd.join.failed = Beitritt zur Fraktion fehlgeschlagen.
+
+# ========== Befehle - Rauswerfen ==========
+cmd.kick.no_permission = Sie haben keine Berechtigung, Mitglieder rauszuwerfen.
+cmd.kick.usage = Verwendung: /f kick <Spieler>
+cmd.kick.not_in_your_faction = Spieler '{0}' ist nicht in Ihrer Fraktion.
+cmd.kick.success = {0} aus der Fraktion geworfen.
+cmd.kick.broadcast = {0} wurde aus der Fraktion geworfen.
+cmd.kick.kicked = Sie wurden aus der Fraktion geworfen.
+cmd.kick.cannot_kick_higher = Sie haben keine Berechtigung, diesen Spieler rauszuwerfen.
+cmd.kick.cannot_kick_leader = Sie können den Fraktionsanführer nicht rauswerfen.
+cmd.kick.failed = Spieler konnte nicht rausgeworfen werden.
+
+# ========== Befehle - Verlassen ==========
+cmd.leave.no_permission = Sie haben keine Berechtigung, Fraktionen zu verlassen.
+cmd.leave.confirm_prompt = Sind Sie sicher, dass Sie Ihre Fraktion verlassen möchten?
+cmd.leave.confirm_instruction = Geben Sie innerhalb von {0} Sekunden erneut /f leave --text ein, um zu bestätigen.
+cmd.leave.success = Sie haben Ihre Fraktion verlassen.
+cmd.leave.broadcast = {0} hat die Fraktion verlassen.
+cmd.leave.failed = Verlassen der Fraktion fehlgeschlagen.
+cmd.leave.cancelled = Vorherige Bestätigung abgebrochen. Geben Sie den Befehl erneut ein, um das Verlassen zu bestätigen.
+
+# ========== Befehle - Befördern / Degradieren / Übertragen ==========
+cmd.rank.promote_no_permission = Sie haben keine Berechtigung, Mitglieder zu befördern.
+cmd.rank.promote_usage = Verwendung: /f promote <Spieler>
+cmd.rank.promoted = {0} zu {1} befördert!
+cmd.rank.promote_broadcast = {0} wurde zu {1} befördert!
+cmd.rank.already_highest = Weitere Beförderung nicht möglich. Verwenden Sie /f transfer, um den Anführer zu wechseln.
+cmd.rank.promote_failed = Beförderung des Spielers fehlgeschlagen.
+cmd.rank.demote_no_permission = Sie haben keine Berechtigung, Mitglieder zu degradieren.
+cmd.rank.demote_usage = Verwendung: /f demote <Spieler>
+cmd.rank.demoted = {0} zu {1} degradiert.
+cmd.rank.demote_broadcast = {0} wurde zu {1} degradiert.
+cmd.rank.already_lowest = Dieser Spieler ist bereits ein Mitglied.
+cmd.rank.demote_failed = Degradierung des Spielers fehlgeschlagen.
+cmd.rank.transfer_no_permission = Sie haben keine Berechtigung, die Führung zu übertragen.
+cmd.rank.transfer_usage = Verwendung: /f transfer <Spieler>
+cmd.rank.player_not_in_faction = Spieler nicht in Ihrer Fraktion gefunden.
+cmd.rank.transfer_confirm = Sind Sie sicher, dass Sie die Führung an {0} übertragen möchten?
+cmd.rank.transfer_confirm_instruction = Geben Sie innerhalb von {1} Sekunden erneut /f transfer {0} --text ein, um zu bestätigen.
+cmd.rank.transferred = Führung an {0} übertragen!
+cmd.rank.transfer_broadcast = {0} ist jetzt der Fraktionsanführer!
+cmd.rank.transfer_failed = Übertragung der Führung fehlgeschlagen.
+cmd.rank.transfer_cancelled = Vorherige Bestätigung abgebrochen. Geben Sie den Befehl erneut ein, um die Übertragung zu bestätigen.
+
+# ========== Befehle - Freigeben ==========
+cmd.unclaim.no_permission = Sie haben keine Berechtigung, Territorium freizugeben.
+cmd.unclaim.success = Chunk bei {0}, {1} freigegeben.
+cmd.unclaim.not_officer = Sie müssen ein Offizier sein, um Land freizugeben.
+cmd.unclaim.chunk_not_claimed = Dieser Chunk ist nicht beansprucht.
+cmd.unclaim.not_your_claim = Ihre Fraktion besitzt diesen Chunk nicht.
+cmd.unclaim.cannot_unclaim_home = Der Chunk mit dem Fraktionsheim kann nicht freigegeben werden.
+cmd.unclaim.would_disconnect = Freigabe nicht möglich — sie würde Ihr Territorium trennen.
+cmd.unclaim.failed = Freigabe des Chunks fehlgeschlagen.
+
+# ========== Befehle - Überbeanspruchen ==========
+cmd.overclaim.no_permission = Sie haben keine Berechtigung, Territorium zu überbeanspruchen.
+cmd.overclaim.success = Feindliches Territorium überbeansprucht!
+cmd.overclaim.not_officer = Sie müssen ein Offizier sein, um zu überbeanspruchen.
+cmd.overclaim.not_claimed = Dieser Chunk ist nicht beansprucht. Verwenden Sie /f claim.
+cmd.overclaim.own_chunk = Ihre Fraktion besitzt diesen Chunk bereits.
+cmd.overclaim.ally = Sie können verbündetes Territorium nicht überbeanspruchen.
+cmd.overclaim.target_has_power = Diese Fraktion hat noch genug Macht.
+cmd.overclaim.failed = Überbeanspruchung fehlgeschlagen.
+
+# ========== Befehle - Feststecken ==========
+cmd.stuck.no_permission = Sie haben keine Berechtigung, /f stuck zu verwenden.
+cmd.stuck.not_stuck = Sie stecken nicht fest — dies ist Wildnis.
+cmd.stuck.combat_tagged = Sie können /f stuck nicht im Kampf verwenden!
+cmd.stuck.no_safe = Es konnte kein sicherer Ort gefunden werden.
+cmd.stuck.teleporting = Teleportation in Sicherheit in {0} Sekunden. Nicht bewegen!
+
+# ========== Befehle - Heim ==========
+cmd.home.no_permission = Sie haben keine Berechtigung, sich zum Fraktionsheim zu teleportieren.
+cmd.home.no_home = Ihre Fraktion hat kein Heim festgelegt.
+cmd.home.combat_tagged = Sie können sich nicht im Kampf teleportieren!
+cmd.home.teleported = Zum Fraktionsheim teleportiert!
+
+# ========== Befehle - Heim Setzen ==========
+cmd.sethome.no_permission = Sie haben keine Berechtigung, das Fraktionsheim festzulegen.
+cmd.sethome.world_not_allowed = In dieser Welt kann kein Heim gesetzt werden.
+cmd.sethome.not_in_territory = Sie können das Heim nur im Territorium Ihrer Fraktion setzen.
+cmd.sethome.set = Fraktionsheim festgelegt!
+cmd.sethome.broadcast = {0} hat das Fraktionsheim festgelegt.
+cmd.sethome.not_officer = Sie müssen ein Offizier sein, um das Heim festzulegen.
+cmd.sethome.failed = Heim konnte nicht festgelegt werden.
+
+# ========== Befehle - Heim Löschen ==========
+cmd.delhome.no_permission = Sie haben keine Berechtigung, das Fraktionsheim zu löschen.
+cmd.delhome.no_home = Ihre Fraktion hat kein Heim festgelegt.
+cmd.delhome.deleted = Fraktionsheim gelöscht!
+cmd.delhome.broadcast = {0} hat das Fraktionsheim gelöscht.
+cmd.delhome.not_officer = Sie müssen ein Offizier sein, um das Heim zu löschen.
+cmd.delhome.failed = Heim konnte nicht gelöscht werden.
+
+# ========== Befehle - Beziehung (Verbündeter/Feind/Neutral/Beziehungen) ==========
+cmd.relation.ally_no_permission = Sie haben keine Berechtigung, Allianzen zu verwalten.
+cmd.relation.ally_usage = Verwendung: /f ally <Fraktion>
+cmd.relation.ally_sent = Allianzanfrage an {0} gesendet!
+cmd.relation.ally_formed = Sie sind jetzt mit {0} verbündet!
+cmd.relation.already_ally = Sie sind bereits mit dieser Fraktion verbündet.
+cmd.relation.ally_failed = Allianzanfrage konnte nicht gesendet werden.
+cmd.relation.enemy_no_permission = Sie haben keine Berechtigung, Feinde zu erklären.
+cmd.relation.enemy_usage = Verwendung: /f enemy <Fraktion>
+cmd.relation.enemy_declared = {0} ist jetzt Ihr Feind!
+cmd.relation.already_enemy = Sie sind bereits Feinde mit dieser Fraktion.
+cmd.relation.max_enemies = Sie haben die maximale Anzahl an Feinden erreicht.
+cmd.relation.enemy_failed = Feind konnte nicht gesetzt werden.
+cmd.relation.neutral_no_permission = Sie haben keine Berechtigung, neutrale Beziehungen zu setzen.
+cmd.relation.neutral_usage = Verwendung: /f neutral <Fraktion>
+cmd.relation.neutral_set = Ihre Fraktion ist jetzt neutral mit {0}.
+cmd.relation.already_neutral = Sie sind bereits neutral mit dieser Fraktion.
+cmd.relation.neutral_failed = Neutral konnte nicht gesetzt werden.
+cmd.relation.cannot_self = Sie können sich nicht mit sich selbst verbünden.
+cmd.relation.max_allies = Sie haben die maximale Anzahl an Verbündeten erreicht.
+cmd.relation.view_no_permission = Sie haben keine Berechtigung, Beziehungen anzuzeigen.
+cmd.relation.header = === Fraktionsbeziehungen ===
+cmd.relation.allies_count = Verbündete ({0}):
+cmd.relation.enemies_count = Feinde ({0}):
+cmd.relation.list_entry = - {0}
+
+# ========== Befehle - Chat ==========
+cmd.chat.usage = Verwendung: /f c [f|a|off]
+cmd.chat.no_permission = Sie haben keine Berechtigung für diesen Chat-Modus.
+cmd.chat.mode_set = Chat-Modus auf {0} gesetzt
+
+# ========== Befehle - Einladungen ==========
+cmd.invites.not_officer = Sie müssen ein Offizier sein, um Einladungen zu verwalten.
+cmd.invites.header = === Fraktionseinladungen ===
+cmd.invites.no_pending = Keine ausstehenden Einladungen oder Anfragen.
+cmd.invites.outgoing = Ausgehende Einladungen:
+cmd.invites.outgoing_entry = {0} (eingeladen von {1})
+cmd.invites.requests = Beitrittsanfragen:
+cmd.invites.request_entry = {0}{1}
+cmd.invites.your_invites_header = === Ihre Einladungen ===
+cmd.invites.no_invites = Sie haben keine ausstehenden Einladungen.
+cmd.invites.invite_entry = {0} - Verwenden Sie /f accept {1}
+
+# ========== Befehle - Anfrage ==========
+cmd.request.no_permission = Sie haben keine Berechtigung, eine Fraktionsmitgliedschaft anzufragen.
+cmd.request.already_in_named = Sie sind bereits in {0}.
+cmd.request.use_leave_hint = Verwenden Sie zuerst /f leave, wenn Sie einer anderen Fraktion beitreten möchten.
+cmd.request.usage = Verwendung: /f request <Fraktion> [Nachricht]
+cmd.request.faction_open = Diese Fraktion ist offen! Verwenden Sie /f accept {0}, um direkt beizutreten.
+cmd.request.already_requested = Sie haben bereits eine ausstehende Anfrage bei dieser Fraktion.
+cmd.request.has_invite = Sie wurden von dieser Fraktion eingeladen! Verwenden Sie /f accept {0}, um beizutreten.
+cmd.request.sent = Beitrittsanfrage an {0} gesendet!
+cmd.request.your_message = Ihre Nachricht: "{0}"
+cmd.request.officer_review = Ein Offizier wird Ihre Anfrage prüfen.
+cmd.request.officer_notify = {0} hat einen Beitritt zu Ihrer Fraktion angefragt!
+cmd.request.officer_review_hint = Verwenden Sie /f gui > Einladungen zur Prüfung.
+
+# ========== Befehle - Info ==========
+cmd.info.faction_header = === {0} ===
+cmd.info.player_header = === {0} ===
+cmd.info.no_permission = Sie haben keine Berechtigung, Fraktionsinfo anzuzeigen.
+cmd.info.faction_not_found = Fraktion '{0}' nicht gefunden.
+cmd.info.not_in_faction_hint = Sie sind in keiner Fraktion. Verwenden Sie /f info <Fraktion>
+cmd.info.leader = Anführer: {0}
+cmd.info.members = Mitglieder: {0}/{1}
+cmd.info.power = Macht: {0}
+cmd.info.claims = Gebietsansprüche: {0}
+cmd.info.raidable = PLÜNDERBAR!
+cmd.info.allies = Verbündete: {0}
+cmd.info.enemies = Feinde: {0}
+cmd.info.they_consider = Sie betrachten euch als: {0}
+cmd.info.you_consider = Ihr betrachtet sie als: {0}
+cmd.info.members_no_permission = Sie haben keine Berechtigung, Fraktionsmitglieder anzuzeigen.
+cmd.info.members_header = === {0} Mitglieder ({1}) ===
+cmd.info.member_online = [Online]
+cmd.info.list_no_permission = Sie haben keine Berechtigung, die Fraktionsliste anzuzeigen.
+cmd.info.list_empty = Es gibt keine Fraktionen.
+cmd.info.list_header = === Fraktionen ({0}) ===
+cmd.info.list_entry = {0} - {1} Mitglieder, {2} Macht
+cmd.info.list_entry_raidable = {0} - {1} Mitglieder, {2} Macht [PLÜNDERBAR]
+cmd.info.help_no_permission = Sie haben keine Berechtigung, die Hilfe anzuzeigen.
+cmd.info.who_no_permission = Sie haben keine Berechtigung, Spielerinfo anzuzeigen.
+cmd.info.who_faction = Fraktion: {0}
+cmd.info.who_role = Rolle: {0}
+cmd.info.who_joined = Beigetreten: {0}
+cmd.info.who_faction_none = Fraktion: Keine
+cmd.info.who_power = Macht: {0}
+cmd.info.who_status = Status: {0}
+cmd.info.who_last_seen = Zuletzt gesehen: {0}
+cmd.info.map_no_permission = Sie haben keine Berechtigung, die Karte anzuzeigen.
+cmd.info.map_header = === Gebietskarte ===
+cmd.info.map_legend = Legende: +Du /Eigen /Verbündet /Feind -Wildnis
+cmd.info.map_gui_hint = Verwenden Sie /f gui für die interaktive Karte
+
+# ========== Befehle - Macht ==========
+cmd.power.personal = Persönliche Macht: {0}/{1}
+cmd.power.faction = Fraktionsmacht: {0}/{1}
+cmd.power.death_loss = Todesverlust: {0}
+cmd.power.regen = Regenerationsrate: {0}/Std
+cmd.power.no_permission = Sie haben keine Berechtigung, Machtinfo anzuzeigen.
+cmd.power.header = Macht von {0}:
+cmd.power.current = Aktuell: {0}
+
+# ========== Befehle - Wirtschaft ==========
+cmd.economy.balance = Guthaben: {0}
+cmd.economy.deposited = {0} in die Fraktionsschatzkammer eingezahlt.
+cmd.economy.withdrawn = {0} aus der Fraktionsschatzkammer abgehoben.
+cmd.economy.transferred = {0} an {1} überwiesen.
+cmd.economy.insufficient = Unzureichendes Guthaben in der Fraktionsschatzkammer.
+cmd.economy.invalid_amount = Ungültiger Betrag: {0}
+cmd.economy.economy_disabled = Wirtschaft ist deaktiviert.
+cmd.economy.balance_no_permission = Sie haben keine Berechtigung, Guthaben anzuzeigen.
+cmd.economy.treasury_unavailable = Schatzkammer ist nicht verfügbar.
+cmd.economy.balance_display = Schatzkammer von {0}: {1}
+cmd.economy.deposit_no_permission = Sie haben keine Berechtigung, einzuzahlen.
+cmd.economy.deposit_faction_denied = Sie haben keine Fraktionsberechtigung zum Einzahlen.
+cmd.economy.deposit_usage = Verwendung: /f deposit <Betrag>
+cmd.economy.amount_positive = Betrag muss positiv sein.
+cmd.economy.wallet_insufficient = Sie haben nicht genug Geld. Geldbörse: {0}
+cmd.economy.wallet_withdraw_failed = Abhebung von Ihrer Geldbörse fehlgeschlagen.
+cmd.economy.deposit_failed = Einzahlung in die Fraktionsschatzkammer fehlgeschlagen. Geld zurückerstattet.
+cmd.economy.withdraw_no_permission = Sie haben keine Berechtigung, abzuheben.
+cmd.economy.withdraw_faction_denied = Sie haben keine Fraktionsberechtigung zum Abheben.
+cmd.economy.withdraw_usage = Verwendung: /f withdraw <Betrag>
+cmd.economy.withdraw_limit_denied = Abhebung abgelehnt: {0}
+cmd.economy.wallet_deposit_failed = Warnung: Einzahlung in Ihre Geldbörse fehlgeschlagen. Kontaktieren Sie einen Admin.
+cmd.economy.withdraw_limit_exceeded = Abhebung abgelehnt: Limit überschritten.
+cmd.economy.withdraw_failed = Abhebung fehlgeschlagen: {0}
+cmd.economy.transfer_no_permission = Sie haben keine Berechtigung zu überweisen.
+cmd.economy.transfer_faction_denied = Sie haben keine Fraktionsberechtigung zum Überweisen.
+cmd.economy.transfer_usage = Verwendung: /f money transfer <Fraktion> <Betrag>
+cmd.economy.transfer_self = Überweisung an die eigene Fraktion nicht möglich.
+cmd.economy.transfer_limit_denied = Überweisung abgelehnt: {0}
+cmd.economy.transfer_limit_exceeded = Überweisung abgelehnt: Limit überschritten.
+cmd.economy.transfer_failed = Überweisung fehlgeschlagen: {0}
+cmd.economy.log_no_permission = Sie haben keine Berechtigung, das Transaktionsprotokoll anzuzeigen.
+cmd.economy.log_header = Transaktionsprotokoll (Seite {0}/{1})
+cmd.economy.log_empty = Keine Transaktionen gefunden.
+cmd.economy.money_help_header = Schatzkammer-Befehle:
+cmd.economy.money_help_balance = /f money balance [Fraktion] - Guthaben anzeigen
+cmd.economy.money_help_deposit = /f money deposit <Betrag> - In Schatzkammer einzahlen
+cmd.economy.money_help_withdraw = /f money withdraw <Betrag> - Von Schatzkammer abheben
+cmd.economy.money_help_transfer = /f money transfer <Fraktion> <Betrag> - Zwischen Fraktionen überweisen
+cmd.economy.money_help_log = /f money log [Seite] [Typ] - Transaktionsverlauf anzeigen
+
+# ========== Schutz - Aktionsphrasen ==========
+protection.action.generic = Sie können das hier nicht tun
+protection.action.build = Sie können keine Blöcke bauen oder abbauen
+protection.action.interact = Sie können damit nicht interagieren
+protection.action.door = Sie können keine Türen benutzen
+protection.action.container = Sie können keine Behälter öffnen
+protection.action.bench = Sie können keine Werkbänke benutzen
+protection.action.processing = Sie können keine Verarbeitungsstationen benutzen
+protection.action.seat = Sie können keine Sitzplätze benutzen
+protection.action.light = Sie können keine Lichter umschalten
+protection.action.teleporter = Sie können keine Teleporter benutzen
+protection.action.crate = Sie können keine Kisten benutzen
+protection.action.tame = Sie können keine Kreaturen zähmen
+protection.action.npc = Sie können nicht mit NPCs interagieren
+protection.action.mount = Sie können keine Kreaturen reiten
+protection.action.pve = Sie können keine Kreaturen verletzen
+protection.action.item_drop = Sie können keine Gegenstände fallen lassen
+protection.action.item_pickup = Sie können keine Gegenstände aufheben
+
+# ========== Schutz - Ablehnungsgründe ==========
+protection.denied.safezone = {0} in einer SafeZone.
+protection.denied.warzone = {0} in einer WarZone.
+protection.denied.enemy_claim = {0} in feindlichem Territorium.
+protection.denied.claimed = {0} in beanspruchtem Territorium.
+protection.denied.here = {0} hier.
+protection.denied.zone = {0} in dieser Zone.
+protection.denied.faction_perm = {0} hier. (Fraktionsberechtigung: {1})
+protection.denied.ally_territory = {0} hier. (Verbündetes Territorium)
+protection.denied.error = Schutzfehler — Aktion zur Sicherheit blockiert.
+
+# ========== Schutz - PvP ==========
+protection.pvp.safezone = PvP ist in SafeZones deaktiviert.
+protection.pvp.same_faction = Sie können Fraktionsmitglieder nicht angreifen.
+protection.pvp.ally = Sie können Verbündete nicht angreifen.
+protection.pvp.spawn_protected = Dieser Spieler hat Spawn-Schutz.
+protection.pvp.territory_disabled = PvP ist in diesem Territorium deaktiviert.
+protection.pvp.generic = Sie können diesen Spieler nicht angreifen.
+
+# ========== Schutz - Kreaturschaden ==========
+protection.mob_damage_disabled = Mob-Schaden ist in dieser Zone deaktiviert.
+protection.pve_damage_disabled = PvE-Schaden ist in dieser Zone deaktiviert.
+protection.pve_territory_denied = Sie können Mobs in diesem Territorium nicht verletzen.
+
+# ========== Schutz - Kampfmarkierung ==========
+protection.combat_tag_command = Sie können diesen Befehl nicht verwenden, während Sie im Kampf markiert sind.
+
+# ========== Server-Ankündigungen ==========
+# Diese werden an alle Online-Spieler für bedeutende Fraktionsereignisse gesendet.
+# {0}, {1} = dynamische Werte (Fraktionsnamen, Spielernamen)
+server_announce.faction_created = {0} hat die Fraktion {1} gegründet!
+server_announce.faction_disbanded = Die Fraktion {0} wurde aufgelöst!
+server_announce.leadership_transfer = {0} ist jetzt der Anführer von {1}!
+server_announce.overclaim = {0} hat Territorium von {1} überbeansprucht!
+server_announce.war_declared = {0} hat {1} den Krieg erklärt!
+server_announce.alliance_formed = {0} und {1} sind jetzt Verbündete!
+server_announce.alliance_broken = {0} und {1} sind keine Verbündeten mehr!
+
+# ========== Teleportationssystem ==========
+teleport.cooldown_wait = Sie müssen {0} warten, bevor Sie sich erneut teleportieren können.
+teleport.warmup_start = Teleportation zum Fraktionsheim in {0} Sekunden...
+teleport.combat_cancelled = Teleportation abgebrochen — Sie sind im Kampf!
+teleport.success_default = Zum Fraktionsheim teleportiert!
+teleport.no_home = Ihre Fraktion hat kein Heim festgelegt.
+teleport.world_not_found = Welt nicht gefunden.
+teleport.failed = Teleportation fehlgeschlagen.
+teleport.countdown = Teleportation in {0} Sekunden...
+teleport.countdown_one = Teleportation in 1 Sekunde...
+teleport.moved_cancelled = Teleportation abgebrochen — Sie haben sich bewegt!
+teleport.damage_cancelled = Teleportation abgebrochen — Sie haben Schaden erlitten!
+teleport.mount_teleport_blocked = Sie können sich nicht in diese Zone teleportieren, während Sie reiten.
+teleport.mount_entry_blocked = Sie können diese Zone nicht betreten, während Sie reiten.
+
+# ========== Chat-Anzeige ==========
+chat.display.public = Öffentlich
+chat.display.faction = Fraktion
+chat.display.ally = Verbündete
+
+# ========== Hilfesystem ==========
+help.commands_label = Befehle:
+help.default_footer = Verwenden Sie /f <Befehl> für weitere Details
+help.title = HyperFactions
+help.description = Fraktionsverwaltung und Gebietskontrolle
+
+# Hilfe-Abschnitte
+help.section.core = Grundlagen
+help.section.management = Verwaltung
+help.section.territory = Territorium
+help.section.relations = Beziehungen
+help.section.teleport = Teleportation
+help.section.information = Information
+help.section.other = Sonstiges
+help.section.admin = Admin
+
+# Hilfe-Befehlsbeschreibungen (Grundlagen)
+help.cmd.create = Eine Fraktion erstellen
+help.cmd.disband = Ihre Fraktion auflösen
+help.cmd.invite = Einen Spieler einladen
+help.cmd.accept = Eine Einladung annehmen
+help.cmd.request = Beitritt zu einer Fraktion anfragen
+help.cmd.leave = Ihre Fraktion verlassen
+help.cmd.kick = Ein Mitglied rauswerfen
+
+# Hilfe-Befehlsbeschreibungen (Verwaltung)
+help.cmd.rename = Ihre Fraktion umbenennen
+help.cmd.desc = Fraktionsbeschreibung festlegen
+help.cmd.color = Fraktionsfarbe festlegen
+help.cmd.open = Jedem den Beitritt erlauben
+help.cmd.close = Einladung zum Beitritt erfordern
+help.cmd.promote = Zum Offizier befördern
+help.cmd.demote = Zum Mitglied degradieren
+help.cmd.transfer = Führung übertragen
+
+# Hilfe-Befehlsbeschreibungen (Territorium)
+help.cmd.claim = Diesen Chunk beanspruchen
+help.cmd.unclaim = Diesen Chunk freigeben
+help.cmd.overclaim = Feindliches Territorium überbeanspruchen
+help.cmd.map = Gebietskarte anzeigen
+
+# Hilfe-Befehlsbeschreibungen (Beziehungen)
+help.cmd.ally = Allianz anfragen
+help.cmd.enemy = Feind erklären
+help.cmd.neutral = Neutrale Beziehung setzen
+
+# Hilfe-Befehlsbeschreibungen (Teleportation)
+help.cmd.home = Zum Fraktionsheim teleportieren
+help.cmd.sethome = Fraktionsheim festlegen
+help.cmd.stuck = Aus feindlichem Territorium entkommen
+
+# Hilfe-Befehlsbeschreibungen (Information)
+help.cmd.info = Fraktionsinfo anzeigen
+help.cmd.list = Alle Fraktionen auflisten
+help.cmd.browse = Fraktionen durchsuchen (Alias für list)
+help.cmd.members = Fraktionsmitglieder anzeigen
+help.cmd.invites = Einladungen/Anfragen verwalten
+help.cmd.who = Spielerinfo anzeigen
+help.cmd.power = Machtstufe anzeigen
+help.cmd.gui = Fraktions-GUI öffnen
+help.cmd.settings = Fraktionseinstellungen öffnen
+
+# Hilfe-Befehlsbeschreibungen (Sonstiges)
+help.cmd.chat = Nachricht im Fraktionschat senden
+help.cmd.chat_short = Fraktionschat (kurz)
+
+# Hilfe-Befehlsbeschreibungen (Admin in Haupthilfe)
+help.cmd.admin = Admin-GUI öffnen
+help.cmd.admin_reload = Konfiguration neu laden
+help.cmd.admin_sync = Daten von Festplatte synchronisieren
+help.cmd.admin_factions = Fraktionen verwalten
+help.cmd.admin_zones = Zonen verwalten
+help.cmd.admin_config = Konfiguration anzeigen/bearbeiten
+help.cmd.admin_backups = Backups verwalten
+help.cmd.admin_update = Nach Updates suchen
+help.cmd.admin_debug = Debug-Befehle
+
+# Admin-Hilfeseite
+help.admin.title = Admin-Befehle
+help.admin.description = Serververwaltung
+help.admin.cmd.dashboard = Admin-Dashboard-GUI öffnen
+help.admin.cmd.factions = Alle Fraktionen verwalten
+help.admin.cmd.zone = Zonenverwaltung
+help.admin.cmd.config = Serverkonfiguration
+help.admin.cmd.backup = Backup-Verwaltung
+help.admin.cmd.import_cmd = Aus anderen Plugins importieren
+help.admin.cmd.update = Nach Updates suchen und herunterladen
+help.admin.cmd.update_mixin = HyperProtect-Mixin aktualisieren
+help.admin.cmd.update_toggle = HP-Mixin Auto-Download umschalten
+help.admin.cmd.rollback = Auf frühere Version zurücksetzen
+help.admin.cmd.reload = Konfiguration neu laden
+help.admin.cmd.sync = Daten von Festplatte synchronisieren
+help.admin.cmd.debug = Debug-Befehle
+help.admin.cmd.decay = Gebietsverfall-Verwaltung
+help.admin.cmd.map = Weltkarten-Verwaltung
+help.admin.cmd.safezone = SafeZone erstellen + Chunk beanspruchen
+help.admin.cmd.warzone = WarZone erstellen + Chunk beanspruchen
+help.admin.cmd.removezone = Chunk aus Zone freigeben
+help.admin.cmd.zoneflag = Zonen-Flag setzen
+help.admin.cmd.integrations = Übersicht aller Integrationen
+help.admin.cmd.integration = Detaillierter Integrationsstatus
+help.admin.cmd.clearhistory = Mitgliedschaftsverlauf eines Spielers löschen
+help.admin.cmd.power = Admin-Machtverwaltung
+help.admin.cmd.economy = Wirtschafts-/Schatzkammerverwaltung
+help.admin.cmd.economy_upkeep = Unterhaltseinzug manuell auslösen
+help.admin.cmd.info = Admin-Fraktionsinfo-GUI anzeigen
+help.admin.cmd.who = Admin-Spielerinfo-GUI anzeigen
+help.admin.cmd.log = Globales Aktivitätsprotokoll anzeigen
+help.admin.cmd.world = Weltenspezifische Einstellungsverwaltung
+help.admin.cmd.version = Mod-Version und Integrationsstatus anzeigen
+help.admin.cmd.sentry = Sentry-Status anzeigen
+help.admin.cmd.sentry_disable = Sentry-Fehlerberichterstattung deaktivieren
+help.admin.cmd.sentry_enable = Sentry-Fehlerberichterstattung aktivieren
+help.admin.cmd.test_gui = UI-Element-Testseite öffnen
+help.admin.cmd.test_sentry = Testfehler an Sentry senden
+help.admin.cmd.test_md = Markdown-Rendering-Testseite öffnen
+
+# Unterhilfe: Backup
+help.backup.title = Backup-Verwaltung
+help.backup.description = GFS-Rotationsschema
+help.backup.cmd.create = Manuelles Backup erstellen
+help.backup.cmd.list = Alle Backups nach Typ gruppiert auflisten
+help.backup.cmd.restore = Aus Backup wiederherstellen (Bestätigung erforderlich)
+help.backup.cmd.delete = Ein Backup löschen
+
+# Unterhilfe: Debug
+help.debug.title = Debug-Befehle
+help.debug.description = Diagnose und Fehlerbehebung
+help.debug.cmd.toggle = Debug-Protokollierung umschalten
+help.debug.cmd.status = Debug-Status anzeigen
+help.debug.cmd.power = Machtdetails anzeigen
+help.debug.cmd.claim = Gebietsanspruchsinfo anzeigen
+help.debug.cmd.protection = Schutzinfo anzeigen
+help.debug.cmd.combat = Kampfmarkierungsstatus anzeigen
+help.debug.cmd.relation = Beziehungsinfo anzeigen
+
+# Unterhilfe: Macht
+help.power.title = Admin-Macht
+help.power.description = Spieler-/Fraktionsmacht verwalten
+help.power.cmd.set = Exakte Macht festlegen
+help.power.cmd.add = Macht erhöhen
+help.power.cmd.remove = Macht verringern
+help.power.cmd.reset = Auf Standard zurücksetzen
+help.power.cmd.setmax = Maximale Macht überschreiben
+help.power.cmd.resetmax = Max-Überschreibung entfernen
+help.power.cmd.noloss = Machtverlust-Bypass umschalten
+help.power.cmd.nodecay = Gebietsverfall-Ausnahme umschalten
+help.power.cmd.faction = Fraktionsweite Operationen
+help.power.cmd.info = Spieler-Machtdetails anzeigen
+
+# Unterhilfe: Wirtschaft
+help.economy.title = Admin-Wirtschaft
+help.economy.description = Fraktionsschatzkammern verwalten
+help.economy.cmd.balance = Fraktionsguthaben anzeigen
+help.economy.cmd.set = Exaktes Guthaben festlegen
+help.economy.cmd.add = Zum Guthaben hinzufügen
+help.economy.cmd.take = Vom Guthaben abziehen
+help.economy.cmd.total = Gesamtguthaben des Servers anzeigen
+help.economy.cmd.reset = Guthaben auf 0 zurücksetzen
+help.economy.cmd.upkeep = Unterhaltseinzug manuell auslösen
+
+# Unterhilfe: Welt
+help.world.title = Welteinstellungen
+help.world.description = Weltenspezifische Konfiguration
+help.world.cmd.list = Alle konfigurierten Welten auflisten
+help.world.cmd.info = Einstellungen einer Welt anzeigen
+help.world.cmd.set = Eine Welteinstellung festlegen
+help.world.cmd.reset = Weltenspezifische Einstellungen entfernen
+
+# Unterhilfe: Karte
+help.map.title = Weltkarte
+help.map.description = Kartenoverlay-Verwaltung
+help.map.cmd.status = Weltkartenstatus und Statistiken anzeigen
+help.map.cmd.refresh = Sofortige Kartenaktualisierung erzwingen
+
+# Unterhilfe: Verfall
+help.decay.title = Gebietsverfall
+help.decay.description = Entfernt automatisch Ansprüche inaktiver Fraktionen
+help.decay.cmd.status = Verfallstatus anzeigen
+help.decay.cmd.run = Gebietsverfall manuell auslösen
+help.decay.cmd.check = Verfallstatus einer Fraktion prüfen
+
+# Unterhilfe: Import
+help.import.title = Import-Befehle
+help.import.description = Von anderen Fraktions-Plugins migrieren
+help.import.cmd.hyfactions = Aus HyFactions importieren
+help.import.path.hyfactions = Standardpfad: mods/Kaws_Hyfaction
+help.import.cmd.elbaphfactions = Aus ElbaphFactions importieren
+help.import.path.elbaphfactions = Standardpfad: mods/ElbaphFactions
+help.import.cmd.factionsx = Aus FactionsX importieren
+help.import.path.factionsx = Standardpfad: mods/FactionsX
+help.import.cmd.simpleclaims = Aus SimpleClaims importieren
+help.import.path.simpleclaims = Standardpfad: Server/universe/SimpleClaims
+help.import.flags_header = Flags:
+help.import.flag.dryrun = Simulation ohne Änderungen
+help.import.flag.overwrite = Bestehende Fraktionen ersetzen
+help.import.flag.nozones = Zonenimport überspringen
+help.import.flag.nopower = Machtverteilung überspringen
+
+# Unterhilfe: Tests
+help.test.title = Test-Befehle
+help.test.description = Entwicklungs-Testtools
+help.test.cmd.gui = UI-Element-Testseite öffnen
+help.test.cmd.sentry = Testfehler an Sentry senden
+help.test.cmd.md = Markdown-Rendering-Testseite öffnen
+
+# ========== Admin-CLI-Nachrichten ==========
+admincmd.no_permission = Sie haben keine Berechtigung.
+admincmd.player_only = Dieser Befehl kann nur von einem Spieler verwendet werden.
+admincmd.player_context = Spielerkontext nicht verfügbar.
+admincmd.entity_not_found = Spielerentität konnte nicht gefunden werden.
+admincmd.unknown_command = Unbekannter Admin-Befehl. Verwenden Sie /f admin help
+admincmd.faction_not_found = Fraktion nicht gefunden.
+admincmd.player_not_found = Spieler nicht gefunden: {0}
+admincmd.invalid_number = Ungültige Zahl: {0}
+admincmd.amount_positive = Betrag muss positiv sein.
+admincmd.balance_not_negative = Guthaben darf nicht negativ sein.
+admincmd.error_generic = Ein Fehler ist aufgetreten.
+
+# Admin - Neu laden/Synchronisieren
+admincmd.reload.success = Konfiguration neu geladen.
+admincmd.sync.start = Synchronisiere Fraktionsdaten von Festplatte...
+admincmd.sync.complete = Synchronisierung abgeschlossen: {0} Fraktionen aktualisiert, {1} Mitglieder hinzugefügt, {2} Mitglieder aktualisiert.
+admincmd.sync.failed = Synchronisierung fehlgeschlagen: {0}
+
+# Admin - Version
+admincmd.version.title = Versionsinformation
+admincmd.version.server = Hytale Server: {0}
+admincmd.version.java = Java: {0}
+admincmd.version.treasury = Schatzkammer: {0}
+admincmd.version.active = Aktiv
+admincmd.version.not_found = Nicht gefunden
+
+# Admin - Sentry
+admincmd.sentry.header = Sentry-Fehlerberichterstattung
+admincmd.sentry.config = Config: {0}
+admincmd.sentry.status = Status: {0}
+admincmd.sentry.already_disabled = Sentry ist bereits deaktiviert.
+admincmd.sentry.already_enabled = Sentry ist bereits aktiviert.
+admincmd.sentry.disabled = Sentry deaktiviert und Konfiguration gespeichert. Fehlerberichterstattung ist nun aus.
+admincmd.sentry.enabled = Sentry aktiviert und Konfiguration gespeichert. Fehlerberichterstattung ist nun an.
+admincmd.sentry.usage = Verwendung: /f admin sentry [disable|enable]
+admincmd.sentry.not_initialized = Sentry ist nicht initialisiert. Prüfen Sie config/debug.json
+admincmd.sentry.test_sent = Testfehler an Sentry gesendet. Prüfen Sie Ihr Sentry-Dashboard.
+admincmd.sentry.test_failed = Senden des Testereignisses fehlgeschlagen.
+
+# Admin - Backup
+admincmd.backup.no_permission = Sie haben keine Berechtigung, Backups zu verwalten.
+admincmd.backup.creating = Erstelle Backup...
+admincmd.backup.created = Backup erfolgreich erstellt!
+admincmd.backup.name = Name: {0}
+admincmd.backup.size = Größe: {0}
+admincmd.backup.failed = Backup fehlgeschlagen: {0}
+admincmd.backup.none = Keine Backups gefunden.
+admincmd.backup.header = Backups
+admincmd.backup.not_found = Backup '{0}' nicht gefunden.
+admincmd.backup.unknown_command = Unbekannter Backup-Befehl: {0}
+admincmd.backup.usage_restore = Verwendung: /f admin backup restore <Name>
+admincmd.backup.usage_delete = Verwendung: /f admin backup delete <Name>
+admincmd.backup.restore_warning = WARNUNG: Das Wiederherstellen eines Backups überschreibt die aktuellen Daten!
+admincmd.backup.restore_confirm = Geben Sie den Befehl innerhalb von {0} Sekunden erneut ein, um zu bestätigen.
+admincmd.backup.restoring = Stelle Backup wieder her...
+admincmd.backup.restored = Backup erfolgreich wiederhergestellt! Daten neu geladen.
+admincmd.backup.restore_failed = Wiederherstellung fehlgeschlagen: {0}
+admincmd.backup.confirm_cancelled = Vorherige Bestätigung abgebrochen. Geben Sie den Befehl erneut ein, um die Wiederherstellung zu bestätigen.
+admincmd.backup.deleted = Backup '{0}' gelöscht
+admincmd.backup.delete_failed = Backup konnte nicht gelöscht werden.
+
+# Admin - Debug
+admincmd.debug.no_permission = Sie haben keine Berechtigung, Debug-Befehle zu verwenden.
+admincmd.debug.unknown_command = Unbekannter Debug-Befehl: {0}
+admincmd.debug.player_only = Dieser Debug-Befehl kann nur von einem Spieler verwendet werden.
+admincmd.debug.toggle_set = Debug-Kategorie '{0}' auf {1} gesetzt (gespeichert)
+admincmd.debug.all_enabled = Alle Debug-Kategorien aktiviert.
+admincmd.debug.all_disabled = Alle Debug-Kategorien deaktiviert.
+admincmd.debug.unknown_category = Unbekannte Kategorie: {0}
+admincmd.debug.not_implemented = Debug-Info {0} noch nicht implementiert.
+
+# Admin - Wirtschaft
+admincmd.econ.disabled = Das Wirtschaftssystem ist nicht aktiviert.
+admincmd.econ.unknown_command = Unbekannter Wirtschaftsbefehl. Verwenden Sie /f admin economy help
+admincmd.econ.set = Guthaben von {0} auf {1} gesetzt (war {2})
+admincmd.econ.added = {0} zu {1} hinzugefügt (Guthaben: {2})
+admincmd.econ.deducted = {0} von {1} abgezogen (Guthaben: {2})
+admincmd.econ.reset = Guthaben von {0} auf {1} zurückgesetzt (war {2})
+admincmd.econ.failed = Fehlgeschlagen: {0}
+admincmd.econ.total_header = Server-Wirtschaftsstatistiken
+admincmd.econ.upkeep_disabled = Das Unterhaltssystem ist nicht aktiviert.
+admincmd.econ.upkeep_trigger = Löse Unterhaltseinzug manuell aus...
+admincmd.econ.upkeep_complete = Unterhaltseinzug abgeschlossen. Prüfen Sie das Serverprotokoll für Details.
+admincmd.econ.upkeep_failed = Unterhaltseinzug fehlgeschlagen: {0}
+
+# Admin - Macht
+admincmd.power.no_permission = Sie haben keine Berechtigung.
+admincmd.power.unknown_command = Unbekannter Machtbefehl. Verwenden Sie /f admin power help
+admincmd.power.max_positive = Maximale Macht muss positiv sein.
+admincmd.power.faction_unknown_action = Unbekannte Fraktionsmacht-Aktion. Verwenden Sie: set, add, remove, reset
+
+# Admin - Verlauf löschen
+admincmd.history.no_data = Keine Spielerdaten für {0} gefunden.
+admincmd.history.empty = {0} hat keinen Mitgliedschaftsverlauf.
+admincmd.history.cleared = {0} Verlaufseinträge für {1} gelöscht.
+admincmd.history.cleared_reinit = {0} Verlaufseinträge für {1} gelöscht (re-initialisiert mit aktueller Fraktion: {2}).
+
+# Admin - Zone
+admincmd.zone.created = {0} '{1}' erstellt bei {2}, {3}
+admincmd.zone.chunk_claimed = Zone kann nicht erstellt werden: Dieser Chunk wird von einer Fraktion beansprucht.
+admincmd.zone.already_exists = An diesem Standort existiert bereits eine Zone.
+admincmd.zone.name_taken = Eine Zone mit diesem Namen existiert bereits.
+admincmd.zone.not_found = Zone '{0}' nicht gefunden.
+admincmd.zone.unclaimed = Chunk aus Zone freigegeben.
+admincmd.zone.no_chunk = Kein Zonen-Chunk an diesem Standort gefunden.
+admincmd.zone.none = Keine Zonen definiert.
+admincmd.zone.deleted = Zone '{0}' gelöscht ({1} Chunks freigegeben)
+admincmd.zone.renamed = Zone '{0}' umbenannt zu '{1}'
+admincmd.zone.invalid_type = Ungültiger Zonentyp. Verwenden Sie 'safe' oder 'war'
+admincmd.zone.invalid_name = Ungültiger Zonenname. Muss 1-32 Zeichen lang sein.
+admincmd.zone.claimed_radius = {0} Chunks für Zone '{1}' beansprucht
+admincmd.zone.no_chunks_claimed = Keine Chunks konnten beansprucht werden (alle belegt oder bereits in einer Zone).
+admincmd.zone.unknown_command = Unbekannter Zonenbefehl. Verwenden Sie /f admin help
+admincmd.zone.chunk_has_zone = Dieser Chunk gehört bereits zu einer anderen Zone.
+admincmd.zone.chunk_has_faction = Dieser Chunk wird von einer Fraktion beansprucht.
+admincmd.zone.notify_set = Eingangsbenachrichtigung für Zone '{0}' {1}
+admincmd.zone.title_set = {0}-Titel für Zone '{1}' gesetzt auf: {2}
+admincmd.zone.title_cleared = {0}-Titel für Zone '{1}' gelöscht (Standard wird verwendet)
+admincmd.zone.no_zone_at = Keine Zone an Ihrem Standort. Stehen Sie in einer Zone, um Flags zu verwalten.
+admincmd.zone.flag_cleared = Flag '{0}' gelöscht (jetzt Standard: {1})
+admincmd.zone.flag_set = Flag '{0}' auf {1} gesetzt
+admincmd.zone.flag_invalid = Ungültiges Flag: {0}
+admincmd.zone.flags_cleared = Alle benutzerdefinierten Flags für '{0}' gelöscht — jetzt werden Zonentyp-Standards verwendet.
+
+# Admin - Welt
+admincmd.world.unknown_command = Unbekannter Weltbefehl. Verwenden Sie /f admin world help
+admincmd.world.no_settings = Keine weltenspezifischen Einstellungen konfiguriert.
+admincmd.world.unknown_setting = Unbekannte Einstellung: {0}
+admincmd.world.set = {0}={1} für Welt {2} gesetzt
+admincmd.world.reset = Weltenspezifische Einstellungen entfernt für: {0}
+admincmd.world.not_found = Keine Einstellungen für Welt gefunden: {0}
+
+# Admin - Karte/Verfall
+admincmd.map.not_available = Weltkartendienst ist nicht verfügbar.
+admincmd.map.refreshing = Erzwinge vollständige Kartenaktualisierung...
+admincmd.map.refreshed = Kartenaktualisierung abgeschlossen.
+admincmd.map.unknown_command = Unbekannter Kartenbefehl: {0}
+admincmd.decay.disabled = Gebietsverfall ist in der Konfiguration deaktiviert.
+admincmd.decay.running = Führe Gebietsverfallsprüfung durch...
+admincmd.decay.complete = Gebietsverfallsprüfung abgeschlossen. Prüfen Sie die Konsole für Details.
+admincmd.decay.unknown_command = Unbekannter Verfallsbefehl: {0}
+
+# Admin - Update
+admincmd.update.not_available = Update-Prüfer ist nicht verfügbar.
+admincmd.update.checking = Suche nach Updates...
+admincmd.update.up_to_date = Plugin ist bereits aktuell (v{0})
+admincmd.update.available = Update verfügbar: v{0}
+admincmd.update.unknown_target = Unbekanntes Update-Ziel: {0}
+
+# Admin - Import
+admincmd.import.unknown_source = Unbekannte Importquelle: {0}
+admincmd.import.importing = Importiere aus {0}...
+admincmd.import.complete = {0}-Import {1}abgeschlossen!
+admincmd.import.failed = {0}-Import mit Fehlern fehlgeschlagen:
+
+# Admin - Update Notifications (login messages)
+admincmd.update_notify.new_version = [HyperFactions] Eine neue Version ist verfügbar!
+admincmd.update_notify.version_info = Aktuell: v{0} -> Neueste: v{1}
+admincmd.update_notify.instruction = Führe /f admin update aus, um das Plugin zu aktualisieren.
+admincmd.update_notify.up_to_date = [HyperFactions] Plugin ist aktuell (v{0})
+
+# Admin - Update Download Flow
+admincmd.update.no_info = Keine Update-Informationen verfügbar.
+admincmd.update.creating_backup = Erstelle Pre-Update-Backup...
+admincmd.update.backup_created = Backup erstellt: {0}
+admincmd.update.backup_warning = Warnung: Backup fehlgeschlagen - {0}
+admincmd.update.backup_continue = Fahre trotzdem mit dem Update fort...
+admincmd.update.downloading = Lade HyperFactions v{0} herunter...
+admincmd.update.download_failed = Download fehlgeschlagen. Prüfe die Server-Logs.
+admincmd.update.downloaded = Update erfolgreich heruntergeladen!
+admincmd.update.file_label = Datei: {0}
+admincmd.update.cleanup = Bereinigung: {0} alte(s) Backup(s) entfernt
+admincmd.update.kept_backup = Behalten: {0} (für Rollback)
+admincmd.update.restart = Starte den Server neu, um das Update anzuwenden.
+admincmd.update.use_rollback = Verwende /f admin rollback zum Rückgängigmachen vor dem Neustart.
+admincmd.update.usage_hf = /f admin update — HyperFactions aktualisieren
+admincmd.update.usage_mixin = /f admin update mixin — HyperProtect-Mixin aktualisieren
+admincmd.update.usage_toggle = /f admin update toggle-mixin-download — Auto-Download umschalten
+
+# Admin - Mixin Update
+admincmd.update.mixin_current = HyperProtect-Mixin: {0}
+admincmd.update.mixin_up_to_date = HyperProtect-Mixin ist aktuell.
+admincmd.update.mixin_none = Noch keine HyperProtect-Mixin-Releases verfügbar.
+admincmd.update.mixin_available = Verfügbar: v{0}
+admincmd.update.mixin_downloading = Lade HyperProtect-Mixin v{0} herunter...
+admincmd.update.mixin_downloaded = Erfolgreich heruntergeladen!
+admincmd.update.mixin_failed = Download fehlgeschlagen. Prüfe die Server-Logs.
+admincmd.update.mixin_location = Speicherort: earlyplugins/
+admincmd.update.mixin_restart = Starte den Server neu zum Anwenden.
+admincmd.update.mixin_auto_on = HP-Mixin Auto-Download aktiviert.
+admincmd.update.mixin_auto_on_desc = HyperProtect-Mixin wird beim nächsten Start automatisch heruntergeladen, falls nicht installiert.
+admincmd.update.mixin_auto_off = HP-Mixin Auto-Download deaktiviert.
+admincmd.update.mixin_auto_off_desc = Verwende /f admin update mixin zum manuellen Download.
+
+# Admin - Rollback
+admincmd.rollback.no_backup = Kein Backup-JAR zum Zurücksetzen gefunden.
+admincmd.rollback.unsafe = Automatisches Rollback nicht möglich!
+admincmd.rollback.unsafe_reason = Der Server wurde seit dem letzten Update neu gestartet.
+admincmd.rollback.unsafe_migration = Konfigurations-/Datenmigrationen wurden möglicherweise angewendet.
+admincmd.rollback.instructions = Für ein sicheres Rollback musst du:
+admincmd.rollback.find_backup = Verwende /f admin backup list, um das Pre-Update-Backup zu finden.
+admincmd.rollback.rolling = Update wird zurückgesetzt...
+admincmd.rollback.from = Von: v{0} (neu)
+admincmd.rollback.to = Zu: v{0} (vorherige)
+admincmd.rollback.version = Setze auf v{0} zurück...
+admincmd.rollback.success = Rollback erfolgreich!
+admincmd.rollback.restored = Wiederhergestellt: {0}
+admincmd.rollback.removed = Entfernt: {0}
+admincmd.rollback.restart = Starte den Server neu, um das Rollback anzuwenden.
+admincmd.rollback.failed = Rollback fehlgeschlagen: {0}
+
+# Admin - Zone Display
+admincmd.zone.failed = Fehlgeschlagen: {0}
+admincmd.zone.failed_delete = Zone konnte nicht gelöscht werden: {0}
+admincmd.zone.failed_rename = Zone konnte nicht umbenannt werden: {0}
+admincmd.zone.failed_flags = Flags konnten nicht zurückgesetzt werden.
+admincmd.zone.failed_flag = Flag konnte nicht gesetzt werden.
+admincmd.zone.list_header = Zonen ({0})
+admincmd.zone.info_header = Zone: {0}
+admincmd.zone.info_notify = Benachrichtigung: {0}
+admincmd.zone.info_upper_title = Oberer Titel: {0}
+admincmd.zone.info_lower_title = Unterer Titel: {0}
+admincmd.zone.info_custom_flags = Benutzerdefinierte Flags:
+admincmd.zone.flags_header = Zone-Flags: {0}
+admincmd.zone.flags_type = Zonentyp: {0}
+admincmd.zone.player_only = Dieser Befehl kann nur von einem Spieler verwendet werden.
+
+# Admin - Decay Display
+admincmd.decay.status_header = Gebietsverfall-Status
+admincmd.decay.enable_hint = Setze claims.decayEnabled auf true zum Aktivieren.
+admincmd.decay.error = Fehler beim Verfall: {0}
+admincmd.decay.check_header = Verfallsprüfung: {0}
+admincmd.decay.check_not_found = Fraktion '{0}' nicht gefunden.
+admincmd.decay.no_claims = Keine Gebiete zum Verfallen.
+admincmd.decay.disabled_globally = Global deaktiviert
+
+# Admin - Map/Debug Display
+admincmd.map.status_header = Weltkarten-Status
+admincmd.debug.status_header = Debug-Protokollierung
+admincmd.debug.full_status_header = HyperFactions Debug-Status
+
+# ========== Common - Shared Labels ==========
+common.no_description = Keine Beschreibung festgelegt.
+common.member_count = {0} Mitglieder
+common.economy_disabled = Wirtschaftssystem ist nicht aktiviert.
+
+# ========== Territory Display ==========
+territory.display.wilderness = Wildnis
+territory.display.safezone = Sicherheitszone
+territory.display.warzone = Kriegszone
+territory.display.unknown_faction = Unbekannte Fraktion
+territory.secondary.pvp_disabled = PvP Deaktiviert
+territory.secondary.pvp_no_protection = PvP Aktiviert - Kein Schutz
+territory.secondary.your_territory = Dein Territorium
+territory.secondary.faction_territory = Territorium
+territory.secondary.relation_territory = {0}-Territorium
+
+# ========== Announcements ==========
+announce.death_location = {0} starb bei ({1}, {2}, {3}) in {4}

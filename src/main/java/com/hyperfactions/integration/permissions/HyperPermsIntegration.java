@@ -1,5 +1,6 @@
 package com.hyperfactions.integration.permissions;
 
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.lang.reflect.Method;
 import java.util.UUID;
@@ -85,11 +86,11 @@ public final class HyperPermsIntegration {
     } catch (NoSuchMethodException e) {
       available = false;
       initError = "Method not found: " + e.getMessage();
-      Logger.warn("HyperPerms API mismatch: %s - defaulting to allow all", e.getMessage());
+      ErrorHandler.report("HyperPerms API mismatch - defaulting to allow all", e);
     } catch (Exception e) {
       available = false;
       initError = e.getClass().getSimpleName() + ": " + e.getMessage();
-      Logger.warn("Failed to initialize HyperPerms integration: %s - defaulting to allow all", e.getMessage());
+      ErrorHandler.report("Failed to initialize HyperPerms integration - defaulting to allow all", e);
     }
   }
 
@@ -167,8 +168,7 @@ public final class HyperPermsIntegration {
 
     } catch (Exception e) {
       // Any error in permission check = allow (fail-open)
-      Logger.warn("[PERM] Exception checking %s for %s: %s, ALLOWING",
-        permission, playerUuid, e.getMessage());
+      ErrorHandler.report("Exception checking permission " + permission + " for " + playerUuid + ", ALLOWING", e);
       return true;
     }
   }

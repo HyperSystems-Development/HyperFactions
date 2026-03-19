@@ -24,6 +24,7 @@ class CombatTagManagerTest {
 
     @BeforeEach
     void setUp() {
+        com.hyperfactions.config.ConfigManager.initTestDefaults();
         manager = new CombatTagManager();
     }
 

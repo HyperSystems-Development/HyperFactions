@@ -7,7 +7,127 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+**Admin GUI: Runtime Config Editor ([#40](https://github.com/HyperSystems-Development/HyperFactions/issues/40))**
+- 11-tab config editor covering all HyperFactions settings: Server, Chat, Announcements, Economy, Factions, Faction Perms, Worldmap, Worlds, Backup, Debug, Gravestones
+- Size-adaptive layouts: narrow (520px, 1-col), standard (780px, 2-col), wide (1020px, 4-col) — template switches automatically per tab
+- Inline editing with boolean toggles, integer/double steppers, text fields, color pickers, enum dropdowns, and locale selectors
+- Faction permissions editor with parent/child toggling (disabling parent auto-disables children), Default/Lock checkboxes per flag
+- World overrides editor with add/remove worlds and tri-state per-world settings (Default/Allow/Deny)
+- Upkeep scaling tiers modal with add/remove/reorder tiers, promote/demote disable on first/last, and live cost example
+- Edit session caching — pending changes survive page close/reopen and modal round-trips
+- Input validation with per-field error highlighting, debounced text updates, and save-blocked-on-invalid state
+- Per-tab label fixes: "Requires Faction", "Show to Factionless", shortened section names
+- ConfigSnapshot for applying changes, ConfigValidator for input bounds, ConfigV7→V8 migration
+
+**Admin GUI: Backup Manager ([#41](https://github.com/HyperSystems-Development/HyperFactions/issues/41))**
+- Paginated backup list with expand/collapse detail view per entry
+- Create manual backups with optional custom name
+- Restore backups with two-click confirmation and automatic safety backup
+- Delete backups with two-click confirmation
+- Backup type filter dropdown (All / Hourly / Daily / Weekly / Manual / Migration)
+
+**Admin GUI: Updates Page ([#42](https://github.com/HyperSystems-Development/HyperFactions/issues/42))**
+- Two-column layout: HyperFactions (left) and HyperProtect Mixin (right) with mirrored version info
+- Shows current version, latest version, channel, build date, and update status for both
+- Single "Check for Updates" button checks both simultaneously
+- Download buttons appear when updates are available
+- Changelog display for HyperFactions updates
+- Rollback support with two-click confirmation
+- HyperProtect detection via ProtectionMixinBridge (works even without update checker)
+
+**SimpleClaims Data Importer ([#99](https://github.com/HyperSystems-Development/HyperFactions/issues/99))**
+- Import faction claims from SimpleClaims, converting claim data to HyperFactions territory
+- Command: `/f admin import simpleclaims [path]`
+
+**FactionsX Data Importer ([#98](https://github.com/HyperSystems-Development/HyperFactions/issues/98))**
+- Import faction data from FactionsX, converting factions, claims, and player data
+- Command: `/f admin import factionsx [path]`
+
+**World Map Config & BetterMap Compatibility ([#102](https://github.com/HyperSystems-Development/HyperFactions/issues/102))**
+- Respect per-world WorldMap enable/disable from world config
+- BetterMap integration: compatible with exploration-based map reveal
+- Claims and zones render correctly on BetterMap-managed worlds
+
+**Built-in Localization (i18n) ([#92](https://github.com/HyperSystems-Development/HyperFactions/issues/92))**
+- 10 languages: en-US, de-DE, es-ES, fr-FR, it-IT, nl-NL, pl-PL, pt-BR, ru-RU, tl-PH
+- ~467 translation entries per locale covering all commands, GUI labels, help content
+- Player language detection with configurable default and per-player override
+- Markdown-based help content system with translation guide
+
+**Split MessageKeys into Domain-Specific Files**
+- Split the monolithic `MessageKeys.java` (2,789 lines, 60 inner classes, ~1,298 constants) into 6 focused domain files:
+  - `CommonKeys.java` — shared messages, protection denial, territory notifications, announcements, teleport, chat display
+  - `CommandKeys.java` — all player command message keys (create, disband, rename, claim, invite, etc.)
+  - `HelpKeys.java` — help system message keys (166 constants)
+  - `AdminKeys.java` — admin command responses and navigation labels
+  - `GuiKeys.java` — faction and shared GUI page keys
+  - `AdminGuiKeys.java` — admin GUI page keys (613 constants)
+- Deleted original `MessageKeys.java`; updated imports across 130+ files
+
+**Localize Remaining Hardcoded Strings**
+- Territory display banners (Wilderness, SafeZone, WarZone titles and subtitles) — now localized per-player via `TerritoryInfo.getPrimaryText(PlayerRef)` and `getSecondaryText(PlayerRef)`
+- Update notification messages — "new version available", version info, and update instructions now localized
+- Player death broadcast location — `"{0} died at ({1}, {2}, {3}) in {4}"` now localized
+- ~70 admin handler strings localized across `AdminUpdateHandler`, `AdminZoneHandler`, `AdminMapDecayHandler`, and `AdminDebugHandler` — covers update/mixin/rollback flow, zone display, decay status, and debug headers
+
+**New Translation Entries**
+- Added ~467 new entries per locale file across all 10 supported languages (en-US, de-DE, es-ES, fr-FR, it-IT, nl-NL, pl-PL, pt-BR, ru-RU, tl-PH)
+- Covers all split key files (help commands, GUI labels, admin GUI) plus newly localized strings
+
+**API Expansion ([#106](https://github.com/HyperSystems-Development/HyperFactions/issues/106))**
+- Comprehensive event system: 20 post-events and 11 cancellable pre-events covering all major faction operations
+- `Cancellable` interface for pre-events with `setCancelReason()` for custom denial messages
+- Language/i18n API methods: `setPlayerLanguage()`, `getPlayerLanguage()`, `getSupportedLocales()`
+- Chat color customization API: `setChatColor()`, `setChatColors()`, `getChatColors()`
+- Manager accessor methods: `getChatManager()`, `getEconomyAPI()`, `getJoinRequestManager()`
+- Extended query methods: `getFactionPowerStats()`, `getFactionClaimCount()`, `getFactionCount()`, `isFactionRaidable()`, `getPlayerRelation()`
+- Config persistence API: `ConfigManager.saveConfig()` and `ConfigManager.reloadConfig()`
+
+**HyperEssentials Integration APIs ([#107](https://github.com/HyperSystems-Development/HyperFactions/issues/107))**
+- New API methods for essentials integration: `hasFactionHome()`, `getFactionHomeWorld()`, `getFactionHomeCoords()`, `getFactionHomeCooldownRemaining()`, `isZoneFlagAllowed()`
+- `ESSENTIALS_BACK` zone flag — controls whether /back teleportation works in zones (defaults to allowed)
+- `FactionHomeTeleportEvent` and `FactionHomeTeleportPreEvent` events for home teleport tracking
+
+**Configurable Announcement Colors**
+- 7 per-event color settings in `AnnouncementConfig`: `factionCreatedColor`, `factionDisbandedColor`, `leadershipTransferColor`, `overclaimColor`, `warDeclaredColor`, `allianceFormedColor`, `allianceBrokenColor`
+- Colors stored in `announcements.json` under a `"colors"` section, loaded/saved with defaults matching previous hardcoded values
+- `AnnouncementManager` reads colors from config instead of using hardcoded `broadcastSuccess`/`broadcastError` calls
+- Admin GUI: color picker for each event in the Announcements config tab
+
+**Zone & Power Query API Methods**
+- `HyperFactionsAPI.getZone(world, chunkX, chunkZ)` — returns the zone at a chunk position
+- `HyperFactionsAPI.getZoneByName(name)` — returns zone by name (case-insensitive)
+- `HyperFactionsAPI.getAllZones()` — returns all zones as an unmodifiable collection
+- `HyperFactionsAPI.getZonesByType(type)` — returns zones filtered by type (SAFE/WAR)
+- `HyperFactionsAPI.isHardcoreMode()` — returns whether hardcore power mode is enabled
+- `HyperFactionsAPI.getFactionHardcorePower(factionId)` — returns faction's hardcore power pool value
+
+**Per-World Max Claims**
+- New `maxClaims` per-world setting in `worlds.json` — limits how many claims a single faction can hold in a specific world
+- `null` or `0` = use global limit, `>0` = per-faction per-world hard cap
+- Enforced in both `/f claim` and `/f overclaim` flows
+- Admin commands: `/f admin world set <world> maxclaims <value>`, supports `default`/`0` to clear
+- New `WORLD_MAX_CLAIMS_REACHED` claim result handled in all consumer sites (commands, GUI map, dashboard)
+- Localized error messages in all 10 locales
+
+**World Settings API**
+- `HyperFactionsAPI.registerWorldSettings(worldKey, settings)` — upsert with persistence, thread-safe
+- `HyperFactionsAPI.getWorldSettings(worldName)` — resolved through wildcard pattern matching
+- `HyperFactionsAPI.getConfiguredWorldSettings(worldKey)` — exact key match, no pattern resolution
+- `HyperFactionsAPI.removeWorldSettings(worldKey)` — removes and persists
+- `WorldSettingsResolver` made thread-safe with volatile fields and copy-on-write rebuild
+
+### Changed
+
+**Consolidate Duplicate Message Keys**
+- Consolidated ~25 duplicate keys into shared `CommonKeys.Common` constants — bare `NO_PERMISSION`, `Back`, `Cancel`, `Save`, `Clear`, `N/A` duplicates replaced with single shared references
+- Added `CommonKeys.Common.NO_DESCRIPTION`, `MEMBER_COUNT`, and `ECONOMY_DISABLED` shared keys, replacing 3 identical copies each
+- Command-specific permission messages with unique wording (e.g., "to create factions", "to claim territory") kept as-is
+
 ### Fixed
+- **Faction claims in water/ocean nearly invisible on world map** — moved claim overlay to render after water/fluid color ([#90](https://github.com/HyperSystems-Development/HyperFactions/issues/90))
 - **Water/lava disappears in own faction claim** — fluid spread was incorrectly tied to `fireSpreadAllowed` config, causing all fluid to be removed in claims when fire spread was disabled. Fluid spread in faction claims is now always allowed ([#95](https://github.com/HyperSystems-Development/HyperFactions/issues/95))
 
 ## [0.11.1] - 2026-03-11

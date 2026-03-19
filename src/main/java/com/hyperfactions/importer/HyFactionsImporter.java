@@ -12,6 +12,7 @@ import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.manager.ZoneManager;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.GuiKeys;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
@@ -522,6 +523,16 @@ public class HyFactionsImporter {
   public ImportResult importFrom(@NotNull Path sourcePath) {
     ImportResult.Builder result = ImportResult.builder().dryRun(dryRun);
 
+    // Check other importers aren't running
+    if (ElbaphFactionsImporter.isImportInProgress()) {
+      result.error("An ElbaphFactions import is already in progress. Please wait for it to complete.");
+      return result.build();
+    }
+    if (FactionsXImporter.isImportInProgress()) {
+      result.error("A FactionsX import is already in progress. Please wait for it to complete.");
+      return result.build();
+    }
+
     // Thread safety: prevent concurrent imports
     if (!importLock.tryLock()) {
       result.error("Another import is already in progress. Please wait for it to complete.");
@@ -901,7 +912,8 @@ public class HyFactionsImporter {
           .withLog(FactionLog.create(
             FactionLog.LogType.MEMBER_LEAVE,
             playerName + " left (imported to another faction)",
-            null // System action
+            null, // System action
+            GuiKeys.LogsGui.MSG_LEFT_IMPORT, playerName
           ));
 
         // CRITICAL: Remove player from the player-to-faction index
@@ -924,7 +936,8 @@ public class HyFactionsImporter {
                 .withLog(FactionLog.create(
                   FactionLog.LogType.LEADER_TRANSFER,
                   promoted.username() + " became leader (previous leader imported to another faction)",
-                  null
+                  null,
+                  GuiKeys.LogsGui.MSG_LEADER_IMPORT_TRANSFER, promoted.username()
                 ));
               progress("    - %s promoted to leader of '%s'",
                 promoted.username(), existingFaction.name());

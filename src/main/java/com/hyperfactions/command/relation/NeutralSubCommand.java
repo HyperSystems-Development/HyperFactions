@@ -8,6 +8,8 @@ import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.RelationManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -38,7 +40,7 @@ public class NeutralSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.NEUTRAL)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to set neutral relations.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.NEUTRAL_NO_PERMISSION));
       return;
     }
 
@@ -60,25 +62,25 @@ public class NeutralSubCommand extends FactionSubCommand {
     }
 
     if (!fctx.hasArgs()) {
-      ctx.sendMessage(prefix().insert(msg("Usage: /f neutral <faction>", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.NEUTRAL_USAGE));
       return;
     }
 
     String factionName = fctx.joinArgs();
     Faction targetFaction = hyperFactions.getFactionManager().getFactionByName(factionName);
     if (targetFaction == null) {
-      ctx.sendMessage(prefix().insert(msg("Faction '" + factionName + "' not found.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.FACTION_NOT_FOUND));
       return;
     }
 
     RelationManager.RelationResult result = hyperFactions.getRelationManager().setNeutral(player.getUuid(), targetFaction.id());
 
     switch (result) {
-      case SUCCESS -> ctx.sendMessage(prefix().insert(msg("Your faction is now neutral with " + targetFaction.name() + ".", COLOR_GRAY)));
-      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error("You are not in a faction."));
-      case NOT_OFFICER -> ctx.sendMessage(prefix().insert(msg("You must be an officer to manage relations.", COLOR_RED)));
-      case ALREADY_NEUTRAL -> ctx.sendMessage(prefix().insert(msg("You are already neutral with that faction.", COLOR_RED)));
-      default -> ctx.sendMessage(prefix().insert(msg("Failed to set neutral.", COLOR_RED)));
+      case SUCCESS -> ctx.sendMessage(MessageUtil.info(player, CommandKeys.Relation.NEUTRAL_SET, COLOR_GRAY, targetFaction.name()));
+      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.NOT_IN_FACTION));
+      case NOT_OFFICER -> ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.MUST_BE_OFFICER));
+      case ALREADY_NEUTRAL -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.ALREADY_NEUTRAL));
+      default -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.NEUTRAL_FAILED));
     }
   }
 }

@@ -8,6 +8,8 @@ import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -37,7 +39,7 @@ public class InviteSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.INVITE)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to invite players.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Invite.NO_PERMISSION));
       return;
     }
 
@@ -48,7 +50,7 @@ public class InviteSubCommand extends FactionSubCommand {
 
     FactionMember member = faction.getMember(player.getUuid());
     if (member == null || !member.isOfficerOrHigher()) {
-      ctx.sendMessage(prefix().insert(msg("You must be an officer to invite players.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Invite.NOT_OFFICER));
       return;
     }
 
@@ -65,29 +67,26 @@ public class InviteSubCommand extends FactionSubCommand {
     }
 
     if (!fctx.hasArgs()) {
-      ctx.sendMessage(prefix().insert(msg("Usage: /f invite <player>", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Invite.USAGE));
       return;
     }
 
     String targetName = fctx.getArg(0);
     PlayerRef target = findOnlinePlayer(targetName);
     if (target == null) {
-      ctx.sendMessage(prefix().insert(msg("Player '" + targetName + "' not found or offline.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Invite.PLAYER_NOT_FOUND, targetName));
       return;
     }
 
     if (hyperFactions.getFactionManager().isInFaction(target.getUuid())) {
-      ctx.sendMessage(prefix().insert(msg("That player is already in a faction.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Invite.TARGET_IN_FACTION));
       return;
     }
 
     hyperFactions.getInviteManager().createInvite(faction.id(), target.getUuid(), player.getUuid());
 
-    ctx.sendMessage(prefix().insert(msg("Invited ", COLOR_GREEN))
-      .insert(msg(target.getUsername(), COLOR_YELLOW)).insert(msg(" to your faction.", COLOR_GREEN)));
-    target.sendMessage(prefix().insert(msg("You have been invited to join ", COLOR_YELLOW))
-      .insert(msg(faction.name(), COLOR_CYAN)).insert(msg("!", COLOR_YELLOW)));
-    target.sendMessage(prefix().insert(msg("Type ", COLOR_YELLOW))
-      .insert(msg("/f accept " + faction.name(), COLOR_GREEN)).insert(msg(" to join.", COLOR_YELLOW)));
+    ctx.sendMessage(MessageUtil.success(player, CommandKeys.Invite.SENT, target.getUsername()));
+    target.sendMessage(MessageUtil.info(target, CommandKeys.Invite.RECEIVED, COLOR_YELLOW, faction.name()));
+    target.sendMessage(MessageUtil.info(target, CommandKeys.Invite.ACCEPT_HINT, COLOR_YELLOW, faction.name()));
   }
 }

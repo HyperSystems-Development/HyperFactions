@@ -9,7 +9,7 @@ $C.@PageOverlay {
     Anchor: (Width: 520, Height: 480);
 
     #Title {
-      $C.@Title {
+      $C.@Title #PageTitle {
         @Text = "Admin Dashboard";
       }
     }
@@ -23,7 +23,7 @@ $C.@PageOverlay {
         Anchor: (Height: 25, Bottom: 15);
         LayoutMode: Left;
 
-        Label {
+        Label #ServerStatsLabel {
           Text: "Server Statistics";
           Style: (FontSize: 14, TextColor: #00FFFF, RenderBold: true, VerticalAlignment: Center);
         }
@@ -42,7 +42,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Right: 5);
 
-          Label {
+          Label #FactionsLabel {
             Text: "Factions";
             Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 16);
@@ -62,7 +62,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 5, Right: 5);
 
-          Label {
+          Label #TotalMembersLabel {
             Text: "Total Members";
             Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 16);
@@ -82,7 +82,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 5);
 
-          Label {
+          Label #TotalClaimsLabel {
             Text: "Total Claims";
             Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 16);
@@ -108,7 +108,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Right: 5);
 
-          Label {
+          Label #ZonesLabel {
             Text: "Zones";
             Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 16);
@@ -133,7 +133,7 @@ $C.@PageOverlay {
               FlexWeight: 1;
             }
           }
-          Label {
+          Label #SafeWarLabel {
             Text: "safe / war";
             Style: (FontSize: 9, TextColor: #444444, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 14);
@@ -148,7 +148,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 5, Right: 5);
 
-          Label {
+          Label #TotalPowerLabel {
             Text: "Total Power";
             Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 16);
@@ -168,7 +168,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 5);
 
-          Label {
+          Label #AvgPowerLabel {
             Text: "Avg Power/Faction";
             Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 16);
@@ -195,7 +195,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Right: 5);
 
-          Label {
+          Label #TotalEconomyLabel {
             Text: "Total Economy";
             Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 16);
@@ -215,7 +215,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 5, Right: 5);
 
-          Label {
+          Label #WealthiestLabel {
             Text: "Wealthiest";
             Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 16);
@@ -235,7 +235,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 5);
 
-          Label {
+          Label #AvgBalanceLabel {
             Text: "Avg Balance";
             Style: (FontSize: 10, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 16);
@@ -255,17 +255,16 @@ $C.@PageOverlay {
         Padding: (Left: 20, Right: 20, Top: 10, Bottom: 10);
         LayoutMode: Left;
 
-        Label {
+        Label #BypassLabel {
           Text: "Protection Bypass:";
           Style: (FontSize: 13, TextColor: #AAAAAA, VerticalAlignment: Center);
-          Anchor: (Width: 130);
+          FlexWeight: 1;
         }
         Label #BypassState {
           Text: "Off";
           Style: (FontSize: 14, TextColor: #FF5555, RenderBold: true, VerticalAlignment: Center);
-          Anchor: (Width: 50);
+          Anchor: (Width: 105);
         }
-        Label { FlexWeight: 1; }
         TextButton #ToggleBypassBtn {
           Text: "Enable";
           Anchor: (Height: 30, Width: 100);

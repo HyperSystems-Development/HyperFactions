@@ -14,6 +14,9 @@ import com.hyperfactions.manager.ZoneManager;
 import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.AdminGuiKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -119,7 +122,7 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
     Player player = store.getComponent(ref, Player.getComponentType());
     TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
     World world = player != null ? player.getWorld() : null;
-    String worldName = world != null ? world.getName() : "world";
+    String worldName = world != null ? world.getName() : HFMessages.get(playerRef, CommonKeys.Common.WORLD_FALLBACK);
 
     // Check if player is in the same world as the zone
     boolean sameWorld = zone.world().equals(worldName);
@@ -140,31 +143,44 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
       cmd.append(UIPaths.ADMIN_ZONE_MAP);
     }
 
+    // Localize labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_TITLE_ZONE_MAP));
+    cmd.set("#ActionHint.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_MAP_ACTION_HINT));
+    cmd.set("#ConfirmBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_MAP_DONE));
+    cmd.set("#LegendZoneSafe.Text", " " + HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_MAP_LEGEND_ZONE_SAFE));
+    cmd.set("#LegendZoneWar.Text", " " + HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_MAP_LEGEND_ZONE_WAR));
+    cmd.set("#LegendOtherSafe.Text", " " + HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_MAP_LEGEND_OTHER_SAFE));
+    cmd.set("#LegendOtherWar.Text", " " + HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_MAP_LEGEND_OTHER_WAR));
+    cmd.set("#LegendFactionClaim.Text", " " + HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_MAP_LEGEND_FACTION));
+    cmd.set("#LegendUnclaimed.Text", " " + HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_MAP_LEGEND_UNCLAIMED));
+    cmd.set("#LegendYouAreHere.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_MAP_LEGEND_YOU_HERE));
+
     // Zone header info
     cmd.set("#ZoneTitle.Text", zone.name() + " (" + zone.type().getDisplayName() + ")");
     cmd.set("#ZoneStats.Text", zone.getChunkCount() + " chunks in " + zone.world());
 
     // Show world mismatch warning if player is in different world
     if (!sameWorld) {
-      cmd.set("#PositionInfo.Text", "WARNING: You are in '" + worldName + "' - zone is in '" + zone.world() + "'");
+      cmd.set("#PositionInfo.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.MAP_WORLD_WARNING, worldName, zone.world()));
     } else {
-      cmd.set("#PositionInfo.Text", "Your Position: Chunk (" + playerChunkX + ", " + playerChunkZ + ")");
+      cmd.set("#PositionInfo.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.MAP_POSITION, playerChunkX, playerChunkZ));
     }
 
     // Dynamic legend: add OrbisGuard protected region entry when OG is available
+    String protectedLabel = " " + HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_MAP_PROTECTED);
     if (OrbisGuardIntegration.isAvailable()) {
       if (terrainEnabled) {
         // Terrain mode: append to row 2 (#LegendContainer[1])
         cmd.appendInline("#LegendContainer[1]",
             "Group { LayoutMode: Left; Anchor: (Width: 110); "
             + "Group { Anchor: (Width: 10, Height: 10); Background: (Color: " + COLOR_OG_PROTECTED + "); } "
-            + "Label { Text: \" Protected\"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); } }");
+            + "Label { Text: \"" + protectedLabel + "\"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); } }");
       } else {
         // Flat mode: append to column 3 (#LegendContainer[2])
         cmd.appendInline("#LegendContainer[2]",
             "Group { LayoutMode: Left; Anchor: (Height: 16); "
             + "Group { Anchor: (Width: 12, Height: 12); Background: (Color: " + COLOR_OG_PROTECTED + "); } "
-            + "Label { Text: \" Protected\"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); } }");
+            + "Label { Text: \"" + protectedLabel + "\"; Style: (FontSize: 10, TextColor: #cccccc, VerticalAlignment: Center); } }");
       }
     }
 
@@ -434,7 +450,7 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
     // Get fresh zone data
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.errorText("Zone no longer exists."));
+      player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.MAP_ZONE_GONE));
       guiManager.openAdminZone(player, ref, store, playerRef);
       return;
     }
@@ -455,9 +471,9 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
       case "Claim" -> {
         ZoneManager.ZoneResult result = zoneManager.claimChunk(zoneId, zoneWorld, data.chunkX, data.chunkZ);
         if (result == ZoneManager.ZoneResult.SUCCESS) {
-          player.sendMessage(MessageUtil.text("Claimed chunk (" + data.chunkX + ", " + data.chunkZ + ") for " + zone.name(), "#44cc44"));
+          player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.MAP_CLAIMED, "#44cc44", data.chunkX, data.chunkZ, zone.name()));
         } else {
-          player.sendMessage(MessageUtil.errorText("Failed to claim chunk: " + result));
+          player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.MAP_CLAIM_FAILED, result));
         }
 
         // Refresh by opening new page with fresh zone data, preserving openFlagsAfter
@@ -470,9 +486,9 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
       case "Unclaim" -> {
         ZoneManager.ZoneResult result = zoneManager.unclaimChunk(zoneId, zoneWorld, data.chunkX, data.chunkZ);
         if (result == ZoneManager.ZoneResult.SUCCESS) {
-          player.sendMessage(MessageUtil.text("Unclaimed chunk (" + data.chunkX + ", " + data.chunkZ + ") from " + zone.name(), "#44cc44"));
+          player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.MAP_UNCLAIMED, "#44cc44", data.chunkX, data.chunkZ, zone.name()));
         } else {
-          player.sendMessage(MessageUtil.errorText("Failed to unclaim chunk: " + result));
+          player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.MAP_UNCLAIM_FAILED, result));
         }
 
         // Refresh by opening new page with fresh zone data, preserving openFlagsAfter
@@ -484,16 +500,16 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
 
       case "OtherZone" -> {
         Zone otherZone = zoneManager.getZone(zoneWorld, data.chunkX, data.chunkZ);
-        String zoneName = otherZone != null ? otherZone.name() : "another zone";
-        player.sendMessage(MessageUtil.text("This chunk belongs to " + zoneName + ".", MessageUtil.COLOR_GOLD));
+        String zoneName = otherZone != null ? otherZone.name() : HFMessages.get(playerRef, AdminGuiKeys.AdminGui.MAP_ANOTHER_ZONE);
+        player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.MAP_CHUNK_BELONGS, MessageUtil.COLOR_GOLD, zoneName));
       }
 
       case "Faction" -> {
-        player.sendMessage(MessageUtil.text("This chunk is claimed by a faction.", MessageUtil.COLOR_GOLD));
+        player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.MAP_CHUNK_FACTION, MessageUtil.COLOR_GOLD));
       }
 
       case "Protected" -> {
-        player.sendMessage(MessageUtil.text("This chunk is in a protected region.", MessageUtil.COLOR_GOLD));
+        player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.MAP_CHUNK_PROTECTED, MessageUtil.COLOR_GOLD));
       }
 
       default -> {}

@@ -12,6 +12,9 @@ import com.hyperfactions.manager.EconomyManager;
 import com.hyperfactions.manager.FactionKDCache;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.PowerManager;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hyperfactions.util.UuidUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -57,16 +60,16 @@ public class FactionLeaderboardPage extends InteractiveCustomUIPage<FactionPageD
   private SortMode sortMode = SortMode.KD;
 
   private enum SortMode {
-    KD("K/D"),
-    POWER("Power"),
-    TERRITORY("Territory"),
-    BALANCE("Balance"),
-    MEMBERS("Members");
+    KD(GuiKeys.LeaderboardGui.SORT_KD),
+    POWER(GuiKeys.GuiCommon.SORT_POWER),
+    TERRITORY(GuiKeys.LeaderboardGui.SORT_TERRITORY),
+    BALANCE(GuiKeys.LeaderboardGui.SORT_BALANCE),
+    MEMBERS(GuiKeys.GuiCommon.SORT_MEMBERS);
 
-    private final String displayName;
+    private final String displayKey;
 
-    SortMode(String displayName) {
-      this.displayName = displayName;
+    SortMode(String displayKey) {
+      this.displayKey = displayKey;
     }
   }
 
@@ -96,6 +99,16 @@ public class FactionLeaderboardPage extends InteractiveCustomUIPage<FactionPageD
 
     cmd.append(UIPaths.FACTION_LEADERBOARD);
 
+    // Localize static labels
+    cmd.set("#LeaderboardTitle.Text", HFMessages.get(playerRef, GuiKeys.LeaderboardGui.TITLE));
+    cmd.set("#RankByLabel.Text", HFMessages.get(playerRef, GuiKeys.LeaderboardGui.RANK_BY));
+    cmd.set("#ColRankLabel.Text", HFMessages.get(playerRef, GuiKeys.LeaderboardGui.COL_RANK));
+    cmd.set("#ColFactionLabel.Text", HFMessages.get(playerRef, GuiKeys.LeaderboardGui.COL_FACTION));
+    cmd.set("#ColClaimsLabel.Text", HFMessages.get(playerRef, GuiKeys.LeaderboardGui.COL_CLAIMS));
+    cmd.set("#ColMembersLabel.Text", HFMessages.get(playerRef, GuiKeys.LeaderboardGui.COL_MEMBERS));
+    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.PREV));
+    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.NEXT));
+
     // Setup navigation bar
     if (viewerFaction != null) {
       NavBarHelper.setupBar(playerRef, viewerFaction, PAGE_ID, cmd, events);
@@ -110,17 +123,17 @@ public class FactionLeaderboardPage extends InteractiveCustomUIPage<FactionPageD
                  @Nullable Faction viewerFaction) {
     List<LeaderboardEntry> entries = buildEntryList();
 
-    cmd.set("#FactionCount.Text", entries.size() + " factions");
+    cmd.set("#FactionCount.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.FACTION_COUNT, entries.size()));
 
     // Sort dropdown
     List<DropdownEntryInfo> sortOptions = new ArrayList<>();
-    sortOptions.add(new DropdownEntryInfo(LocalizableString.fromString("K/D"), "KD"));
-    sortOptions.add(new DropdownEntryInfo(LocalizableString.fromString("Power"), "POWER"));
-    sortOptions.add(new DropdownEntryInfo(LocalizableString.fromString("Territory"), "TERRITORY"));
+    sortOptions.add(new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, GuiKeys.LeaderboardGui.SORT_KD)), "KD"));
+    sortOptions.add(new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, GuiKeys.GuiCommon.SORT_POWER)), "POWER"));
+    sortOptions.add(new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, GuiKeys.LeaderboardGui.SORT_TERRITORY)), "TERRITORY"));
     if (economyManager != null) {
-      sortOptions.add(new DropdownEntryInfo(LocalizableString.fromString("Balance"), "BALANCE"));
+      sortOptions.add(new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, GuiKeys.LeaderboardGui.SORT_BALANCE)), "BALANCE"));
     }
-    sortOptions.add(new DropdownEntryInfo(LocalizableString.fromString("Members"), "MEMBERS"));
+    sortOptions.add(new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, GuiKeys.GuiCommon.SORT_MEMBERS)), "MEMBERS"));
     cmd.set("#SortDropdown.Entries", sortOptions);
     cmd.set("#SortDropdown.Value", sortMode.name());
 
@@ -133,7 +146,7 @@ public class FactionLeaderboardPage extends InteractiveCustomUIPage<FactionPageD
     );
 
     // Update column header based on sort mode
-    cmd.set("#StatHeader.Text", sortMode.displayName);
+    cmd.set("#StatHeader.Text", HFMessages.get(playerRef, sortMode.displayKey));
 
     // Calculate pagination
     int totalPages = Math.max(1, (int) Math.ceil((double) entries.size() / ENTRIES_PER_PAGE));
@@ -154,7 +167,7 @@ public class FactionLeaderboardPage extends InteractiveCustomUIPage<FactionPageD
     }
 
     // Pagination
-    cmd.set("#PageInfo.Text", (currentPage + 1) + "/" + totalPages);
+    cmd.set("#PageInfo.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.PAGE_FORMAT, currentPage + 1, totalPages));
 
     if (currentPage > 0) {
       events.addEventBinding(
@@ -203,7 +216,7 @@ public class FactionLeaderboardPage extends InteractiveCustomUIPage<FactionPageD
           faction.name(),
           faction.tag(),
           faction.color() != null ? faction.color() : "#00FFFF",
-          leader != null ? leader.username() : "None",
+          leader != null ? leader.username() : HFMessages.get(playerRef, CommonKeys.Common.NONE),
           stats.currentPower(),
           stats.maxPower(),
           faction.getClaimCount(),
@@ -250,7 +263,7 @@ public class FactionLeaderboardPage extends InteractiveCustomUIPage<FactionPageD
     }
 
     // Leader
-    cmd.set(idx + " #LeaderName.Text", "Leader: " + entry.leaderName);
+    cmd.set(idx + " #LeaderName.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.LEADER_LABEL, entry.leaderName));
 
     // Primary stat value based on sort mode
     String statValue = switch (sortMode) {
@@ -259,7 +272,7 @@ public class FactionLeaderboardPage extends InteractiveCustomUIPage<FactionPageD
       case TERRITORY -> String.valueOf(entry.claimCount);
       case BALANCE -> economyManager != null
           ? economyManager.formatCurrency(entry.balance)
-          : "N/A";
+          : HFMessages.get(playerRef, CommonKeys.Common.NA);
       case MEMBERS -> String.valueOf(entry.memberCount);
     };
     cmd.set(idx + " #StatValue.Text", statValue);

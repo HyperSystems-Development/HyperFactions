@@ -13,7 +13,7 @@ $C.@PageOverlay {
     Anchor: (Width: 700, Height: 500);
 
     #Title {
-      $C.@Title {
+      $C.@Title #BrowserTitle {
         @Text = "Browse Factions";
       }
     }
@@ -27,7 +27,7 @@ $C.@PageOverlay {
         Anchor: (Height: 38, Bottom: 8);
         LayoutMode: Left;
 
-        Label {
+        Label #SearchLabel {
           Text: "Search:";
           Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
           Anchor: (Width: 55);
@@ -52,7 +52,7 @@ $C.@PageOverlay {
 
         Group { FlexWeight: 1; }
 
-        Label {
+        Label #SortLabel {
           Text: "Sort:";
           Style: (FontSize: 11, TextColor: #888888, VerticalAlignment: Center);
           Anchor: (Width: 35);

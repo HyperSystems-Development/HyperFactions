@@ -11,6 +11,9 @@ import com.hyperfactions.manager.EconomyManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.manager.RelationManager;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hyperfactions.util.TimeUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -134,6 +137,9 @@ public class FactionInfoPage extends InteractiveCustomUIPage<FactionPageData> {
     Faction viewerFaction = factionManager.getPlayerFaction(viewerRef.getUuid());
     boolean isOwnFaction = viewerFaction != null && viewerFaction.id().equals(targetFaction.id());
 
+    // === Page Title ===
+    cmd.set("#PageTitle.Text", HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.TITLE));
+
     // === Header Section ===
     // Faction name
     cmd.set("#FactionName.Text", targetFaction.name());
@@ -150,13 +156,37 @@ public class FactionInfoPage extends InteractiveCustomUIPage<FactionPageData> {
     // Description
     String description = targetFaction.description();
     cmd.set("#FactionDescription.Text",
-        description != null && !description.isEmpty() ? description : "No description set.");
+        description != null && !description.isEmpty() ? description
+            : HFMessages.get(viewerRef, CommonKeys.Common.NO_DESCRIPTION));
 
     // Open/Closed status indicator
-    cmd.set("#StatusIndicator.Text", targetFaction.open() ? "Open" : "Invite Only");
+    cmd.set("#StatusIndicator.Text", targetFaction.open()
+        ? HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.STATUS_OPEN)
+        : HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.STATUS_INVITE_ONLY));
     // Note: Cannot dynamically set text color via cmd.set()
 
     // === Stats Section ===
+    // Set stat card headers and subtitles
+    cmd.set("#PowerHeader.Text", HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.POWER_HEADER));
+    cmd.set("#PowerSubtitle.Text", HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.CURRENT_MAX));
+    cmd.set("#ClaimsHeader.Text", HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.CLAIMS_HEADER));
+    cmd.set("#ClaimsSubtitle.Text", HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.CLAIMED_MAX));
+    cmd.set("#MembersHeader.Text", HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.MEMBERS_HEADER));
+    cmd.set("#RelationsHeader.Text", HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.RELATIONS_HEADER));
+    cmd.set("#RelationsSubtitle.Text", HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.ALLY_ENEMY));
+    cmd.set("#StatusHeader.Text", HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.STATUS_HEADER));
+    cmd.set("#TreasuryHeader.Text", HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.TREASURY_HEADER));
+    cmd.set("#TreasurySubtitle.Text", HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.FACTION_BALANCE));
+
+    // Leadership labels
+    cmd.set("#LeaderLabel.Text", HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.LEADER_LABEL));
+    cmd.set("#OfficersLabel.Text", HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.OFFICERS_LABEL));
+
+    // Button text
+    cmd.set("#ViewMembersBtn.Text", HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.VIEW_MEMBERS_BTN));
+    cmd.set("#ViewRelationsBtn.Text", HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.RELATIONS_BTN));
+    cmd.set("#BackBtn.Text", HFMessages.get(viewerRef, CommonKeys.Common.BACK));
+
     PowerManager.FactionPowerStats powerStats = powerManager.getFactionPowerStats(targetFaction.id());
 
     // Power
@@ -171,7 +201,9 @@ public class FactionInfoPage extends InteractiveCustomUIPage<FactionPageData> {
     cmd.set("#MembersValue.Text", String.format("%d / %d", memberCount, maxMembers));
 
     // Recruitment status
-    cmd.set("#RecruitmentValue.Text", targetFaction.open() ? "Open" : "Invite Only");
+    cmd.set("#RecruitmentValue.Text", targetFaction.open()
+        ? HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.STATUS_OPEN)
+        : HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.STATUS_INVITE_ONLY));
     // Note: Cannot dynamically set text color via cmd.set()
 
     // Founded date
@@ -185,11 +217,9 @@ public class FactionInfoPage extends InteractiveCustomUIPage<FactionPageData> {
 
     // Raidable status
     if (powerStats.isRaidable()) {
-      cmd.set("#RaidableValue.Text", "Raidable");
-      // Note: Cannot dynamically set text color via cmd.set()
+      cmd.set("#RaidableValue.Text", HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.STATUS_RAIDABLE));
     } else {
-      cmd.set("#RaidableValue.Text", "Protected");
-      // Note: Cannot dynamically set text color via cmd.set()
+      cmd.set("#RaidableValue.Text", HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.STATUS_PROTECTED));
     }
 
     // Treasury balance (visible when economy enabled)
@@ -202,21 +232,23 @@ public class FactionInfoPage extends InteractiveCustomUIPage<FactionPageData> {
     // === Leadership Section ===
     // Leader
     FactionMember leader = targetFaction.getLeader();
-    cmd.set("#LeaderName.Text", leader != null ? leader.username() : "Unknown");
+    cmd.set("#LeaderName.Text", leader != null ? leader.username()
+        : HFMessages.get(viewerRef, CommonKeys.Common.UNKNOWN));
 
     // Officers
     List<FactionMember> officers = targetFaction.getMembersSorted().stream()
         .filter(m -> m.role() == FactionRole.OFFICER)
         .toList();
     if (officers.isEmpty()) {
-      cmd.set("#OfficersValue.Text", "None");
+      cmd.set("#OfficersValue.Text", HFMessages.get(viewerRef, CommonKeys.Common.NONE));
     } else {
       String officerNames = officers.stream()
           .map(FactionMember::username)
           .limit(3) // Show max 3 names
           .collect(Collectors.joining(", "));
       if (officers.size() > 3) {
-        officerNames += " +" + (officers.size() - 3) + " more";
+        officerNames += " " + HFMessages.get(viewerRef, GuiKeys.FactionInfoGui.OFFICERS_MORE,
+            officers.size() - 3);
       }
       cmd.set("#OfficersValue.Text", officerNames);
     }

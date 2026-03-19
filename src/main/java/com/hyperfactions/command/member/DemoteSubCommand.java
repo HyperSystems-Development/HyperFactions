@@ -11,6 +11,9 @@ import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.data.FactionRole;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -40,7 +43,7 @@ public class DemoteSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.DEMOTE)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to demote members.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rank.DEMOTE_NO_PERMISSION));
       return;
     }
 
@@ -53,7 +56,7 @@ public class DemoteSubCommand extends FactionSubCommand {
     FactionCommandContext fctx = parseContext(rawArgs);
 
     if (!fctx.hasArgs()) {
-      ctx.sendMessage(prefix().insert(msg("Usage: /f demote <player>", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rank.DEMOTE_USAGE));
       return;
     }
 
@@ -63,7 +66,7 @@ public class DemoteSubCommand extends FactionSubCommand {
       .findFirst().orElse(null);
 
     if (target == null) {
-      ctx.sendMessage(prefix().insert(msg("Player not found in your faction.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rank.PLAYER_NOT_IN_FACTION));
       return;
     }
 
@@ -74,10 +77,8 @@ public class DemoteSubCommand extends FactionSubCommand {
     switch (result) {
       case SUCCESS -> {
         String memberName = ConfigManager.get().getRoleDisplayName(FactionRole.MEMBER);
-        ctx.sendMessage(prefix().insert(msg("Demoted ", COLOR_GREEN))
-          .insert(msg(target.username(), COLOR_YELLOW)).insert(msg(" to " + memberName + ".", COLOR_GREEN)));
-        broadcastToFaction(faction.id(), prefix().insert(msg(target.username(), COLOR_YELLOW))
-          .insert(msg(" was demoted to " + memberName + ".", COLOR_RED)));
+        ctx.sendMessage(MessageUtil.success(player, CommandKeys.Rank.DEMOTED, target.username(), memberName));
+        broadcastToFaction(faction.id(), MessageUtil.error(player, CommandKeys.Rank.DEMOTE_BROADCAST, target.username(), memberName));
         // Show members page after action (if not text mode)
         if (!fctx.isTextMode()) {
           Player playerEntity = store.getComponent(ref, Player.getComponentType());
@@ -86,9 +87,9 @@ public class DemoteSubCommand extends FactionSubCommand {
           }
         }
       }
-      case NOT_LEADER -> ctx.sendMessage(prefix().insert(msg("Only the leader can demote members.", COLOR_RED)));
-      case CANNOT_DEMOTE_MEMBER -> ctx.sendMessage(prefix().insert(msg("That player is already a Member.", COLOR_RED)));
-      default -> ctx.sendMessage(prefix().insert(msg("Failed to demote player.", COLOR_RED)));
+      case NOT_LEADER -> ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.MUST_BE_LEADER));
+      case CANNOT_DEMOTE_MEMBER -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rank.ALREADY_LOWEST));
+      default -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rank.DEMOTE_FAILED));
     }
   }
 }

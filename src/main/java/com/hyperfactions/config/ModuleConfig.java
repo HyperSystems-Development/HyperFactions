@@ -3,6 +3,7 @@ package com.hyperfactions.config;
 import com.google.gson.JsonObject;
 import java.nio.file.Path;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Abstract base class for module configuration files.
@@ -76,6 +77,40 @@ public abstract class ModuleConfig extends ConfigFile {
     root.addProperty("enabled", enabled);
     writeModuleSettings(root);
     return root;
+  }
+
+  // === Optional value helpers (null = absent/inherit) ===
+
+  /**
+   * Gets an optional float value from a JSON object.
+   * Returns null if the key is absent or null, allowing "inherit" semantics.
+   *
+   * @param obj JSON object
+   * @param key property key
+   * @return the float value, or null if absent/null
+   */
+  @Nullable
+  protected Float getOptionalFloat(@NotNull JsonObject obj, @NotNull String key) {
+    if (!obj.has(key) || obj.get(key).isJsonNull()) {
+      return null;
+    }
+    return obj.get(key).getAsFloat();
+  }
+
+  /**
+   * Gets an optional boolean value from a JSON object.
+   * Returns null if the key is absent or null, allowing "inherit" semantics.
+   *
+   * @param obj JSON object
+   * @param key property key
+   * @return the boolean value, or null if absent/null
+   */
+  @Nullable
+  protected Boolean getOptionalBool(@NotNull JsonObject obj, @NotNull String key) {
+    if (!obj.has(key) || obj.get(key).isJsonNull()) {
+      return null;
+    }
+    return obj.get(key).getAsBoolean();
   }
 
   /**

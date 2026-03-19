@@ -2,6 +2,8 @@ package com.hyperfactions.command.faction;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
+import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.FactionRenameEvent;
 import com.hyperfactions.command.FactionCommandContext;
 import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.command.util.CommandUtil;
@@ -9,6 +11,10 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionLog;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -39,7 +45,7 @@ public class DescSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.DESC)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.NO_PERMISSION));
       return;
     }
 
@@ -50,7 +56,7 @@ public class DescSubCommand extends FactionSubCommand {
 
     FactionMember member = faction.getMember(player.getUuid());
     if (member == null || !member.isOfficerOrHigher()) {
-      ctx.sendMessage(prefix().insert(msg("You must be an officer to set the description.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Desc.NOT_OFFICER));
       return;
     }
 
@@ -71,14 +77,17 @@ public class DescSubCommand extends FactionSubCommand {
 
     Faction updated = faction.withDescription(description)
       .withLog(FactionLog.create(FactionLog.LogType.SETTINGS_CHANGE,
-        description != null ? "Description set" : "Description cleared", player.getUuid()));
+        description != null ? "Description set" : "Description cleared", player.getUuid(),
+        description != null ? GuiKeys.LogsGui.MSG_DESC_SET : GuiKeys.LogsGui.MSG_DESC_CLEARED));
 
     hyperFactions.getFactionManager().updateFaction(updated);
+    EventBus.publish(new FactionRenameEvent(faction.id(), FactionRenameEvent.Field.DESCRIPTION,
+        faction.description(), description, player.getUuid()));
 
     if (description != null) {
-      ctx.sendMessage(prefix().insert(msg("Faction description set!", COLOR_GREEN)));
+      ctx.sendMessage(MessageUtil.success(player, CommandKeys.Desc.SET));
     } else {
-      ctx.sendMessage(prefix().insert(msg("Faction description cleared.", COLOR_GREEN)));
+      ctx.sendMessage(MessageUtil.success(player, CommandKeys.Desc.CLEARED));
     }
 
     // After action, open settings page if not text mode

@@ -1,0 +1,934 @@
+# HyperFactions Admin GUI - Nederlandse Vertalingen
+# Formaat: sleutel = waarde
+# Opmerking: Sleutels krijgen automatisch het voorvoegsel "hyperfactions_admin." door Hytale's I18nModule
+
+# ========== Admin Navigatiebalk ==========
+nav.dashboard = Dashboard
+nav.actions = Acties
+nav.factions = Facties
+nav.players = Spelers
+nav.economy = Economie
+nav.zones = Zones
+nav.config = Configuratie
+nav.backups = Back-ups
+nav.log = Logboek
+nav.updates = Updates
+nav.help = Hulp
+nav.version = Versie
+
+# ========== Algemene Admin Labels ==========
+common.faction_not_found = Factie Niet Gevonden
+common.no_faction = Geen Factie
+common.not_set = Niet ingesteld
+common.on = Aan
+common.off = Uit
+common.enable = Inschakelen
+common.disable = Uitschakelen
+common.none_paren = (Geen)
+common.invalid_faction = Ongeldige factie.
+common.leader_prefix = Leider: {0}
+common.members_suffix = {0} leden
+common.claims_suffix = {0} gebieden
+common.factions_suffix = {0} facties
+common.players_suffix = {0} spelers
+common.chunks_suffix = {0} chunks
+common.entries_suffix = {0} vermeldingen
+common.found_suffix = {0} gevonden
+common.power_format = {0}/{1} kracht
+common.raidable = Plunderbaar
+common.protected = Beschermd
+common.no_description = Geen beschrijving ingesteld.
+common.officers_more = +{0} meer
+common.custom_max = (aangepast max)
+common.default_max = (standaard max)
+common.now = Nu
+common.ago_suffix = {0} geleden
+common.just_now = zojuist
+common.no_membership_history = Geen lidmaatschapsgeschiedenis
+
+# ========== Admin Dashboard ==========
+dashboard.factions_prefix = Facties: {0}
+dashboard.members_prefix = Totaal Leden: {0}
+dashboard.claims_prefix = Totaal Gebieden: {0}
+
+# ========== Admin Acties ==========
+actions.confirm_reset = Bevestig Reset?
+actions.confirm_trigger = Bevestig Trigger?
+actions.kd_reset = K/D gereset voor {0} spelers.
+actions.kd_reset_failed = K/D resetten mislukt: {0}
+actions.upkeep_unavailable = Onderhoudsprocessor is niet beschikbaar.
+actions.upkeep_triggered = Onderhoudsinning geactiveerd.
+actions.upkeep_failed = Onderhoud mislukt: {0}
+
+# ========== Admin Ontbinden ==========
+disband.faction_gone = Factie bestaat niet meer.
+disband.success = Factie '{0}' is ontbonden.
+disband.failed = Ontbinden mislukt: {0}
+disband.no_leader = Factie heeft geen leider, kan niet ontbinden.
+
+# ========== Admin Alles Unclaimen ==========
+unclaim.removed = [Admin] {0} gebieden verwijderd van {1}.
+unclaim.no_claims = {0} had geen gebieden om te verwijderen.
+
+# ========== Admin Factielijst ==========
+factions.home_not_set = Niet ingesteld
+factions.teleported = Geteleporteerd naar de basis van {0}.
+factions.no_home = Factie heeft geen basis ingesteld.
+factions.world_not_found = Doelwereld niet gevonden.
+
+# ========== Admin Factie-info ==========
+info.faction_gone = Deze factie bestaat niet meer.
+
+# ========== Admin Factieleden ==========
+members.sort_role = Rol
+members.sort_online = Online
+members.sort_name = Naam
+members.sort_power = Kracht
+members.promoted = [Admin] {0} gepromoveerd tot {1}.
+members.demoted = [Admin] {0} gedegradeerd naar {1}.
+members.kicked = [Admin] {0} uit de factie geschopt.
+
+# ========== Admin Factierelaties ==========
+relations.allies_header = BONDGENOTEN ({0})
+relations.enemies_header = VIJANDEN ({0})
+relations.no_allies = Geen bondgenoten.
+relations.no_enemies = Geen vijanden.
+relations.neutral_count = {0} neutrale facties
+relations.since_today = Sinds: vandaag
+relations.since_one_day = Sinds: 1 dag geleden
+relations.since_days = Sinds: {0} dagen geleden
+relations.set_ally = [Admin] Wederzijds bondgenootschap ingesteld met {0}.
+relations.set_enemy = Wederzijdse vijandschap ingesteld met {0}.
+relations.set_neutral = [Admin] Wederzijdse neutraliteit ingesteld met {0}.
+
+# ========== Admin Factie-instellingen ==========
+settings.locked = Deze instelling is vergrendeld door de serverconfiguratie.
+settings.perm_toggled = {0} ingesteld op {1}.
+settings.color_changed = Factiekleur ingesteld op {0}.
+settings.recruitment_set = Werving ingesteld op {0}.
+settings.no_home = [Admin] Deze factie heeft geen basis ingesteld.
+settings.home_cleared = Factiebasis gewist voor {0}.
+
+# ========== Sorteer Dropdown Labels ==========
+sort.power = Kracht
+sort.name = Naam
+sort.members = Leden
+sort.balance = Saldo
+
+# ========== Admin Spelers ==========
+players.sort_last_online = Laatst Online
+players.sort_faction = Factie
+players.sort_online = Online
+players.not_online = Speler is niet online.
+players.world_not_found = Doelwereld niet gevonden.
+players.teleported = [Admin] Geteleporteerd naar {0}.
+
+# ========== Admin Spelerinfo ==========
+playerinfo.disband_faction = Factie Ontbinden
+playerinfo.kick_leader = Leider Schoppen
+playerinfo.enter_valid_number = Voer een geldig getal in.
+playerinfo.enter_valid_positive = Voer een geldig positief getal in.
+playerinfo.faction_gone = Factie bestaat niet meer.
+playerinfo.kd_reset = K/D gereset voor {0}.
+playerinfo.kicked_success = {0} geschopt uit {1}.
+playerinfo.kicked_leader = Leider {0} geschopt. Leiderschap overgedragen aan {1}.
+playerinfo.disbanded_kick = [Admin] Factie '{0}' ontbonden (laatste lid geschopt).
+
+# ========== Admin Economie ==========
+economy.no_data = Geen facties met economiegegevens.
+economy.amount_zero = Bedrag mag niet nul zijn.
+economy.enter_amount = Voer een bedrag in.
+economy.invalid_number = Ongeldig getal: {0}
+economy.error = Er is een fout opgetreden.
+economy.balance_negative = Saldo kan niet negatief zijn.
+economy.failed = Mislukt: {0}
+economy.bulk_complete = Bulkaanpassing voltooid: {0} {1} aan {2} facties.
+economy.bulk_failures = ({0} mislukt)
+
+# ========== Admin Zones ==========
+zones.not_found = Zone niet gevonden.
+zones.invalid_id = Ongeldig zone-ID.
+zones.deleted = Zone {0} verwijderd.
+zones.delete_failed = Zone verwijderen mislukt: {0}
+zones.no_chunks = Geen chunks
+zones.chunks_suffix = {0} ({1} chunks)
+
+# ========== Zone Aanmaakwizard ==========
+wizard.enter_name = Voer een zonenaam in.
+wizard.name_too_short = Zonenaam moet minstens {0} tekens lang zijn.
+wizard.name_too_long = Zonenaam mag niet meer dan {0} tekens bevatten.
+wizard.name_taken = Er bestaat al een zone met deze naam.
+wizard.radius_range = Radius moet tussen 1 en {0} liggen.
+wizard.create_failed = Kon zone niet aanmaken: {0}
+wizard.created_not_found = Zone aangemaakt maar kon niet worden gevonden.
+wizard.created = {0} '{1}' aangemaakt!
+wizard.chunk_claimed = Chunk geclaimd ({0}, {1}).
+wizard.chunk_failed = Kon huidige chunk niet claimen: {0}
+wizard.radius_claimed = {0} chunks geclaimd in een radius van {1} rond {2}.
+wizard.radius_no_claims = Geen chunks konden worden geclaimd (gebied kan bezet zijn).
+wizard.no_claims = Zone aangemaakt zonder claims.
+wizard.chunks_preview = ~{0} chunks
+
+# ========== Zone Hernoemen ==========
+zone_rename.zone_gone = Zone bestaat niet meer.
+zone_rename.enter_name = Voer een zonenaam in.
+zone_rename.too_short = Zonenaam moet minstens {0} teken lang zijn.
+zone_rename.too_long = Zonenaam mag niet meer dan {0} tekens bevatten.
+zone_rename.same_name = Dat is al de naam van deze zone.
+zone_rename.renamed = [Admin] Zone hernoemd van {0} naar {1}!
+zone_rename.name_taken = Er bestaat al een zone met die naam.
+zone_rename.invalid_name = Ongeldige zonenaam.
+zone_rename.rename_failed = Zone hernoemen mislukt: {0}
+
+# ========== Zone Type Wijzigen ==========
+zone_type.zone_gone = Zone bestaat niet meer.
+zone_type.changed = [Admin] {0} gewijzigd van {1} naar {2} ({3}).
+zone_type.failed = Zonetype wijzigen mislukt: {0}
+zone_type.flags_reset = vlaggen gereset
+zone_type.flags_kept = vlaggen behouden
+
+# ========== Zone Integratievlaggen ==========
+zone_int.zone_not_found = Zone Niet Gevonden
+zone_int.no_plugin = (geen plugin)
+zone_int.default = (standaard)
+zone_int.custom = (aangepast)
+
+# UI-labels integratievlaggen
+gui.zint_cat_gravestones = Grafstenen
+gui.zint_gravestones_desc = Indien AAN kunnen niet-eigenaren graven plunderen. Eigenaren kunnen dat altijd.
+gui.zint_cat_world_map = Wereldkaart
+gui.zint_world_map_desc = Overschrijf kaartverberging voor spelers in deze zone. Indien ingeschakeld, selecteer wie spelers in deze zone kan zien.
+gui.zint_visibility_label = Zichtbaarheidsniveau:
+gui.zint_cat_essentials = HyperEssentials
+gui.zint_reset_defaults = Standaardwaarden Herstellen
+gui.zint_back_to_flags = Terug naar Vlaggen
+gui.zint_map_vis_faction = Alleen Factie
+gui.zint_map_vis_ally = Factie + Bondgenoten
+gui.zint_map_vis_all = Alle Spelers
+
+# ========== Activiteitenlog ==========
+log.all_types = Alle Types
+log.no_logs = Geen activiteitenlogs die overeenkomen met filters.
+
+# ========== Versiepagina ==========
+version.active = Actief
+version.not_found = Niet Gevonden
+version.not_detected = Niet Gedetecteerd
+version.not_installed = Niet Geinstalleerd
+version.active_version = Actief (v{0})
+version.active_compatible = Actief (compatibel)
+version.active_claims_only = Actief (alleen claims)
+version.installed_no_perm = Geinstalleerd (geen perm provider)
+version.active_provider = Actief ({0})
+
+# ========== Admin Hoofdpagina ==========
+main.reload_hint = Gebruik /f reload om configuratie te herladen.
+main.unclaim_hint = Gebruik /f admin unclaim {0} om alle {1} chunks vrij te geven.
+
+# ========== Zone Vlaggen/Instellingen ==========
+zflags.invalid_flag = Ongeldige vlag.
+zflags.zone_not_found = Zone niet gevonden.
+zflags.conflict = (conflict)
+zflags.mixin = (mixin)
+zflags.reset_int = Integratievlaggen naar standaard herstellen.
+zflags.reset_all = Alle vlaggen naar standaard herstellen.
+zflags.reset_failed = Vlaggen resetten mislukt: {0}
+zflags.back_to_settings = Terug naar Instellingen
+
+# Zone-instellingen UI-labels
+gui.zset_cat_combat = Gevecht
+gui.zset_cat_damage = Schade
+gui.zset_cat_death = Dood
+gui.zset_cat_building = Bouwen
+gui.zset_cat_interaction = Interactie
+gui.zset_cat_transport = Transport
+gui.zset_cat_items = Items
+gui.zset_cat_spawning = Mob-spawning
+gui.zset_cat_mob_clear = Mob-opruiming
+gui.zset_children_hint = (onderliggende opties alleen actief wanneer bovenliggende AAN is)
+gui.zset_reset_defaults = Standaardwaarden Herstellen
+gui.zset_integration_flags = Integratievlaggen
+gui.zset_back_to_zones = Terug naar Zones
+gui.zset_chunks = {0} chunks
+
+# Zone Vlag Weergavenamen
+gui.zflag_pvp_enabled = PvP Ingeschakeld
+gui.zflag_friendly_fire = Vriendelijk Vuur
+gui.zflag_friendly_fire_faction = Factieschade
+gui.zflag_friendly_fire_ally = Bondgenootschade
+gui.zflag_projectile_damage = Projectielschade
+gui.zflag_mob_damage = Mobschade Ontvangen
+gui.zflag_pve_damage = Mobschade Uitdelen
+gui.zflag_fall_damage = Valschade
+gui.zflag_environmental_damage = Omgevingsschade
+gui.zflag_explosion_damage = Explosieschade
+gui.zflag_fire_spread = Vuurverspreiding
+gui.zflag_keep_inventory = Inventaris Behouden
+gui.zflag_power_loss = Krachtverlies
+gui.zflag_build_allowed = Bouwen Toegestaan
+gui.zflag_block_place = Blok Plaatsen
+gui.zflag_hammer_use = Hamergebruik
+gui.zflag_builder_tools_use = Bouwgereedschap
+gui.zflag_block_interact = Blokinteractie
+gui.zflag_door_use = Deurgebruik
+gui.zflag_container_use = Opberggebruik
+gui.zflag_bench_use = Werkbankgebruik
+gui.zflag_processing_use = Verwerkingsgebruik
+gui.zflag_seat_use = Zitplaatsgebruik
+gui.zflag_mount_use = Mountgebruik
+gui.zflag_light_use = Verlichtingsgebruik
+gui.zflag_npc_use = NPC-interactie
+gui.zflag_crate_pickup = Krat Oprapen
+gui.zflag_crate_place = Krat Plaatsen
+gui.zflag_npc_tame = NPC Temmen
+gui.zflag_npc_interact = NPC Interactie
+gui.zflag_teleporter_use = Teleportergebruik
+gui.zflag_portal_use = Portaalgebruik
+gui.zflag_mount_entry = Mount Betreden
+gui.zflag_item_drop = Item Laten Vallen
+gui.zflag_item_pickup = Automatisch Oprapen
+gui.zflag_item_pickup_manual = F-toets Oprapen
+gui.zflag_invincible_items = Onverwoestbare Items
+gui.zflag_mob_spawning = Mob-spawning
+gui.zflag_hostile_mob_spawning = Vijandige Mobs
+gui.zflag_passive_mob_spawning = Passieve Mobs
+gui.zflag_neutral_mob_spawning = Neutrale Mobs
+gui.zflag_npc_spawning = NPC-spawning
+gui.zflag_mob_clear = Mob-opruiming
+gui.zflag_hostile_mob_clear = Vijandige Mobs Opruimen
+gui.zflag_passive_mob_clear = Passieve Mobs Opruimen
+gui.zflag_neutral_mob_clear = Neutrale Mobs Opruimen
+gui.zflag_gravestone_access = Anderen Plunderen Graven
+gui.zflag_show_on_map = Tonen op Kaart
+gui.zflag_essentials_homes = Basisgebruik
+gui.zflag_essentials_warps = Warpgebruik
+gui.zflag_essentials_kits = Kit Claimen
+
+# ========== Zone Eigenschappen ==========
+zprop.current_custom = Huidig: "{0}" (aangepast)
+zprop.current_default = Huidig: "{0}" (standaard)
+zprop.pvp_disabled = PvP Uitgeschakeld
+zprop.pvp_enabled = PvP Ingeschakeld
+zprop.name_empty = Naam mag niet leeg zijn.
+zprop.renamed = Zone hernoemd naar "{0}".
+zprop.name_taken = Er bestaat al een zone met die naam.
+zprop.name_invalid = Ongeldige naam (max 32 tekens).
+zprop.rename_failed = Hernoemen mislukt: {0}
+zprop.upper_empty = Boventitel mag niet leeg zijn. Gebruik Wissen om te resetten.
+zprop.upper_set = Boventitel ingesteld.
+zprop.upper_reset = Boventitel gereset naar standaard.
+zprop.lower_empty = Ondertitel mag niet leeg zijn. Gebruik Wissen om te resetten.
+zprop.lower_set = Ondertitel ingesteld.
+zprop.lower_reset = Ondertitel gereset naar standaard.
+
+# ========== Relaties Aanvullend ==========
+relations.failed = Mislukt: {0}
+
+# ========== Leden Aanvullend ==========
+members.never = Nooit
+members.teleported = [Admin] Geteleporteerd naar {0}.
+
+# ========== Spelerinfo Aanvullend ==========
+playerinfo.records = {0} vermeldingen
+playerinfo.joined_date = Toegetreden: {0}
+playerinfo.current = Huidig
+playerinfo.left_date = Vertrokken: {0}
+
+# ========== Zonekaart ==========
+map.world_warning = WAARSCHUWING: Je bent in '{0}' - zone is in '{1}'
+map.position = Jouw Positie: Chunk ({0}, {1})
+map.zone_gone = Zone bestaat niet meer.
+map.claimed = Chunk geclaimd ({0}, {1}) voor {2}.
+map.claim_failed = Chunk claimen mislukt: {0}
+map.unclaimed = Chunk vrijgegeven ({0}, {1}) van {2}.
+map.unclaim_failed = Chunk vrijgeven mislukt: {0}
+map.chunk_belongs = Dit chunk behoort toe aan {0}.
+map.chunk_faction = Dit chunk is geclaimd door een factie.
+map.chunk_protected = Dit chunk bevindt zich in een beschermd gebied.
+map.another_zone = een andere zone
+
+# ========== GUI Label Sleutels (voor .ui hardcoded tekst lokalisatie) ==========
+
+# Paginatitels
+gui.title_dashboard = Admin Dashboard
+gui.title_main = Facties Admin
+gui.title_actions = Admin: Serveracties
+gui.title_factions = Factiebeheer
+gui.title_players = Spelerbeheer
+gui.title_economy = Admin: Servereconomie
+gui.title_zones = Zonebeheer
+gui.title_backups = Back-ups
+gui.title_config = Configuratie
+gui.title_help = Admin Hulp
+gui.title_updates = Updates
+gui.title_version = Versie en Integraties
+gui.title_activity_log = Admin: Activiteitenlog
+gui.title_player_info = Admin: Spelerinfo
+gui.title_faction_info = Admin: Factie-info
+gui.title_faction_settings = Admin: Factie-instellingen
+gui.title_faction_members = Admin: Leden
+gui.title_faction_relations = Admin: Relaties
+gui.title_zone_map = Zone Kaarteditor
+gui.title_zone_settings = Admin: Zone-instellingen
+gui.title_zone_properties = Admin: Zone-eigenschappen
+gui.title_bulk_economy = Bulk Schatkist Aanpassen
+gui.title_economy_adjust = Admin: Economie
+
+# Dashboard labels
+gui.dash_server_stats = Serverstatistieken
+gui.dash_factions = Facties
+gui.dash_total_members = Totaal Leden
+gui.dash_total_claims = Totaal Gebieden
+gui.dash_zones = Zones
+gui.dash_safe_war = safe / war
+gui.dash_total_power = Totale Kracht
+gui.dash_avg_power = Gem. Kracht/Factie
+gui.dash_total_economy = Totale Economie
+gui.dash_wealthiest = Rijkste
+gui.dash_avg_balance = Gem. Saldo
+gui.dash_protection_bypass = Beschermingsbypass:
+
+# Algemene knoppen en labels
+gui.search = Zoeken:
+gui.sort = Sorteren:
+gui.prev = < Vorige
+gui.next = Volgende >
+gui.back = Terug
+gui.done = Klaar
+gui.cancel = Annuleren
+gui.apply = Toepassen
+gui.set = Instellen
+gui.reset = Resetten
+gui.coming_soon = Binnenkort Beschikbaar
+gui.zones_btn = Zones
+gui.reload_btn = Herladen
+gui.all = Alles
+gui.safe = Safe
+gui.war = War
+gui.create_zone = + Aanmaken
+
+# Actiepagina labels
+gui.act_combat_stats = Gevechtsstatistieken
+gui.act_combat_desc = Reset kills en sterfgevallen voor ALLE spelers op de server. Deze actie kan niet ongedaan worden gemaakt.
+gui.act_reset_kd = Alle K/D Resetten
+gui.act_economy = Economie
+gui.act_economy_desc = Voeg geld toe of verwijder geld uit ALLE factieschatkisten tegelijk.
+gui.act_bulk_adjust = Bulk Toevoegen/Verwijderen
+gui.act_upkeep_collection = Onderhoudsinning
+gui.act_upkeep_desc = Activeer handmatig de onderhoudsinning voor alle facties, ongeacht de geplande timer.
+gui.act_trigger_upkeep = Onderhoud Activeren
+
+# Placeholder pagina labels
+gui.backup_heading = Back-upbeheer
+gui.backup_desc1 = Maak, herstel en beheer back-ups van factiegegevens.
+gui.backup_desc2 = Automatische back-ups worden opgeslagen in de map data/backups.
+gui.config_heading = Configuratie-editor
+gui.config_desc1 = Configureer HyperFactions-instellingen rechtstreeks vanuit de GUI.
+gui.config_desc2 = Gebruik voorlopig /f reload om configuratiewijzigingen te herladen.
+gui.help_heading = Admin Documentatie
+gui.help_desc1 = Bekijk admin-documentatie en commandoreferentie.
+gui.help_desc2 = Bezoek de HyperFactions wiki voor hulp.
+gui.updates_heading = Updatecentrum
+gui.updates_desc1 = Controleer op nieuwe versies en bekijk changelogs.
+gui.updates_desc2 = Bezoek de HyperFactions-pagina voor de laatste updates.
+
+# Versiepagina labels
+gui.ver_hyperfactions = HyperFactions
+gui.ver_hytale_server = Hytale Server
+gui.ver_java = Java
+gui.ver_permissions = RECHTEN
+gui.ver_placeholders = PLAATSHOUDERS
+gui.ver_economy_section = ECONOMIE
+gui.ver_protection = BESCHERMING
+gui.ver_disabled = Uitgeschakeld
+
+# Kolomkoppen (gedeeld over pagina's)
+gui.col_faction = Factie
+gui.col_balance = Saldo
+gui.col_members = Leden
+gui.col_actions = Acties
+gui.col_time = Tijd
+gui.col_type = Type
+gui.col_message = Bericht
+
+# Economiepagina labels
+gui.econ_total_balance = Totaal Saldo
+gui.econ_factions = Facties
+gui.econ_avg_balance = Gem. Saldo
+gui.econ_in_grace = In Uitstel
+gui.econ_collected = Geind (24u)
+gui.econ_next_collection = Volgende Inning
+gui.econ_no_data = Geen facties met economiegegevens.
+
+# Activiteitenlog labels
+gui.log_type = Type:
+gui.log_time = Tijd:
+gui.log_player = Speler:
+gui.log_no_logs = Geen activiteitenlogs die overeenkomen met filters.
+
+# Spelerinfo labels
+gui.plr_first_joined = Eerste keer toegetreden:
+gui.plr_last_online = Laatst online:
+gui.plr_uuid = UUID:
+gui.plr_faction = Factie:
+gui.plr_role = Rol:
+gui.plr_view_faction = Factie Bekijken
+gui.plr_power = Kracht
+gui.plr_max_power = Max Kracht
+gui.plr_set_power = Instellen
+gui.plr_reset_power = Resetten
+gui.plr_set_max = Instellen
+gui.plr_reset_max = Resetten
+gui.plr_no_power_loss = Geen Krachtverlies
+gui.plr_no_claim_decay = Geen Claimverval
+gui.plr_kills = Kills
+gui.plr_deaths = Sterfgevallen
+gui.plr_kdr = K/D-ratio
+gui.plr_reset_kd = K/D Resetten
+gui.plr_kick = Schoppen
+gui.plr_membership_history = Lidmaatschapsgeschiedenis
+gui.plr_no_faction_label = Niet in een factie
+gui.plr_power_management = Krachtbeheer
+gui.plr_combat_stats = Gevechtsstatistieken
+gui.plr_bypass_flags = Bypassvlaggen
+gui.plr_admin_controls = Adminbediening
+gui.plr_kd_subtitle = K / D
+gui.plr_max_prefix = Max:
+gui.plr_view = Bekijken
+gui.plr_kick_from_faction = Uit Factie Schoppen
+gui.plr_set_max_btn = Max Instellen
+gui.plr_combat = Gevecht
+gui.plr_reason_active = ACTIEF
+gui.plr_reason_left = VERTROKKEN
+gui.plr_reason_kicked = GESCHOPT
+gui.plr_reason_disbanded = ONTBONDEN
+
+# Lid-entry labels
+gui.mem_label_power = Kracht:
+gui.mem_label_joined = Toegetreden:
+gui.mem_label_last_death = Laatste Dood:
+gui.mem_label_uuid = UUID:
+gui.mem_btn_info = Info
+gui.mem_btn_teleport = Teleporteren
+gui.mem_btn_promote = Promoveren
+gui.mem_btn_demote = Degraderen
+gui.mem_btn_kick = Schoppen
+gui.econ_not_enabled = Economiesysteem is niet ingeschakeld.
+gui.info_more = +{0} meer
+gui.log_time_1h = 1u
+gui.log_time_24h = 24u
+gui.log_time_7d = 7d
+gui.log_time_all = Alles
+gui.shape_circular = cirkelvormig
+gui.shape_square = vierkant
+gui.nav_title = Admin Paneel
+gui.econ_btn_adjust = Aanpassen
+gui.econ_btn_info = Info
+
+# Factie-info labels
+gui.fac_description = Beschrijving
+gui.fac_power = Kracht
+gui.fac_claims = Gebieden
+gui.fac_members = Leden
+gui.fac_recruitment = Werving
+gui.fac_founded = Opgericht
+gui.fac_allies = Bondgenoten
+gui.fac_enemies = Vijanden
+gui.fac_raidable = Plunderstatus
+gui.fac_treasury = Schatkist
+gui.fac_leader = Leider
+gui.fac_officers = Officieren
+gui.fac_view_members = Leden Bekijken
+gui.fac_view_relations = Relaties Bekijken
+gui.fac_view_settings = Instellingen
+gui.fac_disband = Factie Ontbinden
+gui.fac_power_management = Krachtbeheer
+gui.fac_reset_all_power = Alle Kracht Resetten
+gui.fac_econ_adjust = Saldo Aanpassen
+gui.fac_econ_view_log = Transactielog Bekijken
+gui.fac_current_max = huidig / max
+gui.fac_claimed_max = geclaimd / max
+gui.fac_relations = Relaties
+gui.fac_ally_enemy = bondgenoot / vijand
+gui.fac_status = Status
+gui.fac_info = Info
+gui.fac_treasury_balance = schatkistsaldo
+gui.fac_leadership = Leiderschap
+gui.fac_leader_label = Leider:
+gui.fac_officers_label = Officieren:
+gui.fac_econ_mgmt = Economiebeheer
+gui.fac_danger_zone = Gevarenzone
+gui.fac_view_treasury = Schatkist Bekijken
+
+# Factie-instellingen labels
+gui.set_editing = Bewerken:
+gui.set_general = Algemene Instellingen
+gui.set_name = Naam
+gui.set_tag = Tag
+gui.set_description = Beschrijving
+gui.set_recruitment = Werving
+gui.set_home = Basislocatie
+gui.set_clear_home = Basis Wissen
+gui.set_disband_faction = Factie Ontbinden
+gui.set_faction_color = Factiekleur
+gui.set_admin_override = [Admin Overschrijving]
+gui.set_territory_perms = Territoriumrechten
+gui.set_mob_spawning = Mob-spawning
+gui.set_faction_settings = Factie-instellingen
+gui.set_name_label = Naam:
+gui.set_tag_label = Tag:
+gui.set_desc_label = Beschr.:
+gui.set_edit = Bewerken
+gui.set_status_label = Status:
+gui.set_location_label = Locatie:
+gui.set_danger_zone = Gevarenzone
+gui.set_irreversible = Deze actie is onomkeerbaar.
+gui.set_lock_hint = Sommige opties kunnen door de server vergrendeld zijn en accepteren geen wijzigingen.
+gui.set_appearance = Uiterlijk
+gui.set_color_label = Kleur:
+gui.set_mob_sub = (onderliggende opties uitgeschakeld wanneer hoofdschakelaar uit is)
+gui.set_back_to_info = Terug naar Info
+gui.set_col_out = Buiten
+gui.set_col_ally = Bondg.
+gui.set_col_mem = Lid
+gui.set_col_off = Off.
+gui.set_cat_building = BOUWEN
+gui.set_cat_interaction = INTERACTIE
+gui.set_cat_interact_sub = (onderliggende opties uitgeschakeld wanneer Alles uit is)
+gui.set_cat_other = OVERIG
+gui.set_perm_break = Breken
+gui.set_perm_place = Plaatsen
+gui.set_perm_all = Alles
+gui.set_perm_door = Deur
+gui.set_perm_chest = Kist
+gui.set_perm_bench = Werkbank
+gui.set_perm_processing = Verwerking
+gui.set_perm_seat = Zitplaats
+gui.set_perm_transport = Transport
+gui.set_perm_crate_use = Kratgebruik
+gui.set_perm_npc_tame = NPC Temmen
+gui.set_perm_pve_damage = PvE-schade
+gui.set_perm_mob_spawning = Mob-spawning
+gui.set_perm_hostile = Vijandige Mobs
+gui.set_perm_passive = Passieve Mobs
+gui.set_perm_neutral = Neutrale Mobs
+gui.set_perm_pvp = PvP in Territorium
+gui.set_perm_officers_edit = Officieren kunnen bewerken
+
+# Factierelatie labels
+gui.rel_subtitle = Factierelaties beheren (omzeilt goedkeuring)
+gui.rel_set_new = Nieuwe Relatie Instellen
+gui.rel_btn_ally = Bondgenoot
+gui.rel_btn_neutral = Neutraal
+gui.rel_btn_enemy = Vijand
+
+# Zonepagina labels
+gui.zone_sort_name = Naam
+gui.zone_sort_type = Type
+gui.zone_sort_chunks = Chunks
+gui.zone_sort_world = Wereld
+gui.zone_count_format = {0} {1}zones ({2} chunks)
+
+# Zonekaart labels
+gui.map_zone_chunk = Zone Chunk
+gui.map_empty = Leeg
+gui.map_other_zone = Andere Zone
+gui.map_faction_claim = Factiegebied
+gui.map_protected = Beschermd
+gui.map_your_pos = Jouw Positie
+gui.map_click_hint = Klik om chunks te claimen/unclaimen
+gui.map_legend_zone_safe = Deze Zone (Safe)
+gui.map_legend_zone_war = Deze Zone (War)
+gui.map_legend_other_safe = Andere SafeZone
+gui.map_legend_other_war = Andere WarZone
+gui.map_legend_faction = Factiegebied
+gui.map_legend_unclaimed = Ongeclaimd
+gui.map_legend_you_here = Je bent hier
+gui.map_action_hint = Linksklik: Claimen voor zone  |  Rechtsklik: Unclaimen van zone
+gui.map_done = Klaar
+
+# Zone-eigenschappen labels
+gui.zprop_general = Algemeen
+gui.zprop_zone_name = Zonenaam
+gui.zprop_zone_type = Zonetype
+gui.zprop_change_type = Type Wijzigen
+gui.zprop_notifications = Meldingen
+gui.zprop_show_entry = Toegangsmelding Tonen
+gui.zprop_upper_title = Boventitel
+gui.zprop_upper_desc = Boventitel (kleine tekst boven zonenaam)
+gui.zprop_lower_title = Ondertitel
+gui.zprop_lower_desc = Ondertitel (grote zonenaamtekst)
+gui.zprop_edit_flags = Vlaggen Bewerken
+gui.zprop_back_to_zones = Terug naar Zones
+gui.save = Opslaan
+gui.clear = Wissen
+
+# Bulk economie labels
+gui.bulk_header = Alle Factieschatkisten Aanpassen
+gui.bulk_factions_label = Facties:
+gui.bulk_total_label = Totaal Saldo:
+gui.bulk_amount_hint = Bedrag (positief om toe te voegen, negatief om te verwijderen):
+gui.bulk_hint = Dit wordt toegepast op elke factie met een schatkist
+gui.bulk_warning_msg = Waarschuwing: Deze actie beinvloedt ALLE facties en kan niet ongedaan worden gemaakt.
+gui.bulk_apply_all = Op Alles Toepassen
+gui.bulk_operation = Bewerking
+gui.bulk_add = Toevoegen
+gui.bulk_remove = Verwijderen
+gui.bulk_amount = Bedrag
+gui.bulk_warning = Dit beinvloedt ALLE factieschatkisten.
+gui.bulk_preview = Voorbeeld
+
+# Economie aanpassen labels
+gui.ecadj_header = Schatkistsaldo Aanpassen
+gui.ecadj_faction_label = Factie:
+gui.ecadj_current_balance = Huidig Saldo:
+gui.ecadj_amount_hint = Bedrag (positief om toe te voegen, negatief om af te trekken):
+gui.ecadj_preview_hint = Voer een getal in om de wijziging te bekijken
+gui.ecadj_adjustment = Aanpassing:
+gui.ecadj_set_balance = Saldo Instellen
+gui.ecadj_confirm = Bevestig +/-
+gui.ecadj_operation = Bewerking
+gui.ecadj_add = Toevoegen
+gui.ecadj_remove = Verwijderen
+gui.ecadj_set_to = Instellen Op
+gui.ecadj_amount = Bedrag
+gui.ecadj_new_balance = Nieuw Saldo:
+
+# Versiepagina integratie labels
+gui.ver_hyperperms = HyperPerms
+gui.ver_luckperms = LuckPerms
+gui.ver_vault = VaultUnlocked
+gui.ver_native = Hytale Native
+gui.ver_hyperprotect = HyperProtect
+gui.ver_orbisguard_mixins = OrbisGuard Mixins
+gui.ver_orbisguard_api = OrbisGuard API
+gui.ver_mixin_hooks = Mixin Hooks
+gui.ver_gravestones = Grafstenen
+gui.ver_kyuubisoft = KyuubiSoft
+gui.ver_placeholder_api = PlaceholderAPI
+gui.ver_wiflow_papi = WiFlow PAPI
+gui.ver_treasury = Schatkist
+
+# Alles unclaimen bevestigingsmodaal labels
+gui.unclaim_title = Alle Gebieden Vrijgeven
+gui.unclaim_confirm_msg1 = Weet je zeker dat je alle gebieden wilt vrijgeven
+gui.unclaim_confirm_msg2 = van
+gui.unclaim_warning = Deze actie kan niet ongedaan worden gemaakt!
+gui.unclaim_all = Alles Vrijgeven
+
+# Zone hernoemen modaal labels
+gui.zren_title = Zone Hernoemen
+gui.zren_current = Huidig:
+gui.zren_new_name = Nieuwe Naam:
+
+# Zone type wijzigen modaal labels
+gui.ztype_title = Zonetype Wijzigen
+gui.ztype_zone_label = Zone:
+gui.ztype_current = Huidig:
+gui.ztype_will_become = wordt
+gui.ztype_new = Nieuw:
+gui.ztype_warning1 = Verschillende zonetypes hebben verschillende standaard vlagwaarden.
+gui.ztype_warning2 = Kies hoe bestaande vlaginstellingen behandeld moeten worden:
+gui.ztype_keep_desc = Aangepaste overschrijvingen behouden
+gui.ztype_keep_flags = Vlaggen Behouden
+gui.ztype_reset_desc = Nieuwe type standaarden gebruiken
+gui.ztype_reset_flags = Vlaggen Resetten
+
+# Zone aanmaakwizard labels
+gui.czw_title = Zone Aanmaken
+gui.czw_back = < Terug
+gui.czw_create = Zone Aanmaken
+gui.czw_zone_type = Zonetype
+gui.czw_safe_desc = Beschermd, geen PvP
+gui.czw_war_desc = Gevecht, PvP ingeschakeld
+gui.czw_zone_name = Zonenaam
+gui.czw_name_desc = Voer een unieke naam in voor de zone
+gui.czw_claim_method = Claimmethode
+gui.czw_method_none_desc = Lege zone aanmaken
+gui.czw_method_none = Geen claims
+gui.czw_method_single_desc = Je huidige chunk
+gui.czw_method_single = Enkele chunk
+gui.czw_method_circle_desc = Cirkelvormig gebied
+gui.czw_method_circle = Cirkelradius
+gui.czw_method_square_desc = Vierkant gebied
+gui.czw_method_square = Vierkantradius
+gui.czw_method_map_desc = Interactieve chunk-editor
+gui.czw_method_map = Claimkaart gebruiken
+gui.czw_radius = Radius
+gui.czw_custom_radius = Aangepast (1-50):
+gui.czw_flags = Vlaggen
+gui.czw_flags_defaults_desc = Gebaseerd op zonetype
+gui.czw_flags_defaults = Standaard gebruiken
+gui.czw_flags_customize_desc = Instellingen openen na
+gui.czw_flags_customize = Aanpassen
+
+# ========== Entry Labels (Factie/Speler/Zone lijstvermeldingen) ==========
+
+# Factie-entry labels
+gui.fac_entry_power = kracht
+gui.fac_entry_claims = gebieden
+gui.fac_entry_members = leden
+gui.fac_entry_created = Opgericht:
+gui.fac_entry_home = Basis:
+gui.fac_entry_tp_home = TP Basis
+gui.fac_entry_view_info = Info Bekijken
+gui.fac_entry_members_btn = Leden
+gui.fac_entry_settings = Instellingen
+gui.fac_entry_unclaim_all = Alles Vrijgeven
+gui.fac_entry_disband = Ontbinden
+
+# Speler-entry labels
+gui.plr_entry_role = Rol:
+gui.plr_entry_joined = Toegetreden:
+gui.plr_entry_last_online = Laatst Online:
+gui.plr_entry_kdr = K/D/R:
+gui.plr_entry_power = Kracht:
+gui.plr_entry_uuid = UUID:
+gui.plr_entry_info = Info
+gui.plr_entry_teleport = Teleporteren
+gui.plr_entry_na = N.v.t.
+gui.plr_entry_unknown = Onbekend
+gui.plr_entry_ago = {0} geleden
+
+# Zone-entry labels
+gui.zone_entry_world = Wereld:
+gui.zone_entry_chunks = Chunks:
+gui.zone_entry_bounds = Grenzen:
+gui.zone_entry_created = Aangemaakt:
+gui.zone_entry_edit_map = Kaart Bewerken
+gui.zone_entry_flags = Vlaggen
+gui.zone_entry_settings = Instellingen
+gui.zone_entry_delete = Verwijderen
+
+# ========== Updates Page ==========
+updates.version_info = Versie-informatie
+updates.current_version = Huidig:
+updates.build_date = Gebouwd:
+updates.latest_version = Nieuwste:
+updates.channel = Kanaal:
+updates.update_status = Update Status
+updates.status_checking = Zoeken naar updates...
+updates.status_up_to_date = Up-to-date
+updates.status_available = Nieuwe versie beschikbaar: v{0}
+updates.status_downloading = Update downloaden...
+updates.status_downloaded = Update succesvol gedownload!
+updates.status_failed = Fout bij het zoeken naar updates.
+updates.btn_check = Controleer op Updates
+updates.btn_download = Downloaden & Installeren
+updates.btn_rollback = Terugdraaien naar
+updates.changelog_title = Wijzigingslogboek
+updates.no_changelog = Geen wijzigingslogboek beschikbaar.
+updates.rollback_section = Terugdraaien
+updates.rollback_confirm = Bevestig Terugdraaien
+updates.rollback_unsafe = Terugdraaien is niet veilig (server is herstart sinds de update).
+updates.rollback_success = Teruggedraaid naar v{0}. Herstart om toe te passen.
+updates.rollback_failed = Terugdraaien mislukt: {0}
+updates.mixin_title = HyperProtect Mixin
+updates.mixin_version = Versie:
+updates.mixin_check = Controleer Mixin Update
+updates.mixin_up_to_date = Mixin is up-to-date.
+updates.mixin_available = Mixin update beschikbaar: v{0}
+updates.mixin_downloading = Mixin update downloaden...
+updates.mixin_downloaded = Mixin update gedownload!
+updates.mixin_failed = Fout bij het downloaden van mixin update.
+updates.mixin_not_installed = Niet geinstalleerd
+updates.restart_required = Server herstart vereist.
+updates.pre_release = (pre-release)
+# ========== Backups Page ==========
+backups.title = Backup Management
+backups.total_count = Backups ({0} total)
+backups.empty = No backups found.
+backups.btn_create = Create Backup
+backups.btn_restore = Restore
+backups.btn_delete = Delete
+backups.name_placeholder = Name:
+backups.creating = Creating backup...
+backups.created = Backup created: {0}
+backups.create_failed = Failed to create backup
+backups.type_hourly = Hourly
+backups.type_daily = Daily
+backups.type_weekly = Weekly
+backups.type_manual = Manual
+backups.type_migration = Migration
+backups.detail_type = Type:
+backups.detail_created = Created:
+backups.detail_size = Size:
+backups.restore_warning = Warning: This will overwrite current data!
+backups.restore_confirm = Confirm Restore
+backups.restoring = Restoring backup...
+backups.restored = Restored {0} ({1} files).
+backups.restore_failed = Restore failed
+backups.delete_confirm = Confirm Delete
+backups.deleting = Deleting backup...
+backups.deleted = Deleted backup: {0}
+backups.delete_failed = Failed to delete backup.
+backups.reload_required = Run /f reload to apply restored data.
+
+# ========== Config Editor ==========
+config.tab_server = Server
+config.tab_chat = Chat
+config.tab_announcements = Announce
+config.tab_economy = Economy
+config.tab_factions = Factions
+config.tab_faction_perms = Fac Perms
+config.tab_worldmap = Worldmap
+config.tab_worlds = Worlds
+config.tab_backup = Backup
+config.tab_debug = Debug
+config.tab_gravestones = Graves
+config.changes_pending = changes pending
+config.no_changes = No changes
+config.btn_save = Save
+config.btn_revert = Revert
+config.btn_reset = Reset Defaults
+config.saved = Configuration saved.
+config.reverted = Changes reverted.
+config.reset_confirm = Confirm Reset
+config.reset_done = Configuration reset to defaults.
+config.sec_teleport = Teleport
+config.sec_autosave = Auto-Save
+config.sec_messages = Messages
+config.sec_gui = GUI
+config.sec_permissions = Permissions
+config.sec_language = Language
+config.sec_mob_clear = Mob Clearing
+config.sec_updates = Updates
+config.sec_faction_limits = Faction Limits
+config.sec_power = Power
+config.sec_power_loss = Power Loss
+config.sec_regen = Regeneration
+config.sec_claims = Claims
+config.sec_decay = Decay
+config.sec_protection = Claim Protection
+config.sec_combat_tag = Combat Tag
+config.sec_friendly_fire = Friendly Fire
+config.sec_spawn_prot = Spawn Protection
+config.sec_relations = Relations
+config.sec_invites = Invites
+config.sec_stuck = Stuck Command
+config.sec_format = Chat Format
+config.sec_colors = Colors
+config.sec_rel_colors = Relation Colors
+config.sec_faction_chat = Faction Chat
+config.sec_history = Chat History
+config.sec_backup = Backup
+config.sec_economy = Economy
+config.sec_announcements = Announcements
+config.sec_map_display = Map Display
+config.sec_visibility = Player Visibility
+config.sec_mixin = Mixin
+config.sec_territory_notify = Territory Notifications
+config.sec_wilderness = Wilderness Messages
+config.sec_currency = Currency
+config.sec_treasury_limits = Treasury Limits
+config.sec_fees = Fees
+config.sec_upkeep = Upkeep
+config.sec_proximity = Proximity Mode
+config.sec_incremental = Incremental Mode
+config.sec_debounced = Debounced Mode
+config.sec_debug_global = Global
+config.sec_debug_categories = Categories
+config.sec_sentry = Sentry
+config.sec_gravestone_protection = Protection
+config.sec_gravestone_access = Access
+config.sec_gravestone_loot = Loot Rules

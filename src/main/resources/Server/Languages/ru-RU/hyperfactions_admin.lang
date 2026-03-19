@@ -1,0 +1,934 @@
+# HyperFactions Admin GUI - Russian Translations
+# Format: key = value
+# Note: Keys are auto-prefixed with "hyperfactions_admin." by Hytale's I18nModule
+
+# ========== Навигация панели администратора ==========
+nav.dashboard = Обзор
+nav.actions = Действия
+nav.factions = Фракции
+nav.players = Игроки
+nav.economy = Экономика
+nav.zones = Зоны
+nav.config = Конфигурация
+nav.backups = Резервные копии
+nav.log = Журнал
+nav.updates = Обновления
+nav.help = Справка
+nav.version = Версия
+
+# ========== Общие метки администратора ==========
+common.faction_not_found = Фракция не найдена
+common.no_faction = Нет фракции
+common.not_set = Не задано
+common.on = Вкл
+common.off = Выкл
+common.enable = Включить
+common.disable = Отключить
+common.none_paren = (Нет)
+common.invalid_faction = Недопустимая фракция.
+common.leader_prefix = Лидер: {0}
+common.members_suffix = {0} участников
+common.claims_suffix = {0} территорий
+common.factions_suffix = {0} фракций
+common.players_suffix = {0} игроков
+common.chunks_suffix = {0} чанков
+common.entries_suffix = {0} записей
+common.found_suffix = {0} найдено
+common.power_format = {0}/{1} Силы
+common.raidable = Уязвима для рейда
+common.protected = Защищена
+common.no_description = Описание не задано.
+common.officers_more = +{0} ещё
+common.custom_max = (пользовательский макс.)
+common.default_max = (макс. по умолчанию)
+common.now = Сейчас
+common.ago_suffix = {0} назад
+common.just_now = только что
+common.no_membership_history = Нет истории членства
+
+# ========== Панель управления администратора ==========
+dashboard.factions_prefix = Фракции: {0}
+dashboard.members_prefix = Всего участников: {0}
+dashboard.claims_prefix = Всего территорий: {0}
+
+# ========== Действия администратора ==========
+actions.confirm_reset = Подтвердить сброс?
+actions.confirm_trigger = Подтвердить запуск?
+actions.kd_reset = У/С сброшены для {0} игроков.
+actions.kd_reset_failed = Не удалось сбросить У/С: {0}
+actions.upkeep_unavailable = Обработчик содержания недоступен.
+actions.upkeep_triggered = Сбор содержания запущен.
+actions.upkeep_failed = Ошибка содержания: {0}
+
+# ========== Роспуск администратором ==========
+disband.faction_gone = Фракция больше не существует.
+disband.success = Фракция '{0}' была распущена.
+disband.failed = Не удалось распустить: {0}
+disband.no_leader = У фракции нет Лидера, роспуск невозможен.
+
+# ========== Снятие всех территорий администратором ==========
+unclaim.removed = [Admin] Удалено {0} территорий у {1}.
+unclaim.no_claims = У {0} нет территорий для удаления.
+
+# ========== Список фракций администратора ==========
+factions.home_not_set = Не задано
+factions.teleported = Телепортация к дому {0} выполнена.
+factions.no_home = У фракции не установлен дом.
+factions.world_not_found = Целевой мир не найден.
+
+# ========== Информация о фракции (администратор) ==========
+info.faction_gone = Эта фракция больше не существует.
+
+# ========== Участники фракции (администратор) ==========
+members.sort_role = Роль
+members.sort_online = В сети
+members.sort_name = Имя
+members.sort_power = Сила
+members.promoted = [Admin] {0} повышен(а) до {1}.
+members.demoted = [Admin] {0} понижен(а) до {1}.
+members.kicked = [Admin] {0} исключён(а) из фракции.
+
+# ========== Отношения фракции (администратор) ==========
+relations.allies_header = СОЮЗНИКИ ({0})
+relations.enemies_header = ВРАГИ ({0})
+relations.no_allies = Нет союзников.
+relations.no_enemies = Нет врагов.
+relations.neutral_count = {0} нейтральных фракций
+relations.since_today = С: сегодня
+relations.since_one_day = С: 1 день назад
+relations.since_days = С: {0} дней назад
+relations.set_ally = [Admin] Установлен взаимный союз с {0}.
+relations.set_enemy = Установлена взаимная вражда с {0}.
+relations.set_neutral = [Admin] Установлен взаимный нейтралитет с {0}.
+
+# ========== Настройки фракции (администратор) ==========
+settings.locked = Этот параметр заблокирован конфигурацией сервера.
+settings.perm_toggled = {0} установлено на {1}.
+settings.color_changed = Цвет фракции изменён на {0}.
+settings.recruitment_set = Набор установлен: {0}.
+settings.no_home = [Admin] У этой фракции не установлен дом.
+settings.home_cleared = Дом фракции {0} удалён.
+
+# ========== Метки сортировки ==========
+sort.power = Сила
+sort.name = Название
+sort.members = Участники
+sort.balance = Баланс
+
+# ========== Игроки (администратор) ==========
+players.sort_last_online = Последний вход
+players.sort_faction = Фракция
+players.sort_online = В сети
+players.not_online = Игрок не в сети.
+players.world_not_found = Целевой мир не найден.
+players.teleported = [Admin] Телепортация к {0} выполнена.
+
+# ========== Информация об игроке (администратор) ==========
+playerinfo.disband_faction = Распустить фракцию
+playerinfo.kick_leader = Исключить Лидера
+playerinfo.enter_valid_number = Введите допустимое число.
+playerinfo.enter_valid_positive = Введите допустимое положительное число.
+playerinfo.faction_gone = Фракция больше не существует.
+playerinfo.kd_reset = У/С сброшены для {0}.
+playerinfo.kicked_success = {0} исключён(а) из {1}.
+playerinfo.kicked_leader = Лидер {0} исключён. Лидерство передано {1}.
+playerinfo.disbanded_kick = [Admin] Фракция '{0}' распущена (исключён последний участник).
+
+# ========== Экономика (администратор) ==========
+economy.no_data = Нет фракций с экономическими данными.
+economy.amount_zero = Сумма не может быть нулевой.
+economy.enter_amount = Пожалуйста, введите сумму.
+economy.invalid_number = Недопустимое число: {0}
+economy.error = Произошла ошибка.
+economy.balance_negative = Баланс не может быть отрицательным.
+economy.failed = Ошибка: {0}
+economy.bulk_complete = Массовая корректировка завершена: {0} {1} для {2} фракций.
+economy.bulk_failures = ({0} неудачных)
+
+# ========== Зоны (администратор) ==========
+zones.not_found = Зона не найдена.
+zones.invalid_id = Недопустимый ID зоны.
+zones.deleted = Зона {0} удалена.
+zones.delete_failed = Не удалось удалить зону: {0}
+zones.no_chunks = Нет чанков
+zones.chunks_suffix = {0} ({1} чанков)
+
+# ========== Мастер создания зон ==========
+wizard.enter_name = Пожалуйста, введите название зоны.
+wizard.name_too_short = Название зоны должно содержать не менее {0} символов.
+wizard.name_too_long = Название зоны не может превышать {0} символов.
+wizard.name_taken = Зона с таким названием уже существует.
+wizard.radius_range = Радиус должен быть от 1 до {0}.
+wizard.create_failed = Не удалось создать зону: {0}
+wizard.created_not_found = Зона создана, но не найдена.
+wizard.created = Создана {0} '{1}'!
+wizard.chunk_claimed = Чанк захвачен ({0}, {1}).
+wizard.chunk_failed = Не удалось захватить текущий чанк: {0}
+wizard.radius_claimed = Захвачено {0} чанков в радиусе {1} от {2}.
+wizard.radius_no_claims = Не удалось захватить чанки (область может быть занята).
+wizard.no_claims = Зона создана без территорий.
+wizard.chunks_preview = ~{0} чанков
+
+# ========== Переименование зоны ==========
+zone_rename.zone_gone = Зона больше не существует.
+zone_rename.enter_name = Пожалуйста, введите название зоны.
+zone_rename.too_short = Название зоны должно содержать не менее {0} символов.
+zone_rename.too_long = Название зоны не может превышать {0} символов.
+zone_rename.same_name = Это уже текущее название зоны.
+zone_rename.renamed = [Admin] Зона переименована из {0} в {1}!
+zone_rename.name_taken = Зона с таким названием уже существует.
+zone_rename.invalid_name = Недопустимое название зоны.
+zone_rename.rename_failed = Не удалось переименовать зону: {0}
+
+# ========== Смена типа зоны ==========
+zone_type.zone_gone = Зона больше не существует.
+zone_type.changed = [Admin] {0} изменена с {1} на {2} ({3}).
+zone_type.failed = Не удалось сменить тип зоны: {0}
+zone_type.flags_reset = флаги сброшены
+zone_type.flags_kept = флаги сохранены
+
+# ========== Флаги интеграции зон ==========
+zone_int.zone_not_found = Зона не найдена
+zone_int.no_plugin = (нет плагина)
+zone_int.default = (по умолчанию)
+zone_int.custom = (пользовательское)
+
+# Метки интерфейса флагов интеграции
+gui.zint_cat_gravestones = Надгробия
+gui.zint_gravestones_desc = Когда ВКЛ, не-владельцы могут обыскивать могилы. Владельцы всегда могут.
+gui.zint_cat_world_map = Карта мира
+gui.zint_world_map_desc = Переопределить скрытие на карте для игроков в этой зоне. При включении выберите, кто может видеть игроков в этой зоне.
+gui.zint_visibility_label = Уровень видимости:
+gui.zint_cat_essentials = HyperEssentials
+gui.zint_reset_defaults = Сбросить по умолчанию
+gui.zint_back_to_flags = Назад к флагам
+gui.zint_map_vis_faction = Только фракция
+gui.zint_map_vis_ally = Фракция + Союзники
+gui.zint_map_vis_all = Все игроки
+
+# ========== Журнал активности ==========
+log.all_types = Все типы
+log.no_logs = Нет записей, соответствующих фильтрам.
+
+# ========== Страница версии ==========
+version.active = Активен
+version.not_found = Не найден
+version.not_detected = Не обнаружен
+version.not_installed = Не установлен
+version.active_version = Активен (v{0})
+version.active_compatible = Активен (совместим)
+version.active_claims_only = Активен (только территории)
+version.installed_no_perm = Установлен (нет поставщика прав)
+version.active_provider = Активен ({0})
+
+# ========== Главная страница администратора ==========
+main.reload_hint = Используйте /f reload для перезагрузки конфигурации.
+main.unclaim_hint = Используйте /f admin unclaim {0} для освобождения всех {1} чанков.
+
+# ========== Флаги/Настройки зон ==========
+zflags.invalid_flag = Недопустимый флаг.
+zflags.zone_not_found = Зона не найдена.
+zflags.conflict = (конфликт)
+zflags.mixin = (миксин)
+zflags.reset_int = Сброс флагов интеграции по умолчанию.
+zflags.reset_all = Сброс всех флагов по умолчанию.
+zflags.reset_failed = Не удалось сбросить флаги: {0}
+zflags.back_to_settings = Назад к настройкам
+
+# Метки интерфейса настроек зон
+gui.zset_cat_combat = Бой
+gui.zset_cat_damage = Урон
+gui.zset_cat_death = Смерть
+gui.zset_cat_building = Строительство
+gui.zset_cat_interaction = Взаимодействие
+gui.zset_cat_transport = Транспорт
+gui.zset_cat_items = Предметы
+gui.zset_cat_spawning = Спавн мобов
+gui.zset_cat_mob_clear = Очистка мобов
+gui.zset_children_hint = (дочерние применяются, только когда родительский ВКЛ)
+gui.zset_reset_defaults = Сбросить по умолчанию
+gui.zset_integration_flags = Флаги интеграции
+gui.zset_back_to_zones = Назад к зонам
+gui.zset_chunks = {0} чанков
+
+# Отображаемые названия флагов зон
+gui.zflag_pvp_enabled = PvP включено
+gui.zflag_friendly_fire = Дружественный огонь
+gui.zflag_friendly_fire_faction = Урон по фракции
+gui.zflag_friendly_fire_ally = Урон по союзникам
+gui.zflag_projectile_damage = Урон от снарядов
+gui.zflag_mob_damage = Получать урон от мобов
+gui.zflag_pve_damage = Наносить урон мобам
+gui.zflag_fall_damage = Урон от падения
+gui.zflag_environmental_damage = Урон от окружения
+gui.zflag_explosion_damage = Урон от взрыва
+gui.zflag_fire_spread = Распространение огня
+gui.zflag_keep_inventory = Сохранение инвентаря
+gui.zflag_power_loss = Потеря Силы
+gui.zflag_build_allowed = Строительство разрешено
+gui.zflag_block_place = Размещение блоков
+gui.zflag_hammer_use = Использование молотка
+gui.zflag_builder_tools_use = Инструменты строителя
+gui.zflag_block_interact = Взаимодействие с блоками
+gui.zflag_door_use = Использование дверей
+gui.zflag_container_use = Использование контейнеров
+gui.zflag_bench_use = Использование верстаков
+gui.zflag_processing_use = Использование переработки
+gui.zflag_seat_use = Использование сидений
+gui.zflag_mount_use = Использование верхового животного
+gui.zflag_light_use = Использование освещения
+gui.zflag_npc_use = Взаимодействие с NPC
+gui.zflag_crate_pickup = Подбор ящиков
+gui.zflag_crate_place = Размещение ящиков
+gui.zflag_npc_tame = Приручение NPC
+gui.zflag_npc_interact = Взаимодействие с NPC
+gui.zflag_teleporter_use = Использование телепортеров
+gui.zflag_portal_use = Использование порталов
+gui.zflag_mount_entry = Посадка верхом
+gui.zflag_item_drop = Выброс предметов
+gui.zflag_item_pickup = Автоподбор
+gui.zflag_item_pickup_manual = Подбор клавишей F
+gui.zflag_invincible_items = Неуязвимые предметы
+gui.zflag_mob_spawning = Спавн мобов
+gui.zflag_hostile_mob_spawning = Враждебные мобы
+gui.zflag_passive_mob_spawning = Мирные мобы
+gui.zflag_neutral_mob_spawning = Нейтральные мобы
+gui.zflag_npc_spawning = Спавн NPC
+gui.zflag_mob_clear = Очистка мобов
+gui.zflag_hostile_mob_clear = Очистка враждебных мобов
+gui.zflag_passive_mob_clear = Очистка мирных мобов
+gui.zflag_neutral_mob_clear = Очистка нейтральных мобов
+gui.zflag_gravestone_access = Обыск чужих могил
+gui.zflag_show_on_map = Показывать на карте
+gui.zflag_essentials_homes = Использование домов
+gui.zflag_essentials_warps = Использование варпов
+gui.zflag_essentials_kits = Получение наборов
+
+# ========== Свойства зон ==========
+zprop.current_custom = Текущее: "{0}" (пользовательское)
+zprop.current_default = Текущее: "{0}" (по умолчанию)
+zprop.pvp_disabled = PvP отключено
+zprop.pvp_enabled = PvP включено
+zprop.name_empty = Название не может быть пустым.
+zprop.renamed = Зона переименована в "{0}".
+zprop.name_taken = Зона с таким названием уже существует.
+zprop.name_invalid = Недопустимое название (макс. 32 символа).
+zprop.rename_failed = Не удалось переименовать: {0}
+zprop.upper_empty = Верхний заголовок не может быть пустым. Используйте «Очистить» для сброса.
+zprop.upper_set = Верхний заголовок установлен.
+zprop.upper_reset = Верхний заголовок сброшен по умолчанию.
+zprop.lower_empty = Нижний заголовок не может быть пустым. Используйте «Очистить» для сброса.
+zprop.lower_set = Нижний заголовок установлен.
+zprop.lower_reset = Нижний заголовок сброшен по умолчанию.
+
+# ========== Дополнительные отношения ==========
+relations.failed = Ошибка: {0}
+
+# ========== Дополнительные участники ==========
+members.never = Никогда
+members.teleported = [Admin] Телепортация к {0} выполнена.
+
+# ========== Дополнительная информация об игроке ==========
+playerinfo.records = {0} записей
+playerinfo.joined_date = Вступил(а): {0}
+playerinfo.current = Текущая
+playerinfo.left_date = Покинул(а): {0}
+
+# ========== Карта зон ==========
+map.world_warning = ВНИМАНИЕ: Вы находитесь в '{0}' — зона в '{1}'
+map.position = Ваша позиция: Чанк ({0}, {1})
+map.zone_gone = Зона больше не существует.
+map.claimed = Чанк захвачен ({0}, {1}) для {2}.
+map.claim_failed = Не удалось захватить чанк: {0}
+map.unclaimed = Чанк освобождён ({0}, {1}) у {2}.
+map.unclaim_failed = Не удалось освободить чанк: {0}
+map.chunk_belongs = Этот чанк принадлежит {0}.
+map.chunk_faction = Этот чанк захвачен фракцией.
+map.chunk_protected = Этот чанк находится в защищённой области.
+map.another_zone = другая зона
+
+# ========== Ключи меток интерфейса (для локализации текстов .ui) ==========
+
+# Заголовки страниц
+gui.title_dashboard = Панель управления администратора
+gui.title_main = Администрирование фракций
+gui.title_actions = Админ: Серверные действия
+gui.title_factions = Управление фракциями
+gui.title_players = Управление игроками
+gui.title_economy = Админ: Серверная экономика
+gui.title_zones = Управление зонами
+gui.title_backups = Резервные копии
+gui.title_config = Конфигурация
+gui.title_help = Справка администратора
+gui.title_updates = Обновления
+gui.title_version = Версия и интеграции
+gui.title_activity_log = Админ: Журнал активности
+gui.title_player_info = Админ: Информация об игроке
+gui.title_faction_info = Админ: Информация о фракции
+gui.title_faction_settings = Админ: Настройки фракции
+gui.title_faction_members = Админ: Участники
+gui.title_faction_relations = Админ: Отношения
+gui.title_zone_map = Редактор карты зон
+gui.title_zone_settings = Админ: Настройки зоны
+gui.title_zone_properties = Админ: Свойства зоны
+gui.title_bulk_economy = Массовая корректировка Казны
+gui.title_economy_adjust = Админ: Экономика
+
+# Метки панели управления
+gui.dash_server_stats = Статистика сервера
+gui.dash_factions = Фракции
+gui.dash_total_members = Всего участников
+gui.dash_total_claims = Всего территорий
+gui.dash_zones = Зоны
+gui.dash_safe_war = безопасные / военные
+gui.dash_total_power = Общая Сила
+gui.dash_avg_power = Средн. Сила/Фракция
+gui.dash_total_economy = Общая экономика
+gui.dash_wealthiest = Богатейшая
+gui.dash_avg_balance = Средн. баланс
+gui.dash_protection_bypass = Обход защиты:
+
+# Общие кнопки и метки
+gui.search = Поиск:
+gui.sort = Сортировка:
+gui.prev = < Назад
+gui.next = Далее >
+gui.back = Назад
+gui.done = Готово
+gui.cancel = Отмена
+gui.apply = Применить
+gui.set = Установить
+gui.reset = Сбросить
+gui.coming_soon = Скоро
+gui.zones_btn = Зоны
+gui.reload_btn = Перезагрузить
+gui.all = Все
+gui.safe = Безопасные
+gui.war = Военные
+gui.create_zone = + Создать
+
+# Метки страницы действий
+gui.act_combat_stats = Боевая статистика
+gui.act_combat_desc = Сбросить убийства и смерти для ВСЕХ игроков на сервере. Это действие нельзя отменить.
+gui.act_reset_kd = Сбросить все У/С
+gui.act_economy = Экономика
+gui.act_economy_desc = Добавить или снять средства со ВСЕХ казначейств фракций сразу.
+gui.act_bulk_adjust = Массовое добавление/снятие
+gui.act_upkeep_collection = Сбор содержания
+gui.act_upkeep_desc = Вручную запустить сбор содержания для всех фракций, независимо от таймера.
+gui.act_trigger_upkeep = Запустить содержание
+
+# Метки заглушек страниц
+gui.backup_heading = Управление резервными копиями
+gui.backup_desc1 = Создание, восстановление и управление резервными копиями данных фракций.
+gui.backup_desc2 = Автоматические копии сохраняются в папку data/backups.
+gui.config_heading = Редактор конфигурации
+gui.config_desc1 = Настройка параметров HyperFactions прямо из интерфейса.
+gui.config_desc2 = Пока используйте /f reload для перезагрузки изменений конфигурации.
+gui.help_heading = Документация администратора
+gui.help_desc1 = Просмотр документации и справочника команд.
+gui.help_desc2 = Для помощи посетите вики HyperFactions.
+gui.updates_heading = Центр обновлений
+gui.updates_desc1 = Проверка новых версий и просмотр списка изменений.
+gui.updates_desc2 = Посетите страницу HyperFactions для последних обновлений.
+
+# Метки страницы версии
+gui.ver_hyperfactions = HyperFactions
+gui.ver_hytale_server = Hytale Server
+gui.ver_java = Java
+gui.ver_permissions = ПРАВА
+gui.ver_placeholders = ПЛЕЙСХОЛДЕРЫ
+gui.ver_economy_section = ЭКОНОМИКА
+gui.ver_protection = ЗАЩИТА
+gui.ver_disabled = Отключено
+
+# Заголовки столбцов (общие для страниц)
+gui.col_faction = Фракция
+gui.col_balance = Баланс
+gui.col_members = Участники
+gui.col_actions = Действия
+gui.col_time = Время
+gui.col_type = Тип
+gui.col_message = Сообщение
+
+# Метки страницы экономики
+gui.econ_total_balance = Общий баланс
+gui.econ_factions = Фракции
+gui.econ_avg_balance = Средн. баланс
+gui.econ_in_grace = В льготном периоде
+gui.econ_collected = Собрано (24 ч)
+gui.econ_next_collection = Следующий сбор
+gui.econ_no_data = Нет фракций с экономическими данными.
+
+# Метки журнала активности
+gui.log_type = Тип:
+gui.log_time = Время:
+gui.log_player = Игрок:
+gui.log_no_logs = Нет записей, соответствующих фильтрам.
+
+# Метки информации об игроке
+gui.plr_first_joined = Первый вход:
+gui.plr_last_online = Последний вход:
+gui.plr_uuid = UUID:
+gui.plr_faction = Фракция:
+gui.plr_role = Роль:
+gui.plr_view_faction = Открыть фракцию
+gui.plr_power = Сила
+gui.plr_max_power = Макс. Сила
+gui.plr_set_power = Установить
+gui.plr_reset_power = Сбросить
+gui.plr_set_max = Установить
+gui.plr_reset_max = Сбросить
+gui.plr_no_power_loss = Без потери Силы
+gui.plr_no_claim_decay = Без распада территорий
+gui.plr_kills = Убийства
+gui.plr_deaths = Смерти
+gui.plr_kdr = Соотношение У/С
+gui.plr_reset_kd = Сбросить У/С
+gui.plr_kick = Исключить
+gui.plr_membership_history = История членства
+gui.plr_no_faction_label = Не состоит во фракции
+gui.plr_power_management = Управление Силой
+gui.plr_combat_stats = Боевая статистика
+gui.plr_bypass_flags = Флаги обхода
+gui.plr_admin_controls = Управление администратора
+gui.plr_kd_subtitle = У / С
+gui.plr_max_prefix = Макс.:
+gui.plr_view = Просмотр
+gui.plr_kick_from_faction = Исключить из фракции
+gui.plr_set_max_btn = Установить макс.
+gui.plr_combat = Бой
+gui.plr_reason_active = АКТИВЕН
+gui.plr_reason_left = ПОКИНУЛ
+gui.plr_reason_kicked = ИСКЛЮЧЁН
+gui.plr_reason_disbanded = РАСПУЩЕНА
+
+# Метки записи участника
+gui.mem_label_power = Сила:
+gui.mem_label_joined = Вступил(а):
+gui.mem_label_last_death = Последняя смерть:
+gui.mem_label_uuid = UUID:
+gui.mem_btn_info = Инфо
+gui.mem_btn_teleport = Телепорт
+gui.mem_btn_promote = Повысить
+gui.mem_btn_demote = Понизить
+gui.mem_btn_kick = Исключить
+gui.econ_not_enabled = Система экономики не включена.
+gui.info_more = +{0} ещё
+gui.log_time_1h = 1 ч.
+gui.log_time_24h = 24 ч.
+gui.log_time_7d = 7 д.
+gui.log_time_all = Все
+gui.shape_circular = круглая
+gui.shape_square = квадратная
+gui.nav_title = Панель администратора
+gui.econ_btn_adjust = Корректировать
+gui.econ_btn_info = Инфо
+
+# Метки информации о фракции
+gui.fac_description = Описание
+gui.fac_power = Сила
+gui.fac_claims = Территории
+gui.fac_members = Участники
+gui.fac_recruitment = Набор
+gui.fac_founded = Основана
+gui.fac_allies = Союзники
+gui.fac_enemies = Враги
+gui.fac_raidable = Уязвимость для рейда
+gui.fac_treasury = Казна
+gui.fac_leader = Лидер
+gui.fac_officers = Офицеры
+gui.fac_view_members = Просмотр участников
+gui.fac_view_relations = Просмотр отношений
+gui.fac_view_settings = Настройки
+gui.fac_disband = Распустить фракцию
+gui.fac_power_management = Управление Силой
+gui.fac_reset_all_power = Сбросить Силу всем
+gui.fac_econ_adjust = Корректировать баланс
+gui.fac_econ_view_log = Просмотр журнала транзакций
+gui.fac_current_max = текущая / макс.
+gui.fac_claimed_max = занято / макс.
+gui.fac_relations = Отношения
+gui.fac_ally_enemy = союзники / враги
+gui.fac_status = Статус
+gui.fac_info = Инфо
+gui.fac_treasury_balance = баланс Казны
+gui.fac_leadership = Руководство
+gui.fac_leader_label = Лидер:
+gui.fac_officers_label = Офицеры:
+gui.fac_econ_mgmt = Управление экономикой
+gui.fac_danger_zone = Опасная зона
+gui.fac_view_treasury = Открыть Казну
+
+# Метки настроек фракции
+gui.set_editing = Редактирование:
+gui.set_general = Общие настройки
+gui.set_name = Название
+gui.set_tag = Тег
+gui.set_description = Описание
+gui.set_recruitment = Набор
+gui.set_home = Расположение дома
+gui.set_clear_home = Удалить дом
+gui.set_disband_faction = Распустить фракцию
+gui.set_faction_color = Цвет фракции
+gui.set_admin_override = [Переопределение администратора]
+gui.set_territory_perms = Права на территории
+gui.set_mob_spawning = Спавн мобов
+gui.set_faction_settings = Настройки фракции
+gui.set_name_label = Название:
+gui.set_tag_label = Тег:
+gui.set_desc_label = Описание:
+gui.set_edit = Изменить
+gui.set_status_label = Статус:
+gui.set_location_label = Координаты:
+gui.set_danger_zone = Опасная зона
+gui.set_irreversible = Это действие необратимо.
+gui.set_lock_hint = Некоторые параметры могут быть заблокированы сервером и не примут изменения.
+gui.set_appearance = Внешний вид
+gui.set_color_label = Цвет:
+gui.set_mob_sub = (дочерние отключены, когда основной выключен)
+gui.set_back_to_info = Назад к информации
+gui.set_col_out = Чужие
+gui.set_col_ally = Союзн.
+gui.set_col_mem = Участн.
+gui.set_col_off = Офиц.
+gui.set_cat_building = СТРОИТЕЛЬСТВО
+gui.set_cat_interaction = ВЗАИМОДЕЙСТВИЕ
+gui.set_cat_interact_sub = (дочерние отключены, когда «Все» выключено)
+gui.set_cat_other = ПРОЧЕЕ
+gui.set_perm_break = Разрушение
+gui.set_perm_place = Размещение
+gui.set_perm_all = Все
+gui.set_perm_door = Двери
+gui.set_perm_chest = Сундуки
+gui.set_perm_bench = Верстаки
+gui.set_perm_processing = Переработка
+gui.set_perm_seat = Сиденья
+gui.set_perm_transport = Транспорт
+gui.set_perm_crate_use = Ящики
+gui.set_perm_npc_tame = Приручение NPC
+gui.set_perm_pve_damage = PvE-урон
+gui.set_perm_mob_spawning = Спавн мобов
+gui.set_perm_hostile = Враждебные мобы
+gui.set_perm_passive = Мирные мобы
+gui.set_perm_neutral = Нейтральные мобы
+gui.set_perm_pvp = PvP на территории
+gui.set_perm_officers_edit = Офицеры могут редактировать
+
+# Метки отношений фракции
+gui.rel_subtitle = Управление отношениями фракции (в обход утверждения)
+gui.rel_set_new = Установить новое отношение
+gui.rel_btn_ally = Союзник
+gui.rel_btn_neutral = Нейтралитет
+gui.rel_btn_enemy = Враг
+
+# Метки страницы зон
+gui.zone_sort_name = Название
+gui.zone_sort_type = Тип
+gui.zone_sort_chunks = Чанки
+gui.zone_sort_world = Мир
+gui.zone_count_format = {0} {1}зон ({2} чанков)
+
+# Метки карты зон
+gui.map_zone_chunk = Чанк зоны
+gui.map_empty = Пусто
+gui.map_other_zone = Другая зона
+gui.map_faction_claim = Территория фракции
+gui.map_protected = Защищённый
+gui.map_your_pos = Ваша позиция
+gui.map_click_hint = Нажмите для захвата/освобождения чанков
+gui.map_legend_zone_safe = Эта зона (Безопасная)
+gui.map_legend_zone_war = Эта зона (Военная)
+gui.map_legend_other_safe = Другая SafeZone
+gui.map_legend_other_war = Другая WarZone
+gui.map_legend_faction = Территория фракции
+gui.map_legend_unclaimed = Свободный
+gui.map_legend_you_here = Вы здесь
+gui.map_action_hint = ЛКМ: Захватить для зоны  |  ПКМ: Освободить из зоны
+gui.map_done = Готово
+
+# Метки свойств зон
+gui.zprop_general = Общие
+gui.zprop_zone_name = Название зоны
+gui.zprop_zone_type = Тип зоны
+gui.zprop_change_type = Сменить тип
+gui.zprop_notifications = Уведомления
+gui.zprop_show_entry = Показывать уведомление при входе
+gui.zprop_upper_title = Верхний заголовок
+gui.zprop_upper_desc = Верхний заголовок (мелкий текст над названием зоны)
+gui.zprop_lower_title = Нижний заголовок
+gui.zprop_lower_desc = Нижний заголовок (крупный текст с названием зоны)
+gui.zprop_edit_flags = Редактировать флаги
+gui.zprop_back_to_zones = Назад к зонам
+gui.save = Сохранить
+gui.clear = Очистить
+
+# Метки массовой экономики
+gui.bulk_header = Корректировка всех казначейств фракций
+gui.bulk_factions_label = Фракции:
+gui.bulk_total_label = Общий баланс:
+gui.bulk_amount_hint = Сумма (положительная для добавления, отрицательная для снятия):
+gui.bulk_hint = Это будет применено к каждой фракции с Казной
+gui.bulk_warning_msg = Внимание: Это действие затрагивает ВСЕ фракции и не может быть отменено.
+gui.bulk_apply_all = Применить ко всем
+gui.bulk_operation = Операция
+gui.bulk_add = Добавить
+gui.bulk_remove = Снять
+gui.bulk_amount = Сумма
+gui.bulk_warning = Это затронет ВСЕ казначейства фракций.
+gui.bulk_preview = Предпросмотр
+
+# Метки корректировки экономики
+gui.ecadj_header = Корректировка баланса Казны
+gui.ecadj_faction_label = Фракция:
+gui.ecadj_current_balance = Текущий баланс:
+gui.ecadj_amount_hint = Сумма (положительная для добавления, отрицательная для списания):
+gui.ecadj_preview_hint = Введите число для предпросмотра изменения
+gui.ecadj_adjustment = Корректировка:
+gui.ecadj_set_balance = Установить баланс
+gui.ecadj_confirm = Подтвердить +/-
+gui.ecadj_operation = Операция
+gui.ecadj_add = Добавить
+gui.ecadj_remove = Снять
+gui.ecadj_set_to = Установить на
+gui.ecadj_amount = Сумма
+gui.ecadj_new_balance = Новый баланс:
+
+# Метки интеграций на странице версии
+gui.ver_hyperperms = HyperPerms
+gui.ver_luckperms = LuckPerms
+gui.ver_vault = VaultUnlocked
+gui.ver_native = Hytale Native
+gui.ver_hyperprotect = HyperProtect
+gui.ver_orbisguard_mixins = OrbisGuard Mixins
+gui.ver_orbisguard_api = OrbisGuard API
+gui.ver_mixin_hooks = Mixin Hooks
+gui.ver_gravestones = Gravestones
+gui.ver_kyuubisoft = KyuubiSoft
+gui.ver_placeholder_api = PlaceholderAPI
+gui.ver_wiflow_papi = WiFlow PAPI
+gui.ver_treasury = Казна
+
+# Метки окна подтверждения снятия всех территорий
+gui.unclaim_title = Снять все территории
+gui.unclaim_confirm_msg1 = Вы уверены, что хотите освободить все
+gui.unclaim_confirm_msg2 = у
+gui.unclaim_warning = Это действие нельзя отменить!
+gui.unclaim_all = Освободить все
+
+# Метки окна переименования зоны
+gui.zren_title = Переименовать зону
+gui.zren_current = Текущее:
+gui.zren_new_name = Новое название:
+
+# Метки окна смены типа зоны
+gui.ztype_title = Сменить тип зоны
+gui.ztype_zone_label = Зона:
+gui.ztype_current = Текущий:
+gui.ztype_will_become = станет
+gui.ztype_new = Новый:
+gui.ztype_warning1 = Разные типы зон имеют разные значения флагов по умолчанию.
+gui.ztype_warning2 = Выберите, как обработать существующие настройки флагов:
+gui.ztype_keep_desc = Сохранить пользовательские переопределения
+gui.ztype_keep_flags = Сохранить флаги
+gui.ztype_reset_desc = Использовать значения нового типа по умолчанию
+gui.ztype_reset_flags = Сбросить флаги
+
+# Метки мастера создания зон
+gui.czw_title = Создать зону
+gui.czw_back = < Назад
+gui.czw_create = Создать зону
+gui.czw_zone_type = Тип зоны
+gui.czw_safe_desc = Защищённая, без PvP
+gui.czw_war_desc = Боевая, PvP включено
+gui.czw_zone_name = Название зоны
+gui.czw_name_desc = Введите уникальное название для зоны
+gui.czw_claim_method = Метод захвата
+gui.czw_method_none_desc = Создать пустую зону
+gui.czw_method_none = Без территорий
+gui.czw_method_single_desc = Ваш текущий чанк
+gui.czw_method_single = Один чанк
+gui.czw_method_circle_desc = Круглая область
+gui.czw_method_circle = Круговой радиус
+gui.czw_method_square_desc = Квадратная область
+gui.czw_method_square = Квадратный радиус
+gui.czw_method_map_desc = Интерактивный редактор чанков
+gui.czw_method_map = Использовать карту
+gui.czw_radius = Радиус
+gui.czw_custom_radius = Произвольный (1-50):
+gui.czw_flags = Флаги
+gui.czw_flags_defaults_desc = На основе типа зоны
+gui.czw_flags_defaults = По умолчанию
+gui.czw_flags_customize_desc = Открыть настройки после
+gui.czw_flags_customize = Настроить
+
+# ========== Метки записей (списки фракций/игроков/зон) ==========
+
+# Метки записи фракции
+gui.fac_entry_power = Сила
+gui.fac_entry_claims = территории
+gui.fac_entry_members = участники
+gui.fac_entry_created = Создана:
+gui.fac_entry_home = Дом:
+gui.fac_entry_tp_home = ТП к дому
+gui.fac_entry_view_info = Подробнее
+gui.fac_entry_members_btn = Участники
+gui.fac_entry_settings = Настройки
+gui.fac_entry_unclaim_all = Освободить все
+gui.fac_entry_disband = Распустить
+
+# Метки записи игрока
+gui.plr_entry_role = Роль:
+gui.plr_entry_joined = Вступил(а):
+gui.plr_entry_last_online = Последний вход:
+gui.plr_entry_kdr = У/С/Р:
+gui.plr_entry_power = Сила:
+gui.plr_entry_uuid = UUID:
+gui.plr_entry_info = Инфо
+gui.plr_entry_teleport = Телепорт
+gui.plr_entry_na = Н/Д
+gui.plr_entry_unknown = Неизвестно
+gui.plr_entry_ago = {0} назад
+
+# Метки записи зоны
+gui.zone_entry_world = Мир:
+gui.zone_entry_chunks = Чанки:
+gui.zone_entry_bounds = Границы:
+gui.zone_entry_created = Создана:
+gui.zone_entry_edit_map = Редактировать карту
+gui.zone_entry_flags = Флаги
+gui.zone_entry_settings = Настройки
+gui.zone_entry_delete = Удалить
+
+# ========== Updates Page ==========
+updates.version_info = Informatsiya o versii
+updates.current_version = Tekushchaya:
+updates.build_date = Sborka:
+updates.latest_version = Poslednyaya:
+updates.channel = Kanal:
+updates.update_status = Status obnovleniya
+updates.status_checking = Proverka obnovleniy...
+updates.status_up_to_date = Obnovleno
+updates.status_available = Dostupna novaya versiya: v{0}
+updates.status_downloading = Zagruzka obnovleniya...
+updates.status_downloaded = Obnovlenie uspeshno zagruzheno!
+updates.status_failed = Oshibka proverki obnovleniy.
+updates.btn_check = Proverit' obnovleniya
+updates.btn_download = Skachat' i Ustanovit'
+updates.btn_rollback = Otkatit' do
+updates.changelog_title = Zhurnal izmeneniy
+updates.no_changelog = Zhurnal izmeneniy nedostupen.
+updates.rollback_section = Otkat
+updates.rollback_confirm = Podtverdit' otkat
+updates.rollback_unsafe = Otkat nebezopasen (server byl perezapushchen posle obnovleniya).
+updates.rollback_success = Otkacheno do v{0}. Perezapustite dlya primeneniya.
+updates.rollback_failed = Otkat ne udalsia: {0}
+updates.mixin_title = HyperProtect Mixin
+updates.mixin_version = Versiya:
+updates.mixin_check = Proverit' obnovlenie Mixin
+updates.mixin_up_to_date = Mixin obnovlen.
+updates.mixin_available = Dostupno obnovlenie mixin: v{0}
+updates.mixin_downloading = Zagruzka obnovleniya mixin...
+updates.mixin_downloaded = Obnovlenie mixin zagruzheno!
+updates.mixin_failed = Oshibka zagruzki obnovleniya mixin.
+updates.mixin_not_installed = Ne ustanovlen
+updates.restart_required = Trebuetsya perezapusk servera.
+updates.pre_release = (predvarit. versiya)
+# ========== Backups Page ==========
+backups.title = Backup Management
+backups.total_count = Backups ({0} total)
+backups.empty = No backups found.
+backups.btn_create = Create Backup
+backups.btn_restore = Restore
+backups.btn_delete = Delete
+backups.name_placeholder = Name:
+backups.creating = Creating backup...
+backups.created = Backup created: {0}
+backups.create_failed = Failed to create backup
+backups.type_hourly = Hourly
+backups.type_daily = Daily
+backups.type_weekly = Weekly
+backups.type_manual = Manual
+backups.type_migration = Migration
+backups.detail_type = Type:
+backups.detail_created = Created:
+backups.detail_size = Size:
+backups.restore_warning = Warning: This will overwrite current data!
+backups.restore_confirm = Confirm Restore
+backups.restoring = Restoring backup...
+backups.restored = Restored {0} ({1} files).
+backups.restore_failed = Restore failed
+backups.delete_confirm = Confirm Delete
+backups.deleting = Deleting backup...
+backups.deleted = Deleted backup: {0}
+backups.delete_failed = Failed to delete backup.
+backups.reload_required = Run /f reload to apply restored data.
+
+# ========== Config Editor ==========
+config.tab_server = Server
+config.tab_chat = Chat
+config.tab_announcements = Announce
+config.tab_economy = Economy
+config.tab_factions = Factions
+config.tab_faction_perms = Fac Perms
+config.tab_worldmap = Worldmap
+config.tab_worlds = Worlds
+config.tab_backup = Backup
+config.tab_debug = Debug
+config.tab_gravestones = Graves
+config.changes_pending = changes pending
+config.no_changes = No changes
+config.btn_save = Save
+config.btn_revert = Revert
+config.btn_reset = Reset Defaults
+config.saved = Configuration saved.
+config.reverted = Changes reverted.
+config.reset_confirm = Confirm Reset
+config.reset_done = Configuration reset to defaults.
+config.sec_teleport = Teleport
+config.sec_autosave = Auto-Save
+config.sec_messages = Messages
+config.sec_gui = GUI
+config.sec_permissions = Permissions
+config.sec_language = Language
+config.sec_mob_clear = Mob Clearing
+config.sec_updates = Updates
+config.sec_faction_limits = Faction Limits
+config.sec_power = Power
+config.sec_power_loss = Power Loss
+config.sec_regen = Regeneration
+config.sec_claims = Claims
+config.sec_decay = Decay
+config.sec_protection = Claim Protection
+config.sec_combat_tag = Combat Tag
+config.sec_friendly_fire = Friendly Fire
+config.sec_spawn_prot = Spawn Protection
+config.sec_relations = Relations
+config.sec_invites = Invites
+config.sec_stuck = Stuck Command
+config.sec_format = Chat Format
+config.sec_colors = Colors
+config.sec_rel_colors = Relation Colors
+config.sec_faction_chat = Faction Chat
+config.sec_history = Chat History
+config.sec_backup = Backup
+config.sec_economy = Economy
+config.sec_announcements = Announcements
+config.sec_map_display = Map Display
+config.sec_visibility = Player Visibility
+config.sec_mixin = Mixin
+config.sec_territory_notify = Territory Notifications
+config.sec_wilderness = Wilderness Messages
+config.sec_currency = Currency
+config.sec_treasury_limits = Treasury Limits
+config.sec_fees = Fees
+config.sec_upkeep = Upkeep
+config.sec_proximity = Proximity Mode
+config.sec_incremental = Incremental Mode
+config.sec_debounced = Debounced Mode
+config.sec_debug_global = Global
+config.sec_debug_categories = Categories
+config.sec_sentry = Sentry
+config.sec_gravestone_protection = Protection
+config.sec_gravestone_access = Access
+config.sec_gravestone_loot = Loot Rules

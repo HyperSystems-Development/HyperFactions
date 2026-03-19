@@ -18,6 +18,8 @@ import com.hyperfactions.gui.newplayer.page.*;
 import com.hyperfactions.gui.shared.page.*;
 import com.hyperfactions.manager.*;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.AdminKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.entity.entities.Player;
@@ -109,7 +111,7 @@ public class GuiManager {
     // If player has faction, show enhanced dashboard; otherwise show main page
     registry.registerEntry(new Entry(
         "dashboard",
-        "Dashboard",
+        GuiKeys.Nav.DASHBOARD,
         null, // No permission required
         (player, ref, store, playerRef, faction, guiManager) -> {
           if (faction != null) {
@@ -127,7 +129,7 @@ public class GuiManager {
     // Chat page (faction/ally chat history with send-from-GUI)
     registry.registerEntry(new Entry(
         "chat",
-        "Chat",
+        GuiKeys.Nav.CHAT,
         Permissions.CHAT_FACTION,
         (player, ref, store, playerRef, faction, guiManager) -> {
           if (faction == null) {
@@ -148,7 +150,7 @@ public class GuiManager {
     // Members page
     registry.registerEntry(new Entry(
         "members",
-        "Members",
+        GuiKeys.Nav.MEMBERS,
         Permissions.MEMBERS,
         (player, ref, store, playerRef, faction, guiManager) -> {
           if (faction == null) {
@@ -164,7 +166,7 @@ public class GuiManager {
     // Invites page (officers+ only) - shows outgoing invites and incoming join requests
     registry.registerEntry(new Entry(
         "invites",
-        "Invites",
+        GuiKeys.Nav.INVITES,
         Permissions.INVITE,
         (player, ref, store, playerRef, faction, guiManager) -> {
           if (faction == null) {
@@ -182,7 +184,7 @@ public class GuiManager {
     // Browser page
     registry.registerEntry(new Entry(
         "browser",
-        "Browse",
+        GuiKeys.Nav.BROWSER,
         null,
         (player, ref, store, playerRef, faction, guiManager) ->
             new FactionBrowserPage(playerRef, factionManager.get(), powerManager.get(), guiManager),
@@ -194,7 +196,7 @@ public class GuiManager {
     // Map page
     registry.registerEntry(new Entry(
         "map",
-        "Map",
+        GuiKeys.Nav.MAP,
         Permissions.MAP,
         (player, ref, store, playerRef, faction, guiManager) ->
             new ChunkMapPage(playerRef, factionManager.get(), claimManager.get(),
@@ -207,7 +209,7 @@ public class GuiManager {
     // Leaderboard page
     registry.registerEntry(new Entry(
         "leaderboard",
-        "Leaderboard",
+        GuiKeys.Nav.LEADERBOARD,
         null,
         (player, ref, store, playerRef, faction, guiManager) -> {
           EconomyManager econ = plugin.get().isTreasuryEnabled() ? plugin.get().getEconomyManager() : null;
@@ -221,7 +223,7 @@ public class GuiManager {
     // Relations page
     registry.registerEntry(new Entry(
         "relations",
-        "Relations",
+        GuiKeys.Nav.RELATIONS,
         Permissions.RELATIONS,
         (player, ref, store, playerRef, faction, guiManager) -> {
           if (faction == null) {
@@ -239,7 +241,7 @@ public class GuiManager {
     if (plugin.get().isTreasuryEnabled()) {
       registry.registerEntry(new Entry(
           "treasury",
-          "Treasury",
+          GuiKeys.Nav.TREASURY,
           Permissions.ECONOMY_BALANCE,
           (player, ref, store, playerRef, faction, guiManager) -> {
             if (faction == null) {
@@ -260,7 +262,7 @@ public class GuiManager {
     // Settings page (officers+) - unified two-column layout
     registry.registerEntry(new Entry(
         "settings",
-        "Settings",
+        GuiKeys.Nav.SETTINGS,
         null,
         (player, ref, store, playerRef, faction, guiManager) -> {
           if (faction == null) {
@@ -276,7 +278,7 @@ public class GuiManager {
     // Logs page (faction activity log)
     registry.registerEntry(new Entry(
         "logs",
-        "Logs",
+        GuiKeys.Nav.LOGS,
         Permissions.LOGS,
         (player, ref, store, playerRef, faction, guiManager) -> {
           if (faction == null) {
@@ -292,7 +294,7 @@ public class GuiManager {
     // Help page (available to all players in faction nav bar)
     registry.registerEntry(new Entry(
         "help",
-        "Help",
+        GuiKeys.Nav.HELP,
         null,
         (player, ref, store, playerRef, faction, guiManager) ->
             new HelpMainPage(playerRef, guiManager, factionManager.get()),
@@ -301,16 +303,29 @@ public class GuiManager {
         11
     ));
 
+    // Player Settings page (registered but NOT in nav bar — rendered separately on far right)
+    registry.registerEntry(new Entry(
+        "player_settings",
+        GuiKeys.Nav.PLAYER_SETTINGS,
+        null,
+        (player, ref, store, playerRef, faction, guiManager) ->
+            new PlayerSettingsPage(playerRef, factionManager.get(),
+                plugin.get().getPlayerStorage(), guiManager),
+        false, // NOT in nav bar (rendered separately on far right)
+        false, // Doesn't require faction
+        99
+    ));
+
     // Admin page (requires permission) - accessed via /f admin, not in main nav bar
     registry.registerEntry(new Entry(
         "admin",
-        "Admin",
+        GuiKeys.Nav.ADMIN,
         Permissions.ADMIN,
         (player, ref, store, playerRef, faction, guiManager) ->
             new AdminMainPage(playerRef, factionManager.get(), powerManager.get(), guiManager),
         false,  // Not in main nav bar - separate admin GUI
         false,
-        12
+        13
     ));
 
     Logger.debug("[GUI] Registered %d pages with FactionPageRegistry", registry.getEntries().size());
@@ -328,7 +343,7 @@ public class GuiManager {
     // Browse Factions (default landing page)
     registry.registerEntry(new NewPlayerPageRegistry.Entry(
         "browse",
-        "Browse",
+        GuiKeys.Nav.BROWSER,
         null,
         (player, ref, store, playerRef, guiManager) ->
             new NewPlayerBrowsePage(playerRef, factionManager.get(), powerManager.get(),
@@ -340,7 +355,7 @@ public class GuiManager {
     // Create Faction (permission checked on actual create action, not nav visibility)
     registry.registerEntry(new NewPlayerPageRegistry.Entry(
         "create",
-        "Create",
+        GuiKeys.Nav.CREATE,
         null,
         (player, ref, store, playerRef, guiManager) ->
             new CreateFactionPage(playerRef, factionManager.get(), guiManager),
@@ -351,7 +366,7 @@ public class GuiManager {
     // My Invites
     registry.registerEntry(new NewPlayerPageRegistry.Entry(
         "invites",
-        "Invites",
+        GuiKeys.Nav.INVITES,
         null,
         (player, ref, store, playerRef, guiManager) ->
             new InvitesPage(playerRef, factionManager.get(), powerManager.get(),
@@ -363,7 +378,7 @@ public class GuiManager {
     // Territory Map (read-only for new players, always accessible)
     registry.registerEntry(new NewPlayerPageRegistry.Entry(
         "map",
-        "Map",
+        GuiKeys.Nav.MAP,
         null,
         (player, ref, store, playerRef, guiManager) ->
             new NewPlayerMapPage(playerRef, factionManager.get(), claimManager.get(),
@@ -375,7 +390,7 @@ public class GuiManager {
     // Leaderboard (accessible to all players)
     registry.registerEntry(new NewPlayerPageRegistry.Entry(
         "leaderboard",
-        "Leaderboard",
+        GuiKeys.Nav.LEADERBOARD,
         null,
         (player, ref, store, playerRef, guiManager) -> {
           EconomyManager econ = plugin.get().isTreasuryEnabled() ? plugin.get().getEconomyManager() : null;
@@ -388,12 +403,24 @@ public class GuiManager {
     // Help Page
     registry.registerEntry(new NewPlayerPageRegistry.Entry(
         "help",
-        "Help",
+        GuiKeys.Nav.HELP,
         null,
         (player, ref, store, playerRef, guiManager) ->
             new HelpMainPage(playerRef, guiManager, factionManager.get()),
         true,
         5
+    ));
+
+    // Player Settings page (registered but NOT in nav bar — rendered separately on far right)
+    registry.registerEntry(new NewPlayerPageRegistry.Entry(
+        "player_settings",
+        GuiKeys.Nav.PLAYER_SETTINGS,
+        null,
+        (player, ref, store, playerRef, guiManager) ->
+            new PlayerSettingsPage(playerRef, factionManager.get(),
+                plugin.get().getPlayerStorage(), guiManager),
+        false,
+        99
     ));
 
     Logger.debug("[GUI] Registered %d pages with NewPlayerPageRegistry", registry.getEntries().size());
@@ -411,7 +438,7 @@ public class GuiManager {
     // Dashboard (server-wide stats overview)
     registry.registerEntry(new AdminPageRegistry.Entry(
         "dashboard",
-        "Dashboard",
+        AdminKeys.AdminNav.DASHBOARD,
         null,
         (player, ref, store, playerRef, guiManager) ->
             new AdminDashboardPage(playerRef, plugin.get(), factionManager.get(), powerManager.get(),
@@ -423,7 +450,7 @@ public class GuiManager {
     // Actions page (server-wide quick actions)
     registry.registerEntry(new AdminPageRegistry.Entry(
         "actions",
-        "Actions",
+        AdminKeys.AdminNav.ACTIONS,
         null,
         (player, ref, store, playerRef, guiManager) ->
             new AdminActionsPage(playerRef, plugin.get().getPlayerStorage(), guiManager, plugin.get()),
@@ -434,7 +461,7 @@ public class GuiManager {
     // Factions page (faction management with expanding rows)
     registry.registerEntry(new AdminPageRegistry.Entry(
         "factions",
-        "Factions",
+        AdminKeys.AdminNav.FACTIONS,
         null,
         (player, ref, store, playerRef, guiManager) ->
             new AdminFactionsPage(playerRef, factionManager.get(), powerManager.get(), guiManager),
@@ -445,7 +472,7 @@ public class GuiManager {
     // Players page (server-wide player management)
     registry.registerEntry(new AdminPageRegistry.Entry(
         "players",
-        "Players",
+        AdminKeys.AdminNav.PLAYERS,
         Permissions.ADMIN_POWER,
         (player, ref, store, playerRef, guiManager) ->
             new AdminPlayersPage(playerRef, factionManager.get(), powerManager.get(),
@@ -458,7 +485,7 @@ public class GuiManager {
     if (plugin.get().isTreasuryEnabled()) {
       registry.registerEntry(new AdminPageRegistry.Entry(
           "economy",
-          "Economy",
+          AdminKeys.AdminNav.ECONOMY,
           Permissions.ADMIN_ECONOMY,
           (player, ref, store, playerRef, guiManager) ->
               new AdminEconomyPage(playerRef, factionManager.get(),
@@ -471,7 +498,7 @@ public class GuiManager {
     // Zones page
     registry.registerEntry(new AdminPageRegistry.Entry(
         "zones",
-        "Zones",
+        AdminKeys.AdminNav.ZONES,
         null,
         (player, ref, store, playerRef, guiManager) ->
             new AdminZonePage(playerRef, zoneManager.get(), guiManager, "all", 0),
@@ -482,7 +509,7 @@ public class GuiManager {
     // Config page (placeholder)
     registry.registerEntry(new AdminPageRegistry.Entry(
         "config",
-        "Config",
+        AdminKeys.AdminNav.CONFIG,
         null,
         (player, ref, store, playerRef, guiManager) ->
             new AdminConfigPage(playerRef, guiManager),
@@ -490,13 +517,13 @@ public class GuiManager {
         6
     ));
 
-    // Backups page (placeholder)
+    // Backups page
     registry.registerEntry(new AdminPageRegistry.Entry(
         "backups",
-        "Backups",
+        AdminKeys.AdminNav.BACKUPS,
         null,
         (player, ref, store, playerRef, guiManager) ->
-            new AdminBackupsPage(playerRef, guiManager),
+            new AdminBackupsPage(playerRef, guiManager, guiManager.getPlugin().get()),
         true,
         7
     ));
@@ -504,7 +531,7 @@ public class GuiManager {
     // Activity Log page (global log aggregation)
     registry.registerEntry(new AdminPageRegistry.Entry(
         "log",
-        "Log",
+        AdminKeys.AdminNav.LOG,
         null,
         (player, ref, store, playerRef, guiManager) ->
             new AdminActivityLogPage(playerRef, factionManager.get(), guiManager),
@@ -512,13 +539,13 @@ public class GuiManager {
         8
     ));
 
-    // Updates page (placeholder)
+    // Updates page
     registry.registerEntry(new AdminPageRegistry.Entry(
         "updates",
-        "Updates",
+        AdminKeys.AdminNav.UPDATES,
         null,
         (player, ref, store, playerRef, guiManager) ->
-            new AdminUpdatesPage(playerRef, guiManager),
+            new AdminUpdatesPage(playerRef, guiManager, guiManager.getPlugin().get()),
         true,
         9
     ));
@@ -526,7 +553,7 @@ public class GuiManager {
     // Help page (placeholder)
     registry.registerEntry(new AdminPageRegistry.Entry(
         "help",
-        "Help",
+        AdminKeys.AdminNav.HELP,
         null,
         (player, ref, store, playerRef, guiManager) ->
             new AdminHelpPage(playerRef, guiManager),
@@ -537,7 +564,7 @@ public class GuiManager {
     // Version page (mod versions and integration status)
     registry.registerEntry(new AdminPageRegistry.Entry(
         "version",
-        "Version",
+        AdminKeys.AdminNav.VERSION,
         null,
         (player, ref, store, playerRef, guiManager) ->
             new AdminVersionPage(playerRef, plugin.get(), guiManager),
@@ -686,6 +713,12 @@ public class GuiManager {
                   Store<EntityStore> store, PlayerRef playerRef,
                   Faction faction, UUID targetUuid, String targetName) {
     factionPageOpener.openTransferConfirm(player, ref, store, playerRef, faction, targetUuid, targetName);
+  }
+
+  /** Opens the player settings page. */
+  public void openPlayerSettings(Player player, Ref<EntityStore> ref,
+                  Store<EntityStore> store, PlayerRef playerRef) {
+    factionPageOpener.openPlayerSettings(player, ref, store, playerRef);
   }
 
   /** Opens the faction dashboard page. */
@@ -874,6 +907,18 @@ public class GuiManager {
   public void openAdminConfig(Player player, Ref<EntityStore> ref,
                 Store<EntityStore> store, PlayerRef playerRef) {
     adminPageOpener.openAdminConfig(player, ref, store, playerRef);
+  }
+
+  /** Opens the admin config page to a specific tab. */
+  public void openAdminConfig(Player player, Ref<EntityStore> ref,
+                Store<EntityStore> store, PlayerRef playerRef, String tab) {
+    adminPageOpener.openAdminConfig(player, ref, store, playerRef, tab);
+  }
+
+  /** Opens the scaling tiers modal. */
+  public void openScalingTiersModal(Player player, Ref<EntityStore> ref,
+                Store<EntityStore> store, PlayerRef playerRef) {
+    adminPageOpener.openScalingTiersModal(player, ref, store, playerRef);
   }
 
   /** Opens the admin backups page. */
@@ -1096,10 +1141,16 @@ public class GuiManager {
     newPlayerPageOpener.openHelp(player, ref, store, playerRef, category);
   }
 
-  /** Opens the button test page page. */
+  /** Opens the button test page. */
   public void openButtonTestPage(Player player, Ref<EntityStore> ref,
                  Store<EntityStore> store, PlayerRef playerRef) {
     factionPageOpener.openButtonTestPage(player, ref, store, playerRef);
+  }
+
+  /** Opens the markdown rendering test page. */
+  public void openMarkdownTestPage(Player player, Ref<EntityStore> ref,
+                   Store<EntityStore> store, PlayerRef playerRef) {
+    factionPageOpener.openMarkdownTestPage(player, ref, store, playerRef);
   }
 
   /**

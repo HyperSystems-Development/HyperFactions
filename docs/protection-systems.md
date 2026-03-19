@@ -10,18 +10,18 @@ For admin/config documentation, see [protection-claims.md](protection-claims.md)
 Hytale ECS Events                  ProtectionMixinBridge (auto-detect)
      │                                    │
      ▼                                    ├─► HyperProtectIntegration (27 hooks + format handle, recommended)
-ECS Protection Systems                    │   ├── BlockBreak, BlockPlace, Explosion
+ECS Protection Systems (11)                │   ├── BlockBreak, BlockPlace, Explosion
 ├── BlockPlaceProtectionSystem            │   ├── FireSpread, BuilderTools
 ├── BlockBreakProtectionSystem            │   ├── ItemPickup, DeathDrop, Durability
 ├── BlockUseProtectionSystem              │   ├── ContainerAccess, ContainerOpen
 ├── ItemDropProtectionSystem              │   ├── MobSpawn, Command
 ├── ItemPickupProtectionSystem            │   ├── Teleporter, Portal (unique to HP)
 ├── HarvestPickupProtectionSystem         │   ├── EntityDamage, Respawn (unique to HP)
-├── PlayerDeathSystem                     │   ├── Hammer, Use, Seat
-│                                         │   └── Mount, BarterTrade, FluidSpread, PrefabSpawn,
-│                                         │       ProjectileLaunch, CraftingResource, MapMarkerFilter
+├── DamageProtectionSystem                │   ├── Hammer, Use, Seat
+├── PvPProtectionSystem                   │   └── Mount, BarterTrade, FluidSpread, PrefabSpawn,
+├── PlayerDeathSystem                     │       ProjectileLaunch, CraftingResource, MapMarkerFilter
 ├── PlayerRespawnSystem                   │
-└── DamageProtectionSystem                └─► OrbisMixinsIntegration (11 hooks)
+└── TeleportCancelOnDamageSystem          └─► OrbisMixinsIntegration (11 hooks)
      │                                         ├── Pickup, Hammer, Harvest
      ▼                                         ├── Place, Use, Seat
 ProtectionChecker (central logic)              ├── Explosion, Command
@@ -29,11 +29,20 @@ ProtectionChecker (central logic)              ├── Explosion, Command
 ├── canDamagePlayer() ─► PvPResult
 ├── checkBuild/Place/Hammer() ─► String   Interaction Codec Replacements
 ├── checkTeleporter/Portal() ─► String    ├── HarvestCrop (only when no mixin active)
-├── shouldBlockExplosion() (3-way config) ├── PlaceFluid (bucket protection)
-├── shouldBlockFireSpread() (configurable)
-├── shouldKeepInventory/PreventDurability
-├── canPickupItem() (outsider config)    └── RefillContainer (scoop protection)
+├── checkSeat/Mount/Use() ─► String       ├── PlaceFluid (bucket protection)
+├── checkBench/Container() ─► String      └── RefillContainer (scoop protection)
 ├── checkEntityDamage() ─► String
+├── checkPveInTerritory() (PvE in claims)
+├── checkProjectileLaunch() ─► String
+├── checkTrade() ─► String (barter NPC)
+├── shouldBlockExplosion() (3-way config)
+├── shouldBlockFireSpread() (configurable)
+├── shouldBlockFluidSpread()
+├── shouldBlockSpawn() (zone + claim)
+├── shouldKeepInventory/PreventDurability
+├── canPickupItem() (outsider config)
+├── checkCommandBlock() ─► CommandCheckResult
+├── shouldHideMapMarker() ─► boolean
 └── getRespawnOverride() ─► double[]
      │
      ├─► ZoneManager (zone flag lookup)
@@ -47,14 +56,15 @@ ProtectionChecker (central logic)              ├── Explosion, Command
 
 ## Result Enums
 
-### ProtectionResult (11 values)
+### ProtectionResult (12 values)
 
-Source: `ProtectionChecker.java` lines 66–78
+Source: `ProtectionChecker.java`
 
 ```java
 ALLOWED               // Outsider permission granted
 ALLOWED_BYPASS        // Admin bypass or bypass permission
 ALLOWED_WILDERNESS    // Unclaimed territory
+ALLOWED_SAFEZONE      // SafeZone with flag allowed, no claim below
 ALLOWED_OWN_CLAIM     // Player's faction territory
 ALLOWED_ALLY_CLAIM    // Allied faction territory
 ALLOWED_WARZONE       // WarZone with permission granted
@@ -67,7 +77,7 @@ DENIED_NO_PERMISSION  // Faction permission denied (member/officer/ally)
 
 ### PvPResult (9 values)
 
-Source: `ProtectionChecker.java` lines 83–93
+Source: `ProtectionChecker.java`
 
 ```java
 ALLOWED                    // Combat allowed
@@ -81,22 +91,31 @@ DENIED_SPAWN_PROTECTED     // Defender has spawn protection
 DENIED_TERRITORY_NO_PVP    // Territory pvpEnabled=false
 ```
 
-### InteractionType (11 values)
+### InteractionType (20 values)
 
-Source: `ProtectionChecker.java` lines 98–110
+Source: `ProtectionChecker.java`
 
 ```java
-BUILD        // Place/break blocks
-INTERACT     // General block interaction (fallback)
-CONTAINER    // Open chests, etc.
-DOOR         // Use doors/gates
-BENCH        // Crafting tables
-PROCESSING   // Furnaces/smelters
-SEAT         // Seats/mounts
-DAMAGE       // Damage entities (not players)
-USE          // Use items (fallback)
-TELEPORTER   // Use teleporter blocks
-PORTAL       // Use portal blocks
+BUILD         // Place/break blocks
+INTERACT      // General block interaction (fallback)
+CONTAINER     // Open chests, etc.
+DOOR          // Use doors/gates
+BENCH         // Crafting tables
+PROCESSING    // Furnaces/smelters
+SEAT          // Seats/mounts
+LIGHT         // Lights/lanterns/campfires
+DAMAGE        // Damage entities (not players)
+USE           // Use items (fallback)
+TELEPORTER    // Use teleporter blocks
+PORTAL        // Use portal blocks
+CRATE_PICKUP  // Capture crate entity pickup
+CRATE_PLACE   // Capture crate entity release
+NPC_TAME      // F-key NPC taming
+NPC_INTERACT  // NPC shops/dialogue interaction
+MOUNT         // Mount/ride entities
+PVE_DAMAGE    // Damage non-player entities (mobs)
+ITEM_DROP     // Drop items
+ITEM_PICKUP   // Pick up items
 ```
 
 ---
@@ -115,7 +134,12 @@ world.registerSystem(new BlockBreakProtectionSystem(this, protectionListener));
 world.registerSystem(new BlockUseProtectionSystem(this, protectionListener));
 world.registerSystem(new ItemDropProtectionSystem(this, protectionListener));
 world.registerSystem(new ItemPickupProtectionSystem(this, protectionListener));
+world.registerSystem(new HarvestPickupProtectionSystem(this, protectionListener));
 world.registerSystem(new DamageProtectionSystem(this, protectionListener));
+world.registerSystem(new PvPProtectionSystem(this, protectionListener));
+world.registerSystem(new PlayerDeathSystem(this));
+world.registerSystem(new PlayerRespawnSystem(this));
+world.registerSystem(new TeleportCancelOnDamageSystem(this));
 ```
 
 ### Damage System Group
@@ -128,13 +152,15 @@ Damage systems use `DamageModule.get().getFilterDamageGroup()` to run BEFORE dam
 |--------|-------|-------------|----------------|
 | BlockPlaceProtectionSystem | PlaceBlockEvent | `canInteract(BUILD)` | Yes |
 | BlockBreakProtectionSystem | BreakBlockEvent | `canInteract(BUILD)` | Yes |
-| BlockUseProtectionSystem | UseBlockEvent | `canInteract(DOOR/CONTAINER/BENCH/PROCESSING/SEAT/INTERACT)` | Yes |
-| ItemDropProtectionSystem | DropItemEvent | `ZoneInteractionProtection.isItemDropAllowed()` + `outsiderDropAllowed` config | **Zone + claim config** |
+| BlockUseProtectionSystem | UseBlockEvent.Pre | `canInteract(DOOR/CONTAINER/BENCH/PROCESSING/SEAT/INTERACT)` | Yes |
+| ItemDropProtectionSystem | DropItemEvent.PlayerRequest | `ZoneInteractionProtection.isItemDropAllowed()` + `outsiderDropAllowed` config | **Zone + claim config** |
 | ItemPickupProtectionSystem | InteractivelyPickupItemEvent | `canInteract(INTERACT)` | Yes |
-| HarvestPickupProtectionSystem | InteractivelyPickupItemEvent (F-key) | `canPickupItem()` | Yes |
-| DamageProtectionSystem | Damage event | `DamageProtectionHandler` | PvP only |
-| PlayerDeathSystem | DeathComponent | Power loss, kill rewards | Uses config |
-| PlayerRespawnSystem | DeathComponent removal | Spawn protection | N/A |
+| HarvestPickupProtectionSystem | InteractivelyPickupItemEvent | `canPickupItem()` | Yes |
+| DamageProtectionSystem | Damage | `DamageProtectionHandler` | PvP only |
+| PvPProtectionSystem | Damage (extends DamageProtectionSystem) | PvP-specific damage handling | Yes |
+| PlayerDeathSystem | DeathComponent (RefChangeSystem) | Power loss, kill rewards | Uses config |
+| PlayerRespawnSystem | DeathComponent removal (RefChangeSystem) | Spawn protection | N/A |
+| TeleportCancelOnDamageSystem | Damage | Cancel pending teleports on damage | N/A |
 
 ### Block Type Detection (BlockUseProtectionSystem)
 
@@ -182,7 +208,7 @@ When BOTH systems are detected:
 
 ---
 
-## HyperProtect-Mixin Integration (30 Slots, 27 Used)
+## HyperProtect-Mixin Integration (30 Slots, 28 Used)
 
 Source: [`HyperProtectIntegration.java`](../src/main/java/com/hyperfactions/integration/protection/HyperProtectIntegration.java)
 
@@ -208,16 +234,16 @@ Verdict protocol: 0=ALLOW, 1=DENY_WITH_MESSAGE, 2=DENY_SILENT, 3=DENY_MOD_HANDLE
 | 17 | ContainerOpen | `checkContainer()` | Yes |
 | 18 | BlockPlace | `checkPlace()` | Yes |
 | 19 | Hammer | `checkHammer()` | Yes |
-| 20 | Use | `checkUse(type)` | Yes (routes CRATE_PICKUP, CRATE_PLACE, NPC_USE, NPC_TAME, NPC_INTERACT, INTERACT) |
+| 20 | Use | `checkUse(type)` | Yes (routes CRATE_PICKUP, CRATE_PLACE, NPC_TAME, MOUNT, LIGHT, INTERACT) |
 | 21 | Seat | `checkSeat()` | Yes |
 | 22 | Respawn | `getRespawnOverride()` | Yes |
-| 23 | Mount | `checkMount()` | Yes |
-| 24 | BarterTrade | `checkBarterTrade()` | Yes |
-| 25 | FluidSpread | `shouldBlockFluidSpread()` | Yes |
-| 26 | PrefabSpawn | `shouldBlockPrefabSpawn()` | Yes |
-| 27 | ProjectileLaunch | `shouldBlockProjectileLaunch()` | Yes |
-| 28 | CraftingResource | `checkCraftingResource()` | Yes |
-| 29 | MapMarkerFilter | `filterMapMarker()` | N/A — visibility filter |
+| 23 | CraftingResource | `CraftingResourceHook.evaluateCraftingResource()` | Yes |
+| 24 | MapMarkerFilter | `MapMarkerFilterHook.filterPlayerMarker()` | N/A — visibility filter |
+| 25 | FluidSpread | `shouldBlockFluidSpread()` | Yes (zone-only, claims always allow) |
+| 26 | PrefabSpawn | `shouldBlockSpawn()` (via `PrefabSpawnHook`) | Yes |
+| 27 | ProjectileLaunch | `checkProjectileLaunch()` (via `ProjectileLaunchHook`) | Yes |
+| 28 | Mount | `checkMount()` (via `MountHook`) | Yes |
+| 29 | BarterTrade | `checkTrade()` (via `BarterTradeHook`) | Yes |
 
 ---
 
@@ -305,21 +331,30 @@ Set in `config/debug.json`:
 
 ## Key Class Reference
 
-| Class | Path | Lines | Purpose |
-|-------|------|-------|---------|
-| ProtectionChecker | `protection/ProtectionChecker.java` | ~1,320 | Central protection logic |
-| ProtectionListener | `protection/ProtectionListener.java` | ~140 | High-level event callbacks |
-| ProtectionMixinBridge | `integration/protection/ProtectionMixinBridge.java` | ~297 | Mixin auto-detection and routing |
-| HyperProtectIntegration | `integration/protection/HyperProtectIntegration.java` | ~570 | HyperProtect-Mixin hooks |
-| OrbisMixinsIntegration | `integration/protection/OrbisMixinsIntegration.java` | ~1,332 | OrbisGuard-Mixins hooks |
-| OrbisGuardIntegration | `integration/protection/OrbisGuardIntegration.java` | ~425 | OrbisGuard region conflict detection |
-| GravestoneIntegration | `integration/protection/GravestoneIntegration.java` | ~347 | Gravestone plugin integration |
-| SpawnProtection | `protection/SpawnProtection.java` | ~73 | Spawn protection data record |
-| FactionPermissions | `data/FactionPermissions.java` | ~552 | 45-flag permission model |
-| ZoneFlags | `data/ZoneFlags.java` | — | Zone flag constants and defaults |
-| DamageProtectionHandler | `protection/damage/DamageProtectionHandler.java` | ~132 | Damage check coordinator |
-| ZoneInteractionProtection | `protection/zone/ZoneInteractionProtection.java` | — | Zone interaction checks + block type detection |
-| ZoneDamageProtection | `protection/zone/ZoneDamageProtection.java` | — | Zone damage flag checks |
-| FactionsConfig | `config/FactionsConfig.java` | — | Faction gameplay settings (`config/factions.json`) |
-| ServerConfig | `config/ServerConfig.java` | — | Server behavior settings (`config/server.json`) |
-| CoreConfig *(deprecated)* | `config/CoreConfig.java` | — | Replaced by FactionsConfig + ServerConfig (Migration V5 -> V6) |
+| Class | Path | Purpose |
+|-------|------|---------|
+| ProtectionChecker | `protection/ProtectionChecker.java` | Central protection logic (~1,871 lines) |
+| ProtectionListener | `protection/ProtectionListener.java` | High-level event callbacks |
+| ProtectionMessageDebounce | `protection/ProtectionMessageDebounce.java` | Debounces repeated denial messages |
+| NpcInteractionProtectionHandler | `protection/NpcInteractionProtectionHandler.java` | NPC interaction protection |
+| MobCleanupManager | `protection/MobCleanupManager.java` | Periodic mob removal in zones |
+| SpawnProtection | `protection/SpawnProtection.java` | Spawn protection data record |
+| ProtectionMixinBridge | `integration/protection/ProtectionMixinBridge.java` | Mixin auto-detection and routing |
+| HyperProtectIntegration | `integration/protection/HyperProtectIntegration.java` | HyperProtect-Mixin hooks |
+| OrbisMixinsIntegration | `integration/protection/OrbisMixinsIntegration.java` | OrbisGuard-Mixins hooks |
+| OrbisGuardIntegration | `integration/protection/OrbisGuardIntegration.java` | OrbisGuard region conflict detection |
+| GravestoneIntegration | `integration/protection/GravestoneIntegration.java` | Gravestone plugin integration |
+| KyuubiSoftIntegration | `integration/protection/KyuubiSoftIntegration.java` | KyuubiSoft integration |
+| FactionPermissions | `data/FactionPermissions.java` | 57-flag permission model |
+| ZoneFlags | `data/ZoneFlags.java` | 52 zone flag constants and defaults |
+| DamageProtectionHandler | `protection/damage/DamageProtectionHandler.java` | Damage check coordinator |
+| PvPDamageProtection | `protection/damage/PvPDamageProtection.java` | PvP damage checks |
+| FallDamageProtection | `protection/damage/FallDamageProtection.java` | Fall damage (zone-only) |
+| EnvironmentalDamageProtection | `protection/damage/EnvironmentalDamageProtection.java` | Environmental damage (zone-only) |
+| ProjectileDamageProtection | `protection/damage/ProjectileDamageProtection.java` | Projectile damage (zone-only) |
+| MobDamageProtection | `protection/damage/MobDamageProtection.java` | Mob damage (zone-only) |
+| ZoneInteractionProtection | `protection/zone/ZoneInteractionProtection.java` | Zone interaction checks + block type detection |
+| ZoneDamageProtection | `protection/zone/ZoneDamageProtection.java` | Zone damage flag checks |
+| FactionsConfig | `config/modules/FactionsConfig.java` | Faction gameplay settings (`config/factions.json`) |
+| ServerConfig | `config/modules/ServerConfig.java` | Server behavior settings (`config/server.json`) |
+| CoreConfig *(deprecated)* | `config/CoreConfig.java` | Replaced by FactionsConfig + ServerConfig (Migration V5 -> V6) |

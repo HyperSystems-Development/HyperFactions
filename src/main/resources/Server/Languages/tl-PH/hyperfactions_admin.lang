@@ -1,0 +1,934 @@
+# HyperFactions Admin GUI - Filipino (Tagalog) na mga Salin
+# Format: key = value
+# Note: Ang mga key ay awtomatikong may prefix na "hyperfactions_admin." mula sa I18nModule ng Hytale
+
+# ========== Admin Navigation Bar ==========
+nav.dashboard = Dashboard
+nav.actions = Mga Aksyon
+nav.factions = Mga Paksyon
+nav.players = Mga Manlalaro
+nav.economy = Ekonomiya
+nav.zones = Mga Zone
+nav.config = Config
+nav.backups = Mga Backup
+nav.log = Talaan
+nav.updates = Mga Update
+nav.help = Tulong
+nav.version = Bersyon
+
+# ========== Mga Karaniwang Label ng Admin ==========
+common.faction_not_found = Hindi Nahanap ang Paksyon
+common.no_faction = Walang Paksyon
+common.not_set = Hindi pa naitakda
+common.on = Bukas
+common.off = Sarado
+common.enable = I-enable
+common.disable = I-disable
+common.none_paren = (Wala)
+common.invalid_faction = Hindi wastong paksyon.
+common.leader_prefix = Pinuno: {0}
+common.members_suffix = {0} kasapi
+common.claims_suffix = {0} claim
+common.factions_suffix = {0} paksyon
+common.players_suffix = {0} manlalaro
+common.chunks_suffix = {0} chunks
+common.entries_suffix = {0} tala
+common.found_suffix = {0} nahanap
+common.power_format = {0}/{1} kapangyarihan
+common.raidable = Raidable
+common.protected = Protektado
+common.no_description = Walang itinakdang deskripsyon.
+common.officers_more = +{0} pa
+common.custom_max = (custom max)
+common.default_max = (default max)
+common.now = Ngayon
+common.ago_suffix = {0} nakalipas
+common.just_now = ngayon lang
+common.no_membership_history = Walang kasaysayan ng pagsapi
+
+# ========== Admin Dashboard ==========
+dashboard.factions_prefix = Mga Paksyon: {0}
+dashboard.members_prefix = Kabuuang Kasapi: {0}
+dashboard.claims_prefix = Kabuuang Claim: {0}
+
+# ========== Mga Aksyon ng Admin ==========
+actions.confirm_reset = Kumpirmahin ang Reset?
+actions.confirm_trigger = Kumpirmahin ang Trigger?
+actions.kd_reset = Na-reset ang K/D para sa {0} manlalaro.
+actions.kd_reset_failed = Nabigo ang pag-reset ng K/D: {0}
+actions.upkeep_unavailable = Hindi magagamit ang upkeep processor.
+actions.upkeep_triggered = Na-trigger ang koleksyon ng sustento.
+actions.upkeep_failed = Nabigo ang sustento: {0}
+
+# ========== Admin Buwagin ==========
+disband.faction_gone = Wala na ang paksyon.
+disband.success = Ang paksyon na '{0}' ay nabuag na.
+disband.failed = Nabigo ang pagbuag: {0}
+disband.no_leader = Walang pinuno ang paksyon, hindi maaaring buwagin.
+
+# ========== Admin Unclaim Lahat ==========
+unclaim.removed = [Admin] Tinanggal ang {0} claim mula sa {1}.
+unclaim.no_claims = Walang claim na tinatanggal ang {0}.
+
+# ========== Listahan ng mga Paksyon ng Admin ==========
+factions.home_not_set = Hindi pa naitakda
+factions.teleported = Na-teleport sa home ng {0}.
+factions.no_home = Walang itinakdang home ang paksyon.
+factions.world_not_found = Hindi nahanap ang target na mundo.
+
+# ========== Impormasyon ng Paksyon ng Admin ==========
+info.faction_gone = Wala na ang paksyon na ito.
+
+# ========== Mga Kasapi ng Paksyon ng Admin ==========
+members.sort_role = Tungkulin
+members.sort_online = Online
+members.sort_name = Pangalan
+members.sort_power = Kapangyarihan
+members.promoted = [Admin] Na-promote si {0} sa {1}.
+members.demoted = [Admin] Na-demote si {0} sa {1}.
+members.kicked = [Admin] Pinalayas si {0} mula sa paksyon.
+
+# ========== Mga Relasyon ng Paksyon ng Admin ==========
+relations.allies_header = MGA KAKAMPI ({0})
+relations.enemies_header = MGA KALABAN ({0})
+relations.no_allies = Walang mga kakampi.
+relations.no_enemies = Walang mga kalaban.
+relations.neutral_count = {0} neutral na paksyon
+relations.since_today = Mula noong: ngayon
+relations.since_one_day = Mula noong: 1 araw nakalipas
+relations.since_days = Mula noong: {0} araw nakalipas
+relations.set_ally = [Admin] Itinakda ang mutual na kakampi status sa {0}.
+relations.set_enemy = Itinakda ang mutual na kalaban status sa {0}.
+relations.set_neutral = [Admin] Itinakda ang mutual na neutral status sa {0}.
+
+# ========== Mga Setting ng Paksyon ng Admin ==========
+settings.locked = Ang setting na ito ay naka-lock ng konpigurasyon ng server.
+settings.perm_toggled = Itinakda ang {0} sa {1}.
+settings.color_changed = Itinakda ang kulay ng paksyon sa {0}.
+settings.recruitment_set = Itinakda ang recruitment sa {0}.
+settings.no_home = [Admin] Walang itinakdang home ang paksyon na ito.
+settings.home_cleared = Na-clear ang faction home para sa {0}.
+
+# ========== Mga Label ng Sort Dropdown ==========
+sort.power = Kapangyarihan
+sort.name = Pangalan
+sort.members = Mga Kasapi
+sort.balance = Balanse
+
+# ========== Mga Manlalaro ng Admin ==========
+players.sort_last_online = Huling Online
+players.sort_faction = Paksyon
+players.sort_online = Online
+players.not_online = Ang manlalaro ay hindi online.
+players.world_not_found = Hindi nahanap ang target na mundo.
+players.teleported = [Admin] Na-teleport kay {0}.
+
+# ========== Impormasyon ng Manlalaro ng Admin ==========
+playerinfo.disband_faction = Buwagin ang Paksyon
+playerinfo.kick_leader = Paalisin ang Pinuno
+playerinfo.enter_valid_number = Maglagay ng wastong numero.
+playerinfo.enter_valid_positive = Maglagay ng wastong positibong numero.
+playerinfo.faction_gone = Wala na ang paksyon.
+playerinfo.kd_reset = Na-reset ang K/D para kay {0}.
+playerinfo.kicked_success = Pinalayas si {0} mula sa {1}.
+playerinfo.kicked_leader = Pinalayas ang pinuno na si {0}. Nailipat ang pamumuno kay {1}.
+playerinfo.disbanded_kick = [Admin] Ang paksyon na '{0}' ay nabuag (huling kasapi ay pinalayas).
+
+# ========== Ekonomiya ng Admin ==========
+economy.no_data = Walang mga paksyon na may datos ng ekonomiya.
+economy.amount_zero = Ang halaga ay hindi maaaring zero.
+economy.enter_amount = Pakilagay ng halaga.
+economy.invalid_number = Hindi wastong numero: {0}
+economy.error = May naganap na error.
+economy.balance_negative = Ang balanse ay hindi maaaring negatibo.
+economy.failed = Nabigo: {0}
+economy.bulk_complete = Nakumpleto ang bulk adjust: {0} {1} sa {2} paksyon.
+economy.bulk_failures = ({0} nabigo)
+
+# ========== Mga Zone ng Admin ==========
+zones.not_found = Hindi nahanap ang zone.
+zones.invalid_id = Hindi wastong zone ID.
+zones.deleted = Natanggal ang zone na {0}.
+zones.delete_failed = Nabigo ang pagtanggal ng zone: {0}
+zones.no_chunks = Walang chunks
+zones.chunks_suffix = {0} ({1} chunks)
+
+# ========== Wizard ng Paggawa ng Zone ==========
+wizard.enter_name = Pakilagay ng pangalan ng zone.
+wizard.name_too_short = Ang pangalan ng zone ay dapat hindi bababa sa {0} karakter.
+wizard.name_too_long = Ang pangalan ng zone ay hindi maaaring lumampas sa {0} karakter.
+wizard.name_taken = Mayroon nang zone na may ganitong pangalan.
+wizard.radius_range = Ang radius ay dapat nasa pagitan ng 1 at {0}.
+wizard.create_failed = Hindi malikha ang zone: {0}
+wizard.created_not_found = Nalikha ang zone ngunit hindi nahanap.
+wizard.created = Nalikha ang {0} na '{1}'!
+wizard.chunk_claimed = Na-claim ang chunk ({0}, {1}).
+wizard.chunk_failed = Hindi ma-claim ang kasalukuyang chunk: {0}
+wizard.radius_claimed = Na-claim ang {0} chunks sa {1} radius ng {2}.
+wizard.radius_no_claims = Walang chunks na na-claim (maaaring okupado ang lugar).
+wizard.no_claims = Nalikha ang zone na walang claim.
+wizard.chunks_preview = ~{0} chunks
+
+# ========== Pagpapalit ng Pangalan ng Zone ==========
+zone_rename.zone_gone = Wala na ang zone.
+zone_rename.enter_name = Pakilagay ng pangalan ng zone.
+zone_rename.too_short = Ang pangalan ng zone ay dapat hindi bababa sa {0} karakter.
+zone_rename.too_long = Ang pangalan ng zone ay hindi maaaring lumampas sa {0} karakter.
+zone_rename.same_name = Iyan na ang pangalan ng zone na ito.
+zone_rename.renamed = [Admin] Pinalitan ang pangalan ng zone mula {0} sa {1}!
+zone_rename.name_taken = Mayroon nang zone na may ganitong pangalan.
+zone_rename.invalid_name = Hindi wastong pangalan ng zone.
+zone_rename.rename_failed = Nabigo ang pagpalit ng pangalan ng zone: {0}
+
+# ========== Pagpapalit ng Uri ng Zone ==========
+zone_type.zone_gone = Wala na ang zone.
+zone_type.changed = [Admin] Pinalitan ang {0} mula {1} sa {2} ({3}).
+zone_type.failed = Nabigo ang pagpalit ng uri ng zone: {0}
+zone_type.flags_reset = na-reset ang mga flag
+zone_type.flags_kept = napanatili ang mga flag
+
+# ========== Mga Integration Flag ng Zone ==========
+zone_int.zone_not_found = Hindi Nahanap ang Zone
+zone_int.no_plugin = (walang plugin)
+zone_int.default = (default)
+zone_int.custom = (custom)
+
+# Mga label ng UI ng integration flags
+gui.zint_cat_gravestones = Mga Lapida
+gui.zint_gravestones_desc = Kapag BUKAS, ang mga hindi may-ari ay maaaring mag-loot ng mga lapida. Ang mga may-ari ay palaging maaari.
+gui.zint_cat_world_map = Mapa ng Mundo
+gui.zint_world_map_desc = I-override ang pagtatago sa mapa para sa mga manlalaro sa zone na ito. Kapag naka-enable, piliin kung sino ang makakakita ng mga manlalaro sa zone na ito.
+gui.zint_visibility_label = Antas ng Visibility:
+gui.zint_cat_essentials = HyperEssentials
+gui.zint_reset_defaults = I-reset sa Defaults
+gui.zint_back_to_flags = Bumalik sa mga Flag
+gui.zint_map_vis_faction = Paksyon Lamang
+gui.zint_map_vis_ally = Paksyon + Mga Kakampi
+gui.zint_map_vis_all = Lahat ng Manlalaro
+
+# ========== Talaan ng Aktibidad ==========
+log.all_types = Lahat ng Uri
+log.no_logs = Walang mga talaan ng aktibidad na tumutugma sa mga filter.
+
+# ========== Pahina ng Bersyon ==========
+version.active = Aktibo
+version.not_found = Hindi Nahanap
+version.not_detected = Hindi Natukoy
+version.not_installed = Hindi Naka-install
+version.active_version = Aktibo (v{0})
+version.active_compatible = Aktibo (compatible)
+version.active_claims_only = Aktibo (claims lamang)
+version.installed_no_perm = Naka-install (walang perm provider)
+version.active_provider = Aktibo ({0})
+
+# ========== Pangunahing Pahina ng Admin ==========
+main.reload_hint = Gamitin ang /f reload upang i-reload ang konpigurasyon.
+main.unclaim_hint = Gamitin ang /f admin unclaim {0} upang i-unclaim ang lahat ng {1} chunks.
+
+# ========== Mga Flag/Setting ng Zone ==========
+zflags.invalid_flag = Hindi wastong flag.
+zflags.zone_not_found = Hindi nahanap ang zone.
+zflags.conflict = (conflict)
+zflags.mixin = (mixin)
+zflags.reset_int = Na-reset ang mga integration flag sa defaults.
+zflags.reset_all = Na-reset ang lahat ng flag sa defaults.
+zflags.reset_failed = Nabigo ang pag-reset ng mga flag: {0}
+zflags.back_to_settings = Bumalik sa mga Setting
+
+# Mga label ng UI ng zone settings
+gui.zset_cat_combat = Labanan
+gui.zset_cat_damage = Pinsala
+gui.zset_cat_death = Kamatayan
+gui.zset_cat_building = Pagtatayo
+gui.zset_cat_interaction = Interaksyon
+gui.zset_cat_transport = Transport
+gui.zset_cat_items = Mga Bagay
+gui.zset_cat_spawning = Pag-spawn ng Mob
+gui.zset_cat_mob_clear = Pag-clear ng Mob
+gui.zset_children_hint = (mga anak ay nalalapat lamang kapag BUKAS ang parent)
+gui.zset_reset_defaults = I-reset sa Defaults
+gui.zset_integration_flags = Mga Integration Flag
+gui.zset_back_to_zones = Bumalik sa mga Zone
+gui.zset_chunks = {0} chunks
+
+# Mga Display Name ng Zone Flag
+gui.zflag_pvp_enabled = PvP Naka-enable
+gui.zflag_friendly_fire = Friendly Fire
+gui.zflag_friendly_fire_faction = Pinsala ng Paksyon
+gui.zflag_friendly_fire_ally = Pinsala ng Kakampi
+gui.zflag_projectile_damage = Pinsala ng Projectile
+gui.zflag_mob_damage = Tumanggap ng Pinsala mula sa Mob
+gui.zflag_pve_damage = Magbigay ng Pinsala sa Mob
+gui.zflag_fall_damage = Pinsala sa Pagkahulog
+gui.zflag_environmental_damage = Pinsala ng Kapaligiran
+gui.zflag_explosion_damage = Pinsala ng Pagsabog
+gui.zflag_fire_spread = Pagkalat ng Apoy
+gui.zflag_keep_inventory = Panatilihin ang Inventory
+gui.zflag_power_loss = Pagkawala ng Kapangyarihan
+gui.zflag_build_allowed = Pinapayagan ang Pagtatayo
+gui.zflag_block_place = Paglalagay ng Block
+gui.zflag_hammer_use = Paggamit ng Hammer
+gui.zflag_builder_tools_use = Mga Builder Tool
+gui.zflag_block_interact = Interaksyon ng Block
+gui.zflag_door_use = Paggamit ng Pinto
+gui.zflag_container_use = Paggamit ng Lalagyan
+gui.zflag_bench_use = Paggamit ng Bench
+gui.zflag_processing_use = Paggamit ng Processing
+gui.zflag_seat_use = Paggamit ng Upuan
+gui.zflag_mount_use = Paggamit ng Mount
+gui.zflag_light_use = Paggamit ng Ilaw
+gui.zflag_npc_use = Interaksyon ng NPC
+gui.zflag_crate_pickup = Pagpili ng Crate
+gui.zflag_crate_place = Paglalagay ng Crate
+gui.zflag_npc_tame = Pag-tame ng NPC
+gui.zflag_npc_interact = Pakikipag-ugnayan sa NPC
+gui.zflag_teleporter_use = Paggamit ng Teleporter
+gui.zflag_portal_use = Paggamit ng Portal
+gui.zflag_mount_entry = Pagsakay sa Mount
+gui.zflag_item_drop = Pag-drop ng Bagay
+gui.zflag_item_pickup = Auto Pickup
+gui.zflag_item_pickup_manual = F-Key Pickup
+gui.zflag_invincible_items = Mga Di-masisira na Bagay
+gui.zflag_mob_spawning = Pag-spawn ng Mob
+gui.zflag_hostile_mob_spawning = Mga Agresibong Mob
+gui.zflag_passive_mob_spawning = Mga Pasibong Mob
+gui.zflag_neutral_mob_spawning = Mga Neutral na Mob
+gui.zflag_npc_spawning = Pag-spawn ng NPC
+gui.zflag_mob_clear = Pag-clear ng Mob
+gui.zflag_hostile_mob_clear = I-clear ang mga Agresibong Mob
+gui.zflag_passive_mob_clear = I-clear ang mga Pasibong Mob
+gui.zflag_neutral_mob_clear = I-clear ang mga Neutral na Mob
+gui.zflag_gravestone_access = Iba ang Mag-loot ng Lapida
+gui.zflag_show_on_map = Ipakita sa Mapa
+gui.zflag_essentials_homes = Paggamit ng Home
+gui.zflag_essentials_warps = Paggamit ng Warp
+gui.zflag_essentials_kits = Pag-claim ng Kit
+
+# ========== Mga Katangian ng Zone ==========
+zprop.current_custom = Kasalukuyan: "{0}" (custom)
+zprop.current_default = Kasalukuyan: "{0}" (default)
+zprop.pvp_disabled = PvP Naka-disable
+zprop.pvp_enabled = PvP Naka-enable
+zprop.name_empty = Ang pangalan ay hindi maaaring walang laman.
+zprop.renamed = Ang zone ay pinalitan ng pangalan sa "{0}".
+zprop.name_taken = Mayroon nang zone na may ganitong pangalan.
+zprop.name_invalid = Hindi wastong pangalan (maximum 32 karakter).
+zprop.rename_failed = Nabigo ang pagpalit ng pangalan: {0}
+zprop.upper_empty = Ang upper title ay hindi maaaring walang laman. Gamitin ang Clear upang i-reset.
+zprop.upper_set = Naitakda ang upper title.
+zprop.upper_reset = Na-reset ang upper title sa default.
+zprop.lower_empty = Ang lower title ay hindi maaaring walang laman. Gamitin ang Clear upang i-reset.
+zprop.lower_set = Naitakda ang lower title.
+zprop.lower_reset = Na-reset ang lower title sa default.
+
+# ========== Karagdagang Relasyon ==========
+relations.failed = Nabigo: {0}
+
+# ========== Karagdagang Kasapi ==========
+members.never = Kailanman
+members.teleported = [Admin] Na-teleport kay {0}.
+
+# ========== Karagdagang Impormasyon ng Manlalaro ==========
+playerinfo.records = {0} tala
+playerinfo.joined_date = Sumali: {0}
+playerinfo.current = Kasalukuyan
+playerinfo.left_date = Umalis: {0}
+
+# ========== Mapa ng Zone ==========
+map.world_warning = BABALA: Ikaw ay nasa '{0}' - ang zone ay nasa '{1}'
+map.position = Iyong Posisyon: Chunk ({0}, {1})
+map.zone_gone = Wala na ang zone.
+map.claimed = Na-claim ang chunk ({0}, {1}) para sa {2}.
+map.claim_failed = Nabigo ang pag-claim ng chunk: {0}
+map.unclaimed = Na-unclaim ang chunk ({0}, {1}) mula sa {2}.
+map.unclaim_failed = Nabigo ang pag-unclaim ng chunk: {0}
+map.chunk_belongs = Ang chunk na ito ay pag-aari ng {0}.
+map.chunk_faction = Ang chunk na ito ay naka-claim ng isang paksyon.
+map.chunk_protected = Ang chunk na ito ay nasa protektadong rehiyon.
+map.another_zone = ibang zone
+
+# ========== Mga GUI Label Key (para sa lokalisasyon ng hardcoded text sa .ui) ==========
+
+# Mga Pamagat ng Pahina
+gui.title_dashboard = Admin Dashboard
+gui.title_main = Admin ng mga Paksyon
+gui.title_actions = Admin: Mga Aksyon sa Server
+gui.title_factions = Pamamahala ng Paksyon
+gui.title_players = Pamamahala ng Manlalaro
+gui.title_economy = Admin: Ekonomiya ng Server
+gui.title_zones = Pamamahala ng Zone
+gui.title_backups = Mga Backup
+gui.title_config = Konpigurasyon
+gui.title_help = Tulong ng Admin
+gui.title_updates = Mga Update
+gui.title_version = Bersyon at mga Integrasyon
+gui.title_activity_log = Admin: Talaan ng Aktibidad
+gui.title_player_info = Admin: Impormasyon ng Manlalaro
+gui.title_faction_info = Admin: Impormasyon ng Paksyon
+gui.title_faction_settings = Admin: Mga Setting ng Paksyon
+gui.title_faction_members = Admin: Mga Kasapi
+gui.title_faction_relations = Admin: Mga Relasyon
+gui.title_zone_map = Editor ng Mapa ng Zone
+gui.title_zone_settings = Admin: Mga Setting ng Zone
+gui.title_zone_properties = Admin: Mga Katangian ng Zone
+gui.title_bulk_economy = Bulk na Pagsasaayos ng Kaban ng Yaman
+gui.title_economy_adjust = Admin: Ekonomiya
+
+# Mga label ng Dashboard
+gui.dash_server_stats = Mga Estadistika ng Server
+gui.dash_factions = Mga Paksyon
+gui.dash_total_members = Kabuuang Kasapi
+gui.dash_total_claims = Kabuuang Claim
+gui.dash_zones = Mga Zone
+gui.dash_safe_war = safe / war
+gui.dash_total_power = Kabuuang Kapangyarihan
+gui.dash_avg_power = Avg na Kapangyarihan/Paksyon
+gui.dash_total_economy = Kabuuang Ekonomiya
+gui.dash_wealthiest = Pinakamayaman
+gui.dash_avg_balance = Avg na Balanse
+gui.dash_protection_bypass = Protection Bypass:
+
+# Mga karaniwang button at label
+gui.search = Maghanap:
+gui.sort = Ayusin:
+gui.prev = < Nakaraang
+gui.next = Susunod >
+gui.back = Bumalik
+gui.done = Tapos
+gui.cancel = Kanselahin
+gui.apply = Ilapat
+gui.set = Itakda
+gui.reset = I-reset
+gui.coming_soon = Malapit Na
+gui.zones_btn = Mga Zone
+gui.reload_btn = I-reload
+gui.all = Lahat
+gui.safe = Safe
+gui.war = War
+gui.create_zone = + Gumawa
+
+# Mga label ng pahina ng mga aksyon
+gui.act_combat_stats = Mga Estadistika ng Labanan
+gui.act_combat_desc = I-reset ang mga patay at kamatayan para sa LAHAT ng manlalaro sa server. Ang aksyon na ito ay hindi na maaaring ibalik.
+gui.act_reset_kd = I-reset ang Lahat ng K/D
+gui.act_economy = Ekonomiya
+gui.act_economy_desc = Magdagdag o magtanggal ng pera mula sa LAHAT ng kaban ng yaman ng paksyon nang sabay-sabay.
+gui.act_bulk_adjust = Bulk na Dagdag/Tanggal
+gui.act_upkeep_collection = Koleksyon ng Sustento
+gui.act_upkeep_desc = Manu-manong i-trigger ang koleksyon ng sustento para sa lahat ng paksyon ngayon din, anuman ang naka-iskedyul na timer.
+gui.act_trigger_upkeep = I-trigger ang Sustento
+
+# Mga label ng placeholder na pahina
+gui.backup_heading = Pamamahala ng Backup
+gui.backup_desc1 = Gumawa, i-restore, at mamahala ng mga backup ng datos ng paksyon.
+gui.backup_desc2 = Ang mga awtomatikong backup ay naka-save sa data/backups folder.
+gui.config_heading = Editor ng Konpigurasyon
+gui.config_desc1 = I-configure ang mga setting ng HyperFactions nang direkta mula sa GUI.
+gui.config_desc2 = Sa ngayon, gamitin ang /f reload upang i-reload ang mga pagbabago sa konpigurasyon.
+gui.help_heading = Dokumentasyon ng Admin
+gui.help_desc1 = Tingnan ang dokumentasyon ng admin at sanggunian ng mga utos.
+gui.help_desc2 = Para sa tulong, bisitahin ang wiki ng HyperFactions.
+gui.updates_heading = Sentro ng mga Update
+gui.updates_desc1 = Tingnan kung may mga bagong bersyon at tingnan ang mga changelog.
+gui.updates_desc2 = Bisitahin ang pahina ng HyperFactions para sa mga pinakabagong update.
+
+# Mga label ng pahina ng bersyon
+gui.ver_hyperfactions = HyperFactions
+gui.ver_hytale_server = Hytale Server
+gui.ver_java = Java
+gui.ver_permissions = MGA PAHINTULOT
+gui.ver_placeholders = MGA PLACEHOLDER
+gui.ver_economy_section = EKONOMIYA
+gui.ver_protection = PROTEKSYON
+gui.ver_disabled = Naka-disable
+
+# Mga header ng column (ginagamit sa iba't ibang pahina)
+gui.col_faction = Paksyon
+gui.col_balance = Balanse
+gui.col_members = Mga Kasapi
+gui.col_actions = Mga Aksyon
+gui.col_time = Oras
+gui.col_type = Uri
+gui.col_message = Mensahe
+
+# Mga label ng pahina ng ekonomiya
+gui.econ_total_balance = Kabuuang Balanse
+gui.econ_factions = Mga Paksyon
+gui.econ_avg_balance = Avg na Balanse
+gui.econ_in_grace = Nasa Grace
+gui.econ_collected = Nakolekta (24h)
+gui.econ_next_collection = Susunod na Koleksyon
+gui.econ_no_data = Walang mga paksyon na may datos ng ekonomiya.
+
+# Mga label ng activity log
+gui.log_type = Uri:
+gui.log_time = Oras:
+gui.log_player = Manlalaro:
+gui.log_no_logs = Walang mga talaan ng aktibidad na tumutugma sa mga filter.
+
+# Mga label ng impormasyon ng manlalaro
+gui.plr_first_joined = Unang sumali:
+gui.plr_last_online = Huling online:
+gui.plr_uuid = UUID:
+gui.plr_faction = Paksyon:
+gui.plr_role = Tungkulin:
+gui.plr_view_faction = Tingnan ang Paksyon
+gui.plr_power = Kapangyarihan
+gui.plr_max_power = Max na Kapangyarihan
+gui.plr_set_power = Itakda
+gui.plr_reset_power = I-reset
+gui.plr_set_max = Itakda
+gui.plr_reset_max = I-reset
+gui.plr_no_power_loss = Walang Pagkawala ng Kapangyarihan
+gui.plr_no_claim_decay = Walang Claim Decay
+gui.plr_kills = Mga Patay
+gui.plr_deaths = Mga Kamatayan
+gui.plr_kdr = K/D Ratio
+gui.plr_reset_kd = I-reset ang K/D
+gui.plr_kick = Paalisin
+gui.plr_membership_history = Kasaysayan ng Pagsapi
+gui.plr_no_faction_label = Wala sa isang paksyon
+gui.plr_power_management = Pamamahala ng Kapangyarihan
+gui.plr_combat_stats = Mga Estadistika ng Labanan
+gui.plr_bypass_flags = Mga Bypass Flag
+gui.plr_admin_controls = Mga Kontrol ng Admin
+gui.plr_kd_subtitle = K / D
+gui.plr_max_prefix = Max:
+gui.plr_view = Tingnan
+gui.plr_kick_from_faction = Paalisin mula sa Paksyon
+gui.plr_set_max_btn = Itakda ang Max
+gui.plr_combat = Labanan
+gui.plr_reason_active = AKTIBO
+gui.plr_reason_left = UMALIS
+gui.plr_reason_kicked = PINALAYAS
+gui.plr_reason_disbanded = NABUAG
+
+# Mga label ng entry ng kasapi
+gui.mem_label_power = Kapangyarihan:
+gui.mem_label_joined = Sumali:
+gui.mem_label_last_death = Huling Kamatayan:
+gui.mem_label_uuid = UUID:
+gui.mem_btn_info = Info
+gui.mem_btn_teleport = Teleport
+gui.mem_btn_promote = I-promote
+gui.mem_btn_demote = I-demote
+gui.mem_btn_kick = Paalisin
+gui.econ_not_enabled = Ang sistema ng ekonomiya ay hindi naka-enable.
+gui.info_more = +{0} pa
+gui.log_time_1h = 1h
+gui.log_time_24h = 24h
+gui.log_time_7d = 7d
+gui.log_time_all = Lahat
+gui.shape_circular = bilog
+gui.shape_square = parisukat
+gui.nav_title = Panel ng Admin
+gui.econ_btn_adjust = Isaayos
+gui.econ_btn_info = Info
+
+# Mga label ng impormasyon ng paksyon
+gui.fac_description = Deskripsyon
+gui.fac_power = Kapangyarihan
+gui.fac_claims = Mga Claim
+gui.fac_members = Mga Kasapi
+gui.fac_recruitment = Recruitment
+gui.fac_founded = Itinatag
+gui.fac_allies = Mga Kakampi
+gui.fac_enemies = Mga Kalaban
+gui.fac_raidable = Katayuan ng Raidable
+gui.fac_treasury = Kaban ng Yaman
+gui.fac_leader = Pinuno
+gui.fac_officers = Mga Opisyal
+gui.fac_view_members = Tingnan ang mga Kasapi
+gui.fac_view_relations = Tingnan ang mga Relasyon
+gui.fac_view_settings = Mga Setting
+gui.fac_disband = Buwagin ang Paksyon
+gui.fac_power_management = Pamamahala ng Kapangyarihan
+gui.fac_reset_all_power = I-reset ang Lahat ng Kapangyarihan
+gui.fac_econ_adjust = Isaayos ang Balanse
+gui.fac_econ_view_log = Tingnan ang Talaan ng Transaksyon
+gui.fac_current_max = kasalukuyan / maximum
+gui.fac_claimed_max = naka-claim / maximum
+gui.fac_relations = Mga Relasyon
+gui.fac_ally_enemy = kakampi / kalaban
+gui.fac_status = Katayuan
+gui.fac_info = Info
+gui.fac_treasury_balance = balanse ng kaban ng yaman
+gui.fac_leadership = Pamumuno
+gui.fac_leader_label = Pinuno:
+gui.fac_officers_label = Mga Opisyal:
+gui.fac_econ_mgmt = Pamamahala ng Ekonomiya
+gui.fac_danger_zone = Mapanganib na Zone
+gui.fac_view_treasury = Tingnan ang Kaban ng Yaman
+
+# Mga label ng setting ng paksyon
+gui.set_editing = Ine-edit:
+gui.set_general = Mga Pangkalahatang Setting
+gui.set_name = Pangalan
+gui.set_tag = Tag
+gui.set_description = Deskripsyon
+gui.set_recruitment = Recruitment
+gui.set_home = Lokasyon ng Home
+gui.set_clear_home = I-clear ang Home
+gui.set_disband_faction = Buwagin ang Paksyon
+gui.set_faction_color = Kulay ng Paksyon
+gui.set_admin_override = [Admin Override]
+gui.set_territory_perms = Mga Pahintulot sa Teritoryo
+gui.set_mob_spawning = Pag-spawn ng Mob
+gui.set_faction_settings = Mga Setting ng Paksyon
+gui.set_name_label = Pangalan:
+gui.set_tag_label = Tag:
+gui.set_desc_label = Desk:
+gui.set_edit = I-edit
+gui.set_status_label = Katayuan:
+gui.set_location_label = Lokasyon:
+gui.set_danger_zone = Mapanganib na Zone
+gui.set_irreversible = Ang aksyon na ito ay hindi na maaaring ibalik.
+gui.set_lock_hint = Ang ilang opsyon ay maaaring naka-lock ng server at hindi tatanggap ng mga pagbabago.
+gui.set_appearance = Hitsura
+gui.set_color_label = Kulay:
+gui.set_mob_sub = (mga anak ay naka-disable kapag naka-off ang master)
+gui.set_back_to_info = Bumalik sa Info
+gui.set_col_out = Labas
+gui.set_col_ally = Kakampi
+gui.set_col_mem = Kasapi
+gui.set_col_off = Opisyal
+gui.set_cat_building = PAGTATAYO
+gui.set_cat_interaction = INTERAKSYON
+gui.set_cat_interact_sub = (mga anak ay naka-disable kapag naka-off ang Lahat)
+gui.set_cat_other = IBA PA
+gui.set_perm_break = Sirain
+gui.set_perm_place = Ilagay
+gui.set_perm_all = Lahat
+gui.set_perm_door = Pinto
+gui.set_perm_chest = Chest
+gui.set_perm_bench = Bench
+gui.set_perm_processing = Processing
+gui.set_perm_seat = Upuan
+gui.set_perm_transport = Transport
+gui.set_perm_crate_use = Paggamit ng Crate
+gui.set_perm_npc_tame = Pag-tame ng NPC
+gui.set_perm_pve_damage = PvE Damage
+gui.set_perm_mob_spawning = Pag-spawn ng Mob
+gui.set_perm_hostile = Mga Agresibong Mob
+gui.set_perm_passive = Mga Pasibong Mob
+gui.set_perm_neutral = Mga Neutral na Mob
+gui.set_perm_pvp = PvP sa Teritoryo
+gui.set_perm_officers_edit = Maaaring mag-edit ang mga opisyal
+
+# Mga label ng relasyon ng paksyon
+gui.rel_subtitle = Pamahalaan ang mga relasyon ng paksyon (nilalampasan ang pag-apruba)
+gui.rel_set_new = Magtakda ng Bagong Relasyon
+gui.rel_btn_ally = Kakampi
+gui.rel_btn_neutral = Neutral
+gui.rel_btn_enemy = Kalaban
+
+# Mga label ng pahina ng zone
+gui.zone_sort_name = Pangalan
+gui.zone_sort_type = Uri
+gui.zone_sort_chunks = Mga Chunk
+gui.zone_sort_world = Mundo
+gui.zone_count_format = {0} {1}zones ({2} chunks)
+
+# Mga label ng mapa ng zone
+gui.map_zone_chunk = Chunk ng Zone
+gui.map_empty = Walang laman
+gui.map_other_zone = Ibang Zone
+gui.map_faction_claim = Claim ng Paksyon
+gui.map_protected = Protektado
+gui.map_your_pos = Iyong Posisyon
+gui.map_click_hint = I-click upang mag-claim/mag-unclaim ng mga chunk
+gui.map_legend_zone_safe = Itong Zone (Safe)
+gui.map_legend_zone_war = Itong Zone (War)
+gui.map_legend_other_safe = Ibang SafeZone
+gui.map_legend_other_war = Ibang WarZone
+gui.map_legend_faction = Claim ng Paksyon
+gui.map_legend_unclaimed = Hindi naka-claim
+gui.map_legend_you_here = Narito ka
+gui.map_action_hint = Left-click: I-claim para sa zone  |  Right-click: I-unclaim mula sa zone
+gui.map_done = Tapos
+
+# Mga label ng katangian ng zone
+gui.zprop_general = Pangkalahatan
+gui.zprop_zone_name = Pangalan ng Zone
+gui.zprop_zone_type = Uri ng Zone
+gui.zprop_change_type = Palitan ang Uri
+gui.zprop_notifications = Mga Notipikasyon
+gui.zprop_show_entry = Ipakita ang Entry Notification
+gui.zprop_upper_title = Upper Title
+gui.zprop_upper_desc = Upper Title (maliit na teksto sa itaas ng pangalan ng zone)
+gui.zprop_lower_title = Lower Title
+gui.zprop_lower_desc = Lower Title (malaking teksto ng pangalan ng zone)
+gui.zprop_edit_flags = I-edit ang mga Flag
+gui.zprop_back_to_zones = Bumalik sa mga Zone
+gui.save = I-save
+gui.clear = I-clear
+
+# Mga label ng bulk economy
+gui.bulk_header = Isaayos ang Lahat ng Kaban ng Yaman ng Paksyon
+gui.bulk_factions_label = Mga Paksyon:
+gui.bulk_total_label = Kabuuang Balanse:
+gui.bulk_amount_hint = Halaga (positibo upang magdagdag, negatibo upang magtanggal):
+gui.bulk_hint = Ito ay ilalapat sa bawat paksyon na may kaban ng yaman
+gui.bulk_warning_msg = Babala: Ang aksyon na ito ay nakakaapekto sa LAHAT ng paksyon at hindi na maaaring ibalik.
+gui.bulk_apply_all = Ilapat sa Lahat
+gui.bulk_operation = Operasyon
+gui.bulk_add = Magdagdag
+gui.bulk_remove = Magtanggal
+gui.bulk_amount = Halaga
+gui.bulk_warning = Ito ay makakaapekto sa LAHAT ng kaban ng yaman ng paksyon.
+gui.bulk_preview = Preview
+
+# Mga label ng pagsasaayos ng ekonomiya
+gui.ecadj_header = Isaayos ang Balanse ng Kaban ng Yaman
+gui.ecadj_faction_label = Paksyon:
+gui.ecadj_current_balance = Kasalukuyang Balanse:
+gui.ecadj_amount_hint = Halaga (positibo upang magdagdag, negatibo upang ibawas):
+gui.ecadj_preview_hint = Maglagay ng numero upang i-preview ang pagbabago
+gui.ecadj_adjustment = Pagsasaayos:
+gui.ecadj_set_balance = Itakda ang Balanse
+gui.ecadj_confirm = Kumpirmahin +/-
+gui.ecadj_operation = Operasyon
+gui.ecadj_add = Magdagdag
+gui.ecadj_remove = Magtanggal
+gui.ecadj_set_to = Itakda Sa
+gui.ecadj_amount = Halaga
+gui.ecadj_new_balance = Bagong Balanse:
+
+# Mga label ng integrasyon ng pahina ng bersyon
+gui.ver_hyperperms = HyperPerms
+gui.ver_luckperms = LuckPerms
+gui.ver_vault = VaultUnlocked
+gui.ver_native = Hytale Native
+gui.ver_hyperprotect = HyperProtect
+gui.ver_orbisguard_mixins = OrbisGuard Mixins
+gui.ver_orbisguard_api = OrbisGuard API
+gui.ver_mixin_hooks = Mixin Hooks
+gui.ver_gravestones = Mga Lapida
+gui.ver_kyuubisoft = KyuubiSoft
+gui.ver_placeholder_api = PlaceholderAPI
+gui.ver_wiflow_papi = WiFlow PAPI
+gui.ver_treasury = Kaban ng Yaman
+
+# Mga label ng modal ng kumpirmasyon ng unclaim lahat
+gui.unclaim_title = I-unclaim ang Lahat ng Teritoryo
+gui.unclaim_confirm_msg1 = Sigurado ka bang gusto mong i-unclaim ang lahat ng
+gui.unclaim_confirm_msg2 = mula sa
+gui.unclaim_warning = Ang aksyon na ito ay hindi na maaaring ibalik!
+gui.unclaim_all = I-unclaim Lahat
+
+# Mga label ng modal ng pagpapalit ng pangalan ng zone
+gui.zren_title = Palitan ang Pangalan ng Zone
+gui.zren_current = Kasalukuyan:
+gui.zren_new_name = Bagong Pangalan:
+
+# Mga label ng modal ng pagpapalit ng uri ng zone
+gui.ztype_title = Palitan ang Uri ng Zone
+gui.ztype_zone_label = Zone:
+gui.ztype_current = Kasalukuyan:
+gui.ztype_will_become = ay magiging
+gui.ztype_new = Bago:
+gui.ztype_warning1 = Ang iba't ibang uri ng zone ay may iba't ibang default na halaga ng flag.
+gui.ztype_warning2 = Piliin kung paano pangasiwaan ang mga umiiral na setting ng flag:
+gui.ztype_keep_desc = Panatilihin ang mga custom override
+gui.ztype_keep_flags = Panatilihin ang mga Flag
+gui.ztype_reset_desc = Gamitin ang mga default ng bagong uri
+gui.ztype_reset_flags = I-reset ang mga Flag
+
+# Mga label ng wizard ng paggawa ng zone
+gui.czw_title = Gumawa ng Zone
+gui.czw_back = < Bumalik
+gui.czw_create = Gumawa ng Zone
+gui.czw_zone_type = Uri ng Zone
+gui.czw_safe_desc = Protektado, walang PvP
+gui.czw_war_desc = Labanan, PvP naka-enable
+gui.czw_zone_name = Pangalan ng Zone
+gui.czw_name_desc = Maglagay ng natatanging pangalan para sa zone
+gui.czw_claim_method = Paraan ng Pag-claim
+gui.czw_method_none_desc = Gumawa ng walang laman na zone
+gui.czw_method_none = Walang claim
+gui.czw_method_single_desc = Ang iyong kasalukuyang chunk
+gui.czw_method_single = Isang chunk
+gui.czw_method_circle_desc = Bilog na lugar
+gui.czw_method_circle = Radius ng bilog
+gui.czw_method_square_desc = Parisukat na lugar
+gui.czw_method_square = Radius ng parisukat
+gui.czw_method_map_desc = Interactive na chunk editor
+gui.czw_method_map = Gamitin ang claim map
+gui.czw_radius = Radius
+gui.czw_custom_radius = Custom (1-50):
+gui.czw_flags = Mga Flag
+gui.czw_flags_defaults_desc = Batay sa uri ng zone
+gui.czw_flags_defaults = Gamitin ang mga default
+gui.czw_flags_customize_desc = Buksan ang mga setting pagkatapos
+gui.czw_flags_customize = I-customize
+
+# ========== Mga Label ng Entry (mga listahan ng Paksyon/Manlalaro/Zone) ==========
+
+# Mga label ng entry ng paksyon
+gui.fac_entry_power = kapangyarihan
+gui.fac_entry_claims = mga claim
+gui.fac_entry_members = mga kasapi
+gui.fac_entry_created = Nilikha:
+gui.fac_entry_home = Home:
+gui.fac_entry_tp_home = TP Home
+gui.fac_entry_view_info = Tingnan ang Info
+gui.fac_entry_members_btn = Mga Kasapi
+gui.fac_entry_settings = Mga Setting
+gui.fac_entry_unclaim_all = I-unclaim Lahat
+gui.fac_entry_disband = Buwagin
+
+# Mga label ng entry ng manlalaro
+gui.plr_entry_role = Tungkulin:
+gui.plr_entry_joined = Sumali:
+gui.plr_entry_last_online = Huling Online:
+gui.plr_entry_kdr = K/D/R:
+gui.plr_entry_power = Kapangyarihan:
+gui.plr_entry_uuid = UUID:
+gui.plr_entry_info = Info
+gui.plr_entry_teleport = Teleport
+gui.plr_entry_na = N/A
+gui.plr_entry_unknown = Hindi alam
+gui.plr_entry_ago = {0} nakalipas
+
+# Mga label ng entry ng zone
+gui.zone_entry_world = Mundo:
+gui.zone_entry_chunks = Mga Chunk:
+gui.zone_entry_bounds = Hangganan:
+gui.zone_entry_created = Nilikha:
+gui.zone_entry_edit_map = I-edit ang Mapa
+gui.zone_entry_flags = Mga Flag
+gui.zone_entry_settings = Mga Setting
+gui.zone_entry_delete = Tanggalin
+
+# ========== Updates Page ==========
+updates.version_info = Impormasyon ng Bersyon
+updates.current_version = Kasalukuyan:
+updates.build_date = Ginawa:
+updates.latest_version = Pinakabago:
+updates.channel = Channel:
+updates.update_status = Status ng Update
+updates.status_checking = Naghahanap ng mga update...
+updates.status_up_to_date = Na-update na
+updates.status_available = Bagong bersyon available: v{0}
+updates.status_downloading = Dina-download ang update...
+updates.status_downloaded = Matagumpay na na-download ang update!
+updates.status_failed = Hindi makapag-check ng mga update.
+updates.btn_check = Mag-check ng Updates
+updates.btn_download = I-download at I-install
+updates.btn_rollback = I-rollback sa
+updates.changelog_title = Mga Pagbabago
+updates.no_changelog = Walang changelog na available.
+updates.rollback_section = Rollback
+updates.rollback_confirm = Kumpirmahin ang Rollback
+updates.rollback_unsafe = Hindi ligtas ang rollback (na-restart na ang server pagkatapos ng update).
+updates.rollback_success = Na-rollback sa v{0}. I-restart para mag-apply.
+updates.rollback_failed = Nabigo ang rollback: {0}
+updates.mixin_title = HyperProtect Mixin
+updates.mixin_version = Bersyon:
+updates.mixin_check = I-check ang Mixin Update
+updates.mixin_up_to_date = Ang mixin ay na-update na.
+updates.mixin_available = May available na mixin update: v{0}
+updates.mixin_downloading = Dina-download ang mixin update...
+updates.mixin_downloaded = Na-download na ang mixin update!
+updates.mixin_failed = Hindi ma-download ang mixin update.
+updates.mixin_not_installed = Hindi naka-install
+updates.restart_required = Kailangan i-restart ang server.
+updates.pre_release = (pre-release)
+# ========== Backups Page ==========
+backups.title = Backup Management
+backups.total_count = Backups ({0} total)
+backups.empty = No backups found.
+backups.btn_create = Create Backup
+backups.btn_restore = Restore
+backups.btn_delete = Delete
+backups.name_placeholder = Name:
+backups.creating = Creating backup...
+backups.created = Backup created: {0}
+backups.create_failed = Failed to create backup
+backups.type_hourly = Hourly
+backups.type_daily = Daily
+backups.type_weekly = Weekly
+backups.type_manual = Manual
+backups.type_migration = Migration
+backups.detail_type = Type:
+backups.detail_created = Created:
+backups.detail_size = Size:
+backups.restore_warning = Warning: This will overwrite current data!
+backups.restore_confirm = Confirm Restore
+backups.restoring = Restoring backup...
+backups.restored = Restored {0} ({1} files).
+backups.restore_failed = Restore failed
+backups.delete_confirm = Confirm Delete
+backups.deleting = Deleting backup...
+backups.deleted = Deleted backup: {0}
+backups.delete_failed = Failed to delete backup.
+backups.reload_required = Run /f reload to apply restored data.
+
+# ========== Config Editor ==========
+config.tab_server = Server
+config.tab_chat = Chat
+config.tab_announcements = Announce
+config.tab_economy = Economy
+config.tab_factions = Factions
+config.tab_faction_perms = Fac Perms
+config.tab_worldmap = Worldmap
+config.tab_worlds = Worlds
+config.tab_backup = Backup
+config.tab_debug = Debug
+config.tab_gravestones = Graves
+config.changes_pending = changes pending
+config.no_changes = No changes
+config.btn_save = Save
+config.btn_revert = Revert
+config.btn_reset = Reset Defaults
+config.saved = Configuration saved.
+config.reverted = Changes reverted.
+config.reset_confirm = Confirm Reset
+config.reset_done = Configuration reset to defaults.
+config.sec_teleport = Teleport
+config.sec_autosave = Auto-Save
+config.sec_messages = Messages
+config.sec_gui = GUI
+config.sec_permissions = Permissions
+config.sec_language = Language
+config.sec_mob_clear = Mob Clearing
+config.sec_updates = Updates
+config.sec_faction_limits = Faction Limits
+config.sec_power = Power
+config.sec_power_loss = Power Loss
+config.sec_regen = Regeneration
+config.sec_claims = Claims
+config.sec_decay = Decay
+config.sec_protection = Claim Protection
+config.sec_combat_tag = Combat Tag
+config.sec_friendly_fire = Friendly Fire
+config.sec_spawn_prot = Spawn Protection
+config.sec_relations = Relations
+config.sec_invites = Invites
+config.sec_stuck = Stuck Command
+config.sec_format = Chat Format
+config.sec_colors = Colors
+config.sec_rel_colors = Relation Colors
+config.sec_faction_chat = Faction Chat
+config.sec_history = Chat History
+config.sec_backup = Backup
+config.sec_economy = Economy
+config.sec_announcements = Announcements
+config.sec_map_display = Map Display
+config.sec_visibility = Player Visibility
+config.sec_mixin = Mixin
+config.sec_territory_notify = Territory Notifications
+config.sec_wilderness = Wilderness Messages
+config.sec_currency = Currency
+config.sec_treasury_limits = Treasury Limits
+config.sec_fees = Fees
+config.sec_upkeep = Upkeep
+config.sec_proximity = Proximity Mode
+config.sec_incremental = Incremental Mode
+config.sec_debounced = Debounced Mode
+config.sec_debug_global = Global
+config.sec_debug_categories = Categories
+config.sec_sentry = Sentry
+config.sec_gravestone_protection = Protection
+config.sec_gravestone_access = Access
+config.sec_gravestone_loot = Loot Rules

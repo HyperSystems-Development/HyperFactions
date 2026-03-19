@@ -1,0 +1,32 @@
+// Markdown rendering test page — /f admin test md
+$C = "../../Common.ui";
+
+Group {
+  Anchor: (Width: 700, Height: 650);
+  Background: (Color: #0d1117);
+
+  // Title bar
+  Group {
+    Anchor: (Height: 40, Top: 0, Left: 0, Right: 0);
+    Background: (Color: #161b22);
+
+    Label #PageTitle {
+      Text: "Markdown Test Page";
+      Style: (FontSize: 14, TextColor: #00AAAA, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
+      Anchor: (Left: 0, Right: 0, Top: 0, Bottom: 0);
+    }
+  }
+
+  // Scrollable content area
+  Group {
+    Anchor: (Top: 44, Left: 12, Right: 12, Bottom: 12);
+    LayoutMode: TopScrolling;
+    ScrollbarStyle: $C.@DefaultScrollbarStyle;
+
+    // Content entries appended here by Java
+    Group #ContentList {
+      LayoutMode: Top;
+      Anchor: (Left: 0, Right: 0);
+    }
+  }
+}

@@ -2,6 +2,7 @@ package com.hyperfactions.command.territory;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
+import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.command.FactionCommandContext;
 import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.command.util.CommandUtil;
@@ -9,6 +10,8 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.ClaimManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.ChunkUtil;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -41,7 +44,7 @@ public class OverclaimSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.OVERCLAIM)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to overclaim territory.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.OVERCLAIM_NO_PERMISSION));
       return;
     }
 
@@ -68,7 +71,7 @@ public class OverclaimSubCommand extends FactionSubCommand {
 
     switch (result) {
       case SUCCESS -> {
-        ctx.sendMessage(prefix().insert(msg("Overclaimed enemy territory!", COLOR_GREEN)));
+        ctx.sendMessage(MessageUtil.success(player, CommandKeys.Claim.OVERCLAIMED));
         // Show map after overclaiming (if not text mode)
         if (!fctx.isTextMode()) {
           Player playerEntity = store.getComponent(ref, Player.getComponentType());
@@ -77,14 +80,18 @@ public class OverclaimSubCommand extends FactionSubCommand {
           }
         }
       }
-      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error("You are not in a faction."));
-      case NOT_OFFICER -> ctx.sendMessage(prefix().insert(msg("You must be an officer to overclaim.", COLOR_RED)));
-      case CHUNK_NOT_CLAIMED -> ctx.sendMessage(prefix().insert(msg("This chunk is not claimed. Use /f claim.", COLOR_RED)));
-      case ALREADY_CLAIMED_SELF -> ctx.sendMessage(prefix().insert(msg("Your faction already owns this chunk.", COLOR_RED)));
-      case ALREADY_CLAIMED_ALLY -> ctx.sendMessage(prefix().insert(msg("You cannot overclaim ally territory.", COLOR_RED)));
-      case TARGET_HAS_POWER -> ctx.sendMessage(prefix().insert(msg("This faction still has enough power.", COLOR_RED)));
-      case MAX_CLAIMS_REACHED -> ctx.sendMessage(prefix().insert(msg("Your faction has reached max claims.", COLOR_RED)));
-      default -> ctx.sendMessage(prefix().insert(msg("Failed to overclaim.", COLOR_RED)));
+      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.NOT_IN_FACTION));
+      case NOT_OFFICER -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.OVERCLAIM_NOT_OFFICER));
+      case CHUNK_NOT_CLAIMED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.OVERCLAIM_NOT_CLAIMED));
+      case ALREADY_CLAIMED_SELF -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.OVERCLAIM_OWN));
+      case ALREADY_CLAIMED_ALLY -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.OVERCLAIM_ALLY));
+      case TARGET_HAS_POWER -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.TARGET_HAS_POWER));
+      case MAX_CLAIMS_REACHED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.MAX_CLAIMS));
+      case WORLD_MAX_CLAIMS_REACHED -> {
+        Integer wmc = ConfigManager.get().getWorldMaxClaims(currentWorld.getName());
+        ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.WORLD_MAX_CLAIMS, wmc != null ? wmc : "?"));
+      }
+      default -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.OVERCLAIM_FAILED));
     }
   }
 }

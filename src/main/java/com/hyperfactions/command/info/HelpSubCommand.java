@@ -10,6 +10,9 @@ import com.hyperfactions.gui.help.HelpRegistry;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.CommandHelp;
 import com.hyperfactions.util.HelpFormatter;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.HelpKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -43,7 +46,7 @@ public class HelpSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.HELP)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to view help.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Info.HELP_NO_PERMISSION));
       return;
     }
 
@@ -71,67 +74,67 @@ public class HelpSubCommand extends FactionSubCommand {
   private void showHelpText(CommandContext ctx, PlayerRef player) {
     List<CommandHelp> commands = new ArrayList<>();
 
-    // Core - Basic faction management
-    commands.add(new CommandHelp("/f create <name>", "Create a faction", "Core"));
-    commands.add(new CommandHelp("/f disband", "Disband your faction", "Core"));
-    commands.add(new CommandHelp("/f invite <player>", "Invite a player", "Core"));
-    commands.add(new CommandHelp("/f accept [faction]", "Accept an invite", "Core"));
-    commands.add(new CommandHelp("/f request <faction> [msg]", "Request to join a faction", "Core"));
-    commands.add(new CommandHelp("/f leave", "Leave your faction", "Core"));
-    commands.add(new CommandHelp("/f kick <player>", "Kick a member", "Core"));
+    // Core - Basic faction management (sortOrder 0)
+    commands.add(new CommandHelp("/f create <name>", HelpKeys.Help.CMD_CREATE, HelpKeys.Help.SECTION_CORE, 0));
+    commands.add(new CommandHelp("/f disband", HelpKeys.Help.CMD_DISBAND, HelpKeys.Help.SECTION_CORE, 0));
+    commands.add(new CommandHelp("/f invite <player>", HelpKeys.Help.CMD_INVITE, HelpKeys.Help.SECTION_CORE, 0));
+    commands.add(new CommandHelp("/f accept [faction]", HelpKeys.Help.CMD_ACCEPT, HelpKeys.Help.SECTION_CORE, 0));
+    commands.add(new CommandHelp("/f request <faction> [msg]", HelpKeys.Help.CMD_REQUEST, HelpKeys.Help.SECTION_CORE, 0));
+    commands.add(new CommandHelp("/f leave", HelpKeys.Help.CMD_LEAVE, HelpKeys.Help.SECTION_CORE, 0));
+    commands.add(new CommandHelp("/f kick <player>", HelpKeys.Help.CMD_KICK, HelpKeys.Help.SECTION_CORE, 0));
 
-    // Management - Faction settings
-    commands.add(new CommandHelp("/f rename <name>", "Rename your faction", "Management"));
-    commands.add(new CommandHelp("/f desc <text>", "Set faction description", "Management"));
-    commands.add(new CommandHelp("/f color <code>", "Set faction color", "Management"));
-    commands.add(new CommandHelp("/f open", "Allow anyone to join", "Management"));
-    commands.add(new CommandHelp("/f close", "Require invite to join", "Management"));
-    commands.add(new CommandHelp("/f promote <player>", "Promote to officer", "Management"));
-    commands.add(new CommandHelp("/f demote <player>", "Demote to member", "Management"));
-    commands.add(new CommandHelp("/f transfer <player>", "Transfer leadership", "Management"));
+    // Management - Faction settings (sortOrder 1)
+    commands.add(new CommandHelp("/f rename <name>", HelpKeys.Help.CMD_RENAME, HelpKeys.Help.SECTION_MANAGEMENT, 1));
+    commands.add(new CommandHelp("/f desc <text>", HelpKeys.Help.CMD_DESC, HelpKeys.Help.SECTION_MANAGEMENT, 1));
+    commands.add(new CommandHelp("/f color <code>", HelpKeys.Help.CMD_COLOR, HelpKeys.Help.SECTION_MANAGEMENT, 1));
+    commands.add(new CommandHelp("/f open", HelpKeys.Help.CMD_OPEN, HelpKeys.Help.SECTION_MANAGEMENT, 1));
+    commands.add(new CommandHelp("/f close", HelpKeys.Help.CMD_CLOSE, HelpKeys.Help.SECTION_MANAGEMENT, 1));
+    commands.add(new CommandHelp("/f promote <player>", HelpKeys.Help.CMD_PROMOTE, HelpKeys.Help.SECTION_MANAGEMENT, 1));
+    commands.add(new CommandHelp("/f demote <player>", HelpKeys.Help.CMD_DEMOTE, HelpKeys.Help.SECTION_MANAGEMENT, 1));
+    commands.add(new CommandHelp("/f transfer <player>", HelpKeys.Help.CMD_TRANSFER, HelpKeys.Help.SECTION_MANAGEMENT, 1));
 
-    // Territory - Land claims
-    commands.add(new CommandHelp("/f claim", "Claim this chunk", "Territory"));
-    commands.add(new CommandHelp("/f unclaim", "Unclaim this chunk", "Territory"));
-    commands.add(new CommandHelp("/f overclaim", "Overclaim enemy territory", "Territory"));
-    commands.add(new CommandHelp("/f map", "View territory map", "Territory"));
+    // Territory - Land claims (sortOrder 2)
+    commands.add(new CommandHelp("/f claim", HelpKeys.Help.CMD_CLAIM, HelpKeys.Help.SECTION_TERRITORY, 2));
+    commands.add(new CommandHelp("/f unclaim", HelpKeys.Help.CMD_UNCLAIM, HelpKeys.Help.SECTION_TERRITORY, 2));
+    commands.add(new CommandHelp("/f overclaim", HelpKeys.Help.CMD_OVERCLAIM, HelpKeys.Help.SECTION_TERRITORY, 2));
+    commands.add(new CommandHelp("/f map", HelpKeys.Help.CMD_MAP, HelpKeys.Help.SECTION_TERRITORY, 2));
 
-    // Relations - Diplomatic relations
-    commands.add(new CommandHelp("/f ally <faction>", "Request alliance", "Relations"));
-    commands.add(new CommandHelp("/f enemy <faction>", "Declare enemy", "Relations"));
-    commands.add(new CommandHelp("/f neutral <faction>", "Set neutral relation", "Relations"));
+    // Relations - Diplomatic relations (sortOrder 3)
+    commands.add(new CommandHelp("/f ally <faction>", HelpKeys.Help.CMD_ALLY, HelpKeys.Help.SECTION_RELATIONS, 3));
+    commands.add(new CommandHelp("/f enemy <faction>", HelpKeys.Help.CMD_ENEMY, HelpKeys.Help.SECTION_RELATIONS, 3));
+    commands.add(new CommandHelp("/f neutral", HelpKeys.Help.CMD_NEUTRAL, HelpKeys.Help.SECTION_RELATIONS, 3));
 
-    // Teleport - Home teleportation
-    commands.add(new CommandHelp("/f home", "Teleport to faction home", "Teleport"));
-    commands.add(new CommandHelp("/f sethome", "Set faction home", "Teleport"));
-    commands.add(new CommandHelp("/f stuck", "Escape from enemy territory", "Teleport"));
+    // Teleport - Home teleportation (sortOrder 4)
+    commands.add(new CommandHelp("/f home", HelpKeys.Help.CMD_HOME, HelpKeys.Help.SECTION_TELEPORT, 4));
+    commands.add(new CommandHelp("/f sethome", HelpKeys.Help.CMD_SETHOME, HelpKeys.Help.SECTION_TELEPORT, 4));
+    commands.add(new CommandHelp("/f stuck", HelpKeys.Help.CMD_STUCK, HelpKeys.Help.SECTION_TELEPORT, 4));
 
-    // Information - Viewing faction data
-    commands.add(new CommandHelp("/f info [faction]", "View faction info", "Information"));
-    commands.add(new CommandHelp("/f list", "List all factions", "Information"));
-    commands.add(new CommandHelp("/f browse", "Browse factions (alias for list)", "Information"));
-    commands.add(new CommandHelp("/f members", "View faction members", "Information"));
-    commands.add(new CommandHelp("/f invites", "Manage invites/requests", "Information"));
-    commands.add(new CommandHelp("/f who [player]", "View player info", "Information"));
-    commands.add(new CommandHelp("/f power [player]", "View power level", "Information"));
-    commands.add(new CommandHelp("/f gui", "Open faction GUI", "Information"));
-    commands.add(new CommandHelp("/f settings", "Open faction settings", "Information"));
+    // Information - Viewing faction data (sortOrder 5)
+    commands.add(new CommandHelp("/f info [faction]", HelpKeys.Help.CMD_INFO, HelpKeys.Help.SECTION_INFORMATION, 5));
+    commands.add(new CommandHelp("/f list", HelpKeys.Help.CMD_LIST, HelpKeys.Help.SECTION_INFORMATION, 5));
+    commands.add(new CommandHelp("/f browse", HelpKeys.Help.CMD_BROWSE, HelpKeys.Help.SECTION_INFORMATION, 5));
+    commands.add(new CommandHelp("/f members", HelpKeys.Help.CMD_MEMBERS, HelpKeys.Help.SECTION_INFORMATION, 5));
+    commands.add(new CommandHelp("/f invites", HelpKeys.Help.CMD_INVITES, HelpKeys.Help.SECTION_INFORMATION, 5));
+    commands.add(new CommandHelp("/f who [player]", HelpKeys.Help.CMD_WHO, HelpKeys.Help.SECTION_INFORMATION, 5));
+    commands.add(new CommandHelp("/f power [player]", HelpKeys.Help.CMD_POWER, HelpKeys.Help.SECTION_INFORMATION, 5));
+    commands.add(new CommandHelp("/f gui", HelpKeys.Help.CMD_GUI, HelpKeys.Help.SECTION_INFORMATION, 5));
+    commands.add(new CommandHelp("/f settings", HelpKeys.Help.CMD_SETTINGS, HelpKeys.Help.SECTION_INFORMATION, 5));
 
-    // Other
-    commands.add(new CommandHelp("/f chat <message>", "Send faction chat message", "Other"));
-    commands.add(new CommandHelp("/f c <message>", "Faction chat (short)", "Other"));
+    // Other (sortOrder 6)
+    commands.add(new CommandHelp("/f chat <message>", HelpKeys.Help.CMD_CHAT, HelpKeys.Help.SECTION_OTHER, 6));
+    commands.add(new CommandHelp("/f c <message>", HelpKeys.Help.CMD_CHAT_SHORT, HelpKeys.Help.SECTION_OTHER, 6));
 
-    // Admin
-    commands.add(new CommandHelp("/f admin", "Open admin GUI", "Admin"));
-    commands.add(new CommandHelp("/f admin reload", "Reload config", "Admin"));
-    commands.add(new CommandHelp("/f admin sync", "Sync data from disk", "Admin"));
-    commands.add(new CommandHelp("/f admin factions", "Manage factions", "Admin"));
-    commands.add(new CommandHelp("/f admin zones", "Manage zones", "Admin"));
-    commands.add(new CommandHelp("/f admin config", "View/edit config", "Admin"));
-    commands.add(new CommandHelp("/f admin backups", "Manage backups", "Admin"));
-    commands.add(new CommandHelp("/f admin update", "Check for updates", "Admin"));
-    commands.add(new CommandHelp("/f admin debug", "Debug commands", "Admin"));
+    // Admin (sortOrder 7)
+    commands.add(new CommandHelp("/f admin", HelpKeys.Help.CMD_ADMIN, HelpKeys.Help.SECTION_ADMIN, 7));
+    commands.add(new CommandHelp("/f admin reload", HelpKeys.Help.CMD_ADMIN_RELOAD, HelpKeys.Help.SECTION_ADMIN, 7));
+    commands.add(new CommandHelp("/f admin sync", HelpKeys.Help.CMD_ADMIN_SYNC, HelpKeys.Help.SECTION_ADMIN, 7));
+    commands.add(new CommandHelp("/f admin factions", HelpKeys.Help.CMD_ADMIN_FACTIONS, HelpKeys.Help.SECTION_ADMIN, 7));
+    commands.add(new CommandHelp("/f admin zones", HelpKeys.Help.CMD_ADMIN_ZONES, HelpKeys.Help.SECTION_ADMIN, 7));
+    commands.add(new CommandHelp("/f admin config", HelpKeys.Help.CMD_ADMIN_CONFIG, HelpKeys.Help.SECTION_ADMIN, 7));
+    commands.add(new CommandHelp("/f admin backups", HelpKeys.Help.CMD_ADMIN_BACKUPS, HelpKeys.Help.SECTION_ADMIN, 7));
+    commands.add(new CommandHelp("/f admin update", HelpKeys.Help.CMD_ADMIN_UPDATE, HelpKeys.Help.SECTION_ADMIN, 7));
+    commands.add(new CommandHelp("/f admin debug", HelpKeys.Help.CMD_ADMIN_DEBUG, HelpKeys.Help.SECTION_ADMIN, 7));
 
-    ctx.sendMessage(HelpFormatter.buildHelp("HyperFactions", "Faction management and territory control", commands, "Use /f <command> for more details"));
+    ctx.sendMessage(HelpFormatter.buildHelp(HelpKeys.Help.TITLE, HelpKeys.Help.DESCRIPTION, commands, HelpKeys.Help.DEFAULT_FOOTER, player));
   }
 }

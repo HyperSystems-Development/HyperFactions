@@ -1,5 +1,9 @@
 package com.hyperfactions.gui.admin.page;
 
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.AdminGuiKeys;
+import com.hyperfactions.util.CommonKeys;
+
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.gui.GuiManager;
@@ -59,20 +63,35 @@ public class AdminVersionPage extends InteractiveCustomUIPage<AdminVersionData> 
     // Setup admin nav bar
     AdminNavBarHelper.setupBar(playerRef, "version", cmd, events);
 
+    // Localize page title
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_TITLE_VERSION));
+
+    // Localize version card labels
+    cmd.set("#VersionLabelFactions.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_VER_HYPERFACTIONS));
+    cmd.set("#VersionLabelServer.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_VER_HYTALE_SERVER));
+    cmd.set("#VersionLabelJava.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_VER_JAVA));
+
+    // Localize section headers
+    cmd.set("#SectionPermissions.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_VER_PERMISSIONS));
+    cmd.set("#SectionPlaceholders.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_VER_PLACEHOLDERS));
+    cmd.set("#SectionEconomy.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_VER_ECONOMY_SECTION));
+    cmd.set("#SectionProtection.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_VER_PROTECTION));
+
     // --- Version Info ---
     cmd.set("#FactionsVersion.Text", "v" + HyperFactions.VERSION);
 
     String serverVersion = ManifestUtil.getVersion();
-    cmd.set("#ServerVersion.Text", serverVersion != null ? serverVersion : "Unknown");
+    cmd.set("#ServerVersion.Text", serverVersion != null ? serverVersion : HFMessages.get(playerRef, CommonKeys.Common.UNKNOWN));
 
-    cmd.set("#JavaVersion.Text", System.getProperty("java.version", "Unknown"));
+    String javaVersion = System.getProperty("java.version");
+    cmd.set("#JavaVersion.Text", javaVersion != null ? javaVersion : HFMessages.get(playerRef, CommonKeys.Common.UNKNOWN));
 
     // --- Permissions ---
-    setStatus(cmd, "#HyperPermsStatus", HyperPermsIntegration.isAvailable(), "Active", "Not Found");
+    setStatus(cmd, "#HyperPermsStatus", HyperPermsIntegration.isAvailable(), HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_ACTIVE), HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_NOT_FOUND));
 
     String providerNames = PermissionManager.get().getProviderNames();
 
-    setStatus(cmd, "#LuckPermsStatus", providerNames.contains("LuckPerms"), "Active", "Not Found");
+    setStatus(cmd, "#LuckPermsStatus", providerNames.contains("LuckPerms"), HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_ACTIVE), HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_NOT_FOUND));
 
     boolean vaultAvailable = providerNames.contains("VaultUnlocked");
     boolean vaultInstalled = false;
@@ -83,14 +102,14 @@ public class AdminVersionPage extends InteractiveCustomUIPage<AdminVersionData> 
       } catch (ClassNotFoundException ignored) {}
     }
     if (vaultAvailable) {
-      setStatusColor(cmd, "#VaultUnlockedStatus", "Active", COLOR_GREEN);
+      setStatusColor(cmd, "#VaultUnlockedStatus", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_ACTIVE), COLOR_GREEN);
     } else if (vaultInstalled) {
-      setStatusColor(cmd, "#VaultUnlockedStatus", "Installed (no perm provider)", COLOR_YELLOW);
+      setStatusColor(cmd, "#VaultUnlockedStatus", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_ACTIVE_PROVIDER), COLOR_YELLOW);
     } else {
-      setStatusColor(cmd, "#VaultUnlockedStatus", "Not Installed", COLOR_GRAY);
+      setStatusColor(cmd, "#VaultUnlockedStatus", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_NOT_INSTALLED), COLOR_GRAY);
     }
 
-    setStatus(cmd, "#NativeStatus", providerNames.contains("HytaleNative"), "Active", "Not Found");
+    setStatus(cmd, "#NativeStatus", providerNames.contains("HytaleNative"), HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_ACTIVE), HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_NOT_FOUND));
 
     // --- Protection ---
     ProtectionMixinBridge.MixinProvider provider = ProtectionMixinBridge.getProvider();
@@ -99,33 +118,33 @@ public class AdminVersionPage extends InteractiveCustomUIPage<AdminVersionData> 
     switch (provider) {
       case BOTH -> {
         String hpVersion = System.getProperty("hyperprotect.bridge.version", "unknown");
-        setStatusColor(cmd, "#HyperProtectStatus", "Active (v" + hpVersion + ")", COLOR_GREEN);
-        setStatusColor(cmd, "#OrbisGuardMixinsStatus", "Active (compatible)", COLOR_GREEN);
+        setStatusColor(cmd, "#HyperProtectStatus", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_ACTIVE) + " (v" + hpVersion + ")", COLOR_GREEN);
+        setStatusColor(cmd, "#OrbisGuardMixinsStatus", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_ACTIVE) + " (compatible)", COLOR_GREEN);
       }
       case HYPERPROTECT -> {
         String hpVersion = System.getProperty("hyperprotect.bridge.version", "unknown");
-        setStatusColor(cmd, "#HyperProtectStatus", "Active (v" + hpVersion + ")", COLOR_GREEN);
-        setStatusColor(cmd, "#OrbisGuardMixinsStatus", "N/A", COLOR_GRAY);
+        setStatusColor(cmd, "#HyperProtectStatus", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_ACTIVE) + " (v" + hpVersion + ")", COLOR_GREEN);
+        setStatusColor(cmd, "#OrbisGuardMixinsStatus", HFMessages.get(playerRef, CommonKeys.Common.NA), COLOR_GRAY);
       }
       case ORBISGUARD -> {
-        setStatusColor(cmd, "#HyperProtectStatus", "Not Detected", COLOR_GRAY);
-        setStatusColor(cmd, "#OrbisGuardMixinsStatus", "Active", COLOR_GREEN);
+        setStatusColor(cmd, "#HyperProtectStatus", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_NOT_DETECTED), COLOR_GRAY);
+        setStatusColor(cmd, "#OrbisGuardMixinsStatus", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_ACTIVE), COLOR_GREEN);
       }
       case NONE -> {
-        setStatusColor(cmd, "#HyperProtectStatus", "Not Detected", COLOR_GRAY);
-        setStatusColor(cmd, "#OrbisGuardMixinsStatus", "Not Detected", COLOR_GRAY);
+        setStatusColor(cmd, "#HyperProtectStatus", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_NOT_DETECTED), COLOR_GRAY);
+        setStatusColor(cmd, "#OrbisGuardMixinsStatus", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_NOT_DETECTED), COLOR_GRAY);
       }
       default -> throw new IllegalStateException("Unexpected value");
     }
 
     if (ogApiAvailable) {
       String ogLabel = provider == ProtectionMixinBridge.MixinProvider.NONE
-          ? "Active (claims only)" : "Active";
+          ? HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_ACTIVE) + " (claims only)" : HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_ACTIVE);
       String ogColor = provider == ProtectionMixinBridge.MixinProvider.NONE
           ? COLOR_YELLOW : COLOR_GREEN;
       setStatusColor(cmd, "#OrbisGuardApiStatus", ogLabel, ogColor);
     } else {
-      setStatusColor(cmd, "#OrbisGuardApiStatus", "Not Detected", COLOR_GRAY);
+      setStatusColor(cmd, "#OrbisGuardApiStatus", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_NOT_DETECTED), COLOR_GRAY);
     }
 
     String mixinStatus = ProtectionMixinBridge.getStatusSummary();
@@ -135,16 +154,16 @@ public class AdminVersionPage extends InteractiveCustomUIPage<AdminVersionData> 
     GravestoneIntegration gs = plugin.getProtectionChecker().getGravestoneIntegration();
     boolean gsAvailable = gs != null && gs.isAvailable();
     boolean gsEnabled = ConfigManager.get().gravestones().isEnabled();
-    String gsStatus = !gsAvailable ? "Not Found" : (gsEnabled ? "Active" : "Disabled");
+    String gsStatus = !gsAvailable ? HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_NOT_FOUND) : (gsEnabled ? HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_ACTIVE) : HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_VER_DISABLED));
     String gsColor = gsAvailable && gsEnabled ? COLOR_GREEN : (gsAvailable ? COLOR_YELLOW : COLOR_GRAY);
     setStatusColor(cmd, "#GravestonesStatus", gsStatus, gsColor);
 
     KyuubiSoftIntegration ks = plugin.getKyuubiSoftIntegration();
     boolean ksAvailable = ks != null && ks.isAvailable();
-    setStatus(cmd, "#KyuubiSoftStatus", ksAvailable, "Active", "Not Found");
+    setStatus(cmd, "#KyuubiSoftStatus", ksAvailable, HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_ACTIVE), HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_NOT_FOUND));
 
     // --- Placeholders ---
-    setStatus(cmd, "#PlaceholderAPIStatus", PlaceholderAPIIntegration.isAvailable(), "Active", "Not Found");
+    setStatus(cmd, "#PlaceholderAPIStatus", PlaceholderAPIIntegration.isAvailable(), HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_ACTIVE), HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_NOT_FOUND));
 
     boolean wiflowAvailable;
     try {
@@ -152,7 +171,7 @@ public class AdminVersionPage extends InteractiveCustomUIPage<AdminVersionData> 
     } catch (NoClassDefFoundError e) {
       wiflowAvailable = false;
     }
-    setStatus(cmd, "#WiFlowPAPIStatus", wiflowAvailable, "Active", "Not Found");
+    setStatus(cmd, "#WiFlowPAPIStatus", wiflowAvailable, HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_ACTIVE), HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_NOT_FOUND));
 
     // --- Economy ---
     if (plugin.isTreasuryEnabled()) {
@@ -161,10 +180,10 @@ public class AdminVersionPage extends InteractiveCustomUIPage<AdminVersionData> 
       if (econMgr != null) {
         econName = econMgr.getVaultProvider().getEconomyName();
       }
-      String treasuryLabel = econName != null ? "Active (" + econName + ")" : "Active";
+      String treasuryLabel = econName != null ? HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_ACTIVE) + " (" + econName + ")" : HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_ACTIVE);
       setStatusColor(cmd, "#TreasuryStatus", treasuryLabel, COLOR_GREEN);
     } else {
-      setStatusColor(cmd, "#TreasuryStatus", "Not Found", COLOR_GRAY);
+      setStatusColor(cmd, "#TreasuryStatus", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.VER_NOT_FOUND), COLOR_GRAY);
     }
   }
 

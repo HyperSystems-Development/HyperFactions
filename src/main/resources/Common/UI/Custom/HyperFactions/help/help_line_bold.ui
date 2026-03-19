@@ -1,0 +1,11 @@
+// Help content line - bold text (gray, bold, wrapping)
+
+Group {
+  Padding: (Top: 1, Bottom: 1);
+
+  Label #Text {
+    Text: "";
+    Style: (FontSize: 11, TextColor: #CCCCCC, RenderBold: true, Wrap: true, VerticalAlignment: Center);
+    Anchor: (Left: 0, Right: 0);
+  }
+}

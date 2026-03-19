@@ -104,7 +104,7 @@ public final class StorageUtils {
         try {
           Files.copy(targetFile, backupFile, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-          Logger.warn("[Storage] Could not create backup for %s: %s", targetFile, e.getMessage());
+          ErrorHandler.report(String.format("[Storage] Could not create backup for %s", targetFile), e);
           // Continue anyway - backup is best-effort
         }
       }
@@ -290,7 +290,7 @@ public final class StorageUtils {
     try {
       mainDeleted = Files.deleteIfExists(targetFile);
     } catch (IOException e) {
-      Logger.warn("[Storage] Failed to delete %s: %s", targetFile.getFileName(), e.getMessage());
+      ErrorHandler.report(String.format("[Storage] Failed to delete %s", targetFile.getFileName()), e);
     }
 
     try {
@@ -298,7 +298,7 @@ public final class StorageUtils {
         Logger.debug("[Storage] Deleted backup file: %s", backupFile.getFileName());
       }
     } catch (IOException e) {
-      Logger.warn("[Storage] Failed to delete backup %s: %s", backupFile.getFileName(), e.getMessage());
+      ErrorHandler.report(String.format("[Storage] Failed to delete backup %s", backupFile.getFileName()), e);
     }
 
     return mainDeleted;
@@ -339,7 +339,7 @@ public final class StorageUtils {
             cleaned++;
             Logger.debug("[Storage] Cleaned orphaned temp file: %s", fileName);
           } catch (IOException e) {
-            Logger.warn("[Storage] Failed to clean temp file %s: %s", fileName, e.getMessage());
+            ErrorHandler.report(String.format("[Storage] Failed to clean temp file %s", fileName), e);
           }
           continue;
         }
@@ -354,13 +354,13 @@ public final class StorageUtils {
               cleaned++;
               Logger.debug("[Storage] Cleaned orphaned backup file: %s", fileName);
             } catch (IOException e) {
-              Logger.warn("[Storage] Failed to clean backup file %s: %s", fileName, e.getMessage());
+              ErrorHandler.report(String.format("[Storage] Failed to clean backup file %s", fileName), e);
             }
           }
         }
       }
     } catch (IOException e) {
-      Logger.warn("[Storage] Failed to scan directory for cleanup: %s", e.getMessage());
+      ErrorHandler.report("[Storage] Failed to scan directory for cleanup", e);
     }
 
     if (cleaned > 0) {

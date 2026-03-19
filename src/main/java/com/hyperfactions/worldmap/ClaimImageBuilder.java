@@ -507,21 +507,6 @@ public class ClaimImageBuilder {
           }
         }
 
-        // Apply claim overlay if enabled (renders ON TOP of OG regions)
-        if (showClaimsOnMap) {
-          if (isSafeZone) {
-            boolean isBorder = isBorderPixel(ix, iz, nearbySafeZones);
-            getForceBlockColor(blockId, COLOR_SAFEZONE, this.outColor, isBorder);
-          } else if (isWarZone) {
-            boolean isBorder = isBorderPixel(ix, iz, nearbyWarZones);
-            getForceBlockColor(blockId, COLOR_WARZONE, this.outColor, isBorder);
-          } else if (factionInfo != null) {
-            boolean isBorder = isFactionBorderPixel(ix, iz, factionInfo.id(), nearbyChunkOwners);
-            int factionColor = colorCodeToHex(factionInfo.color());
-            getForceBlockColor(blockId, factionColor, this.outColor, isBorder);
-          }
-        }
-
         // Calculate terrain shading
         short north = this.neighborHeightSamples[sampleZ * (this.sampleWidth + 2) + sampleX + 1];
         short south = this.neighborHeightSamples[(sampleZ + 2) * (this.sampleWidth + 2) + sampleX + 1];
@@ -542,6 +527,21 @@ public class ClaimImageBuilder {
           short fluidDepth = this.fluidDepthSamples[sampleIndex];
           int environmentId = this.environmentSamples[sampleIndex];
           getFluidColor(fluidId, environmentId, fluidDepth, this.outColor);
+        }
+
+        // Apply claim overlay if enabled (renders ON TOP of water/fluid)
+        if (showClaimsOnMap) {
+          if (isSafeZone) {
+            boolean isBorder = isBorderPixel(ix, iz, nearbySafeZones);
+            getForceBlockColor(blockId, COLOR_SAFEZONE, this.outColor, isBorder);
+          } else if (isWarZone) {
+            boolean isBorder = isBorderPixel(ix, iz, nearbyWarZones);
+            getForceBlockColor(blockId, COLOR_WARZONE, this.outColor, isBorder);
+          } else if (factionInfo != null) {
+            boolean isBorder = isFactionBorderPixel(ix, iz, factionInfo.id(), nearbyChunkOwners);
+            int factionColor = colorCodeToHex(factionInfo.color());
+            getForceBlockColor(blockId, factionColor, this.outColor, isBorder);
+          }
         }
 
         // Pack pixel

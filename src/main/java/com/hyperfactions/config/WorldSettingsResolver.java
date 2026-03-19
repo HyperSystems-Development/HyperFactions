@@ -26,16 +26,15 @@ import org.jetbrains.annotations.Nullable;
 public class WorldSettingsResolver {
 
   /** Cached compiled patterns for wildcard world keys. */
-  private final List<WildcardEntry> wildcardPatterns = new ArrayList<>();
+  private volatile List<WildcardEntry> wildcardPatterns = List.of();
 
   /** Exact-match world settings. */
-  private final Map<String, WorldSettings> exactMatches = new HashMap<>();
+  private volatile Map<String, WorldSettings> exactMatches = Map.of();
 
   /** The default policy when no match is found. */
-  private boolean defaultAllow = true;
+  private volatile boolean defaultAllow = true;
 
-  /** Claim blacklist (always blocked, regardless of per-world settings). */
-  private Set<String> claimBlacklist = new HashSet<>();
+  // claimBlacklist removed in v8 — migrated to per-world claiming=false entries
 
   /** Record for a wildcard pattern with its priority. */
   private record WildcardEntry(String key, Pattern pattern, int wildcardCount, WorldSettings settings) {}
@@ -47,32 +46,32 @@ public class WorldSettingsResolver {
    * @param config the worlds config
    */
   public void rebuild(@NotNull WorldsConfig config) {
-    exactMatches.clear();
-    wildcardPatterns.clear();
-    defaultAllow = "allow".equals(config.getDefaultPolicy());
-    claimBlacklist = new HashSet<>(config.getClaimBlacklist());
+    Map<String, WorldSettings> newExact = new HashMap<>();
+    List<WildcardEntry> newWild = new ArrayList<>();
+    boolean newDefaultAllow = "allow".equals(config.getDefaultPolicy());
 
     for (Map.Entry<String, WorldSettings> entry : config.getWorlds().entrySet()) {
       String key = entry.getKey();
       if (key.contains("%")) {
-        // Wildcard pattern
         String regex = Pattern.quote(key).replace("%", "\\E.*\\Q");
-        // Clean up empty quote groups
         regex = regex.replace("\\Q\\E", "");
         Pattern pattern = Pattern.compile("^" + regex + "$");
         int wildcardCount = (int) key.chars().filter(c -> c == '%').count();
-        wildcardPatterns.add(new WildcardEntry(key, pattern, wildcardCount, entry.getValue()));
+        newWild.add(new WildcardEntry(key, pattern, wildcardCount, entry.getValue()));
       } else {
-        // Exact match
-        exactMatches.put(key, entry.getValue());
+        newExact.put(key, entry.getValue());
       }
     }
 
-    // Sort wildcards: fewer wildcards = higher priority (more specific)
-    wildcardPatterns.sort(Comparator.comparingInt(WildcardEntry::wildcardCount));
+    newWild.sort(Comparator.comparingInt(WildcardEntry::wildcardCount));
 
-    Logger.debug("[Worlds] Resolver rebuilt: %d exact, %d wildcard, defaultAllow=%s, blacklist=%d",
-        exactMatches.size(), wildcardPatterns.size(), defaultAllow, claimBlacklist.size());
+    // Atomic swap (volatile writes)
+    this.wildcardPatterns = List.copyOf(newWild);
+    this.exactMatches = Map.copyOf(newExact);
+    this.defaultAllow = newDefaultAllow;
+
+    Logger.debug("[Worlds] Resolver rebuilt: %d exact, %d wildcard, defaultAllow=%s",
+        newExact.size(), newWild.size(), newDefaultAllow);
   }
 
   /**
@@ -109,11 +108,6 @@ public class WorldSettingsResolver {
    * @return true if claiming is allowed
    */
   public boolean isClaimingAllowed(@NotNull String worldName) {
-    // Claim blacklist always takes precedence
-    if (claimBlacklist.contains(worldName)) {
-      return false;
-    }
-
     WorldSettings settings = resolve(worldName);
     if (settings != null && settings.claiming() != null) {
       return settings.claiming();
@@ -172,6 +166,22 @@ public class WorldSettingsResolver {
   }
 
   /**
+   * Gets the per-world max claims limit for a world.
+   * Returns null if no per-world limit is set (use global config).
+   *
+   * @param worldName the world name
+   * @return the max claims limit, or null for no per-world limit
+   */
+  @Nullable
+  public Integer getMaxClaimsInWorld(@NotNull String worldName) {
+    WorldSettings settings = resolve(worldName);
+    if (settings != null && settings.maxClaims() != null && settings.maxClaims() > 0) {
+      return settings.maxClaims();
+    }
+    return null;
+  }
+
+  /**
    * Checks if the default policy is "allow".
    *
    * @return true if default policy is allow
@@ -180,13 +190,4 @@ public class WorldSettingsResolver {
     return defaultAllow;
   }
 
-  /**
-   * Gets the claim blacklist.
-   *
-   * @return unmodifiable set of blacklisted world names
-   */
-  @NotNull
-  public Set<String> getClaimBlacklist() {
-    return Collections.unmodifiableSet(claimBlacklist);
-  }
 }

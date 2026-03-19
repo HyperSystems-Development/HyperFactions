@@ -14,7 +14,7 @@ import com.hypixel.hytale.server.core.universe.world.worldmap.provider.IWorldMap
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
+
 
 /**
  * Handles world map provider registration, spawn suppression initialization,
@@ -46,7 +46,7 @@ public class WorldSetup {
       );
       Logger.debug("Registered world map provider (ID: %s)", HyperFactionsWorldMapProvider.ID);
     } catch (Exception e) {
-      plugin.getLogger().at(Level.WARNING).withCause(e).log("Failed to register world map provider");
+      ErrorHandler.report("Failed to register world map provider", e);
     }
   }
 
@@ -64,39 +64,34 @@ public class WorldSetup {
       Map<String, World> worlds = Universe.get().getWorlds();
       Logger.debug("Checking %d existing worlds for world map provider setup", worlds.size());
 
-      for (World world : worlds.values()) {
-        try {
-          // Skip temporary worlds
-          if (world.getWorldConfig().isDeleteOnRemove()) {
-            Logger.debug("Skipping temporary world: %s", world.getName());
-            continue;
+      // DO NOT set our WorldConfig provider here — doing so causes the server
+      // to use our generator during init, preventing us from capturing the
+      // vanilla GeneratorChunkWorldMap settings (imageScale, viewRadius, etc).
+      //
+      // Instead, schedule delayed registration AFTER the server finishes
+      // initializing WorldMapManager generators ("Getting Hytale Universe ready").
+      // The delayed task captures the vanilla settings, then replaces the generator.
+      hyperFactions.scheduleDelayedTask(60, () -> { // 60 ticks = 2 seconds
+        Logger.debug("[WorldMap] Delayed registration: applying to existing worlds");
+        for (World world : Universe.get().getWorlds().values()) {
+          try {
+            if (world.getWorldConfig().isDeleteOnRemove()) {
+              continue;
+            }
+            hyperFactions.getWorldMapService().registerProviderIfNeeded(world);
+          } catch (Exception e) {
+            ErrorHandler.report("Failed to register world map for world " + world.getName(), e);
           }
-
-          // Set our world map generator directly on the WorldMapManager
-          // This is critical - setWorldMapProvider() only affects future loads,
-          // but setGenerator() updates the live WorldMapManager
-          var wmManager = world.getWorldMapManager();
-          Logger.debug("World %s: WorldMapManager=%s, current generator=%s",
-              world.getName(), wmManager, wmManager != null ? wmManager.getGenerator() : "null");
-          wmManager.setGenerator(
-              com.hyperfactions.worldmap.HyperFactionsWorldMap.INSTANCE);
-          Logger.debug("Applied HyperFactions world map generator to existing world: %s (generator now=%s)",
-              world.getName(), wmManager.getGenerator());
-
-          // Also register with WorldMapService to track it
-          hyperFactions.getWorldMapService().registerProviderIfNeeded(world);
-
-        } catch (Exception e) {
-          Logger.warn("Failed to apply world map provider to world %s: %s",
-              world.getName(), e.getMessage());
         }
-      }
+        // Apply map player filters after registration
+        hyperFactions.getMapPlayerFilterService().applyToAll();
+      });
 
-      // Apply map player filters to any already-online players
+      // Apply filters immediately for any already-online players
       hyperFactions.getMapPlayerFilterService().applyToAll();
 
     } catch (Exception e) {
-      Logger.warn("Failed to apply world map provider to existing worlds: %s", e.getMessage());
+      ErrorHandler.report("Failed to apply world map provider to existing worlds", e);
     }
   }
 
@@ -156,7 +151,7 @@ public class WorldSetup {
         }
       }
     } catch (Exception e) {
-      Logger.warn("Failed to apply spawn suppression to worlds: %s", e.getMessage());
+      ErrorHandler.report("Failed to apply spawn suppression to worlds", e);
     }
     return failedWorlds;
   }
@@ -170,7 +165,7 @@ public class WorldSetup {
       hyperFactions.getZoneMobClearManager().initialize();
       Logger.info("[Startup] Mob clearing initialized");
     } catch (Exception e) {
-      plugin.getLogger().at(Level.WARNING).withCause(e).log("Failed to initialize mob clearing");
+      ErrorHandler.report("Failed to initialize mob clearing", e);
     }
   }
 
@@ -187,34 +182,16 @@ public class WorldSetup {
         return;
       }
 
-      // Register our world map provider for this world
+      // Register world map provider (WorldMapService handles all setup)
       boolean worldMapEnabled = ConfigManager.get().isWorldMapMarkersEnabled();
-      Logger.debug("World map markers enabled: %s for world: %s", worldMapEnabled, world.getName());
-
       if (worldMapEnabled) {
-        HyperFactionsWorldMapProvider provider = new HyperFactionsWorldMapProvider();
-        world.getWorldConfig().setWorldMapProvider((IWorldMapProvider) provider);
-        Logger.debug("World map provider set for: %s (provider=%s)", world.getName(), provider.getClass().getName());
-
-        // Also set the live generator directly on the WorldMapManager
-        var wmManager = world.getWorldMapManager();
-        if (wmManager != null) {
-          wmManager.setGenerator(com.hyperfactions.worldmap.HyperFactionsWorldMap.INSTANCE);
-          Logger.debug("World map generator set for: %s (generator=%s)", world.getName(), wmManager.getGenerator());
-        } else {
-          Logger.warn("WorldMapManager is null for world: %s — generator not set", world.getName());
-        }
+        hyperFactions.getWorldMapService().registerProviderIfNeeded(world);
       }
-
-      // Track the world in WorldMapService
-      hyperFactions.getWorldMapService().registerProviderIfNeeded(world);
 
       // Apply spawn suppression to the new world
       hyperFactions.getSpawnSuppressionManager().applyToWorld(world);
     } catch (Exception e) {
-      plugin.getLogger().at(Level.WARNING).log("Error in AddWorldEvent handler for %s: %s",
-          world.getName(), e.getMessage());
-      ErrorHandler.report(String.format("AddWorldEvent error for %s", world.getName()), e);
+      ErrorHandler.report("AddWorldEvent error for " + world.getName(), e);
     }
   }
 
@@ -226,8 +203,7 @@ public class WorldSetup {
     try {
       hyperFactions.getWorldMapService().unregisterProvider(world.getName());
     } catch (Exception e) {
-      plugin.getLogger().at(Level.WARNING).log("Error in RemoveWorldEvent handler for %s: %s",
-          world.getName(), e.getMessage());
+      ErrorHandler.report("RemoveWorldEvent error for " + world.getName(), e);
     }
   }
 

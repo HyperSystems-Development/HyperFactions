@@ -25,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
  *     "events": { "claiming": false, "powerLoss": false, "friendlyFireFaction": true },
  *     "arena_%": { "claiming": false, "powerLoss": false, "friendlyFireFaction": true, "friendlyFireAlly": true }
  *   },
- *   "claimBlacklist": []
  * }
  * </pre>
  */
@@ -38,22 +37,24 @@ public class WorldsConfig extends ModuleConfig {
    * @param powerLoss          whether power loss on death applies (null = use default)
    * @param friendlyFireFaction whether faction-on-faction friendly fire is allowed (null = use default)
    * @param friendlyFireAlly   whether ally-on-ally friendly fire is allowed (null = use default)
+   * @param maxClaims          per-world max claims limit (null/0 = use global limit)
    */
   public record WorldSettings(
       Boolean claiming,
       Boolean powerLoss,
       Boolean friendlyFireFaction,
-      Boolean friendlyFireAlly
+      Boolean friendlyFireAlly,
+      Integer maxClaims
   ) {
     /** Default settings — all null means defer to global config. */
-    public static final WorldSettings DEFAULTS = new WorldSettings(null, null, null, null);
+    public static final WorldSettings DEFAULTS = new WorldSettings(null, null, null, null, null);
   }
 
   private String defaultPolicy = "allow";
 
   private final Map<String, WorldSettings> worlds = new LinkedHashMap<>();
 
-  private List<String> claimBlacklist = new ArrayList<>();
+  // claimBlacklist removed in v8 — migrated to per-world claiming=false entries
 
   /** Creates a new WorldsConfig. */
   public WorldsConfig(@NotNull Path filePath) {
@@ -74,17 +75,15 @@ public class WorldsConfig extends ModuleConfig {
     defaultPolicy = "allow";
     worlds.clear();
     // Block claiming in temporary instance worlds (power loss defers to global config)
-    worlds.put("instance-%", new WorldSettings(false, null, null, null));
+    worlds.put("instance-%", new WorldSettings(false, null, null, null, null));
     // Example entry showing all available options (non-matching name won't affect real worlds)
-    worlds.put("example-world-abc", new WorldSettings(true, true, false, false));
-    claimBlacklist = new ArrayList<>();
+    worlds.put("example-world-abc", new WorldSettings(true, true, false, false, null));
   }
 
   /** Loads module settings. */
   @Override
   protected void loadModuleSettings(@NotNull JsonObject root) {
     defaultPolicy = getString(root, "defaultPolicy", defaultPolicy);
-    claimBlacklist = getStringList(root, "claimBlacklist");
 
     worlds.clear();
     if (root.has("worlds") && root.get("worlds").isJsonObject()) {
@@ -96,7 +95,8 @@ public class WorldsConfig extends ModuleConfig {
               getNullableBool(worldObj, "claiming"),
               getNullableBool(worldObj, "powerLoss"),
               getNullableBool(worldObj, "friendlyFireFaction"),
-              getNullableBool(worldObj, "friendlyFireAlly")
+              getNullableBool(worldObj, "friendlyFireAlly"),
+              getNullableInt(worldObj, "maxClaims")
           );
           worlds.put(entry.getKey(), settings);
         }
@@ -125,11 +125,12 @@ public class WorldsConfig extends ModuleConfig {
       if (s.friendlyFireAlly() != null) {
         worldObj.addProperty("friendlyFireAlly", s.friendlyFireAlly());
       }
+      if (s.maxClaims() != null && s.maxClaims() > 0) {
+        worldObj.addProperty("maxClaims", s.maxClaims());
+      }
       worldsObj.add(entry.getKey(), worldObj);
     }
     root.add("worlds", worldsObj);
-
-    root.add("claimBlacklist", toJsonArray(claimBlacklist));
   }
 
   // === Getters ===
@@ -140,16 +141,15 @@ public class WorldsConfig extends ModuleConfig {
     return defaultPolicy;
   }
 
+  /** Sets the default policy ("allow" or "deny"). */
+  public void setDefaultPolicy(@NotNull String policy) {
+    this.defaultPolicy = policy;
+  }
+
   /** Returns the worlds. */
   @NotNull
   public Map<String, WorldSettings> getWorlds() {
     return Collections.unmodifiableMap(worlds);
-  }
-
-  /** Returns the claim blacklist. */
-  @NotNull
-  public List<String> getClaimBlacklist() {
-    return claimBlacklist;
   }
 
   /**
@@ -195,6 +195,16 @@ public class WorldsConfig extends ModuleConfig {
       defaultPolicy = "allow";
     }
 
+    for (Map.Entry<String, WorldSettings> entry : worlds.entrySet()) {
+      WorldSettings ws = entry.getValue();
+      if (ws.maxClaims() != null && ws.maxClaims() < 0) {
+        result.addWarning("worlds", entry.getKey() + ".maxClaims",
+            "must be >= 0", ws.maxClaims(), null);
+        worlds.put(entry.getKey(), new WorldSettings(ws.claiming(), ws.powerLoss(),
+            ws.friendlyFireFaction(), ws.friendlyFireAlly(), null));
+      }
+    }
+
     return result;
   }
 
@@ -207,6 +217,17 @@ public class WorldsConfig extends ModuleConfig {
   private Boolean getNullableBool(@NotNull JsonObject obj, @NotNull String key) {
     if (obj.has(key) && !obj.get(key).isJsonNull()) {
       return obj.get(key).getAsBoolean();
+    }
+    return null;
+  }
+
+  /**
+   * Gets a nullable Integer from a JSON object.
+   * Returns null if the key doesn't exist or is null.
+   */
+  private Integer getNullableInt(@NotNull JsonObject obj, @NotNull String key) {
+    if (obj.has(key) && !obj.get(key).isJsonNull()) {
+      return obj.get(key).getAsInt();
     }
     return null;
   }

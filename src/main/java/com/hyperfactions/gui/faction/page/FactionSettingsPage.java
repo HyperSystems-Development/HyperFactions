@@ -2,6 +2,8 @@ package com.hyperfactions.gui.faction.page;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
+import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.FactionRenameEvent;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionMember;
@@ -17,6 +19,10 @@ import com.hyperfactions.manager.ClaimManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.TeleportManager;
 import com.hyperfactions.util.ChunkUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -24,7 +30,6 @@ import com.hypixel.hytale.math.vector.Vector3d;
 import com.hypixel.hytale.math.vector.Vector3f;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
-import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
@@ -89,7 +94,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
     // Permission check - officer or leader only
     if (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel()) {
       cmd.append(UIPaths.ERROR_PAGE);
-      cmd.set("#ErrorMessage.Text", "Only officers and leaders can change faction settings.");
+      cmd.set("#ErrorMessage.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.OFFICERS_ONLY));
       events.addEventBinding(
           CustomUIEventBindingType.Activating,
           "#CloseBtn",
@@ -103,6 +108,63 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
 
     // Load the unified settings template
     cmd.append(UIPaths.FACTION_SETTINGS);
+
+    // Localize static labels
+    cmd.set("#SettingsTitle.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.TITLE));
+    cmd.set("#GeneralHeader.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.GENERAL));
+    cmd.set("#NameLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.NAME_LABEL));
+    cmd.set("#TagLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.TAG_LABEL));
+    cmd.set("#DescLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.DESC_LABEL));
+    cmd.set("#NameEditBtn.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.EDIT_BTN));
+    cmd.set("#TagEditBtn.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.EDIT_BTN));
+    cmd.set("#DescEditBtn.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.EDIT_BTN));
+    cmd.set("#RecruitmentHeader.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.RECRUITMENT));
+    cmd.set("#StatusLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.STATUS_LABEL));
+    cmd.set("#HomeLocationHeader.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.HOME_LOCATION));
+    cmd.set("#LocationLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.LOCATION_LABEL));
+    cmd.set("#SetHomeBtn.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.SET_HOME_BTN));
+    cmd.set("#TeleportHomeBtn.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.TELEPORT_BTN));
+    cmd.set("#DeleteHomeBtn.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.DELETE_BTN));
+    cmd.set("#OptionalFeaturesHeader.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.OPTIONAL_FEATURES));
+    cmd.set("#ModulesDescLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.CONFIGURE_MODULES));
+    cmd.set("#ModulesBtn.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.MODULES_BTN));
+    cmd.set("#DangerZoneHeader.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.DANGER_ZONE));
+    cmd.set("#IrreversibleLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.IRREVERSIBLE));
+    cmd.set("#DisbandBtn.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.DISBAND_BTN));
+    cmd.set("#LockHintLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.LOCK_HINT));
+    cmd.set("#TerritoryPermissionsHeader.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.TERRITORY_PERMISSIONS));
+    cmd.set("#ColOutLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.COL_OUT));
+    cmd.set("#ColAllyLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.COL_ALLY));
+    cmd.set("#ColMemLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.COL_MEM));
+    cmd.set("#ColOffLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.COL_OFF));
+    cmd.set("#BuildingCatLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.CAT_BUILDING));
+    cmd.set("#BreakPermLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_BREAK));
+    cmd.set("#PlacePermLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_PLACE));
+    cmd.set("#InteractionCatLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.CAT_INTERACTION));
+    cmd.set("#InteractionHintLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.INTERACTION_HINT));
+    cmd.set("#AllPermLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_ALL));
+    cmd.set("#DoorPermLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_DOOR));
+    cmd.set("#ChestPermLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_CHEST));
+    cmd.set("#BenchPermLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_BENCH));
+    cmd.set("#ProcessingPermLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_PROCESSING));
+    cmd.set("#SeatPermLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_SEAT));
+    cmd.set("#TransportPermLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_TRANSPORT));
+    cmd.set("#OtherCatLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.CAT_OTHER));
+    cmd.set("#CrateUsePermLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_CRATE));
+    cmd.set("#NpcTamePermLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_NPC_TAME));
+    cmd.set("#PveDamagePermLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PERM_PVE));
+    cmd.set("#AppearanceHeader.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.APPEARANCE));
+    cmd.set("#ColorLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.COLOR_LABEL));
+    cmd.set("#MobSpawningHeader.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.MOB_SPAWNING));
+    cmd.set("#MobSpawningHintLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.MOB_SPAWNING_HINT));
+    cmd.set("#MobSpawningMasterLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.MOB_SPAWNING_LABEL));
+    cmd.set("#HostileMobsLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.HOSTILE_MOBS));
+    cmd.set("#PassiveMobsLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PASSIVE_MOBS));
+    cmd.set("#NeutralMobsLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.NEUTRAL_MOBS));
+    cmd.set("#FactionSettingsHeader.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.FACTION_SETTINGS));
+    cmd.set("#PvpLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.PVP_IN_TERRITORY));
+    cmd.set("#OfficersCanEditLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.OFFICERS_CAN_EDIT));
+    cmd.set("#LeaderOnlyLabel.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.LEADER_ONLY));
 
     // Setup navigation bar
     NavBarHelper.setupBar(playerRef, faction, PAGE_ID, cmd, events);
@@ -141,7 +203,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
     // Tag
     String tagDisplay = faction.tag() != null && !faction.tag().isEmpty()
         ? "[" + faction.tag().toUpperCase() + "]"
-        : "(None)";
+        : HFMessages.get(playerRef, GuiKeys.SettingsGui.DISPLAY_NONE);
     cmd.set("#TagValue.Text", tagDisplay);
     events.addEventBinding(CustomUIEventBindingType.Activating, "#TagEditBtn",
         EventData.of("Button", "OpenTagModal"), false);
@@ -149,15 +211,15 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
     // Description
     String desc = faction.description() != null && !faction.description().isEmpty()
         ? faction.description()
-        : "(None)";
+        : HFMessages.get(playerRef, GuiKeys.SettingsGui.DISPLAY_NONE);
     cmd.set("#DescValue.Text", desc);
     events.addEventBinding(CustomUIEventBindingType.Activating, "#DescEditBtn",
         EventData.of("Button", "OpenDescriptionModal"), false);
 
     // Recruitment dropdown
     cmd.set("#RecruitmentDropdown.Entries", List.of(
-        new DropdownEntryInfo(LocalizableString.fromString("Open"), "OPEN"),
-        new DropdownEntryInfo(LocalizableString.fromString("Invite Only"), "INVITE_ONLY")
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_OPEN)), "OPEN"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_INVITE_ONLY)), "INVITE_ONLY")
     ));
     cmd.set("#RecruitmentDropdown.Value", faction.open() ? "OPEN" : "INVITE_ONLY");
     events.addEventBinding(CustomUIEventBindingType.ValueChanged, "#RecruitmentDropdown",
@@ -223,7 +285,9 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
 
     // PvP toggle
     buildToggle(cmd, events, "PvPToggle", "pvpEnabled", perms.pvpEnabled(), canEdit, config, false);
-    cmd.set("#PvPStatus.Text", perms.pvpEnabled() ? "Enabled" : "Disabled");
+    cmd.set("#PvPStatus.Text", perms.pvpEnabled()
+        ? HFMessages.get(playerRef, GuiKeys.SettingsGui.PVP_ENABLED)
+        : HFMessages.get(playerRef, GuiKeys.SettingsGui.PVP_DISABLED));
     cmd.set("#PvPStatus.Style.TextColor", perms.pvpEnabled() ? "#55FF55" : "#FF5555");
 
     // Officers can edit - only leader can change this
@@ -300,7 +364,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
           worldName, home.x(), home.y(), home.z());
       cmd.set("#HomeLocation.Text", homeText);
     } else {
-      cmd.set("#HomeLocation.Text", "Not set");
+      cmd.set("#HomeLocation.Text", HFMessages.get(playerRef, GuiKeys.SettingsGui.HOME_NOT_SET));
       cmd.set("#TeleportHomeBtn.Disabled", true);
       cmd.set("#DeleteHomeBtn.Disabled", true);
     }
@@ -366,7 +430,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
 
     // Verify permissions
     if (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel()) {
-      player.sendMessage(MessageUtil.errorText("You don't have permission to change settings."));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.NO_PERMISSION));
       sendUpdate();
       return;
     }
@@ -386,7 +450,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
       case "OpenModules" -> guiManager.openFactionModules(player, ref, store, playerRef, faction);
       case "Disband" -> {
         if (!isLeader) {
-          player.sendMessage(MessageUtil.errorText("Only the leader can disband the faction."));
+          player.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.ONLY_LEADER_DISBAND));
           sendUpdate();
           return;
         }
@@ -407,19 +471,19 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
     ConfigManager config = ConfigManager.get();
 
     if (config.isPermissionLocked(permName)) {
-      player.sendMessage(MessageUtil.errorText("This setting is locked by the server."));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.PERM_LOCKED));
       sendUpdate();
       return;
     }
 
     if (!canEditPermissions(playerRef.getUuid(), faction)) {
-      player.sendMessage(MessageUtil.errorText("You don't have permission to edit territory permissions."));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.NO_PERM_EDIT));
       sendUpdate();
       return;
     }
 
     if ("officersCanEdit".equals(permName) && !isLeader) {
-      player.sendMessage(MessageUtil.errorText("Only the leader can change officer access."));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.ONLY_LEADER_OFFICERS));
       sendUpdate();
       return;
     }
@@ -453,6 +517,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
 
     Faction updatedFaction = faction.withColor(hexColor);
     factionManager.updateFaction(updatedFaction);
+    EventBus.publish(new FactionRenameEvent(faction.id(), FactionRenameEvent.Field.COLOR, faction.color(), hexColor, playerRef.getUuid()));
 
     var worldMapService = hyperFactions.getWorldMapService();
     if (worldMapService != null) {
@@ -475,7 +540,10 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
     Faction updatedFaction = faction.withOpen(isOpen);
     factionManager.updateFaction(updatedFaction);
 
-    player.sendMessage(Message.raw("Recruitment set to " + (isOpen ? "Open" : "Invite Only") + ".").color("#55FF55"));
+    String status = isOpen
+        ? HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_OPEN)
+        : HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_INVITE_ONLY);
+    player.sendMessage(MessageUtil.success(playerRef, GuiKeys.SettingsGui.RECRUITMENT_SET, status));
 
     Faction freshFaction = factionManager.getFaction(faction.id());
     guiManager.openFactionSettings(player, ref, store, playerRef, freshFaction);
@@ -492,7 +560,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
       int chunkZ = ChunkUtil.toChunkCoord(pos.z);
       UUID claimOwner = claimManager.getClaimOwner(worldName, chunkX, chunkZ);
       if (claimOwner == null || !claimOwner.equals(faction.id())) {
-        player.sendMessage(MessageUtil.errorText("You must be in your faction's territory to set home."));
+        player.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.NOT_IN_TERRITORY));
         sendUpdate();
         return;
       }
@@ -504,19 +572,19 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
       Faction updatedFaction = faction.withHome(newHome);
       factionManager.updateFaction(updatedFaction);
 
-      player.sendMessage(MessageUtil.successText("Faction home set to your current location!"));
+      player.sendMessage(MessageUtil.success(playerRef, GuiKeys.SettingsGui.HOME_SET));
 
       guiManager.openFactionSettings(player, ref, store, playerRef,
           factionManager.getFaction(faction.id()));
     } else {
-      player.sendMessage(MessageUtil.errorText("Could not determine your location."));
+      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.LOCATION_ERROR));
       sendUpdate();
     }
   }
 
   private void handleTeleportHome(Player player, Ref<EntityStore> ref, Store<EntityStore> store, UUID uuid) {
     if (faction.home() == null) {
-      player.sendMessage(MessageUtil.errorText("No faction home set."));
+      player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Home.NO_HOME));
       sendUpdate();
       return;
     }
@@ -526,14 +594,14 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
 
     TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
     if (transform == null) {
-      player.sendMessage(MessageUtil.errorText("Could not determine your location."));
+      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.LOCATION_ERROR));
       return;
     }
 
     Vector3d pos = transform.getPosition();
     World world = player.getWorld();
     if (world == null) {
-      player.sendMessage(MessageUtil.errorText("Could not determine your world."));
+      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.WORLD_ERROR));
       return;
     }
 
@@ -581,10 +649,10 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
 
   private void handleTeleportResult(Player player, TeleportManager.TeleportResult result) {
     switch (result) {
-      case NOT_IN_FACTION -> player.sendMessage(MessageUtil.errorText("You are not in a faction."));
-      case NO_HOME -> player.sendMessage(MessageUtil.errorText("Your faction has no home set."));
-      case COMBAT_TAGGED -> player.sendMessage(MessageUtil.errorText("You cannot teleport while in combat!"));
-      case SUCCESS_INSTANT -> player.sendMessage(MessageUtil.successText("Teleported to faction home!"));
+      case NOT_IN_FACTION -> player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.NOT_IN_FACTION));
+      case NO_HOME -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Home.NO_HOME));
+      case COMBAT_TAGGED -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Home.COMBAT_TAGGED));
+      case SUCCESS_INSTANT -> player.sendMessage(MessageUtil.success(playerRef, CommandKeys.Home.TELEPORTED));
       case ON_COOLDOWN, SUCCESS_WARMUP -> {} // Message sent by TeleportManager
       default -> {}
     }
@@ -592,7 +660,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
 
   private void handleDeleteHome(Player player, Ref<EntityStore> ref, Store<EntityStore> store, UUID uuid) {
     if (faction.home() == null) {
-      player.sendMessage(MessageUtil.text("Your faction does not have a home set.", MessageUtil.COLOR_GOLD));
+      player.sendMessage(MessageUtil.info(playerRef, GuiKeys.SettingsGui.HOME_NO_SET, MessageUtil.COLOR_GOLD));
       sendUpdate();
       return;
     }
@@ -600,7 +668,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
     Faction updatedFaction = faction.withHome(null);
     factionManager.updateFaction(updatedFaction);
 
-    player.sendMessage(MessageUtil.successText("Faction home deleted!"));
+    player.sendMessage(MessageUtil.success(playerRef, GuiKeys.SettingsGui.HOME_DELETED));
 
     guiManager.openFactionSettings(player, ref, store, playerRef,
         factionManager.getFaction(faction.id()));

@@ -92,7 +92,7 @@ public class ConfigV5ToV6Migration implements Migration {
       }
       return root.get("configVersion").getAsInt() == 5;
     } catch (Exception e) {
-      Logger.warn("[Migration] Failed to check config version: %s", e.getMessage());
+      ErrorHandler.report("[Migration] Failed to check config version for V5->V6", e);
       return false;
     }
   }

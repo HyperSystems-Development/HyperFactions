@@ -12,6 +12,9 @@ import com.hyperfactions.manager.ConfirmationManager.ConfirmationType;
 import com.hyperfactions.manager.ConfirmationManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -41,7 +44,7 @@ public class TransferSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.TRANSFER)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to transfer leadership.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rank.TRANSFER_NO_PERMISSION));
       return;
     }
 
@@ -53,7 +56,7 @@ public class TransferSubCommand extends FactionSubCommand {
     // Check if leader
     FactionMember member = faction.getMember(player.getUuid());
     if (member == null || !member.isLeader()) {
-      ctx.sendMessage(prefix().insert(msg("Only the leader can transfer leadership.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.MUST_BE_LEADER));
       return;
     }
 
@@ -61,7 +64,7 @@ public class TransferSubCommand extends FactionSubCommand {
     FactionCommandContext fctx = parseContext(rawArgs);
 
     if (!fctx.hasArgs()) {
-      ctx.sendMessage(prefix().insert(msg("Usage: /f transfer <player>", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rank.TRANSFER_USAGE));
       return;
     }
 
@@ -71,7 +74,7 @@ public class TransferSubCommand extends FactionSubCommand {
       .findFirst().orElse(null);
 
     if (target == null) {
-      ctx.sendMessage(prefix().insert(msg("Player not found in your faction.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rank.PLAYER_NOT_IN_FACTION));
       return;
     }
 
@@ -93,27 +96,23 @@ public class TransferSubCommand extends FactionSubCommand {
 
     switch (confirmResult) {
       case NEEDS_CONFIRMATION, EXPIRED_RECREATED -> {
-        ctx.sendMessage(prefix().insert(msg("Are you sure you want to transfer leadership to ", COLOR_YELLOW))
-          .insert(msg(target.username(), COLOR_WHITE)).insert(msg("?", COLOR_YELLOW)));
-        ctx.sendMessage(prefix().insert(msg("Type ", COLOR_YELLOW))
-          .insert(msg("/f transfer " + target.username() + " --text", COLOR_WHITE))
-          .insert(msg(" again within " + confirmManager.getTimeoutSeconds() + " seconds to confirm.", COLOR_YELLOW)));
+        ctx.sendMessage(MessageUtil.info(player, CommandKeys.Rank.TRANSFER_CONFIRM, COLOR_YELLOW, target.username()));
+        ctx.sendMessage(MessageUtil.info(player, CommandKeys.Rank.TRANSFER_CONFIRM_INSTRUCTION, COLOR_YELLOW,
+          target.username(), confirmManager.getTimeoutSeconds()));
       }
       case CONFIRMED -> {
         FactionManager.FactionResult result = hyperFactions.getFactionManager().transferLeadership(
           faction.id(), target.uuid(), player.getUuid()
         );
         if (result == FactionManager.FactionResult.SUCCESS) {
-          ctx.sendMessage(prefix().insert(msg("Transferred leadership to ", COLOR_GREEN))
-            .insert(msg(target.username(), COLOR_YELLOW)).insert(msg("!", COLOR_GREEN)));
-          broadcastToFaction(faction.id(), prefix().insert(msg(target.username(), COLOR_YELLOW))
-            .insert(msg(" is now the faction leader!", COLOR_GREEN)));
+          ctx.sendMessage(MessageUtil.success(player, CommandKeys.Rank.TRANSFERRED, target.username()));
+          broadcastToFaction(faction.id(), MessageUtil.success(player, CommandKeys.Rank.TRANSFER_BROADCAST, target.username()));
         } else {
-          ctx.sendMessage(prefix().insert(msg("Failed to transfer leadership.", COLOR_RED)));
+          ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rank.TRANSFER_FAILED));
         }
       }
       case DIFFERENT_ACTION -> {
-        ctx.sendMessage(prefix().insert(msg("Previous confirmation cancelled. Type again to confirm transfer.", COLOR_YELLOW)));
+        ctx.sendMessage(MessageUtil.info(player, CommandKeys.Rank.TRANSFER_CANCELLED, COLOR_YELLOW));
       }
       default -> throw new IllegalStateException("Unexpected value");
     }

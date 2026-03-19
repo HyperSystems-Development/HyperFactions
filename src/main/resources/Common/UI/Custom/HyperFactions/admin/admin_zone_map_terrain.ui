@@ -11,7 +11,7 @@ $C.@Container {
   Anchor: (Width: 620, Height: 760);
 
   #Title {
-    $C.@Title {
+    $C.@Title #PageTitle {
       @Text = "Zone Map Editor";
     }
   }
@@ -89,25 +89,25 @@ $C.@Container {
           LayoutMode: Left;
           Anchor: (Width: 120);
           Group { Anchor: (Width: 10, Height: 10); Background: (Color: #14b8a6); }
-          Label { Text: " This Zone (Safe)"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); }
+          Label #LegendZoneSafe { Text: " This Zone (Safe)"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); }
         }
         Group {
           LayoutMode: Left;
           Anchor: (Width: 120);
           Group { Anchor: (Width: 10, Height: 10); Background: (Color: #c084fc); }
-          Label { Text: " This Zone (War)"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); }
+          Label #LegendZoneWar { Text: " This Zone (War)"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); }
         }
         Group {
           LayoutMode: Left;
           Anchor: (Width: 110);
           Group { Anchor: (Width: 10, Height: 10); Background: (Color: #2dd4bf80); }
-          Label { Text: " Other SafeZone"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); }
+          Label #LegendOtherSafe { Text: " Other SafeZone"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); }
         }
         Group {
           LayoutMode: Left;
           Anchor: (Width: 110);
           Group { Anchor: (Width: 10, Height: 10); Background: (Color: #c084fc80); }
-          Label { Text: " Other WarZone"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); }
+          Label #LegendOtherWar { Text: " Other WarZone"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); }
         }
       }
 
@@ -120,19 +120,19 @@ $C.@Container {
           LayoutMode: Left;
           Anchor: (Width: 120);
           Group { Anchor: (Width: 10, Height: 10); Background: (Color: #6b7280); }
-          Label { Text: " Faction Claim"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); }
+          Label #LegendFactionClaim { Text: " Faction Claim"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); }
         }
         Group {
           LayoutMode: Left;
           Anchor: (Width: 120);
           Group { Anchor: (Width: 10, Height: 10); Background: (Color: #00000000); }
-          Label { Text: " Unclaimed"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); }
+          Label #LegendUnclaimed { Text: " Unclaimed"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); }
         }
         Group {
           LayoutMode: Left;
           Anchor: (Width: 110);
           Label { Text: " + "; Style: (FontSize: 9, TextColor: #ffffff, RenderBold: true, VerticalAlignment: Center); Anchor: (Width: 14); }
-          Label { Text: "You are here"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); }
+          Label #LegendYouAreHere { Text: "You are here"; Style: (FontSize: 9, TextColor: #cccccc, VerticalAlignment: Center); }
         }
       }
     }

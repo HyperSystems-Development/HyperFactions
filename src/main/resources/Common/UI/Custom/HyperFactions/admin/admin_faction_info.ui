@@ -13,7 +13,7 @@ $C.@PageOverlay {
     Anchor: (Width: 640, Height: 600);
 
     #Title {
-      $C.@Title {
+      $C.@Title #PageTitle {
         @Text = "Admin: Faction Info";
       }
     }
@@ -72,7 +72,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Right: 4);
 
-          Label {
+          Label #PowerCardLabel {
             Text: "Power";
             Style: (FontSize: 9, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 14);
@@ -82,7 +82,7 @@ $C.@PageOverlay {
             Style: (FontSize: 18, TextColor: #44CC44, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
             FlexWeight: 1;
           }
-          Label {
+          Label #PowerSubLabel {
             Text: "current / max";
             Style: (FontSize: 9, TextColor: #444444, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 14);
@@ -97,7 +97,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 4, Right: 4);
 
-          Label {
+          Label #ClaimsCardLabel {
             Text: "Claims";
             Style: (FontSize: 9, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 14);
@@ -107,7 +107,7 @@ $C.@PageOverlay {
             Style: (FontSize: 18, TextColor: #FFAA00, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
             FlexWeight: 1;
           }
-          Label {
+          Label #ClaimsSubLabel {
             Text: "claimed / max";
             Style: (FontSize: 9, TextColor: #444444, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 14);
@@ -122,7 +122,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 4);
 
-          Label {
+          Label #MembersCardLabel {
             Text: "Members";
             Style: (FontSize: 9, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 14);
@@ -153,7 +153,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Right: 4);
 
-          Label {
+          Label #RelationsCardLabel {
             Text: "Relations";
             Style: (FontSize: 9, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 14);
@@ -178,7 +178,7 @@ $C.@PageOverlay {
               FlexWeight: 1;
             }
           }
-          Label {
+          Label #RelationsSubLabel {
             Text: "ally / enemy";
             Style: (FontSize: 9, TextColor: #444444, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 14);
@@ -193,7 +193,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 4, Right: 4);
 
-          Label {
+          Label #StatusCardLabel {
             Text: "Status";
             Style: (FontSize: 9, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 14);
@@ -218,7 +218,7 @@ $C.@PageOverlay {
           LayoutMode: Top;
           Anchor: (Left: 4);
 
-          Label {
+          Label #InfoCardLabel {
             Text: "Info";
             Style: (FontSize: 9, TextColor: #666666, HorizontalAlignment: Center, VerticalAlignment: Center);
             Anchor: (Height: 14);
@@ -235,7 +235,7 @@ $C.@PageOverlay {
               Style: (FontSize: 18, TextColor: #FFD700, RenderBold: true, HorizontalAlignment: Center, VerticalAlignment: Center);
               FlexWeight: 1;
             }
-            Label {
+            Label #TreasurySubLabel {
               Text: "treasury balance";
               Style: (FontSize: 9, TextColor: #444444, HorizontalAlignment: Center, VerticalAlignment: Center);
               Anchor: (Height: 14);
@@ -268,7 +268,7 @@ $C.@PageOverlay {
             Padding: (Left: 12, Right: 12, Top: 10, Bottom: 10);
             LayoutMode: Top;
 
-            Label {
+            Label #LeadershipHeader {
               Text: "Leadership";
               Style: (FontSize: 11, TextColor: #666666, RenderBold: true);
               Anchor: (Height: 16, Bottom: 6);
@@ -278,7 +278,7 @@ $C.@PageOverlay {
               LayoutMode: Left;
               Anchor: (Height: 22, Bottom: 4);
 
-              Label {
+              Label #LeaderLabel {
                 Text: "Leader:";
                 Style: (FontSize: 12, TextColor: #FFD700, RenderBold: true, VerticalAlignment: Center);
                 Anchor: (Width: 60);
@@ -293,7 +293,7 @@ $C.@PageOverlay {
               LayoutMode: Left;
               Anchor: (Height: 22);
 
-              Label {
+              Label #OfficersLabel {
                 Text: "Officers:";
                 Style: (FontSize: 12, TextColor: #87CEEB, RenderBold: true, VerticalAlignment: Center);
                 Anchor: (Width: 60);
@@ -319,7 +319,7 @@ $C.@PageOverlay {
             LayoutMode: Top;
             Anchor: (Bottom: 6);
 
-            Label {
+            Label #PowerMgmtHeader {
               Text: "Power Management";
               Style: (FontSize: 11, TextColor: #666666, RenderBold: true);
               Anchor: (Height: 16, Bottom: 6);
@@ -360,7 +360,7 @@ $C.@PageOverlay {
 
               TextButton #PowerResetAll {
                 Text: "Reset All Power";
-                Anchor: (Height: 26, Width: 130);
+                Anchor: (Height: 26, Width: 170);
                 Style: $S.@CyanButtonStyle;
               }
             }
@@ -374,7 +374,7 @@ $C.@PageOverlay {
             Visible: false;
             Anchor: (Bottom: 6);
 
-            Label {
+            Label #EconMgmtHeader {
               Text: "Economy Management";
               Style: (FontSize: 11, TextColor: #666666, RenderBold: true);
               Anchor: (Height: 16, Bottom: 6);
@@ -404,7 +404,7 @@ $C.@PageOverlay {
             Padding: (Left: 12, Right: 12, Top: 10, Bottom: 10);
             LayoutMode: Top;
 
-            Label {
+            Label #DangerZoneHeader {
               Text: "Danger Zone";
               Style: (FontSize: 11, TextColor: #FF5555, RenderBold: true);
               Anchor: (Height: 16, Bottom: 6);
@@ -426,7 +426,7 @@ $C.@PageOverlay {
 
         TextButton #ViewMembersBtn {
           Text: "Members";
-          Anchor: (Height: 30, Width: 85);
+          Anchor: (Height: 30, Width: 110);
           Style: $S.@ButtonStyle;
         }
 
@@ -434,7 +434,7 @@ $C.@PageOverlay {
 
         TextButton #ViewRelationsBtn {
           Text: "Relations";
-          Anchor: (Height: 30, Width: 85);
+          Anchor: (Height: 30, Width: 110);
           Style: $S.@ButtonStyle;
         }
 

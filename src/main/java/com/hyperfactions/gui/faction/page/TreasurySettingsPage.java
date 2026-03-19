@@ -12,6 +12,9 @@ import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.faction.data.TreasurySettingsData;
 import com.hyperfactions.manager.EconomyManager;
 import com.hyperfactions.manager.FactionManager;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
+import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -63,6 +66,19 @@ public class TreasurySettingsPage extends InteractiveCustomUIPage<TreasurySettin
            UIEventBuilder events, Store<EntityStore> store) {
 
     cmd.append(UIPaths.TREASURY_SETTINGS);
+
+    // Localize static labels
+    cmd.set("#TreasurySettingsTitle.Text", HFMessages.get(playerRef, GuiKeys.TreasuryGui.SETTINGS_TITLE));
+    cmd.set("#OfficerPermissionsHeader.Text", HFMessages.get(playerRef, GuiKeys.TreasuryGui.OFFICER_PERMISSIONS));
+    cmd.set("#LimitsHeader.Text", HFMessages.get(playerRef, GuiKeys.TreasuryGui.LIMITS_SECTION));
+    cmd.set("#MaxWithdrawLabel.Text", HFMessages.get(playerRef, GuiKeys.TreasuryGui.MAX_PER_WITHDRAWAL));
+    cmd.set("#MaxWithdrawPeriodLabel.Text", HFMessages.get(playerRef, GuiKeys.TreasuryGui.MAX_WITHDRAWALS_PER));
+    cmd.set("#MaxTransferLabel.Text", HFMessages.get(playerRef, GuiKeys.TreasuryGui.MAX_PER_TRANSFER));
+    cmd.set("#MaxTransferPeriodLabel.Text", HFMessages.get(playerRef, GuiKeys.TreasuryGui.MAX_TRANSFERS_PER));
+    cmd.set("#PeriodHoursLabel.Text", HFMessages.get(playerRef, GuiKeys.TreasuryGui.LIMIT_PERIOD));
+    cmd.set("#NoLimitHintLabel.Text", HFMessages.get(playerRef, GuiKeys.TreasuryGui.NO_LIMIT_HINT));
+    cmd.set("#UpkeepSettingsHeader.Text", HFMessages.get(playerRef, GuiKeys.TreasuryGui.UPKEEP_SETTINGS));
+    cmd.set("#BackBtn.Text", HFMessages.get(playerRef, CommonKeys.Common.BACK));
 
     FactionPermissions perms = faction.getEffectivePermissions();
     FactionEconomy economy = economyManager.getEconomy(faction.id());
@@ -150,7 +166,7 @@ public class TreasurySettingsPage extends InteractiveCustomUIPage<TreasurySettin
 
     FactionMember member = faction.getMember(uuid);
     if (member == null || member.role() != FactionRole.LEADER) {
-      player.sendMessage(MessageUtil.errorText("Only the leader can change treasury permissions."));
+      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.LEADER_ONLY_PERMS));
       sendUpdate();
       return;
     }
@@ -169,7 +185,7 @@ public class TreasurySettingsPage extends InteractiveCustomUIPage<TreasurySettin
                    PlayerRef playerRef, UUID uuid) {
     FactionMember member = faction.getMember(uuid);
     if (member == null || member.role() != FactionRole.LEADER) {
-      player.sendMessage(MessageUtil.errorText("Only the leader can change upkeep settings."));
+      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.LEADER_ONLY_UPKEEP));
       sendUpdate();
       return;
     }
@@ -206,7 +222,7 @@ public class TreasurySettingsPage extends InteractiveCustomUIPage<TreasurySettin
 
       economyManager.updateLimits(faction.id(), newLimits);
     } catch (NumberFormatException e) {
-      player.sendMessage(MessageUtil.errorText("Invalid number in limit fields. Use 0 for unlimited."));
+      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.INVALID_LIMIT));
     }
   }
 

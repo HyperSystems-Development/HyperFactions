@@ -1,6 +1,6 @@
 # HyperFactions Permission Framework
 
-> **Version**: 0.11.0 | **76 permission nodes** across **12 categories**
+> **Version**: 0.12.0 | **76 permission constants** across **13 categories**
 
 Architecture documentation for the HyperFactions permission system.
 
@@ -8,8 +8,8 @@ Architecture documentation for the HyperFactions permission system.
 
 HyperFactions uses a centralized permission system with:
 
-- **Permission Constants** - All 76 nodes defined in `Permissions.java`
-- **Permission Manager** - Chain-based provider resolution (VaultUnlocked → HyperPerms → LuckPerms)
+- **Permission Constants** - All 76 constants (62 nodes + 11 wildcards + 2 limit prefixes + ROOT) defined in `Permissions.java`
+- **Permission Manager** - Chain-based provider resolution (VaultUnlocked → HyperPerms → LuckPerms → HytaleNative)
 - **Multiple Provider Support** - VaultUnlocked, HyperPerms, and LuckPerms adapters
 - **Manager-Level Checks** - Permissions enforced in business logic, not just commands
 - **Wildcard Resolution** - Category wildcards (`hyperfactions.teleport.*`) and root wildcard (`hyperfactions.*`)
@@ -23,9 +23,10 @@ Permission Check Request
      ▼
 PermissionManager.hasPermission(uuid, node)
      │
-     ├─► 1. VaultUnlockedProvider (if available)
-     ├─► 2. HyperPermsProviderAdapter (if available)
-     ├─► 3. LuckPermsProvider (if available)
+     ├─► 1. VaultUnlockedProvider (always registered, lazy init)
+     ├─► 2. HyperPermsProviderAdapter (only if available at startup)
+     ├─► 3. LuckPermsProvider (always registered, lazy init)
+     ├─► 4. HytaleNativeProvider (only if PermissionsModule available)
      │
      ├─► Category wildcard check (e.g., hyperfactions.teleport.*)
      ├─► Root wildcard check (hyperfactions.*)
@@ -34,7 +35,7 @@ PermissionManager.hasPermission(uuid, node)
           ├─► admin.* → Require OP
           ├─► bypass.* → Deny
           ├─► limit.* → Deny (config defaults used)
-          └─► user-level → Configurable (allowWithoutPermissionMod)
+          └─► user-level → Configurable (allowWithoutPermissionMod, default: deny)
 ```
 
 See [Integrations](integrations.md#permission-system) for the full permission resolution flow with Mermaid diagram.
@@ -120,6 +121,7 @@ hyperfactions.*                       # All permissions
 ├── hyperfactions.teleport.*          # Teleportation
 │   ├── hyperfactions.teleport.home
 │   ├── hyperfactions.teleport.sethome
+│   ├── hyperfactions.teleport.delhome
 │   └── hyperfactions.teleport.stuck
 │
 ├── hyperfactions.relation.*          # Diplomacy
@@ -141,6 +143,13 @@ hyperfactions.*                       # All permissions
 │   ├── hyperfactions.info.logs
 │   └── hyperfactions.info.help
 │
+├── hyperfactions.economy.*           # Economy/treasury
+│   ├── hyperfactions.economy.balance
+│   ├── hyperfactions.economy.deposit
+│   ├── hyperfactions.economy.withdraw
+│   ├── hyperfactions.economy.transfer
+│   └── hyperfactions.economy.log
+│
 ├── hyperfactions.bypass.*            # Protection bypass
 │   ├── hyperfactions.bypass.build
 │   ├── hyperfactions.bypass.interact
@@ -148,7 +157,9 @@ hyperfactions.*                       # All permissions
 │   ├── hyperfactions.bypass.damage
 │   ├── hyperfactions.bypass.use
 │   ├── hyperfactions.bypass.warmup
-│   └── hyperfactions.bypass.cooldown
+│   ├── hyperfactions.bypass.cooldown
+│   ├── hyperfactions.bypass.mapvisibility
+│   └── hyperfactions.bypass.mapfilter
 │
 ├── hyperfactions.admin.*             # Administration
 │   ├── hyperfactions.admin.use
@@ -158,7 +169,9 @@ hyperfactions.*                       # All permissions
 │   ├── hyperfactions.admin.disband
 │   ├── hyperfactions.admin.modify
 │   ├── hyperfactions.admin.bypass.limits
-│   └── hyperfactions.admin.backup
+│   ├── hyperfactions.admin.backup
+│   ├── hyperfactions.admin.power
+│   └── hyperfactions.admin.economy
 │
 └── hyperfactions.limit.*             # Numeric limits
     ├── hyperfactions.limit.claims.<N>
@@ -174,52 +187,52 @@ Singleton that coordinates permission checks. Provider implementations are in `i
 ```java
 public class PermissionManager {
 
-    private static PermissionManager instance;
+    private static final PermissionManager INSTANCE = new PermissionManager();
 
+    private final List<PermissionProvider> providers = new ArrayList<>();
     private Function<UUID, PlayerRef> playerLookup;
-    private List<PermissionProvider> providers = new ArrayList<>();
+    private boolean initialized = false;
+
+    private PermissionManager() {}
 
     public static PermissionManager get() {
-        if (instance == null) {
-            instance = new PermissionManager();
-        }
-        return instance;
+        return INSTANCE;
     }
 
     public void init() {
-        // Register HyperPerms provider if available
-        if (HyperPermsIntegration.isAvailable()) {
-            providers.add(new HyperPermsProviderAdapter());
-        }
+        // Register providers in priority order:
+        // 1. VaultUnlocked (always registered, lazy init)
+        // 2. HyperPerms (only if available at startup)
+        // 3. LuckPerms (always registered, lazy init)
+        // 4. HytaleNative (only if PermissionsModule available)
     }
 
     public boolean hasPermission(UUID playerUuid, String permission) {
-        // 1. Check providers in order
+        // 1. Check providers in order for the specific permission
         for (PermissionProvider provider : providers) {
-            Boolean result = provider.hasPermission(playerUuid, permission);
-            if (result != null) {
-                return result;
+            Optional<Boolean> result = provider.hasPermission(playerUuid, permission);
+            if (result.isPresent()) {
+                return result.get(); // (with special user-level wildcard fallthrough)
             }
         }
 
-        // 2. For admin permissions, check OP
-        if (permission.startsWith("hyperfactions.admin")) {
-            if (ConfigManager.get().isAdminRequiresOp()) {
-                return isOp(playerUuid);
-            }
-        }
-
-        // 3. Fallback behavior
-        return getFallbackResult(permission);
+        // 2. Check category wildcard (e.g., hyperfactions.teleport.*)
+        // 3. Check root wildcard (hyperfactions.*)
+        // 4. Fallback behavior
+        return handleFallback(playerUuid, permission);
     }
 }
 ```
 
 ### Resolution Order
 
-1. **HyperPerms** (if available) - Full permission system with groups, inheritance
-2. **OP Check** (for admin permissions) - Server operator status
-3. **Fallback** - Config-based default behavior
+1. **VaultUnlocked** (always registered, lazy init) - Economy/permission abstraction layer
+2. **HyperPerms** (if available at startup) - Full permission system with groups, inheritance
+3. **LuckPerms** (always registered, lazy init) - Permission system
+4. **HytaleNative** (if PermissionsModule available) - Hytale built-in permissions
+5. **Category wildcard check** (e.g., `hyperfactions.teleport.*`)
+6. **Root wildcard check** (`hyperfactions.*`)
+7. **Fallback** - Admin: OP check, Bypass/Limit: deny, User: `allowWithoutPermissionMod` (default: deny)
 
 ## Permission Provider Interface
 
@@ -227,17 +240,27 @@ public class PermissionManager {
 
 ```java
 public interface PermissionProvider {
+
+    @NotNull String getName();
+
+    boolean isAvailable();
+
     /**
      * Check if player has permission.
      *
-     * @return true if has permission, false if denied, null if unknown
+     * @return Optional containing true/false if the provider can answer,
+     *         or empty if the provider cannot determine (e.g., player not found)
      */
-    @Nullable
-    Boolean hasPermission(UUID playerUuid, String permission);
+    @NotNull
+    Optional<Boolean> hasPermission(@NotNull UUID playerUuid, @NotNull String permission);
+
+    @Nullable String getPrefix(@NotNull UUID playerUuid, @Nullable String worldName);
+    @Nullable String getSuffix(@NotNull UUID playerUuid, @Nullable String worldName);
+    @NotNull String getPrimaryGroup(@NotNull UUID playerUuid);
 }
 ```
 
-The `null` return allows providers to "pass" on permissions they don't handle, letting the next provider in the chain respond.
+The empty `Optional` return allows providers to "pass" on permissions they don't handle, letting the next provider in the chain respond. The interface also exposes `getPrefix()`, `getSuffix()`, and `getPrimaryGroup()` for chat formatting integration.
 
 ## HyperPerms Integration
 
@@ -246,29 +269,40 @@ The `null` return allows providers to "pass" on permissions they don't handle, l
 Soft dependency detection via reflection:
 
 ```java
-public class HyperPermsIntegration {
+public final class HyperPermsIntegration {
 
     private static boolean available = false;
+    private static Object hyperPermsInstance = null;
+    private static Method hasPermissionMethod = null;
+    private static Method getUserManagerMethod = null;
 
     public static void init() {
         try {
-            Class.forName("com.hyperperms.HyperPerms");
+            // Loads via HyperPermsBootstrap (not HyperPerms directly)
+            Class<?> bootstrapClass = Class.forName("com.hyperperms.HyperPermsBootstrap");
+            Method getInstanceMethod = bootstrapClass.getMethod("getInstance");
+            hyperPermsInstance = getInstanceMethod.invoke(null);
+
+            hasPermissionMethod = hyperPermsInstance.getClass()
+                .getMethod("hasPermission", UUID.class, String.class);
+            getUserManagerMethod = hyperPermsInstance.getClass()
+                .getMethod("getUserManager");
+
             available = true;
-            Logger.info("HyperPerms detected - using for permissions");
         } catch (ClassNotFoundException e) {
             available = false;
-            Logger.info("HyperPerms not found - using fallback permissions");
+            // HyperPerms not installed — fail-open in production
         }
     }
 
-    public static boolean isAvailable() {
-        return available;
-    }
-
+    /**
+     * Returns true if HyperPerms is unavailable (fail-open) unless test mode is on.
+     * When available, delegates to HyperPerms via reflection.
+     */
     public static boolean hasPermission(UUID playerUuid, String permission) {
-        if (!available) return false;
-        // Call HyperPerms API via reflection or direct call
-        return HyperPerms.get().hasPermission(playerUuid, permission);
+        if (!available) return !testMode; // fail-open in production, fail-closed in tests
+        // Call hasPermission(UUID, String) via reflection
+        return (Boolean) hasPermissionMethod.invoke(hyperPermsInstance, playerUuid, permission);
     }
 }
 ```
@@ -279,23 +313,22 @@ When no provider gives a definitive answer:
 
 | Permission Type | Fallback |
 |-----------------|----------|
-| User permissions | `allow` (configurable) |
-| Admin permissions | Requires OP (configurable) |
+| User permissions | `deny` by default (configurable via `allowWithoutPermissionMod`) |
+| Admin permissions | Requires OP (always) |
 | Bypass permissions | **Always deny** |
 | Limit permissions | **Always deny** (uses config defaults) |
 
-Configuration in `config.json`:
+Configuration in `config/server.json`:
 
 ```json
 {
   "permissions": {
-    "adminRequiresOp": true,
-    "fallbackBehavior": "deny"
+    "allowWithoutPermissionMod": false
   }
 }
 ```
 
-**Security Note:** Bypass and limit permissions are never granted by fallback - they always require explicit permission grants.
+**Security Note:** Bypass and limit permissions are never granted by fallback - they always require explicit permission grants. Admin fallback always checks OP status regardless of the `allowWithoutPermissionMod` setting.
 
 ## Manager-Level Permission Checks
 
@@ -354,6 +387,8 @@ Bypass permissions allow players to ignore protection rules:
 | `hyperfactions.bypass.use` | Item use protection |
 | `hyperfactions.bypass.warmup` | Teleport warmup delay |
 | `hyperfactions.bypass.cooldown` | Teleport cooldown timer |
+| `hyperfactions.bypass.mapvisibility` | Always visible to everyone on map (admin/staff) |
+| `hyperfactions.bypass.mapfilter` | Can see all players on map regardless of faction filter |
 
 **Admin Bypass Toggle:**
 Admins with `hyperfactions.admin.use` can toggle bypass mode via `/f admin bypass`. This is separate from bypass permissions and requires explicit toggle.

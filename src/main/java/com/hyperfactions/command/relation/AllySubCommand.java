@@ -8,6 +8,8 @@ import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.RelationManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -38,7 +40,7 @@ public class AllySubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.ALLY)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to manage alliances.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.ALLY_NO_PERMISSION));
       return;
     }
 
@@ -60,34 +62,28 @@ public class AllySubCommand extends FactionSubCommand {
     }
 
     if (!fctx.hasArgs()) {
-      ctx.sendMessage(prefix().insert(msg("Usage: /f ally <faction>", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.ALLY_USAGE));
       return;
     }
 
     String factionName = fctx.joinArgs();
     Faction targetFaction = hyperFactions.getFactionManager().getFactionByName(factionName);
     if (targetFaction == null) {
-      ctx.sendMessage(prefix().insert(msg("Faction '" + factionName + "' not found.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.FACTION_NOT_FOUND));
       return;
     }
 
     RelationManager.RelationResult result = hyperFactions.getRelationManager().requestAlly(player.getUuid(), targetFaction.id());
 
     switch (result) {
-      case REQUEST_SENT -> {
-        ctx.sendMessage(prefix().insert(msg("Ally request sent to ", COLOR_GREEN))
-          .insert(msg(targetFaction.name(), COLOR_CYAN)).insert(msg("!", COLOR_GREEN)));
-      }
-      case REQUEST_ACCEPTED -> {
-        ctx.sendMessage(prefix().insert(msg("You are now allies with ", COLOR_GREEN))
-          .insert(msg(targetFaction.name(), COLOR_CYAN)).insert(msg("!", COLOR_GREEN)));
-      }
-      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error("You are not in a faction."));
-      case NOT_OFFICER -> ctx.sendMessage(prefix().insert(msg("You must be an officer to manage relations.", COLOR_RED)));
-      case CANNOT_RELATE_SELF -> ctx.sendMessage(prefix().insert(msg("You cannot ally with yourself.", COLOR_RED)));
-      case ALREADY_ALLY -> ctx.sendMessage(prefix().insert(msg("You are already allied with that faction.", COLOR_RED)));
-      case ALLY_LIMIT_REACHED -> ctx.sendMessage(prefix().insert(msg("You have reached the maximum number of allies.", COLOR_RED)));
-      default -> ctx.sendMessage(prefix().insert(msg("Failed to send ally request.", COLOR_RED)));
+      case REQUEST_SENT -> ctx.sendMessage(MessageUtil.success(player, CommandKeys.Relation.ALLY_SENT, targetFaction.name()));
+      case REQUEST_ACCEPTED -> ctx.sendMessage(MessageUtil.success(player, CommandKeys.Relation.ALLY_FORMED, targetFaction.name()));
+      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.NOT_IN_FACTION));
+      case NOT_OFFICER -> ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.MUST_BE_OFFICER));
+      case CANNOT_RELATE_SELF -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.CANNOT_SELF));
+      case ALREADY_ALLY -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.ALREADY_ALLY));
+      case ALLY_LIMIT_REACHED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.MAX_ALLIES));
+      default -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Relation.ALLY_FAILED));
     }
   }
 }

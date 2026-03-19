@@ -9,7 +9,10 @@ import com.hyperfactions.config.modules.WorldsConfig.WorldSettings;
 import com.hyperfactions.config.modules.WorldsConfig;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.util.CommandHelp;
+import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.HelpFormatter;
+import com.hyperfactions.util.AdminKeys;
+import com.hyperfactions.util.HelpKeys;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -63,12 +66,12 @@ public class AdminWorldHandler {
    */
   public void handleAdminWorld(CommandContext ctx, @Nullable PlayerRef player, String[] args) {
     if (!hasPermission(player, Permissions.ADMIN)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission.", COLOR_RED)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.NO_PERMISSION), COLOR_RED)));
       return;
     }
 
     if (args.length == 0 || args[0].equalsIgnoreCase("help")) {
-      showWorldHelp(ctx);
+      showWorldHelp(ctx, player);
       return;
     }
 
@@ -76,27 +79,27 @@ public class AdminWorldHandler {
     String[] subArgs = args.length > 1 ? Arrays.copyOfRange(args, 1, args.length) : new String[0];
 
     switch (subCmd) {
-      case "list" -> handleList(ctx);
+      case "list" -> handleList(ctx, player);
       case "info" -> handleInfo(ctx, subArgs);
-      case "set" -> handleSet(ctx, subArgs);
-      case "reset", "remove" -> handleReset(ctx, subArgs);
-      default -> ctx.sendMessage(prefix().insert(msg("Unknown world command. Use /f admin world help", COLOR_RED)));
+      case "set" -> handleSet(ctx, player, subArgs);
+      case "reset", "remove" -> handleReset(ctx, player, subArgs);
+      default -> ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.WORLD_UNKNOWN_CMD), COLOR_RED)));
     }
   }
 
-  private void showWorldHelp(CommandContext ctx) {
+  private void showWorldHelp(CommandContext ctx, @Nullable PlayerRef player) {
     List<CommandHelp> commands = new ArrayList<>();
-    commands.add(new CommandHelp("/f admin world list", "List all configured worlds"));
-    commands.add(new CommandHelp("/f admin world info <world>", "Show settings for a world"));
-    commands.add(new CommandHelp("/f admin world set <world> <setting> <value>", "Set a world setting"));
-    commands.add(new CommandHelp("/f admin world reset <world>", "Remove world-specific settings"));
-    ctx.sendMessage(HelpFormatter.buildHelp("World Settings", "Per-world configuration", commands, null));
+    commands.add(new CommandHelp("/f admin world list", HelpKeys.Help.WORLD_CMD_LIST));
+    commands.add(new CommandHelp("/f admin world info <world>", HelpKeys.Help.WORLD_CMD_INFO));
+    commands.add(new CommandHelp("/f admin world set <world> <setting> <value>", HelpKeys.Help.WORLD_CMD_SET));
+    commands.add(new CommandHelp("/f admin world reset <world>", HelpKeys.Help.WORLD_CMD_RESET));
+    ctx.sendMessage(HelpFormatter.buildHelp(HelpKeys.Help.WORLD_TITLE, HelpKeys.Help.WORLD_DESCRIPTION, commands, null, player));
   }
 
   /**
    * /f admin world list — show all configured worlds and their settings.
    */
-  private void handleList(CommandContext ctx) {
+  private void handleList(CommandContext ctx, @Nullable PlayerRef player) {
     WorldsConfig config = ConfigManager.get().worlds();
 
     var builder = prefix().insert(msg("Per-World Settings", COLOR_CYAN))
@@ -104,7 +107,7 @@ public class AdminWorldHandler {
     ctx.sendMessage(builder);
 
     if (config.getWorlds().isEmpty()) {
-      ctx.sendMessage(msg("  No per-world settings configured.", COLOR_GRAY));
+      ctx.sendMessage(msg("  " + HFMessages.get(player, AdminKeys.AdminCmd.WORLD_NO_SETTINGS), COLOR_GRAY));
       return;
     }
 
@@ -127,6 +130,9 @@ public class AdminWorldHandler {
       if (settings.friendlyFireAlly() != null) {
         parts.add("ffAlly=" + boolStr(settings.friendlyFireAlly()));
       }
+      if (settings.maxClaims() != null && settings.maxClaims() > 0) {
+        parts.add("maxClaims=" + settings.maxClaims());
+      }
 
       if (parts.isEmpty()) {
         line = line.insert(msg("(no overrides)", COLOR_GRAY));
@@ -137,9 +143,6 @@ public class AdminWorldHandler {
       ctx.sendMessage(line);
     }
 
-    if (!config.getClaimBlacklist().isEmpty()) {
-      ctx.sendMessage(msg("  Claim blacklist: " + String.join(", ", config.getClaimBlacklist()), COLOR_GRAY));
-    }
   }
 
   /**
@@ -167,6 +170,8 @@ public class AdminWorldHandler {
     ctx.sendMessage(msg("  Power loss: " + boolStr(powerLoss), COLOR_WHITE));
     ctx.sendMessage(msg("  Faction FF: " + (ffFaction != null ? boolStr(ffFaction) : "global (" + boolStr(config.isFactionDamage()) + ")"), COLOR_WHITE));
     ctx.sendMessage(msg("  Ally FF: " + (ffAlly != null ? boolStr(ffAlly) : "global (" + boolStr(config.isAllyDamage()) + ")"), COLOR_WHITE));
+    Integer maxClaims = resolved != null ? resolved.maxClaims() : null;
+    ctx.sendMessage(msg("  Max claims: " + (maxClaims != null && maxClaims > 0 ? maxClaims : "unlimited (global)"), COLOR_WHITE));
 
     if (resolved != null) {
       ctx.sendMessage(msg("  Source: per-world override", COLOR_GRAY));
@@ -179,16 +184,51 @@ public class AdminWorldHandler {
    * /f admin world set {@code <world>} {@code <setting>} {@code <value>}
    * Settings: claiming, powerLoss, friendlyFireFaction, friendlyFireAlly
    */
-  private void handleSet(CommandContext ctx, String[] args) {
+  private void handleSet(CommandContext ctx, @Nullable PlayerRef player, String[] args) {
     if (args.length < 3) {
-      ctx.sendMessage(prefix().insert(msg("Usage: /f admin world set <world> <setting> <true|false>", COLOR_RED)));
-      ctx.sendMessage(msg("  Settings: claiming, powerLoss, friendlyFireFaction, friendlyFireAlly", COLOR_GRAY));
+      ctx.sendMessage(prefix().insert(msg("Usage: /f admin world set <world> <setting> <value>", COLOR_RED)));
+      ctx.sendMessage(msg("  Settings: claiming, powerLoss, friendlyFireFaction, friendlyFireAlly, maxClaims", COLOR_GRAY));
       return;
     }
 
     String worldKey = args[0];
     String setting = args[1].toLowerCase();
     String valueStr = args[2].toLowerCase();
+
+    // Handle integer settings
+    if (setting.equals("maxclaims")) {
+        WorldsConfig config = ConfigManager.get().worlds();
+        WorldSettings current = config.getWorldSettings(worldKey);
+        if (current == null) {
+            current = WorldSettings.DEFAULTS;
+        }
+
+        Integer maxClaimsVal;
+        if (valueStr.equals("default") || valueStr.equals("null") || valueStr.equals("0")) {
+            maxClaimsVal = null;
+        } else {
+            try {
+                maxClaimsVal = Integer.parseInt(valueStr);
+            } catch (NumberFormatException e) {
+                ctx.sendMessage(prefix().insert(msg("maxClaims must be a number, 'default', or '0'.", COLOR_RED)));
+                return;
+            }
+            if (maxClaimsVal < 0) {
+                ctx.sendMessage(prefix().insert(msg("maxClaims cannot be negative.", COLOR_RED)));
+                return;
+            }
+        }
+
+        WorldSettings updated = new WorldSettings(current.claiming(), current.powerLoss(),
+            current.friendlyFireFaction(), current.friendlyFireAlly(), maxClaimsVal);
+        config.setWorldSettings(worldKey, updated);
+        config.save();
+        ConfigManager.get().getWorldSettingsResolver().rebuild(config);
+
+        String displayVal = maxClaimsVal != null ? String.valueOf(maxClaimsVal) : "unlimited";
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.WORLD_SET, "maxClaims", displayVal, worldKey), COLOR_GREEN)));
+        return;
+    }
 
     if (!valueStr.equals("true") && !valueStr.equals("false")) {
       ctx.sendMessage(prefix().insert(msg("Value must be 'true' or 'false'.", COLOR_RED)));
@@ -203,13 +243,13 @@ public class AdminWorldHandler {
     }
 
     WorldSettings updated = switch (setting) {
-      case "claiming" -> new WorldSettings(value, current.powerLoss(), current.friendlyFireFaction(), current.friendlyFireAlly());
-      case "powerloss" -> new WorldSettings(current.claiming(), value, current.friendlyFireFaction(), current.friendlyFireAlly());
-      case "friendlyfirefaction", "fffaction" -> new WorldSettings(current.claiming(), current.powerLoss(), value, current.friendlyFireAlly());
-      case "friendlyfireally", "ffally" -> new WorldSettings(current.claiming(), current.powerLoss(), current.friendlyFireFaction(), value);
+      case "claiming" -> new WorldSettings(value, current.powerLoss(), current.friendlyFireFaction(), current.friendlyFireAlly(), current.maxClaims());
+      case "powerloss" -> new WorldSettings(current.claiming(), value, current.friendlyFireFaction(), current.friendlyFireAlly(), current.maxClaims());
+      case "friendlyfirefaction", "fffaction" -> new WorldSettings(current.claiming(), current.powerLoss(), value, current.friendlyFireAlly(), current.maxClaims());
+      case "friendlyfireally", "ffally" -> new WorldSettings(current.claiming(), current.powerLoss(), current.friendlyFireFaction(), value, current.maxClaims());
       default -> {
-        ctx.sendMessage(prefix().insert(msg("Unknown setting: " + setting, COLOR_RED)));
-        ctx.sendMessage(msg("  Settings: claiming, powerLoss, friendlyFireFaction, friendlyFireAlly", COLOR_GRAY));
+        ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.WORLD_UNKNOWN_SETTING, setting), COLOR_RED)));
+        ctx.sendMessage(msg("  Settings: claiming, powerLoss, friendlyFireFaction, friendlyFireAlly, maxClaims", COLOR_GRAY));
         yield null;
       }
     };
@@ -222,16 +262,13 @@ public class AdminWorldHandler {
     config.save();
     ConfigManager.get().getWorldSettingsResolver().rebuild(config);
 
-    ctx.sendMessage(prefix().insert(msg("Set ", COLOR_GREEN))
-        .insert(msg(setting, COLOR_CYAN))
-        .insert(msg("=" + value + " for world ", COLOR_GREEN))
-        .insert(msg(worldKey, COLOR_WHITE)));
+    ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.WORLD_SET, setting, String.valueOf(value), worldKey), COLOR_GREEN)));
   }
 
   /**
    * /f admin world reset {@code <world>} — remove all per-world settings for a world.
    */
-  private void handleReset(CommandContext ctx, String[] args) {
+  private void handleReset(CommandContext ctx, @Nullable PlayerRef player, String[] args) {
     if (args.length == 0) {
       ctx.sendMessage(prefix().insert(msg("Usage: /f admin world reset <world>", COLOR_RED)));
       return;
@@ -241,15 +278,14 @@ public class AdminWorldHandler {
     WorldsConfig config = ConfigManager.get().worlds();
 
     if (!config.removeWorldSettings(worldKey)) {
-      ctx.sendMessage(prefix().insert(msg("No settings found for world: " + worldKey, COLOR_YELLOW)));
+      ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.WORLD_NOT_FOUND, worldKey), COLOR_YELLOW)));
       return;
     }
 
     config.save();
     ConfigManager.get().getWorldSettingsResolver().rebuild(config);
 
-    ctx.sendMessage(prefix().insert(msg("Removed per-world settings for: ", COLOR_GREEN))
-        .insert(msg(worldKey, COLOR_WHITE)));
+    ctx.sendMessage(prefix().insert(msg(HFMessages.get(player, AdminKeys.AdminCmd.WORLD_RESET, worldKey), COLOR_GREEN)));
   }
 
   private String boolStr(boolean value) {

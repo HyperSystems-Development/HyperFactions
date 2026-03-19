@@ -13,6 +13,9 @@ import com.hyperfactions.gui.faction.data.FactionMembersData;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.manager.PowerManager;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.TimeUtil;
 import com.hyperfactions.util.UuidUtil;
@@ -100,6 +103,13 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
     // Load the main template
     cmd.append(UIPaths.FACTION_MEMBERS);
 
+    // Localize static labels
+    cmd.set("#MembersTitle.Text", HFMessages.get(playerRef, GuiKeys.MembersGui.TITLE));
+    cmd.set("#SearchLabel.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.SEARCH));
+    cmd.set("#SortLabel.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.SORT));
+    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.PREV));
+    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.NEXT));
+
     // Setup navigation bar
     NavBarHelper.setupBar(playerRef, faction, PAGE_ID, cmd, events);
 
@@ -139,12 +149,12 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
     int endIdx = Math.min(startIdx + ITEMS_PER_PAGE, totalMembers);
     List<FactionMember> pageMembers = allMembers.subList(startIdx, endIdx);
 
-    cmd.set("#MemberCount.Text", totalMembers + " members");
+    cmd.set("#MemberCount.Text", HFMessages.get(playerRef, CommonKeys.Common.MEMBER_COUNT, totalMembers));
 
     // Sort dropdown
     cmd.set("#SortDropdown.Entries", List.of(
-        new DropdownEntryInfo(LocalizableString.fromString("Role"), "ROLE"),
-        new DropdownEntryInfo(LocalizableString.fromString("Last Online"), "LAST_ONLINE")
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, GuiKeys.MembersGui.SORT_ROLE)), "ROLE"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, GuiKeys.MembersGui.SORT_LAST_ONLINE)), "LAST_ONLINE")
     ));
     cmd.set("#SortDropdown.Value", sortMode.name());
     events.addEventBinding(
@@ -217,6 +227,17 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
     // Use indexed selector like NavBarHelper does
     String idx = "#IndexCards[" + index + "]";
 
+    // Localize entry labels
+    cmd.set(idx + " #PowerLabel.Text", HFMessages.get(playerRef, GuiKeys.MembersGui.LABEL_POWER));
+    cmd.set(idx + " #JoinedLabel.Text", HFMessages.get(playerRef, GuiKeys.MembersGui.LABEL_JOINED));
+    cmd.set(idx + " #LastDeathLabel.Text", HFMessages.get(playerRef, GuiKeys.MembersGui.LABEL_LAST_DEATH));
+    cmd.set(idx + " #PromoteBtn.Text", HFMessages.get(playerRef, GuiKeys.MembersGui.BTN_PROMOTE));
+    cmd.set(idx + " #DemoteBtn.Text", HFMessages.get(playerRef, GuiKeys.MembersGui.BTN_DEMOTE));
+    cmd.set(idx + " #KickBtn.Text", HFMessages.get(playerRef, GuiKeys.MembersGui.BTN_KICK));
+    cmd.set(idx + " #TransferBtn.Text", HFMessages.get(playerRef, GuiKeys.MembersGui.BTN_MAKE_LEADER));
+    cmd.set(idx + " #ProfileBtn.Text", HFMessages.get(playerRef, GuiKeys.MembersGui.BTN_PROFILE));
+    cmd.set(idx + " #SelfLabel.Text", HFMessages.get(playerRef, GuiKeys.MembersGui.SELF_LABEL));
+
     // Basic info
     cmd.set(idx + " #MemberName.Text", member.username());
     cmd.set(idx + " #MemberRole.Text", formatRole(member.role()));
@@ -225,7 +246,9 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
     cmd.set(idx + " #RoleIndicator.Background.Color", GuiColors.forRole(member.role()));
 
     // Online status
-    cmd.set(idx + " #OnlineStatus.Text", memberIsOnline ? "Online" : "Offline");
+    cmd.set(idx + " #OnlineStatus.Text", memberIsOnline
+        ? HFMessages.get(playerRef, CommonKeys.Common.ONLINE)
+        : HFMessages.get(playerRef, CommonKeys.Common.OFFLINE));
     cmd.set(idx + " #OnlineStatus.Style.TextColor", GuiColors.forOnlineStatus(memberIsOnline));
     if (!memberIsOnline) {
       cmd.set(idx + " #LastOnline.Text", formatLastOnline(member.lastOnline()));
@@ -261,13 +284,14 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
       // Joined date
       String joinedDate = member.joinedAt() > 0
           ? DATE_FORMAT.format(Instant.ofEpochMilli(member.joinedAt()))
-          : "Unknown";
+          : HFMessages.get(playerRef, CommonKeys.Common.UNKNOWN);
       cmd.set(idx + " #JoinedDate.Text", joinedDate);
 
       // Last death (relative format)
       String lastDeathText = power.lastDeath() > 0
-          ? TimeUtil.formatDuration(System.currentTimeMillis() - power.lastDeath()) + " ago"
-          : "Never";
+          ? HFMessages.get(playerRef, GuiKeys.MembersGui.AGO,
+              TimeUtil.formatDuration(System.currentTimeMillis() - power.lastDeath()))
+          : HFMessages.get(playerRef, GuiKeys.MembersGui.NEVER);
       cmd.set(idx + " #LastDeath.Text", lastDeathText);
 
       // Determine what actions the viewer can take on this member
@@ -391,9 +415,10 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
     }
     long diffMs = System.currentTimeMillis() - lastOnlineMs;
     if (diffMs < 60000) {
-      return "just now";
+      return HFMessages.get(playerRef, GuiKeys.MembersGui.JUST_NOW);
     }
-    return TimeUtil.formatDuration(diffMs) + " ago";
+    return HFMessages.get(playerRef, GuiKeys.MembersGui.AGO,
+        TimeUtil.formatDuration(diffMs));
   }
 
   /** Handles data event. */
@@ -472,7 +497,7 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
             sendUpdate();
             return;
           }
-          String targetName = data.target != null ? data.target : "Unknown";
+          String targetName = data.target != null ? data.target : HFMessages.get(playerRef, CommonKeys.Common.UNKNOWN);
           guiManager.openPlayerInfo(player, ref, store, playerRef, uuid, targetName, "members");
         }
       }
@@ -499,16 +524,17 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
     }
     FactionMember target = faction.members().get(targetUuid);
     if (target == null) {
-      player.sendMessage(MessageUtil.errorText("Member not found."));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.MembersGui.MEMBER_NOT_FOUND));
       sendUpdate();
       return;
     }
 
     var result = factionManager.promoteMember(faction.id(), targetUuid, playerRef.getUuid());
     if (result == FactionManager.FactionResult.SUCCESS) {
-      player.sendMessage(Message.raw("Promoted " + target.username() + " to " + ConfigManager.get().getRoleDisplayName(FactionRole.OFFICER) + ".").color("#55FF55"));
+      player.sendMessage(MessageUtil.success(playerRef, GuiKeys.MembersGui.PROMOTED,
+          target.username(), ConfigManager.get().getRoleDisplayName(FactionRole.OFFICER)));
     } else {
-      player.sendMessage(MessageUtil.errorText("Failed to promote: " + result.name()));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.MembersGui.PROMOTE_FAILED, result.name()));
     }
     rebuildList(ref, store);
   }
@@ -526,16 +552,17 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
     }
     FactionMember target = faction.members().get(targetUuid);
     if (target == null) {
-      player.sendMessage(MessageUtil.errorText("Member not found."));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.MembersGui.MEMBER_NOT_FOUND));
       sendUpdate();
       return;
     }
 
     var result = factionManager.demoteMember(faction.id(), targetUuid, playerRef.getUuid());
     if (result == FactionManager.FactionResult.SUCCESS) {
-      player.sendMessage(Message.raw("Demoted " + target.username() + " to " + ConfigManager.get().getRoleDisplayName(FactionRole.MEMBER) + ".").color("#55FF55"));
+      player.sendMessage(MessageUtil.success(playerRef, GuiKeys.MembersGui.DEMOTED,
+          target.username(), ConfigManager.get().getRoleDisplayName(FactionRole.MEMBER)));
     } else {
-      player.sendMessage(MessageUtil.errorText("Failed to demote: " + result.name()));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.MembersGui.DEMOTE_FAILED, result.name()));
     }
     rebuildList(ref, store);
   }
@@ -553,16 +580,16 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
     }
     FactionMember target = faction.members().get(targetUuid);
     if (target == null) {
-      player.sendMessage(MessageUtil.errorText("Member not found."));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.MembersGui.MEMBER_NOT_FOUND));
       sendUpdate();
       return;
     }
 
     var result = factionManager.removeMember(faction.id(), targetUuid, playerRef.getUuid(), true);
     if (result == FactionManager.FactionResult.SUCCESS) {
-      player.sendMessage(Message.raw("Kicked " + target.username() + " from the faction.").color("#55FF55"));
+      player.sendMessage(MessageUtil.success(playerRef, GuiKeys.MembersGui.KICKED, target.username()));
     } else {
-      player.sendMessage(MessageUtil.errorText("Failed to kick: " + result.name()));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.MembersGui.KICK_FAILED, result.name()));
     }
     rebuildList(ref, store);
   }
@@ -580,7 +607,7 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
     }
     FactionMember target = faction.members().get(targetUuid);
     if (target == null) {
-      player.sendMessage(MessageUtil.errorText("Member not found."));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.MembersGui.MEMBER_NOT_FOUND));
       sendUpdate();
       return;
     }

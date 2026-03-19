@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 public class ServerConfig extends ModuleConfig {
 
   // Config version (for migration tracking — lives here after V5→V6)
-  private int configVersion = 7;
+  private int configVersion = 8;
 
   // Teleport settings
   private int warmupSeconds = 5;
@@ -76,6 +76,11 @@ public class ServerConfig extends ModuleConfig {
 
   private int mobClearIntervalSeconds = 10;
 
+  // Language / i18n settings
+  private String defaultLanguage = "en-US";
+
+  private boolean usePlayerLanguage = true;
+
   // HyperProtect-Mixin management
   private boolean hyperProtectAutoDownload = false;
 
@@ -99,7 +104,7 @@ public class ServerConfig extends ModuleConfig {
   @Override
   protected void createDefaults() {
     enabled = true;
-    configVersion = 7;
+    configVersion = 8;
   }
 
   /** Loads module settings. */
@@ -163,6 +168,13 @@ public class ServerConfig extends ModuleConfig {
       JsonObject permissions = root.getAsJsonObject("permissions");
       adminRequiresOp = getBool(permissions, "adminRequiresOp", adminRequiresOp);
       allowWithoutPermissionMod = getBool(permissions, "allowWithoutPermissionMod", allowWithoutPermissionMod);
+    }
+
+    // Language / i18n settings
+    if (hasSection(root, "language")) {
+      JsonObject language = root.getAsJsonObject("language");
+      defaultLanguage = getString(language, "default", defaultLanguage);
+      usePlayerLanguage = getBool(language, "usePlayerLanguage", usePlayerLanguage);
     }
 
     // Mob clearing settings
@@ -243,6 +255,12 @@ public class ServerConfig extends ModuleConfig {
     permissions.addProperty("adminRequiresOp", adminRequiresOp);
     permissions.addProperty("allowWithoutPermissionMod", allowWithoutPermissionMod);
     root.add("permissions", permissions);
+
+    // Language / i18n settings
+    JsonObject language = new JsonObject();
+    language.addProperty("default", defaultLanguage);
+    language.addProperty("usePlayerLanguage", usePlayerLanguage);
+    root.add("language", language);
 
     // Mob clearing settings
     JsonObject mobClearing = new JsonObject();
@@ -377,6 +395,17 @@ public class ServerConfig extends ModuleConfig {
     return mobClearIntervalSeconds;
   }
 
+  // Language / i18n
+  /** Returns the default server language code (e.g. "en-US"). */
+  @NotNull public String getDefaultLanguage() {
+    return defaultLanguage;
+  }
+
+  /** Whether to respect each player's client language for translations. */
+  public boolean isUsePlayerLanguage() {
+    return usePlayerLanguage;
+  }
+
   // HyperProtect-Mixin
   /** Checks if hyper protect auto download. */
   public boolean isHyperProtectAutoDownload() {
@@ -397,6 +426,74 @@ public class ServerConfig extends ModuleConfig {
   public void setHyperProtectAutoDownload(boolean value) {
     this.hyperProtectAutoDownload = value;
   }
+
+  // === Setters (for admin config editor) ===
+
+  /** Sets warmup seconds. */
+  public void setWarmupSeconds(int value) { this.warmupSeconds = value; }
+
+  /** Sets cooldown seconds. */
+  public void setCooldownSeconds(int value) { this.cooldownSeconds = value; }
+
+  /** Sets cancel on move. */
+  public void setCancelOnMove(boolean value) { this.cancelOnMove = value; }
+
+  /** Sets cancel on damage. */
+  public void setCancelOnDamage(boolean value) { this.cancelOnDamage = value; }
+
+  /** Sets auto save enabled. */
+  public void setAutoSaveEnabled(boolean value) { this.autoSaveEnabled = value; }
+
+  /** Sets auto save interval minutes. */
+  public void setAutoSaveIntervalMinutes(int value) { this.autoSaveIntervalMinutes = value; }
+
+  /** Sets prefix text. */
+  public void setPrefixText(@NotNull String value) { this.prefixText = value; }
+
+  /** Sets prefix color. */
+  public void setPrefixColor(@NotNull String value) { this.prefixColor = value; }
+
+  /** Sets prefix bracket color. */
+  public void setPrefixBracketColor(@NotNull String value) { this.prefixBracketColor = value; }
+
+  /** Sets primary color. */
+  public void setPrimaryColor(@NotNull String value) { this.primaryColor = value; }
+
+  /** Sets gui title. */
+  public void setGuiTitle(@NotNull String value) { this.guiTitle = value; }
+
+  /** Sets terrain map enabled. */
+  public void setTerrainMapEnabled(boolean value) { this.terrainMapEnabled = value; }
+
+  /** Sets admin requires op. */
+  public void setAdminRequiresOp(boolean value) { this.adminRequiresOp = value; }
+
+  /** Sets allow without permission mod. */
+  public void setAllowWithoutPermissionMod(boolean value) { this.allowWithoutPermissionMod = value; }
+
+  /** Sets update check enabled. */
+  public void setUpdateCheckEnabled(boolean value) { this.updateCheckEnabled = value; }
+
+  /** Sets release channel. */
+  public void setReleaseChannel(@NotNull String value) { this.releaseChannel = value; }
+
+  /** Sets mob clear enabled. */
+  public void setMobClearEnabled(boolean value) { this.mobClearEnabled = value; }
+
+  /** Sets mob clear interval seconds. */
+  public void setMobClearIntervalSeconds(int value) { this.mobClearIntervalSeconds = value; }
+
+  /** Sets default language. */
+  public void setDefaultLanguage(@NotNull String value) { this.defaultLanguage = value; }
+
+  /** Sets use player language. */
+  public void setUsePlayerLanguage(boolean value) { this.usePlayerLanguage = value; }
+
+  /** Sets leaderboard K/D refresh seconds. */
+  public void setLeaderboardKdRefreshSeconds(int value) { this.leaderboardKdRefreshSeconds = value; }
+
+  /** Sets hyper protect auto update. */
+  public void setHyperProtectAutoUpdate(boolean value) { this.hyperProtectAutoUpdate = value; }
 
   // === Validation ===
 

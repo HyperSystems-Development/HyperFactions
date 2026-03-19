@@ -3,6 +3,7 @@ package com.hyperfactions.update;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.UuidUtil;
 import java.io.IOException;
@@ -65,7 +66,7 @@ public final class UpdateNotificationPreferences {
       }
       Logger.debug("[UpdatePrefs] Loaded %d preferences", preferences.size());
     } catch (IOException e) {
-      Logger.warn("[UpdatePrefs] Failed to load preferences: %s", e.getMessage());
+      ErrorHandler.report("[UpdatePrefs] Failed to load preferences", e);
     }
   }
 
@@ -80,7 +81,7 @@ public final class UpdateNotificationPreferences {
       Files.writeString(filePath, json, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
       Logger.debug("[UpdatePrefs] Saved %d preferences", preferences.size());
     } catch (IOException e) {
-      Logger.warn("[UpdatePrefs] Failed to save preferences: %s", e.getMessage());
+      ErrorHandler.report("[UpdatePrefs] Failed to save preferences", e);
     }
   }
 

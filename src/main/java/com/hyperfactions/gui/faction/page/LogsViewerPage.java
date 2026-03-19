@@ -10,6 +10,8 @@ import com.hyperfactions.gui.faction.data.FactionPageData;
 import com.hyperfactions.gui.newplayer.NewPlayerNavBarHelper;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.util.TimeUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.GuiKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
@@ -26,6 +28,7 @@ import com.hypixel.hytale.server.core.universe.world.storage.EntityStore;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,6 +41,7 @@ public class LogsViewerPage extends InteractiveCustomUIPage<FactionPageData> {
   private static final String PAGE_ID = "logs";
 
   private static final int LOGS_PER_PAGE = 10;
+
 
   private final PlayerRef playerRef;
 
@@ -79,7 +83,15 @@ public class LogsViewerPage extends InteractiveCustomUIPage<FactionPageData> {
     }
 
     // Set title with faction name
-    cmd.set("#LogsTitle.Text", faction.name() + " - Activity Logs");
+    cmd.set("#LogsTitle.Text", HFMessages.get(playerRef, GuiKeys.LogsGui.TITLE, faction.name()));
+
+    // Localize static labels
+    cmd.set("#FilterLabel.Text", HFMessages.get(playerRef, GuiKeys.LogsGui.FILTER_LABEL));
+    cmd.set("#ColTimeLabel.Text", HFMessages.get(playerRef, GuiKeys.LogsGui.COL_TIME));
+    cmd.set("#ColTypeLabel.Text", HFMessages.get(playerRef, GuiKeys.LogsGui.COL_TYPE));
+    cmd.set("#ColMessageLabel.Text", HFMessages.get(playerRef, GuiKeys.LogsGui.COL_MESSAGE));
+    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.PREV));
+    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.NEXT));
 
     buildLogList(cmd, events);
   }
@@ -114,13 +126,13 @@ public class LogsViewerPage extends InteractiveCustomUIPage<FactionPageData> {
     int endIndex = Math.min(startIndex + LOGS_PER_PAGE, totalLogs);
 
     // Log count
-    cmd.set("#LogCount.Text", totalLogs + " entries");
+    cmd.set("#LogCount.Text", HFMessages.get(playerRef, GuiKeys.LogsGui.ENTRY_COUNT, totalLogs));
 
     // Filter dropdown
     List<DropdownEntryInfo> filterOptions = new ArrayList<>();
-    filterOptions.add(new DropdownEntryInfo(LocalizableString.fromString("All Types"), "ALL"));
+    filterOptions.add(new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, GuiKeys.LogsGui.ALL_TYPES)), "ALL"));
     for (FactionLog.LogType type : FactionLog.LogType.values()) {
-      filterOptions.add(new DropdownEntryInfo(LocalizableString.fromString(type.getDisplayName()), type.name()));
+      filterOptions.add(new DropdownEntryInfo(LocalizableString.fromString(getLocalizedTypeName(type)), type.name()));
     }
     cmd.set("#FilterDropdown.Entries", filterOptions);
     cmd.set("#FilterDropdown.Value", filterType != null ? filterType.name() : "ALL");
@@ -137,9 +149,11 @@ public class LogsViewerPage extends InteractiveCustomUIPage<FactionPageData> {
     cmd.clear("#LogsList");
 
     if (totalLogs == 0) {
+      String emptyText = filterType != null
+          ? HFMessages.get(playerRef, GuiKeys.LogsGui.NO_LOGS_TYPE)
+          : HFMessages.get(playerRef, GuiKeys.LogsGui.NO_LOGS);
       cmd.appendInline("#LogsList",
-          "Label { Text: \""
-          + (filterType != null ? "No logs of this type." : "No activity logs yet.") +
+          "Label { Text: \"" + emptyText +
           "\"; Style: (FontSize: 11, TextColor: #555555); Anchor: (Height: 30); }");
     } else {
       for (int i = startIndex; i < endIndex; i++) {
@@ -148,20 +162,20 @@ public class LogsViewerPage extends InteractiveCustomUIPage<FactionPageData> {
 
         cmd.append("#LogsList", UIPaths.LOG_ENTRY);
 
-        // Time
-        cmd.set(sel + " #LogTime.Text", TimeUtil.formatRelative(log.timestamp()));
+        // Time (localized)
+        cmd.set(sel + " #LogTime.Text", formatRelativeTime(log.timestamp()));
 
-        // Type badge with color
-        cmd.set(sel + " #LogType.Text", log.type().getDisplayName());
+        // Type badge with color (localized)
+        cmd.set(sel + " #LogType.Text", getLocalizedTypeName(log.type()));
         cmd.set(sel + " #LogType.Style.TextColor", GuiColors.forLogType(log.type()));
 
-        // Message
-        cmd.set(sel + " #LogMessage.Text", log.message());
+        // Message (localized if key available, else English fallback)
+        cmd.set(sel + " #LogMessage.Text", HFMessages.resolveLogMessage(playerRef, log));
       }
     }
 
     // Pagination
-    cmd.set("#PageInfo.Text", (currentPage + 1) + "/" + totalPages);
+    cmd.set("#PageInfo.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.PAGE_FORMAT, currentPage + 1, totalPages));
 
     if (currentPage > 0) {
       events.addEventBinding(
@@ -240,6 +254,33 @@ public class LogsViewerPage extends InteractiveCustomUIPage<FactionPageData> {
 
       default -> sendUpdate();
     }
+  }
+
+  /** Returns a localized relative time string for the given timestamp. */
+  private String formatRelativeTime(long timestamp) {
+    long diff = System.currentTimeMillis() - timestamp;
+    if (diff < 60_000) {
+      return HFMessages.get(playerRef, GuiKeys.LogsGui.TIME_JUST_NOW);
+    } else if (diff < 3600_000) {
+      long m = TimeUnit.MILLISECONDS.toMinutes(diff);
+      return HFMessages.get(playerRef, m == 1 ? GuiKeys.LogsGui.TIME_MINUTE : GuiKeys.LogsGui.TIME_MINUTES, m);
+    } else if (diff < 86400_000) {
+      long h = TimeUnit.MILLISECONDS.toHours(diff);
+      return HFMessages.get(playerRef, h == 1 ? GuiKeys.LogsGui.TIME_HOUR : GuiKeys.LogsGui.TIME_HOURS, h);
+    } else if (diff < 604800_000) {
+      long d = TimeUnit.MILLISECONDS.toDays(diff);
+      return HFMessages.get(playerRef, d == 1 ? GuiKeys.LogsGui.TIME_DAY : GuiKeys.LogsGui.TIME_DAYS, d);
+    } else if (diff < 2592000_000L) {
+      long w = TimeUnit.MILLISECONDS.toDays(diff) / 7;
+      return HFMessages.get(playerRef, w == 1 ? GuiKeys.LogsGui.TIME_WEEK : GuiKeys.LogsGui.TIME_WEEKS, w);
+    } else {
+      return TimeUtil.formatDate(timestamp);
+    }
+  }
+
+  /** Returns the localized display name for a log type. */
+  private String getLocalizedTypeName(FactionLog.LogType type) {
+    return HFMessages.get(playerRef, GuiKeys.LogsGui.typeKey(type.name()));
   }
 
   private void rebuildList() {

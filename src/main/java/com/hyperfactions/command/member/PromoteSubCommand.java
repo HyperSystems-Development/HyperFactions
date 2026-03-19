@@ -11,6 +11,9 @@ import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.data.FactionRole;
 import com.hyperfactions.manager.FactionManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -40,7 +43,7 @@ public class PromoteSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.PROMOTE)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to promote members.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rank.PROMOTE_NO_PERMISSION));
       return;
     }
 
@@ -53,7 +56,7 @@ public class PromoteSubCommand extends FactionSubCommand {
     FactionCommandContext fctx = parseContext(rawArgs);
 
     if (!fctx.hasArgs()) {
-      ctx.sendMessage(prefix().insert(msg("Usage: /f promote <player>", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rank.PROMOTE_USAGE));
       return;
     }
 
@@ -63,7 +66,7 @@ public class PromoteSubCommand extends FactionSubCommand {
       .findFirst().orElse(null);
 
     if (target == null) {
-      ctx.sendMessage(prefix().insert(msg("Player not found in your faction.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rank.PLAYER_NOT_IN_FACTION));
       return;
     }
 
@@ -74,10 +77,8 @@ public class PromoteSubCommand extends FactionSubCommand {
     switch (result) {
       case SUCCESS -> {
         String officerName = ConfigManager.get().getRoleDisplayName(FactionRole.OFFICER);
-        ctx.sendMessage(prefix().insert(msg("Promoted ", COLOR_GREEN))
-          .insert(msg(target.username(), COLOR_YELLOW)).insert(msg(" to " + officerName + "!", COLOR_GREEN)));
-        broadcastToFaction(faction.id(), prefix().insert(msg(target.username(), COLOR_YELLOW))
-          .insert(msg(" was promoted to " + officerName + "!", COLOR_GREEN)));
+        ctx.sendMessage(MessageUtil.success(player, CommandKeys.Rank.PROMOTED, target.username(), officerName));
+        broadcastToFaction(faction.id(), MessageUtil.success(player, CommandKeys.Rank.PROMOTE_BROADCAST, target.username(), officerName));
         // Show members page after action (if not text mode)
         if (!fctx.isTextMode()) {
           Player playerEntity = store.getComponent(ref, Player.getComponentType());
@@ -86,9 +87,9 @@ public class PromoteSubCommand extends FactionSubCommand {
           }
         }
       }
-      case NOT_LEADER -> ctx.sendMessage(prefix().insert(msg("Only the leader can promote members.", COLOR_RED)));
-      case CANNOT_PROMOTE_LEADER -> ctx.sendMessage(prefix().insert(msg("Cannot promote further. Use /f transfer to change leader.", COLOR_RED)));
-      default -> ctx.sendMessage(prefix().insert(msg("Failed to promote player.", COLOR_RED)));
+      case NOT_LEADER -> ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.MUST_BE_LEADER));
+      case CANNOT_PROMOTE_LEADER -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rank.ALREADY_HIGHEST));
+      default -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Rank.PROMOTE_FAILED));
     }
   }
 }

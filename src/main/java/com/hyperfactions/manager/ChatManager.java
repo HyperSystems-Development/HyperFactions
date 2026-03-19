@@ -1,6 +1,7 @@
 package com.hyperfactions.manager;
 
 import com.hyperfactions.Permissions;
+import com.hyperfactions.api.events.*;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.ChatMessage;
 import com.hyperfactions.data.Faction;
@@ -8,7 +9,10 @@ import com.hyperfactions.data.FactionRelation;
 import com.hyperfactions.gui.ActivePageTracker;
 import com.hyperfactions.gui.GuiUpdateService;
 import com.hyperfactions.integration.PermissionManager;
+import com.hyperfactions.util.ErrorHandler;
+import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.CommonKeys;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import java.util.List;
@@ -345,10 +349,20 @@ public class ChatManager {
     }
 
     if (channel == ChatChannel.FACTION) {
+      FactionChatEvent.Channel eventChannel = FactionChatEvent.Channel.FACTION;
+      if (EventBus.publishCancellable(new FactionChatPreEvent(senderUuid, senderFaction.id(), eventChannel, message))) {
+        return true; // Message "handled" but blocked
+      }
       sendFactionMessage(sender, senderFaction, message);
+      EventBus.publish(new FactionChatEvent(senderUuid, senderFaction.id(), eventChannel, message));
       return true;
     } else if (channel == ChatChannel.ALLY) {
+      FactionChatEvent.Channel eventChannel = FactionChatEvent.Channel.ALLY;
+      if (EventBus.publishCancellable(new FactionChatPreEvent(senderUuid, senderFaction.id(), eventChannel, message))) {
+        return true; // Message "handled" but blocked
+      }
       sendAllyMessage(sender, senderFaction, message);
+      EventBus.publish(new FactionChatEvent(senderUuid, senderFaction.id(), eventChannel, message));
       return true;
     }
 
@@ -366,11 +380,17 @@ public class ChatManager {
    */
   public void sendFromGui(@NotNull PlayerRef sender, @NotNull Faction faction,
               @NotNull ChatMessage.Channel channel, @NotNull String message) {
+    FactionChatEvent.Channel eventChannel = (channel == ChatMessage.Channel.FACTION)
+        ? FactionChatEvent.Channel.FACTION : FactionChatEvent.Channel.ALLY;
+    if (EventBus.publishCancellable(new FactionChatPreEvent(sender.getUuid(), faction.id(), eventChannel, message))) {
+      return; // Message blocked by listener
+    }
     if (channel == ChatMessage.Channel.FACTION) {
       sendFactionMessage(sender, faction, message);
     } else {
       sendAllyMessage(sender, faction, message);
     }
+    EventBus.publish(new FactionChatEvent(sender.getUuid(), faction.id(), eventChannel, message));
   }
 
   /**
@@ -489,7 +509,7 @@ public class ChatManager {
       try {
         listener.onMessage(message, factionId);
       } catch (Exception e) {
-        Logger.warn("Chat message listener threw exception: %s", e.getMessage());
+        ErrorHandler.report("Chat message listener threw exception", e);
       }
     }
   }
@@ -507,9 +527,9 @@ public class ChatManager {
   @NotNull
   public static String getChannelDisplay(@NotNull ChatChannel channel) {
     return switch (channel) {
-      case NORMAL -> "Public";
-      case FACTION -> "Faction";
-      case ALLY -> "Ally";
+      case NORMAL -> HFMessages.get((PlayerRef) null, CommonKeys.ChatDisplay.PUBLIC);
+      case FACTION -> HFMessages.get((PlayerRef) null, CommonKeys.ChatDisplay.FACTION);
+      case ALLY -> HFMessages.get((PlayerRef) null, CommonKeys.ChatDisplay.ALLY);
     };
   }
 

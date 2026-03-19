@@ -7,6 +7,9 @@ import com.hyperfactions.gui.admin.AdminNavBarHelper;
 import com.hyperfactions.gui.admin.data.AdminZoneData;
 import com.hyperfactions.manager.ZoneManager;
 import com.hyperfactions.util.MessageUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.AdminGuiKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hyperfactions.util.UuidUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -90,6 +93,16 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
     // Setup admin nav bar
     AdminNavBarHelper.setupBar(playerRef, "zones", cmd, events);
 
+    // Localize page title and common labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_TITLE_ZONES));
+    cmd.set("#TabAll.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ALL));
+    cmd.set("#TabSafe.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SAFE));
+    cmd.set("#TabWar.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_WAR));
+    cmd.set("#CreateZoneBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_CREATE_ZONE));
+    cmd.set("#SortLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_SORT));
+    cmd.set("#PrevBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_PREV));
+    cmd.set("#NextBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_NEXT));
+
     // Build zone list
     buildZoneList(cmd, events);
   }
@@ -124,10 +137,10 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
 
     // Sort dropdown
     cmd.set("#SortDropdown.Entries", List.of(
-        new DropdownEntryInfo(LocalizableString.fromString("Name"), "NAME"),
-        new DropdownEntryInfo(LocalizableString.fromString("Type"), "TYPE"),
-        new DropdownEntryInfo(LocalizableString.fromString("Chunks"), "CHUNKS"),
-        new DropdownEntryInfo(LocalizableString.fromString("World"), "WORLD")
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZONE_SORT_NAME)), "NAME"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZONE_SORT_TYPE)), "TYPE"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZONE_SORT_CHUNKS)), "CHUNKS"),
+        new DropdownEntryInfo(LocalizableString.fromString(HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZONE_SORT_WORLD)), "WORLD")
     ));
     cmd.set("#SortDropdown.Value", zoneSortMode.name());
     events.addEventBinding(
@@ -155,7 +168,7 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
     // Zone count (with total chunks)
     int totalChunks = zones.stream().mapToInt(Zone::getChunkCount).sum();
     String tabLabel = currentTab.equals("all") ? "" : currentTab + " ";
-    cmd.set("#ZoneCount.Text", zones.size() + " " + tabLabel + "zones (" + totalChunks + " chunks)");
+    cmd.set("#ZoneCount.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZONE_COUNT_FORMAT, zones.size(), tabLabel, totalChunks));
 
     // Create zone button
     events.addEventBinding(
@@ -184,7 +197,7 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
     }
 
     // Pagination
-    cmd.set("#PageInfo.Text", (currentPage + 1) + "/" + totalPages);
+    cmd.set("#PageInfo.Text", HFMessages.get(playerRef, GuiKeys.GuiCommon.PAGE_FORMAT, currentPage + 1, totalPages));
 
     if (currentPage > 0) {
       events.addEventBinding(
@@ -228,6 +241,10 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
     // Inline stats (visible in collapsed row)
     cmd.set(idx + " #InlineChunks.Text", String.valueOf(zone.getChunkCount()));
 
+    // Localize header labels
+    cmd.set(idx + " #WorldLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZONE_ENTRY_WORLD));
+    cmd.set(idx + " #InlineChunksLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZONE_ENTRY_CHUNKS));
+
     // Expansion state
     cmd.set(idx + " #ExpandIcon.Visible", !isExpanded);
     cmd.set(idx + " #CollapseIcon.Visible", isExpanded);
@@ -244,6 +261,17 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
 
     // Extended info (only bind events if expanded)
     if (isExpanded) {
+      // Localize expanded labels
+      cmd.set(idx + " #ChunksLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZONE_ENTRY_CHUNKS));
+      cmd.set(idx + " #BoundsLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZONE_ENTRY_BOUNDS));
+      cmd.set(idx + " #CreatedLabel.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZONE_ENTRY_CREATED));
+
+      // Localize button texts
+      cmd.set(idx + " #EditMapBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZONE_ENTRY_EDIT_MAP));
+      cmd.set(idx + " #SettingsBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZONE_ENTRY_FLAGS));
+      cmd.set(idx + " #SettingsBtn2.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZONE_ENTRY_SETTINGS));
+      cmd.set(idx + " #DeleteBtn.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.GUI_ZONE_ENTRY_DELETE));
+
       // Chunk count
       cmd.set(idx + " #ChunkCount.Text", String.valueOf(zone.getChunkCount()));
 
@@ -260,7 +288,7 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
         cmd.set(idx + " #Bounds.Text",
             String.format("(%d,%d) to (%d,%d)", minX, minZ, maxX, maxZ));
       } else {
-        cmd.set(idx + " #Bounds.Text", "No chunks");
+        cmd.set(idx + " #Bounds.Text", HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ZONE_NO_CHUNKS));
       }
 
       // Created date
@@ -384,14 +412,14 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
         if (data.zoneId != null) {
           UUID zoneId = UuidUtil.parseOrNull(data.zoneId);
           if (zoneId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid zone ID."));
+            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZONE_INVALID_ID));
             return;
           }
           Zone zone = zoneManager.getZoneById(zoneId);
           if (zone != null) {
             guiManager.openAdminZoneMap(player, ref, store, playerRef, zone);
           } else {
-            player.sendMessage(MessageUtil.errorText("Zone not found."));
+            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZONE_NOT_FOUND));
             rebuildList();
           }
         }
@@ -401,7 +429,7 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
         if (data.zoneId != null) {
           UUID zoneId = UuidUtil.parseOrNull(data.zoneId);
           if (zoneId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid zone ID."));
+            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZONE_INVALID_ID));
             return;
           }
           guiManager.openAdminZoneSettings(player, ref, store, playerRef, zoneId);
@@ -412,7 +440,7 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
         if (data.zoneId != null) {
           UUID zoneId = UuidUtil.parseOrNull(data.zoneId);
           if (zoneId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid zone ID."));
+            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZONE_INVALID_ID));
             return;
           }
           guiManager.openAdminZoneProperties(player, ref, store, playerRef,
@@ -424,15 +452,15 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
         if (data.zoneId != null) {
           UUID zoneId = UuidUtil.parseOrNull(data.zoneId);
           if (zoneId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid zone ID."));
+            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZONE_INVALID_ID));
             return;
           }
           ZoneManager.ZoneResult result = zoneManager.removeZone(zoneId);
           if (result == ZoneManager.ZoneResult.SUCCESS) {
-            player.sendMessage(MessageUtil.errorText("Zone " + data.zoneName + " deleted."));
+            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZONE_DELETED, data.zoneName));
             expandedZones.remove(zoneId);
           } else {
-            player.sendMessage(MessageUtil.errorText("Failed to delete zone: " + result));
+            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZONE_DELETE_FAILED, result));
           }
           rebuildList();
         }

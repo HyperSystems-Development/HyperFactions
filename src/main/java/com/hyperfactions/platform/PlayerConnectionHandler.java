@@ -3,8 +3,11 @@ package com.hyperfactions.platform;
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
 import com.hyperfactions.integration.PermissionManager;
+import com.hyperfactions.util.CommandKeys;
 import com.hyperfactions.util.ErrorHandler;
+import com.hyperfactions.util.HFMessages;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.server.core.event.events.player.PlayerChatEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerConnectEvent;
 import com.hypixel.hytale.server.core.event.events.player.PlayerDisconnectEvent;
@@ -44,7 +47,7 @@ public class PlayerConnectionHandler {
     Logger.debug("Tracked players after connect: %d (contains %s=%s)",
         trackedPlayers.size(), uuid, trackedPlayers.containsKey(uuid));
 
-    // Cache username, track first join and last online
+    // Cache username, track first join and last online, load preferences
     ErrorHandler.guard("Player connect: load/save player data for " + username,
       hyperFactions.getPlayerStorage().loadPlayerData(uuid).thenAccept(opt -> {
         com.hyperfactions.data.PlayerData data = opt.orElseGet(() -> new com.hyperfactions.data.PlayerData(uuid));
@@ -55,6 +58,11 @@ public class PlayerConnectionHandler {
         }
         data.setLastOnline(now);
         hyperFactions.getPlayerStorage().savePlayerData(data);
+
+        // Cache language preference for i18n resolution
+        if (data.getLanguagePreference() != null) {
+          HFMessages.setLanguageOverride(uuid, data.getLanguagePreference());
+        }
       }));
 
     // Load player power
@@ -109,6 +117,38 @@ public class PlayerConnectionHandler {
     } catch (Exception e) {
       Logger.debugTerritory("Failed to initialize territory tracking for %s: %s", username, e.getMessage());
     }
+
+    // Warn officers/leaders if their faction exceeds any per-world claim limit
+    if (playerFaction != null) {
+      com.hyperfactions.data.FactionMember member = playerFaction.members().get(uuid);
+      if (member != null && member.isOfficerOrHigher()) {
+        checkWorldClaimLimits(playerRef, playerFaction);
+      }
+    }
+  }
+
+  /**
+   * Checks if a faction exceeds per-world claim limits and warns the player.
+   */
+  private void checkWorldClaimLimits(PlayerRef playerRef, com.hyperfactions.data.Faction faction) {
+    var configManager = com.hyperfactions.config.ConfigManager.get();
+    if (configManager == null) return;
+
+    var worldsConfig = configManager.getWorldsConfig();
+    if (worldsConfig == null || !worldsConfig.isEnabled()) return;
+
+    var claimManager = hyperFactions.getClaimManager();
+    for (var entry : worldsConfig.getWorlds().entrySet()) {
+      String worldName = entry.getKey();
+      Integer maxClaims = entry.getValue().maxClaims();
+      if (maxClaims == null || maxClaims <= 0) continue;
+
+      int currentClaims = claimManager.countFactionClaimsInWorld(faction.id(), worldName);
+      if (currentClaims > maxClaims) {
+        playerRef.sendMessage(MessageUtil.info(playerRef,
+            CommandKeys.Claim.WORLD_OVERCLAIMED, MessageUtil.COLOR_GOLD, currentClaims, worldName, maxClaims));
+      }
+    }
   }
 
   /**
@@ -162,6 +202,9 @@ public class PlayerConnectionHandler {
 
     // Clean up territory tracking
     hyperFactions.getTerritoryNotifier().onPlayerDisconnect(uuid);
+
+    // Clear cached language preference
+    HFMessages.clearLanguageOverride(uuid);
 
     // Unregister from active page tracker (GUI real-time updates)
     if (hyperFactions.getActivePageTracker() != null) {

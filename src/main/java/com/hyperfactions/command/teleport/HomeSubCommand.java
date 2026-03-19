@@ -2,10 +2,15 @@ package com.hyperfactions.command.teleport;
 
 import com.hyperfactions.HyperFactions;
 import com.hyperfactions.Permissions;
+import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.FactionHomeTeleportEvent;
+import com.hyperfactions.api.events.FactionHomeTeleportPreEvent;
 import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.TeleportManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -41,7 +46,7 @@ public class HomeSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.HOME)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to teleport to faction home.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.NO_PERMISSION));
       return;
     }
 
@@ -63,6 +68,16 @@ public class HomeSubCommand extends FactionSubCommand {
       currentWorld.getName(), pos.getX(), pos.getY(), pos.getZ()
     );
 
+    // Pre-event: allow external plugins to cancel the teleport
+    Faction.FactionHome home = faction.home();
+    if (home != null && EventBus.publishCancellable(new FactionHomeTeleportPreEvent(
+        playerUuid, faction.id(),
+        currentWorld.getName(), pos.getX(), pos.getY(), pos.getZ(),
+        home.world(), home.x(), home.y(), home.z()))) {
+      ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.NO_PERMISSION));
+      return;
+    }
+
     // Call TeleportManager
     // - For instant teleport (warmup=0): doTeleport is called immediately
     // - For warmup teleport: destination is stored, TerritoryTickingSystem executes later
@@ -79,11 +94,22 @@ public class HomeSubCommand extends FactionSubCommand {
 
     // Handle immediate results (warmup teleports are handled by TerritoryTickingSystem)
     switch (result) {
-      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error("You are not in a faction."));
-      case NO_HOME -> ctx.sendMessage(prefix().insert(msg("Your faction has no home set.", COLOR_RED)));
-      case COMBAT_TAGGED -> ctx.sendMessage(prefix().insert(msg("You cannot teleport while in combat!", COLOR_RED)));
+      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.NOT_IN_FACTION));
+      case NO_HOME -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.NO_HOME));
+      case COMBAT_TAGGED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Home.COMBAT_TAGGED));
       case ON_COOLDOWN -> {} // Message sent by TeleportManager
-      case SUCCESS_INSTANT -> ctx.sendMessage(prefix().insert(msg("Teleported to faction home!", COLOR_GREEN)));
+      case SUCCESS_INSTANT -> {
+        ctx.sendMessage(MessageUtil.success(player, CommandKeys.Home.TELEPORTED));
+        // Emit event for integrations (e.g. HyperEssentials back tracking)
+        Faction.FactionHome fHome = faction.home();
+        if (fHome != null) {
+          EventBus.publish(new FactionHomeTeleportEvent(
+            playerUuid, faction.id(),
+            currentWorld.getName(), pos.getX(), pos.getY(), pos.getZ(),
+            fHome.world(), fHome.x(), fHome.y(), fHome.z(), fHome.yaw(), fHome.pitch()
+          ));
+        }
+      }
       case SUCCESS_WARMUP -> {} // Message sent by TeleportManager, teleport executed by TerritoryTickingSystem
       default -> {}
     }

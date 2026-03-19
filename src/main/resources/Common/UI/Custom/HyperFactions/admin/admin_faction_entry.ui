@@ -44,7 +44,7 @@ Group {
           Style: (FontSize: 12, TextColor: #44CC44, VerticalAlignment: Center, HorizontalAlignment: Center);
           Anchor: (Height: 18);
         }
-        Label {
+        Label #PowerLabel {
           Text: "power";
           Style: (FontSize: 9, TextColor: #666666, VerticalAlignment: Center, HorizontalAlignment: Center);
           Anchor: (Height: 14);
@@ -61,7 +61,7 @@ Group {
           Style: (FontSize: 12, TextColor: #FFAA00, VerticalAlignment: Center, HorizontalAlignment: Center);
           Anchor: (Height: 18);
         }
-        Label {
+        Label #ClaimsLabel {
           Text: "claims";
           Style: (FontSize: 9, TextColor: #666666, VerticalAlignment: Center, HorizontalAlignment: Center);
           Anchor: (Height: 14);
@@ -78,7 +78,7 @@ Group {
           Style: (FontSize: 12, TextColor: #888888, VerticalAlignment: Center, HorizontalAlignment: Center);
           Anchor: (Height: 18);
         }
-        Label {
+        Label #MembersLabel {
           Text: "members";
           Style: (FontSize: 9, TextColor: #666666, VerticalAlignment: Center, HorizontalAlignment: Center);
           Anchor: (Height: 14);
@@ -119,7 +119,7 @@ Group {
       LayoutMode: Left;
       Anchor: (Height: 20, Bottom: 4);
 
-      Label {
+      Label #CreatedLabel {
         Text: "Created:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
         Anchor: (Width: 50);
@@ -130,7 +130,7 @@ Group {
         Anchor: (Width: 90);
       }
 
-      Label {
+      Label #HomeLabel {
         Text: "Home:";
         Style: (FontSize: 10, TextColor: #666666, VerticalAlignment: Center);
         Anchor: (Width: 40);

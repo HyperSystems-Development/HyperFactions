@@ -7,6 +7,9 @@ import com.hyperfactions.command.FactionSubCommand;
 import com.hyperfactions.command.util.CommandUtil;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.ChunkUtil;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.math.vector.Vector3d;
@@ -40,7 +43,7 @@ public class MapSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.MAP)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to view the map.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Info.MAP_NO_PERMISSION));
       return;
     }
 
@@ -68,7 +71,7 @@ public class MapSubCommand extends FactionSubCommand {
 
     UUID playerFactionId = hyperFactions.getFactionManager().getPlayerFactionId(player.getUuid());
 
-    ctx.sendMessage(msg("=== Territory Map ===", COLOR_CYAN).bold(true));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.MAP_HEADER), COLOR_CYAN).bold(true));
 
     for (int dz = -3; dz <= 3; dz++) {
       StringBuilder row = new StringBuilder();
@@ -90,7 +93,7 @@ public class MapSubCommand extends FactionSubCommand {
       }
       ctx.sendMessage(Message.raw(row.toString()));
     }
-    ctx.sendMessage(msg("Legend: +You /Own /Ally /Enemy -Wild", COLOR_GRAY));
-    ctx.sendMessage(msg("Use /f gui for interactive map", COLOR_GRAY));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.MAP_LEGEND), COLOR_GRAY));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.MAP_GUI_HINT), COLOR_GRAY));
   }
 }

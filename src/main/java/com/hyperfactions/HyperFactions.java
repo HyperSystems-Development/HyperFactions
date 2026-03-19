@@ -40,6 +40,7 @@ import com.hyperfactions.update.UpdateNotificationListener;
 import com.hyperfactions.update.UpdateNotificationPreferences;
 import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.worldmap.BetterMapCompat;
 import com.hyperfactions.worldmap.MapPlayerFilterService;
 import com.hyperfactions.worldmap.WorldMapService;
 import java.io.IOException;
@@ -389,8 +390,14 @@ public class HyperFactions {
 
     // Initialize territory notifier (for entry/exit notifications)
     territoryNotifier = new TerritoryNotifier(
-      factionManager, claimManager, zoneManager, relationManager
+      factionManager, claimManager, zoneManager, relationManager, playerStorage
     );
+
+    // Detect BetterMap mod availability for enhanced map integration
+    BetterMapCompat.initialize();
+    Logger.debug("[BetterMap] Compat mode: %s (detected=%s, active=%s)",
+        ConfigManager.get().worldMap().getBetterMapCompat(),
+        BetterMapCompat.isDetected(), BetterMapCompat.isActive());
 
     // Initialize world map service (for claim markers on map)
     worldMapService = new WorldMapService(
@@ -1203,6 +1210,30 @@ public class HyperFactions {
   @NotNull
   public WorldMapService getWorldMapService() {
     return worldMapService;
+  }
+
+  /**
+   * Restarts all interval-based runtime systems to pick up config changes.
+   * Called after the admin config editor saves changes.
+   */
+  public void reloadRuntimeSystems() {
+    // Restart periodic tasks (auto-save, mob clear, upkeep, etc.)
+    if (periodicTaskManager != null) {
+      periodicTaskManager.cancelAll();
+      periodicTaskManager.startAll();
+      Logger.info("[Config] Periodic tasks restarted");
+    }
+
+    // Restart worldmap refresh scheduler with new mode/intervals
+    if (worldMapService != null) {
+      worldMapService.initializeScheduler(ConfigManager.get().worldMap());
+      // Re-create generators with new config overrides and send updated settings to clients
+      worldMapService.reapplySettings();
+      Logger.info("[Config] World map scheduler restarted and settings reapplied");
+    }
+
+    // Rebuild world settings resolver
+    ConfigManager.get().getWorldSettingsResolver().rebuild(ConfigManager.get().worlds());
   }
 
   /**

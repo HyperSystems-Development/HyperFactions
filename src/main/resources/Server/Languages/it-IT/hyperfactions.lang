@@ -1,0 +1,904 @@
+# HyperFactions - Traduzioni Italiane
+# Formato: chiave = valore (o chiave = "valore tra virgolette")
+# Nota: Le chiavi sono automaticamente prefissate con "hyperfactions." dal modulo I18n di Hytale
+# Segnaposto: {0}, {1}, ecc.
+
+# ========== Comune ==========
+common.no_permission = Non hai il permesso per farlo.
+common.not_in_faction = Non fai parte di una fazione.
+common.already_in_faction = Fai già parte di una fazione.
+common.player_not_found = Giocatore non trovato.
+common.faction_not_found = Fazione non trovata.
+common.player_not_online = Quel giocatore non è online.
+common.must_be_leader = Solo il capo della fazione può farlo.
+common.must_be_officer = Devi essere un Ufficiale o un Capo per farlo.
+common.combat_tagged = Non puoi farlo mentre sei in combattimento.
+common.cancel = Annulla
+common.confirm = Conferma
+common.save = Salva
+common.close = Chiudi
+common.clear = Cancella
+common.back = Indietro
+common.leave = Abbandona
+common.transfer = Trasferisci
+common.disband = Sciogli
+common.world_fallback = mondo
+common.yes = Sì
+common.no = No
+common.loading = Caricamento...
+common.online = Online
+common.offline = Offline
+common.enabled = Attivato
+common.disabled = Disattivato
+common.none = Nessuno
+common.page = Pagina {0} di {1}
+common.unknown = Sconosciuto
+common.error_generic = Qualcosa è andato storto. Riprova.
+common.gui_fallback = Impossibile accedere alla GUI. Usa /f help per i comandi.
+common.admin_prefix = [Admin]
+common.location_error = Impossibile determinare la tua posizione.
+common.world_error = Impossibile determinare il tuo mondo.
+common.invalid_id = ID fazione non valido.
+common.na = N/D
+
+# ========== Comandi - Creazione ==========
+cmd.create.no_permission = Non hai il permesso di creare fazioni.
+cmd.create.usage = Uso: /f create <nome>
+cmd.create.success = Fazione '{0}' creata!
+cmd.create.already_in_named = Fai già parte di {0}.
+cmd.create.use_leave_first = Usa /f leave prima se vuoi creare una nuova fazione.
+cmd.create.name_taken = Quel nome di fazione è già in uso.
+cmd.create.name_too_short = Il nome della fazione è troppo corto.
+cmd.create.name_too_long = Il nome della fazione è troppo lungo.
+cmd.create.failed = Impossibile creare la fazione.
+
+# ========== Comandi - Scioglimento ==========
+cmd.disband.no_permission = Non hai il permesso di sciogliere fazioni.
+cmd.disband.not_leader = Solo il capo della fazione può scioglierla.
+cmd.disband.confirm_prompt = Sei sicuro di voler sciogliere la tua fazione?
+cmd.disband.confirm_instruction = Digita /f disband --text di nuovo entro {0} secondi per confermare.
+cmd.disband.success = La tua fazione è stata sciolta.
+cmd.disband.failed = Impossibile sciogliere la fazione.
+cmd.disband.cancelled = Conferma precedente annullata. Digita di nuovo per confermare lo scioglimento.
+
+# ========== Comandi - Rinomina ==========
+cmd.rename.no_permission = Non hai il permesso.
+cmd.rename.not_leader = Solo il capo può rinominare la fazione.
+cmd.rename.usage = Uso: /f rename <nome>
+cmd.rename.too_short = Il nome è troppo corto (min {0} caratteri).
+cmd.rename.too_long = Il nome è troppo lungo (max {0} caratteri).
+cmd.rename.name_taken = Quel nome è già in uso.
+cmd.rename.success = Fazione rinominata in {0}!
+cmd.rename.broadcast = {0} ha rinominato la fazione in {1}
+
+# ========== Comandi - Descrizione ==========
+cmd.desc.no_permission = Non hai il permesso.
+cmd.desc.not_officer = Devi essere un ufficiale per impostare la descrizione.
+cmd.desc.set = Descrizione della fazione impostata!
+cmd.desc.cleared = Descrizione della fazione cancellata.
+
+# ========== Comandi - Apri / Chiudi ==========
+cmd.open.no_permission = Non hai il permesso.
+cmd.open.not_leader = Solo il capo può modificare questa impostazione.
+cmd.open.already_open = La tua fazione è già aperta.
+cmd.open.success = La tua fazione è ora aperta! Chiunque può unirsi con /f join.
+cmd.open.broadcast = {0} ha aperto la fazione all'iscrizione pubblica.
+cmd.close.no_permission = Non hai il permesso.
+cmd.close.not_leader = Solo il capo può modificare questa impostazione.
+cmd.close.already_closed = La tua fazione è già chiusa.
+cmd.close.success = La tua fazione è ora solo su invito.
+cmd.close.broadcast = {0} ha chiuso la fazione, ora è solo su invito.
+
+# ========== Comandi - Colore ==========
+cmd.color.no_permission = Non hai il permesso.
+cmd.color.not_officer = Devi essere un ufficiale per cambiare il colore.
+cmd.color.colors_disabled = I colori delle fazioni sono disattivati.
+cmd.color.usage = Uso: /f color <codice|#hex>
+cmd.color.usage_hint = Codici validi: 0-9, a-f oppure #RRGGBB hex
+cmd.color.invalid = Colore non valido. Usa 0-9, a-f, oppure #RRGGBB.
+cmd.color.success = Colore della fazione aggiornato!
+
+# ========== Comandi - Territorio ==========
+cmd.claim.no_permission = Non hai il permesso di rivendicare territorio.
+cmd.claim.already_yours = La tua fazione possiede già questo chunk.
+cmd.claim.cannot_claim_ally = Non puoi rivendicare il territorio di un alleato.
+cmd.claim.already_claimed_hint = Questo chunk è rivendicato. Usa /f overclaim se sono saccheggiabili.
+cmd.claim.success = Chunk rivendicato a {0}, {1}!
+cmd.claim.not_officer = Devi essere un ufficiale per rivendicare territori.
+cmd.claim.already_claimed = Questo chunk è già rivendicato.
+cmd.claim.max_claims = La tua fazione ha raggiunto il massimo di territori. Ottieni più potere!
+cmd.claim.world_max_claims = La tua fazione ha raggiunto il massimo di territori ({0}) consentiti in questo mondo.
+cmd.claim.not_adjacent = Devi rivendicare un chunk adiacente al territorio esistente.
+cmd.claim.world_not_allowed = La rivendicazione non è permessa in questo mondo.
+cmd.claim.orbisguard = Quest'area è protetta da OrbisGuard.
+cmd.claim.zone_protected = Questo chunk si trova in una SafeZone o WarZone.
+cmd.claim.insufficient_power = La tua fazione non ha abbastanza potere per rivendicare altro territorio.
+cmd.claim.failed = Impossibile rivendicare il chunk.
+cmd.claim.world_overclaimed = La tua fazione ha {0} rivendicazioni in {1} (limite: {2}). Considera di liberare il territorio in eccesso.
+
+# ========== Comandi - Invito ==========
+cmd.invite.no_permission = Non hai il permesso di invitare giocatori.
+cmd.invite.not_officer = Devi essere un ufficiale per invitare giocatori.
+cmd.invite.usage = Uso: /f invite <giocatore>
+cmd.invite.player_not_found = Giocatore '{0}' non trovato o offline.
+cmd.invite.target_in_faction = Quel giocatore fa già parte di una fazione.
+cmd.invite.sent = {0} è stato invitato nella tua fazione.
+cmd.invite.received = Sei stato invitato a unirti a {0}!
+cmd.invite.accept_hint = Digita /f accept {0} per unirti.
+
+# ========== Comandi - Accetta / Unisciti ==========
+cmd.join.no_permission = Non hai il permesso di unirti alle fazioni.
+cmd.join.already_in_named = Fai già parte di {0}.
+cmd.join.use_leave_hint = Usa /f leave prima se vuoi unirti a un'altra fazione.
+cmd.join.no_invites = Non hai inviti in sospeso.
+cmd.join.faction_not_found = Fazione '{0}' non trovata.
+cmd.join.not_invited = Non hai un invito da quella fazione.
+cmd.join.faction_gone = Quella fazione non esiste più.
+cmd.join.success = Ti sei unito a {0}!
+cmd.join.broadcast = {0} si è unito alla fazione!
+cmd.join.faction_full = Quella fazione è piena.
+cmd.join.failed = Impossibile unirsi alla fazione.
+
+# ========== Comandi - Espulsione ==========
+cmd.kick.no_permission = Non hai il permesso di espellere membri.
+cmd.kick.usage = Uso: /f kick <giocatore>
+cmd.kick.not_in_your_faction = Il giocatore '{0}' non è nella tua fazione.
+cmd.kick.success = {0} è stato espulso dalla fazione.
+cmd.kick.broadcast = {0} è stato espulso dalla fazione.
+cmd.kick.kicked = Sei stato espulso dalla fazione.
+cmd.kick.cannot_kick_higher = Non hai il permesso di espellere quel giocatore.
+cmd.kick.cannot_kick_leader = Non puoi espellere il capo della fazione.
+cmd.kick.failed = Impossibile espellere il giocatore.
+
+# ========== Comandi - Abbandono ==========
+cmd.leave.no_permission = Non hai il permesso di abbandonare le fazioni.
+cmd.leave.confirm_prompt = Sei sicuro di voler abbandonare la tua fazione?
+cmd.leave.confirm_instruction = Digita /f leave --text di nuovo entro {0} secondi per confermare.
+cmd.leave.success = Hai abbandonato la tua fazione.
+cmd.leave.broadcast = {0} ha abbandonato la fazione.
+cmd.leave.failed = Impossibile abbandonare la fazione.
+cmd.leave.cancelled = Conferma precedente annullata. Digita di nuovo per confermare l'abbandono.
+
+# ========== Comandi - Promozione / Retrocessione / Trasferimento ==========
+cmd.rank.promote_no_permission = Non hai il permesso di promuovere membri.
+cmd.rank.promote_usage = Uso: /f promote <giocatore>
+cmd.rank.promoted = {0} promosso a {1}!
+cmd.rank.promote_broadcast = {0} è stato promosso a {1}!
+cmd.rank.already_highest = Impossibile promuovere ulteriormente. Usa /f transfer per cambiare capo.
+cmd.rank.promote_failed = Impossibile promuovere il giocatore.
+cmd.rank.demote_no_permission = Non hai il permesso di retrocedere membri.
+cmd.rank.demote_usage = Uso: /f demote <giocatore>
+cmd.rank.demoted = {0} retrocesso a {1}.
+cmd.rank.demote_broadcast = {0} è stato retrocesso a {1}.
+cmd.rank.already_lowest = Quel giocatore è già un Membro.
+cmd.rank.demote_failed = Impossibile retrocedere il giocatore.
+cmd.rank.transfer_no_permission = Non hai il permesso di trasferire la leadership.
+cmd.rank.transfer_usage = Uso: /f transfer <giocatore>
+cmd.rank.player_not_in_faction = Giocatore non trovato nella tua fazione.
+cmd.rank.transfer_confirm = Sei sicuro di voler trasferire la leadership a {0}?
+cmd.rank.transfer_confirm_instruction = Digita /f transfer {0} --text di nuovo entro {1} secondi per confermare.
+cmd.rank.transferred = Leadership trasferita a {0}!
+cmd.rank.transfer_broadcast = {0} è ora il capo della fazione!
+cmd.rank.transfer_failed = Impossibile trasferire la leadership.
+cmd.rank.transfer_cancelled = Conferma precedente annullata. Digita di nuovo per confermare il trasferimento.
+
+# ========== Comandi - Rinuncia Territorio ==========
+cmd.unclaim.no_permission = Non hai il permesso di rinunciare al territorio.
+cmd.unclaim.success = Chunk rilasciato a {0}, {1}.
+cmd.unclaim.not_officer = Devi essere un ufficiale per rinunciare ai territori.
+cmd.unclaim.chunk_not_claimed = Questo chunk non è rivendicato.
+cmd.unclaim.not_your_claim = La tua fazione non possiede questo chunk.
+cmd.unclaim.cannot_unclaim_home = Impossibile rilasciare il chunk con la base della fazione.
+cmd.unclaim.would_disconnect = Impossibile rilasciare — disconnetterebbe il tuo territorio.
+cmd.unclaim.failed = Impossibile rilasciare il chunk.
+
+# ========== Comandi - Conquista ==========
+cmd.overclaim.no_permission = Non hai il permesso di conquistare territori.
+cmd.overclaim.success = Territorio nemico conquistato!
+cmd.overclaim.not_officer = Devi essere un ufficiale per conquistare territori.
+cmd.overclaim.not_claimed = Questo chunk non è rivendicato. Usa /f claim.
+cmd.overclaim.own_chunk = La tua fazione possiede già questo chunk.
+cmd.overclaim.ally = Non puoi conquistare il territorio di un alleato.
+cmd.overclaim.target_has_power = Questa fazione ha ancora abbastanza potere.
+cmd.overclaim.failed = Impossibile conquistare il territorio.
+
+# ========== Comandi - Bloccato ==========
+cmd.stuck.no_permission = Non hai il permesso di usare /f stuck.
+cmd.stuck.not_stuck = Non sei bloccato - questa è zona selvaggia.
+cmd.stuck.combat_tagged = Non puoi usare /f stuck durante il combattimento!
+cmd.stuck.no_safe = Impossibile trovare una posizione sicura.
+cmd.stuck.teleporting = Teletrasporto verso un luogo sicuro tra {0} secondi. Non muoverti!
+
+# ========== Comandi - Base ==========
+cmd.home.no_permission = Non hai il permesso di teletrasportarti alla base della fazione.
+cmd.home.no_home = La tua fazione non ha una base impostata.
+cmd.home.combat_tagged = Non puoi teletrasportarti durante il combattimento!
+cmd.home.teleported = Teletrasportato alla base della fazione!
+
+# ========== Comandi - Imposta Base ==========
+cmd.sethome.no_permission = Non hai il permesso di impostare la base della fazione.
+cmd.sethome.world_not_allowed = Impossibile impostare la base in questo mondo.
+cmd.sethome.not_in_territory = Puoi impostare la base solo nel territorio della tua fazione.
+cmd.sethome.set = Base della fazione impostata!
+cmd.sethome.broadcast = {0} ha impostato la base della fazione.
+cmd.sethome.not_officer = Devi essere un ufficiale per impostare la base.
+cmd.sethome.failed = Impossibile impostare la base.
+
+# ========== Comandi - Elimina Base ==========
+cmd.delhome.no_permission = Non hai il permesso di eliminare la base della fazione.
+cmd.delhome.no_home = La tua fazione non ha una base impostata.
+cmd.delhome.deleted = Base della fazione eliminata!
+cmd.delhome.broadcast = {0} ha eliminato la base della fazione.
+cmd.delhome.not_officer = Devi essere un ufficiale per eliminare la base.
+cmd.delhome.failed = Impossibile eliminare la base.
+
+# ========== Comandi - Relazioni (Alleato/Nemico/Neutrale/Relazioni) ==========
+cmd.relation.ally_no_permission = Non hai il permesso di gestire le alleanze.
+cmd.relation.ally_usage = Uso: /f ally <fazione>
+cmd.relation.ally_sent = Richiesta di alleanza inviata a {0}!
+cmd.relation.ally_formed = Ora sei alleato con {0}!
+cmd.relation.already_ally = Sei già alleato con quella fazione.
+cmd.relation.ally_failed = Impossibile inviare la richiesta di alleanza.
+cmd.relation.enemy_no_permission = Non hai il permesso di dichiarare nemici.
+cmd.relation.enemy_usage = Uso: /f enemy <fazione>
+cmd.relation.enemy_declared = {0} è ora tuo nemico!
+cmd.relation.already_enemy = Sei già nemico di quella fazione.
+cmd.relation.max_enemies = Hai raggiunto il numero massimo di nemici.
+cmd.relation.enemy_failed = Impossibile impostare il nemico.
+cmd.relation.neutral_no_permission = Non hai il permesso di impostare relazioni neutrali.
+cmd.relation.neutral_usage = Uso: /f neutral <fazione>
+cmd.relation.neutral_set = La tua fazione è ora neutrale con {0}.
+cmd.relation.already_neutral = Sei già neutrale con quella fazione.
+cmd.relation.neutral_failed = Impossibile impostare la neutralità.
+cmd.relation.cannot_self = Non puoi allearti con te stesso.
+cmd.relation.max_allies = Hai raggiunto il numero massimo di alleati.
+cmd.relation.view_no_permission = Non hai il permesso di visualizzare le relazioni.
+cmd.relation.header = === Relazioni della Fazione ===
+cmd.relation.allies_count = Alleati ({0}):
+cmd.relation.enemies_count = Nemici ({0}):
+cmd.relation.list_entry = - {0}
+
+# ========== Comandi - Chat ==========
+cmd.chat.usage = Uso: /f c [f|a|off]
+cmd.chat.no_permission = Non hai il permesso per quella modalità di chat.
+cmd.chat.mode_set = Modalità chat impostata su {0}
+
+# ========== Comandi - Inviti ==========
+cmd.invites.not_officer = Devi essere un ufficiale per gestire gli inviti.
+cmd.invites.header = === Inviti della Fazione ===
+cmd.invites.no_pending = Nessun invito o richiesta in sospeso.
+cmd.invites.outgoing = Inviti in uscita:
+cmd.invites.outgoing_entry = {0} (invitato da {1})
+cmd.invites.requests = Richieste di adesione:
+cmd.invites.request_entry = {0}{1}
+cmd.invites.your_invites_header = === I Tuoi Inviti ===
+cmd.invites.no_invites = Non hai inviti in sospeso.
+cmd.invites.invite_entry = {0} - Usa /f accept {1}
+
+# ========== Comandi - Richiesta ==========
+cmd.request.no_permission = Non hai il permesso di richiedere l'adesione a una fazione.
+cmd.request.already_in_named = Fai già parte di {0}.
+cmd.request.use_leave_hint = Usa /f leave prima se vuoi unirti a un'altra fazione.
+cmd.request.usage = Uso: /f request <fazione> [messaggio]
+cmd.request.faction_open = Quella fazione è aperta! Usa /f accept {0} per unirti direttamente.
+cmd.request.already_requested = Hai già una richiesta in sospeso per quella fazione.
+cmd.request.has_invite = Sei stato invitato da quella fazione! Usa /f accept {0} per unirti.
+cmd.request.sent = Richiesta di adesione inviata a {0}!
+cmd.request.your_message = Il tuo messaggio: "{0}"
+cmd.request.officer_review = Un ufficiale esaminerà la tua richiesta.
+cmd.request.officer_notify = {0} ha richiesto di unirsi alla tua fazione!
+cmd.request.officer_review_hint = Usa /f gui > Inviti per esaminare.
+
+# ========== Comandi - Informazioni ==========
+cmd.info.faction_header = === {0} ===
+cmd.info.player_header = === {0} ===
+cmd.info.no_permission = Non hai il permesso di visualizzare le informazioni della fazione.
+cmd.info.faction_not_found = Fazione '{0}' non trovata.
+cmd.info.not_in_faction_hint = Non fai parte di una fazione. Usa /f info <fazione>
+cmd.info.leader = Capo: {0}
+cmd.info.members = Membri: {0}/{1}
+cmd.info.power = Potere: {0}
+cmd.info.claims = Territori: {0}
+cmd.info.raidable = SACCHEGGIABILE!
+cmd.info.allies = Alleati: {0}
+cmd.info.enemies = Nemici: {0}
+cmd.info.they_consider = Ti considerano: {0}
+cmd.info.you_consider = Li consideri: {0}
+cmd.info.members_no_permission = Non hai il permesso di visualizzare i membri della fazione.
+cmd.info.members_header = === Membri di {0} ({1}) ===
+cmd.info.member_online = [Online]
+cmd.info.list_no_permission = Non hai il permesso di visualizzare l'elenco delle fazioni.
+cmd.info.list_empty = Non ci sono fazioni.
+cmd.info.list_header = === Fazioni ({0}) ===
+cmd.info.list_entry = {0} - {1} membri, {2} potere
+cmd.info.list_entry_raidable = {0} - {1} membri, {2} potere [SACCHEGGIABILE]
+cmd.info.help_no_permission = Non hai il permesso di visualizzare l'aiuto.
+cmd.info.who_no_permission = Non hai il permesso di visualizzare le informazioni del giocatore.
+cmd.info.who_faction = Fazione: {0}
+cmd.info.who_role = Ruolo: {0}
+cmd.info.who_joined = Iscritto: {0}
+cmd.info.who_faction_none = Fazione: Nessuna
+cmd.info.who_power = Potere: {0}
+cmd.info.who_status = Stato: {0}
+cmd.info.who_last_seen = Ultimo accesso: {0}
+cmd.info.map_no_permission = Non hai il permesso di visualizzare la mappa.
+cmd.info.map_header = === Mappa del Territorio ===
+cmd.info.map_legend = Legenda: +Tu /Tuo /Alleato /Nemico -Selvaggio
+cmd.info.map_gui_hint = Usa /f gui per la mappa interattiva
+
+# ========== Comandi - Potere ==========
+cmd.power.personal = Potere Personale: {0}/{1}
+cmd.power.faction = Potere della Fazione: {0}/{1}
+cmd.power.death_loss = Perdita per Morte: {0}
+cmd.power.regen = Rigenerazione: {0}/ora
+cmd.power.no_permission = Non hai il permesso di visualizzare le informazioni sul potere.
+cmd.power.header = Potere di {0}:
+cmd.power.current = Attuale: {0}
+
+# ========== Comandi - Economia ==========
+cmd.economy.balance = Saldo: {0}
+cmd.economy.deposited = Depositato {0} nella tesoreria della fazione.
+cmd.economy.withdrawn = Prelevato {0} dalla tesoreria della fazione.
+cmd.economy.transferred = Trasferito {0} a {1}.
+cmd.economy.insufficient = Fondi insufficienti nella tesoreria della fazione.
+cmd.economy.invalid_amount = Importo non valido: {0}
+cmd.economy.economy_disabled = L'economia è disattivata.
+cmd.economy.balance_no_permission = Non hai il permesso di visualizzare i saldi.
+cmd.economy.treasury_unavailable = La tesoreria non è disponibile.
+cmd.economy.balance_display = Tesoreria di {0}: {1}
+cmd.economy.deposit_no_permission = Non hai il permesso di depositare.
+cmd.economy.deposit_faction_denied = Non hai il permesso della fazione per depositare.
+cmd.economy.deposit_usage = Uso: /f deposit <importo>
+cmd.economy.amount_positive = L'importo deve essere positivo.
+cmd.economy.wallet_insufficient = Non hai abbastanza denaro. Portafoglio: {0}
+cmd.economy.wallet_withdraw_failed = Impossibile prelevare dal tuo portafoglio.
+cmd.economy.deposit_failed = Impossibile depositare nella tesoreria della fazione. Denaro restituito.
+cmd.economy.withdraw_no_permission = Non hai il permesso di prelevare.
+cmd.economy.withdraw_faction_denied = Non hai il permesso della fazione per prelevare.
+cmd.economy.withdraw_usage = Uso: /f withdraw <importo>
+cmd.economy.withdraw_limit_denied = Prelievo negato: {0}
+cmd.economy.wallet_deposit_failed = Attenzione: Impossibile depositare nel tuo portafoglio. Contatta un amministratore.
+cmd.economy.withdraw_limit_exceeded = Prelievo negato: limite superato.
+cmd.economy.withdraw_failed = Prelievo fallito: {0}
+cmd.economy.transfer_no_permission = Non hai il permesso di trasferire.
+cmd.economy.transfer_faction_denied = Non hai il permesso della fazione per trasferire.
+cmd.economy.transfer_usage = Uso: /f money transfer <fazione> <importo>
+cmd.economy.transfer_self = Non puoi trasferire alla tua stessa fazione.
+cmd.economy.transfer_limit_denied = Trasferimento negato: {0}
+cmd.economy.transfer_limit_exceeded = Trasferimento negato: limite superato.
+cmd.economy.transfer_failed = Trasferimento fallito: {0}
+cmd.economy.log_no_permission = Non hai il permesso di visualizzare il registro delle transazioni.
+cmd.economy.log_header = Registro Transazioni (pagina {0}/{1})
+cmd.economy.log_empty = Nessuna transazione trovata.
+cmd.economy.money_help_header = Comandi Tesoreria:
+cmd.economy.money_help_balance = /f money balance [fazione] - Visualizza saldo
+cmd.economy.money_help_deposit = /f money deposit <importo> - Deposita nella tesoreria
+cmd.economy.money_help_withdraw = /f money withdraw <importo> - Preleva dalla tesoreria
+cmd.economy.money_help_transfer = /f money transfer <fazione> <importo> - Trasferisci tra fazioni
+cmd.economy.money_help_log = /f money log [pagina] [tipo] - Visualizza cronologia transazioni
+
+# ========== Protezione - Frasi di Azione ==========
+protection.action.generic = Non puoi farlo
+protection.action.build = Non puoi costruire o distruggere blocchi
+protection.action.interact = Non puoi interagire con quello
+protection.action.door = Non puoi usare le porte
+protection.action.container = Non puoi aprire i contenitori
+protection.action.bench = Non puoi usare le stazioni di fabbricazione
+protection.action.processing = Non puoi usare le stazioni di lavorazione
+protection.action.seat = Non puoi usare le sedute
+protection.action.light = Non puoi accendere/spegnere le luci
+protection.action.teleporter = Non puoi usare i teletrasportatori
+protection.action.crate = Non puoi usare le casse
+protection.action.tame = Non puoi addomesticare creature
+protection.action.npc = Non puoi interagire con gli NPC
+protection.action.mount = Non puoi cavalcare creature
+protection.action.pve = Non puoi danneggiare creature
+protection.action.item_drop = Non puoi rilasciare oggetti
+protection.action.item_pickup = Non puoi raccogliere oggetti
+
+# ========== Protezione - Motivi del Rifiuto ==========
+protection.denied.safezone = {0} in una SafeZone.
+protection.denied.warzone = {0} in una WarZone.
+protection.denied.enemy_claim = {0} in territorio nemico.
+protection.denied.claimed = {0} in territorio rivendicato.
+protection.denied.here = {0} qui.
+protection.denied.zone = {0} in questa zona.
+protection.denied.faction_perm = {0} qui. (Permesso fazione: {1})
+protection.denied.ally_territory = {0} qui. (Territorio alleato)
+protection.denied.error = Errore di protezione — azione bloccata per sicurezza.
+
+# ========== Protezione - PvP ==========
+protection.pvp.safezone = Il PvP è disattivato nelle SafeZone.
+protection.pvp.same_faction = Non puoi attaccare i membri della tua fazione.
+protection.pvp.ally = Non puoi attaccare gli alleati.
+protection.pvp.spawn_protected = Quel giocatore ha la protezione allo spawn.
+protection.pvp.territory_disabled = Il PvP è disattivato in questo territorio.
+protection.pvp.generic = Non puoi attaccare questo giocatore.
+
+# ========== Protezione - Danni alle Entità ==========
+protection.mob_damage_disabled = I danni dei mob sono disattivati in questa zona.
+protection.pve_damage_disabled = I danni PvE sono disattivati in questa zona.
+protection.pve_territory_denied = Non puoi danneggiare i mob in questo territorio.
+
+# ========== Protezione - Tag Combattimento ==========
+protection.combat_tag_command = Non puoi usare quel comando mentre sei in combattimento.
+
+# ========== Annunci del Server ==========
+# Questi vengono trasmessi a tutti i giocatori online per eventi significativi della fazione.
+# {0}, {1} = valori dinamici (nomi di fazioni, nomi di giocatori)
+server_announce.faction_created = {0} ha fondato la fazione {1}!
+server_announce.faction_disbanded = La fazione {0} è stata sciolta!
+server_announce.leadership_transfer = {0} è ora il capo di {1}!
+server_announce.overclaim = {0} ha conquistato territorio da {1}!
+server_announce.war_declared = {0} ha dichiarato guerra a {1}!
+server_announce.alliance_formed = {0} e {1} sono ora alleati!
+server_announce.alliance_broken = {0} e {1} non sono più alleati!
+
+# ========== Sistema di Teletrasporto ==========
+teleport.cooldown_wait = Devi attendere {0} prima di teletrasportarti di nuovo.
+teleport.warmup_start = Teletrasporto alla base della fazione tra {0} secondi...
+teleport.combat_cancelled = Teletrasporto annullato - sei in combattimento!
+teleport.success_default = Teletrasportato alla base della fazione!
+teleport.no_home = La tua fazione non ha una base impostata.
+teleport.world_not_found = Mondo non trovato.
+teleport.failed = Teletrasporto fallito.
+teleport.countdown = Teletrasporto tra {0} secondi...
+teleport.countdown_one = Teletrasporto tra 1 secondo...
+teleport.moved_cancelled = Teletrasporto annullato - ti sei mosso!
+teleport.damage_cancelled = Teletrasporto annullato - hai subito danni!
+teleport.mount_teleport_blocked = Non puoi teletrasportarti in quella zona mentre sei in sella.
+teleport.mount_entry_blocked = Non puoi entrare in questa zona mentre sei in sella.
+
+# ========== Visualizzazione Chat ==========
+chat.display.public = Pubblico
+chat.display.faction = Fazione
+chat.display.ally = Alleato
+
+# ========== Sistema di Aiuto ==========
+help.commands_label = Comandi:
+help.default_footer = Usa /f <comando> per maggiori dettagli
+help.title = HyperFactions
+help.description = Gestione fazioni e controllo del territorio
+
+# Sezioni dell'aiuto
+help.section.core = Principali
+help.section.management = Gestione
+help.section.territory = Territorio
+help.section.relations = Relazioni
+help.section.teleport = Teletrasporto
+help.section.information = Informazioni
+help.section.other = Altro
+help.section.admin = Admin
+
+# Descrizioni comandi dell'aiuto (Principali)
+help.cmd.create = Crea una fazione
+help.cmd.disband = Sciogli la tua fazione
+help.cmd.invite = Invita un giocatore
+help.cmd.accept = Accetta un invito
+help.cmd.request = Richiedi di unirti a una fazione
+help.cmd.leave = Abbandona la tua fazione
+help.cmd.kick = Espelli un membro
+
+# Descrizioni comandi dell'aiuto (Gestione)
+help.cmd.rename = Rinomina la tua fazione
+help.cmd.desc = Imposta la descrizione della fazione
+help.cmd.color = Imposta il colore della fazione
+help.cmd.open = Consenti a chiunque di unirsi
+help.cmd.close = Richiedi invito per unirsi
+help.cmd.promote = Promuovi a ufficiale
+help.cmd.demote = Retrocedi a membro
+help.cmd.transfer = Trasferisci la leadership
+
+# Descrizioni comandi dell'aiuto (Territorio)
+help.cmd.claim = Rivendica questo chunk
+help.cmd.unclaim = Rinuncia a questo chunk
+help.cmd.overclaim = Conquista territorio nemico
+help.cmd.map = Visualizza la mappa del territorio
+
+# Descrizioni comandi dell'aiuto (Relazioni)
+help.cmd.ally = Richiedi un'alleanza
+help.cmd.enemy = Dichiara nemico
+help.cmd.neutral = Imposta relazione neutrale
+
+# Descrizioni comandi dell'aiuto (Teletrasporto)
+help.cmd.home = Teletrasportati alla base della fazione
+help.cmd.sethome = Imposta la base della fazione
+help.cmd.stuck = Esci dal territorio nemico
+
+# Descrizioni comandi dell'aiuto (Informazioni)
+help.cmd.info = Visualizza informazioni sulla fazione
+help.cmd.list = Elenca tutte le fazioni
+help.cmd.browse = Sfoglia le fazioni (alias di list)
+help.cmd.members = Visualizza i membri della fazione
+help.cmd.invites = Gestisci inviti/richieste
+help.cmd.who = Visualizza informazioni sul giocatore
+help.cmd.power = Visualizza livello di potere
+help.cmd.gui = Apri la GUI della fazione
+help.cmd.settings = Apri le impostazioni della fazione
+
+# Descrizioni comandi dell'aiuto (Altro)
+help.cmd.chat = Invia un messaggio nella chat di fazione
+help.cmd.chat_short = Chat di fazione (abbreviata)
+
+# Descrizioni comandi dell'aiuto (Admin nell'aiuto principale)
+help.cmd.admin = Apri la GUI admin
+help.cmd.admin_reload = Ricarica la configurazione
+help.cmd.admin_sync = Sincronizza i dati dal disco
+help.cmd.admin_factions = Gestisci le fazioni
+help.cmd.admin_zones = Gestisci le zone
+help.cmd.admin_config = Visualizza/modifica la configurazione
+help.cmd.admin_backups = Gestisci i backup
+help.cmd.admin_update = Controlla aggiornamenti
+help.cmd.admin_debug = Comandi di debug
+
+# Pagina aiuto admin
+help.admin.title = Comandi Admin
+help.admin.description = Amministrazione del server
+help.admin.cmd.dashboard = Apri la GUI del pannello admin
+help.admin.cmd.factions = Gestisci tutte le fazioni
+help.admin.cmd.zone = Gestione zone
+help.admin.cmd.config = Configurazione del server
+help.admin.cmd.backup = Gestione backup
+help.admin.cmd.import_cmd = Importa da altri plugin
+help.admin.cmd.update = Controlla e scarica aggiornamenti
+help.admin.cmd.update_mixin = Aggiorna HyperProtect-Mixin
+help.admin.cmd.update_toggle = Attiva/disattiva auto-download HP-Mixin
+help.admin.cmd.rollback = Ripristina versione precedente
+help.admin.cmd.reload = Ricarica la configurazione
+help.admin.cmd.sync = Sincronizza i dati dal disco
+help.admin.cmd.debug = Comandi di debug
+help.admin.cmd.decay = Gestione decadimento territori
+help.admin.cmd.map = Gestione mappa del mondo
+help.admin.cmd.safezone = Crea SafeZone + rivendica chunk
+help.admin.cmd.warzone = Crea WarZone + rivendica chunk
+help.admin.cmd.removezone = Rimuovi chunk dalla zona
+help.admin.cmd.zoneflag = Imposta flag della zona
+help.admin.cmd.integrations = Riepilogo di tutte le integrazioni
+help.admin.cmd.integration = Stato dettagliato dell'integrazione
+help.admin.cmd.clearhistory = Cancella la cronologia di appartenenza del giocatore
+help.admin.cmd.power = Gestione potere admin
+help.admin.cmd.economy = Gestione economia/tesoreria
+help.admin.cmd.economy_upkeep = Attiva manualmente la riscossione del mantenimento
+help.admin.cmd.info = Visualizza GUI info fazione admin
+help.admin.cmd.who = Visualizza GUI info giocatore admin
+help.admin.cmd.log = Visualizza registro attività globale
+help.admin.cmd.world = Gestione impostazioni per mondo
+help.admin.cmd.version = Visualizza versione mod e stato integrazioni
+help.admin.cmd.sentry = Visualizza stato Sentry
+help.admin.cmd.sentry_disable = Disattiva segnalazione errori Sentry
+help.admin.cmd.sentry_enable = Attiva segnalazione errori Sentry
+help.admin.cmd.test_gui = Apri pagina di test elementi UI
+help.admin.cmd.test_sentry = Invia un errore di test a Sentry
+help.admin.cmd.test_md = Apri pagina di test rendering markdown
+
+# Sotto-aiuto: Backup
+help.backup.title = Gestione Backup
+help.backup.description = Schema di rotazione GFS
+help.backup.cmd.create = Crea backup manuale
+help.backup.cmd.list = Elenca tutti i backup raggruppati per tipo
+help.backup.cmd.restore = Ripristina da backup (richiede conferma)
+help.backup.cmd.delete = Elimina un backup
+
+# Sotto-aiuto: Debug
+help.debug.title = Comandi di Debug
+help.debug.description = Diagnostica e risoluzione problemi
+help.debug.cmd.toggle = Attiva/disattiva il logging di debug
+help.debug.cmd.status = Mostra stato del debug
+help.debug.cmd.power = Mostra dettagli del potere
+help.debug.cmd.claim = Mostra informazioni sul territorio
+help.debug.cmd.protection = Mostra informazioni sulla protezione
+help.debug.cmd.combat = Mostra stato del tag combattimento
+help.debug.cmd.relation = Mostra informazioni sulle relazioni
+
+# Sotto-aiuto: Potere
+help.power.title = Potere Admin
+help.power.description = Gestisci potere giocatore/fazione
+help.power.cmd.set = Imposta potere esatto
+help.power.cmd.add = Aumenta potere
+help.power.cmd.remove = Diminuisci potere
+help.power.cmd.reset = Ripristina al valore predefinito
+help.power.cmd.setmax = Imposta override potere massimo
+help.power.cmd.resetmax = Rimuovi override massimo
+help.power.cmd.noloss = Attiva/disattiva bypass perdita potere
+help.power.cmd.nodecay = Attiva/disattiva esenzione decadimento
+help.power.cmd.faction = Operazioni a livello di fazione
+help.power.cmd.info = Mostra dettagli potere del giocatore
+
+# Sotto-aiuto: Economia
+help.economy.title = Economia Admin
+help.economy.description = Gestisci le tesorerie delle fazioni
+help.economy.cmd.balance = Mostra saldo della fazione
+help.economy.cmd.set = Imposta saldo esatto
+help.economy.cmd.add = Aggiungi al saldo
+help.economy.cmd.take = Deduci dal saldo
+help.economy.cmd.total = Mostra saldo totale del server
+help.economy.cmd.reset = Azzera il saldo
+help.economy.cmd.upkeep = Attiva manualmente la riscossione del mantenimento
+
+# Sotto-aiuto: Mondo
+help.world.title = Impostazioni Mondo
+help.world.description = Configurazione per mondo
+help.world.cmd.list = Elenca tutti i mondi configurati
+help.world.cmd.info = Mostra le impostazioni di un mondo
+help.world.cmd.set = Imposta un'impostazione del mondo
+help.world.cmd.reset = Rimuovi impostazioni specifiche del mondo
+
+# Sotto-aiuto: Mappa
+help.map.title = Mappa del Mondo
+help.map.description = Gestione overlay della mappa
+help.map.cmd.status = Mostra stato e statistiche della mappa del mondo
+help.map.cmd.refresh = Forza aggiornamento immediato della mappa
+
+# Sotto-aiuto: Decadimento
+help.decay.title = Decadimento Territori
+help.decay.description = Rimuove automaticamente i territori delle fazioni inattive
+help.decay.cmd.status = Mostra stato del decadimento
+help.decay.cmd.run = Attiva manualmente il decadimento dei territori
+help.decay.cmd.check = Controlla stato di decadimento della fazione
+
+# Sotto-aiuto: Importazione
+help.import.title = Comandi di Importazione
+help.import.description = Migra da altri plugin di fazioni
+help.import.cmd.hyfactions = Importa dal mod HyFactions
+help.import.path.hyfactions = Percorso predefinito: mods/Kaws_Hyfaction
+help.import.cmd.elbaphfactions = Importa dal mod ElbaphFactions
+help.import.path.elbaphfactions = Percorso predefinito: mods/ElbaphFactions
+help.import.cmd.factionsx = Importa dal mod FactionsX
+help.import.path.factionsx = Percorso predefinito: mods/FactionsX
+help.import.cmd.simpleclaims = Importa dal mod SimpleClaims
+help.import.path.simpleclaims = Percorso predefinito: Server/universe/SimpleClaims
+help.import.flags_header = Flag:
+help.import.flag.dryrun = Simula senza modifiche
+help.import.flag.overwrite = Sostituisci fazioni esistenti
+help.import.flag.nozones = Salta importazione zone
+help.import.flag.nopower = Salta distribuzione potere
+
+# Sotto-aiuto: Test
+help.test.title = Comandi di Test
+help.test.description = Strumenti di test per lo sviluppo
+help.test.cmd.gui = Apri pagina di test elementi UI
+help.test.cmd.sentry = Invia errore di test a Sentry
+help.test.cmd.md = Apri pagina di test rendering markdown
+
+# ========== Messaggi Admin CLI ==========
+admincmd.no_permission = Non hai il permesso.
+admincmd.player_only = Questo comando può essere usato solo da un giocatore.
+admincmd.player_context = Contesto giocatore non disponibile.
+admincmd.entity_not_found = Impossibile trovare l'entità del giocatore.
+admincmd.unknown_command = Comando admin sconosciuto. Usa /f admin help
+admincmd.faction_not_found = Fazione non trovata.
+admincmd.player_not_found = Giocatore non trovato: {0}
+admincmd.invalid_number = Numero non valido: {0}
+admincmd.amount_positive = L'importo deve essere positivo.
+admincmd.balance_not_negative = Il saldo non può essere negativo.
+admincmd.error_generic = Si è verificato un errore.
+
+# Admin - Ricarica/Sincronizzazione
+admincmd.reload.success = Configurazione ricaricata.
+admincmd.sync.start = Sincronizzazione dati delle fazioni dal disco...
+admincmd.sync.complete = Sincronizzazione completata: {0} fazioni aggiornate, {1} membri aggiunti, {2} membri aggiornati.
+admincmd.sync.failed = Sincronizzazione fallita: {0}
+
+# Admin - Versione
+admincmd.version.title = Informazioni Versione
+admincmd.version.server = Hytale Server: {0}
+admincmd.version.java = Java: {0}
+admincmd.version.treasury = Tesoreria: {0}
+admincmd.version.active = Attivo
+admincmd.version.not_found = Non trovato
+
+# Admin - Sentry
+admincmd.sentry.header = Sentry - Segnalazione Errori
+admincmd.sentry.config = Configurazione: {0}
+admincmd.sentry.status = Stato: {0}
+admincmd.sentry.already_disabled = Sentry è già disattivato.
+admincmd.sentry.already_enabled = Sentry è già attivato.
+admincmd.sentry.disabled = Sentry disattivato e configurazione salvata. La segnalazione errori è ora disattivata.
+admincmd.sentry.enabled = Sentry attivato e configurazione salvata. La segnalazione errori è ora attiva.
+admincmd.sentry.usage = Uso: /f admin sentry [disable|enable]
+admincmd.sentry.not_initialized = Sentry non è inizializzato. Controlla config/debug.json
+admincmd.sentry.test_sent = Errore di test inviato a Sentry. Controlla la dashboard di Sentry.
+admincmd.sentry.test_failed = Impossibile inviare l'evento di test.
+
+# Admin - Backup
+admincmd.backup.no_permission = Non hai il permesso di gestire i backup.
+admincmd.backup.creating = Creazione backup in corso...
+admincmd.backup.created = Backup creato con successo!
+admincmd.backup.name = Nome: {0}
+admincmd.backup.size = Dimensione: {0}
+admincmd.backup.failed = Backup fallito: {0}
+admincmd.backup.none = Nessun backup trovato.
+admincmd.backup.header = Backup
+admincmd.backup.not_found = Backup '{0}' non trovato.
+admincmd.backup.unknown_command = Comando backup sconosciuto: {0}
+admincmd.backup.usage_restore = Uso: /f admin backup restore <nome>
+admincmd.backup.usage_delete = Uso: /f admin backup delete <nome>
+admincmd.backup.restore_warning = ATTENZIONE: Il ripristino sovrascriverà i dati attuali!
+admincmd.backup.restore_confirm = Digita il comando di nuovo entro {0} secondi per confermare.
+admincmd.backup.restoring = Ripristino backup in corso...
+admincmd.backup.restored = Backup ripristinato con successo! Dati ricaricati.
+admincmd.backup.restore_failed = Ripristino fallito: {0}
+admincmd.backup.confirm_cancelled = Conferma precedente annullata. Digita di nuovo per confermare il ripristino.
+admincmd.backup.deleted = Backup '{0}' eliminato
+admincmd.backup.delete_failed = Impossibile eliminare il backup.
+
+# Admin - Debug
+admincmd.debug.no_permission = Non hai il permesso di usare i comandi di debug.
+admincmd.debug.unknown_command = Comando debug sconosciuto: {0}
+admincmd.debug.player_only = Questo comando di debug può essere usato solo da un giocatore.
+admincmd.debug.toggle_set = Categoria di debug '{0}' impostata su {1} (salvata)
+admincmd.debug.all_enabled = Tutte le categorie di debug attivate.
+admincmd.debug.all_disabled = Tutte le categorie di debug disattivate.
+admincmd.debug.unknown_category = Categoria sconosciuta: {0}
+admincmd.debug.not_implemented = Informazioni debug {0} non ancora implementate.
+
+# Admin - Economia
+admincmd.econ.disabled = Il sistema economico non è attivato.
+admincmd.econ.unknown_command = Comando economia sconosciuto. Usa /f admin economy help
+admincmd.econ.set = Saldo di {0} impostato a {1} (era {2})
+admincmd.econ.added = Aggiunto {0} a {1} (saldo: {2})
+admincmd.econ.deducted = Dedotto {0} da {1} (saldo: {2})
+admincmd.econ.reset = Saldo di {0} azzerato a {1} (era {2})
+admincmd.econ.failed = Errore: {0}
+admincmd.econ.total_header = Statistiche Economia del Server
+admincmd.econ.upkeep_disabled = Il sistema di mantenimento non è attivato.
+admincmd.econ.upkeep_trigger = Attivazione manuale della riscossione del mantenimento...
+admincmd.econ.upkeep_complete = Riscossione del mantenimento completata. Controlla il log del server per i dettagli.
+admincmd.econ.upkeep_failed = Riscossione del mantenimento fallita: {0}
+
+# Admin - Potere
+admincmd.power.no_permission = Non hai il permesso.
+admincmd.power.unknown_command = Comando potere sconosciuto. Usa /f admin power help
+admincmd.power.max_positive = Il potere massimo deve essere positivo.
+admincmd.power.faction_unknown_action = Azione potere fazione sconosciuta. Usa: set, add, remove, reset
+
+# Admin - Cancella Cronologia
+admincmd.history.no_data = Nessun dato giocatore trovato per {0}.
+admincmd.history.empty = {0} non ha cronologia di appartenenza.
+admincmd.history.cleared = Cancellati {0} record di cronologia per {1}.
+admincmd.history.cleared_reinit = Cancellati {0} record di cronologia per {1} (reinizializzato con fazione attuale: {2}).
+
+# Admin - Zone
+admincmd.zone.created = Creata {0} '{1}' a {2}, {3}
+admincmd.zone.chunk_claimed = Impossibile creare la zona: Questo chunk è rivendicato da una fazione.
+admincmd.zone.already_exists = Una zona esiste già in questa posizione.
+admincmd.zone.name_taken = Una zona con quel nome esiste già.
+admincmd.zone.not_found = Zona '{0}' non trovata.
+admincmd.zone.unclaimed = Chunk rimosso dalla zona.
+admincmd.zone.no_chunk = Nessun chunk di zona trovato in questa posizione.
+admincmd.zone.none = Nessuna zona definita.
+admincmd.zone.deleted = Zona '{0}' eliminata ({1} chunk rilasciati)
+admincmd.zone.renamed = Zona '{0}' rinominata in '{1}'
+admincmd.zone.invalid_type = Tipo di zona non valido. Usa 'safe' o 'war'
+admincmd.zone.invalid_name = Nome zona non valido. Deve essere tra 1 e 32 caratteri.
+admincmd.zone.claimed_radius = Rivendicati {0} chunk per la zona '{1}'
+admincmd.zone.no_chunks_claimed = Nessun chunk rivendicabile (tutti occupati o già in una zona).
+admincmd.zone.unknown_command = Comando zona sconosciuto. Usa /f admin help
+admincmd.zone.chunk_has_zone = Questo chunk appartiene già a un'altra zona.
+admincmd.zone.chunk_has_faction = Questo chunk è rivendicato da una fazione.
+admincmd.zone.notify_set = Notifica di ingresso della zona '{0}' {1}
+admincmd.zone.title_set = Impostato titolo {0} per la zona '{1}' a: {2}
+admincmd.zone.title_cleared = Cancellato titolo {0} per la zona '{1}' (uso predefinito)
+admincmd.zone.no_zone_at = Nessuna zona nella tua posizione. Entra in una zona per gestirne i flag.
+admincmd.zone.flag_cleared = Flag '{0}' cancellato (ora usa il predefinito: {1})
+admincmd.zone.flag_set = Flag '{0}' impostato su {1}
+admincmd.zone.flag_invalid = Flag non valido: {0}
+admincmd.zone.flags_cleared = Cancellati tutti i flag personalizzati per '{0}' — ora usa i predefiniti del tipo di zona.
+
+# Admin - Mondo
+admincmd.world.unknown_command = Comando mondo sconosciuto. Usa /f admin world help
+admincmd.world.no_settings = Nessuna impostazione per mondo configurata.
+admincmd.world.unknown_setting = Impostazione sconosciuta: {0}
+admincmd.world.set = Impostato {0}={1} per il mondo {2}
+admincmd.world.reset = Rimosse le impostazioni per mondo per: {0}
+admincmd.world.not_found = Nessuna impostazione trovata per il mondo: {0}
+
+# Admin - Mappa/Decadimento
+admincmd.map.not_available = Il servizio mappa del mondo non è disponibile.
+admincmd.map.refreshing = Aggiornamento forzato della mappa del mondo...
+admincmd.map.refreshed = Aggiornamento mappa del mondo completato.
+admincmd.map.unknown_command = Comando mappa sconosciuto: {0}
+admincmd.decay.disabled = Il decadimento dei territori è disattivato nella configurazione.
+admincmd.decay.running = Esecuzione del controllo decadimento...
+admincmd.decay.complete = Controllo decadimento completato. Controlla la console per i dettagli.
+admincmd.decay.unknown_command = Comando decadimento sconosciuto: {0}
+
+# Admin - Aggiornamento
+admincmd.update.not_available = Il controllo aggiornamenti non è disponibile.
+admincmd.update.checking = Controllo aggiornamenti in corso...
+admincmd.update.up_to_date = Il plugin è già aggiornato (v{0})
+admincmd.update.available = Aggiornamento disponibile: v{0}
+admincmd.update.unknown_target = Obiettivo di aggiornamento sconosciuto: {0}
+
+# Admin - Importazione
+admincmd.import.unknown_source = Sorgente di importazione sconosciuta: {0}
+admincmd.import.importing = Importazione da {0} in corso...
+admincmd.import.complete = Importazione da {0} {1}completata!
+admincmd.import.failed = Importazione da {0} fallita con errori:
+
+# Admin - Update Notifications (login messages)
+admincmd.update_notify.new_version = [HyperFactions] Una nuova versione è disponibile!
+admincmd.update_notify.version_info = Attuale: v{0} -> Ultima: v{1}
+admincmd.update_notify.instruction = Esegui /f admin update per aggiornare il plugin.
+admincmd.update_notify.up_to_date = [HyperFactions] Il plugin è aggiornato (v{0})
+admincmd.update.no_info = Nessuna informazione di aggiornamento disponibile.
+admincmd.update.creating_backup = Creazione backup pre-aggiornamento...
+admincmd.update.backup_created = Backup creato: {0}
+admincmd.update.backup_warning = Attenzione: Backup fallito - {0}
+admincmd.update.backup_continue = Continuando con l'aggiornamento comunque...
+admincmd.update.downloading = Scaricamento di HyperFactions v{0}...
+admincmd.update.download_failed = Scaricamento fallito. Controlla i log del server.
+admincmd.update.downloaded = Aggiornamento scaricato con successo!
+admincmd.update.file_label = File: {0}
+admincmd.update.cleanup = Pulizia: {0} backup vecchio/i rimosso/i
+admincmd.update.kept_backup = Mantenuto: {0} (per rollback)
+admincmd.update.restart = Riavvia il server per applicare l'aggiornamento.
+admincmd.update.use_rollback = Usa /f admin rollback per annullare prima del riavvio.
+admincmd.update.usage_hf = /f admin update — aggiorna HyperFactions
+admincmd.update.usage_mixin = /f admin update mixin — aggiorna HyperProtect-Mixin
+admincmd.update.usage_toggle = /f admin update toggle-mixin-download — attiva/disattiva download automatico
+admincmd.update.mixin_current = HyperProtect-Mixin: {0}
+admincmd.update.mixin_up_to_date = HyperProtect-Mixin è aggiornato.
+admincmd.update.mixin_none = Nessuna release di HyperProtect-Mixin ancora disponibile.
+admincmd.update.mixin_available = Disponibile: v{0}
+admincmd.update.mixin_downloading = Scaricamento di HyperProtect-Mixin v{0}...
+admincmd.update.mixin_downloaded = Scaricato con successo!
+admincmd.update.mixin_failed = Scaricamento fallito. Controlla i log del server.
+admincmd.update.mixin_location = Posizione: earlyplugins/
+admincmd.update.mixin_restart = Riavvia il server per applicare.
+admincmd.update.mixin_auto_on = Download automatico HP-Mixin attivato.
+admincmd.update.mixin_auto_on_desc = HyperProtect-Mixin verrà scaricato automaticamente al prossimo avvio se non installato.
+admincmd.update.mixin_auto_off = Download automatico HP-Mixin disattivato.
+admincmd.update.mixin_auto_off_desc = Usa /f admin update mixin per scaricare manualmente.
+admincmd.rollback.no_backup = Nessun JAR di backup trovato per il rollback.
+admincmd.rollback.unsafe = Impossibile eseguire il rollback automaticamente!
+admincmd.rollback.unsafe_reason = Il server è stato riavviato dall'ultimo aggiornamento.
+admincmd.rollback.unsafe_migration = Le migrazioni di configurazione/dati potrebbero essere state applicate.
+admincmd.rollback.instructions = Per un rollback sicuro, devi:
+admincmd.rollback.find_backup = Usa /f admin backup list per trovare il backup pre-aggiornamento.
+admincmd.rollback.rolling = Ripristino aggiornamento...
+admincmd.rollback.from = Da: v{0} (nuova)
+admincmd.rollback.to = A: v{0} (precedente)
+admincmd.rollback.version = Ripristino a v{0}...
+admincmd.rollback.success = Rollback riuscito!
+admincmd.rollback.restored = Ripristinato: {0}
+admincmd.rollback.removed = Rimosso: {0}
+admincmd.rollback.restart = Riavvia il server per applicare il rollback.
+admincmd.rollback.failed = Rollback fallito: {0}
+admincmd.zone.failed = Fallito: {0}
+admincmd.zone.failed_delete = Impossibile eliminare la zona: {0}
+admincmd.zone.failed_rename = Impossibile rinominare la zona: {0}
+admincmd.zone.failed_flags = Impossibile resettare i flag.
+admincmd.zone.failed_flag = Impossibile impostare il flag.
+admincmd.zone.list_header = Zone ({0})
+admincmd.zone.info_header = Zona: {0}
+admincmd.zone.info_notify = Notifica: {0}
+admincmd.zone.info_upper_title = Titolo superiore: {0}
+admincmd.zone.info_lower_title = Titolo inferiore: {0}
+admincmd.zone.info_custom_flags = Flag personalizzati:
+admincmd.zone.flags_header = Flag della Zona: {0}
+admincmd.zone.flags_type = Tipo di Zona: {0}
+admincmd.zone.player_only = Questo comando può essere usato solo da un giocatore.
+admincmd.decay.status_header = Stato Decadimento Territori
+admincmd.decay.enable_hint = Imposta claims.decayEnabled su true per attivare.
+admincmd.decay.error = Errore durante il decadimento: {0}
+admincmd.decay.check_header = Controllo Decadimento: {0}
+admincmd.decay.check_not_found = Fazione '{0}' non trovata.
+admincmd.decay.no_claims = Nessun territorio da far decadere.
+admincmd.decay.disabled_globally = Disabilitato globalmente
+admincmd.map.status_header = Stato Mappa Mondiale
+admincmd.debug.status_header = Stato Registrazione Debug
+admincmd.debug.full_status_header = Stato Debug HyperFactions
+common.no_description = Nessuna descrizione impostata.
+common.member_count = {0} membri
+common.economy_disabled = Il sistema economico non è abilitato.
+territory.display.wilderness = Terre Selvagge
+territory.display.safezone = Zona Sicura
+territory.display.warzone = Zona di Guerra
+territory.display.unknown_faction = Fazione Sconosciuta
+territory.secondary.pvp_disabled = PvP Disabilitato
+territory.secondary.pvp_no_protection = PvP Abilitato - Nessuna Protezione
+territory.secondary.your_territory = Il Tuo Territorio
+territory.secondary.faction_territory = Territorio
+territory.secondary.relation_territory = Territorio di {0}
+announce.death_location = {0} è morto/a a ({1}, {2}, {3}) in {4}

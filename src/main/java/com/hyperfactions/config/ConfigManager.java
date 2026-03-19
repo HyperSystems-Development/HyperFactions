@@ -52,6 +52,8 @@ public class ConfigManager {
 
   private final WorldSettingsResolver worldSettingsResolver = new WorldSettingsResolver();
 
+  private final Object worldSettingsLock = new Object();
+
   private ConfigManager() {}
 
   /**
@@ -65,6 +67,36 @@ public class ConfigManager {
       instance = new ConfigManager();
     }
     return instance;
+  }
+
+  /**
+   * Initializes ConfigManager with default values for all configs.
+   * Uses a temporary directory so no files are actually read from or written to disk.
+   * Intended for unit tests that need ConfigManager to be non-null.
+   *
+   * @return the initialized ConfigManager
+   */
+  @NotNull
+  public static ConfigManager initTestDefaults() {
+    ConfigManager cm = get();
+    Path tempDir;
+    try {
+      tempDir = java.nio.file.Files.createTempDirectory("hf-test-config");
+      tempDir.toFile().deleteOnExit();
+    } catch (java.io.IOException e) {
+      throw new RuntimeException("Failed to create temp config dir for tests", e);
+    }
+    cm.loadAll(tempDir);
+    // In test environments without a permission mod, allow all user-level permissions
+    cm.server().setAllowWithoutPermissionMod(true);
+    return cm;
+  }
+
+  /**
+   * Resets the singleton instance. For testing only.
+   */
+  public static void resetInstance() {
+    instance = null;
   }
 
   /**
@@ -262,6 +294,30 @@ public class ConfigManager {
     validateAll();
 
     Logger.info("[Config] Configuration reloaded");
+  }
+
+  /**
+   * Resets all configuration files to factory defaults and saves.
+   */
+  public void resetAllDefaults() {
+    Logger.info("[Config] Resetting all configuration to defaults...");
+
+    factionsConfig.resetDefaults();
+    serverConfig.resetDefaults();
+    backupConfig.resetDefaults();
+    chatConfig.resetDefaults();
+    debugConfig.resetDefaults();
+    economyConfig.resetDefaults();
+    factionPermissionsConfig.resetDefaults();
+    worldMapConfig.resetDefaults();
+    announcementConfig.resetDefaults();
+    gravestoneConfig.resetDefaults();
+    worldsConfig.resetDefaults();
+
+    worldSettingsResolver.rebuild(worldsConfig);
+    validateAll();
+
+    Logger.info("[Config] Configuration reset to defaults");
   }
 
   /**
@@ -620,6 +676,27 @@ public class ConfigManager {
       return worldSettingsResolver.isPowerLossEnabled(worldName);
     }
     return true;
+  }
+
+  /**
+   * Gets the per-world max claims limit for a world.
+   * Returns null if no per-world limit is set (use global config).
+   *
+   * @param worldName the world name
+   * @return the max claims limit, or null for no per-world limit
+   */
+  @org.jetbrains.annotations.Nullable
+  public Integer getWorldMaxClaims(@NotNull String worldName) {
+    if (worldsConfig != null && worldsConfig.isEnabled()) {
+      return worldSettingsResolver.getMaxClaimsInWorld(worldName);
+    }
+    return null;
+  }
+
+  /** Returns the worlds config, or null if not loaded. */
+  @org.jetbrains.annotations.Nullable
+  public WorldsConfig getWorldsConfig() {
+    return worldsConfig;
   }
 
   // Combat (from factions config)
@@ -1230,6 +1307,17 @@ public class ConfigManager {
     return chatConfig.getHistoryCleanupIntervalMinutes();
   }
 
+  // Language / i18n (from server config)
+  /** Returns the default server language code (e.g. "en-US"). */
+  @NotNull public String getDefaultLanguage() {
+    return serverConfig.getDefaultLanguage();
+  }
+
+  /** Whether to respect each player's client language for translations. */
+  public boolean isUsePlayerLanguage() {
+    return serverConfig.isUsePlayerLanguage();
+  }
+
   // Permissions (from server config)
   public boolean isAdminRequiresOp() {
     return serverConfig.isAdminRequiresOp();
@@ -1253,5 +1341,42 @@ public class ConfigManager {
   /** Checks if permission locked. */
   public boolean isPermissionLocked(@NotNull String permissionName) {
     return factionPermissionsConfig.isPermissionLocked(permissionName);
+  }
+
+  // === World Settings API ===
+
+  /**
+   * Registers or updates per-world settings for the given world key.
+   * Upsert semantics: skips save if settings are identical to existing.
+   * Thread-safe.
+   *
+   * @param worldKey the world name or wildcard pattern
+   * @param settings the settings to apply
+   */
+  public void registerWorldSettings(@NotNull String worldKey,
+      @NotNull com.hyperfactions.config.modules.WorldsConfig.WorldSettings settings) {
+    synchronized (worldSettingsLock) {
+      com.hyperfactions.config.modules.WorldsConfig.WorldSettings existing = worldsConfig.getWorldSettings(worldKey);
+      if (settings.equals(existing)) return;
+      worldsConfig.setWorldSettings(worldKey, settings);
+      worldsConfig.save();
+      worldSettingsResolver.rebuild(worldsConfig);
+    }
+  }
+
+  /**
+   * Removes per-world settings for the given key and persists.
+   * Thread-safe.
+   *
+   * @param worldKey the world key to remove
+   * @return true if settings were removed
+   */
+  public boolean removeExternalWorldSettings(@NotNull String worldKey) {
+    synchronized (worldSettingsLock) {
+      if (!worldsConfig.removeWorldSettings(worldKey)) return false;
+      worldsConfig.save();
+      worldSettingsResolver.rebuild(worldsConfig);
+      return true;
+    }
   }
 }

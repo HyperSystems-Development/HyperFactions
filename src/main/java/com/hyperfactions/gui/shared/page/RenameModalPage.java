@@ -1,5 +1,7 @@
 package com.hyperfactions.gui.shared.page;
 
+import com.hyperfactions.api.events.EventBus;
+import com.hyperfactions.api.events.FactionRenameEvent;
 import com.hyperfactions.data.Faction;
 import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.data.FactionRole;
@@ -7,6 +9,9 @@ import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.shared.data.RenameModalData;
 import com.hyperfactions.manager.FactionManager;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.CommonKeys;
+import com.hyperfactions.util.GuiKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.worldmap.WorldMapService;
 import com.hypixel.hytale.component.Ref;
@@ -80,6 +85,13 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
     // Load the modal template
     cmd.append(UIPaths.RENAME_MODAL);
 
+    // Static labels
+    cmd.set("#PageTitle.Text", HFMessages.get(playerRef, GuiKeys.RenameGui.TITLE));
+    cmd.set("#CurrentLabel.Text", HFMessages.get(playerRef, GuiKeys.RenameGui.CURRENT_LABEL));
+    cmd.set("#NewNameLabel.Text", HFMessages.get(playerRef, GuiKeys.RenameGui.NEW_NAME_LABEL));
+    cmd.set("#CancelBtn.Text", HFMessages.get(playerRef, CommonKeys.Common.CANCEL));
+    cmd.set("#SaveBtn.Text", HFMessages.get(playerRef, CommonKeys.Common.SAVE));
+
     // Show current name
     cmd.set("#CurrentName.Text", faction.name());
 
@@ -118,7 +130,7 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
 
     // Verify officer permission (skip in admin mode)
     if (!adminMode && (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel())) {
-      player.sendMessage(MessageUtil.errorText("You don't have permission to rename the faction."));
+      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RenameGui.NO_PERMISSION));
       guiManager.openFactionSettings(player, ref, store, playerRef,
           factionManager.getFaction(faction.id()));
       return;
@@ -139,7 +151,7 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
 
         // Validation
         if (newName == null || newName.trim().isEmpty()) {
-          player.sendMessage(MessageUtil.errorText("Please enter a faction name."));
+          player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RenameGui.ENTER_NAME));
           sendUpdate();
           return;
         }
@@ -147,20 +159,20 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
         newName = newName.trim();
 
         if (newName.length() < MIN_NAME_LENGTH) {
-          player.sendMessage(MessageUtil.errorText("Faction name must be at least " + MIN_NAME_LENGTH + " characters."));
+          player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RenameGui.TOO_SHORT, MIN_NAME_LENGTH));
           sendUpdate();
           return;
         }
 
         if (newName.length() > MAX_NAME_LENGTH) {
-          player.sendMessage(MessageUtil.errorText("Faction name cannot exceed " + MAX_NAME_LENGTH + " characters."));
+          player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RenameGui.TOO_LONG, MAX_NAME_LENGTH));
           sendUpdate();
           return;
         }
 
         // Check if name is the same
         if (newName.equalsIgnoreCase(faction.name())) {
-          player.sendMessage(MessageUtil.text("That's already your faction's name.", MessageUtil.COLOR_GOLD));
+          player.sendMessage(MessageUtil.info(playerRef, GuiKeys.RenameGui.SAME_NAME, "#FFD700"));
           sendUpdate();
           return;
         }
@@ -168,7 +180,7 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
         // Check uniqueness
         Faction existing = factionManager.getFactionByName(newName);
         if (existing != null) {
-          player.sendMessage(MessageUtil.errorText("A faction with that name already exists."));
+          player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RenameGui.NAME_TAKEN));
           sendUpdate();
           return;
         }
@@ -177,20 +189,18 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
         String oldName = faction.name();
         Faction updatedFaction = faction.withName(newName);
         factionManager.updateFaction(updatedFaction);
+        EventBus.publish(new FactionRenameEvent(faction.id(), FactionRenameEvent.Field.NAME, oldName, newName, uuid));
 
         // Refresh world maps to show new faction name (respects configured refresh mode)
         if (worldMapService != null) {
           worldMapService.triggerFactionWideRefresh(faction.id());
         }
 
-        String prefix = adminMode ? "[Admin] " : "";
-        player.sendMessage(
-            Message.raw(prefix + "Faction renamed from ").color("#AAAAAA")
-                .insert(Message.raw(oldName).color("#888888"))
-                .insert(Message.raw(" to ").color("#AAAAAA"))
-                .insert(Message.raw(newName).color("#00FFFF"))
-                .insert(Message.raw("!").color("#AAAAAA"))
-        );
+        String msg = HFMessages.get(playerRef, GuiKeys.RenameGui.SUCCESS, oldName, newName);
+        if (adminMode) {
+          msg = HFMessages.get(playerRef, CommonKeys.Common.ADMIN_PREFIX) + " " + msg;
+        }
+        player.sendMessage(Message.raw(msg).color("#55FF55"));
 
         if (adminMode) {
           guiManager.openAdminFactionSettings(player, ref, store, playerRef, faction.id());

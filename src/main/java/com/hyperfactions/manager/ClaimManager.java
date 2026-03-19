@@ -1,6 +1,7 @@
 package com.hyperfactions.manager;
 
 import com.hyperfactions.Permissions;
+import com.hyperfactions.api.events.*;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.ChunkKey;
 import com.hyperfactions.data.Faction;
@@ -10,7 +11,9 @@ import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.integration.PermissionManager;
 import com.hyperfactions.integration.protection.OrbisGuardIntegration;
 import com.hyperfactions.util.ChunkUtil;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.util.GuiKeys;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
@@ -124,7 +127,7 @@ public class ClaimManager {
       try {
         notificationCallback.notifyFaction(factionId, message, hexColor);
       } catch (Exception e) {
-        Logger.warn("Failed to notify faction members: %s", e.getMessage());
+        ErrorHandler.report("Failed to notify faction members", e);
       }
     }
   }
@@ -172,7 +175,7 @@ public class ClaimManager {
       try {
         onClaimChangeCallback.run();
       } catch (Exception e) {
-        Logger.warn("Error in claim change callback: %s", e.getMessage());
+        ErrorHandler.report("Error in claim change callback", e);
       }
     }
   }
@@ -193,7 +196,7 @@ public class ClaimManager {
       try {
         onChunkChangeCallback.onChunkChange(worldName, chunkX, chunkZ);
       } catch (Exception e) {
-        Logger.warn("Error in chunk change callback: %s", e.getMessage());
+        ErrorHandler.report("Error in chunk change callback", e);
       }
 
     // Fall back to legacy callback if no chunk-specific callback set
@@ -201,7 +204,7 @@ public class ClaimManager {
       try {
         onClaimChangeCallback.run();
       } catch (Exception e) {
-        Logger.warn("Error in claim change callback: %s", e.getMessage());
+        ErrorHandler.report("Error in claim change callback", e);
       }
     }
 
@@ -210,7 +213,7 @@ public class ClaimManager {
       try {
         onGuiChunkChangeCallback.onChunkChange(worldName, chunkX, chunkZ);
       } catch (Exception e) {
-        Logger.warn("Error in GUI chunk change callback: %s", e.getMessage());
+        ErrorHandler.report("Error in GUI chunk change callback", e);
       }
     }
   }
@@ -252,6 +255,7 @@ public class ClaimManager {
     ALREADY_CLAIMED_ENEMY,
     NOT_ADJACENT,
     MAX_CLAIMS_REACHED,
+    WORLD_MAX_CLAIMS_REACHED,
     INSUFFICIENT_POWER,
     WORLD_NOT_ALLOWED,
     CHUNK_NOT_CLAIMED,
@@ -403,6 +407,13 @@ public class ClaimManager {
       return ClaimResult.MAX_CLAIMS_REACHED;
     }
 
+    // Check per-world max claims
+    Integer worldMaxClaims = ConfigManager.get().getWorldMaxClaims(world);
+    if (worldMaxClaims != null && worldMaxClaims > 0
+        && countFactionClaimsInWorld(faction.id(), world) >= worldMaxClaims) {
+      return ClaimResult.WORLD_MAX_CLAIMS_REACHED;
+    }
+
     // Check adjacency if required
     ConfigManager config = ConfigManager.get();
     if (config.isOnlyAdjacent() && faction.getClaimCount() > 0) {
@@ -411,11 +422,17 @@ public class ClaimManager {
       }
     }
 
+    // Pre-event: allow external plugins to cancel
+    if (EventBus.publishCancellable(new FactionClaimPreEvent(faction.id(), playerUuid, world, chunkX, chunkZ))) {
+      return ClaimResult.NO_PERMISSION;
+    }
+
     // Create claim
     FactionClaim claim = FactionClaim.create(world, chunkX, chunkZ, playerUuid);
     Faction updated = faction.withClaim(claim)
       .withLog(FactionLog.create(FactionLog.LogType.CLAIM,
-        String.format("Claimed chunk at %d, %d in %s", chunkX, chunkZ, world), playerUuid));
+        String.format("Claimed chunk at %d, %d in %s", chunkX, chunkZ, world), playerUuid,
+        GuiKeys.LogsGui.MSG_CLAIMED, String.valueOf(chunkX), String.valueOf(chunkZ), world));
 
     // Update indices and faction
     claimIndex.put(key, faction.id());
@@ -424,6 +441,7 @@ public class ClaimManager {
 
     Logger.debugClaim("Claim success: chunk=%s, faction=%s, player=%s, claimCount=%d/%d",
       key, faction.name(), playerUuid, updated.getClaimCount(), maxClaims);
+    EventBus.publish(new FactionClaimEvent(updated, playerUuid, world, chunkX, chunkZ));
     notifyChunkChange(world, chunkX, chunkZ);
     return ClaimResult.SUCCESS;
   }
@@ -483,6 +501,11 @@ public class ClaimManager {
       }
     }
 
+    // Pre-event: allow external plugins to cancel
+    if (EventBus.publishCancellable(new FactionUnclaimPreEvent(faction.id(), playerUuid, world, chunkX, chunkZ))) {
+      return ClaimResult.NO_PERMISSION;
+    }
+
     // Check if unclaiming would disconnect territory
     if (ConfigManager.get().isPreventDisconnect()) {
       if (wouldDisconnectClaims(faction.id(), key)) {
@@ -493,7 +516,8 @@ public class ClaimManager {
     // Remove claim
     Faction updated = faction.withoutClaimAt(world, chunkX, chunkZ)
       .withLog(FactionLog.create(FactionLog.LogType.UNCLAIM,
-        String.format("Unclaimed chunk at %d, %d in %s", chunkX, chunkZ, world), playerUuid));
+        String.format("Unclaimed chunk at %d, %d in %s", chunkX, chunkZ, world), playerUuid,
+        GuiKeys.LogsGui.MSG_UNCLAIMED, String.valueOf(chunkX), String.valueOf(chunkZ), world));
 
     claimIndex.remove(key);
     Set<ChunkKey> factionClaims = factionClaimsIndex.get(faction.id());
@@ -507,6 +531,8 @@ public class ClaimManager {
 
     Logger.debugClaim("Unclaim success: chunk=%s, faction=%s, player=%s",
       key, faction.name(), playerUuid);
+    EventBus.publish(new FactionUnclaimEvent(faction.id(), world, chunkX, chunkZ,
+        FactionUnclaimEvent.Reason.UNCLAIM, playerUuid));
     notifyChunkChange(world, chunkX, chunkZ);
     return ClaimResult.SUCCESS;
   }
@@ -573,16 +599,25 @@ public class ClaimManager {
       return ClaimResult.MAX_CLAIMS_REACHED;
     }
 
+    // Check per-world max claims for attacker
+    Integer worldMaxClaims = ConfigManager.get().getWorldMaxClaims(world);
+    if (worldMaxClaims != null && worldMaxClaims > 0
+        && countFactionClaimsInWorld(attackerFaction.id(), world) >= worldMaxClaims) {
+      return ClaimResult.WORLD_MAX_CLAIMS_REACHED;
+    }
+
     // Remove from defender
     Faction updatedDefender = defenderFaction.withoutClaimAt(world, chunkX, chunkZ)
       .withLog(FactionLog.create(FactionLog.LogType.OVERCLAIM,
-        String.format("Lost chunk at %d, %d to %s", chunkX, chunkZ, attackerFaction.name()), null));
+        String.format("Lost chunk at %d, %d to %s", chunkX, chunkZ, attackerFaction.name()), null,
+        GuiKeys.LogsGui.MSG_OVERCLAIM_LOST, String.valueOf(chunkX), String.valueOf(chunkZ), attackerFaction.name()));
 
     // Add to attacker
     FactionClaim claim = FactionClaim.create(world, chunkX, chunkZ, playerUuid);
     Faction updatedAttacker = attackerFaction.withClaim(claim)
       .withLog(FactionLog.create(FactionLog.LogType.OVERCLAIM,
-        String.format("Overclaimed chunk at %d, %d from %s", chunkX, chunkZ, defenderFaction.name()), playerUuid));
+        String.format("Overclaimed chunk at %d, %d from %s", chunkX, chunkZ, defenderFaction.name()), playerUuid,
+        GuiKeys.LogsGui.MSG_OVERCLAIM_TAKEN, String.valueOf(chunkX), String.valueOf(chunkZ), defenderFaction.name()));
 
     // Update indices - remove from defender
     Set<ChunkKey> defenderClaims = factionClaimsIndex.get(defenderId);
@@ -604,6 +639,9 @@ public class ClaimManager {
     Logger.debugClaim("Overclaim success: chunk=%s, attacker=%s, defender=%s, defenderClaims=%d/%d",
       key, attackerFaction.name(), defenderFaction.name(), defenderFaction.getClaimCount() - 1, defenderMaxClaims);
     Logger.info("[Claims] Faction '%s' overclaimed chunk from '%s'", attackerFaction.name(), defenderFaction.name());
+    EventBus.publish(new FactionClaimEvent(updatedAttacker, playerUuid, world, chunkX, chunkZ));
+    EventBus.publish(new FactionUnclaimEvent(defenderId, world, chunkX, chunkZ,
+        FactionUnclaimEvent.Reason.OVERCLAIM, playerUuid));
 
     // Notify defender faction members that they lost territory
     notifyFactionMembers(defenderId,
@@ -614,7 +652,7 @@ public class ClaimManager {
       try {
         onOverclaimCallback.accept(attackerFaction.name(), defenderFaction.name());
       } catch (Exception e) {
-        Logger.warn("Error in overclaim callback: %s", e.getMessage());
+        ErrorHandler.report("Error in overclaim callback", e);
       }
     }
 
@@ -631,6 +669,10 @@ public class ClaimManager {
     // Get the faction to update its record
     Faction faction = factionManager.getFaction(factionId);
 
+    // Capture claims before removal for event publishing
+    Set<ChunkKey> removedChunks = factionClaimsIndex.containsKey(factionId)
+        ? new HashSet<>(factionClaimsIndex.get(factionId)) : Set.of();
+
     // Remove from main index
     claimIndex.entrySet().removeIf(entry -> entry.getValue().equals(factionId));
     // Remove from reverse index
@@ -640,9 +682,16 @@ public class ClaimManager {
     if (faction != null && faction.getClaimCount() > 0) {
       Faction updated = faction.withoutAllClaims()
         .withLog(FactionLog.create(FactionLog.LogType.UNCLAIM,
-          "All territory unclaimed", null));
+          "All territory unclaimed", null,
+          GuiKeys.LogsGui.MSG_ALL_UNCLAIMED));
       factionManager.updateFaction(updated);
       Logger.debugClaim("Unclaim all: faction=%s, claims removed=%d", faction.name(), faction.getClaimCount());
+    }
+
+    // Publish unclaim events for each removed chunk
+    for (ChunkKey key : removedChunks) {
+      EventBus.publish(new FactionUnclaimEvent(factionId, key.world(), key.chunkX(), key.chunkZ(),
+          FactionUnclaimEvent.Reason.DISBAND, null));
     }
 
     // For bulk operations like unclaimAll, use the legacy callback for full refresh
@@ -678,7 +727,8 @@ public class ClaimManager {
         if (faction != null) {
           Faction updated = faction.withoutClaimAt(key.world(), key.chunkX(), key.chunkZ())
             .withLog(FactionLog.create(FactionLog.LogType.UNCLAIM,
-              "Claim in '" + key.world() + "' removed (world disallows claiming)", null));
+              "Claim in '" + key.world() + "' removed (world disallows claiming)", null,
+              GuiKeys.LogsGui.MSG_CLAIM_REMOVED_WORLD, key.world()));
           factionManager.updateFaction(updated);
         }
         removed++;
@@ -708,6 +758,19 @@ public class ClaimManager {
 
     // Return unmodifiable view to prevent external modification
     return Collections.unmodifiableSet(claims);
+  }
+
+  /**
+   * Counts the number of claims a faction has in a specific world.
+   *
+   * @param factionId the faction ID
+   * @param world     the world name
+   * @return the number of claims in that world
+   */
+  public int countFactionClaimsInWorld(@NotNull UUID factionId, @NotNull String world) {
+    Set<ChunkKey> claims = factionClaimsIndex.get(factionId);
+    if (claims == null) return 0;
+    return (int) claims.stream().filter(ck -> ck.world().equals(world)).count();
   }
 
   /**
@@ -761,7 +824,8 @@ public class ClaimManager {
 
     Faction updated = faction.withClaim(claim)
       .withLog(FactionLog.create(FactionLog.LogType.CLAIM,
-        String.format("Claimed chunk at %d, %d in %s", chunkX, chunkZ, world), playerUuid));
+        String.format("Claimed chunk at %d, %d in %s", chunkX, chunkZ, world), playerUuid,
+        GuiKeys.LogsGui.MSG_CLAIMED, String.valueOf(chunkX), String.valueOf(chunkZ), world));
 
     // Update both indices
     claimIndex.put(key, faction.id());
@@ -850,6 +914,8 @@ public class ClaimManager {
         factionManager.updateFaction(updated);
       }
 
+      EventBus.publish(new FactionUnclaimEvent(factionId, edge.world(), edge.chunkX(), edge.chunkZ(),
+          FactionUnclaimEvent.Reason.DECAY, null));
       notifyChunkChange(edge.world(), edge.chunkX(), edge.chunkZ());
       removed++;
 
@@ -931,7 +997,8 @@ public class ClaimManager {
           Faction current = factionManager.getFaction(factionId);
           if (current != null) {
             Faction logged = current.withLog(FactionLog.create(FactionLog.LogType.UNCLAIM,
-                String.format("%d claims removed due to inactivity (%d days)", removed, daysSinceActive), null));
+                String.format("%d claims removed due to inactivity (%d days)", removed, daysSinceActive), null,
+                GuiKeys.LogsGui.MSG_CLAIMS_REMOVED_INACTIVE, String.valueOf(removed), String.valueOf(daysSinceActive)));
             factionManager.updateFaction(logged);
           }
 

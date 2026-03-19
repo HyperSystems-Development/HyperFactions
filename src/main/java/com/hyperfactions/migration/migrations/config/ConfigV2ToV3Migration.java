@@ -86,7 +86,7 @@ public class ConfigV2ToV3Migration implements Migration {
       }
       return root.get("configVersion").getAsInt() == 2;
     } catch (Exception e) {
-      Logger.warn("[Migration] Failed to check config version: %s", e.getMessage());
+      ErrorHandler.report("[Migration] Failed to check config version for V2->V3", e);
       return false;
     }
   }

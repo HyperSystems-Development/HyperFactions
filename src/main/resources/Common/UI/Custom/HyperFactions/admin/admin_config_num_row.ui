@@ -1,0 +1,34 @@
+$C = "../../Common.ui";
+$S = "../shared/styles.ui";
+
+Group {
+  LayoutMode: Left;
+  Anchor: (Height: 22, Bottom: 3);
+  Padding: (Left: 6, Right: 4);
+
+  Label #SettingLabel {
+    Text: "";
+    Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+    FlexWeight: 1;
+  }
+
+  TextButton #DecBtn {
+    Style: $S.@ButtonStyle;
+    Text: "-";
+    Anchor: (Width: 22, Height: 20);
+  }
+
+  Group { Anchor: (Width: 2); }
+
+  $C.@TextField #NumInput {
+    Anchor: (Width: 64, Height: 20);
+  }
+
+  Group { Anchor: (Width: 2); }
+
+  TextButton #IncBtn {
+    Style: $S.@ButtonStyle;
+    Text: "+";
+    Anchor: (Width: 22, Height: 20);
+  }
+}

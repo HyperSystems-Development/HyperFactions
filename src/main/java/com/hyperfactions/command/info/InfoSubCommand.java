@@ -11,6 +11,9 @@ import com.hyperfactions.data.FactionMember;
 import com.hyperfactions.data.RelationType;
 import com.hyperfactions.manager.PowerManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -43,7 +46,7 @@ public class InfoSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.INFO)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to view faction info.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Info.NO_PERMISSION));
       return;
     }
 
@@ -55,13 +58,13 @@ public class InfoSubCommand extends FactionSubCommand {
       String factionName = fctx.joinArgs();
       faction = hyperFactions.getFactionManager().getFactionByName(factionName);
       if (faction == null) {
-        ctx.sendMessage(prefix().insert(msg("Faction '" + factionName + "' not found.", COLOR_RED)));
+        ctx.sendMessage(MessageUtil.error(player, CommandKeys.Info.FACTION_NOT_FOUND, factionName));
         return;
       }
     } else {
       faction = hyperFactions.getFactionManager().getPlayerFaction(player.getUuid());
       if (faction == null) {
-        ctx.sendMessage(MessageUtil.error("You are not in a faction. Use /f info <faction>"));
+        ctx.sendMessage(MessageUtil.error(player, CommandKeys.Info.NOT_IN_FACTION_HINT));
         return;
       }
     }
@@ -79,39 +82,29 @@ public class InfoSubCommand extends FactionSubCommand {
     PowerManager.FactionPowerStats stats = hyperFactions.getPowerManager().getFactionPowerStats(faction.id());
     FactionMember leader = faction.getLeader();
 
-    ctx.sendMessage(msg("=== " + faction.name() + " ===", COLOR_CYAN).bold(true));
-    ctx.sendMessage(msg("Leader: ", COLOR_GRAY).insert(msg(leader != null ? leader.username() : "None", COLOR_YELLOW)));
-    ctx.sendMessage(msg("Members: ", COLOR_GRAY).insert(msg(faction.getMemberCount() + "/" + ConfigManager.get().getMaxMembers(), COLOR_WHITE)));
-    ctx.sendMessage(msg("Power: ", COLOR_GRAY).insert(msg(String.format("%.1f/%.1f", stats.currentPower(), stats.maxPower()), COLOR_WHITE)));
-    ctx.sendMessage(msg("Claims: ", COLOR_GRAY).insert(msg(stats.currentClaims() + "/" + stats.maxClaims(), COLOR_WHITE)));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.FACTION_HEADER, faction.name()), COLOR_CYAN).bold(true));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.LEADER, leader != null ? leader.username() : HFMessages.get(player, CommonKeys.Common.NONE)), COLOR_GRAY));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.MEMBERS, faction.getMemberCount(), ConfigManager.get().getMaxMembers()), COLOR_GRAY));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.POWER, String.format("%.1f/%.1f", stats.currentPower(), stats.maxPower())), COLOR_GRAY));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.CLAIMS, stats.currentClaims() + "/" + stats.maxClaims()), COLOR_GRAY));
     if (stats.isRaidable()) {
-      ctx.sendMessage(msg("RAIDABLE!", COLOR_RED).bold(true));
+      ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.RAIDABLE), COLOR_RED).bold(true));
     }
 
     // Relation info
     var relationManager = hyperFactions.getRelationManager();
     int allyCount = relationManager.getAllies(faction.id()).size();
     int enemyCount = relationManager.getEnemies(faction.id()).size();
-    ctx.sendMessage(msg("Allies: ", COLOR_GRAY).insert(msg(String.valueOf(allyCount), COLOR_GREEN)));
-    ctx.sendMessage(msg("Enemies: ", COLOR_GRAY).insert(msg(String.valueOf(enemyCount), COLOR_RED)));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.ALLIES, allyCount), COLOR_GRAY));
+    ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.ENEMIES, enemyCount), COLOR_GRAY));
 
     // Show bidirectional relation if viewer is in a different faction
     Faction viewerFaction = hyperFactions.getFactionManager().getPlayerFaction(player.getUuid());
     if (viewerFaction != null && !viewerFaction.id().equals(faction.id())) {
       RelationType theyThinkOfUs = relationManager.getRelation(faction.id(), viewerFaction.id());
       RelationType weThinkOfThem = relationManager.getRelation(viewerFaction.id(), faction.id());
-      ctx.sendMessage(msg("They consider you: ", COLOR_GRAY)
-        .insert(msg(theyThinkOfUs.name(), relationColor(theyThinkOfUs))));
-      ctx.sendMessage(msg("You consider them: ", COLOR_GRAY)
-        .insert(msg(weThinkOfThem.name(), relationColor(weThinkOfThem))));
+      ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.THEY_CONSIDER, theyThinkOfUs.name()), COLOR_GRAY));
+      ctx.sendMessage(msg(HFMessages.get(player, CommandKeys.Info.YOU_CONSIDER, weThinkOfThem.name()), COLOR_GRAY));
     }
-  }
-
-  private String relationColor(RelationType type) {
-    return switch (type) {
-      case ALLY, OWN -> COLOR_GREEN;
-      case ENEMY -> COLOR_RED;
-      case NEUTRAL -> COLOR_GRAY;
-    };
   }
 }

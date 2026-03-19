@@ -6,10 +6,14 @@ import com.hyperfactions.gui.GuiManager;
 import com.hyperfactions.gui.UIPaths;
 import com.hyperfactions.gui.shared.NavBarUtil;
 import com.hyperfactions.gui.shared.data.NavAwareData;
+import com.hyperfactions.util.HFMessages;
+import com.hyperfactions.util.GuiKeys;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
+import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.entity.entities.player.pages.InteractiveCustomUIPage;
+import com.hypixel.hytale.server.core.ui.builder.EventData;
 import com.hypixel.hytale.server.core.ui.builder.UICommandBuilder;
 import com.hypixel.hytale.server.core.ui.builder.UIEventBuilder;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -60,7 +64,22 @@ public final class NavBarHelper {
     // Create nav cards container and build buttons using shared utility
     cmd.appendInline("#HyperFactionsNavBar #NavBarButtons", "Group #NavCards { LayoutMode: Left; }");
     NavBarUtil.buildButtons(entries, "#NavCards", UIPaths.NAV_BUTTON, "#NavActionButton",
-        "Nav", "NavBar", cmd, events);
+        "Nav", "NavBar", playerRef, cmd, events);
+
+    // Flex spacer pushes "Player" button to far right
+    cmd.appendInline("#HyperFactionsNavBar #NavBarButtons",
+        "Group { FlexWeight: 1; }");
+
+    // "Player" button on far right
+    cmd.append("#HyperFactionsNavBar #NavBarButtons", UIPaths.NAV_BUTTON);
+    cmd.set("#HyperFactionsNavBar #NavBarButtons[2] #NavActionButton.Text",
+        HFMessages.get(playerRef, GuiKeys.Nav.PLAYER_SETTINGS));
+    events.addEventBinding(
+        CustomUIEventBindingType.Activating,
+        "#HyperFactionsNavBar #NavBarButtons[2] #NavActionButton",
+        EventData.of("Button", "Nav").append("NavBar", "player_settings"),
+        false
+    );
   }
 
   /**

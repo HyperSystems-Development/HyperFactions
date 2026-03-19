@@ -1,12 +1,12 @@
 # Zone Protection
 
-> **Version**: 0.11.0 | **Source**: [`data/ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.java), [`protection/ProtectionChecker.java`](../src/main/java/com/hyperfactions/protection/ProtectionChecker.java)
+> **Version**: 0.12.0 | **Source**: [`data/ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.java), [`protection/ProtectionChecker.java`](../src/main/java/com/hyperfactions/protection/ProtectionChecker.java)
 
 How admin-created SafeZones and WarZones protect areas. For faction claim protection, see [protection-claims.md](protection-claims.md). For cross-cutting concerns (wilderness, explosions, fire), see [protection-global.md](protection-global.md).
 
 ## Overview
 
-Zones are admin-controlled protected areas with 50 configurable flags. They **always override** faction claim permissions when both apply.
+Zones are admin-controlled protected areas with 52 configurable flags. They **always override** faction claim permissions when both apply.
 
 - **SafeZone**: PvP disabled, building disabled by default. Used for spawns, shops, arenas.
 - **WarZone**: PvP enabled, building controlled by flags. Used for contested areas.
@@ -16,15 +16,15 @@ Zone check → Claim check → Wilderness
 (zone flags)   (faction perms)  (no protection)
 ```
 
-Source: `ProtectionChecker.canInteractChunk()` lines 173–209
+Source: `ProtectionChecker.canInteractChunk()`
 
 ---
 
-## Zone Flags (50 Flags)
+## Zone Flags (52 Flags)
 
-Source: [`ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.java) — `ALL_FLAGS` array (line 274), `getSafeZoneDefault()` (line 388), `getWarZoneDefault()` (line 452)
+Source: [`ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.java) — `ALL_FLAGS` array, `getSafeZoneDefault()`, `getWarZoneDefault()`
 
-### Combat Flags (6)
+### Combat Flags (7)
 
 | Flag | Description | SafeZone Default | WarZone Default |
 |------|-------------|------------------|-----------------|
@@ -34,6 +34,7 @@ Source: [`ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.jav
 | &emsp;↳ `friendly_fire_ally` | Allied faction members can damage each other | true\* | true\* |
 | `projectile_damage` | Projectiles deal damage | false | true |
 | `mob_damage` | Mobs can damage players | false | true |
+| `pve_damage` | Players can damage mobs/NPCs | false | true |
 
 > **3-level hierarchy**: `pvp_enabled` → `friendly_fire` → `friendly_fire_faction` / `friendly_fire_ally`. Disabling a parent disables all children.
 >
@@ -64,7 +65,7 @@ Source: [`ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.jav
 | ↳ `hammer_use` | Hammer block cycling | false | true | Yes |
 | ↳ `builder_tools_use` | Builder tool paste | false | true | HyperProtect only |
 
-### Interaction Flags (6)
+### Interaction Flags (13)
 
 | Flag | Description | SafeZone Default | WarZone Default | Mixin Required |
 |------|-------------|------------------|-----------------|----------------|
@@ -74,27 +75,23 @@ Source: [`ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.jav
 | ↳ `bench_use` | Use crafting tables | false | false | No |
 | ↳ `processing_use` | Use furnaces, smelters | false | false | No |
 | ↳ `seat_use` | Sit on seats/mounts | true | true | No |
-
-> **Parent-child**: `block_interact` is the parent of all 5 interaction sub-flags. Disabling the parent disables all children.
-
-### NPC & Crate Flags (5)
-
-| Flag | Description | SafeZone Default | WarZone Default | Mixin Required |
-|------|-------------|------------------|-----------------|----------------|
-| `npc_use` | NPC interaction (parent) | false | true | Yes (use hook) |
+| `mount_use` | Use mounts | false | false | Yes |
+| `light_use` | Use light sources | false | true | Yes (use hook, but not in MIXIN_DEPENDENT_FLAGS) |
+| `npc_use` | NPC interaction (parent) | true | true | No (parent flag, not in MIXIN_DEPENDENT_FLAGS) |
 | ↳ `npc_tame` | Tame NPCs with F-key | false | true | Yes (use hook) |
-| ↳ `npc_interact` | NPC dialogue, shops, quests | true | true | Yes (use hook) |
+| ↳ `npc_interact` | NPC dialogue, shops, quests | true | true | No (event-listener based) |
 | `crate_pickup` | Pick up animals with capture crate | false | true | Yes (use hook) |
 | `crate_place` | Release animals from capture crate | false | true | Yes (use hook) |
 
-> **Parent-child**: `npc_use` is the parent of `npc_tame` and `npc_interact`. Disabling the parent visually disables children in the admin UI. NPC role classification uses a fail-open blocklist — only known tameable creature roles trigger `npc_tame`; all other NPC interactions use `npc_interact`.
+> **Parent-child**: `block_interact` is the parent of 7 interaction sub-flags (`door_use`, `container_use`, `bench_use`, `processing_use`, `seat_use`, `mount_use`, `light_use`). `npc_use` is the parent of `npc_tame` and `npc_interact`. Disabling a parent disables all its children.
 
-### Transport Flags (2)
+### Transport Flags (3)
 
 | Flag | Description | SafeZone Default | WarZone Default | Mixin Required |
 |------|-------------|------------------|-----------------|----------------|
-| `teleporter_use` | Teleporter block use | false | true | HyperProtect only |
-| `portal_use` | Portal block use | false | true | HyperProtect only |
+| `teleporter_use` | Teleporter block use | true | true | HyperProtect only |
+| `portal_use` | Portal block use | true | true | HyperProtect only |
+| `mount_entry` | Mounted players can enter zone | false | false | No (territory tracking) |
 
 ### Item Flags (4)
 
@@ -121,8 +118,8 @@ Source: [`ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.jav
 
 | Flag | Description | SafeZone Default | WarZone Default |
 |------|-------------|------------------|-----------------|
-| `mob_clear` | Clear all mobs in zone (parent) | false | false |
-| ↳ `hostile_mob_clear` | Clear hostile mobs | false | false |
+| `mob_clear` | Clear all mobs in zone (parent) | true | false |
+| ↳ `hostile_mob_clear` | Clear hostile mobs | true | false |
 | ↳ `passive_mob_clear` | Clear passive mobs | false | false |
 | ↳ `neutral_mob_clear` | Clear neutral mobs | false | false |
 
@@ -133,11 +130,11 @@ Source: [`ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.jav
 | Flag | Description | SafeZone Default | WarZone Default |
 |------|-------------|------------------|-----------------|
 | `gravestone_access` | Non-owners can loot/break other players' gravestones | false | true |
-| `mount_entry` | Players can mount entities (horses, vehicles) | true | true |
-| `pve_damage` | Players can damage non-player entities (NPCs, animals) | false | true |
-| `show_on_map` | Zone is visible on world map | true | true |
-| `map_visibility` | Zone boundaries visible on map overlays | true | true |
-| `fluid_spread` | Fluid (water/lava) can spread in zone | false | true |
+| `show_on_map` | Override map visibility for players in zone | false | false |
+| `essentials_homes` | HyperEssentials /home works in zone | true | false |
+| `essentials_warps` | HyperEssentials /warp works in zone | true | true |
+| `essentials_kits` | HyperEssentials /kit works in zone | true | true |
+| `essentials_back` | HyperEssentials /back works in zone | true | true |
 
 ---
 
@@ -145,7 +142,9 @@ Source: [`ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.jav
 
 These zone flags require a mixin system to be installed. Without a mixin, the flag exists in zone data but has **no enforcement**.
 
-Source: `ZoneFlags.MIXIN_DEPENDENT_FLAGS` (line 338)
+Source: `ZoneFlags.MIXIN_DEPENDENT_FLAGS`
+
+15 flags require a mixin system for enforcement:
 
 | Flag | Without Mixin | With OrbisGuard-Mixins | With HyperProtect-Mixin |
 |------|--------------|----------------------|------------------------|
@@ -162,9 +161,10 @@ Source: `ZoneFlags.MIXIN_DEPENDENT_FLAGS` (line 338)
 | `npc_spawning` | **Not enforced** | Enforced | Enforced |
 | `crate_pickup` | **Not enforced** | **Not enforced** | Enforced |
 | `crate_place` | **Not enforced** | **Not enforced** | Enforced |
-| `npc_use` | **Not enforced** | **Not enforced** | Enforced |
 | `npc_tame` | **Not enforced** | **Not enforced** | Enforced |
-| `npc_interact` | **Not enforced** | **Not enforced** | Enforced |
+| `mount_use` | **Not enforced** | **Not enforced** | Enforced |
+
+**Not mixin-dependent** (despite being in entity/NPC categories): `npc_use` (parent flag, checked before mixin hooks), `npc_interact` (uses event-listener, not mixin), `light_use` (uses mixin use hook but not listed in `MIXIN_DEPENDENT_FLAGS`).
 
 `build_allowed` (the parent) and `block_interact` are enforced by ECS systems and do not require mixins.
 
@@ -183,6 +183,7 @@ These protections only work inside admin zones. They have **no faction permissio
 | Prevent environmental damage | `environmental_damage` | No check — damage applies |
 | Prevent projectile damage | `projectile_damage` | No check — damage applies |
 | Prevent mob damage | `mob_damage` | No check — damage applies |
+| Prevent PvE damage | `pve_damage` | Checked via `PVE_DAMAGE` InteractionType + `{level}PveDamage` faction flags |
 | Prevent power loss | `power_loss` | Uses FactionsConfig settings instead |
 
 See [protection-claims.md § Known Limitations](protection-claims.md#known-limitations--gaps) for details.
@@ -191,7 +192,7 @@ See [protection-claims.md § Known Limitations](protection-claims.md#known-limit
 
 ## Zone Check Behavior
 
-Source: `ProtectionChecker.canInteractChunk()` lines 173–209
+Source: `ProtectionChecker.canInteractChunk()`
 
 ### Interaction Check
 
@@ -211,7 +212,7 @@ Zone at location?
 
 ### Zone Flag → InteractionType Mapping
 
-Source: `ProtectionChecker.canInteractChunk()` lines 177–188
+Source: `ProtectionChecker.canInteractChunk()`
 
 | InteractionType | Zone Flag Checked |
 |-----------------|-------------------|
@@ -222,13 +223,21 @@ Source: `ProtectionChecker.canInteractChunk()` lines 177–188
 | BENCH | `bench_use` |
 | PROCESSING | `processing_use` |
 | SEAT | `seat_use` |
+| LIGHT | `light_use` |
 | TELEPORTER | `teleporter_use` |
 | PORTAL | `portal_use` |
 | DAMAGE | `pvp_enabled` |
+| PVE_DAMAGE | `pve_damage` |
+| CRATE_PICKUP | `crate_pickup` |
+| CRATE_PLACE | `crate_place` |
+| NPC_TAME | `npc_tame` |
+| NPC_INTERACT | `npc_interact` |
+| MOUNT | `mount_use` |
+| ITEM_DROP, ITEM_PICKUP | `block_interact` (zone checks handled by ECS systems) |
 
 ### PvP Check in Zones
 
-Source: `ProtectionChecker.canDamagePlayerChunk()` lines 369–408
+Source: `ProtectionChecker.canDamagePlayerChunk()`
 
 Zones have a 3-level friendly fire hierarchy:
 

@@ -3,6 +3,7 @@ package com.hyperfactions.config.modules;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.hyperfactions.config.ModuleConfig;
+import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -383,6 +384,18 @@ public class DebugConfig extends ModuleConfig {
     this.sentryEnabled = enabled;
   }
 
+  /** Sets enabled by default. */
+  public void setEnabledByDefault(boolean value) { this.enabledByDefault = value; }
+
+  /** Sets log to console. */
+  public void setLogToConsole(boolean value) { this.logToConsole = value; applyToLogger(); }
+
+  /** Sets sentry debug mode. */
+  public void setSentryDebug(boolean value) { this.sentryDebug = value; }
+
+  /** Sets sentry traces sample rate. */
+  public void setSentryTracesSampleRate(double value) { this.sentryTracesSampleRate = value; }
+
   // === Setters (for runtime toggle) ===
 
   /**
@@ -584,7 +597,7 @@ public class DebugConfig extends ModuleConfig {
       Files.delete(sentryFile);
       Logger.info("[Config] Deleted old config/sentry.json");
     } catch (Exception e) {
-      Logger.warn("[Config] Failed to migrate sentry.json: %s", e.getMessage());
+      ErrorHandler.report("[Config] Failed to migrate sentry.json", e);
     }
   }
 }

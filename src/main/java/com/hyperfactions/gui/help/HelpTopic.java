@@ -1,7 +1,9 @@
 package com.hyperfactions.gui.help;
 
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents an individual help topic within a category.
@@ -20,11 +22,19 @@ public record HelpTopic(
     @NotNull HelpCategory category
 ) {
   /**
-   * Gets the resolved display title.
+   * Gets the resolved display title (server default language).
    */
   @NotNull
   public String title() {
     return HelpMessages.get(titleKey);
+  }
+
+  /**
+   * Gets the resolved display title for a specific player's language.
+   */
+  @NotNull
+  public String title(@Nullable PlayerRef playerRef) {
+    return HelpMessages.get(playerRef, titleKey);
   }
 
   /**

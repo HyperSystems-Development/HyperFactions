@@ -9,6 +9,8 @@ import com.hyperfactions.data.Faction;
 import com.hyperfactions.manager.ClaimManager;
 import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.ChunkUtil;
+import com.hyperfactions.util.CommandKeys;
+import com.hyperfactions.util.CommonKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
@@ -41,7 +43,7 @@ public class UnclaimSubCommand extends FactionSubCommand {
              @NotNull World currentWorld) {
 
     if (!hasPermission(player, Permissions.UNCLAIM)) {
-      ctx.sendMessage(prefix().insert(msg("You don't have permission to unclaim territory.", COLOR_RED)));
+      ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.UNCLAIM_NO_PERMISSION));
       return;
     }
 
@@ -68,7 +70,7 @@ public class UnclaimSubCommand extends FactionSubCommand {
 
     switch (result) {
       case SUCCESS -> {
-        ctx.sendMessage(prefix().insert(msg("Unclaimed chunk at " + chunkX + ", " + chunkZ + ".", COLOR_GREEN)));
+        ctx.sendMessage(MessageUtil.success(player, CommandKeys.Claim.UNCLAIMED, chunkX, chunkZ));
         // Show map after unclaiming (if not text mode)
         if (!fctx.isTextMode()) {
           Player playerEntity = store.getComponent(ref, Player.getComponentType());
@@ -77,13 +79,13 @@ public class UnclaimSubCommand extends FactionSubCommand {
           }
         }
       }
-      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error("You are not in a faction."));
-      case NOT_OFFICER -> ctx.sendMessage(prefix().insert(msg("You must be an officer to unclaim land.", COLOR_RED)));
-      case CHUNK_NOT_CLAIMED -> ctx.sendMessage(prefix().insert(msg("This chunk is not claimed.", COLOR_RED)));
-      case NOT_YOUR_CLAIM -> ctx.sendMessage(prefix().insert(msg("Your faction doesn't own this chunk.", COLOR_RED)));
-      case CANNOT_UNCLAIM_HOME -> ctx.sendMessage(prefix().insert(msg("Cannot unclaim the chunk with faction home.", COLOR_RED)));
-      case WOULD_DISCONNECT -> ctx.sendMessage(prefix().insert(msg("Cannot unclaim — it would disconnect your territory.", COLOR_RED)));
-      default -> ctx.sendMessage(prefix().insert(msg("Failed to unclaim chunk.", COLOR_RED)));
+      case NOT_IN_FACTION -> ctx.sendMessage(MessageUtil.error(player, CommonKeys.Common.NOT_IN_FACTION));
+      case NOT_OFFICER -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.UNCLAIM_NOT_OFFICER));
+      case CHUNK_NOT_CLAIMED -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.CHUNK_NOT_CLAIMED));
+      case NOT_YOUR_CLAIM -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.NOT_YOUR_CLAIM));
+      case CANNOT_UNCLAIM_HOME -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.CANNOT_UNCLAIM_HOME));
+      case WOULD_DISCONNECT -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.WOULD_DISCONNECT));
+      default -> ctx.sendMessage(MessageUtil.error(player, CommandKeys.Claim.UNCLAIM_FAILED));
     }
   }
 }
