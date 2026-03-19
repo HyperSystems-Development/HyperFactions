@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+*No changes yet*
+
+## [0.12.0] - 2026-03-18
+
+**Server Version:** `2026.02.19-1a311a592`
+
 ### Added
 
 **Admin GUI: Runtime Config Editor ([#40](https://github.com/HyperSystems-Development/HyperFactions/issues/40))**
