@@ -7,7 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-*No changes yet*
+### Fixed
+- **Null-safe `getTransform()` for prerelease compatibility** — `PlayerRef.getTransform()` can return null during world transitions in prerelease builds; added null checks in:
+  - `TerritoryTickingSystem` — prevents NPE on every tick during world transitions
+  - `ItemPickupProtectionSystem` — prevents NPE on item pickup in claimed territory
+  - `AdminPlayersPage` — prevents NPE when admin teleports to a player
+  - `AdminFactionMembersPage` — prevents NPE when admin teleports to a faction member
 
 ## [0.12.0] - 2026-03-18
 

@@ -66,7 +66,11 @@ public class ItemPickupProtectionSystem extends EntityEventSystem<EntityStore, I
       }
 
       String worldName = playerComponent.getWorld().getName();
-      var position = playerRef.getTransform().getPosition();
+      var transform = playerRef.getTransform();
+      if (transform == null) {
+        return;
+      }
+      var position = transform.getPosition();
       int x = (int) Math.floor(position.getX());
       int y = (int) Math.floor(position.getY());
       int z = (int) Math.floor(position.getZ());
