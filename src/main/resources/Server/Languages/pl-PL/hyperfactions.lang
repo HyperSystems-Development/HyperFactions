@@ -1,468 +1,468 @@
-# HyperFactions - Polskie tłumaczenie
+# HyperFactions - Polskie tlumaczenie
 # Format: key = value (or key = "quoted value")
 # Note: Keys are auto-prefixed with "hyperfactions." by Hytale's I18nModule
 # Placeholders: {0}, {1}, etc.
 
-# ========== Ogólne ==========
-common.no_permission = Nie masz uprawnień, aby to zrobić.
-common.not_in_faction = Nie należysz do żadnej frakcji.
-common.already_in_faction = Już należysz do frakcji.
+# ========== Ogolne ==========
+common.no_permission = Nie masz uprawnien, aby to zrobic.
+common.not_in_faction = Nie nalezysz do zadnej frakcji.
+common.already_in_faction = Juz nalezysz do frakcji.
 common.player_not_found = Nie znaleziono gracza.
 common.faction_not_found = Nie znaleziono frakcji.
 common.player_not_online = Ten gracz nie jest online.
-common.must_be_leader = Tylko przywódca frakcji może to zrobić.
-common.must_be_officer = Musisz być Oficerem lub Przywódcą, aby to zrobić.
-common.combat_tagged = Nie możesz tego zrobić podczas walki.
+common.must_be_leader = Tylko przywodca frakcji moze to zrobic.
+common.must_be_officer = Musisz byc Oficerem lub Przywodca, aby to zrobic.
+common.combat_tagged = Nie mozesz tego zrobic podczas walki.
 common.cancel = Anuluj
-common.confirm = Potwierdź
+common.confirm = Potwierdz
 common.save = Zapisz
 common.close = Zamknij
-common.clear = Wyczyść
+common.clear = Wyczysc
 common.back = Wstecz
-common.leave = Opuść
-common.transfer = Przekaż
-common.disband = Rozwiąż
-common.world_fallback = świat
+common.leave = Opusc
+common.transfer = Przekaz
+common.disband = Rozwiaz
+common.world_fallback = swiat
 common.yes = Tak
 common.no = Nie
-common.loading = Ładowanie...
+common.loading = Ladowanie...
 common.online = Online
 common.offline = Offline
-common.enabled = Włączone
-common.disabled = Wyłączone
+common.enabled = Wlaczone
+common.disabled = Wylaczone
 common.none = Brak
 common.page = Strona {0} z {1}
 common.unknown = Nieznane
-common.error_generic = Coś poszło nie tak. Spróbuj ponownie.
-common.gui_fallback = Nie udało się otworzyć GUI. Użyj /f help, aby zobaczyć komendy.
+common.error_generic = Cos poszlo nie tak. Sprobuj ponownie.
+common.gui_fallback = Nie udalo sie otworzyc GUI. Uzyj /f help, aby zobaczyc komendy.
 common.admin_prefix = [Admin]
-common.location_error = Nie udało się określić Twojej lokalizacji.
-common.world_error = Nie udało się określić Twojego świata.
-common.invalid_id = Nieprawidłowy identyfikator frakcji.
+common.location_error = Nie udalo sie okreslic Twojej lokalizacji.
+common.world_error = Nie udalo sie okreslic Twojego swiata.
+common.invalid_id = Nieprawidlowy identyfikator frakcji.
 common.na = N/D
 
 # ========== Komendy - Tworzenie ==========
-cmd.create.no_permission = Nie masz uprawnień do tworzenia frakcji.
-cmd.create.usage = Użycie: /f create <nazwa>
-cmd.create.success = Frakcja '{0}' została utworzona!
-cmd.create.already_in_named = Już należysz do {0}.
-cmd.create.use_leave_first = Użyj /f leave, jeśli chcesz utworzyć nową frakcję.
-cmd.create.name_taken = Ta nazwa frakcji jest już zajęta.
-cmd.create.name_too_short = Nazwa frakcji jest za krótka.
-cmd.create.name_too_long = Nazwa frakcji jest za długa.
-cmd.create.failed = Nie udało się utworzyć frakcji.
+cmd.create.no_permission = Nie masz uprawnien do tworzenia frakcji.
+cmd.create.usage = Uzycie: /f create <nazwa>
+cmd.create.success = Frakcja '{0}' zostala utworzona!
+cmd.create.already_in_named = Juz nalezysz do {0}.
+cmd.create.use_leave_first = Uzyj /f leave, jesli chcesz utworzyc nowa frakcje.
+cmd.create.name_taken = Ta nazwa frakcji jest juz zajeta.
+cmd.create.name_too_short = Nazwa frakcji jest za krotka.
+cmd.create.name_too_long = Nazwa frakcji jest za dluga.
+cmd.create.failed = Nie udalo sie utworzyc frakcji.
 
-# ========== Komendy - Rozwiązywanie ==========
-cmd.disband.no_permission = Nie masz uprawnień do rozwiązywania frakcji.
-cmd.disband.not_leader = Tylko przywódca frakcji może ją rozwiązać.
-cmd.disband.confirm_prompt = Czy na pewno chcesz rozwiązać swoją frakcję?
-cmd.disband.confirm_instruction = Wpisz /f disband --text ponownie w ciągu {0} sekund, aby potwierdzić.
-cmd.disband.success = Twoja frakcja została rozwiązana.
-cmd.disband.failed = Nie udało się rozwiązać frakcji.
-cmd.disband.cancelled = Poprzednie potwierdzenie anulowane. Wpisz ponownie, aby potwierdzić rozwiązanie.
+# ========== Komendy - Rozwiazywanie ==========
+cmd.disband.no_permission = Nie masz uprawnien do rozwiazywania frakcji.
+cmd.disband.not_leader = Tylko przywodca frakcji moze ja rozwiazac.
+cmd.disband.confirm_prompt = Czy na pewno chcesz rozwiazac swoja frakcje?
+cmd.disband.confirm_instruction = Wpisz /f disband --text ponownie w ciagu {0} sekund, aby potwierdzic.
+cmd.disband.success = Twoja frakcja zostala rozwiazana.
+cmd.disband.failed = Nie udalo sie rozwiazac frakcji.
+cmd.disband.cancelled = Poprzednie potwierdzenie anulowane. Wpisz ponownie, aby potwierdzic rozwiazanie.
 
 # ========== Komendy - Zmiana nazwy ==========
-cmd.rename.no_permission = Nie masz uprawnień.
-cmd.rename.not_leader = Tylko przywódca może zmienić nazwę frakcji.
-cmd.rename.usage = Użycie: /f rename <nazwa>
-cmd.rename.too_short = Nazwa jest za krótka (min. {0} znaków).
-cmd.rename.too_long = Nazwa jest za długa (maks. {0} znaków).
-cmd.rename.name_taken = Ta nazwa jest już zajęta.
+cmd.rename.no_permission = Nie masz uprawnien.
+cmd.rename.not_leader = Tylko przywodca moze zmienic nazwe frakcji.
+cmd.rename.usage = Uzycie: /f rename <nazwa>
+cmd.rename.too_short = Nazwa jest za krotka (min. {0} znakow).
+cmd.rename.too_long = Nazwa jest za dluga (maks. {0} znakow).
+cmd.rename.name_taken = Ta nazwa jest juz zajeta.
 cmd.rename.success = Nazwa frakcji zmieniona na {0}!
-cmd.rename.broadcast = {0} zmienił(a) nazwę frakcji na {1}
+cmd.rename.broadcast = {0} zmienil(a) nazwe frakcji na {1}
 
 # ========== Komendy - Opis ==========
-cmd.desc.no_permission = Nie masz uprawnień.
-cmd.desc.not_officer = Musisz być oficerem, aby ustawić opis.
+cmd.desc.no_permission = Nie masz uprawnien.
+cmd.desc.not_officer = Musisz byc oficerem, aby ustawic opis.
 cmd.desc.set = Opis frakcji ustawiony!
 cmd.desc.cleared = Opis frakcji wyczyszczony.
 
-# ========== Komendy - Otwarta / Zamknięta ==========
-cmd.open.no_permission = Nie masz uprawnień.
-cmd.open.not_leader = Tylko przywódca może zmienić to ustawienie.
-cmd.open.already_open = Twoja frakcja jest już otwarta.
-cmd.open.success = Twoja frakcja jest teraz otwarta! Każdy może dołączyć komendą /f join.
-cmd.open.broadcast = {0} otworzył(a) frakcję na publiczne dołączanie.
-cmd.close.no_permission = Nie masz uprawnień.
-cmd.close.not_leader = Tylko przywódca może zmienić to ustawienie.
-cmd.close.already_closed = Twoja frakcja jest już zamknięta.
+# ========== Komendy - Otwarta / Zamknieta ==========
+cmd.open.no_permission = Nie masz uprawnien.
+cmd.open.not_leader = Tylko przywodca moze zmienic to ustawienie.
+cmd.open.already_open = Twoja frakcja jest juz otwarta.
+cmd.open.success = Twoja frakcja jest teraz otwarta! Kazdy moze dolaczyc komenda /f join.
+cmd.open.broadcast = {0} otworzyl(a) frakcje na publiczne dolaczanie.
+cmd.close.no_permission = Nie masz uprawnien.
+cmd.close.not_leader = Tylko przywodca moze zmienic to ustawienie.
+cmd.close.already_closed = Twoja frakcja jest juz zamknieta.
 cmd.close.success = Twoja frakcja jest teraz tylko na zaproszenia.
-cmd.close.broadcast = {0} zamknął(a) frakcję — tylko na zaproszenia.
+cmd.close.broadcast = {0} zamknal(a) frakcje — tylko na zaproszenia.
 
 # ========== Komendy - Kolor ==========
-cmd.color.no_permission = Nie masz uprawnień.
-cmd.color.not_officer = Musisz być oficerem, aby zmienić kolor.
-cmd.color.colors_disabled = Kolory frakcji są wyłączone.
-cmd.color.usage = Użycie: /f color <kod|#hex>
-cmd.color.usage_hint = Prawidłowe kody: 0-9, a-f lub #RRGGBB hex
-cmd.color.invalid = Nieprawidłowy kolor. Użyj 0-9, a-f lub #RRGGBB.
+cmd.color.no_permission = Nie masz uprawnien.
+cmd.color.not_officer = Musisz byc oficerem, aby zmienic kolor.
+cmd.color.colors_disabled = Kolory frakcji sa wylaczone.
+cmd.color.usage = Uzycie: /f color <kod|#hex>
+cmd.color.usage_hint = Prawidlowe kody: 0-9, a-f lub #RRGGBB hex
+cmd.color.invalid = Nieprawidlowy kolor. Uzyj 0-9, a-f lub #RRGGBB.
 cmd.color.success = Kolor frakcji zaktualizowany!
 
 # ========== Komendy - Zajmowanie terenu ==========
-cmd.claim.no_permission = Nie masz uprawnień do zajmowania terenu.
-cmd.claim.already_yours = Twoja frakcja już posiada ten chunk.
-cmd.claim.cannot_claim_ally = Nie możesz zająć terenu sojusznika.
-cmd.claim.already_claimed_hint = Ten chunk jest zajęty. Użyj /f overclaim, jeśli frakcja jest podatna na najazd.
-cmd.claim.success = Zajęto chunk na {0}, {1}!
-cmd.claim.not_officer = Musisz być oficerem, aby zajmować teren.
-cmd.claim.already_claimed = Ten chunk jest już zajęty.
-cmd.claim.max_claims = Twoja frakcja osiągnęła maksymalną liczbę terenów. Zdobądź więcej mocy!
-cmd.claim.world_max_claims = Twoja frakcja osiągnęła maksymalną liczbę terenów ({0}) dozwolonych w tym świecie.
-cmd.claim.not_adjacent = Musisz zajmować teren przylegający do istniejącego terytorium.
-cmd.claim.world_not_allowed = Zajmowanie terenu jest niedozwolone w tym świecie.
+cmd.claim.no_permission = Nie masz uprawnien do zajmowania terenu.
+cmd.claim.already_yours = Twoja frakcja juz posiada ten chunk.
+cmd.claim.cannot_claim_ally = Nie mozesz zajac terenu sojusznika.
+cmd.claim.already_claimed_hint = Ten chunk jest zajety. Uzyj /f overclaim, jesli frakcja jest podatna na najazd.
+cmd.claim.success = Zajeto chunk na {0}, {1}!
+cmd.claim.not_officer = Musisz byc oficerem, aby zajmowac teren.
+cmd.claim.already_claimed = Ten chunk jest juz zajety.
+cmd.claim.max_claims = Twoja frakcja osiagnela maksymalna liczbe terenow. Zdobadz wiecej mocy!
+cmd.claim.world_max_claims = Twoja frakcja osiagnela maksymalna liczbe terenow ({0}) dozwolonych w tym swiecie.
+cmd.claim.not_adjacent = Musisz zajmowac teren przylegajacy do istniejacego terytorium.
+cmd.claim.world_not_allowed = Zajmowanie terenu jest niedozwolone w tym swiecie.
 cmd.claim.orbisguard = Ten obszar jest chroniony przez OrbisGuard.
-cmd.claim.zone_protected = Ten chunk znajduje się w strefie bezpiecznej lub wojennej.
-cmd.claim.insufficient_power = Twoja frakcja nie ma wystarczająco mocy, aby zająć więcej terenu.
-cmd.claim.failed = Nie udało się zająć chunka.
-cmd.claim.world_overclaimed = Twoja frakcja ma {0} zajętych chunków w {1} (limit: {2}). Rozważ zwolnienie nadmiarowego terytorium.
+cmd.claim.zone_protected = Ten chunk znajduje sie w strefie bezpiecznej lub wojennej.
+cmd.claim.insufficient_power = Twoja frakcja nie ma wystarczajaco mocy, aby zajac wiecej terenu.
+cmd.claim.failed = Nie udalo sie zajac chunka.
+cmd.claim.world_overclaimed = Twoja frakcja ma {0} zajetych chunkow w {1} (limit: {2}). Rozwaz zwolnienie nadmiarowego terytorium.
 
 # ========== Komendy - Zaproszenia ==========
-cmd.invite.no_permission = Nie masz uprawnień do zapraszania graczy.
-cmd.invite.not_officer = Musisz być oficerem, aby zapraszać graczy.
-cmd.invite.usage = Użycie: /f invite <gracz>
-cmd.invite.player_not_found = Gracz '{0}' nie został znaleziony lub jest offline.
-cmd.invite.target_in_faction = Ten gracz już należy do frakcji.
+cmd.invite.no_permission = Nie masz uprawnien do zapraszania graczy.
+cmd.invite.not_officer = Musisz byc oficerem, aby zapraszac graczy.
+cmd.invite.usage = Uzycie: /f invite <gracz>
+cmd.invite.player_not_found = Gracz '{0}' nie zostal znaleziony lub jest offline.
+cmd.invite.target_in_faction = Ten gracz juz nalezy do frakcji.
 cmd.invite.sent = Zaproszono {0} do Twojej frakcji.
-cmd.invite.received = Otrzymałeś zaproszenie do frakcji {0}!
-cmd.invite.accept_hint = Wpisz /f accept {0}, aby dołączyć.
+cmd.invite.received = Otrzymales zaproszenie do frakcji {0}!
+cmd.invite.accept_hint = Wpisz /f accept {0}, aby dolaczyc.
 
-# ========== Komendy - Akceptacja / Dołączanie ==========
-cmd.join.no_permission = Nie masz uprawnień do dołączania do frakcji.
-cmd.join.already_in_named = Już należysz do {0}.
-cmd.join.use_leave_hint = Użyj /f leave, jeśli chcesz dołączyć do innej frakcji.
-cmd.join.no_invites = Nie masz żadnych oczekujących zaproszeń.
-cmd.join.faction_not_found = Frakcja '{0}' nie została znaleziona.
+# ========== Komendy - Akceptacja / Dolaczanie ==========
+cmd.join.no_permission = Nie masz uprawnien do dolaczania do frakcji.
+cmd.join.already_in_named = Juz nalezysz do {0}.
+cmd.join.use_leave_hint = Uzyj /f leave, jesli chcesz dolaczyc do innej frakcji.
+cmd.join.no_invites = Nie masz zadnych oczekujacych zaproszen.
+cmd.join.faction_not_found = Frakcja '{0}' nie zostala znaleziona.
 cmd.join.not_invited = Nie masz zaproszenia od tej frakcji.
-cmd.join.faction_gone = Ta frakcja już nie istnieje.
-cmd.join.success = Dołączyłeś do {0}!
-cmd.join.broadcast = {0} dołączył(a) do frakcji!
-cmd.join.faction_full = Ta frakcja jest pełna.
-cmd.join.failed = Nie udało się dołączyć do frakcji.
+cmd.join.faction_gone = Ta frakcja juz nie istnieje.
+cmd.join.success = Dolaczyles do {0}!
+cmd.join.broadcast = {0} dolaczyl(a) do frakcji!
+cmd.join.faction_full = Ta frakcja jest pelna.
+cmd.join.failed = Nie udalo sie dolaczyc do frakcji.
 
 # ========== Komendy - Wyrzucanie ==========
-cmd.kick.no_permission = Nie masz uprawnień do wyrzucania członków.
-cmd.kick.usage = Użycie: /f kick <gracz>
+cmd.kick.no_permission = Nie masz uprawnien do wyrzucania czlonkow.
+cmd.kick.usage = Uzycie: /f kick <gracz>
 cmd.kick.not_in_your_faction = Gracz '{0}' nie jest w Twojej frakcji.
 cmd.kick.success = Wyrzucono {0} z frakcji.
-cmd.kick.broadcast = {0} został(a) wyrzucony(a) z frakcji.
-cmd.kick.kicked = Zostałeś wyrzucony z frakcji.
-cmd.kick.cannot_kick_higher = Nie masz uprawnień, aby wyrzucić tego gracza.
-cmd.kick.cannot_kick_leader = Nie możesz wyrzucić przywódcy frakcji.
-cmd.kick.failed = Nie udało się wyrzucić gracza.
+cmd.kick.broadcast = {0} zostal(a) wyrzucony(a) z frakcji.
+cmd.kick.kicked = Zostales wyrzucony z frakcji.
+cmd.kick.cannot_kick_higher = Nie masz uprawnien, aby wyrzucic tego gracza.
+cmd.kick.cannot_kick_leader = Nie mozesz wyrzucic przywodcy frakcji.
+cmd.kick.failed = Nie udalo sie wyrzucic gracza.
 
 # ========== Komendy - Opuszczanie ==========
-cmd.leave.no_permission = Nie masz uprawnień do opuszczenia frakcji.
-cmd.leave.confirm_prompt = Czy na pewno chcesz opuścić swoją frakcję?
-cmd.leave.confirm_instruction = Wpisz /f leave --text ponownie w ciągu {0} sekund, aby potwierdzić.
-cmd.leave.success = Opuściłeś swoją frakcję.
-cmd.leave.broadcast = {0} opuścił(a) frakcję.
-cmd.leave.failed = Nie udało się opuścić frakcji.
-cmd.leave.cancelled = Poprzednie potwierdzenie anulowane. Wpisz ponownie, aby potwierdzić opuszczenie.
+cmd.leave.no_permission = Nie masz uprawnien do opuszczenia frakcji.
+cmd.leave.confirm_prompt = Czy na pewno chcesz opuscic swoja frakcje?
+cmd.leave.confirm_instruction = Wpisz /f leave --text ponownie w ciagu {0} sekund, aby potwierdzic.
+cmd.leave.success = Opusciles swoja frakcje.
+cmd.leave.broadcast = {0} opuscil(a) frakcje.
+cmd.leave.failed = Nie udalo sie opuscic frakcji.
+cmd.leave.cancelled = Poprzednie potwierdzenie anulowane. Wpisz ponownie, aby potwierdzic opuszczenie.
 
 # ========== Komendy - Awans / Degradacja / Przekazanie ==========
-cmd.rank.promote_no_permission = Nie masz uprawnień do awansowania członków.
-cmd.rank.promote_usage = Użycie: /f promote <gracz>
+cmd.rank.promote_no_permission = Nie masz uprawnien do awansowania czlonkow.
+cmd.rank.promote_usage = Uzycie: /f promote <gracz>
 cmd.rank.promoted = Awansowano {0} na {1}!
-cmd.rank.promote_broadcast = {0} został(a) awansowany(a) na {1}!
-cmd.rank.already_highest = Nie można awansować wyżej. Użyj /f transfer, aby zmienić przywódcę.
-cmd.rank.promote_failed = Nie udało się awansować gracza.
-cmd.rank.demote_no_permission = Nie masz uprawnień do degradowania członków.
-cmd.rank.demote_usage = Użycie: /f demote <gracz>
+cmd.rank.promote_broadcast = {0} zostal(a) awansowany(a) na {1}!
+cmd.rank.already_highest = Nie mozna awansowac wyzej. Uzyj /f transfer, aby zmienic przywodce.
+cmd.rank.promote_failed = Nie udalo sie awansowac gracza.
+cmd.rank.demote_no_permission = Nie masz uprawnien do degradowania czlonkow.
+cmd.rank.demote_usage = Uzycie: /f demote <gracz>
 cmd.rank.demoted = Zdegradowano {0} do {1}.
-cmd.rank.demote_broadcast = {0} został(a) zdegradowany(a) do {1}.
-cmd.rank.already_lowest = Ten gracz jest już Członkiem.
-cmd.rank.demote_failed = Nie udało się zdegradować gracza.
-cmd.rank.transfer_no_permission = Nie masz uprawnień do przekazania przywództwa.
-cmd.rank.transfer_usage = Użycie: /f transfer <gracz>
+cmd.rank.demote_broadcast = {0} zostal(a) zdegradowany(a) do {1}.
+cmd.rank.already_lowest = Ten gracz jest juz Czlonkiem.
+cmd.rank.demote_failed = Nie udalo sie zdegradowac gracza.
+cmd.rank.transfer_no_permission = Nie masz uprawnien do przekazania przywodztwa.
+cmd.rank.transfer_usage = Uzycie: /f transfer <gracz>
 cmd.rank.player_not_in_faction = Nie znaleziono gracza w Twojej frakcji.
-cmd.rank.transfer_confirm = Czy na pewno chcesz przekazać przywództwo graczowi {0}?
-cmd.rank.transfer_confirm_instruction = Wpisz /f transfer {0} --text ponownie w ciągu {1} sekund, aby potwierdzić.
-cmd.rank.transferred = Przywództwo przekazane graczowi {0}!
-cmd.rank.transfer_broadcast = {0} jest teraz przywódcą frakcji!
-cmd.rank.transfer_failed = Nie udało się przekazać przywództwa.
-cmd.rank.transfer_cancelled = Poprzednie potwierdzenie anulowane. Wpisz ponownie, aby potwierdzić przekazanie.
+cmd.rank.transfer_confirm = Czy na pewno chcesz przekazac przywodztwo graczowi {0}?
+cmd.rank.transfer_confirm_instruction = Wpisz /f transfer {0} --text ponownie w ciagu {1} sekund, aby potwierdzic.
+cmd.rank.transferred = Przywodztwo przekazane graczowi {0}!
+cmd.rank.transfer_broadcast = {0} jest teraz przywodca frakcji!
+cmd.rank.transfer_failed = Nie udalo sie przekazac przywodztwa.
+cmd.rank.transfer_cancelled = Poprzednie potwierdzenie anulowane. Wpisz ponownie, aby potwierdzic przekazanie.
 
-# ========== Komendy - Zrzeczenie się terenu ==========
-cmd.unclaim.no_permission = Nie masz uprawnień do zrzekania się terenu.
-cmd.unclaim.success = Zrzeczono się chunka na {0}, {1}.
-cmd.unclaim.not_officer = Musisz być oficerem, aby zrzec się terenu.
-cmd.unclaim.chunk_not_claimed = Ten chunk nie jest zajęty.
+# ========== Komendy - Zrzeczenie sie terenu ==========
+cmd.unclaim.no_permission = Nie masz uprawnien do zrzekania sie terenu.
+cmd.unclaim.success = Zrzeczono sie chunka na {0}, {1}.
+cmd.unclaim.not_officer = Musisz byc oficerem, aby zrzec sie terenu.
+cmd.unclaim.chunk_not_claimed = Ten chunk nie jest zajety.
 cmd.unclaim.not_your_claim = Twoja frakcja nie posiada tego chunka.
-cmd.unclaim.cannot_unclaim_home = Nie można zrzec się chunka z domem frakcji.
-cmd.unclaim.would_disconnect = Nie można zrzec się — rozłączyłoby to Twoje terytorium.
-cmd.unclaim.failed = Nie udało się zrzec chunka.
+cmd.unclaim.cannot_unclaim_home = Nie mozna zrzec sie chunka z domem frakcji.
+cmd.unclaim.would_disconnect = Nie mozna zrzec sie — rozlaczyloby to Twoje terytorium.
+cmd.unclaim.failed = Nie udalo sie zrzec chunka.
 
-# ========== Komendy - Przejęcie terenu ==========
-cmd.overclaim.no_permission = Nie masz uprawnień do przejmowania terenu.
-cmd.overclaim.success = Przejęto terytorium wroga!
-cmd.overclaim.not_officer = Musisz być oficerem, aby przejmować teren.
-cmd.overclaim.not_claimed = Ten chunk nie jest zajęty. Użyj /f claim.
-cmd.overclaim.own_chunk = Twoja frakcja już posiada ten chunk.
-cmd.overclaim.ally = Nie możesz przejąć terenu sojusznika.
-cmd.overclaim.target_has_power = Ta frakcja wciąż ma wystarczająco mocy.
-cmd.overclaim.failed = Nie udało się przejąć terenu.
+# ========== Komendy - Przejecie terenu ==========
+cmd.overclaim.no_permission = Nie masz uprawnien do przejmowania terenu.
+cmd.overclaim.success = Przejeto terytorium wroga!
+cmd.overclaim.not_officer = Musisz byc oficerem, aby przejmowac teren.
+cmd.overclaim.not_claimed = Ten chunk nie jest zajety. Uzyj /f claim.
+cmd.overclaim.own_chunk = Twoja frakcja juz posiada ten chunk.
+cmd.overclaim.ally = Nie mozesz przejac terenu sojusznika.
+cmd.overclaim.target_has_power = Ta frakcja wciaz ma wystarczajaco mocy.
+cmd.overclaim.failed = Nie udalo sie przejac terenu.
 
-# ========== Komendy - Utknięcie ==========
-cmd.stuck.no_permission = Nie masz uprawnień do użycia /f stuck.
-cmd.stuck.not_stuck = Nie utknąłeś — to jest dzicz.
-cmd.stuck.combat_tagged = Nie możesz użyć /f stuck podczas walki!
-cmd.stuck.no_safe = Nie udało się znaleźć bezpiecznej lokalizacji.
-cmd.stuck.teleporting = Teleportacja do bezpiecznego miejsca za {0} sekund. Nie ruszaj się!
+# ========== Komendy - Utkniecie ==========
+cmd.stuck.no_permission = Nie masz uprawnien do uzycia /f stuck.
+cmd.stuck.not_stuck = Nie utknales — to jest dzicz.
+cmd.stuck.combat_tagged = Nie mozesz uzyc /f stuck podczas walki!
+cmd.stuck.no_safe = Nie udalo sie znalezc bezpiecznej lokalizacji.
+cmd.stuck.teleporting = Teleportacja do bezpiecznego miejsca za {0} sekund. Nie ruszaj sie!
 
 # ========== Komendy - Dom ==========
-cmd.home.no_permission = Nie masz uprawnień do teleportacji do domu frakcji.
+cmd.home.no_permission = Nie masz uprawnien do teleportacji do domu frakcji.
 cmd.home.no_home = Twoja frakcja nie ma ustawionego domu.
-cmd.home.combat_tagged = Nie możesz się teleportować podczas walki!
+cmd.home.combat_tagged = Nie mozesz sie teleportowac podczas walki!
 cmd.home.teleported = Przeteleportowano do domu frakcji!
 
 # ========== Komendy - Ustawianie domu ==========
-cmd.sethome.no_permission = Nie masz uprawnień do ustawienia domu frakcji.
-cmd.sethome.world_not_allowed = Nie można ustawić domu w tym świecie.
-cmd.sethome.not_in_territory = Dom można ustawić tylko na terytorium frakcji.
+cmd.sethome.no_permission = Nie masz uprawnien do ustawienia domu frakcji.
+cmd.sethome.world_not_allowed = Nie mozna ustawic domu w tym swiecie.
+cmd.sethome.not_in_territory = Dom mozna ustawic tylko na terytorium frakcji.
 cmd.sethome.set = Dom frakcji ustawiony!
-cmd.sethome.broadcast = {0} ustawił(a) dom frakcji.
-cmd.sethome.not_officer = Musisz być oficerem, aby ustawić dom.
-cmd.sethome.failed = Nie udało się ustawić domu.
+cmd.sethome.broadcast = {0} ustawil(a) dom frakcji.
+cmd.sethome.not_officer = Musisz byc oficerem, aby ustawic dom.
+cmd.sethome.failed = Nie udalo sie ustawic domu.
 
 # ========== Komendy - Usuwanie domu ==========
-cmd.delhome.no_permission = Nie masz uprawnień do usunięcia domu frakcji.
+cmd.delhome.no_permission = Nie masz uprawnien do usuniecia domu frakcji.
 cmd.delhome.no_home = Twoja frakcja nie ma ustawionego domu.
-cmd.delhome.deleted = Dom frakcji usunięty!
-cmd.delhome.broadcast = {0} usunął/usunęła dom frakcji.
-cmd.delhome.not_officer = Musisz być oficerem, aby usunąć dom.
-cmd.delhome.failed = Nie udało się usunąć domu.
+cmd.delhome.deleted = Dom frakcji usuniety!
+cmd.delhome.broadcast = {0} usunal/usunela dom frakcji.
+cmd.delhome.not_officer = Musisz byc oficerem, aby usunac dom.
+cmd.delhome.failed = Nie udalo sie usunac domu.
 
-# ========== Komendy - Relacje (Sojusznik/Wróg/Neutralny/Relacje) ==========
-cmd.relation.ally_no_permission = Nie masz uprawnień do zarządzania sojuszami.
-cmd.relation.ally_usage = Użycie: /f ally <frakcja>
-cmd.relation.ally_sent = Prośba o sojusz wysłana do {0}!
-cmd.relation.ally_formed = Jesteście teraz sojusznikami z {0}!
-cmd.relation.already_ally = Jesteście już sprzymierzeni z tą frakcją.
-cmd.relation.ally_failed = Nie udało się wysłać prośby o sojusz.
-cmd.relation.enemy_no_permission = Nie masz uprawnień do ogłaszania wrogów.
-cmd.relation.enemy_usage = Użycie: /f enemy <frakcja>
+# ========== Komendy - Relacje (Sojusznik/Wrog/Neutralny/Relacje) ==========
+cmd.relation.ally_no_permission = Nie masz uprawnien do zarzadzania sojuszami.
+cmd.relation.ally_usage = Uzycie: /f ally <frakcja>
+cmd.relation.ally_sent = Prosba o sojusz wyslana do {0}!
+cmd.relation.ally_formed = Jestescie teraz sojusznikami z {0}!
+cmd.relation.already_ally = Jestescie juz sprzymierzeni z ta frakcja.
+cmd.relation.ally_failed = Nie udalo sie wyslac prosby o sojusz.
+cmd.relation.enemy_no_permission = Nie masz uprawnien do oglaszania wrogow.
+cmd.relation.enemy_usage = Uzycie: /f enemy <frakcja>
 cmd.relation.enemy_declared = {0} jest teraz Twoim wrogiem!
-cmd.relation.already_enemy = Jesteście już wrogami z tą frakcją.
-cmd.relation.max_enemies = Osiągnąłeś maksymalną liczbę wrogów.
-cmd.relation.enemy_failed = Nie udało się ustawić wroga.
-cmd.relation.neutral_no_permission = Nie masz uprawnień do ustawiania neutralnych relacji.
-cmd.relation.neutral_usage = Użycie: /f neutral <frakcja>
+cmd.relation.already_enemy = Jestescie juz wrogami z ta frakcja.
+cmd.relation.max_enemies = Osiagnales maksymalna liczbe wrogow.
+cmd.relation.enemy_failed = Nie udalo sie ustawic wroga.
+cmd.relation.neutral_no_permission = Nie masz uprawnien do ustawiania neutralnych relacji.
+cmd.relation.neutral_usage = Uzycie: /f neutral <frakcja>
 cmd.relation.neutral_set = Twoja frakcja jest teraz neutralna wobec {0}.
-cmd.relation.already_neutral = Jesteście już neutralni wobec tej frakcji.
-cmd.relation.neutral_failed = Nie udało się ustawić neutralności.
-cmd.relation.cannot_self = Nie możesz zawrzeć sojuszu z samym sobą.
-cmd.relation.max_allies = Osiągnąłeś maksymalną liczbę sojuszników.
-cmd.relation.view_no_permission = Nie masz uprawnień do przeglądania relacji.
+cmd.relation.already_neutral = Jestescie juz neutralni wobec tej frakcji.
+cmd.relation.neutral_failed = Nie udalo sie ustawic neutralnosci.
+cmd.relation.cannot_self = Nie mozesz zawrzec sojuszu z samym soba.
+cmd.relation.max_allies = Osiagnales maksymalna liczbe sojusznikow.
+cmd.relation.view_no_permission = Nie masz uprawnien do przegladania relacji.
 cmd.relation.header = === Relacje frakcji ===
 cmd.relation.allies_count = Sojusznicy ({0}):
 cmd.relation.enemies_count = Wrogowie ({0}):
 cmd.relation.list_entry = - {0}
 
 # ========== Komendy - Czat ==========
-cmd.chat.usage = Użycie: /f c [f|a|off]
-cmd.chat.no_permission = Nie masz uprawnień do tego trybu czatu.
+cmd.chat.usage = Uzycie: /f c [f|a|off]
+cmd.chat.no_permission = Nie masz uprawnien do tego trybu czatu.
 cmd.chat.mode_set = Tryb czatu ustawiony na {0}
 
 # ========== Komendy - Zaproszenia ==========
-cmd.invites.not_officer = Musisz być oficerem, aby zarządzać zaproszeniami.
+cmd.invites.not_officer = Musisz byc oficerem, aby zarzadzac zaproszeniami.
 cmd.invites.header = === Zaproszenia frakcji ===
-cmd.invites.no_pending = Brak oczekujących zaproszeń lub próśb.
-cmd.invites.outgoing = Wysłane zaproszenia:
+cmd.invites.no_pending = Brak oczekujacych zaproszen lub prosb.
+cmd.invites.outgoing = Wyslane zaproszenia:
 cmd.invites.outgoing_entry = {0} (zaproszony przez {1})
-cmd.invites.requests = Prośby o dołączenie:
+cmd.invites.requests = Prosby o dolaczenie:
 cmd.invites.request_entry = {0}{1}
 cmd.invites.your_invites_header = === Twoje zaproszenia ===
-cmd.invites.no_invites = Nie masz żadnych oczekujących zaproszeń.
-cmd.invites.invite_entry = {0} - Użyj /f accept {1}
+cmd.invites.no_invites = Nie masz zadnych oczekujacych zaproszen.
+cmd.invites.invite_entry = {0} - Uzyj /f accept {1}
 
-# ========== Komendy - Prośba o dołączenie ==========
-cmd.request.no_permission = Nie masz uprawnień do składania próśb o członkostwo.
-cmd.request.already_in_named = Już należysz do {0}.
-cmd.request.use_leave_hint = Użyj /f leave, jeśli chcesz dołączyć do innej frakcji.
-cmd.request.usage = Użycie: /f request <frakcja> [wiadomość]
-cmd.request.faction_open = Ta frakcja jest otwarta! Użyj /f accept {0}, aby dołączyć bezpośrednio.
-cmd.request.already_requested = Masz już oczekującą prośbę do tej frakcji.
-cmd.request.has_invite = Masz zaproszenie od tej frakcji! Użyj /f accept {0}, aby dołączyć.
-cmd.request.sent = Wysłano prośbę o dołączenie do {0}!
-cmd.request.your_message = Twoja wiadomość: "{0}"
-cmd.request.officer_review = Oficer rozpatrzy Twoją prośbę.
-cmd.request.officer_notify = {0} poprosił(a) o dołączenie do Twojej frakcji!
-cmd.request.officer_review_hint = Użyj /f gui > Zaproszenia, aby sprawdzić.
+# ========== Komendy - Prosba o dolaczenie ==========
+cmd.request.no_permission = Nie masz uprawnien do skladania prosb o czlonkostwo.
+cmd.request.already_in_named = Juz nalezysz do {0}.
+cmd.request.use_leave_hint = Uzyj /f leave, jesli chcesz dolaczyc do innej frakcji.
+cmd.request.usage = Uzycie: /f request <frakcja> [wiadomosc]
+cmd.request.faction_open = Ta frakcja jest otwarta! Uzyj /f accept {0}, aby dolaczyc bezposrednio.
+cmd.request.already_requested = Masz juz oczekujaca prosbe do tej frakcji.
+cmd.request.has_invite = Masz zaproszenie od tej frakcji! Uzyj /f accept {0}, aby dolaczyc.
+cmd.request.sent = Wyslano prosbe o dolaczenie do {0}!
+cmd.request.your_message = Twoja wiadomosc: "{0}"
+cmd.request.officer_review = Oficer rozpatrzy Twoja prosbe.
+cmd.request.officer_notify = {0} poprosil(a) o dolaczenie do Twojej frakcji!
+cmd.request.officer_review_hint = Uzyj /f gui > Zaproszenia, aby sprawdzic.
 
 # ========== Komendy - Informacje ==========
 cmd.info.faction_header = === {0} ===
 cmd.info.player_header = === {0} ===
-cmd.info.no_permission = Nie masz uprawnień do przeglądania informacji o frakcji.
-cmd.info.faction_not_found = Frakcja '{0}' nie została znaleziona.
-cmd.info.not_in_faction_hint = Nie należysz do frakcji. Użyj /f info <frakcja>
-cmd.info.leader = Przywódca: {0}
-cmd.info.members = Członkowie: {0}/{1}
+cmd.info.no_permission = Nie masz uprawnien do przegladania informacji o frakcji.
+cmd.info.faction_not_found = Frakcja '{0}' nie zostala znaleziona.
+cmd.info.not_in_faction_hint = Nie nalezysz do frakcji. Uzyj /f info <frakcja>
+cmd.info.leader = Przywodca: {0}
+cmd.info.members = Czlonkowie: {0}/{1}
 cmd.info.power = Moc: {0}
 cmd.info.claims = Tereny: {0}
 cmd.info.raidable = PODATNA NA NAJAZD!
 cmd.info.allies = Sojusznicy: {0}
 cmd.info.enemies = Wrogowie: {0}
-cmd.info.they_consider = Oni uważają Cię za: {0}
-cmd.info.you_consider = Ty uważasz ich za: {0}
-cmd.info.members_no_permission = Nie masz uprawnień do przeglądania członków frakcji.
-cmd.info.members_header = === Członkowie {0} ({1}) ===
+cmd.info.they_consider = Oni uwazaja Cie za: {0}
+cmd.info.you_consider = Ty uwazasz ich za: {0}
+cmd.info.members_no_permission = Nie masz uprawnien do przegladania czlonkow frakcji.
+cmd.info.members_header = === Czlonkowie {0} ({1}) ===
 cmd.info.member_online = [Online]
-cmd.info.list_no_permission = Nie masz uprawnień do przeglądania listy frakcji.
-cmd.info.list_empty = Nie ma żadnych frakcji.
+cmd.info.list_no_permission = Nie masz uprawnien do przegladania listy frakcji.
+cmd.info.list_empty = Nie ma zadnych frakcji.
 cmd.info.list_header = === Frakcje ({0}) ===
-cmd.info.list_entry = {0} - {1} członków, {2} mocy
-cmd.info.list_entry_raidable = {0} - {1} członków, {2} mocy [PODATNA NA NAJAZD]
-cmd.info.help_no_permission = Nie masz uprawnień do przeglądania pomocy.
-cmd.info.who_no_permission = Nie masz uprawnień do przeglądania informacji o graczu.
+cmd.info.list_entry = {0} - {1} czlonkow, {2} mocy
+cmd.info.list_entry_raidable = {0} - {1} czlonkow, {2} mocy [PODATNA NA NAJAZD]
+cmd.info.help_no_permission = Nie masz uprawnien do przegladania pomocy.
+cmd.info.who_no_permission = Nie masz uprawnien do przegladania informacji o graczu.
 cmd.info.who_faction = Frakcja: {0}
 cmd.info.who_role = Ranga: {0}
-cmd.info.who_joined = Dołączył: {0}
+cmd.info.who_joined = Dolaczyl: {0}
 cmd.info.who_faction_none = Frakcja: Brak
 cmd.info.who_power = Moc: {0}
 cmd.info.who_status = Status: {0}
 cmd.info.who_last_seen = Ostatnio widziany: {0}
-cmd.info.map_no_permission = Nie masz uprawnień do przeglądania mapy.
+cmd.info.map_no_permission = Nie masz uprawnien do przegladania mapy.
 cmd.info.map_header = === Mapa terytorium ===
-cmd.info.map_legend = Legenda: +Twoje /Własne /Sojusznik /Wróg -Dzicz
-cmd.info.map_gui_hint = Użyj /f gui, aby otworzyć interaktywną mapę
+cmd.info.map_legend = Legenda: +Twoje /Wlasne /Sojusznik /Wrog -Dzicz
+cmd.info.map_gui_hint = Uzyj /f gui, aby otworzyc interaktywna mape
 
 # ========== Komendy - Moc ==========
 cmd.power.personal = Moc osobista: {0}/{1}
 cmd.power.faction = Moc frakcji: {0}/{1}
-cmd.power.death_loss = Strata przy śmierci: {0}
-cmd.power.regen = Szybkość regeneracji: {0}/godz.
-cmd.power.no_permission = Nie masz uprawnień do przeglądania informacji o mocy.
+cmd.power.death_loss = Strata przy smierci: {0}
+cmd.power.regen = Szybkosc regeneracji: {0}/godz.
+cmd.power.no_permission = Nie masz uprawnien do przegladania informacji o mocy.
 cmd.power.header = Moc gracza {0}:
 cmd.power.current = Aktualna: {0}
 
 # ========== Komendy - Ekonomia ==========
 cmd.economy.balance = Saldo: {0}
-cmd.economy.deposited = Wpłacono {0} do skarbca frakcji.
-cmd.economy.withdrawn = Wypłacono {0} ze skarbca frakcji.
+cmd.economy.deposited = Wplacono {0} do skarbca frakcji.
+cmd.economy.withdrawn = Wyplacono {0} ze skarbca frakcji.
 cmd.economy.transferred = Przelano {0} do {1}.
-cmd.economy.insufficient = Niewystarczające środki w skarbcu frakcji.
-cmd.economy.invalid_amount = Nieprawidłowa kwota: {0}
-cmd.economy.economy_disabled = Ekonomia jest wyłączona.
-cmd.economy.balance_no_permission = Nie masz uprawnień do przeglądania sald.
-cmd.economy.treasury_unavailable = Skarbiec jest niedostępny.
+cmd.economy.insufficient = Niewystarczajace srodki w skarbcu frakcji.
+cmd.economy.invalid_amount = Nieprawidlowa kwota: {0}
+cmd.economy.economy_disabled = Ekonomia jest wylaczona.
+cmd.economy.balance_no_permission = Nie masz uprawnien do przegladania sald.
+cmd.economy.treasury_unavailable = Skarbiec jest niedostepny.
 cmd.economy.balance_display = Skarbiec {0}: {1}
-cmd.economy.deposit_no_permission = Nie masz uprawnień do wpłacania.
-cmd.economy.deposit_faction_denied = Nie masz uprawnień frakcyjnych do wpłacania.
-cmd.economy.deposit_usage = Użycie: /f deposit <kwota>
-cmd.economy.amount_positive = Kwota musi być dodatnia.
-cmd.economy.wallet_insufficient = Nie masz wystarczająco pieniędzy. Portfel: {0}
-cmd.economy.wallet_withdraw_failed = Nie udało się pobrać środków z portfela.
-cmd.economy.deposit_failed = Nie udało się wpłacić do skarbca frakcji. Pieniądze zwrócone.
-cmd.economy.withdraw_no_permission = Nie masz uprawnień do wypłacania.
-cmd.economy.withdraw_faction_denied = Nie masz uprawnień frakcyjnych do wypłacania.
-cmd.economy.withdraw_usage = Użycie: /f withdraw <kwota>
-cmd.economy.withdraw_limit_denied = Wypłata odrzucona: {0}
-cmd.economy.wallet_deposit_failed = Uwaga: Nie udało się wpłacić do Twojego portfela. Skontaktuj się z administratorem.
-cmd.economy.withdraw_limit_exceeded = Wypłata odrzucona: przekroczono limit.
-cmd.economy.withdraw_failed = Wypłata nieudana: {0}
-cmd.economy.transfer_no_permission = Nie masz uprawnień do przelewów.
-cmd.economy.transfer_faction_denied = Nie masz uprawnień frakcyjnych do przelewów.
-cmd.economy.transfer_usage = Użycie: /f money transfer <frakcja> <kwota>
-cmd.economy.transfer_self = Nie można przelać do własnej frakcji.
+cmd.economy.deposit_no_permission = Nie masz uprawnien do wplacania.
+cmd.economy.deposit_faction_denied = Nie masz uprawnien frakcyjnych do wplacania.
+cmd.economy.deposit_usage = Uzycie: /f deposit <kwota>
+cmd.economy.amount_positive = Kwota musi byc dodatnia.
+cmd.economy.wallet_insufficient = Nie masz wystarczajaco pieniedzy. Portfel: {0}
+cmd.economy.wallet_withdraw_failed = Nie udalo sie pobrac srodkow z portfela.
+cmd.economy.deposit_failed = Nie udalo sie wplacic do skarbca frakcji. Pieniadze zwrocone.
+cmd.economy.withdraw_no_permission = Nie masz uprawnien do wyplacania.
+cmd.economy.withdraw_faction_denied = Nie masz uprawnien frakcyjnych do wyplacania.
+cmd.economy.withdraw_usage = Uzycie: /f withdraw <kwota>
+cmd.economy.withdraw_limit_denied = Wyplata odrzucona: {0}
+cmd.economy.wallet_deposit_failed = Uwaga: Nie udalo sie wplacic do Twojego portfela. Skontaktuj sie z administratorem.
+cmd.economy.withdraw_limit_exceeded = Wyplata odrzucona: przekroczono limit.
+cmd.economy.withdraw_failed = Wyplata nieudana: {0}
+cmd.economy.transfer_no_permission = Nie masz uprawnien do przelewow.
+cmd.economy.transfer_faction_denied = Nie masz uprawnien frakcyjnych do przelewow.
+cmd.economy.transfer_usage = Uzycie: /f money transfer <frakcja> <kwota>
+cmd.economy.transfer_self = Nie mozna przelac do wlasnej frakcji.
 cmd.economy.transfer_limit_denied = Przelew odrzucony: {0}
 cmd.economy.transfer_limit_exceeded = Przelew odrzucony: przekroczono limit.
 cmd.economy.transfer_failed = Przelew nieudany: {0}
-cmd.economy.log_no_permission = Nie masz uprawnień do przeglądania dziennika transakcji.
+cmd.economy.log_no_permission = Nie masz uprawnien do przegladania dziennika transakcji.
 cmd.economy.log_header = Dziennik transakcji (strona {0}/{1})
 cmd.economy.log_empty = Nie znaleziono transakcji.
 cmd.economy.money_help_header = Komendy skarbca:
-cmd.economy.money_help_balance = /f money balance [frakcja] - Sprawdź saldo
-cmd.economy.money_help_deposit = /f money deposit <kwota> - Wpłać do skarbca
-cmd.economy.money_help_withdraw = /f money withdraw <kwota> - Wypłać ze skarbca
-cmd.economy.money_help_transfer = /f money transfer <frakcja> <kwota> - Przelew między frakcjami
+cmd.economy.money_help_balance = /f money balance [frakcja] - Sprawdz saldo
+cmd.economy.money_help_deposit = /f money deposit <kwota> - Wplac do skarbca
+cmd.economy.money_help_withdraw = /f money withdraw <kwota> - Wyplac ze skarbca
+cmd.economy.money_help_transfer = /f money transfer <frakcja> <kwota> - Przelew miedzy frakcjami
 cmd.economy.money_help_log = /f money log [strona] [typ] - Historia transakcji
 
-# ========== Ochrona - Frazy dotyczące akcji ==========
-protection.action.generic = Nie możesz tego zrobić
-protection.action.build = Nie możesz budować ani niszczyć bloków
-protection.action.interact = Nie możesz z tym interagować
-protection.action.door = Nie możesz używać drzwi
-protection.action.container = Nie możesz otwierać pojemników
-protection.action.bench = Nie możesz używać stacji rzemieślniczych
-protection.action.processing = Nie możesz używać stacji przetwórczych
-protection.action.seat = Nie możesz używać siedzeń
-protection.action.light = Nie możesz przełączać świateł
-protection.action.teleporter = Nie możesz używać teleporterów
-protection.action.crate = Nie możesz używać skrzyń
-protection.action.tame = Nie możesz oswajać stworzeń
-protection.action.npc = Nie możesz interagować z NPC
-protection.action.mount = Nie możesz dosiadać stworzeń
-protection.action.pve = Nie możesz zadawać obrażeń stworzeniom
-protection.action.item_drop = Nie możesz upuszczać przedmiotów
-protection.action.item_pickup = Nie możesz podnosić przedmiotów
+# ========== Ochrona - Frazy dotyczace akcji ==========
+protection.action.generic = Nie mozesz tego zrobic
+protection.action.build = Nie mozesz budowac ani niszczyc blokow
+protection.action.interact = Nie mozesz z tym interagowac
+protection.action.door = Nie mozesz uzywac drzwi
+protection.action.container = Nie mozesz otwierac pojemnikow
+protection.action.bench = Nie mozesz uzywac stacji rzemieslniczych
+protection.action.processing = Nie mozesz uzywac stacji przetworczych
+protection.action.seat = Nie mozesz uzywac siedzen
+protection.action.light = Nie mozesz przelaczac swiatel
+protection.action.teleporter = Nie mozesz uzywac teleporterow
+protection.action.crate = Nie mozesz uzywac skrzyn
+protection.action.tame = Nie mozesz oswajac stworzen
+protection.action.npc = Nie mozesz interagowac z NPC
+protection.action.mount = Nie mozesz dosiadac stworzen
+protection.action.pve = Nie mozesz zadawac obrazen stworzeniom
+protection.action.item_drop = Nie mozesz upuszczac przedmiotow
+protection.action.item_pickup = Nie mozesz podnosic przedmiotow
 
 # ========== Ochrona - Powody odmowy ==========
 protection.denied.safezone = {0} w SafeZone.
 protection.denied.warzone = {0} w WarZone.
 protection.denied.enemy_claim = {0} na terytorium wroga.
-protection.denied.claimed = {0} na zajętym terytorium.
+protection.denied.claimed = {0} na zajetym terytorium.
 protection.denied.here = {0} tutaj.
 protection.denied.zone = {0} w tej strefie.
 protection.denied.faction_perm = {0} tutaj. (Uprawnienie frakcji: {1})
 protection.denied.ally_territory = {0} tutaj. (Terytorium sojusznika)
-protection.denied.error = Błąd ochrony — akcja zablokowana dla bezpieczeństwa.
+protection.denied.error = Blad ochrony — akcja zablokowana dla bezpieczenstwa.
 
 # ========== Ochrona - PvP ==========
-protection.pvp.safezone = PvP jest wyłączone w SafeZone.
-protection.pvp.same_faction = Nie możesz atakować członków frakcji.
-protection.pvp.ally = Nie możesz atakować sojuszników.
-protection.pvp.spawn_protected = Ten gracz ma ochronę po odrodzeniu.
-protection.pvp.territory_disabled = PvP jest wyłączone na tym terytorium.
-protection.pvp.generic = Nie możesz zaatakować tego gracza.
+protection.pvp.safezone = PvP jest wylaczone w SafeZone.
+protection.pvp.same_faction = Nie mozesz atakowac czlonkow frakcji.
+protection.pvp.ally = Nie mozesz atakowac sojusznikow.
+protection.pvp.spawn_protected = Ten gracz ma ochrone po odrodzeniu.
+protection.pvp.territory_disabled = PvP jest wylaczone na tym terytorium.
+protection.pvp.generic = Nie mozesz zaatakowac tego gracza.
 
-# ========== Ochrona - Obrażenia od istot ==========
-protection.mob_damage_disabled = Obrażenia od mobów są wyłączone w tej strefie.
-protection.pve_damage_disabled = Obrażenia PvE są wyłączone w tej strefie.
-protection.pve_territory_denied = Nie możesz zadawać obrażeń mobom na tym terytorium.
+# ========== Ochrona - Obrazenia od istot ==========
+protection.mob_damage_disabled = Obrazenia od mobow sa wylaczone w tej strefie.
+protection.pve_damage_disabled = Obrazenia PvE sa wylaczone w tej strefie.
+protection.pve_territory_denied = Nie mozesz zadawac obrazen mobom na tym terytorium.
 
 # ========== Ochrona - Oznaczenie bojowe ==========
-protection.combat_tag_command = Nie możesz użyć tej komendy podczas oznaczenia bojowego.
+protection.combat_tag_command = Nie mozesz uzyc tej komendy podczas oznaczenia bojowego.
 
-# ========== Ogłoszenia serwera ==========
-# Transmitowane do wszystkich graczy online przy ważnych wydarzeniach frakcji.
-# {0}, {1} = wartości dynamiczne (nazwy frakcji, nazwy graczy)
-server_announce.faction_created = {0} założył(a) frakcję {1}!
-server_announce.faction_disbanded = Frakcja {0} została rozwiązana!
-server_announce.leadership_transfer = {0} jest teraz przywódcą {1}!
-server_announce.overclaim = {0} przejął(ęła) terytorium od {1}!
-server_announce.war_declared = {0} wypowiedział(a) wojnę {1}!
-server_announce.alliance_formed = {0} i {1} są teraz sojusznikami!
-server_announce.alliance_broken = {0} i {1} nie są już sojusznikami!
+# ========== Ogloszenia serwera ==========
+# Transmitowane do wszystkich graczy online przy waznych wydarzeniach frakcji.
+# {0}, {1} = wartosci dynamiczne (nazwy frakcji, nazwy graczy)
+server_announce.faction_created = {0} zalozyl(a) frakcje {1}!
+server_announce.faction_disbanded = Frakcja {0} zostala rozwiazana!
+server_announce.leadership_transfer = {0} jest teraz przywodca {1}!
+server_announce.overclaim = {0} przejal(ela) terytorium od {1}!
+server_announce.war_declared = {0} wypowiedzial(a) wojne {1}!
+server_announce.alliance_formed = {0} i {1} sa teraz sojusznikami!
+server_announce.alliance_broken = {0} i {1} nie sa juz sojusznikami!
 
 # ========== System teleportacji ==========
-teleport.cooldown_wait = Musisz poczekać {0} przed ponowną teleportacją.
+teleport.cooldown_wait = Musisz poczekac {0} przed ponowna teleportacja.
 teleport.warmup_start = Teleportacja do domu frakcji za {0} sekund...
-teleport.combat_cancelled = Teleportacja anulowana — jesteś w walce!
+teleport.combat_cancelled = Teleportacja anulowana — jestes w walce!
 teleport.success_default = Przeteleportowano do domu frakcji!
 teleport.no_home = Twoja frakcja nie ma ustawionego domu.
-teleport.world_not_found = Nie znaleziono świata.
+teleport.world_not_found = Nie znaleziono swiata.
 teleport.failed = Teleportacja nieudana.
 teleport.countdown = Teleportacja za {0} sekund...
-teleport.countdown_one = Teleportacja za 1 sekundę...
-teleport.moved_cancelled = Teleportacja anulowana — ruszyłeś się!
-teleport.damage_cancelled = Teleportacja anulowana — otrzymałeś obrażenia!
-teleport.mount_teleport_blocked = Nie możesz teleportować się do tej strefy na wierzchowcu.
-teleport.mount_entry_blocked = Nie możesz wejść do tej strefy na wierzchowcu.
+teleport.countdown_one = Teleportacja za 1 sekund...
+teleport.moved_cancelled = Teleportacja anulowana — ruszyles sie!
+teleport.damage_cancelled = Teleportacja anulowana — otrzymales obrazenia!
+teleport.mount_teleport_blocked = Nie mozesz teleportowac sie do tej strefy na wierzchowcu.
+teleport.mount_entry_blocked = Nie mozesz wejsc do tej strefy na wierzchowcu.
 
-# ========== Wyświetlanie czatu ==========
+# ========== Wyswietlanie czatu ==========
 chat.display.public = Publiczny
 chat.display.faction = Frakcja
 chat.display.ally = Sojusznik
 
 # ========== System pomocy ==========
 help.commands_label = Komendy:
-help.default_footer = Użyj /f <komenda>, aby uzyskać więcej szczegółów
+help.default_footer = Uzyj /f <komenda>, aby uzyskac wiecej szczegolow
 help.title = HyperFactions
-help.description = Zarządzanie frakcjami i kontrola terytorium
+help.description = Zarzadzanie frakcjami i kontrola terytorium
 
 # Sekcje pomocy
 help.section.core = Podstawowe
-help.section.management = Zarządzanie
+help.section.management = Zarzadzanie
 help.section.territory = Terytorium
 help.section.relations = Relacje
 help.section.teleport = Teleportacja
@@ -471,212 +471,212 @@ help.section.other = Inne
 help.section.admin = Admin
 
 # Opisy komend pomocy (Podstawowe)
-help.cmd.create = Utwórz frakcję
-help.cmd.disband = Rozwiąż swoją frakcję
-help.cmd.invite = Zaproś gracza
+help.cmd.create = Utworz frakcje
+help.cmd.disband = Rozwiaz swoja frakcje
+help.cmd.invite = Zapros gracza
 help.cmd.accept = Przyjmij zaproszenie
-help.cmd.request = Poproś o dołączenie do frakcji
-help.cmd.leave = Opuść swoją frakcję
-help.cmd.kick = Wyrzuć członka
+help.cmd.request = Popros o dolaczenie do frakcji
+help.cmd.leave = Opusc swoja frakcje
+help.cmd.kick = Wyrzuc czlonka
 
-# Opisy komend pomocy (Zarządzanie)
-help.cmd.rename = Zmień nazwę frakcji
+# Opisy komend pomocy (Zarzadzanie)
+help.cmd.rename = Zmien nazwe frakcji
 help.cmd.desc = Ustaw opis frakcji
 help.cmd.color = Ustaw kolor frakcji
-help.cmd.open = Pozwól każdemu dołączyć
-help.cmd.close = Wymagaj zaproszenia do dołączenia
+help.cmd.open = Pozwol kazdemu dolaczyc
+help.cmd.close = Wymagaj zaproszenia do dolaczenia
 help.cmd.promote = Awansuj na oficera
-help.cmd.demote = Zdegraduj do członka
-help.cmd.transfer = Przekaż przywództwo
+help.cmd.demote = Zdegraduj do czlonka
+help.cmd.transfer = Przekaz przywodztwo
 
 # Opisy komend pomocy (Terytorium)
 help.cmd.claim = Zajmij ten chunk
-help.cmd.unclaim = Zrzecz się tego chunka
+help.cmd.unclaim = Zrzecz sie tego chunka
 help.cmd.overclaim = Przejmij terytorium wroga
-help.cmd.map = Pokaż mapę terytorium
+help.cmd.map = Pokaz mape terytorium
 
 # Opisy komend pomocy (Relacje)
-help.cmd.ally = Poproś o sojusz
-help.cmd.enemy = Ogłoś wroga
-help.cmd.neutral = Ustaw neutralną relację
+help.cmd.ally = Popros o sojusz
+help.cmd.enemy = Oglos wroga
+help.cmd.neutral = Ustaw neutralna relacje
 
 # Opisy komend pomocy (Teleportacja)
-help.cmd.home = Teleportuj się do domu frakcji
+help.cmd.home = Teleportuj sie do domu frakcji
 help.cmd.sethome = Ustaw dom frakcji
 help.cmd.stuck = Ucieknij z terytorium wroga
 
 # Opisy komend pomocy (Informacje)
-help.cmd.info = Pokaż informacje o frakcji
+help.cmd.info = Pokaz informacje o frakcji
 help.cmd.list = Lista wszystkich frakcji
-help.cmd.browse = Przeglądaj frakcje (alias dla list)
-help.cmd.members = Pokaż członków frakcji
-help.cmd.invites = Zarządzaj zaproszeniami/prośbami
-help.cmd.who = Pokaż informacje o graczu
-help.cmd.power = Pokaż poziom mocy
-help.cmd.gui = Otwórz GUI frakcji
-help.cmd.settings = Otwórz ustawienia frakcji
+help.cmd.browse = Przegladaj frakcje (alias dla list)
+help.cmd.members = Pokaz czlonkow frakcji
+help.cmd.invites = Zarzadzaj zaproszeniami/prosbami
+help.cmd.who = Pokaz informacje o graczu
+help.cmd.power = Pokaz poziom mocy
+help.cmd.gui = Otworz GUI frakcji
+help.cmd.settings = Otworz ustawienia frakcji
 
 # Opisy komend pomocy (Inne)
-help.cmd.chat = Wyślij wiadomość na czacie frakcji
-help.cmd.chat_short = Czat frakcji (skrót)
+help.cmd.chat = Wyslij wiadomosc na czacie frakcji
+help.cmd.chat_short = Czat frakcji (skrot)
 
-# Opisy komend pomocy (Admin w głównej pomocy)
-help.cmd.admin = Otwórz GUI admina
-help.cmd.admin_reload = Przeładuj konfigurację
+# Opisy komend pomocy (Admin w glownej pomocy)
+help.cmd.admin = Otworz GUI admina
+help.cmd.admin_reload = Przeladuj konfiguracje
 help.cmd.admin_sync = Synchronizuj dane z dysku
-help.cmd.admin_factions = Zarządzaj frakcjami
-help.cmd.admin_zones = Zarządzaj strefami
-help.cmd.admin_config = Wyświetl/edytuj konfigurację
-help.cmd.admin_backups = Zarządzaj kopiami zapasowymi
-help.cmd.admin_update = Sprawdź aktualizacje
+help.cmd.admin_factions = Zarzadzaj frakcjami
+help.cmd.admin_zones = Zarzadzaj strefami
+help.cmd.admin_config = Wyswietl/edytuj konfiguracje
+help.cmd.admin_backups = Zarzadzaj kopiami zapasowymi
+help.cmd.admin_update = Sprawdz aktualizacje
 help.cmd.admin_debug = Komendy debugowania
 
 # Strona pomocy admina
 help.admin.title = Komendy admina
 help.admin.description = Administracja serwera
-help.admin.cmd.dashboard = Otwórz GUI panelu admina
-help.admin.cmd.factions = Zarządzaj wszystkimi frakcjami
-help.admin.cmd.zone = Zarządzanie strefami
+help.admin.cmd.dashboard = Otworz GUI panelu admina
+help.admin.cmd.factions = Zarzadzaj wszystkimi frakcjami
+help.admin.cmd.zone = Zarzadzanie strefami
 help.admin.cmd.config = Konfiguracja serwera
-help.admin.cmd.backup = Zarządzanie kopiami zapasowymi
-help.admin.cmd.import_cmd = Importuj z innych pluginów
-help.admin.cmd.update = Sprawdź i pobierz aktualizacje
+help.admin.cmd.backup = Zarzadzanie kopiami zapasowymi
+help.admin.cmd.import_cmd = Importuj z innych pluginow
+help.admin.cmd.update = Sprawdz i pobierz aktualizacje
 help.admin.cmd.update_mixin = Zaktualizuj HyperProtect-Mixin
-help.admin.cmd.update_toggle = Włącz/wyłącz auto-pobieranie HP-Mixin
-help.admin.cmd.rollback = Przywróć poprzednią wersję
-help.admin.cmd.reload = Przeładuj konfigurację
+help.admin.cmd.update_toggle = Wlacz/wylacz auto-pobieranie HP-Mixin
+help.admin.cmd.rollback = Przywroc poprzednia wersje
+help.admin.cmd.reload = Przeladuj konfiguracje
 help.admin.cmd.sync = Synchronizuj dane z dysku
 help.admin.cmd.debug = Komendy debugowania
-help.admin.cmd.decay = Zarządzanie wygasaniem terenów
-help.admin.cmd.map = Zarządzanie mapą świata
-help.admin.cmd.safezone = Utwórz SafeZone + zajmij chunk
-help.admin.cmd.warzone = Utwórz WarZone + zajmij chunk
-help.admin.cmd.removezone = Usuń chunk ze strefy
-help.admin.cmd.zoneflag = Ustaw flagę strefy
+help.admin.cmd.decay = Zarzadzanie wygasaniem terenow
+help.admin.cmd.map = Zarzadzanie mapa swiata
+help.admin.cmd.safezone = Utworz SafeZone + zajmij chunk
+help.admin.cmd.warzone = Utworz WarZone + zajmij chunk
+help.admin.cmd.removezone = Usun chunk ze strefy
+help.admin.cmd.zoneflag = Ustaw flage strefy
 help.admin.cmd.integrations = Podsumowanie wszystkich integracji
-help.admin.cmd.integration = Szczegółowy status integracji
-help.admin.cmd.clearhistory = Wyczyść historię członkostwa gracza
-help.admin.cmd.power = Zarządzanie mocą admina
-help.admin.cmd.economy = Zarządzanie ekonomią/skarbcem
-help.admin.cmd.economy_upkeep = Ręcznie uruchom pobieranie utrzymania
-help.admin.cmd.info = Wyświetl GUI info frakcji admina
-help.admin.cmd.who = Wyświetl GUI info gracza admina
-help.admin.cmd.log = Wyświetl globalny dziennik aktywności
-help.admin.cmd.world = Zarządzanie ustawieniami per świat
-help.admin.cmd.version = Wyświetl wersję moda i status integracji
-help.admin.cmd.sentry = Wyświetl status Sentry
-help.admin.cmd.sentry_disable = Wyłącz raportowanie błędów Sentry
-help.admin.cmd.sentry_enable = Włącz raportowanie błędów Sentry
-help.admin.cmd.test_gui = Otwórz stronę testową elementów UI
-help.admin.cmd.test_sentry = Wyślij testowy błąd do Sentry
-help.admin.cmd.test_md = Otwórz stronę testową renderowania markdown
+help.admin.cmd.integration = Szczegolowy status integracji
+help.admin.cmd.clearhistory = Wyczysc historie czlonkostwa gracza
+help.admin.cmd.power = Zarzadzanie moca admina
+help.admin.cmd.economy = Zarzadzanie ekonomia/skarbcem
+help.admin.cmd.economy_upkeep = Recznie uruchom pobieranie utrzymania
+help.admin.cmd.info = Wyswietl GUI info frakcji admina
+help.admin.cmd.who = Wyswietl GUI info gracza admina
+help.admin.cmd.log = Wyswietl globalny dziennik aktywnosci
+help.admin.cmd.world = Zarzadzanie ustawieniami per swiat
+help.admin.cmd.version = Wyswietl wersje moda i status integracji
+help.admin.cmd.sentry = Wyswietl status Sentry
+help.admin.cmd.sentry_disable = Wylacz raportowanie bledow Sentry
+help.admin.cmd.sentry_enable = Wlacz raportowanie bledow Sentry
+help.admin.cmd.test_gui = Otworz strone testowa elementow UI
+help.admin.cmd.test_sentry = Wyslij testowy blad do Sentry
+help.admin.cmd.test_md = Otworz strone testowa renderowania markdown
 
 # Pod-pomoc: Kopia zapasowa
-help.backup.title = Zarządzanie kopiami zapasowymi
+help.backup.title = Zarzadzanie kopiami zapasowymi
 help.backup.description = Schemat rotacji GFS
-help.backup.cmd.create = Utwórz ręczną kopię zapasową
+help.backup.cmd.create = Utworz reczna kopie zapasowa
 help.backup.cmd.list = Lista kopii zapasowych pogrupowanych wg typu
-help.backup.cmd.restore = Przywróć z kopii zapasowej (wymaga potwierdzenia)
-help.backup.cmd.delete = Usuń kopię zapasową
+help.backup.cmd.restore = Przywroc z kopii zapasowej (wymaga potwierdzenia)
+help.backup.cmd.delete = Usun kopie zapasowa
 
 # Pod-pomoc: Debug
 help.debug.title = Komendy debugowania
-help.debug.description = Diagnostyka i rozwiązywanie problemów
-help.debug.cmd.toggle = Włącz/wyłącz logowanie debugowania
-help.debug.cmd.status = Pokaż status debugowania
-help.debug.cmd.power = Pokaż szczegóły mocy
-help.debug.cmd.claim = Pokaż informacje o terenie
-help.debug.cmd.protection = Pokaż informacje o ochronie
-help.debug.cmd.combat = Pokaż status oznaczenia bojowego
-help.debug.cmd.relation = Pokaż informacje o relacjach
+help.debug.description = Diagnostyka i rozwiazywanie problemow
+help.debug.cmd.toggle = Wlacz/wylacz logowanie debugowania
+help.debug.cmd.status = Pokaz status debugowania
+help.debug.cmd.power = Pokaz szczegoly mocy
+help.debug.cmd.claim = Pokaz informacje o terenie
+help.debug.cmd.protection = Pokaz informacje o ochronie
+help.debug.cmd.combat = Pokaz status oznaczenia bojowego
+help.debug.cmd.relation = Pokaz informacje o relacjach
 
 # Pod-pomoc: Moc
 help.power.title = Moc admina
-help.power.description = Zarządzaj mocą gracza/frakcji
-help.power.cmd.set = Ustaw dokładną moc
-help.power.cmd.add = Zwiększ moc
+help.power.description = Zarzadzaj moca gracza/frakcji
+help.power.cmd.set = Ustaw dokladna moc
+help.power.cmd.add = Zwieksz moc
 help.power.cmd.remove = Zmniejsz moc
-help.power.cmd.reset = Przywróć domyślną wartość
+help.power.cmd.reset = Przywroc domyslna wartosc
 help.power.cmd.setmax = Ustaw nadpisanie maksymalnej mocy
-help.power.cmd.resetmax = Usuń nadpisanie maksymalnej mocy
-help.power.cmd.noloss = Włącz/wyłącz bypass utraty mocy
-help.power.cmd.nodecay = Włącz/wyłącz zwolnienie z wygasania
-help.power.cmd.faction = Operacje na całej frakcji
-help.power.cmd.info = Pokaż szczegóły mocy gracza
+help.power.cmd.resetmax = Usun nadpisanie maksymalnej mocy
+help.power.cmd.noloss = Wlacz/wylacz bypass utraty mocy
+help.power.cmd.nodecay = Wlacz/wylacz zwolnienie z wygasania
+help.power.cmd.faction = Operacje na calej frakcji
+help.power.cmd.info = Pokaz szczegoly mocy gracza
 
 # Pod-pomoc: Ekonomia
 help.economy.title = Ekonomia admina
-help.economy.description = Zarządzaj skarbcami frakcji
-help.economy.cmd.balance = Pokaż saldo frakcji
-help.economy.cmd.set = Ustaw dokładne saldo
+help.economy.description = Zarzadzaj skarbcami frakcji
+help.economy.cmd.balance = Pokaz saldo frakcji
+help.economy.cmd.set = Ustaw dokladne saldo
 help.economy.cmd.add = Dodaj do salda
 help.economy.cmd.take = Odejmij od salda
-help.economy.cmd.total = Pokaż łączne saldo serwera
+help.economy.cmd.total = Pokaz laczne saldo serwera
 help.economy.cmd.reset = Zresetuj saldo do 0
-help.economy.cmd.upkeep = Ręcznie uruchom pobieranie utrzymania
+help.economy.cmd.upkeep = Recznie uruchom pobieranie utrzymania
 
-# Pod-pomoc: Świat
-help.world.title = Ustawienia świata
-help.world.description = Konfiguracja per świat
-help.world.cmd.list = Lista wszystkich skonfigurowanych światów
-help.world.cmd.info = Pokaż ustawienia świata
-help.world.cmd.set = Ustaw ustawienie świata
-help.world.cmd.reset = Usuń ustawienia specyficzne dla świata
+# Pod-pomoc: Swiat
+help.world.title = Ustawienia swiata
+help.world.description = Konfiguracja per swiat
+help.world.cmd.list = Lista wszystkich skonfigurowanych swiatow
+help.world.cmd.info = Pokaz ustawienia swiata
+help.world.cmd.set = Ustaw ustawienie swiata
+help.world.cmd.reset = Usun ustawienia specyficzne dla swiata
 
 # Pod-pomoc: Mapa
-help.map.title = Mapa świata
-help.map.description = Zarządzanie nakładką mapy
-help.map.cmd.status = Pokaż status i statystyki mapy świata
-help.map.cmd.refresh = Wymuś natychmiastowe odświeżenie mapy
+help.map.title = Mapa swiata
+help.map.description = Zarzadzanie nakladka mapy
+help.map.cmd.status = Pokaz status i statystyki mapy swiata
+help.map.cmd.refresh = Wymus natychmiastowe odswiezenie mapy
 
 # Pod-pomoc: Wygasanie
-help.decay.title = Wygasanie terenów
+help.decay.title = Wygasanie terenow
 help.decay.description = Automatycznie usuwa tereny nieaktywnych frakcji
-help.decay.cmd.status = Pokaż status wygasania
-help.decay.cmd.run = Ręcznie uruchom wygasanie terenów
-help.decay.cmd.check = Sprawdź status wygasania frakcji
+help.decay.cmd.status = Pokaz status wygasania
+help.decay.cmd.run = Recznie uruchom wygasanie terenow
+help.decay.cmd.check = Sprawdz status wygasania frakcji
 
 # Pod-pomoc: Import
 help.import.title = Komendy importu
-help.import.description = Migracja z innych pluginów frakcji
+help.import.description = Migracja z innych pluginow frakcji
 help.import.cmd.hyfactions = Importuj z moda HyFactions
-help.import.path.hyfactions = Domyślna ścieżka: mods/Kaws_Hyfaction
+help.import.path.hyfactions = Domyslna sciezka: mods/Kaws_Hyfaction
 help.import.cmd.elbaphfactions = Importuj z moda ElbaphFactions
-help.import.path.elbaphfactions = Domyślna ścieżka: mods/ElbaphFactions
+help.import.path.elbaphfactions = Domyslna sciezka: mods/ElbaphFactions
 help.import.cmd.factionsx = Importuj z moda FactionsX
-help.import.path.factionsx = Domyślna ścieżka: mods/FactionsX
+help.import.path.factionsx = Domyslna sciezka: mods/FactionsX
 help.import.cmd.simpleclaims = Importuj z moda SimpleClaims
-help.import.path.simpleclaims = Domyślna ścieżka: Server/universe/SimpleClaims
+help.import.path.simpleclaims = Domyslna sciezka: Server/universe/SimpleClaims
 help.import.flags_header = Flagi:
 help.import.flag.dryrun = Symuluj bez zmian
-help.import.flag.overwrite = Zastąp istniejące frakcje
-help.import.flag.nozones = Pomiń import stref
-help.import.flag.nopower = Pomiń dystrybucję mocy
+help.import.flag.overwrite = Zastap istniejace frakcje
+help.import.flag.nozones = Pomin import stref
+help.import.flag.nopower = Pomin dystrybucje mocy
 
 # Pod-pomoc: Test
 help.test.title = Komendy testowe
-help.test.description = Narzędzia testowe dla programistów
-help.test.cmd.gui = Otwórz stronę testową elementów UI
-help.test.cmd.sentry = Wyślij testowy błąd do Sentry
-help.test.cmd.md = Otwórz stronę testową renderowania markdown
+help.test.description = Narzedzia testowe dla programistow
+help.test.cmd.gui = Otworz strone testowa elementow UI
+help.test.cmd.sentry = Wyslij testowy blad do Sentry
+help.test.cmd.md = Otworz strone testowa renderowania markdown
 
-# ========== Wiadomości Admin CLI ==========
-admincmd.no_permission = Nie masz uprawnień.
-admincmd.player_only = Ta komenda może być użyta tylko przez gracza.
-admincmd.player_context = Kontekst gracza niedostępny.
-admincmd.entity_not_found = Nie udało się znaleźć encji gracza.
-admincmd.unknown_command = Nieznana komenda admina. Użyj /f admin help
+# ========== Wiadomosci Admin CLI ==========
+admincmd.no_permission = Nie masz uprawnien.
+admincmd.player_only = Ta komenda moze byc uzyta tylko przez gracza.
+admincmd.player_context = Kontekst gracza niedostepny.
+admincmd.entity_not_found = Nie udalo sie znalezc encji gracza.
+admincmd.unknown_command = Nieznana komenda admina. Uzyj /f admin help
 admincmd.faction_not_found = Nie znaleziono frakcji.
 admincmd.player_not_found = Nie znaleziono gracza: {0}
-admincmd.invalid_number = Nieprawidłowa liczba: {0}
-admincmd.amount_positive = Kwota musi być dodatnia.
-admincmd.balance_not_negative = Saldo nie może być ujemne.
-admincmd.error_generic = Wystąpił błąd.
+admincmd.invalid_number = Nieprawidlowa liczba: {0}
+admincmd.amount_positive = Kwota musi byc dodatnia.
+admincmd.balance_not_negative = Saldo nie moze byc ujemne.
+admincmd.error_generic = Wystapil blad.
 
-# Admin - Przeładowanie/Synchronizacja
-admincmd.reload.success = Konfiguracja przeładowana.
+# Admin - Przeladowanie/Synchronizacja
+admincmd.reload.success = Konfiguracja przeladowana.
 admincmd.sync.start = Synchronizacja danych frakcji z dysku...
-admincmd.sync.complete = Synchronizacja zakończona: {0} frakcji zaktualizowanych, {1} członków dodanych, {2} członków zaktualizowanych.
+admincmd.sync.complete = Synchronizacja zakonczona: {0} frakcji zaktualizowanych, {1} czlonkow dodanych, {2} czlonkow zaktualizowanych.
 admincmd.sync.failed = Synchronizacja nieudana: {0}
 
 # Admin - Wersja
@@ -688,22 +688,22 @@ admincmd.version.active = Aktywny
 admincmd.version.not_found = Nie znaleziono
 
 # Admin - Sentry
-admincmd.sentry.header = Sentry - raportowanie błędów
+admincmd.sentry.header = Sentry - raportowanie bledow
 admincmd.sentry.config = Konfiguracja: {0}
 admincmd.sentry.status = Status: {0}
-admincmd.sentry.already_disabled = Sentry jest już wyłączone.
-admincmd.sentry.already_enabled = Sentry jest już włączone.
-admincmd.sentry.disabled = Sentry wyłączone, konfiguracja zapisana. Raportowanie błędów jest teraz wyłączone.
-admincmd.sentry.enabled = Sentry włączone, konfiguracja zapisana. Raportowanie błędów jest teraz włączone.
-admincmd.sentry.usage = Użycie: /f admin sentry [disable|enable]
-admincmd.sentry.not_initialized = Sentry nie jest zainicjalizowane. Sprawdź config/debug.json
-admincmd.sentry.test_sent = Testowy błąd wysłany do Sentry. Sprawdź panel Sentry.
-admincmd.sentry.test_failed = Nie udało się wysłać zdarzenia testowego.
+admincmd.sentry.already_disabled = Sentry jest juz wylaczone.
+admincmd.sentry.already_enabled = Sentry jest juz wlaczone.
+admincmd.sentry.disabled = Sentry wylaczone, konfiguracja zapisana. Raportowanie bledow jest teraz wylaczone.
+admincmd.sentry.enabled = Sentry wlaczone, konfiguracja zapisana. Raportowanie bledow jest teraz wlaczone.
+admincmd.sentry.usage = Uzycie: /f admin sentry [disable|enable]
+admincmd.sentry.not_initialized = Sentry nie jest zainicjalizowane. Sprawdz config/debug.json
+admincmd.sentry.test_sent = Testowy blad wyslany do Sentry. Sprawdz panel Sentry.
+admincmd.sentry.test_failed = Nie udalo sie wyslac zdarzenia testowego.
 
 # Admin - Kopia zapasowa
-admincmd.backup.no_permission = Nie masz uprawnień do zarządzania kopiami zapasowymi.
+admincmd.backup.no_permission = Nie masz uprawnien do zarzadzania kopiami zapasowymi.
 admincmd.backup.creating = Tworzenie kopii zapasowej...
-admincmd.backup.created = Kopia zapasowa utworzona pomyślnie!
+admincmd.backup.created = Kopia zapasowa utworzona pomyslnie!
 admincmd.backup.name = Nazwa: {0}
 admincmd.backup.size = Rozmiar: {0}
 admincmd.backup.failed = Kopia zapasowa nieudana: {0}
@@ -711,194 +711,194 @@ admincmd.backup.none = Nie znaleziono kopii zapasowych.
 admincmd.backup.header = Kopie zapasowe
 admincmd.backup.not_found = Kopia zapasowa '{0}' nie znaleziona.
 admincmd.backup.unknown_command = Nieznana komenda kopii zapasowej: {0}
-admincmd.backup.usage_restore = Użycie: /f admin backup restore <nazwa>
-admincmd.backup.usage_delete = Użycie: /f admin backup delete <nazwa>
-admincmd.backup.restore_warning = UWAGA: Przywracanie nadpisze bieżące dane!
-admincmd.backup.restore_confirm = Wpisz komendę ponownie w ciągu {0} sekund, aby potwierdzić.
+admincmd.backup.usage_restore = Uzycie: /f admin backup restore <nazwa>
+admincmd.backup.usage_delete = Uzycie: /f admin backup delete <nazwa>
+admincmd.backup.restore_warning = UWAGA: Przywracanie nadpisze biezace dane!
+admincmd.backup.restore_confirm = Wpisz komende ponownie w ciagu {0} sekund, aby potwierdzic.
 admincmd.backup.restoring = Przywracanie kopii zapasowej...
-admincmd.backup.restored = Kopia zapasowa przywrócona pomyślnie! Dane przeładowane.
+admincmd.backup.restored = Kopia zapasowa przywrocona pomyslnie! Dane przeladowane.
 admincmd.backup.restore_failed = Przywracanie nieudane: {0}
-admincmd.backup.confirm_cancelled = Poprzednie potwierdzenie anulowane. Wpisz ponownie, aby potwierdzić przywracanie.
-admincmd.backup.deleted = Usunięto kopię zapasową '{0}'
-admincmd.backup.delete_failed = Nie udało się usunąć kopii zapasowej.
+admincmd.backup.confirm_cancelled = Poprzednie potwierdzenie anulowane. Wpisz ponownie, aby potwierdzic przywracanie.
+admincmd.backup.deleted = Usunieto kopie zapasowa '{0}'
+admincmd.backup.delete_failed = Nie udalo sie usunac kopii zapasowej.
 
 # Admin - Debug
-admincmd.debug.no_permission = Nie masz uprawnień do korzystania z komend debugowania.
+admincmd.debug.no_permission = Nie masz uprawnien do korzystania z komend debugowania.
 admincmd.debug.unknown_command = Nieznana komenda debugowania: {0}
-admincmd.debug.player_only = Ta komenda debugowania może być użyta tylko przez gracza.
+admincmd.debug.player_only = Ta komenda debugowania moze byc uzyta tylko przez gracza.
 admincmd.debug.toggle_set = Kategoria debugowania '{0}' ustawiona na {1} (zapisane)
-admincmd.debug.all_enabled = Wszystkie kategorie debugowania włączone.
-admincmd.debug.all_disabled = Wszystkie kategorie debugowania wyłączone.
+admincmd.debug.all_enabled = Wszystkie kategorie debugowania wlaczone.
+admincmd.debug.all_disabled = Wszystkie kategorie debugowania wylaczone.
 admincmd.debug.unknown_category = Nieznana kategoria: {0}
 admincmd.debug.not_implemented = Informacje debugowania {0} jeszcze niezaimplementowane.
 
 # Admin - Ekonomia
-admincmd.econ.disabled = System ekonomii nie jest włączony.
-admincmd.econ.unknown_command = Nieznana komenda ekonomii. Użyj /f admin economy help
-admincmd.econ.set = Ustawiono saldo {0} na {1} (było {2})
+admincmd.econ.disabled = System ekonomii nie jest wlaczony.
+admincmd.econ.unknown_command = Nieznana komenda ekonomii. Uzyj /f admin economy help
+admincmd.econ.set = Ustawiono saldo {0} na {1} (bylo {2})
 admincmd.econ.added = Dodano {0} do {1} (saldo: {2})
-admincmd.econ.deducted = Odjęto {0} od {1} (saldo: {2})
-admincmd.econ.reset = Zresetowano saldo {0} do {1} (było {2})
-admincmd.econ.failed = Błąd: {0}
+admincmd.econ.deducted = Odjeto {0} od {1} (saldo: {2})
+admincmd.econ.reset = Zresetowano saldo {0} do {1} (bylo {2})
+admincmd.econ.failed = Blad: {0}
 admincmd.econ.total_header = Statystyki ekonomii serwera
-admincmd.econ.upkeep_disabled = System utrzymania nie jest włączony.
-admincmd.econ.upkeep_trigger = Ręczne uruchamianie pobierania utrzymania...
-admincmd.econ.upkeep_complete = Pobieranie utrzymania zakończone. Sprawdź logi serwera po szczegóły.
+admincmd.econ.upkeep_disabled = System utrzymania nie jest wlaczony.
+admincmd.econ.upkeep_trigger = Reczne uruchamianie pobierania utrzymania...
+admincmd.econ.upkeep_complete = Pobieranie utrzymania zakonczone. Sprawdz logi serwera po szczegoly.
 admincmd.econ.upkeep_failed = Pobieranie utrzymania nieudane: {0}
 
 # Admin - Moc
-admincmd.power.no_permission = Nie masz uprawnień.
-admincmd.power.unknown_command = Nieznana komenda mocy. Użyj /f admin power help
-admincmd.power.max_positive = Maksymalna moc musi być dodatnia.
-admincmd.power.faction_unknown_action = Nieznana akcja mocy frakcji. Użyj: set, add, remove, reset
+admincmd.power.no_permission = Nie masz uprawnien.
+admincmd.power.unknown_command = Nieznana komenda mocy. Uzyj /f admin power help
+admincmd.power.max_positive = Maksymalna moc musi byc dodatnia.
+admincmd.power.faction_unknown_action = Nieznana akcja mocy frakcji. Uzyj: set, add, remove, reset
 
 # Admin - Czyszczenie historii
 admincmd.history.no_data = Nie znaleziono danych gracza dla {0}.
-admincmd.history.empty = {0} nie ma historii członkostwa.
-admincmd.history.cleared = Wyczyszczono {0} rekordów historii dla {1}.
-admincmd.history.cleared_reinit = Wyczyszczono {0} rekordów historii dla {1} (ponownie zainicjalizowano z bieżącą frakcją: {2}).
+admincmd.history.empty = {0} nie ma historii czlonkostwa.
+admincmd.history.cleared = Wyczyszczono {0} rekordow historii dla {1}.
+admincmd.history.cleared_reinit = Wyczyszczono {0} rekordow historii dla {1} (ponownie zainicjalizowano z biezaca frakcja: {2}).
 
 # Admin - Strefa
 admincmd.zone.created = Utworzono {0} '{1}' na {2}, {3}
-admincmd.zone.chunk_claimed = Nie można utworzyć strefy: Ten chunk jest zajęty przez frakcję.
-admincmd.zone.already_exists = Strefa już istnieje w tej lokalizacji.
-admincmd.zone.name_taken = Strefa o tej nazwie już istnieje.
+admincmd.zone.chunk_claimed = Nie mozna utworzyc strefy: Ten chunk jest zajety przez frakcje.
+admincmd.zone.already_exists = Strefa juz istnieje w tej lokalizacji.
+admincmd.zone.name_taken = Strefa o tej nazwie juz istnieje.
 admincmd.zone.not_found = Strefa '{0}' nie znaleziona.
-admincmd.zone.unclaimed = Chunk usunięty ze strefy.
+admincmd.zone.unclaimed = Chunk usuniety ze strefy.
 admincmd.zone.no_chunk = Nie znaleziono chunka strefy w tej lokalizacji.
 admincmd.zone.none = Brak zdefiniowanych stref.
-admincmd.zone.deleted = Usunięto strefę '{0}' ({1} chunków zwolnionych)
-admincmd.zone.renamed = Zmieniono nazwę strefy '{0}' na '{1}'
-admincmd.zone.invalid_type = Nieprawidłowy typ strefy. Użyj 'safe' lub 'war'
-admincmd.zone.invalid_name = Nieprawidłowa nazwa strefy. Musi mieć 1-32 znaki.
-admincmd.zone.claimed_radius = Zajęto {0} chunków dla strefy '{1}'
-admincmd.zone.no_chunks_claimed = Żadne chunki nie mogły zostać zajęte (wszystkie zajęte lub już w strefie).
-admincmd.zone.unknown_command = Nieznana komenda strefy. Użyj /f admin help
-admincmd.zone.chunk_has_zone = Ten chunk już należy do innej strefy.
-admincmd.zone.chunk_has_faction = Ten chunk jest zajęty przez frakcję.
-admincmd.zone.notify_set = Powiadomienie o wejściu do strefy '{0}' {1}
-admincmd.zone.title_set = Ustawiono tytuł {0} dla strefy '{1}' na: {2}
-admincmd.zone.title_cleared = Wyczyszczono tytuł {0} dla strefy '{1}' (użyto domyślnego)
-admincmd.zone.no_zone_at = Brak strefy w Twojej lokalizacji. Stań w strefie, aby zarządzać flagami.
-admincmd.zone.flag_cleared = Wyczyszczono flagę '{0}' (teraz używa domyślnej: {1})
-admincmd.zone.flag_set = Ustawiono flagę '{0}' na {1}
-admincmd.zone.flag_invalid = Nieprawidłowa flaga: {0}
-admincmd.zone.flags_cleared = Wyczyszczono wszystkie niestandardowe flagi dla '{0}' — teraz używa domyślnych wartości typu strefy.
+admincmd.zone.deleted = Usunieto strefe '{0}' ({1} chunkow zwolnionych)
+admincmd.zone.renamed = Zmieniono nazwe strefy '{0}' na '{1}'
+admincmd.zone.invalid_type = Nieprawidlowy typ strefy. Uzyj 'safe' lub 'war'
+admincmd.zone.invalid_name = Nieprawidlowa nazwa strefy. Musi miec 1-32 znaki.
+admincmd.zone.claimed_radius = Zajeto {0} chunkow dla strefy '{1}'
+admincmd.zone.no_chunks_claimed = Zadne chunki nie mogly zostac zajete (wszystkie zajete lub juz w strefie).
+admincmd.zone.unknown_command = Nieznana komenda strefy. Uzyj /f admin help
+admincmd.zone.chunk_has_zone = Ten chunk juz nalezy do innej strefy.
+admincmd.zone.chunk_has_faction = Ten chunk jest zajety przez frakcje.
+admincmd.zone.notify_set = Powiadomienie o wejsciu do strefy '{0}' {1}
+admincmd.zone.title_set = Ustawiono tytul {0} dla strefy '{1}' na: {2}
+admincmd.zone.title_cleared = Wyczyszczono tytul {0} dla strefy '{1}' (uzyto domyslnego)
+admincmd.zone.no_zone_at = Brak strefy w Twojej lokalizacji. Stan w strefie, aby zarzadzac flagami.
+admincmd.zone.flag_cleared = Wyczyszczono flage '{0}' (teraz uzywa domyslnej: {1})
+admincmd.zone.flag_set = Ustawiono flage '{0}' na {1}
+admincmd.zone.flag_invalid = Nieprawidlowa flaga: {0}
+admincmd.zone.flags_cleared = Wyczyszczono wszystkie niestandardowe flagi dla '{0}' — teraz uzywa domyslnych wartosci typu strefy.
 
-# Admin - Świat
-admincmd.world.unknown_command = Nieznana komenda świata. Użyj /f admin world help
-admincmd.world.no_settings = Brak skonfigurowanych ustawień per świat.
+# Admin - Swiat
+admincmd.world.unknown_command = Nieznana komenda swiata. Uzyj /f admin world help
+admincmd.world.no_settings = Brak skonfigurowanych ustawien per swiat.
 admincmd.world.unknown_setting = Nieznane ustawienie: {0}
-admincmd.world.set = Ustawiono {0}={1} dla świata {2}
-admincmd.world.reset = Usunięto ustawienia specyficzne dla świata: {0}
-admincmd.world.not_found = Nie znaleziono ustawień dla świata: {0}
+admincmd.world.set = Ustawiono {0}={1} dla swiata {2}
+admincmd.world.reset = Usunieto ustawienia specyficzne dla swiata: {0}
+admincmd.world.not_found = Nie znaleziono ustawien dla swiata: {0}
 
 # Admin - Mapa/Wygasanie
-admincmd.map.not_available = Usługa mapy świata jest niedostępna.
-admincmd.map.refreshing = Wymuszanie odświeżenia mapy świata...
-admincmd.map.refreshed = Odświeżenie mapy świata zakończone.
+admincmd.map.not_available = Usluga mapy swiata jest niedostepna.
+admincmd.map.refreshing = Wymuszanie odswiezenia mapy swiata...
+admincmd.map.refreshed = Odswiezenie mapy swiata zakonczone.
 admincmd.map.unknown_command = Nieznana komenda mapy: {0}
-admincmd.decay.disabled = Wygasanie terenów jest wyłączone w konfiguracji.
-admincmd.decay.running = Uruchamianie sprawdzania wygasania terenów...
-admincmd.decay.complete = Sprawdzanie wygasania terenów zakończone. Sprawdź konsolę po szczegóły.
+admincmd.decay.disabled = Wygasanie terenow jest wylaczone w konfiguracji.
+admincmd.decay.running = Uruchamianie sprawdzania wygasania terenow...
+admincmd.decay.complete = Sprawdzanie wygasania terenow zakonczone. Sprawdz konsole po szczegoly.
 admincmd.decay.unknown_command = Nieznana komenda wygasania: {0}
 
 # Admin - Aktualizacja
-admincmd.update.not_available = Sprawdzanie aktualizacji jest niedostępne.
+admincmd.update.not_available = Sprawdzanie aktualizacji jest niedostepne.
 admincmd.update.checking = Sprawdzanie aktualizacji...
-admincmd.update.up_to_date = Plugin jest już aktualny (v{0})
-admincmd.update.available = Dostępna aktualizacja: v{0}
+admincmd.update.up_to_date = Plugin jest juz aktualny (v{0})
+admincmd.update.available = Dostepna aktualizacja: v{0}
 admincmd.update.unknown_target = Nieznany cel aktualizacji: {0}
 
 # Admin - Import
-admincmd.import.unknown_source = Nieznane źródło importu: {0}
+admincmd.import.unknown_source = Nieznane zrodlo importu: {0}
 admincmd.import.importing = Importowanie z {0}...
-admincmd.import.complete = Import z {0} {1}zakończony!
-admincmd.import.failed = Import z {0} nieudany z błędami:
+admincmd.import.complete = Import z {0} {1}zakonczony!
+admincmd.import.failed = Import z {0} nieudany z bledami:
 
 # Admin - Update Notifications
-admincmd.update_notify.new_version = [HyperFactions] Dostępna jest nowa wersja!
+admincmd.update_notify.new_version = [HyperFactions] Dostepna jest nowa wersja!
 admincmd.update_notify.version_info = Aktualna: v{0} -> Najnowsza: v{1}
-admincmd.update_notify.instruction = Uruchom /f admin update, aby zaktualizować plugin.
+admincmd.update_notify.instruction = Uruchom /f admin update, aby zaktualizowac plugin.
 admincmd.update_notify.up_to_date = [HyperFactions] Plugin jest aktualny (v{0})
-admincmd.update.no_info = Brak dostępnych informacji o aktualizacji.
-admincmd.update.creating_backup = Tworzenie kopii zapasowej przed aktualizacją...
+admincmd.update.no_info = Brak dostepnych informacji o aktualizacji.
+admincmd.update.creating_backup = Tworzenie kopii zapasowej przed aktualizacja...
 admincmd.update.backup_created = Kopia zapasowa utworzona: {0}
-admincmd.update.backup_warning = Uwaga: Kopia zapasowa nie powiodła się - {0}
+admincmd.update.backup_warning = Uwaga: Kopia zapasowa nie powiodla sie - {0}
 admincmd.update.backup_continue = Kontynuowanie aktualizacji mimo to...
 admincmd.update.downloading = Pobieranie HyperFactions v{0}...
-admincmd.update.download_failed = Pobieranie nie powiodło się. Sprawdź logi serwera.
-admincmd.update.downloaded = Aktualizacja pobrana pomyślnie!
+admincmd.update.download_failed = Pobieranie nie powiodlo sie. Sprawdz logi serwera.
+admincmd.update.downloaded = Aktualizacja pobrana pomyslnie!
 admincmd.update.file_label = Plik: {0}
-admincmd.update.cleanup = Czyszczenie: Usunięto {0} starych kopii zapasowych
+admincmd.update.cleanup = Czyszczenie: Usunieto {0} starych kopii zapasowych
 admincmd.update.kept_backup = Zachowano: {0} (do przywracania)
-admincmd.update.restart = Uruchom ponownie serwer, aby zastosować aktualizację.
-admincmd.update.use_rollback = Użyj /f admin rollback, aby cofnąć przed restartem.
+admincmd.update.restart = Uruchom ponownie serwer, aby zastosowac aktualizacje.
+admincmd.update.use_rollback = Uzyj /f admin rollback, aby cofnac przed restartem.
 admincmd.update.usage_hf = /f admin update — zaktualizuj HyperFactions
 admincmd.update.usage_mixin = /f admin update mixin — zaktualizuj HyperProtect-Mixin
-admincmd.update.usage_toggle = /f admin update toggle-mixin-download — przełącz automatyczne pobieranie
+admincmd.update.usage_toggle = /f admin update toggle-mixin-download — przelacz automatyczne pobieranie
 admincmd.update.mixin_current = HyperProtect-Mixin: {0}
 admincmd.update.mixin_up_to_date = HyperProtect-Mixin jest aktualny.
-admincmd.update.mixin_none = Brak dostępnych wydań HyperProtect-Mixin.
-admincmd.update.mixin_available = Dostępna: v{0}
+admincmd.update.mixin_none = Brak dostepnych wydan HyperProtect-Mixin.
+admincmd.update.mixin_available = Dostepna: v{0}
 admincmd.update.mixin_downloading = Pobieranie HyperProtect-Mixin v{0}...
-admincmd.update.mixin_downloaded = Pobrano pomyślnie!
-admincmd.update.mixin_failed = Pobieranie nie powiodło się. Sprawdź logi serwera.
+admincmd.update.mixin_downloaded = Pobrano pomyslnie!
+admincmd.update.mixin_failed = Pobieranie nie powiodlo sie. Sprawdz logi serwera.
 admincmd.update.mixin_location = Lokalizacja: earlyplugins/
-admincmd.update.mixin_restart = Uruchom ponownie serwer, aby zastosować.
-admincmd.update.mixin_auto_on = Automatyczne pobieranie HP-Mixin włączone.
-admincmd.update.mixin_auto_on_desc = HyperProtect-Mixin zostanie pobrany automatycznie przy następnym uruchomieniu, jeśli nie jest zainstalowany.
-admincmd.update.mixin_auto_off = Automatyczne pobieranie HP-Mixin wyłączone.
-admincmd.update.mixin_auto_off_desc = Użyj /f admin update mixin, aby pobrać ręcznie.
-admincmd.rollback.no_backup = Nie znaleziono JAR kopii zapasowej do przywrócenia.
-admincmd.rollback.unsafe = Nie można automatycznie przywrócić!
-admincmd.rollback.unsafe_reason = Serwer został uruchomiony ponownie od ostatniej aktualizacji.
-admincmd.rollback.unsafe_migration = Migracje konfiguracji/danych mogły zostać zastosowane.
-admincmd.rollback.instructions = Aby bezpiecznie przywrócić, musisz:
-admincmd.rollback.find_backup = Użyj /f admin backup list, aby znaleźć kopię zapasową sprzed aktualizacji.
+admincmd.update.mixin_restart = Uruchom ponownie serwer, aby zastosowac.
+admincmd.update.mixin_auto_on = Automatyczne pobieranie HP-Mixin wlaczone.
+admincmd.update.mixin_auto_on_desc = HyperProtect-Mixin zostanie pobrany automatycznie przy nastepnym uruchomieniu, jesli nie jest zainstalowany.
+admincmd.update.mixin_auto_off = Automatyczne pobieranie HP-Mixin wylaczone.
+admincmd.update.mixin_auto_off_desc = Uzyj /f admin update mixin, aby pobrac recznie.
+admincmd.rollback.no_backup = Nie znaleziono JAR kopii zapasowej do przywrocenia.
+admincmd.rollback.unsafe = Nie mozna automatycznie przywrocic!
+admincmd.rollback.unsafe_reason = Serwer zostal uruchomiony ponownie od ostatniej aktualizacji.
+admincmd.rollback.unsafe_migration = Migracje konfiguracji/danych mogly zostac zastosowane.
+admincmd.rollback.instructions = Aby bezpiecznie przywrocic, musisz:
+admincmd.rollback.find_backup = Uzyj /f admin backup list, aby znalezc kopie zapasowa sprzed aktualizacji.
 admincmd.rollback.rolling = Przywracanie aktualizacji...
 admincmd.rollback.from = Z: v{0} (nowa)
 admincmd.rollback.to = Do: v{0} (poprzednia)
 admincmd.rollback.version = Przywracanie do v{0}...
-admincmd.rollback.success = Przywracanie zakończone sukcesem!
-admincmd.rollback.restored = Przywrócono: {0}
-admincmd.rollback.removed = Usunięto: {0}
-admincmd.rollback.restart = Uruchom ponownie serwer, aby zastosować przywracanie.
-admincmd.rollback.failed = Przywracanie nie powiodło się: {0}
+admincmd.rollback.success = Przywracanie zakonczone sukcesem!
+admincmd.rollback.restored = Przywrocono: {0}
+admincmd.rollback.removed = Usunieto: {0}
+admincmd.rollback.restart = Uruchom ponownie serwer, aby zastosowac przywracanie.
+admincmd.rollback.failed = Przywracanie nie powiodlo sie: {0}
 admincmd.zone.failed = Niepowodzenie: {0}
-admincmd.zone.failed_delete = Nie można usunąć strefy: {0}
-admincmd.zone.failed_rename = Nie można zmienić nazwy strefy: {0}
-admincmd.zone.failed_flags = Nie można zresetować flag.
-admincmd.zone.failed_flag = Nie można ustawić flagi.
+admincmd.zone.failed_delete = Nie mozna usunac strefy: {0}
+admincmd.zone.failed_rename = Nie mozna zmienic nazwy strefy: {0}
+admincmd.zone.failed_flags = Nie mozna zresetowac flag.
+admincmd.zone.failed_flag = Nie mozna ustawic flagi.
 admincmd.zone.list_header = Strefy ({0})
 admincmd.zone.info_header = Strefa: {0}
 admincmd.zone.info_notify = Powiadomienie: {0}
-admincmd.zone.info_upper_title = Górny tytuł: {0}
-admincmd.zone.info_lower_title = Dolny tytuł: {0}
+admincmd.zone.info_upper_title = Gorny tytul: {0}
+admincmd.zone.info_lower_title = Dolny tytul: {0}
 admincmd.zone.info_custom_flags = Niestandardowe flagi:
 admincmd.zone.flags_header = Flagi Strefy: {0}
 admincmd.zone.flags_type = Typ Strefy: {0}
-admincmd.zone.player_only = Ta komenda może być użyta tylko przez gracza.
-admincmd.decay.status_header = Status Degradacji Terytoriów
-admincmd.decay.enable_hint = Ustaw claims.decayEnabled na true, aby aktywować.
-admincmd.decay.error = Błąd podczas degradacji: {0}
+admincmd.zone.player_only = Ta komenda moze byc uzyta tylko przez gracza.
+admincmd.decay.status_header = Status Degradacji Terytoriow
+admincmd.decay.enable_hint = Ustaw claims.decayEnabled na true, aby aktywowac.
+admincmd.decay.error = Blad podczas degradacji: {0}
 admincmd.decay.check_header = Sprawdzanie Degradacji: {0}
 admincmd.decay.check_not_found = Frakcja '{0}' nie znaleziona.
-admincmd.decay.no_claims = Brak terytoriów do degradacji.
-admincmd.decay.disabled_globally = Wyłączone globalnie
-admincmd.map.status_header = Status Mapy Świata
+admincmd.decay.no_claims = Brak terytoriow do degradacji.
+admincmd.decay.disabled_globally = Wylaczone globalnie
+admincmd.map.status_header = Status Mapy Swiata
 admincmd.debug.status_header = Status Logowania Debugowania
 admincmd.debug.full_status_header = Status Debugowania HyperFactions
 common.no_description = Brak ustawionego opisu.
-common.member_count = {0} członków
-common.economy_disabled = System ekonomii nie jest włączony.
+common.member_count = {0} czlonkow
+common.economy_disabled = System ekonomii nie jest wlaczony.
 territory.display.wilderness = Dzicz
 territory.display.safezone = Strefa Bezpieczna
 territory.display.warzone = Strefa Wojenna
 territory.display.unknown_faction = Nieznana Frakcja
-territory.secondary.pvp_disabled = PvP Wyłączone
-territory.secondary.pvp_no_protection = PvP Włączone - Bez Ochrony
+territory.secondary.pvp_disabled = PvP Wylaczone
+territory.secondary.pvp_no_protection = PvP Wlaczone - Bez Ochrony
 territory.secondary.your_territory = Twoje Terytorium
 territory.secondary.faction_territory = Terytorium
 territory.secondary.relation_territory = Terytorium {0}
-announce.death_location = {0} zginął/a w ({1}, {2}, {3}) w {4}
+announce.death_location = {0} zginal/a w ({1}, {2}, {3}) w {4}

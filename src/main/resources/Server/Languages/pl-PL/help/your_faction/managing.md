@@ -2,9 +2,9 @@
 id: faction_managing
 commands: invite, kick, promote, demote, transfer
 ---
-# Zarządzanie członkami
+# Zarzadzanie czlonkami
 
-Oficerowie i Liderzy wspólnie odpowiadają za zarządzanie składem frakcji. Oto kluczowe komendy i kto może ich używać.
+Oficerowie i Liderzy wspolnie odpowiadaja za zarzadzanie skladem frakcji. Oto kluczowe komendy i kto moze ich uzywac.
 
 ---
 
@@ -12,33 +12,33 @@ Oficerowie i Liderzy wspólnie odpowiadają za zarządzanie składem frakcji. Ot
 
 | Komenda | Opis | Wymagana rola |
 |---------|-------------|---------------|
-| `/f invite <player>` | Wysyła zaproszenie do dołączenia (wygasa po 5 min) | Oficer+ |
-| `/f kick <player>` | Usuwa członka z frakcji | Oficer+ (patrz uwaga) |
-| `/f promote <player>` | Awansuje Członka na Oficera | Tylko Lider |
-| `/f demote <player>` | Degraduje Oficera na Członka | Tylko Lider |
-| `/f transfer <player>` | Przekazuje własność frakcji | Tylko Lider |
+| `/f invite <player>` | Wysyla zaproszenie do dolaczenia (wygasa po 5 min) | Oficer+ |
+| `/f kick <player>` | Usuwa czlonka z frakcji | Oficer+ (patrz uwaga) |
+| `/f promote <player>` | Awansuje Czlonka na Oficera | Tylko Lider |
+| `/f demote <player>` | Degraduje Oficera na Czlonka | Tylko Lider |
+| `/f transfer <player>` | Przekazuje wlasnosc frakcji | Tylko Lider |
 
->[!NOTE] Oficerowie mogą wyrzucać tylko Członków. Aby usunąć innego Oficera, Lider musi go najpierw zdegradować lub wyrzucić bezpośrednio.
+>[!NOTE] Oficerowie moga wyrzucac tylko Czlonkow. Aby usunac innego Oficera, Lider musi go najpierw zdegradowac lub wyrzucic bezposrednio.
 
 ---
 
 ## Zaproszenia
 
-- Zaproszenia wygasają po 5 minutach, jeśli nie zostaną zaakceptowane
-- Zaproszony gracz widzi je w zakładce Zaproszenia po otwarciu /f
-- Nie ma limitu na liczbę wysłanych zaproszeń jednocześnie
-- Twoja frakcja może mieć łącznie do 50 członków
+- Zaproszenia wygasaja po 5 minutach, jesli nie zostana zaakceptowane
+- Zaproszony gracz widzi je w zakladce Zaproszenia po otwarciu /f
+- Nie ma limitu na liczbe wyslanych zaproszen jednoczesnie
+- Twoja frakcja moze miec lacznie do 50 czlonkow
 
 ## Awanse i degradacje
 
-- Tylko Lider może awansować lub degradować
-- /f promote podnosi Członka do rangi Oficera
-- /f demote obniża Oficera z powrotem do Członka
+- Tylko Lider moze awansowac lub degradowac
+- /f promote podnosi Czlonka do rangi Oficera
+- /f demote obniza Oficera z powrotem do Czlonka
 
-## Przekazywanie przywództwa
+## Przekazywanie przywodztwa
 
->[!WARNING] Przekazanie przywództwa jest nieodwracalne. Zostaniesz zdegradowany do Oficera, a wybrany gracz stanie się nowym Liderem. Upewnij się, że mu w pełni ufasz.
+>[!WARNING] Przekazanie przywodztwa jest nieodwracalne. Zostaniesz zdegradowany do Oficera, a wybrany gracz stanie sie nowym Liderem. Upewnij sie, ze mu w pelni ufasz.
 
 `/f transfer <player>`
 
-Wybrany gracz musi być aktualnym członkiem twojej frakcji.
+Wybrany gracz musi byc aktualnym czlonkiem twojej frakcji.

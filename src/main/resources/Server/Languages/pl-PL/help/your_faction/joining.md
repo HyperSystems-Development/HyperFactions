@@ -2,35 +2,35 @@
 id: faction_joining
 commands: accept, join, request
 ---
-# Dołączanie do frakcji
+# Dolaczanie do frakcji
 
-Istnieją trzy sposoby dołączenia do istniejącej frakcji, w zależności od jej konfiguracji.
+Istnieja trzy sposoby dolaczenia do istniejacej frakcji, w zaleznosci od jej konfiguracji.
 
 ---
 
-## Porównanie metod
+## Porownanie metod
 
-| Metoda | Jak to zrobić | Wymagane |
+| Metoda | Jak to zrobic | Wymagane |
 |--------|-----|----------|
-| Przeglądaj i dołącz | Otwórz /f, kliknij Przeglądaj, kliknij Dołącz | Frakcja ustawiona jako otwarta |
-| Przyjmij zaproszenie | Sprawdź zakładkę Zaproszenia w menu /f | Aktywne zaproszenie |
-| Poproś o dołączenie | Użyj /f request, czekaj na zatwierdzenie | Zatwierdzenie przez Oficera lub Lidera |
+| Przegladaj i dolacz | Otworz /f, kliknij Przegladaj, kliknij Dolacz | Frakcja ustawiona jako otwarta |
+| Przyjmij zaproszenie | Sprawdz zakladke Zaproszenia w menu /f | Aktywne zaproszenie |
+| Popros o dolaczenie | Uzyj /f request, czekaj na zatwierdzenie | Zatwierdzenie przez Oficera lub Lidera |
 
 ---
 
-## Szczegóły zaproszeń
+## Szczegoly zaproszen
 
-- Zaproszenia są wysyłane przez Oficerów lub Liderów
-- Zaproszenia wygasają po 5 minutach -- akceptuj szybko
-- Sprawdzaj oczekujące zaproszenia w zakładce Zaproszenia w menu frakcji
+- Zaproszenia sa wysylane przez Oficerow lub Liderow
+- Zaproszenia wygasaja po 5 minutach -- akceptuj szybko
+- Sprawdzaj oczekujace zaproszenia w zakladce Zaproszenia w menu frakcji
 - Akceptuj przez GUI lub /f accept
 
-## Prośby o dołączenie
+## Prosby o dolaczenie
 
-- Użyj /f request, aby poprosić o członkostwo w zamkniętej frakcji
-- Prośby wygasają po 24 godzinach, jeśli nie zostaną rozpatrzone
-- Oficerowie i Liderzy mogą zatwierdzać lub odrzucać prośby z panelu frakcji
+- Uzyj /f request, aby poprosic o czlonkostwo w zamknietej frakcji
+- Prosby wygasaja po 24 godzinach, jesli nie zostana rozpatrzone
+- Oficerowie i Liderzy moga zatwierdzac lub odrzucac prosby z panelu frakcji
 
->[!TIP] Nie wiesz, do której frakcji dołączyć? Użyj zakładki Przeglądaj w /f, aby zobaczyć opisy frakcji, liczbę członków i czy są otwarte czy tylko na zaproszenie.
+>[!TIP] Nie wiesz, do ktorej frakcji dolaczyc? Uzyj zakladki Przegladaj w /f, aby zobaczyc opisy frakcji, liczbe czlonkow i czy sa otwarte czy tylko na zaproszenie.
 
->[!NOTE] Każda frakcja może mieć domyślnie do 50 członków. Jeśli frakcja jest pełna, musisz poczekać na zwolnienie miejsca.
+>[!NOTE] Kazda frakcja moze miec domyslnie do 50 czlonkow. Jesli frakcja jest pelna, musisz poczekac na zwolnienie miejsca.

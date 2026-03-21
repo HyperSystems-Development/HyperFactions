@@ -2,41 +2,41 @@
 id: economy_funds
 commands: deposit, withdraw
 ---
-# Zarządzanie funduszami
+# Zarzadzanie funduszami
 
-Członkowie frakcji współpracują, aby utrzymać skarbiec zasilony poprzez wpłaty, wypłaty i przelewy.
+Czlonkowie frakcji wspolpracuja, aby utrzymac skarbiec zasilony poprzez wplaty, wyplaty i przelewy.
 
-## Wpłacanie
+## Wplacanie
 
-Każdy członek może wpłacić osobiste fundusze do skarbca frakcji.
+Kazdy czlonek moze wplacic osobiste fundusze do skarbca frakcji.
 
 `/f deposit <amount>`
-Wpłać ze swojego osobistego salda do skarbca.
+Wplac ze swojego osobistego salda do skarbca.
 
-## Wypłacanie
+## Wyplacanie
 
-Oficerowie i Lider mogą wypłacać fundusze z powrotem na swoje osobiste saldo.
+Oficerowie i Lider moga wyplacac fundusze z powrotem na swoje osobiste saldo.
 
 `/f withdraw <amount>`
-Wypłać ze skarbca na swoje saldo. (Oficer+)
+Wyplac ze skarbca na swoje saldo. (Oficer+)
 
 ## Przelewanie
 
-Oficerowie mogą przelewać fundusze bezpośrednio między skarbcami frakcji w ramach umów handlowych lub dyplomacji.
+Oficerowie moga przelewac fundusze bezposrednio miedzy skarbcami frakcji w ramach umow handlowych lub dyplomacji.
 
 `/f money transfer <faction> <amount>`
-Wyślij fundusze do skarbca innej frakcji. (Oficer+)
+Wyslij fundusze do skarbca innej frakcji. (Oficer+)
 
 ---
 
-## Opłaty
+## Oplaty
 
-| Transakcja | Opłata |
+| Transakcja | Oplata |
 |------------|-----|
-| Wpłata | 0% |
-| Wypłata | 0% |
+| Wplata | 0% |
+| Wyplata | 0% |
 | Przelew | 0% |
 
->[!INFO] Stawki opłat są konfigurowalne przez serwer i mogą różnić się od domyślnych wartości pokazanych powyżej.
+>[!INFO] Stawki oplat sa konfigurowalne przez serwer i moga roznic sie od domyslnych wartosci pokazanych powyzej.
 
->[!TIP] Wszystkie transakcje są rejestrowane. Używaj /f money log do przeglądania ostatniej aktywności.
+>[!TIP] Wszystkie transakcje sa rejestrowane. Uzywaj /f money log do przegladania ostatniej aktywnosci.

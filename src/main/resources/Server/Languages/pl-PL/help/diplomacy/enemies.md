@@ -4,44 +4,44 @@ commands: enemy, neutral
 ---
 # Wrogie frakcje
 
-Ogłoszenie wroga to jednostronna akcja, która natychmiast włącza PvP i agresję terytorialną wobec docelowej frakcji. Nie wymaga zgody drugiej strony.
+Ogloszenie wroga to jednostronna akcja, ktora natychmiast wlacza PvP i agresje terytorialna wobec docelowej frakcji. Nie wymaga zgody drugiej strony.
 
 ---
 
-## Ogłaszanie wroga
+## Oglaszanie wroga
 
 `/f enemy <faction>`
 
-Natychmiast oznacza docelową frakcję jako twojego wroga. Działa od razu -- potwierdzenie z drugiej strony nie jest potrzebne. Wymaga rangi Oficera lub wyższej.
+Natychmiast oznacza docelowa frakcje jako twojego wroga. Dziala od razu -- potwierdzenie z drugiej strony nie jest potrzebne. Wymaga rangi Oficera lub wyzszej.
 
 ## Resetowanie do neutralnego
 
 `/f neutral <faction>`
 
-Kończy status wroga i resetuje relację do neutralnej. Również wymaga Oficera+ i działa natychmiast.
+Konczy status wroga i resetuje relacje do neutralnej. Rowniez wymaga Oficera+ i dziala natychmiast.
 
 ---
 
-## Co włącza status wroga
+## Co wlacza status wroga
 
-| Efekt | Szczegóły |
+| Efekt | Szczegoly |
 |--------|---------|
-| PvP na terytorium | Pełne PvP jest włączone na terytoriach obu frakcji |
-| Przejmowanie | Możesz przejmować ich chunki, jeśli mają deficyt mocy |
-| Oznaczenie na mapie | Wrogie terytorium wyświetla się na czerwono na mapie |
+| PvP na terytorium | Pelne PvP jest wlaczone na terytoriach obu frakcji |
+| Przejmowanie | Mozesz przejmowac ich chunki, jesli maja deficyt mocy |
+| Oznaczenie na mapie | Wrogie terytorium wyswietla sie na czerwono na mapie |
 | Brak ochrony | Standardowa ochrona terytorialna nie zapobiega wrogim walkom PvP |
 
->[!WARNING] Ogłoszenie wroga to poważna decyzja. Ich członkowie mogą również walczyć z tobą na twoim własnym terytorium po ogłoszeniu.
+>[!WARNING] Ogloszenie wroga to powazna decyzja. Ich czlonkowie moga rowniez walczyc z toba na twoim wlasnym terytorium po ogloszeniu.
 
 ---
 
-## Rozważania strategiczne
+## Rozwazania strategiczne
 
-- Deklaracje wrogości są jednostronne -- możesz ogłosić bez ich zgody, ale oni również widzą cię jako wrogiego
-- Przed ogłoszeniem sprawdź moc celu komendą /f info. Jeśli są silni, to ty możesz stracić terytorium
-- Osłabiaj wrogów powtarzanymi walkami, aby wyczerpać ich moc, a potem przejmuj ich teren
-- Nie ma limitu na liczbę wrogów, ale walka na wielu frontach jest ryzykowna
+- Deklaracje wrogosci sa jednostronne -- mozesz oglosic bez ich zgody, ale oni rowniez widza cie jako wrogiego
+- Przed ogloszeniem sprawdz moc celu komenda /f info. Jesli sa silni, to ty mozesz stracic terytorium
+- Oslabiaj wrogow powtarzanymi walkami, aby wyczerpac ich moc, a potem przejmuj ich teren
+- Nie ma limitu na liczbe wrogow, ale walka na wielu frontach jest ryzykowna
 
->[!TIP] Użyj /f neutral, aby deeskalować konflikty. Czasem strategiczny pokój jest cenniejszy niż kontynuowanie wojny.
+>[!TIP] Uzyj /f neutral, aby deeskalowac konflikty. Czasem strategiczny pokoj jest cenniejszy niz kontynuowanie wojny.
 
->[!NOTE] Jeśli jesteś w sojuszu z frakcją i ogłosisz ją wrogiem, sojusz zostanie najpierw zerwany.
+>[!NOTE] Jesli jestes w sojuszu z frakcja i oglosisz ja wrogiem, sojusz zostanie najpierw zerwany.

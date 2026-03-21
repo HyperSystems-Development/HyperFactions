@@ -1,37 +1,37 @@
 ---
 id: admin_disbanding
 ---
-# Wymuszone rozwiązanie
+# Wymuszone rozwiazanie
 
-Administratorzy mogą wymusić rozwiązanie dowolnej frakcji, niezależnie od woli lidera.
+Administratorzy moga wymusic rozwiazanie dowolnej frakcji, niezaleznie od woli lidera.
 
 ## Komenda
 
 `/f admin disband <faction>`
-Wymusza rozwiązanie nazwanej frakcji. Przed wykonaniem akcji pojawi się monit o potwierdzenie.
+Wymusza rozwiazanie nazwanej frakcji. Przed wykonaniem akcji pojawi sie monit o potwierdzenie.
 
 **Uprawnienie**: `hyperfactions.admin.disband`
 
->[!WARNING] Rozwiązanie frakcji jest **nieodwracalne**. Wszystkie zajęcia są zwalniane, wszyscy członkowie są usuwani, a frakcja przestaje istnieć. Najpierw utwórz kopię zapasową.
+>[!WARNING] Rozwiazanie frakcji jest **nieodwracalne**. Wszystkie zajecia sa zwalniane, wszyscy czlonkowie sa usuwani, a frakcja przestaje istniec. Najpierw utworz kopie zapasowa.
 
 ## Konsekwencje
 
-Gdy frakcja zostaje rozwiązana:
+Gdy frakcja zostaje rozwiazana:
 
 | Efekt | Opis |
 |--------|-------------|
-| **Zajęcia** | Całe terytorium jest natychmiast zwalniane |
-| **Członkowie** | Wszyscy gracze są usuwani ze składu |
-| **Relacje** | Wszystkie sojusze i wrogości są czyszczone |
-| **Skarbiec** | Obsługiwany zgodnie z ustawieniami konfiguracji ekonomii |
+| **Zajecia** | Cale terytorium jest natychmiast zwalniane |
+| **Czlonkowie** | Wszyscy gracze sa usuwani ze skladu |
+| **Relacje** | Wszystkie sojusze i wrogosci sa czyszczone |
+| **Skarbiec** | Obslugiwany zgodnie z ustawieniami konfiguracji ekonomii |
 | **Baza** | Baza frakcji jest usuwana |
 | **Czat** | Historia czatu frakcji jest usuwana |
 
 ## Najlepsze praktyki
 
-1. Zawsze wpisz `/f admin backup create` przed rozwiązaniem
-2. Powiadom członków frakcji, gdy to możliwe
-3. Udokumentuj powód dla rejestrów serwera
-4. Sprawdź `/f admin info <faction>`, aby przejrzeć przed podjęciem akcji
+1. Zawsze wpisz `/f admin backup create` przed rozwiazaniem
+2. Powiadom czlonkow frakcji, gdy to mozliwe
+3. Udokumentuj powod dla rejestrow serwera
+4. Sprawdz `/f admin info <faction>`, aby przejrzec przed podjeciem akcji
 
->[!TIP] Jeśli problem dotyczy konkretnego członka, rozważ użycie GUI administracyjnego frakcji do przekazania przywództwa zamiast rozwiązywania całej frakcji.
+>[!TIP] Jesli problem dotyczy konkretnego czlonka, rozwaz uzycie GUI administracyjnego frakcji do przekazania przywodztwa zamiast rozwiazywania calej frakcji.

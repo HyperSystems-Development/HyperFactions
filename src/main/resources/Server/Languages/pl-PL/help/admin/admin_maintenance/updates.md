@@ -3,43 +3,43 @@ id: admin_updates
 ---
 # Sprawdzanie aktualizacji
 
-HyperFactions może sprawdzać nowe wersje i zarządzać zależnością HyperProtect-Mixin.
+HyperFactions moze sprawdzac nowe wersje i zarzadzac zaleznoscia HyperProtect-Mixin.
 
 ## Komendy aktualizacji
 
 | Komenda | Opis |
 |---------|-------------|
-| `/f admin update` | Sprawdź aktualizacje HyperFactions |
-| `/f admin update mixin` | Sprawdź/pobierz HyperProtect-Mixin |
-| `/f admin update toggle-mixin-download` | Przełącz automatyczne pobieranie |
-| `/f admin version` | Pokaż aktualną wersję i informacje o buildzie |
+| `/f admin update` | Sprawdz aktualizacje HyperFactions |
+| `/f admin update mixin` | Sprawdz/pobierz HyperProtect-Mixin |
+| `/f admin update toggle-mixin-download` | Przelacz automatyczne pobieranie |
+| `/f admin version` | Pokaz aktualna wersje i informacje o buildzie |
 
-## Kanały wydań
+## Kanaly wydan
 
-| Kanał | Opis |
+| Kanal | Opis |
 |---------|-------------|
-| **Stable** | Zalecany dla serwerów produkcyjnych |
-| **Pre-release** | Wczesny dostęp do nadchodzących funkcji |
+| **Stable** | Zalecany dla serwerow produkcyjnych |
+| **Pre-release** | Wczesny dostep do nadchodzacych funkcji |
 
 >[!INFO] Sprawdzanie aktualizacji jedynie powiadamia o nowych wersjach. **Nie** instaluje automatycznie aktualizacji samego HyperFactions.
 
 ## HyperProtect-Mixin
 
-HyperProtect-Mixin to zalecany mixin ochrony, który włącza zaawansowane flagi stref (eksplozje, rozprzestrzenianie ognia, zachowanie ekwipunku, itp.).
+HyperProtect-Mixin to zalecany mixin ochrony, ktory wlacza zaawansowane flagi stref (eksplozje, rozprzestrzenianie ognia, zachowanie ekwipunku, itp.).
 
-- `/f admin update mixin` sprawdza najnowszą wersję
-i pobiera ją, jeśli nowsza wersja jest dostępna
-- Automatyczne pobieranie można włączać i wyłączać dla każdego serwera
+- `/f admin update mixin` sprawdza najnowsza wersje
+i pobiera ja, jesli nowsza wersja jest dostepna
+- Automatyczne pobieranie mozna wlaczac i wylaczac dla kazdego serwera
 
->[!TIP] Po pobraniu nowej wersji mixina wymagany jest restart serwera, aby zmiany zadziałały.
+>[!TIP] Po pobraniu nowej wersji mixina wymagany jest restart serwera, aby zmiany zadzialaly.
 
 ## Procedura wycofania
 
-Jeśli aktualizacja powoduje problemy:
+Jesli aktualizacja powoduje problemy:
 
 1. Zatrzymaj serwer
-2. Zastąp plik JAR pluginu poprzednią wersją
+2. Zastap plik JAR pluginu poprzednia wersja
 3. Uruchom serwer
-4. Zweryfikuj funkcjonalność komendą `/f admin version`
+4. Zweryfikuj funkcjonalnosc komenda `/f admin version`
 
->[!WARNING] Obniżenie wersji może wymagać resetu migracji konfiguracji. Zawsze utrzymuj kopie zapasowe przed aktualizacją.
+>[!WARNING] Obnizenie wersji moze wymagac resetu migracji konfiguracji. Zawsze utrzymuj kopie zapasowe przed aktualizacja.

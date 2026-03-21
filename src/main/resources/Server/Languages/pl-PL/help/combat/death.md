@@ -2,38 +2,38 @@
 id: combat_death
 commands: home, sethome, stuck
 ---
-# Śmierć i odzyskiwanie
+# Smierc i odzyskiwanie
 
-Śmierć niesie realne konsekwencje we frakcjach. Każda śmierć kosztuje cię osobistą moc, osłabiając zdolność twojej frakcji do utrzymania terytorium.
+Smierc niesie realne konsekwencje we frakcjach. Kazda smierc kosztuje cie osobista moc, oslabiajac zdolnosc twojej frakcji do utrzymania terytorium.
 
 ## Utrata mocy
 
-Każda śmierć kosztuje -1.0 mocy z twojego osobistego stanu. To obniża łączną moc frakcji.
+Kazda smierc kosztuje -1.0 mocy z twojego osobistego stanu. To obniza laczna moc frakcji.
 
 | Zdarzenie | Zmiana mocy |
 |-------|-------------|
-| Śmierć (dowolna przyczyna) | -1.0 |
-| Regeneracja online | +0.1 na minutę |
+| Smierc (dowolna przyczyna) | -1.0 |
+| Regeneracja online | +0.1 na minute |
 | Wylogowanie w walce | -1.0 (zabity) |
 
->[!NOTE] To są wartości domyślne. Administrator serwera mógł skonfigurować inne ustawienia.
+>[!NOTE] To sa wartosci domyslne. Administrator serwera mogl skonfigurowac inne ustawienia.
 
-## Przykładowe scenariusze
+## Przykladowe scenariusze
 
-*5 członków po 10.0 mocy każdy = 50 łącznie, 20 zajęć.*
-*Jeden członek ginie dwukrotnie: 8.0 mocy, łącznie we frakcji 48.*
-*Trzech członków ginie po razie: łącznie spada do 47.*
+*5 czlonkow po 10.0 mocy kazdy = 50 lacznie, 20 zajec.*
+*Jeden czlonek ginie dwukrotnie: 8.0 mocy, lacznie we frakcji 48.*
+*Trzech czlonkow ginie po razie: lacznie spada do 47.*
 
->[!WARNING] Jeśli moc twojej frakcji spadnie poniżej liczby zajęć, wrogowie mogą przejąć twoje terytorium.
+>[!WARNING] Jesli moc twojej frakcji spadnie ponizej liczby zajec, wrogowie moga przejac twoje terytorium.
 
 ## Odzyskiwanie
 
-Moc regeneruje się z prędkością 0.1 na minutę będąc online. Odzyskanie 1.0 utraconej mocy zajmuje około 10 minut. Wielokrotne śmierci się kumulują, więc unikaj powtarzanych walk.
+Moc regeneruje sie z predkoscia 0.1 na minute bedac online. Odzyskanie 1.0 utraconej mocy zajmuje okolo 10 minut. Wielokrotne smierci sie kumuluja, wiec unikaj powtarzanych walk.
 
 ---
 
-## Wszystkie rodzaje śmierci
+## Wszystkie rodzaje smierci
 
-Utrata mocy dotyczy wszystkich śmierci: PvP, zabójstw przez moby, obrażeń od upadku, utonięcia i każdej innej przyczyny. Nie ma bezpiecznego sposobu na śmierć.
+Utrata mocy dotyczy wszystkich smierci: PvP, zabojstw przez moby, obrazen od upadku, utoniecia i kazdej innej przyczyny. Nie ma bezpiecznego sposobu na smierc.
 
->[!TIP] Ustaw bazę frakcji komendą /f sethome, aby członkowie mogli szybko się przegrupować po śmierci.
+>[!TIP] Ustaw baze frakcji komenda /f sethome, aby czlonkowie mogli szybko sie przegrupowac po smierci.

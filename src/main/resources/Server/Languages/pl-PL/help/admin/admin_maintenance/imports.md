@@ -3,7 +3,7 @@ id: admin_imports
 ---
 # Import danych
 
-Importuj dane frakcji z innych pluginów, aby zmigrować swój serwer na HyperFactions.
+Importuj dane frakcji z innych pluginow, aby zmigrowac swoj serwer na HyperFactions.
 
 ## Komenda importu
 
@@ -11,9 +11,9 @@ Importuj dane frakcji z innych pluginów, aby zmigrować swój serwer na HyperFa
 
 **Uprawnienie**: `hyperfactions.admin.use`
 
-## Obsługiwane źródła
+## Obslugiwane zrodla
 
-| Źródło | Opis |
+| Zrodlo | Opis |
 |--------|-------------|
 | `elbaphfactions` | Import z danych ElbaphFactions |
 | `hyfactions` | Import z danych HyFactions v1 |
@@ -23,26 +23,26 @@ Importuj dane frakcji z innych pluginów, aby zmigrować swój serwer na HyperFa
 | Flaga | Opis |
 |------|-------------|
 | `--dry-run` | Waliduj dane bez importowania czegokolwiek |
-| `--overwrite` | Nadpisz istniejące frakcje o tej samej nazwie |
-| `--no-zones` | Pomiń dane stref podczas importu |
-| `--no-power` | Pomiń dane mocy podczas importu |
+| `--overwrite` | Nadpisz istniejace frakcje o tej samej nazwie |
+| `--no-zones` | Pomin dane stref podczas importu |
+| `--no-power` | Pomin dane mocy podczas importu |
 
->[!TIP] Zawsze uruchom najpierw z `--dry-run`, aby zobaczyć podgląd tego, co zostanie zaimportowane i wykryć problemy z danymi przed zatwierdzeniem zmian.
+>[!TIP] Zawsze uruchom najpierw z `--dry-run`, aby zobaczyc podglad tego, co zostanie zaimportowane i wykryc problemy z danymi przed zatwierdzeniem zmian.
 
 ## Proces importu
 
 1. Kopia zapasowa przed importem jest tworzona automatycznie
-2. Mapowania nazw graczy są ładowane
-3. Frakcje, zajęcia i strefy są konwertowane
-4. Dane są walidowane i zapisywane
+2. Mapowania nazw graczy sa ladowane
+3. Frakcje, zajecia i strefy sa konwertowane
+4. Dane sa walidowane i zapisywane
 
-## Przykłady
+## Przyklady
 
 - `/f admin import elbaphfactions --dry-run`
 - `/f admin import elbaphfactions --overwrite`
 - `/f admin import hyfactions --no-zones --no-power`
 - `/f admin import elbaphfactions /custom/path`
 
->[!WARNING] Użycie `--overwrite` **zastąpi** każdą istniejącą frakcję, która dzieli nazwę z importowaną frakcją. Dane członków i zajęcia zostaną nadpisane. Uruchom najpierw z `--dry-run`, aby zidentyfikować konflikty.
+>[!WARNING] Uzycie `--overwrite` **zastapi** kazda istniejaca frakcje, ktora dzieli nazwe z importowana frakcja. Dane czlonkow i zajecia zostana nadpisane. Uruchom najpierw z `--dry-run`, aby zidentyfikowac konflikty.
 
->[!NOTE] Niektóre dane specyficzne dla źródła (np. działki robocze, działki rolnicze) nie mają odpowiednika w HyperFactions i zostaną zalogowane jako ostrzeżenia podczas importu.
+>[!NOTE] Niektore dane specyficzne dla zrodla (np. dzialki robocze, dzialki rolnicze) nie maja odpowiednika w HyperFactions i zostana zalogowane jako ostrzezenia podczas importu.

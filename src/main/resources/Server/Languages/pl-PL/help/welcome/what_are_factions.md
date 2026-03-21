@@ -1,11 +1,11 @@
 ---
 id: welcome_what
 ---
-# Czym są frakcje?
+# Czym sa frakcje?
 
-Frakcje to prowadzone przez graczy drużyny, które zajmują terytorium, budują bazy i rywalizują o dominację. Gdy dołączysz do frakcji lub ją utworzysz, zyskujesz dostęp do chronionego terenu, wspólnej bazy, prywatnego czatu i narzędzi dyplomatycznych.
+Frakcje to prowadzone przez graczy druzyny, ktore zajmuja terytorium, buduja bazy i rywalizuja o dominacje. Gdy dolaczysz do frakcji lub ja utworzysz, zyskujesz dostep do chronionego terenu, wspolnej bazy, prywatnego czatu i narzedzi dyplomatycznych.
 
->[!TIP] We frakcjach chodzi o pracę zespołową. Im więcej aktywnych członków masz, tym silniejsza staje się twoja frakcja.
+>[!TIP] We frakcjach chodzi o prace zespolowa. Im wiecej aktywnych czlonkow masz, tym silniejsza staje sie twoja frakcja.
 
 ---
 
@@ -13,25 +13,25 @@ Frakcje to prowadzone przez graczy drużyny, które zajmują terytorium, budują
 
 | Mechanika | Opis |
 |----------|-------------|
-| Moc | Każdy gracz generuje moc z czasem (maks. 20). Łączna moc twojej frakcji określa, ile terenu możesz utrzymać. |
-| Zajęcia | Zajęte chunki są chronione -- tylko członkowie mogą budować, niszczyć i otwierać pojemniki na ich terenie. Każde zajęcie kosztuje 2.0 mocy w utrzymaniu. |
-| Relacje | Frakcje mogą tworzyć sojusze dla wzajemnej ochrony lub ogłaszać wrogów, aby umożliwić PvP i agresję terytorialną. |
-| Role | Trzy rangi -- Lider, Oficer, Członek -- każda z innymi uprawnieniami. |
+| Moc | Kazdy gracz generuje moc z czasem (maks. 20). Laczna moc twojej frakcji okresla, ile terenu mozesz utrzymac. |
+| Zajecia | Zajete chunki sa chronione -- tylko czlonkowie moga budowac, niszczyc i otwierac pojemniki na ich terenie. Kazde zajecie kosztuje 2.0 mocy w utrzymaniu. |
+| Relacje | Frakcje moga tworzyc sojusze dla wzajemnej ochrony lub oglaszac wrogow, aby umozliwic PvP i agresje terytorialna. |
+| Role | Trzy rangi -- Lider, Oficer, Czlonek -- kazda z innymi uprawnieniami. |
 
 ---
 
-## Jak działa siła
+## Jak dziala sila
 
-Siła twojej frakcji pochodzi od jej członków. Każdy gracz zaczyna z 10 mocy i regeneruje do 20 będąc online. Śmierć kosztuje moc. Jeśli łączna moc frakcji spadnie poniżej kosztu zajęć, wrogowie mogą przejąć twoje terytorium.
+Sila twojej frakcji pochodzi od jej czlonkow. Kazdy gracz zaczyna z 10 mocy i regeneruje do 20 bedac online. Smierc kosztuje moc. Jesli laczna moc frakcji spadnie ponizej kosztu zajec, wrogowie moga przejac twoje terytorium.
 
->[!WARNING] Pojedyncza śmierć kosztuje 1.0 mocy. Wiele śmierci w krótkim czasie może sprawić, że twoja frakcja stanie się podatna na przejęcie terenu.
+>[!WARNING] Pojedyncza smierc kosztuje 1.0 mocy. Wiele smierci w krotkim czasie moze sprawic, ze twoja frakcja stanie sie podatna na przejecie terenu.
 
 ---
 
-## Dyplomacja w skrócie
+## Dyplomacja w skrocie
 
-- **Sojusznicy** -- Wzajemne porozumienia, które zapobiegają ogniowi przyjacielskiemu i chronią wzajemne terytorium
-- **Wrogowie** -- Jednostronne deklaracje, które włączają PvP na terenie drugiej frakcji i pozwalają na przejmowanie terenu
-- **Neutralni** -- Domyślny stan między wszystkimi frakcjami ze standardowymi zasadami
+- **Sojusznicy** -- Wzajemne porozumienia, ktore zapobiegaja ogniowi przyjacielskiemu i chronia wzajemne terytorium
+- **Wrogowie** -- Jednostronne deklaracje, ktore wlaczaja PvP na terenie drugiej frakcji i pozwalaja na przejmowanie terenu
+- **Neutralni** -- Domyslny stan miedzy wszystkimi frakcjami ze standardowymi zasadami
 
->[!INFO] Wszystkim tym możesz zarządzać przez GUI w grze, wpisując `/f`, lub przez komendy czatu.
+>[!INFO] Wszystkim tym mozesz zarzadzac przez GUI w grze, wpisujac `/f`, lub przez komendy czatu.

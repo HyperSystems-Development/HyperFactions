@@ -4,42 +4,42 @@ commands: ally
 ---
 # Zawieranie sojuszy
 
-Sojusze to wzajemne porozumienia między dwoma frakcjami, które zapewniają ochronę i korzyści ze współpracy.
+Sojusze to wzajemne porozumienia miedzy dwoma frakcjami, ktore zapewniaja ochrone i korzysci ze wspolpracy.
 
 ---
 
-## Jak zawrzeć sojusz
+## Jak zawrzec sojusz
 
 `/f ally <faction>`
 
-Wysyła propozycję sojuszu do docelowej frakcji. Sojusz wchodzi w życie dopiero gdy obie strony się zgodzą. Oficer lub Lider z drugiej frakcji musi również wpisać tę samą komendę, celując w twoją frakcję, aby potwierdzić.
+Wysyla propozycje sojuszu do docelowej frakcji. Sojusz wchodzi w zycie dopiero gdy obie strony sie zgodza. Oficer lub Lider z drugiej frakcji musi rowniez wpisac te sama komende, celujac w twoja frakcje, aby potwierdzic.
 
-## Jak zerwać sojusz
+## Jak zerwac sojusz
 
 `/f neutral <faction>`
 
-Każda strona może jednostronnie zakończyć sojusz, resetując relację do neutralnej.
+Kazda strona moze jednostronnie zakonczyc sojusz, resetujac relacje do neutralnej.
 
 ---
 
-## Korzyści z sojuszu
+## Korzysci z sojuszu
 
-| Korzyść | Szczegóły |
+| Korzysc | Szczegoly |
 |---------|---------|
-| Brak ognia przyjacielskiego | Sojuszniczy gracze nie mogą się nawzajem ranić |
-| Wspólna widoczność na mapie | Terytorium sojusznicze wyświetla się na niebiesko na mapie |
-| Interakcja z terytorium | Sojusznicy mogą używać drzwi, siedzeń i transportu na twoim terytorium |
-| Czat sojuszniczy | Przełącz na tryb czatu sojuszniczego do komunikacji międzyfrakcyjnej |
-| Ochrona przed przejęciem | Sojusznicy nie mogą przejmować nawzajem swoich terytoriów |
+| Brak ognia przyjacielskiego | Sojuszniczy gracze nie moga sie nawzajem ranic |
+| Wspolna widocznosc na mapie | Terytorium sojusznicze wyswietla sie na niebiesko na mapie |
+| Interakcja z terytorium | Sojusznicy moga uzywac drzwi, siedzen i transportu na twoim terytorium |
+| Czat sojuszniczy | Przelacz na tryb czatu sojuszniczego do komunikacji miedzyfrakcyjnej |
+| Ochrona przed przejeciem | Sojusznicy nie moga przejmowac nawzajem swoich terytoriow |
 
->[!NOTE] Twoja frakcja może mieć jednocześnie do 10 sojuszy. Wybieraj sojuszników mądrze.
+>[!NOTE] Twoja frakcja moze miec jednoczesnie do 10 sojuszy. Wybieraj sojusznikow madrze.
 
 ---
 
 ## Etykieta sojuszu
 
->[!TIP] Komunikacja to klucz. Przed wysłaniem propozycji sojuszu rozważ skontaktowanie się z liderem drugiej frakcji, aby omówić warunki. Silny sojusz opiera się na wzajemnych korzyściach, nie tylko na wygodzie.
+>[!TIP] Komunikacja to klucz. Przed wyslaniem propozycji sojuszu rozwaz skontaktowanie sie z liderem drugiej frakcji, aby omowic warunki. Silny sojusz opiera sie na wzajemnych korzysciach, nie tylko na wygodzie.
 
-- Sojusze działają w obie strony -- jeśli korzystasz z ochrony, twoi sojusznicy oczekują tego samego
-- Zerwanie sojuszu podczas wojny może zaszkodzić reputacji twojej frakcji
-- Sojusznicze frakcje mogą koordynować zajęcia terytoriów, aby tworzyć obronne granice
+- Sojusze dzialaja w obie strony -- jesli korzystasz z ochrony, twoi sojusznicy oczekuja tego samego
+- Zerwanie sojuszu podczas wojny moze zaszkodzic reputacji twojej frakcji
+- Sojusznicze frakcje moga koordynowac zajecia terytoriow, aby tworzyc obronne granice

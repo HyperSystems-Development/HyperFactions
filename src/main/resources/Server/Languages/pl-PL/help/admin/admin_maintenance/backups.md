@@ -3,46 +3,46 @@ id: admin_backups
 ---
 # System kopii zapasowych
 
-HyperFactions zawiera automatyczne i ręczne kopie zapasowe z rotacją GFS (Grandfather-Father-Son).
+HyperFactions zawiera automatyczne i reczne kopie zapasowe z rotacja GFS (Grandfather-Father-Son).
 
 ## Komendy kopii zapasowych
 
 | Komenda | Opis |
 |---------|-------------|
-| `/f admin backup create` | Utwórz ręczną kopię zapasową teraz |
-| `/f admin backup list` | Lista wszystkich dostępnych kopii zapasowych |
-| `/f admin backup restore <name>` | Przywróć z kopii zapasowej |
-| `/f admin backup delete <name>` | Usuń konkretną kopię zapasową |
+| `/f admin backup create` | Utworz reczna kopie zapasowa teraz |
+| `/f admin backup list` | Lista wszystkich dostepnych kopii zapasowych |
+| `/f admin backup restore <name>` | Przywroc z kopii zapasowej |
+| `/f admin backup delete <name>` | Usun konkretna kopie zapasowa |
 
 **Uprawnienie**: `hyperfactions.admin.backup`
 
-## Domyślna rotacja GFS
+## Domyslna rotacja GFS
 
 | Typ | Retencja | Opis |
 |------|-----------|-------------|
 | Godzinowe | 24 | Ostatnie 24 godzinne migawki |
 | Dzienne | 7 | Ostatnie 7 dziennych migawek |
 | Tygodniowe | 4 | Ostatnie 4 tygodniowe migawki |
-| Ręczne | 10 | Ręcznie utworzone kopie zapasowe |
-| Przy wyłączeniu | 5 | Tworzone przy zatrzymaniu serwera |
+| Reczne | 10 | Recznie utworzone kopie zapasowe |
+| Przy wylaczeniu | 5 | Tworzone przy zatrzymaniu serwera |
 
->[!INFO] Kopie zapasowe przy wyłączeniu są domyślnie włączone (`onShutdown=true`). Przechwytują najnowszy stan przed zatrzymaniem serwera.
+>[!INFO] Kopie zapasowe przy wylaczeniu sa domyslnie wlaczone (`onShutdown=true`). Przechwytuja najnowszy stan przed zatrzymaniem serwera.
 
-## Zawartość kopii zapasowej
+## Zawartosc kopii zapasowej
 
-Każde archiwum ZIP kopii zapasowej zawiera:
+Kazde archiwum ZIP kopii zapasowej zawiera:
 - Wszystkie pliki danych frakcji
 - Dane mocy graczy
 - Definicje stref
-- Historię czatu i dane ekonomii
-- Dane zaproszeń i próśb o dołączenie
+- Historie czatu i dane ekonomii
+- Dane zaproszen i prosb o dolaczenie
 - Pliki konfiguracyjne
 
->[!WARNING] **Przywracanie kopii zapasowej jest destrukcyjne.** Zastępuje wszystkie aktualne dane zawartością kopii zapasowej. Wszelkie zmiany dokonane po utworzeniu kopii zapasowej zostaną utracone. Zawsze twórz świeżą kopię zapasową przed przywracaniem.
+>[!WARNING] **Przywracanie kopii zapasowej jest destrukcyjne.** Zastepuje wszystkie aktualne dane zawartoscia kopii zapasowej. Wszelkie zmiany dokonane po utworzeniu kopii zapasowej zostana utracone. Zawsze tworz swieza kopie zapasowa przed przywracaniem.
 
 ## Najlepsze praktyki
 
-1. Utwórz ręczną kopię zapasową przed ważnymi akcjami administracyjnymi
-2. Przejrzyj retencję kopii zapasowych w `backup.json`
+1. Utworz reczna kopie zapasowa przed waznymi akcjami administracyjnymi
+2. Przejrzyj retencje kopii zapasowych w `backup.json`
 3. Przetestuj przywracanie na serwerze testowym
-4. Utrzymuj kopie zapasowe przy wyłączeniu włączone dla odzyskiwania po awariach
+4. Utrzymuj kopie zapasowe przy wylaczeniu wlaczone dla odzyskiwania po awariach

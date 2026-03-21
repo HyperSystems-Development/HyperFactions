@@ -3,41 +3,41 @@ id: admin_zone_commands
 ---
 # Opis komend stref
 
-Kompletna lista wszystkich komend zarządzania strefami. Wszystkie wymagają uprawnienia `hyperfactions.admin.zones`.
+Kompletna lista wszystkich komend zarzadzania strefami. Wszystkie wymagaja uprawnienia `hyperfactions.admin.zones`.
 
 ## Szybkie tworzenie
 
 | Komenda | Opis |
 |---------|-------------|
-| `/f admin safezone <name>` | Utwórz SafeZone na obecnym chunku |
-| `/f admin warzone <name>` | Utwórz WarZone na obecnym chunku |
-| `/f admin removezone <name>` | Usuń strefę i zwolnij chunki |
+| `/f admin safezone <name>` | Utworz SafeZone na obecnym chunku |
+| `/f admin warzone <name>` | Utworz WarZone na obecnym chunku |
+| `/f admin removezone <name>` | Usun strefe i zwolnij chunki |
 
-## Zarządzanie strefami
+## Zarzadzanie strefami
 
 | Komenda | Opis |
 |---------|-------------|
-| `/f admin zone create <name> <type>` | Utwórz strefę (safezone/warzone) |
-| `/f admin zone delete <name>` | Usuń strefę |
+| `/f admin zone create <name> <type>` | Utworz strefe (safezone/warzone) |
+| `/f admin zone delete <name>` | Usun strefe |
 | `/f admin zone claim <zone>` | Dodaj obecny chunk do strefy |
-| `/f admin zone unclaim <zone>` | Usuń obecny chunk ze strefy |
-| `/f admin zone radius <zone> <r>` | Zajmij kwadratowy promień chunków |
-| `/f admin zone list` | Lista wszystkich stref z liczbą chunków |
-| `/f admin zone notify <zone> <true/false>` | Przełącz wiadomości wejścia/wyjścia |
-| `/f admin zone title <zone> upper/lower <text>` | Ustaw tekst tytułu strefy |
-| `/f admin zone properties <zone>` | Otwórz GUI właściwości strefy |
+| `/f admin zone unclaim <zone>` | Usun obecny chunk ze strefy |
+| `/f admin zone radius <zone> <r>` | Zajmij kwadratowy promien chunkow |
+| `/f admin zone list` | Lista wszystkich stref z liczba chunkow |
+| `/f admin zone notify <zone> <true/false>` | Przelacz wiadomosci wejscia/wyjscia |
+| `/f admin zone title <zone> upper/lower <text>` | Ustaw tekst tytulu strefy |
+| `/f admin zone properties <zone>` | Otworz GUI wlasciwosci strefy |
 
-## Zarządzanie flagami
+## Zarzadzanie flagami
 
 | Komenda | Opis |
 |---------|-------------|
-| `/f admin zoneflag <zone> <flag> <true/false>` | Ustaw konkretną flagę |
+| `/f admin zoneflag <zone> <flag> <true/false>` | Ustaw konkretna flage |
 
->[!TIP] Użyj **GUI właściwości** strefy dla wizualnego edytora z przełącznikami dla każdej flagi, zorganizowanymi według kategorii.
+>[!TIP] Uzyj **GUI wlasciwosci** strefy dla wizualnego edytora z przelacznikami dla kazdej flagi, zorganizowanymi wedlug kategorii.
 
-## Przykłady
+## Przyklady
 
-- `/f admin safezone Spawn` -- utwórz ochronę spawnu
-- `/f admin zone radius Spawn 3` -- rozszerz do 7x7 chunków
-- `/f admin zoneflag Spawn door_use true` -- zezwól na drzwi
-- `/f admin zone notify Spawn true` -- pokaż wiadomości wejścia
+- `/f admin safezone Spawn` -- utworz ochrone spawnu
+- `/f admin zone radius Spawn 3` -- rozszerz do 7x7 chunkow
+- `/f admin zoneflag Spawn door_use true` -- zezwol na drzwi
+- `/f admin zone notify Spawn true` -- pokaz wiadomosci wejscia

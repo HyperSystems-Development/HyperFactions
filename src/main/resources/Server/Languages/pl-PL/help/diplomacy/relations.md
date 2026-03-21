@@ -4,35 +4,35 @@ commands: relations
 ---
 # Relacje frakcji
 
-Każda para frakcji ma relację dyplomatyczną, która określa, jak ze sobą współdziałają. Istnieją trzy stany: Sojusznik, Wróg i Neutralny.
+Kazda para frakcji ma relacje dyplomatyczna, ktora okresla, jak ze soba wspoldzialaja. Istnieja trzy stany: Sojusznik, Wrog i Neutralny.
 
 ---
 
-## Porównanie relacji
+## Porownanie relacji
 
-| Efekt | Sojusznik | Neutralny | Wróg |
+| Efekt | Sojusznik | Neutralny | Wrog |
 |--------|------|---------|-------|
-| PvP na terytorium | Wyłączone | Standardowe zasady | Włączone |
-| Ochrona terytorialna | Wzajemna ochrona | Standardowa ochrona | Można przejmować po osłabieniu |
-| Ogień przyjacielski | Wyłączony | Nie dotyczy | Włączony wszędzie |
+| PvP na terytorium | Wylaczone | Standardowe zasady | Wlaczone |
+| Ochrona terytorialna | Wzajemna ochrona | Standardowa ochrona | Mozna przejmowac po oslabieniu |
+| Ogien przyjacielski | Wylaczony | Nie dotyczy | Wlaczony wszedzie |
 | Kolor na mapie | Niebieski | Szary | Czerwony |
-| Jak ustawić | Wzajemna zgoda | Stan domyślny | Jednostronna deklaracja |
-| Dostęp do czatu | Kanał czatu sojuszniczego | Brak | Brak |
+| Jak ustawic | Wzajemna zgoda | Stan domyslny | Jednostronna deklaracja |
+| Dostep do czatu | Kanal czatu sojuszniczego | Brak | Brak |
 
 ---
 
-## Przeglądanie relacji
+## Przegladanie relacji
 
 `/f relations`
 
-Pokazuje wszystkie twoje aktualne sojusze, wrogów i oczekujące propozycje sojuszy.
+Pokazuje wszystkie twoje aktualne sojusze, wrogow i oczekujace propozycje sojuszy.
 
-## Jak działają relacje
+## Jak dzialaja relacje
 
-- Neutralny to domyślny stan między wszystkimi frakcjami. Obowiązują standardowe zasady serwera.
-- Sojusz wymaga zgody obu frakcji. Każda strona może go zerwać jednostronnie.
-- Wróg jest deklarowany jednostronnie. Nie potrzeba zgody -- druga frakcja jest natychmiast oznaczona jako twój wróg.
+- Neutralny to domyslny stan miedzy wszystkimi frakcjami. Obowiazuja standardowe zasady serwera.
+- Sojusz wymaga zgody obu frakcji. Kazda strona moze go zerwac jednostronnie.
+- Wrog jest deklarowany jednostronnie. Nie potrzeba zgody -- druga frakcja jest natychmiast oznaczona jako twoj wrog.
 
->[!INFO] Relacjami zarządzają Oficerowie i Liderzy. Członkowie mogą przeglądać relacje, ale nie mogą ich zmieniać.
+>[!INFO] Relacjami zarzadzaja Oficerowie i Liderzy. Czlonkowie moga przegladac relacje, ale nie moga ich zmieniac.
 
->[!TIP] Używaj /f relations regularnie, aby śledzić sytuację dyplomatyczną. Wiedza o tym, kim są twoi wrogowie, pomaga przygotować się na konflikty terytorialne.
+>[!TIP] Uzywaj /f relations regularnie, aby sledzic sytuacje dyplomatyczna. Wiedza o tym, kim sa twoi wrogowie, pomaga przygotowac sie na konflikty terytorialne.

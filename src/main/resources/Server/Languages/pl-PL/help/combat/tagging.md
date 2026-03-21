@@ -9,21 +9,21 @@ Gdy atakujesz lub zostajesz zaatakowany przez innego gracza, otrzymujesz oznacze
 
 - Brak teleportacji /f home lub /f stuck
 - Brak serwerowych komend teleportacji
-- Oznaczenie resetuje się z każdą nową akcją bojową
-- Timer wyświetla pozostały czas oznaczenia
+- Oznaczenie resetuje sie z kazda nowa akcja bojowa
+- Timer wyswietla pozostaly czas oznaczenia
 
 ---
 
 ## Kara za wylogowanie
 
->[!WARNING] Wylogowanie się podczas oznaczenia bojowego zabija twoją postać i tracisz 1.0 mocy.
+>[!WARNING] Wylogowanie sie podczas oznaczenia bojowego zabija twoja postac i tracisz 1.0 mocy.
 
-Twoje przedmioty wypadają w miejscu rozłączenia i wrogowie mogą je zebrać. Zawsze czekaj na wygaśnięcie oznaczenia.
+Twoje przedmioty wypadaja w miejscu rozlaczenia i wrogowie moga je zebrac. Zawsze czekaj na wygasniecie oznaczenia.
 
-## Jak działa timer
+## Jak dziala timer
 
-Timer oznaczenia bojowego pojawia się na ekranie, gdy wejdziesz w walkę. Każde nowe trafienie resetuje go do 15 sekund. Gdy osiągnie zero, wszystkie ograniczenia zostają zniesione.
+Timer oznaczenia bojowego pojawia sie na ekranie, gdy wejdziesz w walke. Kazde nowe trafienie resetuje go do 15 sekund. Gdy osiagnie zero, wszystkie ograniczenia zostaja zniesione.
 
->[!NOTE] To są wartości domyślne. Administrator serwera mógł skonfigurować inne ustawienia.
+>[!NOTE] To sa wartosci domyslne. Administrator serwera mogl skonfigurowac inne ustawienia.
 
->[!TIP] Wycofaj się i przeczekaj timer, jeśli potrzebujesz się teleportować.
+>[!TIP] Wycofaj sie i przeczekaj timer, jesli potrzebujesz sie teleportowac.

@@ -3,27 +3,27 @@ id: combat_zones
 ---
 # Strefy specjalne
 
-Administratorzy mogą wyznaczać obszary ze specjalnymi zasadami, które nadpisują normalną ochronę terytorialną frakcji.
+Administratorzy moga wyznaczac obszary ze specjalnymi zasadami, ktore nadpisuja normalna ochrone terytorialna frakcji.
 
 ## SafeZone
 
-Brak obrażeń PvP, brak niszczenia bloków przez nie-administratorów. Idealne dla stref odrodzenia, hubów handlowych i miejsc wydarzeń. Gracze nie mogą tu zostać skrzywdzeni.
+Brak obrazen PvP, brak niszczenia blokow przez nie-administratorow. Idealne dla stref odrodzenia, hubow handlowych i miejsc wydarzen. Gracze nie moga tu zostac skrzywdzeni.
 
 ## WarZone
 
-PvP jest zawsze włączone. Brak ochrony bloków. Otwarte strefy walki, gdzie wszystko jest dozwolone. Nie otrzymujesz korzyści z ochrony terytorialnej w WarZone.
+PvP jest zawsze wlaczone. Brak ochrony blokow. Otwarte strefy walki, gdzie wszystko jest dozwolone. Nie otrzymujesz korzysci z ochrony terytorialnej w WarZone.
 
 ---
 
-## Porównanie stref
+## Porownanie stref
 
 | Cecha | SafeZone | WarZone | Teren frakcji |
 |---------|----------|---------|--------------|
-| PvP | Wyłączone | Zawsze włączone | Zależne od relacji |
-| Niszczenie bloków | Wyłączone | Dozwolone | Tylko członkowie |
-| Pojemniki | Chronione | Otwarte | Tylko członkowie |
+| PvP | Wylaczone | Zawsze wlaczone | Zalezne od relacji |
+| Niszczenie blokow | Wylaczone | Dozwolone | Tylko czlonkowie |
+| Pojemniki | Chronione | Otwarte | Tylko czlonkowie |
 | Idealne do | Spawn/Handel | Areny | Bazy |
 
->[!NOTE] Zasady stref zawsze nadpisują zasady terytoriów frakcji. Zajęty chunk wewnątrz WarZone podlega zasadom WarZone.
+>[!NOTE] Zasady stref zawsze nadpisuja zasady terytoriow frakcji. Zajety chunk wewnatrz WarZone podlega zasadom WarZone.
 
->[!TIP] Sprawdź mapę terytoriów komendą /f map, aby zobaczyć granice stref.
+>[!TIP] Sprawdz mape terytoriow komenda /f map, aby zobaczyc granice stref.

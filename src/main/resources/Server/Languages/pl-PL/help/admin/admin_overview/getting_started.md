@@ -8,33 +8,33 @@ Witaj w administracji HyperFactions. Ten poradnik opisuje twoje pierwsze kroki p
 ## Otwieranie panelu administracyjnego
 
 `/f admin`
-Otwiera GUI panelu administracyjnego z dostępem do wszystkich narzędzi zarządzania, edytorów stref i ustawień serwera.
+Otwiera GUI panelu administracyjnego z dostepem do wszystkich narzedzi zarzadzania, edytorow stref i ustawien serwera.
 
->[!INFO] Potrzebujesz uprawnienia **hyperfactions.admin.use** lub statusu OP, aby uzyskać dostęp do komend administracyjnych.
+>[!INFO] Potrzebujesz uprawnienia **hyperfactions.admin.use** lub statusu OP, aby uzyskac dostep do komend administracyjnych.
 
 ## Wymagania
 
-- **Z pluginem uprawnień**: Nadaj `hyperfactions.admin.use`
-- **Bez pluginu uprawnień**: Gracz musi być operatorem serwera (`adminRequiresOp=true` domyślnie)
+- **Z pluginem uprawnien**: Nadaj `hyperfactions.admin.use`
+- **Bez pluginu uprawnien**: Gracz musi byc operatorem serwera (`adminRequiresOp=true` domyslnie)
 
 ## Pierwsze kroki po instalacji
 
-1. Wpisz `/f admin`, aby zweryfikować swój dostęp
-2. Otwórz **Konfigurację**, aby przejrzeć domyślne ustawienia frakcji
-3. Utwórz **SafeZone** na spawnie komendą `/f admin safezone Spawn`
-4. Opcjonalnie utwórz **WarZone** dla aren PvP
-5. Przejrzyj ustawienia **kopii zapasowych**, aby zapewnić bezpieczeństwo danych
+1. Wpisz `/f admin`, aby zweryfikowac swoj dostep
+2. Otworz **Konfiguracje**, aby przejrzec domyslne ustawienia frakcji
+3. Utworz **SafeZone** na spawnie komenda `/f admin safezone Spawn`
+4. Opcjonalnie utworz **WarZone** dla aren PvP
+5. Przejrzyj ustawienia **kopii zapasowych**, aby zapewnic bezpieczenstwo danych
 
-## Możliwości administracyjne
+## Mozliwosci administracyjne
 
-| Obszar | Co możesz zrobić |
+| Obszar | Co mozesz zrobic |
 |------|----------------|
-| Frakcje | Przeglądaj, modyfikuj lub wymuś rozwiązanie dowolnej frakcji |
-| Strefy | Twórz SafeZone i WarZone z niestandardowymi flagami |
-| Moc | Nadpisuj wartości mocy graczy/frakcji |
-| Ekonomia | Zarządzaj skarbcami frakcji i utrzymaniem |
-| Konfiguracja | Edytuj ustawienia na żywo przez GUI lub przeładuj z dysku |
-| Kopie zapasowe | Twórz, przywracaj i zarządzaj kopiami zapasowymi danych |
-| Importy | Migruj dane z innych pluginów frakcji |
+| Frakcje | Przegladaj, modyfikuj lub wymus rozwiazanie dowolnej frakcji |
+| Strefy | Tworz SafeZone i WarZone z niestandardowymi flagami |
+| Moc | Nadpisuj wartosci mocy graczy/frakcji |
+| Ekonomia | Zarzadzaj skarbcami frakcji i utrzymaniem |
+| Konfiguracja | Edytuj ustawienia na zywo przez GUI lub przeladuj z dysku |
+| Kopie zapasowe | Tworz, przywracaj i zarzadzaj kopiami zapasowymi danych |
+| Importy | Migruj dane z innych pluginow frakcji |
 
->[!TIP] Użyj `/f admin --text`, aby uzyskać wynik tekstowy na czacie zamiast GUI -- przydatne dla konsoli lub automatyzacji.
+>[!TIP] Uzyj `/f admin --text`, aby uzyskac wynik tekstowy na czacie zamiast GUI -- przydatne dla konsoli lub automatyzacji.

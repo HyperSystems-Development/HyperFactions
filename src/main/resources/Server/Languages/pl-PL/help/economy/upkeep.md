@@ -3,35 +3,35 @@ id: economy_upkeep
 ---
 # Utrzymanie terytorium
 
-Frakcje muszą płacić bieżące koszty utrzymania swoich zajętych terytoriów. Zapobiega to gromadzeniu ziem i utrzymuje mapę dynamiczną.
+Frakcje musza placic biezace koszty utrzymania swoich zajetych terytoriow. Zapobiega to gromadzeniu ziem i utrzymuje mape dynamiczna.
 
 ## Koszty utrzymania
 
-| Ustawienie | Domyślnie |
+| Ustawienie | Domyslnie |
 |---------|---------|
 | Koszt za chunk | 2.0 za cykl |
-| Interwał płatności | Co 24 godziny |
+| Interwal platnosci | Co 24 godziny |
 | Darmowe chunki | 3 (bez kosztu) |
-| Tryb skalowania | Stawka stała |
+| Tryb skalowania | Stawka stala |
 
->[!NOTE] To są wartości domyślne. Administrator serwera mógł skonfigurować inne ustawienia.
+>[!NOTE] To sa wartosci domyslne. Administrator serwera mogl skonfigurowac inne ustawienia.
 
-Twoje pierwsze 3 chunki są darmowe. Powyżej tego, każdy dodatkowy zajęty chunk kosztuje 2.0 za cykl płatności.
+Twoje pierwsze 3 chunki sa darmowe. Powyzej tego, kazdy dodatkowy zajety chunk kosztuje 2.0 za cykl platnosci.
 
-## Automatyczna płatność
+## Automatyczna platnosc
 
-Automatyczna płatność jest domyślnie włączona. System automatycznie potrąca koszty utrzymania ze skarbca w każdym interwale. Nie wymaga ręcznej akcji.
+Automatyczna platnosc jest domyslnie wlaczona. System automatycznie potraca koszty utrzymania ze skarbca w kazdym interwale. Nie wymaga recznej akcji.
 
 ---
 
 ## Okres karencji
 
-Jeśli twój skarbiec nie pokrywa kosztów utrzymania, rozpoczyna się 48-godzinny okres karencji. Ostrzeżenie jest wysyłane 6 godzin przed rozpoczęciem utraty zajęć.
+Jesli twoj skarbiec nie pokrywa kosztow utrzymania, rozpoczyna sie 48-godzinny okres karencji. Ostrzezenie jest wysylane 6 godzin przed rozpoczeciem utraty zajec.
 
->[!WARNING] Jeśli koszty utrzymania pozostaną nieopłacone po okresie karencji, twoja frakcja traci 1 zajęcie na cykl, dopóki koszty nie zostaną pokryte lub wszystkie dodatkowe zajęcia nie zostaną utracone.
+>[!WARNING] Jesli koszty utrzymania pozostana nieoplacone po okresie karencji, twoja frakcja traci 1 zajecie na cykl, dopoki koszty nie zostana pokryte lub wszystkie dodatkowe zajecia nie zostana utracone.
 
-## Przykład
+## Przyklad
 
-*Frakcja z 8 zajęciami płaci za 5 chunków (8 minus 3 darmowe). Przy 2.0 za chunk, to 10.0 za cykl.*
+*Frakcja z 8 zajeciami placi za 5 chunkow (8 minus 3 darmowe). Przy 2.0 za chunk, to 10.0 za cykl.*
 
->[!TIP] Utrzymuj skarbiec zasilony powyżej kosztu utrzymania. Używaj /f balance, aby sprawdzić rezerwy.
+>[!TIP] Utrzymuj skarbiec zasilony powyzej kosztu utrzymania. Uzywaj /f balance, aby sprawdzic rezerwy.

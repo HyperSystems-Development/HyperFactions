@@ -3,25 +3,25 @@ id: combat_spawn_protection
 ---
 # Ochrona spawnu
 
-Po odrodzeniu się ze śmierci otrzymujesz tymczasową ochronę, aby zapobiec campingowi na spawnie.
+Po odrodzeniu sie ze smierci otrzymujesz tymczasowa ochrone, aby zapobiec campingowi na spawnie.
 
-## Jak to działa
+## Jak to dziala
 
 - Ochrona trwa 5 sekund po odrodzeniu
-- Nie możesz otrzymywać obrażeń w tym okresie
-- Wskaźnik wizualny pokazuje twój status ochrony
+- Nie mozesz otrzymywac obrazen w tym okresie
+- Wskaznik wizualny pokazuje twoj status ochrony
 
-## Zakończenie ochrony
+## Zakonczenie ochrony
 
-Ochrona spawnu kończy się wcześniej, jeśli:
+Ochrona spawnu konczy sie wczesniej, jesli:
 
-- Zaatakujesz innego gracza lub istotę
-- Ruszysz się z pozycji odrodzenia
+- Zaatakujesz innego gracza lub istote
+- Ruszysz sie z pozycji odrodzenia
 
-To zapobiega nadużyciom. Nie możesz atakować innych będąc nietykalnym. Gdy podejmiesz jakąkolwiek akcję, ochrona spada i obowiązują normalne zasady walki.
+To zapobiega naduzyciom. Nie mozesz atakowac innych bedac nietykalnym. Gdy podejmiesz jakakolwiek akcje, ochrona spada i obowiazuja normalne zasady walki.
 
 ---
 
->[!NOTE] To są wartości domyślne. Administrator serwera mógł skonfigurować inne ustawienia.
+>[!NOTE] To sa wartosci domyslne. Administrator serwera mogl skonfigurowac inne ustawienia.
 
->[!TIP] Wykorzystaj czas ochrony na ocenę sytuacji przed ruszeniem się.
+>[!TIP] Wykorzystaj czas ochrony na ocene sytuacji przed ruszeniem sie.

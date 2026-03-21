@@ -3,9 +3,9 @@ id: admin_quickref_commands
 ---
 # Opis komend administracyjnych
 
-Kompletna lista wszystkich podkomend `/f admin` ze składnią i wymaganymi uprawnieniami.
+Kompletna lista wszystkich podkomend `/f admin` ze skladnia i wymaganymi uprawnieniami.
 
-## Panel i ogólne
+## Panel i ogolne
 
 | Komenda | Uprawnienie |
 |---------|-----------|
@@ -15,7 +15,7 @@ Kompletna lista wszystkich podkomend `/f admin` ze składnią i wymaganymi upraw
 | `/f admin sync` | admin.use |
 | `/f admin sentry` | admin.use |
 
-## Zarządzanie frakcjami
+## Zarzadzanie frakcjami
 
 | Komenda | Uprawnienie |
 |---------|-----------|
@@ -25,7 +25,7 @@ Kompletna lista wszystkich podkomend `/f admin` ze składnią i wymaganymi upraw
 | `/f admin disband <faction>` | admin.disband |
 | `/f admin log` | admin.use |
 
-## Zarządzanie strefami
+## Zarzadzanie strefami
 
 | Komenda | Uprawnienie |
 |---------|-----------|
@@ -62,4 +62,4 @@ Kompletna lista wszystkich podkomend `/f admin` ze składnią i wymaganymi upraw
 | `/f admin debug toggle <category>` | admin.debug |
 | `/f admin integration` | admin.use |
 
->[!NOTE] Wszystkie węzły uprawnień mają prefiks `hyperfactions.` (np. `hyperfactions.admin.use`).
+>[!NOTE] Wszystkie wezly uprawnien maja prefiks `hyperfactions.` (np. `hyperfactions.admin.use`).

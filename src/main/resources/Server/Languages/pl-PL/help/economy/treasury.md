@@ -4,23 +4,23 @@ commands: balance
 ---
 # Skarbiec frakcji
 
-Każda frakcja ma wspólny skarbiec, który służy jako bank frakcji. Fundusze są wykorzystywane na koszty utrzymania, konserwację terytoriów i operacje frakcji.
+Kazda frakcja ma wspolny skarbiec, ktory sluzy jako bank frakcji. Fundusze sa wykorzystywane na koszty utrzymania, konserwacje terytoriow i operacje frakcji.
 
-## Saldo początkowe
+## Saldo poczatkowe
 
-Nowe frakcje zaczynają z 0 w skarbcu. Członkowie muszą wpłacać fundusze, aby gromadzić rezerwy.
+Nowe frakcje zaczynaja z 0 w skarbcu. Czlonkowie musza wplacac fundusze, aby gromadzic rezerwy.
 
-## Kto może zarządzać
+## Kto moze zarzadzac
 
-- Każdy członek może wpłacać fundusze
-- Oficerowie i Lider mogą wypłacać i przelewać
-- Lider ma pełną kontrolę nad skarbcem
+- Kazdy czlonek moze wplacac fundusze
+- Oficerowie i Lider moga wyplacac i przelewac
+- Lider ma pelna kontrole nad skarbcem
 
 ---
 
 `/f balance`
-Sprawdź aktualne saldo skarbca twojej frakcji. Dostępne również jako /f bal.
+Sprawdz aktualne saldo skarbca twojej frakcji. Dostepne rowniez jako /f bal.
 
->[!TIP] Wpłacaj regularnie, aby utrzymać frakcję z funduszami. Koszty utrzymania terytorium mogą szybko opróżnić pusty skarbiec.
+>[!TIP] Wplacaj regularnie, aby utrzymac frakcje z funduszami. Koszty utrzymania terytorium moga szybko oproznic pusty skarbiec.
 
->[!INFO] Wszystkie transakcje skarbcowe są rejestrowane i mogą być przeglądane przez oficerów.
+>[!INFO] Wszystkie transakcje skarbcowe sa rejestrowane i moga byc przegladane przez oficerow.

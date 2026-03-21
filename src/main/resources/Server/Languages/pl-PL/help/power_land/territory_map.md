@@ -2,9 +2,9 @@
 id: power_map
 commands: map
 ---
-# Mapa terytoriów
+# Mapa terytoriow
 
-Mapa terytoriów daje ci widok z lotu ptaka na zajęte chunki w twojej okolicy, pokazując które frakcje kontrolują teren wokół ciebie.
+Mapa terytoriow daje ci widok z lotu ptaka na zajete chunki w twojej okolicy, pokazujac ktore frakcje kontroluja teren wokol ciebie.
 
 ---
 
@@ -12,33 +12,33 @@ Mapa terytoriów daje ci widok z lotu ptaka na zajęte chunki w twojej okolicy, 
 
 `/f map`
 
-Otwiera GUI mapy terytoriów wycentrowane na twojej aktualnej lokalizacji.
+Otwiera GUI mapy terytoriow wycentrowane na twojej aktualnej lokalizacji.
 
 ---
 
-## Legenda kolorów
+## Legenda kolorow
 
 | Kolor | Znaczenie |
 |-------|---------|
-| [#55FF55] Kolor twojej frakcji | Terytorium zajęte przez twoją frakcję |
+| [#55FF55] Kolor twojej frakcji | Terytorium zajete przez twoja frakcje |
 | [#5555FF] Niebieski | Terytorium sojuszniczej frakcji |
 | [#FF5555] Czerwony | Terytorium wrogiej frakcji |
 | [#AAAAAA] Szary | Terytorium neutralnej frakcji |
-| [#333333] Ciemny | Pustkowia (niezajęty teren) |
-| [#FFAA00] Złoty | Strefy specjalne (SafeZone, WarZone) |
+| [#333333] Ciemny | Pustkowia (niezajety teren) |
+| [#FFAA00] Zloty | Strefy specjalne (SafeZone, WarZone) |
 
->[!INFO] Kolor twojej frakcji na mapie odpowiada kolorowi ustawionemu w ustawieniach frakcji. Sojusznicy i wrogowie używają stałych kolorów dla łatwej identyfikacji.
+>[!INFO] Kolor twojej frakcji na mapie odpowiada kolorowi ustawionemu w ustawieniach frakcji. Sojusznicy i wrogowie uzywaja stalych kolorow dla latwej identyfikacji.
 
 ---
 
-## Kliknij, aby zająć
+## Kliknij, aby zajac
 
-Mapa służy nie tylko do oglądania -- możesz z nią wchodzić w interakcje.
+Mapa sluzy nie tylko do ogladania -- mozesz z nia wchodzic w interakcje.
 
-- Kliknij niezajęty chunk, aby go zająć (wymaga rangi Oficer+ i wystarczającej mocy)
-- Kliknij zajęty chunk, aby zobaczyć, która frakcja jest jego właścicielem
-- Przewijaj lub przesuwaj, aby eksplorować okolicę
+- Kliknij niezajety chunk, aby go zajac (wymaga rangi Oficer+ i wystarczajacej mocy)
+- Kliknij zajety chunk, aby zobaczyc, ktora frakcja jest jego wlascicielem
+- Przewijaj lub przesuwaj, aby eksplorowac okolice
 
->[!TIP] Mapa to najłatwiejszy sposób na planowanie rozszerzania terytorium. Szukaj niezajętych obszarów blisko twojej bazy i zajmuj strategicznie, aby stworzyć ciągłą granicę.
+>[!TIP] Mapa to najlatwiejszy sposob na planowanie rozszerzania terytorium. Szukaj niezajetych obszarow blisko twojej bazy i zajmuj strategicznie, aby stworzyc ciagla granice.
 
->[!NOTE] Mapa pokazuje stały obszar wokół twojej pozycji. Przesuń się w inne miejsce i otwórz ją ponownie, aby zobaczyć inne części świata.
+>[!NOTE] Mapa pokazuje staly obszar wokol twojej pozycji. Przesun sie w inne miejsce i otworz ja ponownie, aby zobaczyc inne czesci swiata.

@@ -1,42 +1,42 @@
 ---
 id: admin_upkeep_management
 ---
-# Zarządzanie utrzymaniem
+# Zarzadzanie utrzymaniem
 
-Utrzymanie frakcji obciąża frakcje okresowo na podstawie ich terytorium i liczby członków.
+Utrzymanie frakcji obciaza frakcje okresowo na podstawie ich terytorium i liczby czlonkow.
 
 ## Kontrole administracyjne
 
-Ustawienia utrzymania są zarządzane przez plik konfiguracji ekonomii lub GUI konfiguracji administracyjnej.
+Ustawienia utrzymania sa zarzadzane przez plik konfiguracji ekonomii lub GUI konfiguracji administracyjnej.
 
 `/f admin config`
-Otwórz edytor konfiguracji i przejdź do ustawień ekonomii, aby dostosować wartości utrzymania.
+Otworz edytor konfiguracji i przejdz do ustawien ekonomii, aby dostosowac wartosci utrzymania.
 
-## Domyślne ustawienia utrzymania
+## Domyslne ustawienia utrzymania
 
-| Ustawienie | Domyślnie | Opis |
+| Ustawienie | Domyslnie | Opis |
 |---------|---------|-------------|
-| Utrzymanie włączone | false | Główny przełącznik systemu |
-| Interwał utrzymania | 24h | Jak często pobierane jest utrzymanie |
-| Koszt za zajęcie | 5.0 | Koszt za zajęty chunk na cykl |
-| Koszt za członka | 0.0 | Koszt za członka na cykl |
-| Okres karencji | 72h | Nowe frakcje są zwolnione |
-| Rozwiązanie przy bankructwie | false | Automatyczne rozwiązanie jeśli nie może zapłacić |
+| Utrzymanie wlaczone | false | Glowny przelacznik systemu |
+| Interwal utrzymania | 24h | Jak czesto pobierane jest utrzymanie |
+| Koszt za zajecie | 5.0 | Koszt za zajety chunk na cykl |
+| Koszt za czlonka | 0.0 | Koszt za czlonka na cykl |
+| Okres karencji | 72h | Nowe frakcje sa zwolnione |
+| Rozwiazanie przy bankructwie | false | Automatyczne rozwiazanie jesli nie moze zaplacic |
 
 ## Monitorowanie utrzymania
 
-Użyj `/f admin info <faction>`, aby zobaczyć:
+Uzyj `/f admin info <faction>`, aby zobaczyc:
 - Aktualne saldo skarbca
 - Szacowany koszt utrzymania za cykl
-- Czas do następnego pobrania utrzymania
-- Czy frakcja stać na utrzymanie
+- Czas do nastepnego pobrania utrzymania
+- Czy frakcja stac na utrzymanie
 
->[!TIP] Przeglądaj statystyki ekonomii wszystkich frakcji z panelu administracyjnego, aby zidentyfikować frakcje zagrożone bankructwem przed uruchomieniem utrzymania.
+>[!TIP] Przegladaj statystyki ekonomii wszystkich frakcji z panelu administracyjnego, aby zidentyfikowac frakcje zagrozone bankructwem przed uruchomieniem utrzymania.
 
->[!INFO] Konfiguracja utrzymania jest przechowywana w `economy.json`. Zmiany dokonane przez GUI konfiguracji wchodzą w życie po przeładowaniu komendą `/f admin reload`.
+>[!INFO] Konfiguracja utrzymania jest przechowywana w `economy.json`. Zmiany dokonane przez GUI konfiguracji wchodza w zycie po przeladowaniu komenda `/f admin reload`.
 
-## Formuła utrzymania
+## Formula utrzymania
 
-**Łączne utrzymanie** = (zajęte chunki x koszt za zajęcie) + (liczba członków x koszt za członka)
+**Laczne utrzymanie** = (zajete chunki x koszt za zajecie) + (liczba czlonkow x koszt za czlonka)
 
->[!WARNING] Włączenie utrzymania na serwerze z istniejącymi frakcjami może spowodować niespodziewane bankructwa. Rozważ ustawienie okresu karencji lub wcześniejsze ogłoszenie zmiany.
+>[!WARNING] Wlaczenie utrzymania na serwerze z istniejacymi frakcjami moze spowodowac niespodziewane bankructwa. Rozwaz ustawienie okresu karencji lub wczesniejsze ogloszenie zmiany.

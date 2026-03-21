@@ -4,27 +4,27 @@ commands: gui, menu
 ---
 # Pierwsze kroki
 
-Witaj w HyperFactions! Oto jak zacząć grę w kilku prostych krokach.
+Witaj w HyperFactions! Oto jak zaczac gre w kilku prostych krokach.
 
 ---
 
-## Krok 1: Otwórz menu frakcji
+## Krok 1: Otworz menu frakcji
 
-Wpisz /f, aby otworzyć główne GUI frakcji. To twoje centrum dowodzenia -- przeglądanie frakcji, tworzenie własnej i zarządzanie zaproszeniami.
+Wpisz /f, aby otworzyc glowne GUI frakcji. To twoje centrum dowodzenia -- przegladanie frakcji, tworzenie wlasnej i zarzadzanie zaproszeniami.
 
-## Krok 2: Wybierz swoją drogę
+## Krok 2: Wybierz swoja droge
 
-| Opcja | Jak to zrobić |
+| Opcja | Jak to zrobic |
 |--------|-----|
-| Przeglądaj otwarte frakcje | Kliknij Przeglądaj w menu i naciśnij Dołącz przy dowolnej otwartej frakcji. |
-| Przyjmij zaproszenie | Sprawdź zakładkę Zaproszenia. Jeśli ktoś cię zaprosił, kliknij Akceptuj. |
-| Stwórz własną | Kliknij Utwórz frakcję, wybierz nazwę i zostań Liderem. |
+| Przegladaj otwarte frakcje | Kliknij Przegladaj w menu i nacisnij Dolacz przy dowolnej otwartej frakcji. |
+| Przyjmij zaproszenie | Sprawdz zakladke Zaproszenia. Jesli ktos cie zaprosil, kliknij Akceptuj. |
+| Stworz wlasna | Kliknij Utworz frakcje, wybierz nazwe i zostan Liderem. |
 
-## Krok 3: Poznaj swoją frakcję
+## Krok 3: Poznaj swoja frakcje
 
-Gdy dołączysz do frakcji, zobaczysz Panel frakcji z listą członków, mapą terytoriów, relacjami i ustawieniami.
+Gdy dolaczysz do frakcji, zobaczysz Panel frakcji z lista czlonkow, mapa terytoriow, relacjami i ustawieniami.
 
->[!TIP] Jeśli dopiero zaczynasz, spróbuj najpierw dołączyć do istniejącej frakcji. Szybciej nauczysz się zasad z doświadczonymi graczami wokół siebie.
+>[!TIP] Jesli dopiero zaczynasz, sprobuj najpierw dolaczyc do istniejacej frakcji. Szybciej nauczysz sie zasad z doswiadczonymi graczami wokol siebie.
 
 ---
 
@@ -32,7 +32,7 @@ Gdy dołączysz do frakcji, zobaczysz Panel frakcji z listą członków, mapą t
 
 - /f -- Otwiera GUI frakcji
 - /f home -- Teleportuje do bazy twojej frakcji
-- /f c -- Przełącza tryb czatu między Normalnym, Frakcyjnym i Sojuszniczym
-- /f map -- Wyświetla mapę terytoriów wokół ciebie
+- /f c -- Przelacza tryb czatu miedzy Normalnym, Frakcyjnym i Sojuszniczym
+- /f map -- Wyswietla mape terytoriow wokol ciebie
 
->[!TIP] Możesz też wpisać /f help na czacie, aby w każdej chwili zobaczyć szybki spis komend.
+>[!TIP] Mozesz tez wpisac /f help na czacie, aby w kazdej chwili zobaczyc szybki spis komend.

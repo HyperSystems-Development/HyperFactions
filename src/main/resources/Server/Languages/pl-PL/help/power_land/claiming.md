@@ -4,47 +4,47 @@ commands: claim, unclaim
 ---
 # Zajmowanie terytorium
 
-Zajęcie chunka chroni go pod kontrolą twojej frakcji. Tylko członkowie frakcji mogą budować, niszczyć i korzystać z pojemników na zajętym terytorium.
+Zajecie chunka chroni go pod kontrola twojej frakcji. Tylko czlonkowie frakcji moga budowac, niszczyc i korzystac z pojemnikow na zajetym terytorium.
 
 ---
 
-## Jak zajmować
+## Jak zajmowac
 
 `/f claim`
 
-Stań na chunku, który chcesz zająć i wpisz tę komendę. Chunk jest natychmiast chroniony. Wymaga rangi Oficera lub wyższej.
+Stan na chunku, ktory chcesz zajac i wpisz te komende. Chunk jest natychmiast chroniony. Wymaga rangi Oficera lub wyzszej.
 
-## Jak oddawać
+## Jak oddawac
 
 `/f unclaim`
 
-Oddaje chunk, na którym stoisz, z powrotem na pustkowia. Również wymaga Oficera+.
+Oddaje chunk, na ktorym stoisz, z powrotem na pustkowia. Rowniez wymaga Oficera+.
 
 ---
 
 ## Zasady zajmowania
 
-| Zasada | Domyślnie |
+| Zasada | Domyslnie |
 |------|---------|
-| Koszt mocy za zajęcie | 2.0 mocy |
-| Maksymalna liczba zajęć | 100 na frakcję |
-| Tylko przyległe | Nie (możesz zajmować gdziekolwiek) |
+| Koszt mocy za zajecie | 2.0 mocy |
+| Maksymalna liczba zajec | 100 na frakcje |
+| Tylko przylegle | Nie (mozesz zajmowac gdziekolwiek) |
 
->[!NOTE] To są wartości domyślne. Administrator serwera mógł skonfigurować inne ustawienia.
+>[!NOTE] To sa wartosci domyslne. Administrator serwera mogl skonfigurowac inne ustawienia.
 
->[!INFO] Każde zajęcie kosztuje 2.0 mocy w utrzymaniu. Frakcja z 50 łącznej mocy może bezpiecznie utrzymać do 25 zajęć.
+>[!INFO] Kazde zajecie kosztuje 2.0 mocy w utrzymaniu. Frakcja z 50 lacznej mocy moze bezpiecznie utrzymac do 25 zajec.
 
 ---
 
 ## Co zapewnia ochrona
 
-Na zajętym terytorium domyślnie obowiązuje:
+Na zajetym terytorium domyslnie obowiazuje:
 
-- Obcy nie mogą niszczyć, stawiać ani wchodzić w interakcje z blokami
-- Sojusznicy mogą używać drzwi, siedzeń i transportu, ale nie mogą niszczyć ani stawiać bloków
-- Członkowie i Oficerowie mają pełny dostęp do budowania, niszczenia i korzystania ze wszystkiego
-- Dostęp do pojemników (skrzynie, skrzynki) jest ograniczony tylko do członków
+- Obcy nie moga niszczyc, stawiac ani wchodzic w interakcje z blokami
+- Sojusznicy moga uzywac drzwi, siedzen i transportu, ale nie moga niszczyc ani stawiac blokow
+- Czlonkowie i Oficerowie maja pelny dostep do budowania, niszczenia i korzystania ze wszystkiego
+- Dostep do pojemnikow (skrzynie, skrzynki) jest ograniczony tylko do czlonkow
 
->[!TIP] Możesz też zajmować bezpośrednio z mapy terytoriów. Otwórz /f map i kliknij na niezajęte chunki, aby je zająć.
+>[!TIP] Mozesz tez zajmowac bezposrednio z mapy terytoriow. Otworz /f map i kliknij na niezajete chunki, aby je zajac.
 
->[!WARNING] Nie rozszerzaj się nadmiernie. Jeśli twoja frakcja straci moc przez śmierci, zajęcia przekraczające budżet mocy staną się podatne na przejęcie.
+>[!WARNING] Nie rozszerzaj sie nadmiernie. Jesli twoja frakcja straci moc przez smierci, zajecia przekraczajace budzet mocy stana sie podatne na przejecie.

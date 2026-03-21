@@ -3,52 +3,52 @@ id: admin_power_overrides
 ---
 # Nadpisania mocy
 
-Specjalne komendy mocy, które zmieniają zachowanie mocy dla konkretnych graczy lub frakcji.
+Specjalne komendy mocy, ktore zmieniaja zachowanie mocy dla konkretnych graczy lub frakcji.
 
-## Komendy nadpisań
+## Komendy nadpisan
 
 | Komenda | Opis |
 |---------|-------------|
 | `/f admin power setmax <player> <amount>` | Ustaw niestandardowy maksymalny limit mocy |
-| `/f admin power noloss <player>` | Przełącz odporność na karę mocy za śmierć |
-| `/f admin power nodecay <player>` | Przełącz odporność na zanikanie mocy offline |
-| `/f admin power info <player>` | Wyświetl wszystkie nadpisania i szczegóły mocy |
+| `/f admin power noloss <player>` | Przelacz odpornosc na kare mocy za smierc |
+| `/f admin power nodecay <player>` | Przelacz odpornosc na zanikanie mocy offline |
+| `/f admin power info <player>` | Wyswietl wszystkie nadpisania i szczegoly mocy |
 
 ## Niestandardowa maksymalna moc
 
 `/f admin power setmax <player> <amount>`
-Ustawia osobisty limit maksymalnej mocy dla gracza, nadpisując domyślną wartość serwera.
+Ustawia osobisty limit maksymalnej mocy dla gracza, nadpisujac domyslna wartosc serwera.
 
->[!INFO] Ustawienie niestandardowego maksimum **nie** zmienia aktualnej mocy. Zmienia jedynie pułap. Gracz wciąż musi zdobywać moc do nowego limitu.
+>[!INFO] Ustawienie niestandardowego maksimum **nie** zmienia aktualnej mocy. Zmienia jedynie pulap. Gracz wciaz musi zdobywac moc do nowego limitu.
 
 ## Tryb bez utraty
 
 `/f admin power noloss <player>`
-Przełącza odporność na utratę mocy przy śmierci. Gdy włączony, gracz **nie** traci mocy przy śmierci.
+Przelacza odpornosc na utrate mocy przy smierci. Gdy wlaczony, gracz **nie** traci mocy przy smierci.
 
 Przydatne dla:
-- Okresów ochrony nowych graczy
-- Uczestników wydarzeń
-- Członków ekipy
+- Okresow ochrony nowych graczy
+- Uczestnikow wydarzen
+- Czlonkow ekipy
 
 ## Tryb bez zanikania
 
 `/f admin power nodecay <player>`
-Przełącza odporność na zanikanie mocy offline. Gdy włączony, moc gracza **nie** zmniejsza się będąc offline.
+Przelacza odpornosc na zanikanie mocy offline. Gdy wlaczony, moc gracza **nie** zmniejsza sie bedac offline.
 
 Przydatne dla:
-- Graczy na dłuższej przerwie
-- Członków VIP
+- Graczy na dluzszej przerwie
+- Czlonkow VIP
 - Ochrony sezonowej
 
 ## Informacje o mocy
 
 `/f admin power info <player>`
-Pokazuje kompletny podgląd:
+Pokazuje kompletny podglad:
 
 - Aktualna moc i maksymalna moc
 - Aktywne nadpisania (noloss, nodecay, niestandardowe maksimum)
-- Czas ostatniej śmierci i utracona moc
-- Procentowy wkład we frakcję
+- Czas ostatniej smierci i utracona moc
+- Procentowy wklad we frakcje
 
->[!TIP] Wszystkie nadpisania mocy zachowują się po restartach serwera i są zapisywane w pliku danych gracza.
+>[!TIP] Wszystkie nadpisania mocy zachowuja sie po restartach serwera i sa zapisywane w pliku danych gracza.

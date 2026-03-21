@@ -1,45 +1,45 @@
 ---
 id: admin_world_settings
 ---
-# Ustawienia per-świat
+# Ustawienia per-swiat
 
-HyperFactions obsługuje konfigurację per-świat dla zajmowania, PvP i zachowania ochrony.
+HyperFactions obsluguje konfiguracje per-swiat dla zajmowania, PvP i zachowania ochrony.
 
-## Komendy światów
+## Komendy swiatow
 
 | Komenda | Opis |
 |---------|-------------|
-| `/f admin world list` | Lista wszystkich nadpisań światów |
-| `/f admin world info <world>` | Pokaż ustawienia dla świata |
+| `/f admin world list` | Lista wszystkich nadpisan swiatow |
+| `/f admin world info <world>` | Pokaz ustawienia dla swiata |
 | `/f admin world set <world> <key> <value>` | Ustaw ustawienie |
-| `/f admin world reset <world>` | Resetuj świat do domyślnych |
+| `/f admin world reset <world>` | Resetuj swiat do domyslnych |
 
-## Dostępne ustawienia
+## Dostepne ustawienia
 
 | Ustawienie | Typ | Opis |
 |---------|------|-------------|
-| claiming_enabled | boolean | Zezwól na zajęcia frakcji w tym świecie |
-| pvp_enabled | boolean | Zezwól na walkę PvP w tym świecie |
-| power_loss | boolean | Zastosuj utratę mocy przy śmierci |
-| build_protection | boolean | Wymuś ochronę budowania na zajęciach |
-| explosion_protection | boolean | Chroń zajęcia przed eksplozjami |
+| claiming_enabled | boolean | Zezwol na zajecia frakcji w tym swiecie |
+| pvp_enabled | boolean | Zezwol na walke PvP w tym swiecie |
+| power_loss | boolean | Zastosuj utrate mocy przy smierci |
+| build_protection | boolean | Wymus ochrone budowania na zajeciach |
+| explosion_protection | boolean | Chron zajecia przed eksplozjami |
 
-## Biała lista / czarna lista światów
+## Biala lista / czarna lista swiatow
 
-Kontroluj, które światy pozwalają na funkcje frakcji przez plik konfiguracyjny `worlds.json`:
+Kontroluj, ktore swiaty pozwalaja na funkcje frakcji przez plik konfiguracyjny `worlds.json`:
 
-- **Tryb białej listy**: Tylko wymienione światy pozwalają na zajmowanie
-- **Tryb czarnej listy**: Wszystkie światy pozwalają na zajmowanie oprócz wymienionych
+- **Tryb bialej listy**: Tylko wymienione swiaty pozwalaja na zajmowanie
+- **Tryb czarnej listy**: Wszystkie swiaty pozwalaja na zajmowanie oprocz wymienionych
 
->[!INFO] Ustawienia światów są przechowywane w `worlds.json` i nadpisują globalne domyślne z `factions.json`.
+>[!INFO] Ustawienia swiatow sa przechowywane w `worlds.json` i nadpisuja globalne domyslne z `factions.json`.
 
-## Przykłady
+## Przyklady
 
 - `/f admin world set survival claiming_enabled true`
 - `/f admin world set creative claiming_enabled false`
 - `/f admin world set pvp_arena pvp_enabled true`
-- `/f admin world reset lobby` -- przywróć wszystkie domyślne
+- `/f admin world reset lobby` -- przywroc wszystkie domyslne
 
->[!TIP] Wyłącz zajmowanie w światach kreatywnych lub lobby, aby skupić system frakcji na rozgrywce survivalowej.
+>[!TIP] Wylacz zajmowanie w swiatach kreatywnych lub lobby, aby skupic system frakcji na rozgrywce survivalowej.
 
->[!NOTE] Ustawienia per-świat mają priorytet nad globalną konfiguracją, ale są nadpisywane przez flagi stref w danym świecie.
+>[!NOTE] Ustawienia per-swiat maja priorytet nad globalna konfiguracja, ale sa nadpisywane przez flagi stref w danym swiecie.

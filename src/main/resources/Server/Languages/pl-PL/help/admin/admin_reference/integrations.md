@@ -1,43 +1,43 @@
 ---
 id: admin_integrations
 ---
-# Integracje pluginów
+# Integracje pluginow
 
-HyperFactions integruje się z kilkoma zewnętrznymi pluginami poprzez miękkie zależności. Wszystkie integracje są opcjonalne i działają poprawnie, gdy plugin jest niedostępny.
+HyperFactions integruje sie z kilkoma zewnetrznymi pluginami poprzez miekkie zaleznosci. Wszystkie integracje sa opcjonalne i dzialaja poprawnie, gdy plugin jest niedostepny.
 
 ## Sprawdzanie statusu integracji
 
 `/f admin version`
-Pokazuje aktualną wersję i wykryte integracje.
+Pokazuje aktualna wersje i wykryte integracje.
 
 `/f admin integration`
-Otwiera panel zarządzania integracjami ze szczegółowym statusem każdego wykrytego pluginu.
+Otwiera panel zarzadzania integracjami ze szczegolowym statusem kazdego wykrytego pluginu.
 
 ## Tabela integracji
 
 | Plugin | Typ | Opis |
 |--------|------|-------------|
-| **HyperPerms** | Uprawnienia | Pełny system uprawnień z grupami, dziedziczeniem i kontekstem |
-| **LuckPerms** | Uprawnienia | Alternatywny dostawca uprawnień |
-| **VaultUnlocked** | Uprawnienia/Ekonomia | Most uprawnień i ekonomii |
-| **HyperProtect-Mixin** | Ochrona | Włącza zaawansowane flagi stref (eksplozje, ogień, zachowanie ekwipunku) |
+| **HyperPerms** | Uprawnienia | Pelny system uprawnien z grupami, dziedziczeniem i kontekstem |
+| **LuckPerms** | Uprawnienia | Alternatywny dostawca uprawnien |
+| **VaultUnlocked** | Uprawnienia/Ekonomia | Most uprawnien i ekonomii |
+| **HyperProtect-Mixin** | Ochrona | Wlacza zaawansowane flagi stref (eksplozje, ogien, zachowanie ekwipunku) |
 | **OrbisGuard-Mixins** | Ochrona | Alternatywny mixin do egzekwowania flag stref |
-| **PlaceholderAPI** | Placeholdery | 49 placeholderów frakcji dla innych pluginów |
-| **WiFlow PlaceholderAPI** | Placeholdery | Alternatywny dostawca placeholderów |
-| **GravestonePlugin** | Śmierć | Kontrola dostępu do nagrobków w strefach |
-| **HyperEssentials** | Funkcje | Flagi stref dla domów, warpów i kitów |
-| **KyuubiSoft Core** | Framework | Integracja z biblioteką bazową |
-| **Sentry** | Monitoring | Śledzenie błędów i diagnostyka |
+| **PlaceholderAPI** | Placeholdery | 49 placeholderow frakcji dla innych pluginow |
+| **WiFlow PlaceholderAPI** | Placeholdery | Alternatywny dostawca placeholderow |
+| **GravestonePlugin** | Smierc | Kontrola dostepu do nagrobkow w strefach |
+| **HyperEssentials** | Funkcje | Flagi stref dla domow, warpow i kitow |
+| **KyuubiSoft Core** | Framework | Integracja z biblioteka bazowa |
+| **Sentry** | Monitoring | Sledzenie bledow i diagnostyka |
 
-## Priorytet dostawcy uprawnień
+## Priorytet dostawcy uprawnien
 
-1. **VaultUnlocked** (najwyższy priorytet)
+1. **VaultUnlocked** (najwyzszy priorytet)
 2. **HyperPerms**
 3. **LuckPerms**
-4. **Awaryjnie OP** (jeśli nie znaleziono dostawcy)
+4. **Awaryjnie OP** (jesli nie znaleziono dostawcy)
 
->[!INFO] Integracje są wykrywane raz przy uruchomieniu za pomocą refleksji. Wyniki są cachowane na sesję. Restart serwera jest wymagany po dodaniu lub usunięciu zintegrowanego pluginu.
+>[!INFO] Integracje sa wykrywane raz przy uruchomieniu za pomoca refleksji. Wyniki sa cachowane na sesje. Restart serwera jest wymagany po dodaniu lub usunieciu zintegrowanego pluginu.
 
->[!TIP] Użyj `/f admin debug toggle integration`, aby włączyć szczegółowe logowanie integracji do rozwiązywania problemów.
+>[!TIP] Uzyj `/f admin debug toggle integration`, aby wlaczyc szczegolowe logowanie integracji do rozwiazywania problemow.
 
->[!NOTE] HyperProtect-Mixin to **zalecany** mixin ochrony. Bez niego 15 flag stref nie będzie miało efektu.
+>[!NOTE] HyperProtect-Mixin to **zalecany** mixin ochrony. Bez niego 15 flag stref nie bedzie mialo efektu.

@@ -4,29 +4,29 @@ commands: power
 ---
 # Zrozumienie mocy
 
-Moc to podstawowy zasób, który określa, ile terytorium może utrzymać twoja frakcja. Każdy gracz ma osobistą moc, która wlicza się do łącznej mocy frakcji.
+Moc to podstawowy zasob, ktory okresla, ile terytorium moze utrzymac twoja frakcja. Kazdy gracz ma osobista moc, ktora wlicza sie do lacznej mocy frakcji.
 
 ---
 
-## Domyślne wartości mocy
+## Domyslne wartosci mocy
 
-| Ustawienie | Wartość |
+| Ustawienie | Wartosc |
 |---------|-------|
 | Maksymalna moc na gracza | 20 |
 | Moc startowa | 10 |
-| Kara za śmierć | -1.0 za śmierć |
-| Nagroda za zabójstwo | 0.0 |
-| Tempo regeneracji | +0.1 na minutę (będąc online) |
-| Koszt mocy na zajęcie | 2.0 |
+| Kara za smierc | -1.0 za smierc |
+| Nagroda za zabojstwo | 0.0 |
+| Tempo regeneracji | +0.1 na minute (bedac online) |
+| Koszt mocy na zajecie | 2.0 |
 | Wylogowanie podczas oznaczenia | -1.0 dodatkowo |
 
->[!NOTE] To są wartości domyślne. Administrator serwera mógł skonfigurować inne ustawienia.
+>[!NOTE] To sa wartosci domyslne. Administrator serwera mogl skonfigurowac inne ustawienia.
 
-## Jak to działa
+## Jak to dziala
 
-Łączna moc twojej frakcji to suma osobistej mocy wszystkich członków. Wymagana moc to liczba zajęć pomnożona przez 2.0. Dopóki łączna moc pozostaje powyżej wymaganej mocy, twoje terytorium jest bezpieczne.
+Laczna moc twojej frakcji to suma osobistej mocy wszystkich czlonkow. Wymagana moc to liczba zajec pomnozona przez 2.0. Dopoki laczna moc pozostaje powyzej wymaganej mocy, twoje terytorium jest bezpieczne.
 
->[!INFO] Moc regeneruje się pasywnie z prędkością 0.1 na minutę, gdy jesteś online. W tym tempie odzyskanie 1.0 mocy zajmuje około 10 minut.
+>[!INFO] Moc regeneruje sie pasywnie z predkoscia 0.1 na minute, gdy jestes online. W tym tempie odzyskanie 1.0 mocy zajmuje okolo 10 minut.
 
 ---
 
@@ -34,12 +34,12 @@ Moc to podstawowy zasób, który określa, ile terytorium może utrzymać twoja 
 
 `/f power`
 
-Pokazuje twoją osobistą moc, łączną moc frakcji i ile jest potrzebne do utrzymania obecnych zajęć.
+Pokazuje twoja osobista moc, laczna moc frakcji i ile jest potrzebne do utrzymania obecnych zajec.
 
-## Strefa zagrożenia
+## Strefa zagrozenia
 
-Jeśli łączna moc spadnie poniżej wymaganej ilości dla twoich zajęć, twoja frakcja staje się podatna. Wrogowie mogą przejąć twoje chunki.
+Jesli laczna moc spadnie ponizej wymaganej ilosci dla twoich zajec, twoja frakcja staje sie podatna. Wrogowie moga przejac twoje chunki.
 
->[!WARNING] Wiele śmierci w krótkim okresie może szybko się nawarstwiać. Jeśli masz 5 członków po 10 mocy każdy (50 łącznie) i 20 zajęć (40 potrzebne), zaledwie 5 śmierci w twoim zespole obniży moc do 45 -- wciąż bezpiecznie. Ale 11 śmierci da wam 39, poniżej progu 40.
+>[!WARNING] Wiele smierci w krotkim okresie moze szybko sie nawarstwiac. Jesli masz 5 czlonkow po 10 mocy kazdy (50 lacznie) i 20 zajec (40 potrzebne), zaledwie 5 smierci w twoim zespole obnizy moc do 45 -- wciaz bezpiecznie. Ale 11 smierci da wam 39, ponizej progu 40.
 
->[!TIP] Utrzymuj zapas mocy. Nie zajmuj każdego chunka, na jaki cię stać -- zostaw margines na kilka śmierci bez stawania się podatnym na rajdy.
+>[!TIP] Utrzymuj zapas mocy. Nie zajmuj kazdego chunka, na jaki cie stac -- zostaw margines na kilka smierci bez stawania sie podatnym na rajdy.
