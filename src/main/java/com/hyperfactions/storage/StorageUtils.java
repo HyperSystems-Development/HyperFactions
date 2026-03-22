@@ -104,8 +104,8 @@ public final class StorageUtils {
         try {
           Files.copy(targetFile, backupFile, StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-          ErrorHandler.report(String.format("[Storage] Could not create backup for %s", targetFile), e);
-          // Continue anyway - backup is best-effort
+          // Backup is best-effort — don't fire Sentry for transient file contention
+          Logger.warn("[Storage] Could not create backup for %s: %s", targetFile.getFileName(), e.getMessage());
         }
       }
 

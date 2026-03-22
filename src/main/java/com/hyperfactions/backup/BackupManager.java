@@ -274,6 +274,9 @@ public class BackupManager {
       Path backupFile = backupsDir.resolve(name + ".zip");
 
       try {
+        // Ensure backups directory exists (may have been deleted after init())
+        Files.createDirectories(backupsDir);
+
         // Create ZIP file — data files are under data/ subdirectory
         try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(backupFile.toFile()))) {
           // Add data/factions/ directory

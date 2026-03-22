@@ -211,6 +211,16 @@ public final class UpdateChecker {
           return null;
         }
 
+      } catch (java.net.UnknownHostException e) {
+        // DNS failure — expected in environments without internet access
+        Logger.info("[Update:%s] Could not resolve host (no internet?): %s", artifactName, e.getMessage());
+        return null;
+      } catch (java.net.ConnectException e) {
+        Logger.info("[Update:%s] Connection refused: %s", artifactName, e.getMessage());
+        return null;
+      } catch (java.net.SocketTimeoutException e) {
+        Logger.info("[Update:%s] Connection timed out: %s", artifactName, e.getMessage());
+        return null;
       } catch (Exception e) {
         ErrorHandler.report(String.format("[Update:%s] Failed to check for updates", artifactName), e);
         return null;

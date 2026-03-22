@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - Fix crash when opening Admin Zone Integration Flags page — missing Flag5 (`essentials_back`) UI element caused selector `#Flag5Name.Text` not found
+- Downgrade `.bak` copy failure in `StorageUtils.writeAtomic` from Sentry error to warn log — backup is best-effort and file contention is transient
+- Fix `BackupManager.createBackup` crash when `backups/` directory is deleted after init — now re-creates directory before each backup
+- Fix `ConfigFile.save` crash-safety — use atomic write (temp + rename) to prevent truncated configs on server crash
+- Fix `ConfigFile.load` Sentry spam on corrupt JSON — auto-rename to `.corrupt`, recreate with defaults, log warning instead of Sentry
+- Fix `UpdateChecker` Sentry noise for DNS/network failures — catch `UnknownHostException`, `ConnectException`, `SocketTimeoutException` separately and log as info
 
 ## [0.12.0] - 2026-03-18
 

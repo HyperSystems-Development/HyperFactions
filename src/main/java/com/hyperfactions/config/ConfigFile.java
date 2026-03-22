@@ -11,6 +11,7 @@ import com.hyperfactions.util.Logger;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import org.jetbrains.annotations.NotNull;
@@ -94,8 +95,18 @@ public abstract class ConfigFile {
         save();
       }
     } catch (Exception e) {
-      ErrorHandler.report(String.format("[Config] Failed to load %s", filePath.getFileName()), e);
+      // Auto-repair: rename corrupt file to .corrupt and fall back to defaults
+      Path corruptPath = filePath.resolveSibling(filePath.getFileName() + ".corrupt");
+      try {
+        Files.move(filePath, corruptPath, StandardCopyOption.REPLACE_EXISTING);
+        Logger.warn("[Config] %s was corrupt (%s), renamed to %s and recreating with defaults",
+            filePath.getFileName(), e.getMessage(), corruptPath.getFileName());
+      } catch (IOException renameEx) {
+        // Rename failed — report to Sentry since we can't preserve evidence
+        ErrorHandler.report(String.format("[Config] Failed to rename corrupt %s", filePath.getFileName()), renameEx);
+      }
       createDefaults();
+      save();
     }
   }
 
@@ -106,10 +117,30 @@ public abstract class ConfigFile {
     try {
       Files.createDirectories(filePath.getParent());
       JsonObject json = toJson();
-      Files.writeString(filePath, GSON.toJson(json));
+      String content = GSON.toJson(json);
+
+      // Write to temp file first, then atomic rename to prevent truncation on crash
+      Path tmpFile = filePath.resolveSibling(filePath.getFileName() + ".tmp");
+      Files.writeString(tmpFile, content);
+      Files.move(tmpFile, filePath, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+
       needsSave = false;
       Logger.debug("[Config] Saved: %s", filePath.getFileName());
+    } catch (java.nio.file.AtomicMoveNotSupportedException e) {
+      // Filesystem doesn't support atomic move — fall back to direct write
+      try {
+        JsonObject json = toJson();
+        Files.writeString(filePath, GSON.toJson(json));
+        needsSave = false;
+        Logger.debug("[Config] Saved (non-atomic fallback): %s", filePath.getFileName());
+      } catch (IOException fallbackEx) {
+        ErrorHandler.report(String.format("[Config] Failed to save %s", filePath.getFileName()), fallbackEx);
+      }
     } catch (IOException e) {
+      // Clean up temp file if it exists
+      try {
+        Files.deleteIfExists(filePath.resolveSibling(filePath.getFileName() + ".tmp"));
+      } catch (IOException ignored) {}
       ErrorHandler.report(String.format("[Config] Failed to save %s", filePath.getFileName()), e);
     }
   }
