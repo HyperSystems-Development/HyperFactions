@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-*No changes yet*
+### Fixed
+- Fix crash when opening Admin Zone Integration Flags page — missing Flag5 (`essentials_back`) UI element caused selector `#Flag5Name.Text` not found
 
 ## [0.12.0] - 2026-03-18
 

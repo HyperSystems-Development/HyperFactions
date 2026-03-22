@@ -10,7 +10,7 @@ $C.@PageOverlay {
   $Nav.@HyperFactionsAdminNavBar #HyperFactionsAdminNavBar {}
 
   $C.@DecoratedContainer {
-    Anchor: (Width: 500, Height: 520);
+    Anchor: (Width: 500, Height: 544);
 
     #Title {
       Group {
@@ -242,6 +242,27 @@ $C.@PageOverlay {
               Anchor: (Width: 55);
             }
             $C.@CheckBoxWithLabel #Flag4Toggle {
+              @Text = ""; @Checked = false;
+              Anchor: (Height: 20, Width: 44);
+            }
+          }
+
+          // Flag 5: essentials_back
+          Group {
+            Anchor: (Height: 24);
+            LayoutMode: Left;
+            Label #Flag5Name {
+              Text: "Back Teleport";
+              Style: (FontSize: 11, TextColor: #CCCCCC, VerticalAlignment: Center);
+              Anchor: (Width: 160);
+            }
+            Label { FlexWeight: 1; }
+            Label #Flag5Default {
+              Text: "(default)";
+              Style: (FontSize: 9, TextColor: #555555, VerticalAlignment: Center);
+              Anchor: (Width: 55);
+            }
+            $C.@CheckBoxWithLabel #Flag5Toggle {
               @Text = ""; @Checked = false;
               Anchor: (Height: 20, Width: 44);
             }
