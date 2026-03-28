@@ -222,7 +222,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'com.github.HyperSystems-Development:HyperFactions:v0.12.0'
+    compileOnly 'com.github.HyperSystems-Development:HyperFactions:v0.13.0'
 }
 ```
 

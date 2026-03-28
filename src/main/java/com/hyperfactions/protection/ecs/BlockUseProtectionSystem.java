@@ -217,7 +217,7 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
     try {
       var state = blockType.getState();
       if (state != null) {
-        return state.getId();
+        return state.getStateForBlock(blockType.getId());
       }
       return null;
     } catch (Exception e) {

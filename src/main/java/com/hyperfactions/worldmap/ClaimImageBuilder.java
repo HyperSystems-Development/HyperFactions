@@ -19,7 +19,9 @@ import com.hypixel.hytale.server.core.universe.world.chunk.ChunkColumn;
 import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
 import com.hypixel.hytale.server.core.universe.world.chunk.section.FluidSection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -110,8 +112,12 @@ public class ClaimImageBuilder {
 
   private final World world;
 
+  private final int imageWidth;
+
+  private final int imageHeight;
+
   @NotNull
-  private final MapImage image;
+  private final int[] pixels;
 
   private final int sampleWidth;
 
@@ -166,11 +172,13 @@ public class ClaimImageBuilder {
     this.claimManager = claimManager;
     this.zoneManager = zoneManager;
 
-    this.image = new MapImage(imageWidth, imageHeight, new int[imageWidth * imageHeight]);
-    this.sampleWidth = Math.min(32, this.image.width);
-    this.sampleHeight = Math.min(32, this.image.height);
-    this.blockStepX = Math.max(1, 32 / this.image.width);
-    this.blockStepZ = Math.max(1, 32 / this.image.height);
+    this.imageWidth = imageWidth;
+    this.imageHeight = imageHeight;
+    this.pixels = new int[imageWidth * imageHeight];
+    this.sampleWidth = Math.min(32, imageWidth);
+    this.sampleHeight = Math.min(32, imageHeight);
+    this.blockStepX = Math.max(1, 32 / imageWidth);
+    this.blockStepZ = Math.max(1, 32 / imageHeight);
     this.heightSamples = new short[this.sampleWidth * this.sampleHeight];
     this.tintSamples = new int[this.sampleWidth * this.sampleHeight];
     this.blockSamples = new int[this.sampleWidth * this.sampleHeight];
@@ -185,10 +193,62 @@ public class ClaimImageBuilder {
     return this.index;
   }
 
-  /** Returns the image. */
+  /** Returns the image encoded as a palette-indexed MapImage. */
   @NotNull
   public MapImage getImage() {
-    return this.image;
+    // Build palette from unique colors
+    Map<Integer, Integer> colorToIndex = new HashMap<>();
+    List<Integer> paletteList = new ArrayList<>();
+    for (int pixel : this.pixels) {
+      if (!colorToIndex.containsKey(pixel)) {
+        colorToIndex.put(pixel, paletteList.size());
+        paletteList.add(pixel);
+      }
+    }
+
+    int[] palette = new int[paletteList.size()];
+    for (int i = 0; i < paletteList.size(); i++) {
+      palette[i] = paletteList.get(i);
+    }
+
+    // Calculate bits per index (matching Hytale's ImageBuilder thresholds)
+    int bitsPerIndex;
+    if (palette.length <= 16) bitsPerIndex = 4;
+    else if (palette.length <= 256) bitsPerIndex = 8;
+    else if (palette.length <= 4096) bitsPerIndex = 12;
+    else bitsPerIndex = 16;
+
+    // Pack indices into byte array
+    int totalPixels = this.pixels.length;
+    byte[] packedIndices = new byte[(totalPixels * bitsPerIndex + 7) / 8];
+    for (int i = 0; i < totalPixels; i++) {
+      int index = colorToIndex.get(this.pixels[i]);
+      int bitIndex = i * bitsPerIndex;
+      int byteIndex = bitIndex / 8;
+      int bitOffset = bitIndex % 8;
+      if (bitOffset + bitsPerIndex <= 8) {
+        int mask = (1 << bitsPerIndex) - 1;
+        int clearMask = ~(mask << bitOffset);
+        packedIndices[byteIndex] = (byte)(packedIndices[byteIndex] & clearMask | (index & mask) << bitOffset);
+      } else {
+        int remaining = bitsPerIndex;
+        int val = index;
+        int bo = bitOffset;
+        int bi = byteIndex;
+        while (remaining > 0) {
+          int bitsInByte = Math.min(8 - bo, remaining);
+          int mask = (1 << bitsInByte) - 1;
+          int clearMask = ~(mask << bo);
+          packedIndices[bi] = (byte)(packedIndices[bi] & clearMask | (val & mask) << bo);
+          val >>>= bitsInByte;
+          remaining -= bitsInByte;
+          bo = 0;
+          bi++;
+        }
+      }
+    }
+
+    return new MapImage(this.imageWidth, this.imageHeight, palette, (byte) bitsPerIndex, packedIndices);
   }
 
   @NotNull
@@ -389,10 +449,10 @@ public class ClaimImageBuilder {
     }
 
     // Setup for pixel generation
-    float imageToSampleRatioWidth = (float) this.sampleWidth / (float) this.image.width;
-    float imageToSampleRatioHeight = (float) this.sampleHeight / (float) this.image.height;
-    int blockPixelWidth = Math.max(1, this.image.width / this.sampleWidth);
-    int blockPixelHeight = Math.max(1, this.image.height / this.sampleHeight);
+    float imageToSampleRatioWidth = (float) this.sampleWidth / (float) this.imageWidth;
+    float imageToSampleRatioHeight = (float) this.sampleHeight / (float) this.imageHeight;
+    int blockPixelWidth = Math.max(1, this.imageWidth / this.sampleWidth);
+    int blockPixelHeight = Math.max(1, this.imageHeight / this.sampleHeight);
 
     // Copy height samples for neighbor lookup
     for (int iz = 0; iz < this.sampleHeight; ++iz) {
@@ -481,8 +541,8 @@ public class ClaimImageBuilder {
     }
 
     // Second pass: generate pixels with claim overlays
-    for (int ix = 0; ix < this.image.width; ++ix) {
-      for (int iz = 0; iz < this.image.height; ++iz) {
+    for (int ix = 0; ix < this.imageWidth; ++ix) {
+      for (int iz = 0; iz < this.imageHeight; ++iz) {
         int sampleX = Math.min((int) ((float) ix * imageToSampleRatioWidth), this.sampleWidth - 1);
         int sampleZ = Math.min((int) ((float) iz * imageToSampleRatioHeight), this.sampleHeight - 1);
         int sampleIndex = sampleZ * this.sampleWidth + sampleX;
@@ -497,8 +557,8 @@ public class ClaimImageBuilder {
 
         // Apply OrbisGuard region overlay (per-pixel, block-level)
         if (showClaimsOnMap && ogCandidates != null) {
-          int blockX = ogMinBlockX + ix * 32 / this.image.width;
-          int blockZ = ogMinBlockZ + iz * 32 / this.image.height;
+          int blockX = ogMinBlockX + ix * 32 / this.imageWidth;
+          int blockZ = ogMinBlockZ + iz * 32 / this.imageHeight;
           OrbisGuardIntegration.RegionInfo topOgRegion = getTopOgRegion(ogCandidates, blockX, blockZ);
           if (topOgRegion != null) {
             int regionColor = getOgRegionColor(topOgRegion);
@@ -545,7 +605,7 @@ public class ClaimImageBuilder {
         }
 
         // Pack pixel
-        this.image.data[iz * this.image.width + ix] = this.outColor.pack();
+        this.pixels[iz * this.imageWidth + ix] = this.outColor.pack();
       }
     }
 
@@ -566,13 +626,13 @@ public class ClaimImageBuilder {
    */
   private boolean isBorderPixel(int ix, int iz, boolean[] neighborsSameZone) {
     // South, North, East, West
-    if (iz >= this.image.height - BORDER_SIZE - 1 && !neighborsSameZone[0]) {
+    if (iz >= this.imageHeight - BORDER_SIZE - 1 && !neighborsSameZone[0]) {
       return true;
     }
     if (iz <= BORDER_SIZE && !neighborsSameZone[1]) {
       return true;
     }
-    if (ix >= this.image.width - BORDER_SIZE - 1 && !neighborsSameZone[2]) {
+    if (ix >= this.imageWidth - BORDER_SIZE - 1 && !neighborsSameZone[2]) {
       return true;
     }
     if (ix <= BORDER_SIZE && !neighborsSameZone[3]) {
@@ -586,13 +646,13 @@ public class ClaimImageBuilder {
    */
   private boolean isFactionBorderPixel(int ix, int iz, UUID factionId, UUID[] nearbyOwners) {
     // Check if at chunk edge and neighbor is different faction
-    if (iz >= this.image.height - BORDER_SIZE - 1 && !factionId.equals(nearbyOwners[0])) {
+    if (iz >= this.imageHeight - BORDER_SIZE - 1 && !factionId.equals(nearbyOwners[0])) {
       return true;
     }
     if (iz <= BORDER_SIZE && !factionId.equals(nearbyOwners[1])) {
       return true;
     }
-    if (ix >= this.image.width - BORDER_SIZE - 1 && !factionId.equals(nearbyOwners[2])) {
+    if (ix >= this.imageWidth - BORDER_SIZE - 1 && !factionId.equals(nearbyOwners[2])) {
       return true;
     }
     if (ix <= BORDER_SIZE && !factionId.equals(nearbyOwners[3])) {
@@ -883,7 +943,7 @@ public class ClaimImageBuilder {
         int px = x + col;
         int py = y + row;
 
-        if (px >= 0 && px < this.image.width && py >= 0 && py < this.image.height) {
+        if (px >= 0 && px < this.imageWidth && py >= 0 && py < this.imageHeight) {
           if (isSet) {
             // Draw text pixel
             setPixel(px, py, textR, textG, textB);
@@ -922,8 +982,8 @@ public class ClaimImageBuilder {
    * Sets a pixel to a specific color.
    */
   private void setPixel(int x, int y, int r, int g, int b) {
-    if (x >= 0 && x < this.image.width && y >= 0 && y < this.image.height) {
-      this.image.data[y * this.image.width + x] = ((r & 0xFF) << 24) | ((g & 0xFF) << 16) | ((b & 0xFF) << 8) | 0xFF;
+    if (x >= 0 && x < this.imageWidth && y >= 0 && y < this.imageHeight) {
+      this.pixels[y * this.imageWidth + x] = ((r & 0xFF) << 24) | ((g & 0xFF) << 16) | ((b & 0xFF) << 8) | 0xFF;
     }
   }
 
@@ -931,13 +991,13 @@ public class ClaimImageBuilder {
    * Darkens a pixel by a multiplier for outline effect.
    */
   private void darkenPixel(int x, int y, float multiplier) {
-    if (x >= 0 && x < this.image.width && y >= 0 && y < this.image.height) {
-      int pixel = this.image.data[y * this.image.width + x];
+    if (x >= 0 && x < this.imageWidth && y >= 0 && y < this.imageHeight) {
+      int pixel = this.pixels[y * this.imageWidth + x];
       int r = (int) (((pixel >> 24) & 0xFF) * multiplier);
       int g = (int) (((pixel >> 16) & 0xFF) * multiplier);
       int b = (int) (((pixel >> 8) & 0xFF) * multiplier);
       int a = pixel & 0xFF;
-      this.image.data[y * this.image.width + x] = ((r & 0xFF) << 24) | ((g & 0xFF) << 16) | ((b & 0xFF) << 8) | (a & 0xFF);
+      this.pixels[y * this.imageWidth + x] = ((r & 0xFF) << 24) | ((g & 0xFF) << 16) | ((b & 0xFF) << 8) | (a & 0xFF);
     }
   }
 }

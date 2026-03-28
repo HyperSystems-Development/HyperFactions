@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.13.0] - 2026-03-28
+
+### Changed
+- Upgrade Gradle wrapper from 8.12 to 9.4.1 for Java 25 compatibility
+- Adapt world map rendering to new palette-indexed `MapImage` API — `ClaimImageBuilder` now builds raw pixels internally and encodes to palette + packed indices on output
+- Adapt `ChunkMapAsset` GUI rendering to decode palette-indexed `MapImage` back to raw RGBA pixels for `BufferedImage` composition
+- Update `BlockUseProtectionSystem` to use `StateData.getStateForBlock()` in place of removed `StateData.getId()`
+
 ### Fixed
 - Fix crash when opening Admin Zone Integration Flags page — missing Flag5 (`essentials_back`) UI element caused selector `#Flag5Name.Text` not found
 - Downgrade `.bak` copy failure in `StorageUtils.writeAtomic` from Sentry error to warn log — backup is best-effort and file contention is transient

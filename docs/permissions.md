@@ -1,6 +1,6 @@
 # HyperFactions Permission Framework
 
-> **Version**: 0.12.0 | **76 permission constants** across **13 categories**
+> **Version**: 0.13.0 | **76 permission constants** across **13 categories**
 
 Architecture documentation for the HyperFactions permission system.
 

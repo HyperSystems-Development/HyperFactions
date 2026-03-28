@@ -1,6 +1,6 @@
 # HyperFactions Developer API Reference
 
-> **Version**: 0.12.0 | **Package**: `com.hyperfactions.api`
+> **Version**: 0.13.0 | **Package**: `com.hyperfactions.api`
 
 This document is for third-party mod developers who want to hook into HyperFactions from their own plugins.
 
@@ -45,7 +45,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'com.github.HyperSystems-Development:HyperFactions:v0.12.0'
+    compileOnly 'com.github.HyperSystems-Development:HyperFactions:v0.13.0'
 }
 ```
 
@@ -54,7 +54,7 @@ Add the soft dependency in your `manifest.json`:
 ```json
 {
   "optionalDependencies": {
-    "HyperSystems:HyperFactions": "0.12.0"
+    "HyperSystems:HyperFactions": "0.13.0"
   }
 }
 ```

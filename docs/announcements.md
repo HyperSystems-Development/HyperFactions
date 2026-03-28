@@ -1,6 +1,6 @@
 # HyperFactions Announcement System
 
-> **Version**: 0.12.0 | **Package**: `com.hyperfactions.manager`
+> **Version**: 0.13.0 | **Package**: `com.hyperfactions.manager`
 
 The announcement system broadcasts significant faction events to all online players. Events can be individually toggled in the configuration, and each event has a configurable color.
 

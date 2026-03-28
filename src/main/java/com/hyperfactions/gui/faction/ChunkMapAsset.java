@@ -127,12 +127,42 @@ public class ChunkMapAsset extends CommonAsset {
           var index = ChunkUtil.indexChunk(x, z);
           var chunkImage = map.getChunks().get(index);
           if (chunkImage != null) {
-            var pixels = chunkImage.data;
             var width = chunkImage.width;
             var height = chunkImage.height;
 
-            if (pixels == null || width != partSize || height != partSize) {
+            if (chunkImage.palette == null || chunkImage.packedIndices == null
+                || width != partSize || height != partSize) {
               continue;
+            }
+
+            // Decode palette-indexed image to raw pixels
+            int[] pixels = new int[width * height];
+            int bpi = chunkImage.bitsPerIndex;
+            for (int pi = 0; pi < pixels.length; pi++) {
+              int bitIndex = pi * bpi;
+              int byteIndex = bitIndex / 8;
+              int bitOffset = bitIndex % 8;
+              int paletteIndex;
+              if (bitOffset + bpi <= 8) {
+                int mask = (1 << bpi) - 1;
+                paletteIndex = (chunkImage.packedIndices[byteIndex] & 0xFF) >>> bitOffset & mask;
+              } else {
+                paletteIndex = 0;
+                int remaining = bpi;
+                int bo = bitOffset;
+                int bi = byteIndex;
+                int shift = 0;
+                while (remaining > 0) {
+                  int bitsInByte = Math.min(8 - bo, remaining);
+                  int mask = (1 << bitsInByte) - 1;
+                  paletteIndex |= ((chunkImage.packedIndices[bi] & 0xFF) >>> bo & mask) << shift;
+                  shift += bitsInByte;
+                  remaining -= bitsInByte;
+                  bo = 0;
+                  bi++;
+                }
+              }
+              pixels[pi] = chunkImage.palette[paletteIndex];
             }
 
             int imageX = (x - minX) * partSize;

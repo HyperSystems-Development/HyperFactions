@@ -1,6 +1,6 @@
 # HyperFactions Architecture
 
-> **Version**: 0.12.0 | **480 classes** across **72 packages**
+> **Version**: 0.13.0 | **480 classes** across **72 packages**
 
 ## Overview
 

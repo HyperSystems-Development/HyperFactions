@@ -1,6 +1,6 @@
 # HyperFactions Manager Layer
 
-> **Version**: 0.12.0 | **17 manager classes** in `manager/` package
+> **Version**: 0.13.0 | **17 manager classes** in `manager/` package
 
 The manager layer contains all business logic for HyperFactions, organized by domain.
 

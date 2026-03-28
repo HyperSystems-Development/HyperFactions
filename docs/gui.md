@@ -1,6 +1,6 @@
 # HyperFactions GUI System
 
-> **Version**: 0.12.0 | **69 page classes** across **3 registries**
+> **Version**: 0.13.0 | **69 page classes** across **3 registries**
 
 Architecture documentation for the HyperFactions GUI system using Hytale's CustomUI.
 
@@ -844,7 +844,7 @@ Inter-faction transfer search. Browse and search target factions for treasury tr
 #### TreasuryTransferConfirmPage
 Transfer confirmation modal. Shows source faction, target faction, amount, and fee (if configured). Requires officer+ permission.
 
-## New Pages in v0.12.0
+## New Pages in v0.13.0
 
 ### Admin Pages
 

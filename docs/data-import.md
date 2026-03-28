@@ -1,6 +1,6 @@
 # HyperFactions Data Import & Migration
 
-> **Version**: 0.12.0 | **Packages**: `com.hyperfactions.importer`, `com.hyperfactions.migration`
+> **Version**: 0.13.0 | **Packages**: `com.hyperfactions.importer`, `com.hyperfactions.migration`
 
 HyperFactions supports importing data from other faction plugins and automatically migrating its own configuration between versions.
 

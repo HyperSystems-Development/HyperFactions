@@ -1,6 +1,6 @@
 # Zone Protection
 
-> **Version**: 0.12.0 | **Source**: [`data/ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.java), [`protection/ProtectionChecker.java`](../src/main/java/com/hyperfactions/protection/ProtectionChecker.java)
+> **Version**: 0.13.0 | **Source**: [`data/ZoneFlags.java`](../src/main/java/com/hyperfactions/data/ZoneFlags.java), [`protection/ProtectionChecker.java`](../src/main/java/com/hyperfactions/protection/ProtectionChecker.java)
 
 How admin-created SafeZones and WarZones protect areas. For faction claim protection, see [protection-claims.md](protection-claims.md). For cross-cutting concerns (wilderness, explosions, fire), see [protection-global.md](protection-global.md).
 
