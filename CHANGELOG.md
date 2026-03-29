@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+*No changes yet*
+
+## [0.13.1] - 2026-03-29
+
+**Server Version:** `2026.03.26-89796e57b`
+
 ### Fixed
 - **Null-safe `getTransform()`** — `PlayerRef.getTransform()` can return null during world transitions; added null checks in:
   - `TerritoryTickingSystem` — prevents NPE on every tick during world transitions
