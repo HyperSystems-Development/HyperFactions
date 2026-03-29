@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
  * Stores each faction's economy data in {@code data/economy/{factionId}.json}.
  * Follows the same patterns as {@link com.hyperfactions.storage.json.JsonFactionStorage}.
  */
-public class JsonEconomyStorage {
+public class JsonEconomyStorage implements EconomyStorage {
 
   private final Path economyDir;
 

@@ -8,7 +8,7 @@ import com.hyperfactions.data.FactionEconomy.TreasuryLimits;
 import com.hyperfactions.data.FactionEconomy;
 import com.hyperfactions.data.FactionLog;
 import com.hyperfactions.integration.economy.VaultEconomyProvider;
-import com.hyperfactions.storage.JsonEconomyStorage;
+import com.hyperfactions.storage.EconomyStorage;
 import com.hyperfactions.util.Logger;
 import com.hyperfactions.util.GuiKeys;
 import java.math.BigDecimal;
@@ -22,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Manages faction treasury and economy operations.
  * Integrates with VaultUnlocked for player wallet transactions and
- * JsonEconomyStorage for persistent economy data.
+ * EconomyStorage for persistent economy data.
  */
 public class EconomyManager implements EconomyAPI {
 
@@ -32,7 +32,7 @@ public class EconomyManager implements EconomyAPI {
 
   private final VaultEconomyProvider vaultProvider;
 
-  private final JsonEconomyStorage storage;
+  private final EconomyStorage storage;
 
   // Cache for economy data
   private final Map<UUID, FactionEconomy> economyCache = new ConcurrentHashMap<>();
@@ -40,7 +40,7 @@ public class EconomyManager implements EconomyAPI {
   /** Creates a new EconomyManager. */
   public EconomyManager(@NotNull FactionManager factionManager,
              @NotNull VaultEconomyProvider vaultProvider,
-             @NotNull JsonEconomyStorage storage) {
+             @NotNull EconomyStorage storage) {
     this.factionManager = factionManager;
     this.vaultProvider = vaultProvider;
     this.storage = storage;

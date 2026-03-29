@@ -1,22 +1,13 @@
 package com.hyperfactions.manager;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.hyperfactions.Permissions;
 import com.hyperfactions.api.events.*;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.PendingInvite;
 import com.hyperfactions.integration.PermissionManager;
-import com.hyperfactions.storage.StorageUtils;
+import com.hyperfactions.storage.InviteStorage;
 import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
@@ -38,9 +29,7 @@ public class InviteManager {
   private final Map<UUID, Set<UUID>> invitesByFaction = new ConcurrentHashMap<>();
 
   // Persistence
-  private final Path dataFile;
-
-  private final Gson gson;
+  private final InviteStorage storage;
 
   // GUI update callbacks
   @Nullable
@@ -52,14 +41,10 @@ public class InviteManager {
   /**
    * Creates a new InviteManager with persistence.
    *
-   * @param dataDir the data directory for storage
+   * @param storage the storage provider for invites
    */
-  public InviteManager(@NotNull Path dataDir) {
-    this.dataFile = dataDir.resolve("invites.json");
-    this.gson = new GsonBuilder()
-      .setPrettyPrinting()
-      .disableHtmlEscaping()
-      .create();
+  public InviteManager(@NotNull InviteStorage storage) {
+    this.storage = storage;
   }
 
   /**
@@ -81,7 +66,13 @@ public class InviteManager {
    * Initializes the manager by loading persisted invites.
    */
   public void init() {
-    load();
+    List<PendingInvite> loaded = storage.loadAll().join();
+    for (PendingInvite invite : loaded) {
+      invitesByPlayer.computeIfAbsent(invite.playerUuid(), k -> ConcurrentHashMap.newKeySet())
+        .add(invite);
+      invitesByFaction.computeIfAbsent(invite.factionId(), k -> ConcurrentHashMap.newKeySet())
+        .add(invite.playerUuid());
+    }
   }
 
   /**
@@ -437,84 +428,17 @@ public class InviteManager {
   // === Persistence ===
 
   /**
-   * Loads invites from the JSON file.
-   */
-  private void load() {
-    if (!Files.exists(dataFile)) {
-      Logger.info("[Storage] No invites file found, starting fresh");
-      return;
-    }
-
-    try {
-      String json = Files.readString(dataFile);
-      JsonArray array = JsonParser.parseString(json).getAsJsonArray();
-
-      int loaded = 0;
-      int expired = 0;
-
-      for (JsonElement el : array) {
-        PendingInvite invite = deserializeInvite(el.getAsJsonObject());
-        if (invite.isExpired()) {
-          expired++;
-          continue;
-        }
-
-        invitesByPlayer.computeIfAbsent(invite.playerUuid(), k -> ConcurrentHashMap.newKeySet())
-          .add(invite);
-        invitesByFaction.computeIfAbsent(invite.factionId(), k -> ConcurrentHashMap.newKeySet())
-          .add(invite.playerUuid());
-        loaded++;
-      }
-
-      Logger.info("[Storage] Loaded %d invites (%d expired and skipped)", loaded, expired);
-    } catch (Exception e) {
-      ErrorHandler.report("Failed to load invites", e);
-    }
-  }
-
-  /**
-   * Saves all invites to the JSON file.
+   * Collects all non-expired invites from the in-memory maps and saves via storage.
    */
   private void save() {
-    try {
-      Files.createDirectories(dataFile.getParent());
-    } catch (IOException e) {
-      ErrorHandler.report("Failed to create invites directory", e);
-      return;
-    }
-
-    JsonArray array = new JsonArray();
+    List<PendingInvite> all = new ArrayList<>();
     for (Set<PendingInvite> invites : invitesByPlayer.values()) {
       for (PendingInvite invite : invites) {
         if (!invite.isExpired()) {
-          array.add(serializeInvite(invite));
+          all.add(invite);
         }
       }
     }
-
-    StorageUtils.WriteResult result = StorageUtils.writeAtomic(dataFile, gson.toJson(array));
-    if (result instanceof StorageUtils.WriteResult.Failure failure) {
-      ErrorHandler.report(String.format("Failed to save invites: %s", failure.error()), failure.cause());
-    }
-  }
-
-  private JsonObject serializeInvite(PendingInvite invite) {
-    JsonObject obj = new JsonObject();
-    obj.addProperty("factionId", invite.factionId().toString());
-    obj.addProperty("playerUuid", invite.playerUuid().toString());
-    obj.addProperty("invitedBy", invite.invitedBy().toString());
-    obj.addProperty("createdAt", invite.createdAt());
-    obj.addProperty("expiresAt", invite.expiresAt());
-    return obj;
-  }
-
-  private PendingInvite deserializeInvite(JsonObject obj) {
-    return new PendingInvite(
-      UUID.fromString(obj.get("factionId").getAsString()),
-      UUID.fromString(obj.get("playerUuid").getAsString()),
-      UUID.fromString(obj.get("invitedBy").getAsString()),
-      obj.get("createdAt").getAsLong(),
-      obj.get("expiresAt").getAsLong()
-    );
+    storage.saveAll(all).join();
   }
 }

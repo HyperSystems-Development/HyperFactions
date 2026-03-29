@@ -1,22 +1,13 @@
 package com.hyperfactions.manager;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.hyperfactions.Permissions;
 import com.hyperfactions.api.events.*;
 import com.hyperfactions.config.ConfigManager;
 import com.hyperfactions.data.JoinRequest;
 import com.hyperfactions.integration.PermissionManager;
-import com.hyperfactions.storage.StorageUtils;
+import com.hyperfactions.storage.JoinRequestStorage;
 import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.BiConsumer;
@@ -52,9 +43,7 @@ public class JoinRequestManager {
   private final Map<UUID, Set<UUID>> requestsByFaction = new ConcurrentHashMap<>();
 
   // Persistence
-  private final Path dataFile;
-
-  private final Gson gson;
+  private final JoinRequestStorage storage;
 
   // GUI update callbacks
   @Nullable
@@ -69,14 +58,10 @@ public class JoinRequestManager {
   /**
    * Creates a new JoinRequestManager with persistence.
    *
-   * @param dataDir the data directory for storage
+   * @param storage the storage provider for join requests
    */
-  public JoinRequestManager(@NotNull Path dataDir) {
-    this.dataFile = dataDir.resolve("join_requests.json");
-    this.gson = new GsonBuilder()
-      .setPrettyPrinting()
-      .disableHtmlEscaping()
-      .create();
+  public JoinRequestManager(@NotNull JoinRequestStorage storage) {
+    this.storage = storage;
   }
 
   /**
@@ -106,7 +91,13 @@ public class JoinRequestManager {
    * Initializes the manager by loading persisted requests.
    */
   public void init() {
-    load();
+    List<JoinRequest> loaded = storage.loadAll().join();
+    for (JoinRequest request : loaded) {
+      requestsByPlayer.computeIfAbsent(request.playerUuid(), k -> ConcurrentHashMap.newKeySet())
+        .add(request);
+      requestsByFaction.computeIfAbsent(request.factionId(), k -> ConcurrentHashMap.newKeySet())
+        .add(request.playerUuid());
+    }
   }
 
   /**
@@ -470,88 +461,17 @@ public class JoinRequestManager {
   // === Persistence ===
 
   /**
-   * Loads requests from the JSON file.
-   */
-  private void load() {
-    if (!Files.exists(dataFile)) {
-      Logger.info("[Storage] No join requests file found, starting fresh");
-      return;
-    }
-
-    try {
-      String json = Files.readString(dataFile);
-      JsonArray array = JsonParser.parseString(json).getAsJsonArray();
-
-      int loaded = 0;
-      int expired = 0;
-
-      for (JsonElement el : array) {
-        JoinRequest request = deserializeRequest(el.getAsJsonObject());
-        if (request.isExpired()) {
-          expired++;
-          continue;
-        }
-
-        requestsByPlayer.computeIfAbsent(request.playerUuid(), k -> ConcurrentHashMap.newKeySet())
-          .add(request);
-        requestsByFaction.computeIfAbsent(request.factionId(), k -> ConcurrentHashMap.newKeySet())
-          .add(request.playerUuid());
-        loaded++;
-      }
-
-      Logger.info("[Storage] Loaded %d join requests (%d expired and skipped)", loaded, expired);
-    } catch (Exception e) {
-      ErrorHandler.report("Failed to load join requests", e);
-    }
-  }
-
-  /**
-   * Saves all requests to the JSON file.
+   * Collects all non-expired requests from the in-memory maps and saves via storage.
    */
   private void save() {
-    try {
-      Files.createDirectories(dataFile.getParent());
-    } catch (IOException e) {
-      ErrorHandler.report("Failed to create join requests directory", e);
-      return;
-    }
-
-    JsonArray array = new JsonArray();
+    List<JoinRequest> all = new ArrayList<>();
     for (Set<JoinRequest> requests : requestsByPlayer.values()) {
       for (JoinRequest request : requests) {
         if (!request.isExpired()) {
-          array.add(serializeRequest(request));
+          all.add(request);
         }
       }
     }
-
-    StorageUtils.WriteResult result = StorageUtils.writeAtomic(dataFile, gson.toJson(array));
-    if (result instanceof StorageUtils.WriteResult.Failure failure) {
-      ErrorHandler.report(String.format("Failed to save join requests: %s", failure.error()), failure.cause());
-    }
-  }
-
-  private JsonObject serializeRequest(JoinRequest request) {
-    JsonObject obj = new JsonObject();
-    obj.addProperty("factionId", request.factionId().toString());
-    obj.addProperty("playerUuid", request.playerUuid().toString());
-    obj.addProperty("playerName", request.playerName());
-    if (request.message() != null) {
-      obj.addProperty("message", request.message());
-    }
-    obj.addProperty("createdAt", request.createdAt());
-    obj.addProperty("expiresAt", request.expiresAt());
-    return obj;
-  }
-
-  private JoinRequest deserializeRequest(JsonObject obj) {
-    return new JoinRequest(
-      UUID.fromString(obj.get("factionId").getAsString()),
-      UUID.fromString(obj.get("playerUuid").getAsString()),
-      obj.get("playerName").getAsString(),
-      obj.has("message") ? obj.get("message").getAsString() : null,
-      obj.get("createdAt").getAsLong(),
-      obj.get("expiresAt").getAsLong()
-    );
+    storage.saveAll(all).join();
   }
 }

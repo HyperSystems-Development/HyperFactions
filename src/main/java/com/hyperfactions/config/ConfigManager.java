@@ -48,6 +48,8 @@ public class ConfigManager {
 
   private GravestoneConfig gravestoneConfig;
 
+  private StorageConfig storageConfig;
+
   private WorldsConfig worldsConfig;
 
   private final WorldSettingsResolver worldSettingsResolver = new WorldSettingsResolver();
@@ -138,7 +140,10 @@ public class ConfigManager {
       coreConfig.load();
     }
 
-    // Step 3: Load remaining module configs
+    // Step 3: Load remaining module configs (storage first — needed before storage init)
+    storageConfig = new StorageConfig(configDir.resolve("storage.json"));
+    storageConfig.load();
+
     backupConfig = new BackupConfig(configDir.resolve("backup.json"));
     backupConfig.load();
 
@@ -379,6 +384,16 @@ public class ConfigManager {
   @NotNull
   public BackupConfig backup() {
     return backupConfig;
+  }
+
+  /**
+   * Gets the storage configuration.
+   *
+   * @return storage config
+   */
+  @NotNull
+  public StorageConfig storage() {
+    return storageConfig;
   }
 
   /**

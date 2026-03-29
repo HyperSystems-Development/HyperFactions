@@ -27,10 +27,10 @@ import com.hyperfactions.protection.zone.ZoneDamageProtection;
 import com.hyperfactions.protection.zone.ZoneInteractionProtection;
 import com.hyperfactions.storage.ChatHistoryStorage;
 import com.hyperfactions.storage.FactionStorage;
-import com.hyperfactions.storage.JsonEconomyStorage;
+import com.hyperfactions.storage.EconomyStorage;
 import com.hyperfactions.storage.PlayerStorage;
+import com.hyperfactions.storage.StorageFactory;
 import com.hyperfactions.storage.ZoneStorage;
-import com.hyperfactions.storage.json.JsonChatHistoryStorage;
 import com.hyperfactions.storage.json.JsonFactionStorage;
 import com.hyperfactions.storage.json.JsonPlayerStorage;
 import com.hyperfactions.storage.json.JsonZoneStorage;
@@ -116,7 +116,10 @@ public class HyperFactions {
 
   private EconomyManager economyManager;
 
-  private JsonEconomyStorage economyStorage;
+  private EconomyStorage economyStorage;
+
+  @Nullable
+  private com.hyperfactions.storage.sql.SqlConnectionPool connectionPool;
 
   private String treasuryDisabledReason;
 
@@ -268,10 +271,12 @@ public class HyperFactions {
     // so we need to load all Gson inner classes on the main thread at startup.
     preloadGsonClasses();
 
-    // Initialize storage (all storage uses data/ subdirectory)
-    factionStorage = new JsonFactionStorage(dataPath);
-    playerStorage = new JsonPlayerStorage(dataPath);
-    zoneStorage = new JsonZoneStorage(dataPath);
+    // Initialize storage via factory (JSON or SQL based on config/storage.json)
+    var storageBundle = StorageFactory.create(ConfigManager.get().storage(), dataPath);
+    factionStorage = storageBundle.factionStorage();
+    playerStorage = storageBundle.playerStorage();
+    zoneStorage = storageBundle.zoneStorage();
+    connectionPool = storageBundle.connectionPool();
 
     factionStorage.init().join();
     playerStorage.init().join();
@@ -288,8 +293,8 @@ public class HyperFactions {
     spawnSuppressionManager = new SpawnSuppressionManager(zoneManager, claimManager, factionManager);
     zoneMobClearManager = new ZoneMobClearManager(zoneManager, this);
     teleportManager = new TeleportManager(factionManager);
-    inviteManager = new InviteManager(dataPath);
-    joinRequestManager = new JoinRequestManager(dataPath);
+    inviteManager = new InviteManager(storageBundle.inviteStorage());
+    joinRequestManager = new JoinRequestManager(storageBundle.joinRequestStorage());
 
     // Initialize invite/request managers (loads persisted data)
     inviteManager.init();
@@ -333,7 +338,7 @@ public class HyperFactions {
       Logger.debug("Treasury module disabled (no economy provider)");
     } else {
       // Both conditions met — activate treasury
-      economyStorage = new JsonEconomyStorage(dataPath);
+      economyStorage = storageBundle.economyStorage();
       economyStorage.init().join();
       economyManager = new EconomyManager(factionManager, vaultEconomyProvider, economyStorage);
       economyManager.loadAll();
@@ -428,7 +433,7 @@ public class HyperFactions {
       uuid -> playerLookup != null ? playerLookup.apply(uuid) : null);
 
     // Initialize chat history storage and manager
-    chatHistoryStorage = new JsonChatHistoryStorage(dataPath);
+    chatHistoryStorage = storageBundle.chatHistoryStorage();
     chatHistoryStorage.init().join();
     chatHistoryManager = new ChatHistoryManager(chatHistoryStorage);
 
@@ -581,6 +586,11 @@ public class HyperFactions {
     }
     if (zoneStorage != null) {
       zoneStorage.shutdown().join();
+    }
+
+    // Shutdown SQL connection pool (after all storage backends are done)
+    if (connectionPool != null) {
+      connectionPool.shutdown();
     }
 
     // Shutdown update notification listener

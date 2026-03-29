@@ -72,6 +72,25 @@ dependencies {
     // JSON handling
     implementation 'com.google.code.gson:gson:2.11.0'
 
+    // SQL storage (JDBI fluent SQL, HikariCP pooling, Flyway migrations)
+    implementation 'org.jdbi:jdbi3-core:3.45.4'
+    implementation 'com.zaxxer:HikariCP:6.2.1'
+    implementation 'org.flywaydb:flyway-core:10.22.0'
+    implementation 'org.flywaydb:flyway-mysql:10.22.0'
+    implementation 'org.flywaydb:flyway-database-postgresql:10.22.0'
+
+    // JDBC drivers — compileOnly; downloaded at runtime to reduce JAR size
+    // for servers that only use JSON storage. See DriverDownloader.
+    compileOnly 'com.mysql:mysql-connector-j:9.1.0'
+    compileOnly 'org.postgresql:postgresql:42.7.5'
+
+    // SLF4J 2.x — overrides HikariCP's transitive 1.7.x to eliminate
+    // "Failed to load class StaticLoggerBinder" warnings.
+    // Uses jdk14 bridge (not nop) so SQL library errors route through
+    // java.util.logging → Sentry via ErrorHandler
+    implementation 'org.slf4j:slf4j-api:2.0.16'
+    implementation 'org.slf4j:slf4j-jdk14:2.0.16'
+
     // Sentry error tracking (bundled in shadow JAR)
     implementation 'io.sentry:sentry:8.33.0'
 
@@ -228,6 +247,14 @@ shadowJar {
     // Relocate dependencies to avoid conflicts
     relocate 'com.google.gson', 'com.hyperfactions.lib.gson'
     relocate 'io.sentry', 'com.hyperfactions.lib.sentry'
+
+    // SQL storage relocations (JDBC drivers downloaded at runtime, not bundled)
+    relocate 'org.jdbi', 'com.hyperfactions.lib.jdbi'
+    relocate 'com.zaxxer.hikari', 'com.hyperfactions.lib.hikari'
+    relocate 'org.flywaydb', 'com.hyperfactions.lib.flyway'
+    relocate 'org.slf4j', 'com.hyperfactions.lib.slf4j'
+
+    mergeServiceFiles()  // Required for Flyway + JDBI service discovery
 
     // Don't minimize - it removes Gson's inner classes needed at runtime
 }
