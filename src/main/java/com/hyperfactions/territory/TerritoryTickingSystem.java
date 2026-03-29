@@ -87,9 +87,13 @@ public class TerritoryTickingSystem extends EntityTickingSystem<EntityStore> {
       }
 
       // Get current position (as double for precision)
-      double posX = playerRef.getTransform().getPosition().getX();
-      double posY = playerRef.getTransform().getPosition().getY();
-      double posZ = playerRef.getTransform().getPosition().getZ();
+      var transform = playerRef.getTransform();
+      if (transform == null) {
+        return;
+      }
+      double posX = transform.getPosition().getX();
+      double posY = transform.getPosition().getY();
+      double posZ = transform.getPosition().getZ();
 
       UUID playerUuid = playerRef.getUuid();
       TeleportManager teleportManager = hyperFactions.getTeleportManager();

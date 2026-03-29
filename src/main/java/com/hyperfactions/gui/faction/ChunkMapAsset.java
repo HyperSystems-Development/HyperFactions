@@ -14,6 +14,7 @@ import com.hypixel.hytale.server.core.asset.common.CommonAssetRegistry;
 import com.hypixel.hytale.server.core.io.PacketHandler;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.universe.Universe;
+import com.hypixel.hytale.protocol.packets.worldmap.MapImage;
 import com.hypixel.hytale.server.core.universe.world.worldmap.provider.chunk.ChunkWorldMap;
 import it.unimi.dsi.fastutil.longs.LongArraySet;
 import java.awt.image.BufferedImage;
@@ -214,6 +215,43 @@ public class ChunkMapAsset extends CommonAsset {
         return null;
       }
     });
+  }
+
+  /**
+   * Decodes a palette-based MapImage back into a flat RGBA pixel array.
+   */
+  @Nullable
+  private static int[] decodePixels(MapImage img) {
+    if (img.palette == null || img.packedIndices == null) {
+      return null;
+    }
+    int totalPixels = img.width * img.height;
+    int[] pixels = new int[totalPixels];
+    int bitsPerIndex = img.bitsPerIndex & 0xFF;
+    if (bitsPerIndex == 0) {
+      return pixels;
+    }
+    int mask = (1 << bitsPerIndex) - 1;
+    for (int i = 0; i < totalPixels; i++) {
+      int bitOffset = i * bitsPerIndex;
+      int byteIndex = bitOffset / 8;
+      int bitIndex = bitOffset % 8;
+      int index = 0;
+      if (byteIndex < img.packedIndices.length) {
+        index = ((img.packedIndices[byteIndex] & 0xFF) >> bitIndex);
+        if (bitIndex + bitsPerIndex > 8 && byteIndex + 1 < img.packedIndices.length) {
+          index |= ((img.packedIndices[byteIndex + 1] & 0xFF) << (8 - bitIndex));
+        }
+        if (bitsPerIndex > 8 && byteIndex + 2 < img.packedIndices.length) {
+          index |= ((img.packedIndices[byteIndex + 2] & 0xFF) << (16 - bitIndex));
+        }
+        index &= mask;
+      }
+      if (index >= 0 && index < img.palette.length) {
+        pixels[i] = img.palette[index];
+      }
+    }
+    return pixels;
   }
 
   /**

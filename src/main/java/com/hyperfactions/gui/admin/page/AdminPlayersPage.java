@@ -559,6 +559,10 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
               return;
             }
             var targetTransform = targetPlayer.getTransform();
+            if (targetTransform == null) {
+              player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.PLR_NOT_ONLINE));
+              return;
+            }
             var targetPos = targetTransform.getPosition();
             var targetRot = targetTransform.getRotation();
             targetWorld.execute(() -> {
