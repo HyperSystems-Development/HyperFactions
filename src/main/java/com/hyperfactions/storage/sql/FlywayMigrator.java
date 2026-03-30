@@ -33,7 +33,10 @@ public final class FlywayMigrator {
 
     Logger.info("[Storage] Running Flyway migrations from %s (prefix: %s)", location, tablePrefix);
 
-    Flyway flyway = Flyway.configure()
+    // Use the plugin's classloader so Flyway can find migration SQL files
+    // in the shadow JAR. The Hytale PluginClassLoader doesn't propagate to
+    // Flyway's relocated classpath scanner by default.
+    Flyway flyway = Flyway.configure(FlywayMigrator.class.getClassLoader())
         .dataSource(dataSource)
         .locations(location)
         .table(tablePrefix + "_flyway_history")
