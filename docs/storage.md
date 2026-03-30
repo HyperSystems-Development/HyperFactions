@@ -1,44 +1,60 @@
 # HyperFactions Storage Layer
 
-> **Version**: 0.13.0
+> **Version**: 0.14.0
 
 Architecture documentation for the HyperFactions data persistence system.
 
 ## Overview
 
-HyperFactions uses an interface-based storage layer with:
+HyperFactions uses an interface-based storage layer with pluggable backends:
 
-- **Storage Interfaces** - Abstract contracts for data operations
-- **JSON Implementations** - File-based storage with pretty-printed JSON
+- **Storage Interfaces** - Abstract contracts for data operations (7 interfaces)
+- **JSON Backend** (default) - File-based storage with pretty-printed JSON, zero config
+- **SQL Backend** (optional) - MySQL/MariaDB and PostgreSQL with connection pooling
 - **Async Operations** - All I/O returns `CompletableFuture` for non-blocking
 - **Data Models** - Java records for immutable data structures (Faction, Zone, PlayerPower, ChunkKey) and mutable PlayerData class
 - **Auto-Save** - Periodic saves with configurable interval
-- **Safe-Save** - Atomic writes with SHA-256 checksums, backup recovery, `.bak` auto-cleanup
-- **Per-UUID Locking** - `JsonPlayerStorage` uses per-UUID locks to prevent concurrent load-modify-save race conditions (e.g., simultaneous deaths losing kill/death increments)
-- **Migration Support** - Automatic config (v1→v8) and data (v0→v1, v1→v2) format upgrades
-- **Backup System** - GFS rotation with hourly/daily/weekly/manual/migration types
+- **Safe-Save** (JSON) - Atomic writes with SHA-256 checksums, backup recovery, `.bak` auto-cleanup
+- **Row Locking** (SQL) - `SELECT FOR UPDATE` for atomic player data updates
+- **Per-UUID Locking** (JSON) - `JsonPlayerStorage` uses per-UUID locks to prevent concurrent load-modify-save race conditions
+- **Migration Support** - Automatic config (v1→v8) and data (v0→v1, v1→v2) format upgrades; Flyway for SQL schema evolution
+- **Backup System** - GFS rotation with hourly/daily/weekly/manual/migration types; portable JSON backups from any backend
 - **Import Directories** - Data import from ElbaphFactions, HyFactions, SimpleClaims, and FactionsX
+- **Data Migration** - `/f admin migrate` for bidirectional JSON ↔ SQL data transfer
 
 ## Architecture
 
 ```
-Storage Interface                  Implementation
-      │                                  │
-FactionStorage ────────────────► JsonFactionStorage
-PlayerStorage  ────────────────► JsonPlayerStorage
-ZoneStorage    ────────────────► JsonZoneStorage
-      │                                  │
-      └──────── Data Models ◄────────────┘
+Storage Interface              JSON Implementation        SQL Implementation
+      │                              │                          │
+FactionStorage ───────────► JsonFactionStorage      SqlFactionStorage
+PlayerStorage  ───────────► JsonPlayerStorage       SqlPlayerStorage
+ZoneStorage    ───────────► JsonZoneStorage         SqlZoneStorage
+ChatHistoryStorage ───────► JsonChatHistoryStorage  SqlChatHistoryStorage
+EconomyStorage ───────────► JsonEconomyStorage      SqlEconomyStorage
+InviteStorage  ───────────► JsonInviteStorage       SqlInviteStorage
+JoinRequestStorage ───────► JsonJoinRequestStorage  SqlJoinRequestStorage
+      │                              │                          │
+      └────────── Data Models ◄──────┴──────────────────────────┘
+                      │
+             Faction, PlayerPower, PlayerData,
+             Zone, FactionClaim, ChunkKey, etc.
+
+StorageFactory ────────────► Selects backend from config/storage.json
+      │
+      ├── JSON: Zero-config file storage (default)
+      └── SQL: HikariCP pool → JDBI → MySQL/MariaDB or PostgreSQL
                     │
-           Faction, PlayerPower, PlayerData,
-           Zone, FactionClaim, ChunkKey, etc.
+              FlywayMigrator → Schema versioning (db/migration/*.sql)
+              DriverDownloader → Runtime JDBC driver download
 
 Backup System
       │
-BackupManager ─────────────────► ZIP archives in backups/
-      │                          (GFS rotation: hourly, daily, weekly)
-      │
-      └── BackupMetadata ──────► Filename-encoded metadata
+BackupManager ─────────────► ZIP archives in backups/
+      │                      (GFS rotation: hourly, daily, weekly)
+      ├── StorageExporter ──► JSON: direct file zip
+      │                      SQL: export to temp JSON → zip
+      └── BackupMetadata ──► Filename-encoded metadata
 ```
 
 ## Data Directory Structure
@@ -46,9 +62,12 @@ BackupManager ─────────────────► ZIP archive
 ```
 <server>/mods/com.hyperfactions_HyperFactions/
 ├── config/                        # Configuration files
+│   ├── storage.json               # Storage backend selection (json/mysql/postgresql)
 │   ├── factions.json              # Faction gameplay settings
 │   ├── server.json                # Server behavior settings
 │   └── ...                        # Other module configs
+├── libs/                          # Runtime-downloaded JDBC drivers (auto-managed)
+│   └── mysql-connector-j-9.1.0.jar  # Downloaded on first SQL startup
 ├── data/                          # All data files (migrated from root in v0→v1)
 │   ├── factions/                  # Per-faction JSON files
 │   │   └── {uuid}.json
@@ -938,3 +957,89 @@ JSON files can be manually edited while the server is stopped:
 | DataV1ToV2Migration | [`migration/migrations/data/DataV1ToV2Migration.java`](../src/main/java/com/hyperfactions/migration/migrations/data/DataV1ToV2Migration.java) |
 | MigrationRunner | [`migration/MigrationRunner.java`](../src/main/java/com/hyperfactions/migration/MigrationRunner.java) |
 | BackupManager | [`backup/BackupManager.java`](../src/main/java/com/hyperfactions/backup/BackupManager.java) |
+| EconomyStorage | [`storage/EconomyStorage.java`](../src/main/java/com/hyperfactions/storage/EconomyStorage.java) |
+| InviteStorage | [`storage/InviteStorage.java`](../src/main/java/com/hyperfactions/storage/InviteStorage.java) |
+| JoinRequestStorage | [`storage/JoinRequestStorage.java`](../src/main/java/com/hyperfactions/storage/JoinRequestStorage.java) |
+| StorageFactory | [`storage/StorageFactory.java`](../src/main/java/com/hyperfactions/storage/StorageFactory.java) |
+| StorageExporter | [`storage/StorageExporter.java`](../src/main/java/com/hyperfactions/storage/StorageExporter.java) |
+| SqlConnectionPool | [`storage/sql/SqlConnectionPool.java`](../src/main/java/com/hyperfactions/storage/sql/SqlConnectionPool.java) |
+| SqlFactionStorage | [`storage/sql/SqlFactionStorage.java`](../src/main/java/com/hyperfactions/storage/sql/SqlFactionStorage.java) |
+| StorageMigrator | [`migration/StorageMigrator.java`](../src/main/java/com/hyperfactions/migration/StorageMigrator.java) |
+| StorageConfig | [`config/modules/StorageConfig.java`](../src/main/java/com/hyperfactions/config/modules/StorageConfig.java) |
+
+---
+
+## SQL Storage Backend
+
+### Configuration
+
+Set `type` to `mysql`, `mariadb`, or `postgresql` in `config/storage.json`:
+
+```json
+{
+  "type": "mysql",
+  "sql": {
+    "dialect": "mysql",
+    "host": "localhost",
+    "port": 3306,
+    "database": "hyperfactions",
+    "username": "hytale",
+    "password": "password",
+    "tablePrefix": "hf",
+    "pool": {
+      "maxSize": 10,
+      "minIdle": 2,
+      "idleTimeoutMs": 300000,
+      "maxLifetimeMs": 1800000,
+      "connectionTimeoutMs": 10000
+    },
+    "retry": {
+      "maxAttempts": 3,
+      "backoffMs": 1000
+    }
+  }
+}
+```
+
+### Database Setup
+
+```sql
+CREATE DATABASE hyperfactions;
+CREATE USER 'hytale'@'localhost' IDENTIFIED BY 'password';
+GRANT ALL PRIVILEGES ON hyperfactions.* TO 'hytale'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+Required privileges: SELECT, INSERT, UPDATE, DELETE, CREATE TABLE, ALTER TABLE, DROP TABLE, INDEX.
+
+### Table Prefix
+
+All tables use the configured `tablePrefix` (default: `hf`). This allows multiple HyperFactions instances to share a database. Tables: `hf_factions`, `hf_faction_members`, `hf_faction_claims`, `hf_faction_relations`, `hf_faction_logs`, `hf_players`, `hf_player_membership_history`, `hf_zones`, `hf_zone_chunks`, `hf_faction_economy`, `hf_faction_transactions`, `hf_chat_messages`, `hf_invites`, `hf_join_requests`, `hf_flyway_history`.
+
+### Schema Migrations
+
+SQL schema is managed by Flyway. Migration files are in `resources/db/migration/mysql/` and `resources/db/migration/postgresql/`. Flyway runs automatically on startup and applies pending migrations.
+
+### JDBC Driver Download
+
+JDBC drivers (MySQL Connector/J, PostgreSQL) are **not bundled** in the JAR. They are downloaded automatically from Maven Central on first startup when SQL storage is configured. Downloaded JARs are cached in the `libs/` directory.
+
+### Data Migration
+
+Use `/f admin migrate <source> <target>` to transfer data between backends:
+
+```
+/f admin migrate json mysql       — JSON to MySQL (uses config/storage.json for SQL settings)
+/f admin migrate mysql json       — MySQL to JSON
+/f admin migrate mysql postgresql — SQL to SQL (requires --target-host, --target-database, etc.)
+```
+
+### Connection Pooling
+
+Uses HikariCP 6.2.1 with configurable pool size, idle timeout, max lifetime, and keepalive. Connection retry with exponential backoff on startup. Errors route through SLF4J → JUL → Sentry.
+
+### Thread Safety
+
+- SQL storage uses `SELECT ... FOR UPDATE` for atomic player data updates (replaces JSON's per-UUID `ReentrantLock`)
+- All multi-table operations use JDBI transactions with auto-rollback on exception
+- HikariCP provides thread-safe connection acquisition

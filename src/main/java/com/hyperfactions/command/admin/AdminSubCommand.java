@@ -13,6 +13,7 @@ import com.hyperfactions.command.admin.handler.AdminMapDecayHandler;
 import com.hyperfactions.command.admin.handler.AdminPowerHandler;
 import com.hyperfactions.command.admin.handler.AdminTestHandler;
 import com.hyperfactions.command.admin.handler.AdminUpdateHandler;
+import com.hyperfactions.command.admin.handler.AdminMigrateHandler;
 import com.hyperfactions.command.admin.handler.AdminWorldHandler;
 import com.hyperfactions.command.admin.handler.AdminZoneHandler;
 import com.hyperfactions.command.util.CommandUtil;
@@ -81,6 +82,8 @@ public class AdminSubCommand extends AbstractAsyncCommand {
 
   private final AdminWorldHandler worldHandler;
 
+  private final AdminMigrateHandler migrateHandler;
+
   /** Creates a new AdminSubCommand. */
   public AdminSubCommand(@NotNull HyperFactions hyperFactions, @NotNull HyperFactionsPlugin plugin) {
     super("admin", "Admin commands");
@@ -100,6 +103,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
     this.mapDecayHandler = new AdminMapDecayHandler(hyperFactions);
     this.testHandler = new AdminTestHandler(hyperFactions);
     this.worldHandler = new AdminWorldHandler(hyperFactions);
+    this.migrateHandler = new AdminMigrateHandler(hyperFactions);
   }
 
   /** Checks if generate permission. */
@@ -241,6 +245,7 @@ public class AdminSubCommand extends AbstractAsyncCommand {
       case "rollback" -> updateHandler.handleAdminRollback(ctx);
       case "backup" -> backupHandler.handleAdminBackup(ctx, player, senderUuid, subArgs);
       case "import" -> importHandler.handleAdminImport(ctx, player, subArgs);
+      case "migrate" -> migrateHandler.handleAdminMigrate(ctx, subArgs);
       case "debug" -> debugHandler.handleDebug(ctx, store, ref, player, currentWorld, subArgs);
       case "decay" -> mapDecayHandler.handleAdminDecay(ctx, player, subArgs);
       case "map" -> mapDecayHandler.handleAdminMap(ctx, player, subArgs);

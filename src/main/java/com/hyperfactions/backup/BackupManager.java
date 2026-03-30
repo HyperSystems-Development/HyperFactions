@@ -67,6 +67,20 @@ public class BackupManager {
 
   private final Object backupLock = new Object();
 
+  @Nullable
+  private com.hyperfactions.storage.StorageExporter storageExporter;
+
+  /**
+   * Sets the storage exporter for SQL-aware backup/restore.
+   * When set and {@link com.hyperfactions.storage.StorageExporter#requiresExport()} is true,
+   * backups will export SQL data to JSON before zipping.
+   *
+   * @param exporter the storage exporter
+   */
+  public void setStorageExporter(@Nullable com.hyperfactions.storage.StorageExporter exporter) {
+    this.storageExporter = exporter;
+  }
+
   /**
    * Creates a new BackupManager.
    *
@@ -277,60 +291,79 @@ public class BackupManager {
         // Ensure backups directory exists (may have been deleted after init())
         Files.createDirectories(backupsDir);
 
-        // Create ZIP file — data files are under data/ subdirectory
-        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(backupFile.toFile()))) {
-          // Add data/factions/ directory
-          Path factionsDir = dataPath.resolve("factions");
-          if (Files.exists(factionsDir)) {
-            addDirectoryToZip(zos, factionsDir, "data/factions");
-          }
+        // For SQL storage: export data to temp JSON files first
+        Path effectiveDataPath = dataPath;
+        Path tempDir = null;
+        if (storageExporter != null && storageExporter.requiresExport()) {
+          tempDir = Files.createTempDirectory("hf-backup-");
+          Path tempDataPath = tempDir.resolve("data");
+          Files.createDirectories(tempDataPath);
+          Logger.info("[Backup] Exporting SQL data to temporary JSON files...");
+          storageExporter.exportToJson(tempDataPath).join();
+          effectiveDataPath = tempDataPath;
+        }
 
-          // Add data/players/ directory
-          Path playersDir = dataPath.resolve("players");
-          if (Files.exists(playersDir)) {
-            addDirectoryToZip(zos, playersDir, "data/players");
-          }
+        try {
+          // Create ZIP file — data files are under data/ subdirectory
+          try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(backupFile.toFile()))) {
+            // Add data/factions/ directory
+            Path factionsDir = effectiveDataPath.resolve("factions");
+            if (Files.exists(factionsDir)) {
+              addDirectoryToZip(zos, factionsDir, "data/factions");
+            }
 
-          // Add data/chat/ directory
-          Path chatDir = dataPath.resolve("chat");
-          if (Files.exists(chatDir)) {
-            addDirectoryToZip(zos, chatDir, "data/chat");
-          }
+            // Add data/players/ directory
+            Path playersDir = effectiveDataPath.resolve("players");
+            if (Files.exists(playersDir)) {
+              addDirectoryToZip(zos, playersDir, "data/players");
+            }
 
-          // Add data/economy/ directory
-          Path economyDir = dataPath.resolve("economy");
-          if (Files.exists(economyDir)) {
-            addDirectoryToZip(zos, economyDir, "data/economy");
-          }
+            // Add data/chat/ directory
+            Path chatDir = effectiveDataPath.resolve("chat");
+            if (Files.exists(chatDir)) {
+              addDirectoryToZip(zos, chatDir, "data/chat");
+            }
 
-          // Add data/zones.json
-          Path zonesFile = dataPath.resolve("zones.json");
-          if (Files.exists(zonesFile)) {
-            addFileToZip(zos, zonesFile, "data/zones.json");
-          }
+            // Add data/economy/ directory
+            Path economyDir = effectiveDataPath.resolve("economy");
+            if (Files.exists(economyDir)) {
+              addDirectoryToZip(zos, economyDir, "data/economy");
+            }
 
-          // Add data/invites.json
-          Path invitesFile = dataPath.resolve("invites.json");
-          if (Files.exists(invitesFile)) {
-            addFileToZip(zos, invitesFile, "data/invites.json");
-          }
+            // Add data/zones.json
+            Path zonesFile = effectiveDataPath.resolve("zones.json");
+            if (Files.exists(zonesFile)) {
+              addFileToZip(zos, zonesFile, "data/zones.json");
+            }
 
-          // Add data/join_requests.json
-          Path joinRequestsFile = dataPath.resolve("join_requests.json");
-          if (Files.exists(joinRequestsFile)) {
-            addFileToZip(zos, joinRequestsFile, "data/join_requests.json");
-          }
+            // Add data/invites.json
+            Path invitesFile = effectiveDataPath.resolve("invites.json");
+            if (Files.exists(invitesFile)) {
+              addFileToZip(zos, invitesFile, "data/invites.json");
+            }
 
-          // Add config.json (if legacy monolithic config still exists)
-          Path configFile = dataDir.resolve("config.json");
-          if (Files.exists(configFile)) {
-            addFileToZip(zos, configFile, "config.json");
-          }
+            // Add data/join_requests.json
+            Path joinRequestsFile = effectiveDataPath.resolve("join_requests.json");
+            if (Files.exists(joinRequestsFile)) {
+              addFileToZip(zos, joinRequestsFile, "data/join_requests.json");
+            }
 
-          // Add config/ directory (module configs)
-          Path configDir = dataDir.resolve("config");
-          if (Files.exists(configDir)) {
-            addDirectoryToZip(zos, configDir, "config");
+            // Add config.json (if legacy monolithic config still exists)
+            Path configFile = dataDir.resolve("config.json");
+            if (Files.exists(configFile)) {
+              addFileToZip(zos, configFile, "config.json");
+            }
+
+            // Add config/ directory (module configs)
+            Path configDir = dataDir.resolve("config");
+            if (Files.exists(configDir)) {
+              addDirectoryToZip(zos, configDir, "config");
+            }
+          }
+        } finally {
+          // Clean up temp directory for SQL exports
+          if (tempDir != null) {
+            deleteDirectoryRecursive(tempDir);
           }
         }
 
@@ -652,5 +685,29 @@ public class BackupManager {
   @NotNull
   public Path getBackupsDir() {
     return backupsDir;
+  }
+
+  /**
+   * Recursively deletes a directory and all its contents.
+   * Used to clean up temporary export directories.
+   */
+  private void deleteDirectoryRecursive(@NotNull Path dir) {
+    try {
+      Files.walkFileTree(dir, new SimpleFileVisitor<>() {
+        @Override
+        public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+          Files.deleteIfExists(file);
+          return FileVisitResult.CONTINUE;
+        }
+
+        @Override
+        public FileVisitResult postVisitDirectory(Path d, IOException exc) throws IOException {
+          Files.deleteIfExists(d);
+          return FileVisitResult.CONTINUE;
+        }
+      });
+    } catch (IOException e) {
+      Logger.warn("[Backup] Failed to clean up temp directory: %s", dir);
+    }
   }
 }

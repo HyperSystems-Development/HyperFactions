@@ -303,8 +303,9 @@ public class HyperFactions {
     // Initialize confirmation manager (for text-mode command confirmations)
     confirmationManager = new ConfirmationManager();
 
-    // Initialize backup manager
+    // Initialize backup manager (with SQL-aware exporter for portable backups)
     backupManager = new BackupManager(dataDir, this);
+    backupManager.setStorageExporter(storageBundle.storageExporter());
     backupManager.init();
 
     // Load data
@@ -1005,6 +1006,12 @@ public class HyperFactions {
   @NotNull
   public Path getDataDir() {
     return dataDir;
+  }
+
+  /** Returns the SQL connection pool, or null if using JSON storage. */
+  @Nullable
+  public com.hyperfactions.storage.sql.SqlConnectionPool getConnectionPool() {
+    return connectionPool;
   }
 
   /** Returns the faction manager. */

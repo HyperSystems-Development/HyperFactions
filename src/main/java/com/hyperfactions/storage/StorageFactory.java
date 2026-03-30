@@ -32,6 +32,7 @@ public final class StorageFactory {
       @NotNull EconomyStorage economyStorage,
       @NotNull InviteStorage inviteStorage,
       @NotNull JoinRequestStorage joinRequestStorage,
+      @NotNull StorageExporter storageExporter,
       @Nullable SqlConnectionPool connectionPool,
       @NotNull String storageType
   ) {}
@@ -78,9 +79,24 @@ public final class StorageFactory {
         new JsonEconomyStorage(dataDir),
         new JsonInviteStorage(dataDir),
         new JsonJoinRequestStorage(dataDir),
+        new JsonStorageExporter(),
         null,
         "json"
     );
+  }
+
+  /**
+   * Creates an SQL storage bundle from an explicit {@link SqlConfig}.
+   * Used by the migration command when connecting to a target database
+   * with connection details provided via command flags.
+   *
+   * @param sqlConfig the SQL configuration
+   * @param dataDir   the plugin data directory (for driver download)
+   * @return the storage bundle
+   */
+  @NotNull
+  public static StorageBundle createFromSqlConfig(@NotNull SqlConfig sqlConfig, @NotNull Path dataDir) {
+    return createSqlBundleFromConfig(sqlConfig, dataDir);
   }
 
   /**
@@ -91,7 +107,12 @@ public final class StorageFactory {
   private static StorageBundle createSqlBundle(@NotNull StorageConfig config,
                          @NotNull SqlDialect dialect,
                          @NotNull Path dataDir) {
-    SqlConfig sqlConfig = config.toSqlConfig();
+    return createSqlBundleFromConfig(config.toSqlConfig(), dataDir);
+  }
+
+  private static StorageBundle createSqlBundleFromConfig(@NotNull SqlConfig sqlConfig,
+                               @NotNull Path dataDir) {
+    SqlDialect dialect = sqlConfig.dialect();
 
     Logger.info("[Storage] Using %s storage at %s:%d/%s (prefix: %s)",
         dialect.name(), sqlConfig.host(), sqlConfig.port(),
@@ -116,16 +137,22 @@ public final class StorageFactory {
     Jdbi jdbi = pool.getJdbi();
     String prefix = sqlConfig.tablePrefix();
 
+    var factionStorage = new SqlFactionStorage(jdbi, dialect, prefix);
+    var playerStorage = new SqlPlayerStorage(jdbi, dialect, prefix);
+    var zoneStorage = new SqlZoneStorage(jdbi, prefix);
+    var chatStorage = new SqlChatHistoryStorage(jdbi, prefix);
+    var economyStorage = new SqlEconomyStorage(jdbi, dialect, prefix);
+    var inviteStorage = new SqlInviteStorage(jdbi, prefix);
+    var joinRequestStorage = new SqlJoinRequestStorage(jdbi, prefix);
+
+    var exporter = new SqlStorageExporter(
+        factionStorage, playerStorage, zoneStorage,
+        chatStorage, economyStorage, inviteStorage, joinRequestStorage);
+
     return new StorageBundle(
-        new SqlFactionStorage(jdbi, dialect, prefix),
-        new SqlPlayerStorage(jdbi, dialect, prefix),
-        new SqlZoneStorage(jdbi, prefix),
-        new SqlChatHistoryStorage(jdbi, prefix),
-        new SqlEconomyStorage(jdbi, dialect, prefix),
-        new SqlInviteStorage(jdbi, prefix),
-        new SqlJoinRequestStorage(jdbi, prefix),
-        pool,
-        dialect.name().toLowerCase()
+        factionStorage, playerStorage, zoneStorage,
+        chatStorage, economyStorage, inviteStorage, joinRequestStorage,
+        exporter, pool, dialect.name().toLowerCase()
     );
   }
 }
