@@ -1,0 +1,41 @@
+# Flyway service descriptor — merged from flyway-core, flyway-mysql, and
+# flyway-database-postgresql.  The shadow plugin's mergeServiceFiles() drops
+# entries from earlier JARs when combined with relocate(), leaving only the
+# last JAR's entries.  This file provides the complete list so the shadow JAR
+# contains all required Flyway plugins after relocation.
+#
+# flyway-core 10.22.0
+org.flywaydb.core.internal.database.h2.H2DatabaseType
+org.flywaydb.core.internal.database.sqlite.SQLiteDatabaseType
+org.flywaydb.core.internal.database.base.TestContainersDatabaseType
+org.flywaydb.core.internal.schemahistory.BaseAppliedMigration
+org.flywaydb.core.internal.resource.CoreResourceTypeProvider
+org.flywaydb.core.internal.command.clean.CleanModeConfigurationExtension
+org.flywaydb.core.internal.configuration.extensions.DeployScriptFilenameConfigurationExtension
+org.flywaydb.core.internal.configuration.extensions.PrepareScriptFilenameConfigurationExtension
+org.flywaydb.core.internal.configuration.resolvers.EnvironmentVariableResolver
+org.flywaydb.core.internal.configuration.resolvers.EnvironmentProvisionerNone
+org.flywaydb.core.internal.proprietaryStubs.CommandExtensionStub
+org.flywaydb.core.api.migration.baseline.BaselineAppliedMigration
+org.flywaydb.core.api.migration.baseline.BaselineMigrationConfigurationExtension
+org.flywaydb.core.api.migration.baseline.BaselineMigrationResolver
+org.flywaydb.core.api.migration.baseline.BaselineResourceTypeProvider
+org.flywaydb.core.api.migration.baseline.BaselineMigrationTypeResolver
+org.flywaydb.core.internal.proprietaryStubs.LicensingConfigurationExtensionStub
+org.flywaydb.core.internal.proprietaryStubs.AuthCommandExtensionStub
+org.flywaydb.core.internal.proprietaryStubs.DeployCommandExtensionStub
+org.flywaydb.core.internal.proprietaryStubs.DiffCommandExtensionStub
+org.flywaydb.core.internal.proprietaryStubs.ModelCommandExtensionStub
+org.flywaydb.core.internal.proprietaryStubs.DiffTextCommandExtensionStub
+org.flywaydb.core.internal.proprietaryStubs.GenerateCommandExtensionStub
+org.flywaydb.core.internal.proprietaryStubs.PrepareCommandExtensionStub
+org.flywaydb.core.internal.proprietaryStubs.PATTokenConfigurationExtensionStub
+org.flywaydb.core.internal.publishing.PublishingConfigurationExtension
+org.flywaydb.core.experimental.migration.CoreMigrationTypeResolver
+# flyway-mysql 10.22.0
+org.flywaydb.database.mysql.MySQLDatabaseType
+org.flywaydb.database.mysql.mariadb.MariaDBDatabaseType
+# flyway-database-postgresql 10.22.0
+org.flywaydb.database.cockroachdb.CockroachDBDatabaseType
+org.flywaydb.database.postgresql.PostgreSQLDatabaseType
+org.flywaydb.database.postgresql.PostgreSQLConfigurationExtension

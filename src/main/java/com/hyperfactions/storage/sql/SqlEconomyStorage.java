@@ -70,31 +70,44 @@ public class SqlEconomyStorage implements EconomyStorage {
           return null;
         });
 
-        // Load transactions per faction
+        // Load transactions per faction into temp map, then rebuild economies
         if (!economies.isEmpty()) {
+          Map<UUID, List<EconomyAPI.Transaction>> txMap = new HashMap<>();
           jdbi.withHandle(handle -> {
             handle.createQuery("SELECT * FROM " + txTable + " ORDER BY timestamp DESC")
                 .map((rs, ctx) -> {
                   UUID factionId = UUID.fromString(rs.getString("faction_id"));
-                  FactionEconomy econ = economies.get(factionId);
-                  if (econ != null) {
+                  if (economies.containsKey(factionId)) {
                     String actorIdStr = rs.getString("actor_id");
                     UUID actorId = actorIdStr != null ? UUID.fromString(actorIdStr) : null;
-                    econ.transactionHistory().add(new EconomyAPI.Transaction(
-                        factionId,
-                        actorId,
-                        EconomyAPI.TransactionType.valueOf(rs.getString("type")),
-                        rs.getBigDecimal("amount"),
-                        rs.getBigDecimal("balance_after"),
-                        rs.getLong("timestamp"),
-                        rs.getString("description")
-                    ));
+                    txMap.computeIfAbsent(factionId, k -> new ArrayList<>())
+                        .add(new EconomyAPI.Transaction(
+                            factionId,
+                            actorId,
+                            EconomyAPI.TransactionType.valueOf(rs.getString("type")),
+                            rs.getBigDecimal("amount"),
+                            rs.getBigDecimal("balance_after"),
+                            rs.getLong("timestamp"),
+                            rs.getString("description")
+                        ));
                   }
                   return null;
                 })
                 .list();
             return null;
           });
+
+          // Rebuild economy objects with their transactions
+          for (var entry : txMap.entrySet()) {
+            FactionEconomy econ = economies.get(entry.getKey());
+            if (econ != null) {
+              economies.put(entry.getKey(), new FactionEconomy(
+                  econ.balance(), entry.getValue(), econ.limits(),
+                  econ.lastUpkeepTimestamp(), econ.upkeepAutoPay(),
+                  econ.upkeepGraceStartTimestamp(), econ.consecutiveMissedPayments()
+              ));
+            }
+          }
         }
 
         Logger.info("[Storage] Loaded economy data for %d factions from SQL", economies.size());
