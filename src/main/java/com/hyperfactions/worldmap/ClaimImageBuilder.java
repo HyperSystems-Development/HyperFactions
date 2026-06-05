@@ -113,6 +113,10 @@ public class ClaimImageBuilder {
   @NotNull
   private final MapImage image;
 
+  /** RGBA working pixel buffer; encoded into {@link #image}'s palette on {@link #getImage()}. */
+  @NotNull
+  private final int[] pixels;
+
   private final int sampleWidth;
 
   private final int sampleHeight;
@@ -166,7 +170,8 @@ public class ClaimImageBuilder {
     this.claimManager = claimManager;
     this.zoneManager = zoneManager;
 
-    this.image = new MapImage(imageWidth, imageHeight, new int[imageWidth * imageHeight]);
+    this.image = new MapImage(imageWidth, imageHeight, null, (byte) 0, null);
+    this.pixels = new int[imageWidth * imageHeight];
     this.sampleWidth = Math.min(32, this.image.width);
     this.sampleHeight = Math.min(32, this.image.height);
     this.blockStepX = Math.max(1, 32 / this.image.width);
@@ -185,9 +190,12 @@ public class ClaimImageBuilder {
     return this.index;
   }
 
-  /** Returns the image. */
+  /** Returns the image, encoding the pixel buffer into its palette on first call. */
   @NotNull
   public MapImage getImage() {
+    if (this.image.packedIndices == null) {
+      MapImageCodec.encodeInto(this.image, this.pixels);
+    }
     return this.image;
   }
 
@@ -545,7 +553,7 @@ public class ClaimImageBuilder {
         }
 
         // Pack pixel
-        this.image.data[iz * this.image.width + ix] = this.outColor.pack();
+        this.pixels[iz * this.image.width + ix] = this.outColor.pack();
       }
     }
 
@@ -923,7 +931,7 @@ public class ClaimImageBuilder {
    */
   private void setPixel(int x, int y, int r, int g, int b) {
     if (x >= 0 && x < this.image.width && y >= 0 && y < this.image.height) {
-      this.image.data[y * this.image.width + x] = ((r & 0xFF) << 24) | ((g & 0xFF) << 16) | ((b & 0xFF) << 8) | 0xFF;
+      this.pixels[y * this.image.width + x] = ((r & 0xFF) << 24) | ((g & 0xFF) << 16) | ((b & 0xFF) << 8) | 0xFF;
     }
   }
 
@@ -932,12 +940,12 @@ public class ClaimImageBuilder {
    */
   private void darkenPixel(int x, int y, float multiplier) {
     if (x >= 0 && x < this.image.width && y >= 0 && y < this.image.height) {
-      int pixel = this.image.data[y * this.image.width + x];
+      int pixel = this.pixels[y * this.image.width + x];
       int r = (int) (((pixel >> 24) & 0xFF) * multiplier);
       int g = (int) (((pixel >> 16) & 0xFF) * multiplier);
       int b = (int) (((pixel >> 8) & 0xFF) * multiplier);
       int a = pixel & 0xFF;
-      this.image.data[y * this.image.width + x] = ((r & 0xFF) << 24) | ((g & 0xFF) << 16) | ((b & 0xFF) << 8) | (a & 0xFF);
+      this.pixels[y * this.image.width + x] = ((r & 0xFF) << 24) | ((g & 0xFF) << 16) | ((b & 0xFF) << 8) | (a & 0xFF);
     }
   }
 }

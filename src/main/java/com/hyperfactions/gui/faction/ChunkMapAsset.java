@@ -1,6 +1,7 @@
 package com.hyperfactions.gui.faction;
 
 import com.hyperfactions.util.Logger;
+import com.hyperfactions.worldmap.MapImageCodec;
 import com.hypixel.hytale.common.util.ArrayUtil;
 import com.hypixel.hytale.math.util.ChunkUtil;
 import com.hypixel.hytale.protocol.ToClientPacket;
@@ -116,7 +117,7 @@ public class ChunkMapAsset extends CommonAsset {
           var index = ChunkUtil.indexChunk(x, z);
           var chunkImage = map.getChunks().get(index);
           if (chunkImage != null) {
-            var pixels = chunkImage.data;
+            var pixels = MapImageCodec.decode(chunkImage);
             var width = chunkImage.width;
             var height = chunkImage.height;
 
