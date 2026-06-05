@@ -322,7 +322,7 @@ double balance = economy.getFactionBalance(factionId);
 economy.deposit(factionId, 500.0, playerUuid, "Quest reward")
     .thenAccept(result -> {
         if (result == TransactionResult.SUCCESS) {
-            player.sendMessage("Deposited " + economy.formatCurrency(500.0));
+            playerRef.sendMessage(Message.raw("Deposited " + economy.formatCurrency(500.0)));
         }
     });
 
@@ -330,7 +330,7 @@ economy.deposit(factionId, 500.0, playerUuid, "Quest reward")
 economy.transfer(fromFactionId, toFactionId, 1000.0, playerUuid, "Trade payment")
     .thenAccept(result -> {
         if (result == TransactionResult.INSUFFICIENT_FUNDS) {
-            player.sendMessage("Not enough funds!");
+            playerRef.sendMessage(Message.raw("Not enough funds!"));
         }
     });
 ```

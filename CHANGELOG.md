@@ -9,6 +9,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 *No changes yet*
 
+## [0.11.0] - 2026-06-04
+
+**Server Version:** `0.5.3`
+
+### Changed
+
+**Hytale 0.5.3 ("Update 5") support**
+- Migrated the plugin to compile and run against Hytale Server `0.5.3` (previously the
+  Feb 2026 pre-release `2026.02.19-1a311a592`). 0.5.3 is API-identical to 0.5.2 for the
+  surface this plugin uses.
+- **Messaging/permissions:** the `Player` entity no longer implements `CommandSender`,
+  so all player-facing messages and permission checks now route through `PlayerRef`.
+- **Math types:** vectors migrated from `com.hypixel.hytale.math.vector.Vector3d/3f/3i`
+  to JOML (`org.joml.*`); accessors changed from `getX/getY/getZ()` to `x()/y()/z()`.
+  Rotations now use the dedicated `Rotation3f`/`Rotation3fc` type (`pitch()`/`yaw()`).
+- **World map:** the territory/claim overlay is re-encoded to 0.5.3's palette +
+  bit-packed `MapImage` format (the raw `int[] data` field was removed), via a new
+  `MapImageCodec` mirroring the engine's encoder so the client renders it identically.
+- **Blocks:** block-state detection now uses `BlockType.getStateForBlock`
+  (`StateData.getId()` was removed).
+
+**HyperPerms**
+- Integration validated against HyperPerms `2.9.6` (Hytale 0.5.x). The reflection-based
+  adapter and Hytale `PermissionsModule` delegation are unchanged and still degrade
+  gracefully when HyperPerms is absent.
+
 ## [0.10.2] - 2026-02-28
 
 **Server Version:** `2026.02.19-1a311a592`
