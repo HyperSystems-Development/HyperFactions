@@ -118,7 +118,7 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
 
     // Verify officer permission (skip in admin mode)
     if (!adminMode && (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel())) {
-      player.sendMessage(MessageUtil.errorText("You don't have permission to rename the faction."));
+      playerRef.sendMessage(MessageUtil.errorText("You don't have permission to rename the faction."));
       guiManager.openFactionSettings(player, ref, store, playerRef,
           factionManager.getFaction(faction.id()));
       return;
@@ -139,7 +139,7 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
 
         // Validation
         if (newName == null || newName.trim().isEmpty()) {
-          player.sendMessage(MessageUtil.errorText("Please enter a faction name."));
+          playerRef.sendMessage(MessageUtil.errorText("Please enter a faction name."));
           sendUpdate();
           return;
         }
@@ -147,20 +147,20 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
         newName = newName.trim();
 
         if (newName.length() < MIN_NAME_LENGTH) {
-          player.sendMessage(MessageUtil.errorText("Faction name must be at least " + MIN_NAME_LENGTH + " characters."));
+          playerRef.sendMessage(MessageUtil.errorText("Faction name must be at least " + MIN_NAME_LENGTH + " characters."));
           sendUpdate();
           return;
         }
 
         if (newName.length() > MAX_NAME_LENGTH) {
-          player.sendMessage(MessageUtil.errorText("Faction name cannot exceed " + MAX_NAME_LENGTH + " characters."));
+          playerRef.sendMessage(MessageUtil.errorText("Faction name cannot exceed " + MAX_NAME_LENGTH + " characters."));
           sendUpdate();
           return;
         }
 
         // Check if name is the same
         if (newName.equalsIgnoreCase(faction.name())) {
-          player.sendMessage(MessageUtil.text("That's already your faction's name.", MessageUtil.COLOR_GOLD));
+          playerRef.sendMessage(MessageUtil.text("That's already your faction's name.", MessageUtil.COLOR_GOLD));
           sendUpdate();
           return;
         }
@@ -168,7 +168,7 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
         // Check uniqueness
         Faction existing = factionManager.getFactionByName(newName);
         if (existing != null) {
-          player.sendMessage(MessageUtil.errorText("A faction with that name already exists."));
+          playerRef.sendMessage(MessageUtil.errorText("A faction with that name already exists."));
           sendUpdate();
           return;
         }
@@ -184,7 +184,7 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
         }
 
         String prefix = adminMode ? "[Admin] " : "";
-        player.sendMessage(
+        playerRef.sendMessage(
             Message.raw(prefix + "Faction renamed from ").color("#AAAAAA")
                 .insert(Message.raw(oldName).color("#888888"))
                 .insert(Message.raw(" to ").color("#AAAAAA"))

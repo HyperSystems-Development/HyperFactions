@@ -278,7 +278,7 @@ public class AdminZonePropertiesPage extends InteractiveCustomUIPage<AdminZonePr
     switch (result) {
       case SUCCESS -> {
         nameError = null;
-        player.sendMessage(MessageUtil.adminSuccess("Zone renamed to \"" + newName + "\"."));
+        playerRef.sendMessage(MessageUtil.adminSuccess("Zone renamed to \"" + newName + "\"."));
       }
       case NAME_TAKEN -> nameError = "A zone with that name already exists.";
       case INVALID_NAME -> nameError = "Invalid name (max 32 characters).";
@@ -306,38 +306,38 @@ public class AdminZonePropertiesPage extends InteractiveCustomUIPage<AdminZonePr
   private void handleSaveUpper(Player player, AdminZonePropertiesData data) {
     String upper = data.upperTitle;
     if (upper == null || upper.isBlank()) {
-      player.sendMessage(MessageUtil.adminError("Upper title cannot be empty. Use Clear to reset."));
+      playerRef.sendMessage(MessageUtil.adminError("Upper title cannot be empty. Use Clear to reset."));
       sendUpdate();
       return;
     }
 
     zoneManager.setZoneNotifyTitle(zoneId, upper.trim(), null);
-    player.sendMessage(MessageUtil.adminSuccess("Upper title set."));
+    playerRef.sendMessage(MessageUtil.adminSuccess("Upper title set."));
     rebuildPage();
   }
 
   private void handleClearUpper(Player player) {
     zoneManager.setZoneNotifyTitle(zoneId, "clear", null);
-    player.sendMessage(MessageUtil.adminSuccess("Upper title reset to default."));
+    playerRef.sendMessage(MessageUtil.adminSuccess("Upper title reset to default."));
     rebuildPage();
   }
 
   private void handleSaveLower(Player player, AdminZonePropertiesData data) {
     String lower = data.lowerTitle;
     if (lower == null || lower.isBlank()) {
-      player.sendMessage(MessageUtil.adminError("Lower title cannot be empty. Use Clear to reset."));
+      playerRef.sendMessage(MessageUtil.adminError("Lower title cannot be empty. Use Clear to reset."));
       sendUpdate();
       return;
     }
 
     zoneManager.setZoneNotifyTitle(zoneId, null, lower.trim());
-    player.sendMessage(MessageUtil.adminSuccess("Lower title set."));
+    playerRef.sendMessage(MessageUtil.adminSuccess("Lower title set."));
     rebuildPage();
   }
 
   private void handleClearLower(Player player) {
     zoneManager.setZoneNotifyTitle(zoneId, null, "clear");
-    player.sendMessage(MessageUtil.adminSuccess("Lower title reset to default."));
+    playerRef.sendMessage(MessageUtil.adminSuccess("Lower title reset to default."));
     rebuildPage();
   }
 

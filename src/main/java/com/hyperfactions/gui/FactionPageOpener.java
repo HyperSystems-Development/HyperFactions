@@ -727,7 +727,7 @@ class FactionPageOpener {
     try {
       EconomyManager econ = guiManager.getPlugin().get().getEconomyManager();
       if (econ == null) {
-        player.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Treasury is not available."));
+        playerRef.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Treasury is not available."));
         return;
       }
       PageManager pageManager = player.getPageManager();
@@ -764,7 +764,7 @@ class FactionPageOpener {
     try {
       EconomyManager econ = guiManager.getPlugin().get().getEconomyManager();
       if (econ == null) {
-        player.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Treasury is not available."));
+        playerRef.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Treasury is not available."));
         return;
       }
       var page = new TreasuryDepositModalPage(playerRef, guiManager.getFactionManager().get(), econ,
@@ -786,7 +786,7 @@ class FactionPageOpener {
     try {
       EconomyManager econ = guiManager.getPlugin().get().getEconomyManager();
       if (econ == null) {
-        player.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Treasury is not available."));
+        playerRef.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Treasury is not available."));
         return;
       }
       var page = new TreasuryTransferSearchPage(playerRef, guiManager.getFactionManager().get(), econ,
@@ -809,7 +809,7 @@ class FactionPageOpener {
     try {
       EconomyManager econ = guiManager.getPlugin().get().getEconomyManager();
       if (econ == null) {
-        player.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Treasury is not available."));
+        playerRef.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Treasury is not available."));
         return;
       }
       var page = new TreasuryTransferConfirmPage(playerRef, guiManager.getFactionManager().get(), econ,
@@ -831,7 +831,7 @@ class FactionPageOpener {
     try {
       EconomyManager econ = guiManager.getPlugin().get().getEconomyManager();
       if (econ == null) {
-        player.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Treasury is not available."));
+        playerRef.sendMessage(com.hyperfactions.util.MessageUtil.errorText("Treasury is not available."));
         return;
       }
       var page = new TreasurySettingsPage(playerRef, guiManager.getFactionManager().get(), econ, guiManager, faction);

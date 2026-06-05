@@ -203,7 +203,7 @@ public class AdminMainPage extends InteractiveCustomUIPage<AdminMainData> {
 
       case "Reload" -> {
         guiManager.closePage(player, ref, store);
-        player.sendMessage(MessageUtil.text("Use /f reload to reload configuration.", "#00FFFF"));
+        playerRef.sendMessage(MessageUtil.text("Use /f reload to reload configuration.", "#00FFFF"));
       }
 
       case "PrevPage" -> {
@@ -220,7 +220,7 @@ public class AdminMainPage extends InteractiveCustomUIPage<AdminMainData> {
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            playerRef.sendMessage(MessageUtil.errorText("Invalid faction."));
             return;
           }
 
@@ -233,7 +233,7 @@ public class AdminMainPage extends InteractiveCustomUIPage<AdminMainData> {
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            playerRef.sendMessage(MessageUtil.errorText("Invalid faction."));
             return;
           }
           Faction faction = factionManager.getFaction(factionId);
@@ -241,7 +241,7 @@ public class AdminMainPage extends InteractiveCustomUIPage<AdminMainData> {
             int claimCount = faction.claims().size();
             // Admin unclaim - prompt for command
             guiManager.closePage(player, ref, store);
-            player.sendMessage(MessageUtil.text("Use /f admin unclaim " + data.factionName + " to unclaim all " + claimCount + " chunks.", MessageUtil.COLOR_GOLD));
+            playerRef.sendMessage(MessageUtil.text("Use /f admin unclaim " + data.factionName + " to unclaim all " + claimCount + " chunks.", MessageUtil.COLOR_GOLD));
           }
         }
       }

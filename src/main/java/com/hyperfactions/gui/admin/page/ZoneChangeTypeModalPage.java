@@ -137,7 +137,7 @@ public class ZoneChangeTypeModalPage extends InteractiveCustomUIPage<ZoneChangeT
 
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.errorText("Zone no longer exists."));
+      playerRef.sendMessage(MessageUtil.errorText("Zone no longer exists."));
       navigateBack(player, ref, store, playerRef);
       return;
     }
@@ -170,7 +170,7 @@ public class ZoneChangeTypeModalPage extends InteractiveCustomUIPage<ZoneChangeT
       String oldColor = oldType == ZoneType.SAFE ? "#55FF55" : "#FF5555";
       String newColor = newType == ZoneType.SAFE ? "#55FF55" : "#FF5555";
 
-      player.sendMessage(
+      playerRef.sendMessage(
           Message.raw("[Admin] Changed ").color("#AAAAAA")
               .insert(Message.raw(zone.name()).color("#00FFFF"))
               .insert(Message.raw(" from ").color("#AAAAAA"))
@@ -180,7 +180,7 @@ public class ZoneChangeTypeModalPage extends InteractiveCustomUIPage<ZoneChangeT
               .insert(Message.raw(resetFlags ? " (flags reset)" : " (flags kept)").color("#888888"))
       );
     } else {
-      player.sendMessage(MessageUtil.adminError("Failed to change zone type: " + result));
+      playerRef.sendMessage(MessageUtil.adminError("Failed to change zone type: " + result));
     }
 
     navigateBack(player, ref, store, playerRef);

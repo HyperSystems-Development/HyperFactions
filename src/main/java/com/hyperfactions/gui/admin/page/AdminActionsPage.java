@@ -114,12 +114,12 @@ public class AdminActionsPage extends InteractiveCustomUIPage<AdminActionsData> 
                 pd.setDeaths(0);
               });
             }
-            player.sendMessage(MessageUtil.adminSuccess(
+            playerRef.sendMessage(MessageUtil.adminSuccess(
                 "Reset K/D for " + allUuids.size() + " players."));
             Logger.info("[Admin] %s reset K/D stats for all %d players",
                 playerRef.getUsername(), allUuids.size());
           } catch (Exception e) {
-            player.sendMessage(MessageUtil.adminError("Failed to reset K/D: " + e.getMessage()));
+            playerRef.sendMessage(MessageUtil.adminError("Failed to reset K/D: " + e.getMessage()));
             Logger.severe("[Admin] Global K/D reset failed: %s", e.getMessage());
           }
 

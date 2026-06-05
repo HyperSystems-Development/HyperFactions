@@ -328,7 +328,7 @@ public class AdminFactionInfoPage extends InteractiveCustomUIPage<AdminFactionIn
         if (faction != null) {
           factionManager.forceDisband(faction.id(),
               "[Admin] Force disbanded faction '" + faction.name() + "'");
-          player.sendMessage(com.hyperfactions.util.MessageUtil.adminSuccess(
+          playerRef.sendMessage(com.hyperfactions.util.MessageUtil.adminSuccess(
               "Faction '" + faction.name() + "' has been disbanded."));
           guiManager.openAdminFactions(player, ref, store, playerRef);
         }

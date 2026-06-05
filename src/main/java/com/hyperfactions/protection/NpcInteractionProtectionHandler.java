@@ -96,7 +96,10 @@ public class NpcInteractionProtectionHandler {
       if (blocked) {
         event.setCancelled(true);
         String denyMsg = hyperFactions.getProtectionChecker().getDenialMessage(result);
-        ProtectionMessageDebounce.sendIfNotOnCooldown(player, "npc_interact", Message.raw(denyMsg).color("#FF5555"));
+        PlayerRef playerRefComponent = store.getComponent(playerRef, PlayerRef.getComponentType());
+        if (playerRefComponent != null) {
+          ProtectionMessageDebounce.sendIfNotOnCooldown(playerRefComponent, "npc_interact", Message.raw(denyMsg).color("#FF5555"));
+        }
       }
     } catch (Exception e) {
       // Fail-open for NPC interactions to avoid breaking vanilla gameplay

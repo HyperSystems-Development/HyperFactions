@@ -301,14 +301,14 @@ public class AdminZoneSettingsPage extends InteractiveCustomUIPage<AdminZoneSett
   private void handleToggleFlag(Player player, AdminZoneSettingsData data) {
     String flagName = data.flag;
     if (flagName == null || !ZoneFlags.isValidFlag(flagName)) {
-      player.sendMessage(MessageUtil.adminError("Invalid flag."));
+      playerRef.sendMessage(MessageUtil.adminError("Invalid flag."));
       sendUpdate();
       return;
     }
 
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.adminError("Zone not found."));
+      playerRef.sendMessage(MessageUtil.adminError("Zone not found."));
       sendUpdate();
       return;
     }
@@ -336,9 +336,9 @@ public class AdminZoneSettingsPage extends InteractiveCustomUIPage<AdminZoneSett
     ZoneManager.ZoneResult result = zoneManager.clearAllZoneFlags(zoneId);
 
     if (result == ZoneManager.ZoneResult.SUCCESS) {
-      player.sendMessage(MessageUtil.adminSuccess("Reset all flags to defaults."));
+      playerRef.sendMessage(MessageUtil.adminSuccess("Reset all flags to defaults."));
     } else {
-      player.sendMessage(MessageUtil.adminError("Failed to reset flags: " + result));
+      playerRef.sendMessage(MessageUtil.adminError("Failed to reset flags: " + result));
     }
 
     rebuildPage();

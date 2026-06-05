@@ -103,7 +103,7 @@ public class AdminUnclaimAllConfirmPage extends InteractiveCustomUIPage<AdminUnc
         claimManager.unclaimAll(factionId);
 
         if (claimCount > 0) {
-          player.sendMessage(
+          playerRef.sendMessage(
               Message.raw("[Admin] Removed ").color("#FF5555")
                   .insert(Message.raw(String.valueOf(claimCount)).color("#FFFFFF"))
                   .insert(Message.raw(" claims from ").color("#FF5555"))
@@ -111,7 +111,7 @@ public class AdminUnclaimAllConfirmPage extends InteractiveCustomUIPage<AdminUnc
                   .insert(Message.raw(".").color("#FF5555"))
           );
         } else {
-          player.sendMessage(
+          playerRef.sendMessage(
               Message.raw("[Admin] ").color("#FFAA00")
                   .insert(Message.raw(factionName).color("#00FFFF"))
                   .insert(Message.raw(" had no claims to remove.").color("#FFAA00"))

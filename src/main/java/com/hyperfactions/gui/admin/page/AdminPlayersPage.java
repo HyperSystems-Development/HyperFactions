@@ -532,7 +532,7 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
             guiManager.closePage(player, ref, store);
             var targetWorld = Universe.get().getWorld(targetPlayer.getWorldUuid());
             if (targetWorld == null) {
-              player.sendMessage(MessageUtil.errorText("Target world not found."));
+              playerRef.sendMessage(MessageUtil.errorText("Target world not found."));
               return;
             }
             var targetTransform = targetPlayer.getTransform();
@@ -543,11 +543,11 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
                   targetWorld, targetPos, targetRot);
               store.addComponent(ref, Teleport.getComponentType(), teleport);
             });
-            player.sendMessage(Message.raw("[Admin] Teleported to ").color("#55FF55")
+            playerRef.sendMessage(Message.raw("[Admin] Teleported to ").color("#55FF55")
                 .insert(Message.raw(data.playerName != null ? data.playerName : "player").color("#00FFFF"))
                 .insert(Message.raw(".").color("#55FF55")));
           } else {
-            player.sendMessage(MessageUtil.errorText("Player is not online."));
+            playerRef.sendMessage(MessageUtil.errorText("Player is not online."));
             sendUpdate();
           }
         }

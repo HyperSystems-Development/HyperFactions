@@ -366,7 +366,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
 
     // Verify permissions
     if (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel()) {
-      player.sendMessage(MessageUtil.errorText("You don't have permission to change settings."));
+      playerRef.sendMessage(MessageUtil.errorText("You don't have permission to change settings."));
       sendUpdate();
       return;
     }
@@ -386,7 +386,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
       case "OpenModules" -> guiManager.openFactionModules(player, ref, store, playerRef, faction);
       case "Disband" -> {
         if (!isLeader) {
-          player.sendMessage(MessageUtil.errorText("Only the leader can disband the faction."));
+          playerRef.sendMessage(MessageUtil.errorText("Only the leader can disband the faction."));
           sendUpdate();
           return;
         }
@@ -407,19 +407,19 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
     ConfigManager config = ConfigManager.get();
 
     if (config.isPermissionLocked(permName)) {
-      player.sendMessage(MessageUtil.errorText("This setting is locked by the server."));
+      playerRef.sendMessage(MessageUtil.errorText("This setting is locked by the server."));
       sendUpdate();
       return;
     }
 
     if (!canEditPermissions(playerRef.getUuid(), faction)) {
-      player.sendMessage(MessageUtil.errorText("You don't have permission to edit territory permissions."));
+      playerRef.sendMessage(MessageUtil.errorText("You don't have permission to edit territory permissions."));
       sendUpdate();
       return;
     }
 
     if ("officersCanEdit".equals(permName) && !isLeader) {
-      player.sendMessage(MessageUtil.errorText("Only the leader can change officer access."));
+      playerRef.sendMessage(MessageUtil.errorText("Only the leader can change officer access."));
       sendUpdate();
       return;
     }
@@ -475,7 +475,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
     Faction updatedFaction = faction.withOpen(isOpen);
     factionManager.updateFaction(updatedFaction);
 
-    player.sendMessage(Message.raw("Recruitment set to " + (isOpen ? "Open" : "Invite Only") + ".").color("#55FF55"));
+    playerRef.sendMessage(Message.raw("Recruitment set to " + (isOpen ? "Open" : "Invite Only") + ".").color("#55FF55"));
 
     Faction freshFaction = factionManager.getFaction(faction.id());
     guiManager.openFactionSettings(player, ref, store, playerRef, freshFaction);
@@ -492,7 +492,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
       int chunkZ = ChunkUtil.toChunkCoord(pos.z);
       UUID claimOwner = claimManager.getClaimOwner(worldName, chunkX, chunkZ);
       if (claimOwner == null || !claimOwner.equals(faction.id())) {
-        player.sendMessage(MessageUtil.errorText("You must be in your faction's territory to set home."));
+        playerRef.sendMessage(MessageUtil.errorText("You must be in your faction's territory to set home."));
         sendUpdate();
         return;
       }
@@ -504,19 +504,19 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
       Faction updatedFaction = faction.withHome(newHome);
       factionManager.updateFaction(updatedFaction);
 
-      player.sendMessage(MessageUtil.successText("Faction home set to your current location!"));
+      playerRef.sendMessage(MessageUtil.successText("Faction home set to your current location!"));
 
       guiManager.openFactionSettings(player, ref, store, playerRef,
           factionManager.getFaction(faction.id()));
     } else {
-      player.sendMessage(MessageUtil.errorText("Could not determine your location."));
+      playerRef.sendMessage(MessageUtil.errorText("Could not determine your location."));
       sendUpdate();
     }
   }
 
   private void handleTeleportHome(Player player, Ref<EntityStore> ref, Store<EntityStore> store, UUID uuid) {
     if (faction.home() == null) {
-      player.sendMessage(MessageUtil.errorText("No faction home set."));
+      playerRef.sendMessage(MessageUtil.errorText("No faction home set."));
       sendUpdate();
       return;
     }
@@ -526,14 +526,14 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
 
     TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
     if (transform == null) {
-      player.sendMessage(MessageUtil.errorText("Could not determine your location."));
+      playerRef.sendMessage(MessageUtil.errorText("Could not determine your location."));
       return;
     }
 
     Vector3d pos = transform.getPosition();
     World world = player.getWorld();
     if (world == null) {
-      player.sendMessage(MessageUtil.errorText("Could not determine your world."));
+      playerRef.sendMessage(MessageUtil.errorText("Could not determine your world."));
       return;
     }
 
@@ -545,7 +545,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
         uuid,
         startLoc,
         f -> executeTeleport(store, ref, world, f),
-        player::sendMessage,
+        playerRef::sendMessage,
         () -> hyperFactions.getCombatTagManager().isTagged(uuid)
     );
 
@@ -581,10 +581,10 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
 
   private void handleTeleportResult(Player player, TeleportManager.TeleportResult result) {
     switch (result) {
-      case NOT_IN_FACTION -> player.sendMessage(MessageUtil.errorText("You are not in a faction."));
-      case NO_HOME -> player.sendMessage(MessageUtil.errorText("Your faction has no home set."));
-      case COMBAT_TAGGED -> player.sendMessage(MessageUtil.errorText("You cannot teleport while in combat!"));
-      case SUCCESS_INSTANT -> player.sendMessage(MessageUtil.successText("Teleported to faction home!"));
+      case NOT_IN_FACTION -> playerRef.sendMessage(MessageUtil.errorText("You are not in a faction."));
+      case NO_HOME -> playerRef.sendMessage(MessageUtil.errorText("Your faction has no home set."));
+      case COMBAT_TAGGED -> playerRef.sendMessage(MessageUtil.errorText("You cannot teleport while in combat!"));
+      case SUCCESS_INSTANT -> playerRef.sendMessage(MessageUtil.successText("Teleported to faction home!"));
       case ON_COOLDOWN, SUCCESS_WARMUP -> {} // Message sent by TeleportManager
       default -> {}
     }
@@ -592,7 +592,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
 
   private void handleDeleteHome(Player player, Ref<EntityStore> ref, Store<EntityStore> store, UUID uuid) {
     if (faction.home() == null) {
-      player.sendMessage(MessageUtil.text("Your faction does not have a home set.", MessageUtil.COLOR_GOLD));
+      playerRef.sendMessage(MessageUtil.text("Your faction does not have a home set.", MessageUtil.COLOR_GOLD));
       sendUpdate();
       return;
     }
@@ -600,7 +600,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
     Faction updatedFaction = faction.withHome(null);
     factionManager.updateFaction(updatedFaction);
 
-    player.sendMessage(MessageUtil.successText("Faction home deleted!"));
+    playerRef.sendMessage(MessageUtil.successText("Faction home deleted!"));
 
     guiManager.openFactionSettings(player, ref, store, playerRef,
         factionManager.getFaction(faction.id()));

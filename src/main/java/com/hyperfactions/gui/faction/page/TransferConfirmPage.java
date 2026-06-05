@@ -102,7 +102,7 @@ public class TransferConfirmPage extends InteractiveCustomUIPage<TransferConfirm
     // Re-fetch faction to ensure fresh state
     Faction currentFaction = factionManager.getFaction(faction.id());
     if (currentFaction == null) {
-      player.sendMessage(MessageUtil.errorText("Faction no longer exists."));
+      playerRef.sendMessage(MessageUtil.errorText("Faction no longer exists."));
       guiManager.openFactionMain(player, ref, store, playerRef);
       return;
     }
@@ -111,7 +111,7 @@ public class TransferConfirmPage extends InteractiveCustomUIPage<TransferConfirm
 
     // Verify leader permission
     if (member == null || member.role() != FactionRole.LEADER) {
-      player.sendMessage(MessageUtil.errorText("Only the leader can transfer leadership."));
+      playerRef.sendMessage(MessageUtil.errorText("Only the leader can transfer leadership."));
       guiManager.openFactionMembers(player, ref, store, playerRef, currentFaction);
       return;
     }
@@ -128,7 +128,7 @@ public class TransferConfirmPage extends InteractiveCustomUIPage<TransferConfirm
             faction.id(), targetUuid, uuid);
 
         if (result == FactionManager.FactionResult.SUCCESS) {
-          player.sendMessage(
+          playerRef.sendMessage(
               Message.raw("Leadership transferred to ").color("#55FF55")
                   .insert(Message.raw(targetName).color("#00FFFF"))
                   .insert(Message.raw(".").color("#55FF55"))
@@ -141,7 +141,7 @@ public class TransferConfirmPage extends InteractiveCustomUIPage<TransferConfirm
             guiManager.openFactionMain(player, ref, store, playerRef);
           }
         } else {
-          player.sendMessage(Message.raw("Failed to transfer leadership: " + result).color("#FF5555"));
+          playerRef.sendMessage(Message.raw("Failed to transfer leadership: " + result).color("#FF5555"));
           guiManager.openFactionMembers(player, ref, store, playerRef, currentFaction);
         }
       }

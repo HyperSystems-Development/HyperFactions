@@ -217,14 +217,14 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
   private void handleToggleFlag(Player player, AdminZoneSettingsData data) {
     String flagName = data.flag;
     if (flagName == null || !ZoneFlags.isValidFlag(flagName)) {
-      player.sendMessage(MessageUtil.adminError("Invalid flag."));
+      playerRef.sendMessage(MessageUtil.adminError("Invalid flag."));
       sendUpdate();
       return;
     }
 
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.adminError("Zone not found."));
+      playerRef.sendMessage(MessageUtil.adminError("Zone not found."));
       sendUpdate();
       return;
     }
@@ -249,7 +249,7 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
     // Clear only integration flags, not all zone flags
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.adminError("Zone not found."));
+      playerRef.sendMessage(MessageUtil.adminError("Zone not found."));
       sendUpdate();
       return;
     }
@@ -260,7 +260,7 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
       }
     }
 
-    player.sendMessage(MessageUtil.adminSuccess("Reset integration flags to defaults."));
+    playerRef.sendMessage(MessageUtil.adminSuccess("Reset integration flags to defaults."));
     rebuildPage();
   }
 

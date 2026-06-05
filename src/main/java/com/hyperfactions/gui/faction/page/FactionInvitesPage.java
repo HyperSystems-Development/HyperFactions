@@ -426,7 +426,7 @@ public class FactionInvitesPage extends InteractiveCustomUIPage<FactionPageData>
 
     UUID targetUuid = UuidUtil.parseOrNull(data.playerUuid);
     if (targetUuid == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid player."));
+      playerRef.sendMessage(MessageUtil.errorText("Invalid player."));
       sendUpdate();
       return;
     }
@@ -434,7 +434,7 @@ public class FactionInvitesPage extends InteractiveCustomUIPage<FactionPageData>
     inviteManager.removeInvite(faction.id(), targetUuid);
 
     String playerName = getPlayerName(targetUuid);
-    player.sendMessage(Message.raw("Cancelled invite to " + playerName + ".").color("#AAAAAA"));
+    playerRef.sendMessage(Message.raw("Cancelled invite to " + playerName + ".").color("#AAAAAA"));
 
     expandedItems.remove(data.playerUuid);
     rebuildList();
@@ -449,7 +449,7 @@ public class FactionInvitesPage extends InteractiveCustomUIPage<FactionPageData>
 
     UUID targetUuid = UuidUtil.parseOrNull(data.playerUuid);
     if (targetUuid == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid player."));
+      playerRef.sendMessage(MessageUtil.errorText("Invalid player."));
       sendUpdate();
       return;
     }
@@ -465,14 +465,14 @@ public class FactionInvitesPage extends InteractiveCustomUIPage<FactionPageData>
       if (result == FactionManager.FactionResult.SUCCESS) {
         // Clear player's other requests since they joined a faction
         joinRequestManager.clearPlayerRequests(targetUuid);
-        player.sendMessage(Message.raw(request.playerName() + " has joined the faction!").color("#55FF55"));
+        playerRef.sendMessage(Message.raw(request.playerName() + " has joined the faction!").color("#55FF55"));
       } else if (result == FactionManager.FactionResult.FACTION_FULL) {
-        player.sendMessage(MessageUtil.errorText("Faction is full. Cannot accept request."));
+        playerRef.sendMessage(MessageUtil.errorText("Faction is full. Cannot accept request."));
       } else {
-        player.sendMessage(MessageUtil.errorText("Failed to add player to faction."));
+        playerRef.sendMessage(MessageUtil.errorText("Failed to add player to faction."));
       }
     } else {
-      player.sendMessage(MessageUtil.errorText("Request not found or expired."));
+      playerRef.sendMessage(MessageUtil.errorText("Request not found or expired."));
     }
 
     expandedItems.remove(data.playerUuid);
@@ -487,7 +487,7 @@ public class FactionInvitesPage extends InteractiveCustomUIPage<FactionPageData>
 
     UUID targetUuid = UuidUtil.parseOrNull(data.playerUuid);
     if (targetUuid == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid player."));
+      playerRef.sendMessage(MessageUtil.errorText("Invalid player."));
       sendUpdate();
       return;
     }
@@ -497,7 +497,7 @@ public class FactionInvitesPage extends InteractiveCustomUIPage<FactionPageData>
 
     joinRequestManager.declineRequest(faction.id(), targetUuid);
 
-    player.sendMessage(Message.raw("Declined join request from " + playerName + ".").color("#AAAAAA"));
+    playerRef.sendMessage(Message.raw("Declined join request from " + playerName + ".").color("#AAAAAA"));
 
     expandedItems.remove(data.playerUuid);
     rebuildList();

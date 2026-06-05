@@ -284,7 +284,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
 
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null && !data.button.equals("Back")) {
-      player.sendMessage(MessageUtil.adminError("Faction not found."));
+      playerRef.sendMessage(MessageUtil.adminError("Faction not found."));
       sendUpdate();
       return;
     }
@@ -324,7 +324,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
 
     // Check if server has locked this setting
     if (config.isPermissionLocked(permName)) {
-      player.sendMessage(MessageUtil.adminError("This setting is locked by server configuration."));
+      playerRef.sendMessage(MessageUtil.adminError("This setting is locked by server configuration."));
       sendUpdate();
       return;
     }
@@ -332,7 +332,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     // Get current faction
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {
-      player.sendMessage(MessageUtil.adminError("Faction not found."));
+      playerRef.sendMessage(MessageUtil.adminError("Faction not found."));
       sendUpdate();
       return;
     }
@@ -349,7 +349,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     String displayName = formatPermissionName(permName);
     boolean newValue = updated.get(permName);
 
-    player.sendMessage(MessageUtil.adminSuccess("Set " + displayName + " to " + (newValue ? "ON" : "OFF")));
+    playerRef.sendMessage(MessageUtil.adminSuccess("Set " + displayName + " to " + (newValue ? "ON" : "OFF")));
 
     // Rebuild page with fresh data
     rebuildPage();
@@ -375,7 +375,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     Faction updatedFaction = faction.withColor(hexColor);
     factionManager.updateFaction(updatedFaction);
 
-    player.sendMessage(MessageUtil.adminSuccess("Set faction color to " + hexColor));
+    playerRef.sendMessage(MessageUtil.adminSuccess("Set faction color to " + hexColor));
 
     rebuildPage();
   }
@@ -392,14 +392,14 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     Faction updatedFaction = faction.withOpen(isOpen);
     factionManager.updateFaction(updatedFaction);
 
-    player.sendMessage(MessageUtil.adminSuccess("Set recruitment to " + (isOpen ? "Open" : "Invite Only")));
+    playerRef.sendMessage(MessageUtil.adminSuccess("Set recruitment to " + (isOpen ? "Open" : "Invite Only")));
 
     rebuildPage();
   }
 
   private void handleClearHome(Player player, Ref<EntityStore> ref, Store<EntityStore> store, Faction faction) {
     if (faction.home() == null) {
-      player.sendMessage(MessageUtil.text("[Admin] This faction has no home set.", MessageUtil.COLOR_GOLD));
+      playerRef.sendMessage(MessageUtil.text("[Admin] This faction has no home set.", MessageUtil.COLOR_GOLD));
       sendUpdate();
       return;
     }
@@ -407,7 +407,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     Faction updatedFaction = faction.withHome(null);
     factionManager.updateFaction(updatedFaction);
 
-    player.sendMessage(MessageUtil.adminSuccess("Cleared faction home for " + faction.name()));
+    playerRef.sendMessage(MessageUtil.adminSuccess("Cleared faction home for " + faction.name()));
 
     // Rebuild page with fresh data
     rebuildPage();

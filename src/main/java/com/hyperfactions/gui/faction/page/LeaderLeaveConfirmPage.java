@@ -127,13 +127,13 @@ public class LeaderLeaveConfirmPage extends InteractiveCustomUIPage<LeaderLeaveC
 
     // Verify still in faction and still leader
     if (member == null) {
-      player.sendMessage(MessageUtil.errorText("You are not in this faction."));
+      playerRef.sendMessage(MessageUtil.errorText("You are not in this faction."));
       guiManager.openFactionMain(player, ref, store, playerRef);
       return;
     }
 
     if (member.role() != FactionRole.LEADER) {
-      player.sendMessage(MessageUtil.errorText("You are no longer the leader."));
+      playerRef.sendMessage(MessageUtil.errorText("You are no longer the leader."));
       Faction fresh = factionManager.getFaction(faction.id());
       if (fresh != null) {
         guiManager.openFactionDashboard(player, ref, store, playerRef, fresh);
@@ -157,7 +157,7 @@ public class LeaderLeaveConfirmPage extends InteractiveCustomUIPage<LeaderLeaveC
       case "Leave" -> {
         // Transfer leadership to successor and leave
         if (successor == null) {
-          player.sendMessage(MessageUtil.errorText("No successor available. Use disband instead."));
+          playerRef.sendMessage(MessageUtil.errorText("No successor available. Use disband instead."));
           return;
         }
 
@@ -168,7 +168,7 @@ public class LeaderLeaveConfirmPage extends InteractiveCustomUIPage<LeaderLeaveC
             faction.id(), successor.uuid(), uuid);
 
         if (transferResult != FactionManager.FactionResult.SUCCESS) {
-          player.sendMessage(Message.raw("Failed to transfer leadership: " + transferResult).color("#FF5555"));
+          playerRef.sendMessage(Message.raw("Failed to transfer leadership: " + transferResult).color("#FF5555"));
           return;
         }
 
@@ -177,7 +177,7 @@ public class LeaderLeaveConfirmPage extends InteractiveCustomUIPage<LeaderLeaveC
             faction.id(), uuid, uuid, false);
 
         if (leaveResult == FactionManager.FactionResult.SUCCESS) {
-          player.sendMessage(
+          playerRef.sendMessage(
               Message.raw("Leadership transferred to ").color("#55FF55")
                   .insert(Message.raw(successor.username()).color("#00FFFF"))
                   .insert(Message.raw(". You have left ").color("#55FF55"))
@@ -186,7 +186,7 @@ public class LeaderLeaveConfirmPage extends InteractiveCustomUIPage<LeaderLeaveC
           );
           guiManager.openFactionMain(player, ref, store, playerRef);
         } else {
-          player.sendMessage(Message.raw("Failed to leave faction: " + leaveResult).color("#FF5555"));
+          playerRef.sendMessage(Message.raw("Failed to leave faction: " + leaveResult).color("#FF5555"));
           Faction fresh = factionManager.getFaction(faction.id());
           if (fresh != null) {
             guiManager.openFactionDashboard(player, ref, store, playerRef, fresh);

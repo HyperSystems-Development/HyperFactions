@@ -384,14 +384,14 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
         if (data.zoneId != null) {
           UUID zoneId = UuidUtil.parseOrNull(data.zoneId);
           if (zoneId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid zone ID."));
+            playerRef.sendMessage(MessageUtil.errorText("Invalid zone ID."));
             return;
           }
           Zone zone = zoneManager.getZoneById(zoneId);
           if (zone != null) {
             guiManager.openAdminZoneMap(player, ref, store, playerRef, zone);
           } else {
-            player.sendMessage(MessageUtil.errorText("Zone not found."));
+            playerRef.sendMessage(MessageUtil.errorText("Zone not found."));
             rebuildList();
           }
         }
@@ -401,7 +401,7 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
         if (data.zoneId != null) {
           UUID zoneId = UuidUtil.parseOrNull(data.zoneId);
           if (zoneId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid zone ID."));
+            playerRef.sendMessage(MessageUtil.errorText("Invalid zone ID."));
             return;
           }
           guiManager.openAdminZoneSettings(player, ref, store, playerRef, zoneId);
@@ -412,7 +412,7 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
         if (data.zoneId != null) {
           UUID zoneId = UuidUtil.parseOrNull(data.zoneId);
           if (zoneId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid zone ID."));
+            playerRef.sendMessage(MessageUtil.errorText("Invalid zone ID."));
             return;
           }
           guiManager.openAdminZoneProperties(player, ref, store, playerRef,
@@ -424,15 +424,15 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
         if (data.zoneId != null) {
           UUID zoneId = UuidUtil.parseOrNull(data.zoneId);
           if (zoneId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid zone ID."));
+            playerRef.sendMessage(MessageUtil.errorText("Invalid zone ID."));
             return;
           }
           ZoneManager.ZoneResult result = zoneManager.removeZone(zoneId);
           if (result == ZoneManager.ZoneResult.SUCCESS) {
-            player.sendMessage(MessageUtil.errorText("Zone " + data.zoneName + " deleted."));
+            playerRef.sendMessage(MessageUtil.errorText("Zone " + data.zoneName + " deleted."));
             expandedZones.remove(zoneId);
           } else {
-            player.sendMessage(MessageUtil.errorText("Failed to delete zone: " + result));
+            playerRef.sendMessage(MessageUtil.errorText("Failed to delete zone: " + result));
           }
           rebuildList();
         }

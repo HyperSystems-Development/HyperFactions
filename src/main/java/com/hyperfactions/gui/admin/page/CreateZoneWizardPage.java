@@ -361,7 +361,7 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
       case "ApplyCustomRadius" -> {
         int newRadius = parseRadius(data.customRadius);
         if (newRadius < 1 || newRadius > MAX_RADIUS) {
-          player.sendMessage(MessageUtil.errorText("Radius must be between 1 and " + MAX_RADIUS + "."));
+          playerRef.sendMessage(MessageUtil.errorText("Radius must be between 1 and " + MAX_RADIUS + "."));
           sendUpdate();
           return;
         }
@@ -413,26 +413,26 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
 
     // Validate zone name
     if (name.isEmpty()) {
-      player.sendMessage(MessageUtil.errorText("Please enter a zone name."));
+      playerRef.sendMessage(MessageUtil.errorText("Please enter a zone name."));
       sendUpdate();
       return;
     }
 
     if (name.length() < MIN_NAME_LENGTH) {
-      player.sendMessage(MessageUtil.errorText("Zone name must be at least " + MIN_NAME_LENGTH + " characters."));
+      playerRef.sendMessage(MessageUtil.errorText("Zone name must be at least " + MIN_NAME_LENGTH + " characters."));
       sendUpdate();
       return;
     }
 
     if (name.length() > MAX_NAME_LENGTH) {
-      player.sendMessage(MessageUtil.errorText("Zone name cannot exceed " + MAX_NAME_LENGTH + " characters."));
+      playerRef.sendMessage(MessageUtil.errorText("Zone name cannot exceed " + MAX_NAME_LENGTH + " characters."));
       sendUpdate();
       return;
     }
 
     // Check if name is already taken
     if (zoneManager.getZoneByName(name) != null) {
-      player.sendMessage(MessageUtil.errorText("A zone with this name already exists."));
+      playerRef.sendMessage(MessageUtil.errorText("A zone with this name already exists."));
       sendUpdate();
       return;
     }
@@ -449,21 +449,21 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
     ZoneManager.ZoneResult result = zoneManager.createZone(name, type, worldName, playerRef.getUuid());
 
     if (result != ZoneManager.ZoneResult.SUCCESS) {
-      player.sendMessage(MessageUtil.errorText("Could not create zone: " + result));
+      playerRef.sendMessage(MessageUtil.errorText("Could not create zone: " + result));
       sendUpdate();
       return;
     }
 
     Zone newZone = zoneManager.getZoneByName(name);
     if (newZone == null) {
-      player.sendMessage(MessageUtil.text("Zone created but could not be found.", MessageUtil.COLOR_GOLD));
+      playerRef.sendMessage(MessageUtil.text("Zone created but could not be found.", MessageUtil.COLOR_GOLD));
       guiManager.openAdminZone(player, ref, store, playerRef);
       return;
     }
 
     // Success message
     String typeColor = type == ZoneType.SAFE ? "#55FF55" : "#FF5555";
-    player.sendMessage(
+    playerRef.sendMessage(
         Message.raw("Created ").color("#55FF55")
             .insert(Message.raw(type.getDisplayName()).color(typeColor))
             .insert(Message.raw(" '" + name + "'!").color("#55FF55"))
@@ -482,10 +482,10 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
               newZone.id(), worldName, chunkX, chunkZ);
 
           if (claimResult == ZoneManager.ZoneResult.SUCCESS) {
-            player.sendMessage(MessageUtil.text("Claimed chunk (" + chunkX + ", " + chunkZ + ").", "#44cc44"));
+            playerRef.sendMessage(MessageUtil.text("Claimed chunk (" + chunkX + ", " + chunkZ + ").", "#44cc44"));
             newZone = zoneManager.getZoneById(newZone.id());
           } else {
-            player.sendMessage(MessageUtil.text("Could not claim current chunk: " + claimResult, MessageUtil.COLOR_GOLD));
+            playerRef.sendMessage(MessageUtil.text("Could not claim current chunk: " + claimResult, MessageUtil.COLOR_GOLD));
           }
         }
       }
@@ -501,11 +501,11 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
           int claimed = zoneManager.claimRadius(newZone.id(), worldName, centerX, centerZ, radius, circle);
 
           if (claimed > 0) {
-            player.sendMessage(MessageUtil.text("Claimed " + claimed + " chunks in a "
+            playerRef.sendMessage(MessageUtil.text("Claimed " + claimed + " chunks in a "
                 + (circle ? "circular" : "square") + " radius of " + radius + ".", "#44cc44"));
             newZone = zoneManager.getZoneById(newZone.id());
           } else {
-            player.sendMessage(MessageUtil.text("No chunks could be claimed (area may be occupied).", MessageUtil.COLOR_GOLD));
+            playerRef.sendMessage(MessageUtil.text("No chunks could be claimed (area may be occupied).", MessageUtil.COLOR_GOLD));
           }
         }
       }
@@ -513,7 +513,7 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
       case NO_CLAIMS, USE_MAP -> {
         // No chunks to claim now
         if (method == ClaimMethod.NO_CLAIMS) {
-          player.sendMessage(MessageUtil.text("Zone created with no claims.", "#888888"));
+          playerRef.sendMessage(MessageUtil.text("Zone created with no claims.", "#888888"));
         }
       }
       default -> throw new IllegalStateException("Unexpected value");

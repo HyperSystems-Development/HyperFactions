@@ -304,7 +304,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
       case "SetPower" -> {
         double amount = parseDoubleOrNaN(data.powerInput);
         if (Double.isNaN(amount)) {
-          player.sendMessage(MessageUtil.adminError("Enter a valid number."));
+          playerRef.sendMessage(MessageUtil.adminError("Enter a valid number."));
           return;
         }
         double oldPower = powerManager.getPlayerPower(targetPlayerUuid).power();
@@ -327,7 +327,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
       case "SetMax" -> {
         double amount = parseDoubleOrNaN(data.powerInput);
         if (Double.isNaN(amount) || amount <= 0) {
-          player.sendMessage(MessageUtil.adminError("Enter a valid positive number."));
+          playerRef.sendMessage(MessageUtil.adminError("Enter a valid positive number."));
           return;
         }
         PlayerPower old = powerManager.getPlayerPower(targetPlayerUuid);
@@ -379,7 +379,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
               "Admin reset K/D for " + targetPlayerName, adminUuid));
           factionManager.updateFaction(updated);
         }
-        player.sendMessage(MessageUtil.adminSuccess("Reset K/D for " + targetPlayerName + "."));
+        playerRef.sendMessage(MessageUtil.adminSuccess("Reset K/D for " + targetPlayerName + "."));
         reopenPage(player, ref, store, playerRef);
       }
 
@@ -399,7 +399,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
             // Last member — disband the faction
             factionManager.forceDisband(faction.id(),
               "[Admin] Disbanded via admin kick of last member " + targetPlayerName);
-            player.sendMessage(MessageUtil.text("[Admin] Faction '" + faction.name()
+            playerRef.sendMessage(MessageUtil.text("[Admin] Faction '" + faction.name()
               + "' disbanded (last member kicked).", MessageUtil.COLOR_GOLD));
             // Navigate back to factions list since faction no longer exists
             guiManager.openAdminFactions(player, ref, store, playerRef);
@@ -419,7 +419,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
 
               // Now kick the demoted member
               factionManager.adminRemoveMember(faction.id(), targetPlayerUuid);
-              player.sendMessage(MessageUtil.adminSuccess("Kicked leader " + targetPlayerName
+              playerRef.sendMessage(MessageUtil.adminSuccess("Kicked leader " + targetPlayerName
                 + ". Leadership transferred to " + successor.username() + "."));
             }
             reopenPage(player, ref, store, playerRef);
@@ -428,7 +428,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
           // Normal kick
           FactionResult result = factionManager.adminRemoveMember(faction.id(), targetPlayerUuid);
           if (result == FactionResult.SUCCESS) {
-            player.sendMessage(MessageUtil.adminSuccess("Kicked " + targetPlayerName
+            playerRef.sendMessage(MessageUtil.adminSuccess("Kicked " + targetPlayerName
               + " from " + faction.name() + "."));
           }
           reopenPage(player, ref, store, playerRef);
@@ -441,7 +441,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
         if (viewFaction != null) {
           guiManager.openAdminFactionInfo(player, ref, store, playerRef, viewFaction.id());
         } else {
-          player.sendMessage(MessageUtil.adminError("Faction no longer exists."));
+          playerRef.sendMessage(MessageUtil.adminError("Faction no longer exists."));
         }
       }
 

@@ -200,7 +200,7 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
     UUID uuid = playerRef.getUuid();
     BigDecimal amount = UiUtil.parseAmount(data.amount);
     if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
-      player.sendMessage(MessageUtil.errorText("Enter a valid positive amount."));
+      playerRef.sendMessage(MessageUtil.errorText("Enter a valid positive amount."));
       sendUpdate();
       return;
     }
@@ -222,7 +222,7 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
     VaultEconomyProvider vault = economyManager.getVaultProvider();
 
     if (!vault.has(uuid, totalFromWallet)) {
-      player.sendMessage(MessageUtil.errorText(
+      playerRef.sendMessage(MessageUtil.errorText(
           "Insufficient wallet funds. Need " + economyManager.formatCurrency(totalFromWallet)
           + ", have " + economyManager.formatCurrency(vault.getBalanceBigDecimal(uuid))));
       sendUpdate();
@@ -230,7 +230,7 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
     }
 
     if (!vault.withdraw(uuid, totalFromWallet)) {
-      player.sendMessage(MessageUtil.errorText("Failed to withdraw from your wallet."));
+      playerRef.sendMessage(MessageUtil.errorText("Failed to withdraw from your wallet."));
       sendUpdate();
       return;
     }
@@ -240,7 +240,7 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
 
     if (result != EconomyAPI.TransactionResult.SUCCESS) {
       vault.deposit(uuid, totalFromWallet); // Rollback
-      player.sendMessage(MessageUtil.errorText("Failed to deposit. Money returned."));
+      playerRef.sendMessage(MessageUtil.errorText("Failed to deposit. Money returned."));
       sendUpdate();
       return;
     }
@@ -249,7 +249,7 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
     if (fee.compareTo(BigDecimal.ZERO) > 0) {
       msg += " (fee: " + economyManager.formatCurrency(fee) + ")";
     }
-    player.sendMessage(MessageUtil.successText(msg));
+    playerRef.sendMessage(MessageUtil.successText(msg));
 
     Faction fresh = factionManager.getFaction(faction.id());
     if (fresh != null) {
@@ -261,7 +261,7 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
                     PlayerRef playerRef, UUID uuid, BigDecimal amount, BigDecimal fee) {
     // Permission check
     if (!PermissionManager.get().hasPermission(uuid, Permissions.ECONOMY_WITHDRAW)) {
-      player.sendMessage(MessageUtil.errorText("You don't have permission to withdraw."));
+      playerRef.sendMessage(MessageUtil.errorText("You don't have permission to withdraw."));
       sendUpdate();
       return;
     }
@@ -269,7 +269,7 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
     // Limit check
     String limitReason = economyManager.checkWithdrawLimits(faction.id(), amount);
     if (limitReason != null) {
-      player.sendMessage(MessageUtil.errorText("Withdrawal denied: " + limitReason));
+      playerRef.sendMessage(MessageUtil.errorText("Withdrawal denied: " + limitReason));
       sendUpdate();
       return;
     }
@@ -280,11 +280,11 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
     if (result != EconomyAPI.TransactionResult.SUCCESS) {
       switch (result) {
         case INSUFFICIENT_FUNDS ->
-          player.sendMessage(MessageUtil.errorText("Insufficient funds in treasury."));
+          playerRef.sendMessage(MessageUtil.errorText("Insufficient funds in treasury."));
         case LIMIT_EXCEEDED ->
-          player.sendMessage(MessageUtil.errorText("Withdrawal limit exceeded."));
+          playerRef.sendMessage(MessageUtil.errorText("Withdrawal limit exceeded."));
         default ->
-          player.sendMessage(MessageUtil.errorText("Withdrawal failed: " + result));
+          playerRef.sendMessage(MessageUtil.errorText("Withdrawal failed: " + result));
       }
       sendUpdate();
       return;
@@ -293,7 +293,7 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
     BigDecimal netToWallet = amount.subtract(fee);
     VaultEconomyProvider vault = economyManager.getVaultProvider();
     if (!vault.deposit(uuid, netToWallet)) {
-      player.sendMessage(MessageUtil.errorText(
+      playerRef.sendMessage(MessageUtil.errorText(
           "Warning: Failed to deposit to your wallet. Contact an admin."));
       sendUpdate();
       return;
@@ -304,7 +304,7 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
       msg += " (fee: " + economyManager.formatCurrency(fee) + ", received: "
           + economyManager.formatCurrency(netToWallet) + ")";
     }
-    player.sendMessage(MessageUtil.successText(msg));
+    playerRef.sendMessage(MessageUtil.successText(msg));
 
     Faction fresh = factionManager.getFaction(faction.id());
     if (fresh != null) {

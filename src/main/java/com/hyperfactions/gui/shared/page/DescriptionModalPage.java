@@ -125,7 +125,7 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
 
     // Verify officer permission (skip in admin mode)
     if (!adminMode && (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel())) {
-      player.sendMessage(MessageUtil.errorText("You don't have permission to edit the description."));
+      playerRef.sendMessage(MessageUtil.errorText("You don't have permission to edit the description."));
       guiManager.openFactionSettings(player, ref, store, playerRef,
           factionManager.getFaction(faction.id()));
       return;
@@ -147,7 +147,7 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
         factionManager.updateFaction(updatedFaction);
 
         String prefix = adminMode ? "[Admin] " : "";
-        player.sendMessage(Message.raw(prefix + "Faction description cleared.").color("#AAAAAA"));
+        playerRef.sendMessage(Message.raw(prefix + "Faction description cleared.").color("#AAAAAA"));
 
         if (adminMode) {
           guiManager.openAdminFactionSettings(player, ref, store, playerRef, faction.id());
@@ -165,7 +165,7 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
         if (newDesc == null || newDesc.trim().isEmpty()) {
           Faction updatedFaction = faction.withDescription(null);
           factionManager.updateFaction(updatedFaction);
-          player.sendMessage(Message.raw(prefix + "Faction description cleared.").color("#AAAAAA"));
+          playerRef.sendMessage(Message.raw(prefix + "Faction description cleared.").color("#AAAAAA"));
         } else {
           newDesc = newDesc.trim();
 
@@ -176,7 +176,7 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
           Faction updatedFaction = faction.withDescription(newDesc);
           factionManager.updateFaction(updatedFaction);
 
-          player.sendMessage(Message.raw(prefix + "Faction description updated!").color("#55FF55"));
+          playerRef.sendMessage(Message.raw(prefix + "Faction description updated!").color("#55FF55"));
         }
 
         if (adminMode) {

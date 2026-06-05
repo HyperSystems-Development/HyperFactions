@@ -417,7 +417,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
 
     // Verify still in faction
     if (currentFaction == null) {
-      player.sendMessage(MessageUtil.errorText("You are no longer in a faction."));
+      playerRef.sendMessage(MessageUtil.errorText("You are no longer in a faction."));
       guiManager.openFactionMain(player, ref, store, playerRef);
       return;
     }
@@ -438,7 +438,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
           if (isOfficerPlus) {
             handleSetHomeAction(player, ref, store, uuid, currentFaction);
           } else {
-            player.sendMessage(MessageUtil.errorText("Your faction has no home set. Ask an officer to set one."));
+            playerRef.sendMessage(MessageUtil.errorText("Your faction has no home set. Ask an officer to set one."));
             sendUpdate();
           }
         } else {
@@ -448,7 +448,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
 
       case "Claim" -> {
         if (!isOfficerPlus || !PermissionManager.get().hasPermission(uuid, Permissions.CLAIM)) {
-          player.sendMessage(MessageUtil.errorText("Only officers can claim territory."));
+          playerRef.sendMessage(MessageUtil.errorText("Only officers can claim territory."));
           sendUpdate();
           return;
         }
@@ -461,7 +461,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
         if (chatResult.isSuccess() && chatResult.channel() != null) {
           String display = ChatManager.getChannelDisplay(chatResult.channel());
           String color = ChatManager.getChannelColor(chatResult.channel());
-          player.sendMessage(Message.raw("Chat mode: ").color("#AAAAAA")
+          playerRef.sendMessage(Message.raw("Chat mode: ").color("#AAAAAA")
               .insert(Message.raw(display).color(color)));
         }
         rebuild();
@@ -491,7 +491,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
   private void handleHomeAction(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
                  UUID uuid, Faction faction) {
     if (!faction.hasHome()) {
-      player.sendMessage(MessageUtil.errorText("Your faction has no home set."));
+      playerRef.sendMessage(MessageUtil.errorText("Your faction has no home set."));
       sendUpdate();
       return;
     }
@@ -499,7 +499,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     // Get player's current location for start location
     TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
     if (transform == null) {
-      player.sendMessage(MessageUtil.errorText("Could not determine your location."));
+      playerRef.sendMessage(MessageUtil.errorText("Could not determine your location."));
       sendUpdate();
       return;
     }
@@ -507,7 +507,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     Vector3d pos = transform.getPosition();
     World world = player.getWorld();
     if (world == null) {
-      player.sendMessage(MessageUtil.errorText("Could not determine your world."));
+      playerRef.sendMessage(MessageUtil.errorText("Could not determine your world."));
       sendUpdate();
       return;
     }
@@ -523,7 +523,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
         uuid,
         startLoc,
         f -> executeTeleport(store, ref, world, f),
-        player::sendMessage,
+        playerRef::sendMessage,
         () -> plugin.getCombatTagManager().isTagged(uuid)
     );
 
@@ -562,10 +562,10 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
 
   private void handleTeleportResult(Player player, TeleportManager.TeleportResult result) {
     switch (result) {
-      case NOT_IN_FACTION -> player.sendMessage(MessageUtil.errorText("You are not in a faction."));
-      case NO_HOME -> player.sendMessage(MessageUtil.errorText("Your faction has no home set."));
-      case COMBAT_TAGGED -> player.sendMessage(MessageUtil.errorText("You cannot teleport while in combat!"));
-      case SUCCESS_INSTANT -> player.sendMessage(MessageUtil.successText("Teleported to faction home!"));
+      case NOT_IN_FACTION -> playerRef.sendMessage(MessageUtil.errorText("You are not in a faction."));
+      case NO_HOME -> playerRef.sendMessage(MessageUtil.errorText("Your faction has no home set."));
+      case COMBAT_TAGGED -> playerRef.sendMessage(MessageUtil.errorText("You cannot teleport while in combat!"));
+      case SUCCESS_INSTANT -> playerRef.sendMessage(MessageUtil.successText("Teleported to faction home!"));
       case ON_COOLDOWN, SUCCESS_WARMUP -> {} // Message sent by TeleportManager
       default -> {}
     }
@@ -576,14 +576,14 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     // Get player's current location
     TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
     if (transform == null) {
-      player.sendMessage(MessageUtil.errorText("Could not determine your location."));
+      playerRef.sendMessage(MessageUtil.errorText("Could not determine your location."));
       sendUpdate();
       return;
     }
 
     World world = player.getWorld();
     if (world == null) {
-      player.sendMessage(MessageUtil.errorText("Could not determine your world."));
+      playerRef.sendMessage(MessageUtil.errorText("Could not determine your world."));
       sendUpdate();
       return;
     }
@@ -595,7 +595,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     // Check if in faction territory
     UUID owner = claimManager.getClaimOwner(world.getName(), chunkX, chunkZ);
     if (owner == null || !owner.equals(faction.id())) {
-      player.sendMessage(MessageUtil.errorText("You can only set home in your faction's territory."));
+      playerRef.sendMessage(MessageUtil.errorText("You can only set home in your faction's territory."));
       sendUpdate();
       return;
     }
@@ -620,7 +620,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     Faction updated = faction.withHome(home);
     factionManager.updateFaction(updated);
 
-    player.sendMessage(MessageUtil.successText("Faction home set!"));
+    playerRef.sendMessage(MessageUtil.successText("Faction home set!"));
 
     // Refresh dashboard
     Faction fresh = factionManager.getFaction(faction.id());
@@ -634,14 +634,14 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     // Get player's current chunk
     TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
     if (transform == null) {
-      player.sendMessage(MessageUtil.errorText("Could not determine your location."));
+      playerRef.sendMessage(MessageUtil.errorText("Could not determine your location."));
       sendUpdate();
       return;
     }
 
     World world = player.getWorld();
     if (world == null) {
-      player.sendMessage(MessageUtil.errorText("Could not determine your world."));
+      playerRef.sendMessage(MessageUtil.errorText("Could not determine your world."));
       sendUpdate();
       return;
     }
@@ -655,7 +655,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
 
     switch (result) {
       case SUCCESS -> {
-        player.sendMessage(
+        playerRef.sendMessage(
             Message.raw("Claimed chunk at (").color("#55FF55")
                 .insert(Message.raw(chunkX + ", " + chunkZ).color("#AAAAAA"))
                 .insert(Message.raw(")").color("#55FF55"))
@@ -666,16 +666,16 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
           guiManager.openFactionDashboard(player, ref, store, playerRef, fresh);
         }
       }
-      case NOT_IN_FACTION -> player.sendMessage(MessageUtil.errorText("You are not in a faction."));
-      case NOT_OFFICER -> player.sendMessage(MessageUtil.errorText("Only officers can claim land."));
-      case ALREADY_CLAIMED_SELF -> player.sendMessage(MessageUtil.text("This chunk is already claimed by your faction.", MessageUtil.COLOR_GOLD));
-      case ALREADY_CLAIMED_OTHER, ALREADY_CLAIMED_ALLY, ALREADY_CLAIMED_ENEMY -> player.sendMessage(MessageUtil.errorText("This chunk is claimed by another faction."));
-      case MAX_CLAIMS_REACHED -> player.sendMessage(MessageUtil.errorText("Your faction has reached its claim limit."));
-      case WORLD_NOT_ALLOWED -> player.sendMessage(MessageUtil.errorText("Claiming is not allowed in this world."));
-      case NOT_ADJACENT -> player.sendMessage(MessageUtil.errorText("You can only claim chunks adjacent to existing claims."));
-      case INSUFFICIENT_POWER -> player.sendMessage(MessageUtil.errorText("Your faction doesn't have enough power to claim more land."));
-      case ORBISGUARD_PROTECTED -> player.sendMessage(MessageUtil.errorText("This area is protected by OrbisGuard."));
-      default -> player.sendMessage(MessageUtil.errorText("Could not claim this chunk."));
+      case NOT_IN_FACTION -> playerRef.sendMessage(MessageUtil.errorText("You are not in a faction."));
+      case NOT_OFFICER -> playerRef.sendMessage(MessageUtil.errorText("Only officers can claim land."));
+      case ALREADY_CLAIMED_SELF -> playerRef.sendMessage(MessageUtil.text("This chunk is already claimed by your faction.", MessageUtil.COLOR_GOLD));
+      case ALREADY_CLAIMED_OTHER, ALREADY_CLAIMED_ALLY, ALREADY_CLAIMED_ENEMY -> playerRef.sendMessage(MessageUtil.errorText("This chunk is claimed by another faction."));
+      case MAX_CLAIMS_REACHED -> playerRef.sendMessage(MessageUtil.errorText("Your faction has reached its claim limit."));
+      case WORLD_NOT_ALLOWED -> playerRef.sendMessage(MessageUtil.errorText("Claiming is not allowed in this world."));
+      case NOT_ADJACENT -> playerRef.sendMessage(MessageUtil.errorText("You can only claim chunks adjacent to existing claims."));
+      case INSUFFICIENT_POWER -> playerRef.sendMessage(MessageUtil.errorText("Your faction doesn't have enough power to claim more land."));
+      case ORBISGUARD_PROTECTED -> playerRef.sendMessage(MessageUtil.errorText("This area is protected by OrbisGuard."));
+      default -> playerRef.sendMessage(MessageUtil.errorText("Could not claim this chunk."));
     }
   }
 

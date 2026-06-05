@@ -277,7 +277,7 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
 
     UUID factionId = UuidUtil.parseOrNull(data.factionId);
     if (factionId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction ID."));
+      playerRef.sendMessage(MessageUtil.errorText("Invalid faction ID."));
       return;
     }
 
@@ -288,11 +288,11 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
       );
       if (result == FactionManager.FactionResult.SUCCESS) {
         inviteManager.removeInvite(factionId, uuid);
-        player.sendMessage(MessageUtil.text("You joined the faction!", "#44CC44"));
+        playerRef.sendMessage(MessageUtil.text("You joined the faction!", "#44CC44"));
         // Refresh the page
         guiManager.openFactionMain(player, ref, store, playerRef);
       } else {
-        player.sendMessage(Message.raw("Failed to join faction: " + result).color("#FF5555"));
+        playerRef.sendMessage(Message.raw("Failed to join faction: " + result).color("#FF5555"));
       }
     }
   }
@@ -305,12 +305,12 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
 
     UUID factionId = UuidUtil.parseOrNull(data.factionId);
     if (factionId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction ID."));
+      playerRef.sendMessage(MessageUtil.errorText("Invalid faction ID."));
       return;
     }
 
     inviteManager.removeInvite(factionId, uuid);
-    player.sendMessage(MessageUtil.text("Invite declined.", MessageUtil.COLOR_GOLD));
+    playerRef.sendMessage(MessageUtil.text("Invite declined.", MessageUtil.COLOR_GOLD));
     // Refresh the page
     guiManager.openFactionMain(player, ref, store, playerRef);
   }
@@ -330,14 +330,14 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
     // Check cooldown
     if (teleportManager.isOnCooldown(uuid)) {
       int remaining = teleportManager.getCooldownRemaining(uuid);
-      player.sendMessage(Message.raw("Teleport on cooldown! " + remaining + "s remaining.").color("#FF5555"));
+      playerRef.sendMessage(Message.raw("Teleport on cooldown! " + remaining + "s remaining.").color("#FF5555"));
       return;
     }
 
     // Get current world
     World currentWorld = player.getWorld();
     if (currentWorld == null) {
-      player.sendMessage(MessageUtil.errorText("Cannot teleport - world not found."));
+      playerRef.sendMessage(MessageUtil.errorText("Cannot teleport - world not found."));
       return;
     }
 
@@ -348,7 +348,7 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
     } else {
       targetWorld = Universe.get().getWorld(home.world());
       if (targetWorld == null) {
-        player.sendMessage(MessageUtil.errorText("Cannot teleport - target world not found."));
+        playerRef.sendMessage(MessageUtil.errorText("Cannot teleport - target world not found."));
         return;
       }
     }
@@ -361,7 +361,7 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
       store.addComponent(ref, Teleport.getComponentType(), teleport);
     });
 
-    player.sendMessage(MessageUtil.text("Teleported to faction home!", "#44CC44"));
+    playerRef.sendMessage(MessageUtil.text("Teleported to faction home!", "#44CC44"));
   }
 
   private void handleLeave(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
@@ -372,10 +372,10 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
 
     FactionManager.FactionResult result = factionManager.removeMember(faction.id(), uuid, uuid, false);
     if (result == FactionManager.FactionResult.SUCCESS) {
-      player.sendMessage(MessageUtil.text("You left the faction.", MessageUtil.COLOR_GOLD));
+      playerRef.sendMessage(MessageUtil.text("You left the faction.", MessageUtil.COLOR_GOLD));
       guiManager.openFactionMain(player, ref, store, playerRef);
     } else {
-      player.sendMessage(Message.raw("Failed to leave: " + result).color("#FF5555"));
+      playerRef.sendMessage(Message.raw("Failed to leave: " + result).color("#FF5555"));
     }
   }
 

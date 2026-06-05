@@ -387,7 +387,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            playerRef.sendMessage(MessageUtil.errorText("Invalid faction."));
             return;
           }
           Faction faction = factionManager.getFaction(factionId);
@@ -398,7 +398,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
             // Get target world
             World targetWorld = Universe.get().getWorld(home.world());
             if (targetWorld == null) {
-              player.sendMessage(MessageUtil.errorText("Target world not found."));
+              playerRef.sendMessage(MessageUtil.errorText("Target world not found."));
               return;
             }
 
@@ -410,9 +410,9 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
               store.addComponent(ref, Teleport.getComponentType(), teleport);
             });
 
-            player.sendMessage(MessageUtil.text("Teleported to " + faction.name() + "'s home.", "#00FFFF"));
+            playerRef.sendMessage(MessageUtil.text("Teleported to " + faction.name() + "'s home.", "#00FFFF"));
           } else {
-            player.sendMessage(MessageUtil.errorText("Faction has no home set."));
+            playerRef.sendMessage(MessageUtil.errorText("Faction has no home set."));
           }
         }
       }
@@ -421,7 +421,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            playerRef.sendMessage(MessageUtil.errorText("Invalid faction."));
             return;
           }
           Faction faction = factionManager.getFaction(factionId);
@@ -436,7 +436,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            playerRef.sendMessage(MessageUtil.errorText("Invalid faction."));
             return;
           }
           Faction faction = factionManager.getFaction(factionId);
@@ -450,7 +450,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            playerRef.sendMessage(MessageUtil.errorText("Invalid faction."));
             return;
           }
           Faction faction = factionManager.getFaction(factionId);
@@ -464,7 +464,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            playerRef.sendMessage(MessageUtil.errorText("Invalid faction."));
             return;
           }
           guiManager.openAdminDisbandConfirm(player, ref, store, playerRef, factionId, data.factionName);
@@ -475,7 +475,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            playerRef.sendMessage(MessageUtil.errorText("Invalid faction."));
             return;
           }
           Faction faction = factionManager.getFaction(factionId);

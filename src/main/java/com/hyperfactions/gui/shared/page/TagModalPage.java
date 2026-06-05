@@ -126,7 +126,7 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
 
     // Verify officer permission (skip in admin mode)
     if (!adminMode && (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel())) {
-      player.sendMessage(MessageUtil.errorText("You don't have permission to edit the tag."));
+      playerRef.sendMessage(MessageUtil.errorText("You don't have permission to edit the tag."));
       guiManager.openFactionSettings(player, ref, store, playerRef,
           factionManager.getFaction(faction.id()));
       return;
@@ -156,7 +156,7 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
           }
 
           String prefix = adminMode ? "[Admin] " : "";
-          player.sendMessage(Message.raw(prefix + "Faction tag cleared.").color("#AAAAAA"));
+          playerRef.sendMessage(Message.raw(prefix + "Faction tag cleared.").color("#AAAAAA"));
           if (adminMode) {
             guiManager.openAdminFactionSettings(player, ref, store, playerRef, faction.id());
           } else {
@@ -170,27 +170,27 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
 
         // Validate length
         if (newTag.length() < MIN_TAG_LENGTH) {
-          player.sendMessage(MessageUtil.errorText("Tag must be at least " + MIN_TAG_LENGTH + " character."));
+          playerRef.sendMessage(MessageUtil.errorText("Tag must be at least " + MIN_TAG_LENGTH + " character."));
           sendUpdate();
           return;
         }
 
         if (newTag.length() > MAX_TAG_LENGTH) {
-          player.sendMessage(MessageUtil.errorText("Tag cannot exceed " + MAX_TAG_LENGTH + " characters."));
+          playerRef.sendMessage(MessageUtil.errorText("Tag cannot exceed " + MAX_TAG_LENGTH + " characters."));
           sendUpdate();
           return;
         }
 
         // Validate format (alphanumeric only)
         if (!TAG_PATTERN.matcher(newTag).matches()) {
-          player.sendMessage(MessageUtil.errorText("Tag can only contain letters and numbers."));
+          playerRef.sendMessage(MessageUtil.errorText("Tag can only contain letters and numbers."));
           sendUpdate();
           return;
         }
 
         // Check if same as current
         if (newTag.equalsIgnoreCase(faction.tag())) {
-          player.sendMessage(MessageUtil.text("That's already your faction's tag.", MessageUtil.COLOR_GOLD));
+          playerRef.sendMessage(MessageUtil.text("That's already your faction's tag.", MessageUtil.COLOR_GOLD));
           sendUpdate();
           return;
         }
@@ -198,7 +198,7 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
         // Check uniqueness
         Faction existing = factionManager.getFactionByTag(newTag);
         if (existing != null && !existing.id().equals(faction.id())) {
-          player.sendMessage(MessageUtil.errorText("A faction with that tag already exists."));
+          playerRef.sendMessage(MessageUtil.errorText("A faction with that tag already exists."));
           sendUpdate();
           return;
         }
@@ -213,7 +213,7 @@ public class TagModalPage extends InteractiveCustomUIPage<TagModalData> {
         }
 
         String prefix = adminMode ? "[Admin] " : "";
-        player.sendMessage(
+        playerRef.sendMessage(
             Message.raw(prefix + "Faction tag set to ").color("#AAAAAA")
                 .insert(Message.raw("[" + newTag + "]").color("#FFAA00"))
                 .insert(Message.raw("!").color("#AAAAAA"))

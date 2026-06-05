@@ -461,7 +461,7 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
 
     UUID factionId = UuidUtil.parseOrNull(data.factionId);
     if (factionId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction."));
+      playerRef.sendMessage(MessageUtil.errorText("Invalid faction."));
       return;
     }
 
@@ -480,7 +480,7 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
 
     UUID factionId = UuidUtil.parseOrNull(data.factionId);
     if (factionId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction."));
+      playerRef.sendMessage(MessageUtil.errorText("Invalid faction."));
       sendUpdate();
       return;
     }
@@ -488,13 +488,13 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
     Faction faction = factionManager.getFaction(factionId);
 
     if (faction == null) {
-      player.sendMessage(MessageUtil.errorText("Faction not found."));
+      playerRef.sendMessage(MessageUtil.errorText("Faction not found."));
       sendUpdate();
       return;
     }
 
     if (!faction.open()) {
-      player.sendMessage(MessageUtil.errorText("This faction is invite-only."));
+      playerRef.sendMessage(MessageUtil.errorText("This faction is invite-only."));
       sendUpdate();
       return;
     }
@@ -508,7 +508,7 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
 
     switch (result) {
       case SUCCESS -> {
-        player.sendMessage(
+        playerRef.sendMessage(
             Message.raw("You joined ").color("#55FF55")
                 .insert(Message.raw(faction.name()).color("#00FFFF"))
                 .insert(Message.raw("!").color("#55FF55"))
@@ -526,25 +526,25 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
             guiManager.openFactionDashboard(player, ref, store, playerRef, updatedFaction);
           } else {
             // Last resort: close page and let them reopen
-            player.sendMessage(MessageUtil.text("Welcome! Use /f to open faction menu.", MessageUtil.COLOR_GRAY));
+            playerRef.sendMessage(MessageUtil.text("Welcome! Use /f to open faction menu.", MessageUtil.COLOR_GRAY));
             guiManager.closePage(player, ref, store);
           }
         }
       }
       case ALREADY_IN_FACTION -> {
-        player.sendMessage(MessageUtil.errorText("You are already in a faction."));
+        playerRef.sendMessage(MessageUtil.errorText("You are already in a faction."));
         sendUpdate();
       }
       case FACTION_NOT_FOUND -> {
-        player.sendMessage(MessageUtil.errorText("Faction not found."));
+        playerRef.sendMessage(MessageUtil.errorText("Faction not found."));
         sendUpdate();
       }
       case FACTION_FULL -> {
-        player.sendMessage(MessageUtil.errorText("This faction is full."));
+        playerRef.sendMessage(MessageUtil.errorText("This faction is full."));
         sendUpdate();
       }
       default -> {
-        player.sendMessage(MessageUtil.errorText("Could not join faction."));
+        playerRef.sendMessage(MessageUtil.errorText("Could not join faction."));
         sendUpdate();
       }
     }
@@ -559,7 +559,7 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
 
     UUID factionId = UuidUtil.parseOrNull(data.factionId);
     if (factionId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction."));
+      playerRef.sendMessage(MessageUtil.errorText("Invalid faction."));
       sendUpdate();
       return;
     }
@@ -568,14 +568,14 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
 
     // Check if invite exists
     if (!inviteManager.hasInvite(factionId, playerUuid)) {
-      player.sendMessage(MessageUtil.errorText("This invite has expired or was revoked."));
+      playerRef.sendMessage(MessageUtil.errorText("This invite has expired or was revoked."));
       sendUpdate();
       return;
     }
 
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {
-      player.sendMessage(MessageUtil.errorText("Faction no longer exists."));
+      playerRef.sendMessage(MessageUtil.errorText("Faction no longer exists."));
       inviteManager.removeInvite(factionId, playerUuid);
       sendUpdate();
       return;
@@ -590,7 +590,7 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
 
     switch (result) {
       case SUCCESS -> {
-        player.sendMessage(
+        playerRef.sendMessage(
             Message.raw("You joined ").color("#55FF55")
                 .insert(Message.raw(faction.name()).color("#00FFFF"))
                 .insert(Message.raw("!").color("#55FF55"))
@@ -604,15 +604,15 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
         }
       }
       case ALREADY_IN_FACTION -> {
-        player.sendMessage(MessageUtil.errorText("You are already in a faction."));
+        playerRef.sendMessage(MessageUtil.errorText("You are already in a faction."));
         sendUpdate();
       }
       case FACTION_FULL -> {
-        player.sendMessage(MessageUtil.errorText("This faction is full."));
+        playerRef.sendMessage(MessageUtil.errorText("This faction is full."));
         sendUpdate();
       }
       default -> {
-        player.sendMessage(MessageUtil.errorText("Could not join faction."));
+        playerRef.sendMessage(MessageUtil.errorText("Could not join faction."));
         sendUpdate();
       }
     }
@@ -627,7 +627,7 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
 
     UUID factionId = UuidUtil.parseOrNull(data.factionId);
     if (factionId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction."));
+      playerRef.sendMessage(MessageUtil.errorText("Invalid faction."));
       sendUpdate();
       return;
     }
@@ -636,14 +636,14 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
 
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {
-      player.sendMessage(MessageUtil.errorText("Faction not found."));
+      playerRef.sendMessage(MessageUtil.errorText("Faction not found."));
       sendUpdate();
       return;
     }
 
     // Check if faction is open (shouldn't happen, but just in case)
     if (faction.open()) {
-      player.sendMessage(MessageUtil.text("This faction is open! Click JOIN instead.", MessageUtil.COLOR_GOLD));
+      playerRef.sendMessage(MessageUtil.text("This faction is open! Click JOIN instead.", MessageUtil.COLOR_GOLD));
       sendUpdate();
       return;
     }
@@ -651,14 +651,14 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
     // Check if player already has a pending request
     var joinRequestManager = guiManager.getJoinRequestManager();
     if (joinRequestManager.hasRequest(factionId, playerUuid)) {
-      player.sendMessage(MessageUtil.text("You already have a pending request to this faction.", MessageUtil.COLOR_GOLD));
+      playerRef.sendMessage(MessageUtil.text("You already have a pending request to this faction.", MessageUtil.COLOR_GOLD));
       sendUpdate();
       return;
     }
 
     // Check if player already has an invite (they should accept it)
     if (inviteManager.hasInvite(factionId, playerUuid)) {
-      player.sendMessage(MessageUtil.text("You have an invite from this faction! Click ACCEPT instead.", MessageUtil.COLOR_GOLD));
+      playerRef.sendMessage(MessageUtil.text("You have an invite from this faction! Click ACCEPT instead.", MessageUtil.COLOR_GOLD));
       sendUpdate();
       return;
     }
@@ -666,12 +666,12 @@ public class NewPlayerBrowsePage extends InteractiveCustomUIPage<NewPlayerPageDa
     // Create the join request
     joinRequestManager.createRequest(factionId, playerUuid, playerRef.getUsername(), null);
 
-    player.sendMessage(
+    playerRef.sendMessage(
         Message.raw("Join request sent to ").color("#55FF55")
             .insert(Message.raw(faction.name()).color("#00FFFF"))
             .insert(Message.raw("!").color("#55FF55"))
     );
-    player.sendMessage(MessageUtil.text("An officer will review your request.", MessageUtil.COLOR_GRAY));
+    playerRef.sendMessage(MessageUtil.text("An officer will review your request.", MessageUtil.COLOR_GRAY));
 
     // Rebuild list to show updated state (PENDING button)
     rebuildList();

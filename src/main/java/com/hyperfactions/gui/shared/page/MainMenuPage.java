@@ -193,7 +193,7 @@ public class MainMenuPage extends InteractiveCustomUIPage<MainMenuData> {
       case "Claim" -> {
         if (faction != null) {
           guiManager.closePage(player, ref, store);
-          player.sendMessage(
+          playerRef.sendMessage(
             com.hypixel.hytale.server.core.Message.raw("Use ")
               .color("#AAAAAA")
               .insert(com.hypixel.hytale.server.core.Message.raw("/f claim").color("#55FF55"))

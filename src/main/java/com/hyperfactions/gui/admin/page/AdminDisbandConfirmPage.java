@@ -101,7 +101,7 @@ public class AdminDisbandConfirmPage extends InteractiveCustomUIPage<AdminDisban
         // Re-fetch faction to verify it still exists
         Faction faction = factionManager.getFaction(factionId);
         if (faction == null) {
-          player.sendMessage(MessageUtil.errorText("Faction no longer exists."));
+          playerRef.sendMessage(MessageUtil.errorText("Faction no longer exists."));
           guiManager.openAdminMain(player, ref, store, playerRef);
           return;
         }
@@ -111,16 +111,16 @@ public class AdminDisbandConfirmPage extends InteractiveCustomUIPage<AdminDisban
         if (leaderId != null) {
           FactionManager.FactionResult result = factionManager.disbandFaction(factionId, leaderId);
           if (result == FactionManager.FactionResult.SUCCESS) {
-            player.sendMessage(
+            playerRef.sendMessage(
                 Message.raw("Faction '").color("#FF5555")
                     .insert(Message.raw(factionName).color("#AAAAAA"))
                     .insert(Message.raw("' has been disbanded.").color("#FF5555"))
             );
           } else {
-            player.sendMessage(MessageUtil.errorText("Failed to disband: " + result));
+            playerRef.sendMessage(MessageUtil.errorText("Failed to disband: " + result));
           }
         } else {
-          player.sendMessage(MessageUtil.errorText("Faction has no leader, cannot disband."));
+          playerRef.sendMessage(MessageUtil.errorText("Faction has no leader, cannot disband."));
         }
 
         // Return to admin page (will show updated list)

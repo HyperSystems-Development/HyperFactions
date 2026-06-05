@@ -106,7 +106,7 @@ public class ZoneRenameModalPage extends InteractiveCustomUIPage<ZoneRenameModal
 
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.errorText("Zone no longer exists."));
+      playerRef.sendMessage(MessageUtil.errorText("Zone no longer exists."));
       guiManager.openAdminZone(player, ref, store, playerRef, currentTab, currentPage);
       return;
     }
@@ -121,7 +121,7 @@ public class ZoneRenameModalPage extends InteractiveCustomUIPage<ZoneRenameModal
 
         // Validation
         if (newName == null || newName.trim().isEmpty()) {
-          player.sendMessage(MessageUtil.errorText("Please enter a zone name."));
+          playerRef.sendMessage(MessageUtil.errorText("Please enter a zone name."));
           sendUpdate();
           return;
         }
@@ -129,20 +129,20 @@ public class ZoneRenameModalPage extends InteractiveCustomUIPage<ZoneRenameModal
         newName = newName.trim();
 
         if (newName.length() < MIN_NAME_LENGTH) {
-          player.sendMessage(MessageUtil.errorText("Zone name must be at least " + MIN_NAME_LENGTH + " character."));
+          playerRef.sendMessage(MessageUtil.errorText("Zone name must be at least " + MIN_NAME_LENGTH + " character."));
           sendUpdate();
           return;
         }
 
         if (newName.length() > MAX_NAME_LENGTH) {
-          player.sendMessage(MessageUtil.errorText("Zone name cannot exceed " + MAX_NAME_LENGTH + " characters."));
+          playerRef.sendMessage(MessageUtil.errorText("Zone name cannot exceed " + MAX_NAME_LENGTH + " characters."));
           sendUpdate();
           return;
         }
 
         // Check if name is the same
         if (newName.equalsIgnoreCase(zone.name())) {
-          player.sendMessage(MessageUtil.text("That's already this zone's name.", MessageUtil.COLOR_GOLD));
+          playerRef.sendMessage(MessageUtil.text("That's already this zone's name.", MessageUtil.COLOR_GOLD));
           sendUpdate();
           return;
         }
@@ -153,7 +153,7 @@ public class ZoneRenameModalPage extends InteractiveCustomUIPage<ZoneRenameModal
 
         switch (result) {
           case SUCCESS -> {
-            player.sendMessage(
+            playerRef.sendMessage(
                 Message.raw("[Admin] Zone renamed from ").color("#AAAAAA")
                     .insert(Message.raw(oldName).color("#888888"))
                     .insert(Message.raw(" to ").color("#AAAAAA"))
@@ -163,19 +163,19 @@ public class ZoneRenameModalPage extends InteractiveCustomUIPage<ZoneRenameModal
             guiManager.openAdminZone(player, ref, store, playerRef, currentTab, currentPage);
           }
           case NAME_TAKEN -> {
-            player.sendMessage(MessageUtil.errorText("A zone with that name already exists."));
+            playerRef.sendMessage(MessageUtil.errorText("A zone with that name already exists."));
             sendUpdate();
           }
           case INVALID_NAME -> {
-            player.sendMessage(MessageUtil.errorText("Invalid zone name."));
+            playerRef.sendMessage(MessageUtil.errorText("Invalid zone name."));
             sendUpdate();
           }
           case NOT_FOUND -> {
-            player.sendMessage(MessageUtil.errorText("Zone no longer exists."));
+            playerRef.sendMessage(MessageUtil.errorText("Zone no longer exists."));
             guiManager.openAdminZone(player, ref, store, playerRef, currentTab, currentPage);
           }
           default -> {
-            player.sendMessage(MessageUtil.errorText("Failed to rename zone: " + result));
+            playerRef.sendMessage(MessageUtil.errorText("Failed to rename zone: " + result));
             sendUpdate();
           }
         }

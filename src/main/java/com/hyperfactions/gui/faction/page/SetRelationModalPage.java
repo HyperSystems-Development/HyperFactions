@@ -294,7 +294,7 @@ public class SetRelationModalPage extends InteractiveCustomUIPage<SetRelationMod
 
       case "RequestAlly" -> {
         if (!canManage) {
-          player.sendMessage(MessageUtil.errorText("You don't have permission to manage relations."));
+          playerRef.sendMessage(MessageUtil.errorText("You don't have permission to manage relations."));
           sendUpdate();
           return;
         }
@@ -302,7 +302,7 @@ public class SetRelationModalPage extends InteractiveCustomUIPage<SetRelationMod
         if (data.factionId != null) {
           UUID targetId = UuidUtil.parseOrNull(data.factionId);
           if (targetId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            playerRef.sendMessage(MessageUtil.errorText("Invalid faction."));
             sendUpdate();
             return;
           }
@@ -310,17 +310,17 @@ public class SetRelationModalPage extends InteractiveCustomUIPage<SetRelationMod
           RelationManager.RelationResult result = relationManager.requestAlly(uuid, targetId);
 
           if (result == RelationManager.RelationResult.REQUEST_SENT) {
-            player.sendMessage(Message.raw("Alliance request sent to " + data.factionName + ".").color("#00AAFF"));
+            playerRef.sendMessage(Message.raw("Alliance request sent to " + data.factionName + ".").color("#00AAFF"));
             // Navigate to pending tab since a request was sent
             guiManager.openFactionRelations(player, ref, store, playerRef,
                 factionManager.getFaction(faction.id()), "pending");
           } else if (result == RelationManager.RelationResult.REQUEST_ACCEPTED) {
-            player.sendMessage(Message.raw("Now allied with " + data.factionName + "!").color("#00AAFF"));
+            playerRef.sendMessage(Message.raw("Now allied with " + data.factionName + "!").color("#00AAFF"));
             // Navigate to relations tab since alliance is now active
             guiManager.openFactionRelations(player, ref, store, playerRef,
                 factionManager.getFaction(faction.id()), "relations");
           } else {
-            player.sendMessage(Message.raw("Failed: " + result).color("#FF5555"));
+            playerRef.sendMessage(Message.raw("Failed: " + result).color("#FF5555"));
             guiManager.openFactionRelations(player, ref, store, playerRef,
                 factionManager.getFaction(faction.id()));
           }
@@ -329,7 +329,7 @@ public class SetRelationModalPage extends InteractiveCustomUIPage<SetRelationMod
 
       case "SetEnemy" -> {
         if (!canManage) {
-          player.sendMessage(MessageUtil.errorText("You don't have permission to manage relations."));
+          playerRef.sendMessage(MessageUtil.errorText("You don't have permission to manage relations."));
           sendUpdate();
           return;
         }
@@ -337,7 +337,7 @@ public class SetRelationModalPage extends InteractiveCustomUIPage<SetRelationMod
         if (data.factionId != null) {
           UUID targetId = UuidUtil.parseOrNull(data.factionId);
           if (targetId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            playerRef.sendMessage(MessageUtil.errorText("Invalid faction."));
             sendUpdate();
             return;
           }
@@ -345,9 +345,9 @@ public class SetRelationModalPage extends InteractiveCustomUIPage<SetRelationMod
           RelationManager.RelationResult result = relationManager.setEnemy(uuid, targetId);
 
           if (result == RelationManager.RelationResult.SUCCESS) {
-            player.sendMessage(Message.raw("Now enemies with " + data.factionName + "!").color("#FF5555"));
+            playerRef.sendMessage(Message.raw("Now enemies with " + data.factionName + "!").color("#FF5555"));
           } else {
-            player.sendMessage(Message.raw("Failed: " + result).color("#FF5555"));
+            playerRef.sendMessage(Message.raw("Failed: " + result).color("#FF5555"));
           }
 
           guiManager.openFactionRelations(player, ref, store, playerRef,
@@ -359,7 +359,7 @@ public class SetRelationModalPage extends InteractiveCustomUIPage<SetRelationMod
         if (data.factionId != null) {
           UUID targetId = UuidUtil.parseOrNull(data.factionId);
           if (targetId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid faction."));
+            playerRef.sendMessage(MessageUtil.errorText("Invalid faction."));
             sendUpdate();
             return;
           }
@@ -369,7 +369,7 @@ public class SetRelationModalPage extends InteractiveCustomUIPage<SetRelationMod
           if (targetFaction != null) {
             guiManager.openFactionInfo(player, ref, store, playerRef, targetFaction, "relations");
           } else {
-            player.sendMessage(MessageUtil.errorText("Faction no longer exists."));
+            playerRef.sendMessage(MessageUtil.errorText("Faction no longer exists."));
             sendUpdate();
           }
         }

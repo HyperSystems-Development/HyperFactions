@@ -154,7 +154,7 @@ public class TreasurySettingsPage extends InteractiveCustomUIPage<TreasurySettin
 
     FactionMember member = faction.getMember(uuid);
     if (member == null || member.role() != FactionRole.LEADER) {
-      player.sendMessage(MessageUtil.errorText("Only the leader can change treasury permissions."));
+      playerRef.sendMessage(MessageUtil.errorText("Only the leader can change treasury permissions."));
       sendUpdate();
       return;
     }
@@ -173,7 +173,7 @@ public class TreasurySettingsPage extends InteractiveCustomUIPage<TreasurySettin
                    PlayerRef playerRef, UUID uuid) {
     FactionMember member = faction.getMember(uuid);
     if (member == null || member.role() != FactionRole.LEADER) {
-      player.sendMessage(MessageUtil.errorText("Only the leader can change upkeep settings."));
+      playerRef.sendMessage(MessageUtil.errorText("Only the leader can change upkeep settings."));
       sendUpdate();
       return;
     }
@@ -193,7 +193,7 @@ public class TreasurySettingsPage extends InteractiveCustomUIPage<TreasurySettin
               PlayerRef playerRef, UUID uuid, TreasurySettingsData data) {
     FactionMember member = faction.getMember(uuid);
     if (member == null || member.role() != FactionRole.LEADER) {
-      player.sendMessage(MessageUtil.errorText("Only the leader can configure limits."));
+      playerRef.sendMessage(MessageUtil.errorText("Only the leader can configure limits."));
       sendUpdate();
       return;
     }
@@ -212,12 +212,12 @@ public class TreasurySettingsPage extends InteractiveCustomUIPage<TreasurySettin
       );
 
       economyManager.updateLimits(faction.id(), newLimits);
-      player.sendMessage(MessageUtil.successText("Treasury limits updated."));
+      playerRef.sendMessage(MessageUtil.successText("Treasury limits updated."));
 
       guiManager.openTreasurySettings(player, ref, store, playerRef,
           factionManager.getFaction(faction.id()));
     } catch (NumberFormatException e) {
-      player.sendMessage(MessageUtil.errorText("Invalid number in limit fields. Use 0 for unlimited."));
+      playerRef.sendMessage(MessageUtil.errorText("Invalid number in limit fields. Use 0 for unlimited."));
       sendUpdate();
     }
   }

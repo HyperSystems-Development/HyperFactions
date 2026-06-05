@@ -309,7 +309,7 @@ public class InvitesPage extends InteractiveCustomUIPage<NewPlayerPageData> impl
 
     UUID factionId = UuidUtil.parseOrNull(data.factionId);
     if (factionId == null) {
-      player.sendMessage(MessageUtil.errorText("Invalid faction."));
+      playerRef.sendMessage(MessageUtil.errorText("Invalid faction."));
       sendUpdate();
       return;
     }
@@ -317,14 +317,14 @@ public class InvitesPage extends InteractiveCustomUIPage<NewPlayerPageData> impl
     UUID playerUuid = playerRef.getUuid();
 
     if (!inviteManager.hasInvite(factionId, playerUuid)) {
-      player.sendMessage(MessageUtil.errorText("This invite has expired or was revoked."));
+      playerRef.sendMessage(MessageUtil.errorText("This invite has expired or was revoked."));
       sendUpdate();
       return;
     }
 
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {
-      player.sendMessage(MessageUtil.errorText("Faction no longer exists."));
+      playerRef.sendMessage(MessageUtil.errorText("Faction no longer exists."));
       inviteManager.removeInvite(factionId, playerUuid);
       sendUpdate();
       return;
@@ -338,7 +338,7 @@ public class InvitesPage extends InteractiveCustomUIPage<NewPlayerPageData> impl
 
     switch (result) {
       case SUCCESS -> {
-        player.sendMessage(
+        playerRef.sendMessage(
             Message.raw("You joined ").color("#55FF55")
                 .insert(Message.raw(faction.name()).color("#00FFFF"))
                 .insert(Message.raw("!").color("#55FF55"))
@@ -353,15 +353,15 @@ public class InvitesPage extends InteractiveCustomUIPage<NewPlayerPageData> impl
         }
       }
       case ALREADY_IN_FACTION -> {
-        player.sendMessage(MessageUtil.errorText("You are already in a faction."));
+        playerRef.sendMessage(MessageUtil.errorText("You are already in a faction."));
         sendUpdate();
       }
       case FACTION_FULL -> {
-        player.sendMessage(MessageUtil.errorText("This faction is full."));
+        playerRef.sendMessage(MessageUtil.errorText("This faction is full."));
         sendUpdate();
       }
       default -> {
-        player.sendMessage(MessageUtil.errorText("Could not join faction."));
+        playerRef.sendMessage(MessageUtil.errorText("Could not join faction."));
         sendUpdate();
       }
     }
@@ -382,7 +382,7 @@ public class InvitesPage extends InteractiveCustomUIPage<NewPlayerPageData> impl
 
     inviteManager.removeInvite(factionId, playerRef.getUuid());
 
-    player.sendMessage(MessageUtil.text("Invite declined.", MessageUtil.COLOR_GRAY));
+    playerRef.sendMessage(MessageUtil.text("Invite declined.", MessageUtil.COLOR_GRAY));
 
     // Refresh the page
     guiManager.openInvitesPage(player, ref, store, playerRef);
@@ -406,7 +406,7 @@ public class InvitesPage extends InteractiveCustomUIPage<NewPlayerPageData> impl
 
     joinRequestManager.removeRequest(factionId, playerRef.getUuid());
 
-    player.sendMessage(MessageUtil.text("Cancelled request to join " + factionName + ".", MessageUtil.COLOR_GRAY));
+    playerRef.sendMessage(MessageUtil.text("Cancelled request to join " + factionName + ".", MessageUtil.COLOR_GRAY));
 
     // Refresh the page
     guiManager.openInvitesPage(player, ref, store, playerRef);

@@ -249,7 +249,7 @@ public class PlayerInfoPage extends InteractiveCustomUIPage<PlayerInfoData> {
         if (data.playerUuid != null) {
           UUID factionId = UuidUtil.parseOrNull(data.playerUuid);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText("Invalid faction ID."));
+            playerRef.sendMessage(MessageUtil.errorText("Invalid faction ID."));
             return;
           }
 
@@ -258,7 +258,7 @@ public class PlayerInfoPage extends InteractiveCustomUIPage<PlayerInfoData> {
             guiManager.openFactionInfoFromPlayerInfo(player, ref, store, playerRef, faction,
                 targetPlayerUuid, targetPlayerName, sourcePage);
           } else {
-            player.sendMessage(MessageUtil.errorText("Faction no longer exists."));
+            playerRef.sendMessage(MessageUtil.errorText("Faction no longer exists."));
           }
         }
       }

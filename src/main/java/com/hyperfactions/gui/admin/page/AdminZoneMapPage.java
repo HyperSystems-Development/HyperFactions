@@ -434,7 +434,7 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
     // Get fresh zone data
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.errorText("Zone no longer exists."));
+      playerRef.sendMessage(MessageUtil.errorText("Zone no longer exists."));
       guiManager.openAdminZone(player, ref, store, playerRef);
       return;
     }
@@ -455,9 +455,9 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
       case "Claim" -> {
         ZoneManager.ZoneResult result = zoneManager.claimChunk(zoneId, zoneWorld, data.chunkX, data.chunkZ);
         if (result == ZoneManager.ZoneResult.SUCCESS) {
-          player.sendMessage(MessageUtil.text("Claimed chunk (" + data.chunkX + ", " + data.chunkZ + ") for " + zone.name(), "#44cc44"));
+          playerRef.sendMessage(MessageUtil.text("Claimed chunk (" + data.chunkX + ", " + data.chunkZ + ") for " + zone.name(), "#44cc44"));
         } else {
-          player.sendMessage(MessageUtil.errorText("Failed to claim chunk: " + result));
+          playerRef.sendMessage(MessageUtil.errorText("Failed to claim chunk: " + result));
         }
 
         // Refresh by opening new page with fresh zone data, preserving openFlagsAfter
@@ -470,9 +470,9 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
       case "Unclaim" -> {
         ZoneManager.ZoneResult result = zoneManager.unclaimChunk(zoneId, zoneWorld, data.chunkX, data.chunkZ);
         if (result == ZoneManager.ZoneResult.SUCCESS) {
-          player.sendMessage(MessageUtil.text("Unclaimed chunk (" + data.chunkX + ", " + data.chunkZ + ") from " + zone.name(), "#44cc44"));
+          playerRef.sendMessage(MessageUtil.text("Unclaimed chunk (" + data.chunkX + ", " + data.chunkZ + ") from " + zone.name(), "#44cc44"));
         } else {
-          player.sendMessage(MessageUtil.errorText("Failed to unclaim chunk: " + result));
+          playerRef.sendMessage(MessageUtil.errorText("Failed to unclaim chunk: " + result));
         }
 
         // Refresh by opening new page with fresh zone data, preserving openFlagsAfter
@@ -485,15 +485,15 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
       case "OtherZone" -> {
         Zone otherZone = zoneManager.getZone(zoneWorld, data.chunkX, data.chunkZ);
         String zoneName = otherZone != null ? otherZone.name() : "another zone";
-        player.sendMessage(MessageUtil.text("This chunk belongs to " + zoneName + ".", MessageUtil.COLOR_GOLD));
+        playerRef.sendMessage(MessageUtil.text("This chunk belongs to " + zoneName + ".", MessageUtil.COLOR_GOLD));
       }
 
       case "Faction" -> {
-        player.sendMessage(MessageUtil.text("This chunk is claimed by a faction.", MessageUtil.COLOR_GOLD));
+        playerRef.sendMessage(MessageUtil.text("This chunk is claimed by a faction.", MessageUtil.COLOR_GOLD));
       }
 
       case "Protected" -> {
-        player.sendMessage(MessageUtil.text("This chunk is in a protected region.", MessageUtil.COLOR_GOLD));
+        playerRef.sendMessage(MessageUtil.text("This chunk is in a protected region.", MessageUtil.COLOR_GOLD));
       }
 
       default -> {}
