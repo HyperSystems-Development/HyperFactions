@@ -197,11 +197,9 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
       return null;
     }
     try {
-      var state = blockType.getState();
-      if (state != null) {
-        return state.getId();
-      }
-      return null;
+      // 0.5.3: a block's state id is resolved via BlockType.getStateForBlock
+      // (StateData.getId() was removed). Mirrors the engine's own BlockType usage.
+      return blockType.getState() != null ? blockType.getStateForBlock(blockType) : null;
     } catch (Exception e) {
       return null;
     }
