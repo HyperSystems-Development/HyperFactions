@@ -160,12 +160,12 @@ public class AdminActionsPage extends InteractiveCustomUIPage<AdminActionsData> 
                 pd.setDeaths(0);
               });
             }
-            player.sendMessage(MessageUtil.adminSuccess(
+            playerRef.sendMessage(MessageUtil.adminSuccess(
                 "Reset K/D for " + allUuids.size() + " players."));
             Logger.info("[Admin] %s reset K/D stats for all %d players",
                 playerRef.getUsername(), allUuids.size());
           } catch (Exception e) {
-            player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ACT_KD_RESET_FAILED, e.getMessage()));
+            playerRef.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ACT_KD_RESET_FAILED, e.getMessage()));
             ErrorHandler.report("[Admin] Global K/D reset failed", e);
           }
           guiManager.openAdminActions(player, ref, store, playerRef);
@@ -187,15 +187,15 @@ public class AdminActionsPage extends InteractiveCustomUIPage<AdminActionsData> 
           confirmUpkeep = false;
           UpkeepProcessor processor = plugin.getUpkeepProcessor();
           if (processor == null) {
-            player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ACT_UPKEEP_UNAVAILABLE));
+            playerRef.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ACT_UPKEEP_UNAVAILABLE));
           } else {
             try {
               processor.processUpkeep();
-              player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ACT_UPKEEP_TRIGGERED));
+              playerRef.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ACT_UPKEEP_TRIGGERED));
               Logger.info("[Admin] %s manually triggered upkeep collection via GUI",
                   playerRef.getUsername());
             } catch (Exception e) {
-              player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ACT_UPKEEP_FAILED, e.getMessage()));
+              playerRef.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ACT_UPKEEP_FAILED, e.getMessage()));
               ErrorHandler.report("[Admin] Manual upkeep trigger failed", e);
             }
           }

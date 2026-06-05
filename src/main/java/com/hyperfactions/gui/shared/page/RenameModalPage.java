@@ -130,7 +130,7 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
 
     // Verify officer permission (skip in admin mode)
     if (!adminMode && (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel())) {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RenameGui.NO_PERMISSION));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.RenameGui.NO_PERMISSION));
       guiManager.openFactionSettings(player, ref, store, playerRef,
           factionManager.getFaction(faction.id()));
       return;
@@ -151,7 +151,7 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
 
         // Validation
         if (newName == null || newName.trim().isEmpty()) {
-          player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RenameGui.ENTER_NAME));
+          playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.RenameGui.ENTER_NAME));
           sendUpdate();
           return;
         }
@@ -159,20 +159,20 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
         newName = newName.trim();
 
         if (newName.length() < MIN_NAME_LENGTH) {
-          player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RenameGui.TOO_SHORT, MIN_NAME_LENGTH));
+          playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.RenameGui.TOO_SHORT, MIN_NAME_LENGTH));
           sendUpdate();
           return;
         }
 
         if (newName.length() > MAX_NAME_LENGTH) {
-          player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RenameGui.TOO_LONG, MAX_NAME_LENGTH));
+          playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.RenameGui.TOO_LONG, MAX_NAME_LENGTH));
           sendUpdate();
           return;
         }
 
         // Check if name is the same
         if (newName.equalsIgnoreCase(faction.name())) {
-          player.sendMessage(MessageUtil.info(playerRef, GuiKeys.RenameGui.SAME_NAME, "#FFD700"));
+          playerRef.sendMessage(MessageUtil.info(playerRef, GuiKeys.RenameGui.SAME_NAME, "#FFD700"));
           sendUpdate();
           return;
         }
@@ -180,7 +180,7 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
         // Check uniqueness
         Faction existing = factionManager.getFactionByName(newName);
         if (existing != null) {
-          player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RenameGui.NAME_TAKEN));
+          playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.RenameGui.NAME_TAKEN));
           sendUpdate();
           return;
         }
@@ -200,7 +200,7 @@ public class RenameModalPage extends InteractiveCustomUIPage<RenameModalData> {
         if (adminMode) {
           msg = HFMessages.get(playerRef, CommonKeys.Common.ADMIN_PREFIX) + " " + msg;
         }
-        player.sendMessage(Message.raw(msg).color("#55FF55"));
+        playerRef.sendMessage(Message.raw(msg).color("#55FF55"));
 
         if (adminMode) {
           guiManager.openAdminFactionSettings(player, ref, store, playerRef, faction.id());

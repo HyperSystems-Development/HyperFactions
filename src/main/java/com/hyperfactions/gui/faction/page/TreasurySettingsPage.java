@@ -166,7 +166,7 @@ public class TreasurySettingsPage extends InteractiveCustomUIPage<TreasurySettin
 
     FactionMember member = faction.getMember(uuid);
     if (member == null || member.role() != FactionRole.LEADER) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.LEADER_ONLY_PERMS));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.LEADER_ONLY_PERMS));
       sendUpdate();
       return;
     }
@@ -185,7 +185,7 @@ public class TreasurySettingsPage extends InteractiveCustomUIPage<TreasurySettin
                    PlayerRef playerRef, UUID uuid) {
     FactionMember member = faction.getMember(uuid);
     if (member == null || member.role() != FactionRole.LEADER) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.LEADER_ONLY_UPKEEP));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.LEADER_ONLY_UPKEEP));
       sendUpdate();
       return;
     }
@@ -222,7 +222,7 @@ public class TreasurySettingsPage extends InteractiveCustomUIPage<TreasurySettin
 
       economyManager.updateLimits(faction.id(), newLimits);
     } catch (NumberFormatException e) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.INVALID_LIMIT));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.INVALID_LIMIT));
     }
   }
 

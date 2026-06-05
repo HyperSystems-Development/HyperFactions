@@ -337,26 +337,26 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
 
     // Validate faction name
     if (name.isEmpty()) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.ENTER_NAME));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.ENTER_NAME));
       sendUpdate();
       return;
     }
 
     if (name.length() < MIN_NAME_LENGTH) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.NAME_TOO_SHORT, MIN_NAME_LENGTH));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.NAME_TOO_SHORT, MIN_NAME_LENGTH));
       sendUpdate();
       return;
     }
 
     if (name.length() > MAX_NAME_LENGTH) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.NAME_TOO_LONG, MAX_NAME_LENGTH));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.NAME_TOO_LONG, MAX_NAME_LENGTH));
       sendUpdate();
       return;
     }
 
     // Check if name is already taken
     if (factionManager.getFactionByName(name) != null) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.NAME_TAKEN));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.NAME_TAKEN));
       sendUpdate();
       return;
     }
@@ -364,13 +364,13 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
     // Validate tag format if provided
     if (!tag.isEmpty()) {
       if (tag.length() < MIN_TAG_LENGTH || tag.length() > MAX_TAG_LENGTH) {
-        player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.TAG_LENGTH, MIN_TAG_LENGTH, MAX_TAG_LENGTH));
+        playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.TAG_LENGTH, MIN_TAG_LENGTH, MAX_TAG_LENGTH));
         sendUpdate();
         return;
       }
 
       if (!tag.matches("^[a-zA-Z0-9]+$")) {
-        player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.TAG_FORMAT));
+        playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.TAG_FORMAT));
         sendUpdate();
         return;
       }
@@ -383,14 +383,14 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
 
     // Validate description length
     if (description.length() > MAX_DESCRIPTION_LENGTH) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.DESC_TOO_LONG, MAX_DESCRIPTION_LENGTH));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.DESC_TOO_LONG, MAX_DESCRIPTION_LENGTH));
       sendUpdate();
       return;
     }
 
     // Check if player is already in a faction
     if (factionManager.isInFaction(playerRef.getUuid())) {
-      player.sendMessage(MessageUtil.errorText(playerRef, CommonKeys.Common.ALREADY_IN_FACTION));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, CommonKeys.Common.ALREADY_IN_FACTION));
       sendUpdate();
       return;
     }
@@ -426,7 +426,7 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
 
           factionManager.updateFaction(updated);
 
-          player.sendMessage(MessageUtil.successText(playerRef, GuiKeys.CreateGui.CREATED, name));
+          playerRef.sendMessage(MessageUtil.successText(playerRef, GuiKeys.CreateGui.CREATED, name));
 
           // Open faction dashboard
           Faction freshFaction = factionManager.getFaction(updated.id());
@@ -436,28 +436,28 @@ public class CreateFactionPage extends InteractiveCustomUIPage<NewPlayerPageData
             guiManager.openFactionMain(player, ref, store, playerRef);
           }
         } else {
-          player.sendMessage(MessageUtil.text(playerRef, GuiKeys.CreateGui.CREATED_NO_DASHBOARD, MessageUtil.COLOR_GOLD));
+          playerRef.sendMessage(MessageUtil.text(playerRef, GuiKeys.CreateGui.CREATED_NO_DASHBOARD, MessageUtil.COLOR_GOLD));
           guiManager.openFactionMain(player, ref, store, playerRef);
         }
       }
 
       case ALREADY_IN_FACTION -> {
-        player.sendMessage(MessageUtil.errorText(playerRef, CommonKeys.Common.ALREADY_IN_FACTION));
+        playerRef.sendMessage(MessageUtil.errorText(playerRef, CommonKeys.Common.ALREADY_IN_FACTION));
         sendUpdate();
       }
 
       case NAME_TAKEN -> {
-        player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.NAME_TAKEN));
+        playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.NAME_TAKEN));
         sendUpdate();
       }
 
       case NAME_TOO_SHORT, NAME_TOO_LONG -> {
-        player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.INVALID_NAME));
+        playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.INVALID_NAME));
         sendUpdate();
       }
 
       default -> {
-        player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.CREATE_FAILED));
+        playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.CreateGui.CREATE_FAILED));
         sendUpdate();
       }
     }

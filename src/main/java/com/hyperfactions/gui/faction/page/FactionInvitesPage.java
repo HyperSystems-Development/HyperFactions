@@ -444,7 +444,7 @@ public class FactionInvitesPage extends InteractiveCustomUIPage<FactionPageData>
 
     UUID targetUuid = UuidUtil.parseOrNull(data.playerUuid);
     if (targetUuid == null) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.InvitesGui.INVALID_PLAYER));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.InvitesGui.INVALID_PLAYER));
       sendUpdate();
       return;
     }
@@ -452,7 +452,7 @@ public class FactionInvitesPage extends InteractiveCustomUIPage<FactionPageData>
     inviteManager.removeInvite(faction.id(), targetUuid);
 
     String playerName = getPlayerName(targetUuid);
-    player.sendMessage(Message.raw(HFMessages.get(playerRef, GuiKeys.InvitesGui.CANCELLED_INVITE, playerName)).color("#AAAAAA"));
+    playerRef.sendMessage(Message.raw(HFMessages.get(playerRef, GuiKeys.InvitesGui.CANCELLED_INVITE, playerName)).color("#AAAAAA"));
 
     expandedItems.remove(data.playerUuid);
     rebuildList();
@@ -467,7 +467,7 @@ public class FactionInvitesPage extends InteractiveCustomUIPage<FactionPageData>
 
     UUID targetUuid = UuidUtil.parseOrNull(data.playerUuid);
     if (targetUuid == null) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.InvitesGui.INVALID_PLAYER));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.InvitesGui.INVALID_PLAYER));
       sendUpdate();
       return;
     }
@@ -483,14 +483,14 @@ public class FactionInvitesPage extends InteractiveCustomUIPage<FactionPageData>
       if (result == FactionManager.FactionResult.SUCCESS) {
         // Clear player's other requests since they joined a faction
         joinRequestManager.clearPlayerRequests(targetUuid);
-        player.sendMessage(MessageUtil.successText(playerRef, GuiKeys.InvitesGui.PLAYER_JOINED, request.playerName()));
+        playerRef.sendMessage(MessageUtil.successText(playerRef, GuiKeys.InvitesGui.PLAYER_JOINED, request.playerName()));
       } else if (result == FactionManager.FactionResult.FACTION_FULL) {
-        player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.InvitesGui.FACTION_FULL));
+        playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.InvitesGui.FACTION_FULL));
       } else {
-        player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.InvitesGui.ADD_FAILED));
+        playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.InvitesGui.ADD_FAILED));
       }
     } else {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.InvitesGui.REQUEST_EXPIRED));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.InvitesGui.REQUEST_EXPIRED));
     }
 
     expandedItems.remove(data.playerUuid);
@@ -505,7 +505,7 @@ public class FactionInvitesPage extends InteractiveCustomUIPage<FactionPageData>
 
     UUID targetUuid = UuidUtil.parseOrNull(data.playerUuid);
     if (targetUuid == null) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.InvitesGui.INVALID_PLAYER));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.InvitesGui.INVALID_PLAYER));
       sendUpdate();
       return;
     }
@@ -515,7 +515,7 @@ public class FactionInvitesPage extends InteractiveCustomUIPage<FactionPageData>
 
     joinRequestManager.declineRequest(faction.id(), targetUuid);
 
-    player.sendMessage(Message.raw(HFMessages.get(playerRef, GuiKeys.InvitesGui.REQUEST_DECLINED, playerName)).color("#AAAAAA"));
+    playerRef.sendMessage(Message.raw(HFMessages.get(playerRef, GuiKeys.InvitesGui.REQUEST_DECLINED, playerName)).color("#AAAAAA"));
 
     expandedItems.remove(data.playerUuid);
     rebuildList();

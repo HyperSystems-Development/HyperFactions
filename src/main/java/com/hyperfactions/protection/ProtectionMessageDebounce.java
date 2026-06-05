@@ -1,9 +1,7 @@
 package com.hyperfactions.protection;
 
 import com.hypixel.hytale.server.core.Message;
-import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,19 +35,6 @@ public final class ProtectionMessageDebounce {
   }
 
   /**
-   * Sends a protection denial message (red text) if the player is not on cooldown for this action.
-   * Convenience overload for Player entity.
-   *
-   * @param player    the player entity
-   * @param actionKey a short key identifying the action type
-   * @param denial    the denial text (e.g., from getDenialMessage)
-   */
-  public static void sendDenial(@NotNull Player player, @NotNull String actionKey,
-                  @NotNull String denial) {
-    sendIfNotOnCooldown(player, actionKey, Message.raw(denial).color("#FF5555"));
-  }
-
-  /**
    * Sends a protection denial message if the player is not on cooldown for this action.
    *
    * @param player    the player to send the message to
@@ -59,31 +44,6 @@ public final class ProtectionMessageDebounce {
   public static void sendIfNotOnCooldown(@NotNull PlayerRef player, @NotNull String actionKey,
                        @NotNull Message message) {
     String key = player.getUuid() + ":" + actionKey;
-    long now = System.currentTimeMillis();
-    Long last = lastMessageTimes.get(key);
-    if (last != null && (now - last) < DEFAULT_COOLDOWN_MS) {
-      return;
-    }
-    lastMessageTimes.put(key, now);
-    player.sendMessage(message);
-  }
-
-  /**
-   * Sends a protection denial message if the player is not on cooldown for this action.
-   * Overload for Player entity (which is not a PlayerRef).
-   *
-   * @param player    the player entity
-   * @param actionKey a short key identifying the action type
-   * @param message   the message to send
-   */
-  public static void sendIfNotOnCooldown(@NotNull Player player, @NotNull String actionKey,
-                       @NotNull Message message) {
-    UUID uuid = player.getUuid();
-    if (uuid == null) {
-      player.sendMessage(message);
-      return;
-    }
-    String key = uuid + ":" + actionKey;
     long now = System.currentTimeMillis();
     Long last = lastMessageTimes.get(key);
     if (last != null && (now - last) < DEFAULT_COOLDOWN_MS) {

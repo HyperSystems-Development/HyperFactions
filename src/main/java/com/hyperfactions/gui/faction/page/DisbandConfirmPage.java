@@ -103,7 +103,7 @@ public class DisbandConfirmPage extends InteractiveCustomUIPage<DisbandConfirmDa
 
     // Verify leader permission
     if (member == null || member.role() != FactionRole.LEADER) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.DISBAND_NOT_LEADER));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.DISBAND_NOT_LEADER));
       guiManager.openFactionSettings(player, ref, store, playerRef,
           factionManager.getFaction(faction.id()));
       return;
@@ -124,9 +124,9 @@ public class DisbandConfirmPage extends InteractiveCustomUIPage<DisbandConfirmDa
         FactionManager.FactionResult result = factionManager.disbandFaction(faction.id(), uuid);
 
         if (result == FactionManager.FactionResult.SUCCESS) {
-          player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.DISBANDED, factionName));
+          playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.DISBANDED, factionName));
         } else {
-          player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.DISBAND_FAILED));
+          playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.DISBAND_FAILED));
         }
 
         guiManager.openFactionMain(player, ref, store, playerRef);

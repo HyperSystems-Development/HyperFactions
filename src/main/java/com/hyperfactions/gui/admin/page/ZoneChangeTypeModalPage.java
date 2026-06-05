@@ -154,7 +154,7 @@ public class ZoneChangeTypeModalPage extends InteractiveCustomUIPage<ZoneChangeT
 
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZTYPE_ZONE_GONE));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZTYPE_ZONE_GONE));
       navigateBack(player, ref, store, playerRef);
       return;
     }
@@ -187,11 +187,11 @@ public class ZoneChangeTypeModalPage extends InteractiveCustomUIPage<ZoneChangeT
       String oldColor = oldType == ZoneType.SAFE ? "#55FF55" : "#FF5555";
       String newColor = newType == ZoneType.SAFE ? "#55FF55" : "#FF5555";
 
-      player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.ZTYPE_CHANGED, "#AAAAAA",
+      playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.ZTYPE_CHANGED, "#AAAAAA",
           zone.name(), oldType.getDisplayName(), newType.getDisplayName(),
           HFMessages.get(playerRef, resetFlags ? AdminGuiKeys.AdminGui.ZTYPE_FLAGS_RESET : AdminGuiKeys.AdminGui.ZTYPE_FLAGS_KEPT)));
     } else {
-      player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZTYPE_FAILED, result));
+      playerRef.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZTYPE_FAILED, result));
     }
 
     navigateBack(player, ref, store, playerRef);

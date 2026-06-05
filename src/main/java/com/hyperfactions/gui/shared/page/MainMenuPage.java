@@ -195,7 +195,7 @@ public class MainMenuPage extends InteractiveCustomUIPage<MainMenuData> {
       case "Claim" -> {
         if (faction != null) {
           guiManager.closePage(player, ref, store);
-          player.sendMessage(
+          playerRef.sendMessage(
             com.hypixel.hytale.server.core.Message.raw(
                 HFMessages.get(playerRef, GuiKeys.MainMenu.CLAIM_HINT)).color("#AAAAAA")
           );

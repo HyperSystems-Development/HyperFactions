@@ -91,7 +91,7 @@ public class HarvestPickupProtectionSystem extends EntityEventSystem<EntityStore
       if (hyperFactions.isAdminBypassEnabled(playerRef.getUuid())) {
         return;
       }
-      if (player.hasPermission("hyperfactions.bypass.pickup")) {
+      if (playerRef.hasPermission("hyperfactions.bypass.pickup")) {
         return;
       }
 
@@ -101,9 +101,9 @@ public class HarvestPickupProtectionSystem extends EntityEventSystem<EntityStore
         return;
       }
 
-      int x = (int) transform.getPosition().getX();
-      int y = (int) transform.getPosition().getY();
-      int z = (int) transform.getPosition().getZ();
+      int x = (int) transform.getPosition().x();
+      int y = (int) transform.getPosition().y();
+      int z = (int) transform.getPosition().z();
 
       String worldName = getWorldName(store);
       if (worldName == null) {
@@ -123,7 +123,7 @@ public class HarvestPickupProtectionSystem extends EntityEventSystem<EntityStore
       if (!zoneAllows) {
         event.setCancelled(true);
         event.setItemStack(ItemStack.EMPTY);  // Also clear the item stack
-        ProtectionMessageDebounce.sendDenial(player, "zone_pickup", "You can't pick up items in this zone.");
+        ProtectionMessageDebounce.sendDenial(playerRef, "zone_pickup", "You can't pick up items in this zone.");
         Logger.debugInteraction("[ECS:HarvestPickup] BLOCKED by zone at %s/%d/%d for player %s", worldName, x, z, playerRef.getUuid());
         return;
       }
@@ -142,7 +142,7 @@ public class HarvestPickupProtectionSystem extends EntityEventSystem<EntityStore
       if (blocked) {
         event.setCancelled(true);
         event.setItemStack(ItemStack.EMPTY);  // Also clear the item stack
-        ProtectionMessageDebounce.sendDenial(player, "harvest_pickup",
+        ProtectionMessageDebounce.sendDenial(playerRef, "harvest_pickup",
           protectionListener.getDenialMessage(result, ProtectionChecker.InteractionType.ITEM_PICKUP));
         Logger.debugInteraction("[ECS:HarvestPickup] BLOCKED by faction: %s for player %s", result, playerRef.getUuid());
       }

@@ -116,9 +116,9 @@ public class AdminUnclaimAllConfirmPage extends InteractiveCustomUIPage<AdminUnc
         claimManager.unclaimAll(factionId);
 
         if (claimCount > 0) {
-          player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.UNCLAIM_REMOVED, "#FF5555", claimCount, factionName));
+          playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.UNCLAIM_REMOVED, "#FF5555", claimCount, factionName));
         } else {
-          player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.UNCLAIM_NO_CLAIMS, "#FFAA00", factionName));
+          playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.UNCLAIM_NO_CLAIMS, "#FFAA00", factionName));
         }
 
         guiManager.openAdminFactions(player, ref, store, playerRef);

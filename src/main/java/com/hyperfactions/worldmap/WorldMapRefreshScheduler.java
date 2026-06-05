@@ -6,7 +6,7 @@ import com.hyperfactions.data.ChunkKey;
 import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.ErrorHandler;
 import com.hyperfactions.util.Logger;
-import com.hypixel.hytale.math.vector.Vector3d;
+import org.joml.Vector3d;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.universe.Universe;
 import com.hypixel.hytale.server.core.universe.world.World;
@@ -359,8 +359,8 @@ public class WorldMapRefreshScheduler {
       }
 
       Vector3d pos = playerRef.getTransform().getPosition();
-      int playerChunkX = ChunkUtil.toChunkCoord(pos.getX());
-      int playerChunkZ = ChunkUtil.toChunkCoord(pos.getZ());
+      int playerChunkX = ChunkUtil.toChunkCoord(pos.x());
+      int playerChunkZ = ChunkUtil.toChunkCoord(pos.z());
 
       // Check if any changed chunk is within radius of this player
       boolean inRange = false;

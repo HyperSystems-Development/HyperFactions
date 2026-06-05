@@ -199,8 +199,8 @@ public class ZoneMobClearManager {
           return;
         }
 
-        double posX = transform.getPosition().getX();
-        double posZ = transform.getPosition().getZ();
+        double posX = transform.getPosition().x();
+        double posZ = transform.getPosition().z();
         long chunkIndex = ChunkUtil.indexChunkFromBlock((int) posX, (int) posZ);
 
         ClearConfig config = chunkConfigs.get(chunkIndex);

@@ -26,8 +26,8 @@ import com.hyperfactions.util.GuiKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.math.vector.Vector3d;
-import com.hypixel.hytale.math.vector.Vector3f;
+import org.joml.Vector3d;
+import com.hypixel.hytale.math.vector.Rotation3f;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.server.core.entity.entities.Player;
@@ -430,7 +430,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
 
     // Verify permissions
     if (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel()) {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.NO_PERMISSION));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.NO_PERMISSION));
       sendUpdate();
       return;
     }
@@ -450,7 +450,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
       case "OpenModules" -> guiManager.openFactionModules(player, ref, store, playerRef, faction);
       case "Disband" -> {
         if (!isLeader) {
-          player.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.ONLY_LEADER_DISBAND));
+          playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.ONLY_LEADER_DISBAND));
           sendUpdate();
           return;
         }
@@ -471,19 +471,19 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
     ConfigManager config = ConfigManager.get();
 
     if (config.isPermissionLocked(permName)) {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.PERM_LOCKED));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.PERM_LOCKED));
       sendUpdate();
       return;
     }
 
     if (!canEditPermissions(playerRef.getUuid(), faction)) {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.NO_PERM_EDIT));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.NO_PERM_EDIT));
       sendUpdate();
       return;
     }
 
     if ("officersCanEdit".equals(permName) && !isLeader) {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.ONLY_LEADER_OFFICERS));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.ONLY_LEADER_OFFICERS));
       sendUpdate();
       return;
     }
@@ -543,7 +543,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
     String status = isOpen
         ? HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_OPEN)
         : HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_INVITE_ONLY);
-    player.sendMessage(MessageUtil.success(playerRef, GuiKeys.SettingsGui.RECRUITMENT_SET, status));
+    playerRef.sendMessage(MessageUtil.success(playerRef, GuiKeys.SettingsGui.RECRUITMENT_SET, status));
 
     Faction freshFaction = factionManager.getFaction(faction.id());
     guiManager.openFactionSettings(player, ref, store, playerRef, freshFaction);
@@ -560,7 +560,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
       int chunkZ = ChunkUtil.toChunkCoord(pos.z);
       UUID claimOwner = claimManager.getClaimOwner(worldName, chunkX, chunkZ);
       if (claimOwner == null || !claimOwner.equals(faction.id())) {
-        player.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.NOT_IN_TERRITORY));
+        playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.NOT_IN_TERRITORY));
         sendUpdate();
         return;
       }
@@ -572,19 +572,19 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
       Faction updatedFaction = faction.withHome(newHome);
       factionManager.updateFaction(updatedFaction);
 
-      player.sendMessage(MessageUtil.success(playerRef, GuiKeys.SettingsGui.HOME_SET));
+      playerRef.sendMessage(MessageUtil.success(playerRef, GuiKeys.SettingsGui.HOME_SET));
 
       guiManager.openFactionSettings(player, ref, store, playerRef,
           factionManager.getFaction(faction.id()));
     } else {
-      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.LOCATION_ERROR));
+      playerRef.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.LOCATION_ERROR));
       sendUpdate();
     }
   }
 
   private void handleTeleportHome(Player player, Ref<EntityStore> ref, Store<EntityStore> store, UUID uuid) {
     if (faction.home() == null) {
-      player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Home.NO_HOME));
+      playerRef.sendMessage(MessageUtil.error(playerRef, CommandKeys.Home.NO_HOME));
       sendUpdate();
       return;
     }
@@ -594,26 +594,26 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
 
     TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
     if (transform == null) {
-      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.LOCATION_ERROR));
+      playerRef.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.LOCATION_ERROR));
       return;
     }
 
     Vector3d pos = transform.getPosition();
     World world = player.getWorld();
     if (world == null) {
-      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.WORLD_ERROR));
+      playerRef.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.WORLD_ERROR));
       return;
     }
 
     TeleportManager.StartLocation startLoc = new TeleportManager.StartLocation(
-        world.getName(), pos.getX(), pos.getY(), pos.getZ()
+        world.getName(), pos.x(), pos.y(), pos.z()
     );
 
     TeleportManager.TeleportResult result = hyperFactions.getTeleportManager().teleportToHome(
         uuid,
         startLoc,
         f -> executeTeleport(store, ref, world, f),
-        player::sendMessage,
+        playerRef::sendMessage,
         () -> hyperFactions.getCombatTagManager().isTagged(uuid)
     );
 
@@ -639,7 +639,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
 
     targetWorld.execute(() -> {
       Vector3d position = new Vector3d(home.x(), home.y(), home.z());
-      Vector3f rotation = new Vector3f(home.pitch(), home.yaw(), 0);
+      Rotation3f rotation = new Rotation3f(home.pitch(), home.yaw(), 0);
       Teleport teleport = Teleport.createForPlayer(targetWorld, position, rotation);
       store.addComponent(ref, Teleport.getComponentType(), teleport);
     });
@@ -649,10 +649,10 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
 
   private void handleTeleportResult(Player player, TeleportManager.TeleportResult result) {
     switch (result) {
-      case NOT_IN_FACTION -> player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.NOT_IN_FACTION));
-      case NO_HOME -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Home.NO_HOME));
-      case COMBAT_TAGGED -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Home.COMBAT_TAGGED));
-      case SUCCESS_INSTANT -> player.sendMessage(MessageUtil.success(playerRef, CommandKeys.Home.TELEPORTED));
+      case NOT_IN_FACTION -> playerRef.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.NOT_IN_FACTION));
+      case NO_HOME -> playerRef.sendMessage(MessageUtil.error(playerRef, CommandKeys.Home.NO_HOME));
+      case COMBAT_TAGGED -> playerRef.sendMessage(MessageUtil.error(playerRef, CommandKeys.Home.COMBAT_TAGGED));
+      case SUCCESS_INSTANT -> playerRef.sendMessage(MessageUtil.success(playerRef, CommandKeys.Home.TELEPORTED));
       case ON_COOLDOWN, SUCCESS_WARMUP -> {} // Message sent by TeleportManager
       default -> {}
     }
@@ -660,7 +660,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
 
   private void handleDeleteHome(Player player, Ref<EntityStore> ref, Store<EntityStore> store, UUID uuid) {
     if (faction.home() == null) {
-      player.sendMessage(MessageUtil.info(playerRef, GuiKeys.SettingsGui.HOME_NO_SET, MessageUtil.COLOR_GOLD));
+      playerRef.sendMessage(MessageUtil.info(playerRef, GuiKeys.SettingsGui.HOME_NO_SET, MessageUtil.COLOR_GOLD));
       sendUpdate();
       return;
     }
@@ -668,7 +668,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
     Faction updatedFaction = faction.withHome(null);
     factionManager.updateFaction(updatedFaction);
 
-    player.sendMessage(MessageUtil.success(playerRef, GuiKeys.SettingsGui.HOME_DELETED));
+    playerRef.sendMessage(MessageUtil.success(playerRef, GuiKeys.SettingsGui.HOME_DELETED));
 
     guiManager.openFactionSettings(player, ref, store, playerRef,
         factionManager.getFaction(faction.id()));

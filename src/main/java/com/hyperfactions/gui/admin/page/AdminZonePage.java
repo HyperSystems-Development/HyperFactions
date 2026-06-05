@@ -412,14 +412,14 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
         if (data.zoneId != null) {
           UUID zoneId = UuidUtil.parseOrNull(data.zoneId);
           if (zoneId == null) {
-            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZONE_INVALID_ID));
+            playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZONE_INVALID_ID));
             return;
           }
           Zone zone = zoneManager.getZoneById(zoneId);
           if (zone != null) {
             guiManager.openAdminZoneMap(player, ref, store, playerRef, zone);
           } else {
-            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZONE_NOT_FOUND));
+            playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZONE_NOT_FOUND));
             rebuildList();
           }
         }
@@ -429,7 +429,7 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
         if (data.zoneId != null) {
           UUID zoneId = UuidUtil.parseOrNull(data.zoneId);
           if (zoneId == null) {
-            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZONE_INVALID_ID));
+            playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZONE_INVALID_ID));
             return;
           }
           guiManager.openAdminZoneSettings(player, ref, store, playerRef, zoneId);
@@ -440,7 +440,7 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
         if (data.zoneId != null) {
           UUID zoneId = UuidUtil.parseOrNull(data.zoneId);
           if (zoneId == null) {
-            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZONE_INVALID_ID));
+            playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZONE_INVALID_ID));
             return;
           }
           guiManager.openAdminZoneProperties(player, ref, store, playerRef,
@@ -452,15 +452,15 @@ public class AdminZonePage extends InteractiveCustomUIPage<AdminZoneData> {
         if (data.zoneId != null) {
           UUID zoneId = UuidUtil.parseOrNull(data.zoneId);
           if (zoneId == null) {
-            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZONE_INVALID_ID));
+            playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZONE_INVALID_ID));
             return;
           }
           ZoneManager.ZoneResult result = zoneManager.removeZone(zoneId);
           if (result == ZoneManager.ZoneResult.SUCCESS) {
-            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZONE_DELETED, data.zoneName));
+            playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZONE_DELETED, data.zoneName));
             expandedZones.remove(zoneId);
           } else {
-            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZONE_DELETE_FAILED, result));
+            playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZONE_DELETE_FAILED, result));
           }
           rebuildList();
         }

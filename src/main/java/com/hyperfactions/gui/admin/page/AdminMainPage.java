@@ -214,7 +214,7 @@ public class AdminMainPage extends InteractiveCustomUIPage<AdminMainData> {
 
       case "Reload" -> {
         guiManager.closePage(player, ref, store);
-        player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.MAIN_RELOAD_HINT, "#00FFFF"));
+        playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.MAIN_RELOAD_HINT, "#00FFFF"));
       }
 
       case "PrevPage" -> {
@@ -231,7 +231,7 @@ public class AdminMainPage extends InteractiveCustomUIPage<AdminMainData> {
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.INVALID_FACTION));
+            playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.INVALID_FACTION));
             return;
           }
 
@@ -244,7 +244,7 @@ public class AdminMainPage extends InteractiveCustomUIPage<AdminMainData> {
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.INVALID_FACTION));
+            playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.INVALID_FACTION));
             return;
           }
           Faction faction = factionManager.getFaction(factionId);
@@ -252,7 +252,7 @@ public class AdminMainPage extends InteractiveCustomUIPage<AdminMainData> {
             int claimCount = faction.claims().size();
             // Admin unclaim - prompt for command
             guiManager.closePage(player, ref, store);
-            player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.MAIN_UNCLAIM_HINT, MessageUtil.COLOR_GOLD, data.factionName, claimCount));
+            playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.MAIN_UNCLAIM_HINT, MessageUtil.COLOR_GOLD, data.factionName, claimCount));
           }
         }
       }

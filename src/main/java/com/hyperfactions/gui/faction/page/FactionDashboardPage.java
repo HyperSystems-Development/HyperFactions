@@ -33,8 +33,8 @@ import com.hyperfactions.util.GuiKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.math.vector.Vector3d;
-import com.hypixel.hytale.math.vector.Vector3f;
+import org.joml.Vector3d;
+import com.hypixel.hytale.math.vector.Rotation3f;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.server.core.Message;
@@ -473,7 +473,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
 
     // Verify still in faction
     if (currentFaction == null) {
-      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.NOT_IN_FACTION));
+      playerRef.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.NOT_IN_FACTION));
       guiManager.openFactionMain(player, ref, store, playerRef);
       return;
     }
@@ -494,7 +494,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
           if (isOfficerPlus) {
             handleSetHomeAction(player, ref, store, uuid, currentFaction);
           } else {
-            player.sendMessage(MessageUtil.error(playerRef, GuiKeys.DashboardGui.NO_HOME_HINT));
+            playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.DashboardGui.NO_HOME_HINT));
             sendUpdate();
           }
         } else {
@@ -504,7 +504,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
 
       case "Claim" -> {
         if (!isOfficerPlus || !PermissionManager.get().hasPermission(uuid, Permissions.CLAIM)) {
-          player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.NOT_OFFICER));
+          playerRef.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.NOT_OFFICER));
           sendUpdate();
           return;
         }
@@ -516,7 +516,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
         ChatManager.ToggleResult chatResult = chatManager.cycleChannelChecked(uuid);
         if (chatResult.isSuccess() && chatResult.channel() != null) {
           String display = ChatManager.getChannelDisplay(chatResult.channel());
-          player.sendMessage(Message.raw(
+          playerRef.sendMessage(Message.raw(
               HFMessages.get(playerRef, GuiKeys.DashboardGui.CHAT_MODE_SET, display))
               .color("#AAAAAA"));
         }
@@ -547,7 +547,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
   private void handleHomeAction(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
                  UUID uuid, Faction faction) {
     if (!faction.hasHome()) {
-      player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Home.NO_HOME));
+      playerRef.sendMessage(MessageUtil.error(playerRef, CommandKeys.Home.NO_HOME));
       sendUpdate();
       return;
     }
@@ -555,7 +555,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     // Get player's current location for start location
     TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
     if (transform == null) {
-      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.LOCATION_ERROR));
+      playerRef.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.LOCATION_ERROR));
       sendUpdate();
       return;
     }
@@ -563,13 +563,13 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     Vector3d pos = transform.getPosition();
     World world = player.getWorld();
     if (world == null) {
-      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.WORLD_ERROR));
+      playerRef.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.WORLD_ERROR));
       sendUpdate();
       return;
     }
 
     TeleportManager.StartLocation startLoc = new TeleportManager.StartLocation(
-        world.getName(), pos.getX(), pos.getY(), pos.getZ()
+        world.getName(), pos.x(), pos.y(), pos.z()
     );
 
     // Initiate teleport with warmup/combat checking
@@ -579,7 +579,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
         uuid,
         startLoc,
         f -> executeTeleport(store, ref, world, f),
-        player::sendMessage,
+        playerRef::sendMessage,
         () -> plugin.getCombatTagManager().isTagged(uuid)
     );
 
@@ -608,7 +608,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     // Execute teleport on the target world's thread using createForPlayer for proper player teleportation
     targetWorld.execute(() -> {
       Vector3d position = new Vector3d(home.x(), home.y(), home.z());
-      Vector3f rotation = new Vector3f(home.pitch(), home.yaw(), 0);
+      Rotation3f rotation = new Rotation3f(home.pitch(), home.yaw(), 0);
       Teleport teleport = Teleport.createForPlayer(targetWorld, position, rotation);
       store.addComponent(ref, Teleport.getComponentType(), teleport);
     });
@@ -618,10 +618,10 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
 
   private void handleTeleportResult(Player player, TeleportManager.TeleportResult result) {
     switch (result) {
-      case NOT_IN_FACTION -> player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.NOT_IN_FACTION));
-      case NO_HOME -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Home.NO_HOME));
-      case COMBAT_TAGGED -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Home.COMBAT_TAGGED));
-      case SUCCESS_INSTANT -> player.sendMessage(MessageUtil.success(playerRef, CommandKeys.Home.TELEPORTED));
+      case NOT_IN_FACTION -> playerRef.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.NOT_IN_FACTION));
+      case NO_HOME -> playerRef.sendMessage(MessageUtil.error(playerRef, CommandKeys.Home.NO_HOME));
+      case COMBAT_TAGGED -> playerRef.sendMessage(MessageUtil.error(playerRef, CommandKeys.Home.COMBAT_TAGGED));
+      case SUCCESS_INSTANT -> playerRef.sendMessage(MessageUtil.success(playerRef, CommandKeys.Home.TELEPORTED));
       case ON_COOLDOWN, SUCCESS_WARMUP -> {} // Message sent by TeleportManager
       default -> {}
     }
@@ -632,41 +632,41 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     // Get player's current location
     TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
     if (transform == null) {
-      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.LOCATION_ERROR));
+      playerRef.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.LOCATION_ERROR));
       sendUpdate();
       return;
     }
 
     World world = player.getWorld();
     if (world == null) {
-      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.WORLD_ERROR));
+      playerRef.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.WORLD_ERROR));
       sendUpdate();
       return;
     }
 
     Vector3d pos = transform.getPosition();
-    int chunkX = ChunkUtil.toChunkCoord(pos.getX());
-    int chunkZ = ChunkUtil.toChunkCoord(pos.getZ());
+    int chunkX = ChunkUtil.toChunkCoord(pos.x());
+    int chunkZ = ChunkUtil.toChunkCoord(pos.z());
 
     // Check if in faction territory
     UUID owner = claimManager.getClaimOwner(world.getName(), chunkX, chunkZ);
     if (owner == null || !owner.equals(faction.id())) {
-      player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Home.NOT_IN_TERRITORY));
+      playerRef.sendMessage(MessageUtil.error(playerRef, CommandKeys.Home.NOT_IN_TERRITORY));
       sendUpdate();
       return;
     }
 
     // Get rotation from transform
-    Vector3f rot = transform.getRotation();
-    float yaw = rot != null ? rot.getY() : 0;
-    float pitch = rot != null ? rot.getX() : 0;
+    Rotation3f rot = transform.getRotation();
+    float yaw = rot != null ? rot.y() : 0;
+    float pitch = rot != null ? rot.x() : 0;
 
     // Set the home
     Faction.FactionHome home = new Faction.FactionHome(
         world.getName(),
-        pos.getX(),
-        pos.getY(),
-        pos.getZ(),
+        pos.x(),
+        pos.y(),
+        pos.z(),
         yaw,
         pitch,
         System.currentTimeMillis(),
@@ -676,7 +676,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     Faction updated = faction.withHome(home);
     factionManager.updateFaction(updated);
 
-    player.sendMessage(MessageUtil.success(playerRef, CommandKeys.Home.SET));
+    playerRef.sendMessage(MessageUtil.success(playerRef, CommandKeys.Home.SET));
 
     // Refresh dashboard
     Faction fresh = factionManager.getFaction(faction.id());
@@ -690,28 +690,28 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     // Get player's current chunk
     TransformComponent transform = store.getComponent(ref, TransformComponent.getComponentType());
     if (transform == null) {
-      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.LOCATION_ERROR));
+      playerRef.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.LOCATION_ERROR));
       sendUpdate();
       return;
     }
 
     World world = player.getWorld();
     if (world == null) {
-      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.WORLD_ERROR));
+      playerRef.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.WORLD_ERROR));
       sendUpdate();
       return;
     }
 
     Vector3d pos = transform.getPosition();
-    int chunkX = ChunkUtil.toChunkCoord(pos.getX());
-    int chunkZ = ChunkUtil.toChunkCoord(pos.getZ());
+    int chunkX = ChunkUtil.toChunkCoord(pos.x());
+    int chunkZ = ChunkUtil.toChunkCoord(pos.z());
 
     // Attempt to claim
     ClaimManager.ClaimResult result = claimManager.claim(uuid, world.getName(), chunkX, chunkZ);
 
     switch (result) {
       case SUCCESS -> {
-        player.sendMessage(MessageUtil.success(playerRef,
+        playerRef.sendMessage(MessageUtil.success(playerRef,
             GuiKeys.DashboardGui.CLAIM_SUCCESS, chunkX, chunkZ));
         // Refresh dashboard with updated faction data
         Faction fresh = factionManager.getFaction(faction.id());
@@ -719,20 +719,20 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
           guiManager.openFactionDashboard(player, ref, store, playerRef, fresh);
         }
       }
-      case NOT_IN_FACTION -> player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.NOT_IN_FACTION));
-      case NOT_OFFICER -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.NOT_OFFICER));
-      case ALREADY_CLAIMED_SELF -> player.sendMessage(MessageUtil.info(playerRef, CommandKeys.Claim.ALREADY_YOURS, MessageUtil.COLOR_GOLD));
-      case ALREADY_CLAIMED_OTHER, ALREADY_CLAIMED_ALLY, ALREADY_CLAIMED_ENEMY -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.ALREADY_CLAIMED));
-      case MAX_CLAIMS_REACHED -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.MAX_CLAIMS));
+      case NOT_IN_FACTION -> playerRef.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.NOT_IN_FACTION));
+      case NOT_OFFICER -> playerRef.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.NOT_OFFICER));
+      case ALREADY_CLAIMED_SELF -> playerRef.sendMessage(MessageUtil.info(playerRef, CommandKeys.Claim.ALREADY_YOURS, MessageUtil.COLOR_GOLD));
+      case ALREADY_CLAIMED_OTHER, ALREADY_CLAIMED_ALLY, ALREADY_CLAIMED_ENEMY -> playerRef.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.ALREADY_CLAIMED));
+      case MAX_CLAIMS_REACHED -> playerRef.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.MAX_CLAIMS));
       case WORLD_MAX_CLAIMS_REACHED -> {
         Integer wmc = ConfigManager.get().getWorldMaxClaims(world.getName());
-        player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.WORLD_MAX_CLAIMS, wmc != null ? wmc : "?"));
+        playerRef.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.WORLD_MAX_CLAIMS, wmc != null ? wmc : "?"));
       }
-      case WORLD_NOT_ALLOWED -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.WORLD_NOT_ALLOWED));
-      case NOT_ADJACENT -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.NOT_CONNECTED));
-      case INSUFFICIENT_POWER -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.INSUFFICIENT_POWER));
-      case ORBISGUARD_PROTECTED -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.ORBISGUARD));
-      default -> player.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.FAILED));
+      case WORLD_NOT_ALLOWED -> playerRef.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.WORLD_NOT_ALLOWED));
+      case NOT_ADJACENT -> playerRef.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.NOT_CONNECTED));
+      case INSUFFICIENT_POWER -> playerRef.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.INSUFFICIENT_POWER));
+      case ORBISGUARD_PROTECTED -> playerRef.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.ORBISGUARD));
+      default -> playerRef.sendMessage(MessageUtil.error(playerRef, CommandKeys.Claim.FAILED));
     }
   }
 

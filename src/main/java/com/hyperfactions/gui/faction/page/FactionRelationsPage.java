@@ -671,7 +671,7 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
     UUID targetId = UuidUtil.parseOrNull(data.factionId);
     if (targetId == null) {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
       sendUpdate();
       return;
     }
@@ -679,7 +679,7 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
     if (targetFaction != null) {
       guiManager.openFactionInfo(player, ref, store, playerRef, targetFaction, "relations");
     } else {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.PlayerInfoGui.FACTION_GONE));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.PlayerInfoGui.FACTION_GONE));
       sendUpdate();
     }
   }
@@ -691,15 +691,15 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
     UUID targetId = UuidUtil.parseOrNull(data.factionId);
     if (targetId == null) {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
       return;
     }
     UUID actorUuid = playerRef.getUuid();
     RelationManager.RelationResult result = relationManager.setNeutral(actorUuid, targetId);
     if (result == RelationManager.RelationResult.SUCCESS) {
-      player.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.NOW_NEUTRAL, "#888888", data.factionName));
+      playerRef.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.NOW_NEUTRAL, "#888888", data.factionName));
     } else {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.FAILED, result));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.FAILED, result));
     }
     rebuildList(canManage);
   }
@@ -711,15 +711,15 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
     UUID targetId = UuidUtil.parseOrNull(data.factionId);
     if (targetId == null) {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
       return;
     }
     UUID actorUuid = playerRef.getUuid();
     RelationManager.RelationResult result = relationManager.setEnemy(actorUuid, targetId);
     if (result == RelationManager.RelationResult.SUCCESS) {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.NOW_ENEMIES, data.factionName));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.NOW_ENEMIES, data.factionName));
     } else {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.FAILED, result));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.FAILED, result));
     }
     rebuildList(canManage);
   }
@@ -731,21 +731,21 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
     UUID targetId = UuidUtil.parseOrNull(data.factionId);
     if (targetId == null) {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
       return;
     }
     UUID actorUuid = playerRef.getUuid();
     RelationManager.RelationResult result = relationManager.requestAlly(actorUuid, targetId);
     if (result == RelationManager.RelationResult.REQUEST_SENT) {
-      player.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.REQUEST_SENT, "#00AAFF", data.factionName));
+      playerRef.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.REQUEST_SENT, "#00AAFF", data.factionName));
       // Switch to pending tab to show the new request
       currentTab = Tab.PENDING;
       currentPage = 0;
       expandedItems.clear();
     } else if (result == RelationManager.RelationResult.REQUEST_ACCEPTED) {
-      player.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.NOW_ALLIED, "#00AAFF", data.factionName));
+      playerRef.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.NOW_ALLIED, "#00AAFF", data.factionName));
     } else {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.FAILED, result));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.FAILED, result));
     }
     rebuildList(canManage);
   }
@@ -757,15 +757,15 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
     UUID requesterId = UuidUtil.parseOrNull(data.factionId);
     if (requesterId == null) {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
       return;
     }
     UUID actorUuid = playerRef.getUuid();
     RelationManager.RelationResult result = relationManager.acceptAlly(actorUuid, requesterId);
     if (result == RelationManager.RelationResult.REQUEST_ACCEPTED) {
-      player.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.NOW_ALLIED, "#00AAFF", data.factionName));
+      playerRef.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.NOW_ALLIED, "#00AAFF", data.factionName));
     } else {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.FAILED, result));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.FAILED, result));
     }
     rebuildList(canManage);
   }
@@ -777,14 +777,14 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
     UUID requesterId = UuidUtil.parseOrNull(data.factionId);
     if (requesterId == null) {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
       return;
     }
     UUID actorUuid = playerRef.getUuid();
     // No direct decline method - use setEnemy then setNeutral to clear the request
     relationManager.setEnemy(actorUuid, requesterId);
     relationManager.setNeutral(actorUuid, requesterId);
-    player.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.REQUEST_DECLINED, "#888888", data.factionName));
+    playerRef.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.REQUEST_DECLINED, "#888888", data.factionName));
     rebuildList(canManage);
   }
 
@@ -795,15 +795,15 @@ public class FactionRelationsPage extends InteractiveCustomUIPage<FactionRelatio
 
     UUID targetId = UuidUtil.parseOrNull(data.factionId);
     if (targetId == null) {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
       return;
     }
     UUID actorUuid = playerRef.getUuid();
     RelationManager.RelationResult result = relationManager.cancelRequest(actorUuid, targetId);
     if (result == RelationManager.RelationResult.SUCCESS) {
-      player.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.REQUEST_CANCELLED, "#888888", data.factionName));
+      playerRef.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.REQUEST_CANCELLED, "#888888", data.factionName));
     } else {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.FAILED, result));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.FAILED, result));
     }
 
     // Stay on pending tab (Bug 7 fix)

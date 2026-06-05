@@ -4,9 +4,10 @@ import com.hyperfactions.HyperFactions;
 import com.hyperfactions.protection.ProtectionChecker;
 import com.hyperfactions.protection.ProtectionMessageDebounce;
 import com.hyperfactions.util.Logger;
-import com.hypixel.hytale.math.vector.Vector3d;
+import org.joml.Vector3d;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
+import com.hypixel.hytale.server.core.universe.PlayerRef;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
 import com.hypixel.hytale.server.core.universe.world.World;
 import java.lang.reflect.InvocationHandler;
@@ -97,7 +98,7 @@ public class KyuubiSoftIntegration {
     InvocationHandler handler = (proxy, method, args) -> {
       // The functional interface method: interceptDialog(Player, PlayerRef, Ref, Store, String citizenId)
       if ("interceptDialog".equals(method.getName())) {
-        return handleInterceptDialog(hyperFactionsSupplier, (Player) args[0]);
+        return handleInterceptDialog(hyperFactionsSupplier, (Player) args[0], (PlayerRef) args[1]);
       }
 
       // Handle Object methods
@@ -128,7 +129,7 @@ public class KyuubiSoftIntegration {
    * Checks the NPC_INTERACT zone flag at the player's current position.
    */
   private boolean handleInterceptDialog(Supplier<HyperFactions> hyperFactionsSupplier,
-                      Player player) {
+                      Player player, PlayerRef playerRef) {
     try {
       HyperFactions hf = hyperFactionsSupplier.get();
       if (hf == null) {
@@ -161,18 +162,18 @@ public class KyuubiSoftIntegration {
 
       // Check protection using NPC_INTERACT type
       ProtectionChecker.ProtectionResult result = checker.canInteract(
-          playerUuid, worldName, pos.getX(), pos.getZ(),
+          playerUuid, worldName, pos.x(), pos.z(),
           ProtectionChecker.InteractionType.NPC_INTERACT
       );
 
       boolean blocked = !checker.isAllowed(result);
 
       Logger.debugInteraction("[KyuubiSoft:Citizen] player=%s, world=%s, pos=(%.0f,%.0f,%.0f), blocked=%b",
-          playerUuid, worldName, pos.getX(), pos.getY(), pos.getZ(), blocked);
+          playerUuid, worldName, pos.x(), pos.y(), pos.z(), blocked);
 
       if (blocked) {
         String denyMsg = checker.getDenialMessage(result, ProtectionChecker.InteractionType.NPC_INTERACT);
-        ProtectionMessageDebounce.sendIfNotOnCooldown(player, "citizen_interact",
+        ProtectionMessageDebounce.sendIfNotOnCooldown(playerRef, "citizen_interact",
             Message.raw(denyMsg).color("#FF5555"));
         return true; // Block the interaction
       }

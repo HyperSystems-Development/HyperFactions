@@ -311,7 +311,7 @@ class AdminPageOpener {
     try {
       EconomyManager econ = guiManager.getPlugin().get().getEconomyManager();
       if (econ == null) {
-        player.sendMessage(com.hyperfactions.util.MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ECON_NOT_ENABLED));
+        playerRef.sendMessage(com.hyperfactions.util.MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ECON_NOT_ENABLED));
         return;
       }
       PageManager pageManager = player.getPageManager();
@@ -344,7 +344,7 @@ class AdminPageOpener {
     try {
       EconomyManager econ = guiManager.getPlugin().get().getEconomyManager();
       if (econ == null) {
-        player.sendMessage(com.hyperfactions.util.MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ECON_NOT_ENABLED));
+        playerRef.sendMessage(com.hyperfactions.util.MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ECON_NOT_ENABLED));
         return;
       }
       PageManager pageManager = player.getPageManager();
@@ -372,7 +372,7 @@ class AdminPageOpener {
     try {
       EconomyManager econ = guiManager.getPlugin().get().getEconomyManager();
       if (econ == null) {
-        player.sendMessage(com.hyperfactions.util.MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ECON_NOT_ENABLED));
+        playerRef.sendMessage(com.hyperfactions.util.MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ECON_NOT_ENABLED));
         return;
       }
       PageManager pageManager = player.getPageManager();

@@ -276,7 +276,7 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
           languagePreference = data.language;
           savePreference(uuid, d -> d.setLanguagePreference(languagePreference));
           HFMessages.setLanguageOverride(uuid, languagePreference);
-          player.sendMessage(MessageUtil.successText(playerRef,
+          playerRef.sendMessage(MessageUtil.successText(playerRef,
               GuiKeys.PlayerSettings.LANGUAGE_CHANGED,
               nativeDisplayName(data.language)));
         }
@@ -286,7 +286,7 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
       case "ToggleTerritoryAlerts" -> {
         territoryAlerts = !territoryAlerts;
         savePreference(uuid, d -> d.setTerritoryAlertsEnabled(territoryAlerts));
-        player.sendMessage(territoryAlerts
+        playerRef.sendMessage(territoryAlerts
             ? MessageUtil.successText(playerRef, GuiKeys.PlayerSettings.PREF_ENABLED,
                 HFMessages.get(playerRef, GuiKeys.PlayerSettings.TERRITORY_ALERTS))
             : MessageUtil.text(playerRef, GuiKeys.PlayerSettings.PREF_DISABLED, "#FFAA00",
@@ -297,7 +297,7 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
       case "ToggleDeathAnnouncements" -> {
         deathAnnouncements = !deathAnnouncements;
         savePreference(uuid, d -> d.setDeathAnnouncementsEnabled(deathAnnouncements));
-        player.sendMessage(deathAnnouncements
+        playerRef.sendMessage(deathAnnouncements
             ? MessageUtil.successText(playerRef, GuiKeys.PlayerSettings.PREF_ENABLED,
                 HFMessages.get(playerRef, GuiKeys.PlayerSettings.DEATH_ANNOUNCEMENTS))
             : MessageUtil.text(playerRef, GuiKeys.PlayerSettings.PREF_DISABLED, "#FFAA00",
@@ -308,7 +308,7 @@ public class PlayerSettingsPage extends InteractiveCustomUIPage<PlayerSettingsDa
       case "TogglePowerNotifications" -> {
         powerNotifications = !powerNotifications;
         savePreference(uuid, d -> d.setPowerNotificationsEnabled(powerNotifications));
-        player.sendMessage(powerNotifications
+        playerRef.sendMessage(powerNotifications
             ? MessageUtil.successText(playerRef, GuiKeys.PlayerSettings.PREF_ENABLED,
                 HFMessages.get(playerRef, GuiKeys.PlayerSettings.POWER_NOTIFICATIONS))
             : MessageUtil.text(playerRef, GuiKeys.PlayerSettings.PREF_DISABLED, "#FFAA00",

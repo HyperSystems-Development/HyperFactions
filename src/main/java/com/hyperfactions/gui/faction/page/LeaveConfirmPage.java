@@ -103,14 +103,14 @@ public class LeaveConfirmPage extends InteractiveCustomUIPage<LeaveConfirmData> 
 
     // Verify still in faction
     if (member == null) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.NOT_IN_FACTION));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.NOT_IN_FACTION));
       guiManager.openFactionMain(player, ref, store, playerRef);
       return;
     }
 
     // Leaders cannot leave via this modal (they must disband or transfer leadership)
     if (member.role() == FactionRole.LEADER) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.LEADER_CANNOT_LEAVE));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.LEADER_CANNOT_LEAVE));
       guiManager.openFactionDashboard(player, ref, store, playerRef,
           factionManager.getFaction(faction.id()));
       return;
@@ -134,10 +134,10 @@ public class LeaveConfirmPage extends InteractiveCustomUIPage<LeaveConfirmData> 
             faction.id(), uuid, uuid, false);
 
         if (result == FactionManager.FactionResult.SUCCESS) {
-          player.sendMessage(MessageUtil.successText(playerRef, GuiKeys.ConfirmGui.LEFT_FACTION, factionName));
+          playerRef.sendMessage(MessageUtil.successText(playerRef, GuiKeys.ConfirmGui.LEFT_FACTION, factionName));
           guiManager.openFactionMain(player, ref, store, playerRef);
         } else {
-          player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.LEAVE_FAILED, result));
+          playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.LEAVE_FAILED, result));
           guiManager.openFactionMain(player, ref, store, playerRef);
         }
       }

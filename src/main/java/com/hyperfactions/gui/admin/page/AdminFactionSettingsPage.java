@@ -351,7 +351,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
 
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null && !data.button.equals("Back")) {
-      player.sendMessage(MessageUtil.adminError(playerRef, CommonKeys.Common.FACTION_NOT_FOUND));
+      playerRef.sendMessage(MessageUtil.adminError(playerRef, CommonKeys.Common.FACTION_NOT_FOUND));
       sendUpdate();
       return;
     }
@@ -391,7 +391,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
 
     // Check if server has locked this setting
     if (config.isPermissionLocked(permName)) {
-      player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.SET_LOCKED));
+      playerRef.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.SET_LOCKED));
       sendUpdate();
       return;
     }
@@ -399,7 +399,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     // Get current faction
     Faction faction = factionManager.getFaction(factionId);
     if (faction == null) {
-      player.sendMessage(MessageUtil.adminError(playerRef, CommonKeys.Common.FACTION_NOT_FOUND));
+      playerRef.sendMessage(MessageUtil.adminError(playerRef, CommonKeys.Common.FACTION_NOT_FOUND));
       sendUpdate();
       return;
     }
@@ -416,7 +416,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     String displayName = formatPermissionName(permName);
     boolean newValue = updated.get(permName);
 
-    player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.SET_PERM_TOGGLED, displayName, newValue ? HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ON) : HFMessages.get(playerRef, AdminGuiKeys.AdminGui.OFF)));
+    playerRef.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.SET_PERM_TOGGLED, displayName, newValue ? HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ON) : HFMessages.get(playerRef, AdminGuiKeys.AdminGui.OFF)));
 
     // Rebuild page with fresh data
     rebuildPage();
@@ -443,7 +443,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     factionManager.updateFaction(updatedFaction);
     EventBus.publish(new FactionRenameEvent(faction.id(), FactionRenameEvent.Field.COLOR, faction.color(), hexColor, playerRef.getUuid()));
 
-    player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.SET_COLOR_CHANGED, hexColor));
+    playerRef.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.SET_COLOR_CHANGED, hexColor));
 
     rebuildPage();
   }
@@ -460,14 +460,14 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     Faction updatedFaction = faction.withOpen(isOpen);
     factionManager.updateFaction(updatedFaction);
 
-    player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.SET_RECRUITMENT_SET, isOpen ? HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_OPEN) : HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_INVITE_ONLY)));
+    playerRef.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.SET_RECRUITMENT_SET, isOpen ? HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_OPEN) : HFMessages.get(playerRef, GuiKeys.FactionInfoGui.STATUS_INVITE_ONLY)));
 
     rebuildPage();
   }
 
   private void handleClearHome(Player player, Ref<EntityStore> ref, Store<EntityStore> store, Faction faction) {
     if (faction.home() == null) {
-      player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.SET_NO_HOME, MessageUtil.COLOR_GOLD));
+      playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.SET_NO_HOME, MessageUtil.COLOR_GOLD));
       sendUpdate();
       return;
     }
@@ -475,7 +475,7 @@ public class AdminFactionSettingsPage extends InteractiveCustomUIPage<AdminFacti
     Faction updatedFaction = faction.withHome(null);
     factionManager.updateFaction(updatedFaction);
 
-    player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.SET_HOME_CLEARED, faction.name()));
+    playerRef.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.SET_HOME_CLEARED, faction.name()));
 
     // Rebuild page with fresh data
     rebuildPage();

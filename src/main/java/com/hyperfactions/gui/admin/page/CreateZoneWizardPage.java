@@ -393,7 +393,7 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
       case "ApplyCustomRadius" -> {
         int newRadius = parseRadius(data.customRadius);
         if (newRadius < 1 || newRadius > MAX_RADIUS) {
-          player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.WIZ_RADIUS_RANGE, MAX_RADIUS));
+          playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.WIZ_RADIUS_RANGE, MAX_RADIUS));
           sendUpdate();
           return;
         }
@@ -445,26 +445,26 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
 
     // Validate zone name
     if (name.isEmpty()) {
-      player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.WIZ_ENTER_NAME));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.WIZ_ENTER_NAME));
       sendUpdate();
       return;
     }
 
     if (name.length() < MIN_NAME_LENGTH) {
-      player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.WIZ_NAME_TOO_SHORT, MIN_NAME_LENGTH));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.WIZ_NAME_TOO_SHORT, MIN_NAME_LENGTH));
       sendUpdate();
       return;
     }
 
     if (name.length() > MAX_NAME_LENGTH) {
-      player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.WIZ_NAME_TOO_LONG, MAX_NAME_LENGTH));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.WIZ_NAME_TOO_LONG, MAX_NAME_LENGTH));
       sendUpdate();
       return;
     }
 
     // Check if name is already taken
     if (zoneManager.getZoneByName(name) != null) {
-      player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.WIZ_NAME_TAKEN));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.WIZ_NAME_TAKEN));
       sendUpdate();
       return;
     }
@@ -481,21 +481,21 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
     ZoneManager.ZoneResult result = zoneManager.createZone(name, type, worldName, playerRef.getUuid());
 
     if (result != ZoneManager.ZoneResult.SUCCESS) {
-      player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.WIZ_CREATE_FAILED, result));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.WIZ_CREATE_FAILED, result));
       sendUpdate();
       return;
     }
 
     Zone newZone = zoneManager.getZoneByName(name);
     if (newZone == null) {
-      player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.WIZ_CREATED_NOT_FOUND, MessageUtil.COLOR_GOLD));
+      playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.WIZ_CREATED_NOT_FOUND, MessageUtil.COLOR_GOLD));
       guiManager.openAdminZone(player, ref, store, playerRef);
       return;
     }
 
     // Success message
     String typeColor = type == ZoneType.SAFE ? "#55FF55" : "#FF5555";
-    player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.WIZ_CREATED, "#55FF55", type.getDisplayName(), name));
+    playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.WIZ_CREATED, "#55FF55", type.getDisplayName(), name));
 
     // Handle claiming based on method
     switch (method) {
@@ -510,10 +510,10 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
               newZone.id(), worldName, chunkX, chunkZ);
 
           if (claimResult == ZoneManager.ZoneResult.SUCCESS) {
-            player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.WIZ_CHUNK_CLAIMED, "#44cc44", chunkX, chunkZ));
+            playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.WIZ_CHUNK_CLAIMED, "#44cc44", chunkX, chunkZ));
             newZone = zoneManager.getZoneById(newZone.id());
           } else {
-            player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.WIZ_CHUNK_FAILED, MessageUtil.COLOR_GOLD, claimResult));
+            playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.WIZ_CHUNK_FAILED, MessageUtil.COLOR_GOLD, claimResult));
           }
         }
       }
@@ -529,10 +529,10 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
           int claimed = zoneManager.claimRadius(newZone.id(), worldName, centerX, centerZ, radius, circle);
 
           if (claimed > 0) {
-            player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.WIZ_RADIUS_CLAIMED, "#44cc44", claimed, HFMessages.get(playerRef, circle ? AdminGuiKeys.AdminGui.SHAPE_CIRCULAR : AdminGuiKeys.AdminGui.SHAPE_SQUARE), radius));
+            playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.WIZ_RADIUS_CLAIMED, "#44cc44", claimed, HFMessages.get(playerRef, circle ? AdminGuiKeys.AdminGui.SHAPE_CIRCULAR : AdminGuiKeys.AdminGui.SHAPE_SQUARE), radius));
             newZone = zoneManager.getZoneById(newZone.id());
           } else {
-            player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.WIZ_RADIUS_NO_CLAIMS, MessageUtil.COLOR_GOLD));
+            playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.WIZ_RADIUS_NO_CLAIMS, MessageUtil.COLOR_GOLD));
           }
         }
       }
@@ -540,7 +540,7 @@ public class CreateZoneWizardPage extends InteractiveCustomUIPage<AdminZoneData>
       case NO_CLAIMS, USE_MAP -> {
         // No chunks to claim now
         if (method == ClaimMethod.NO_CLAIMS) {
-          player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.WIZ_NO_CLAIMS, "#888888"));
+          playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.WIZ_NO_CLAIMS, "#888888"));
         }
       }
       default -> throw new IllegalStateException("Unexpected value");

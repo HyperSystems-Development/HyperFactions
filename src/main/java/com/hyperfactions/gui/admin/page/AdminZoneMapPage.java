@@ -450,7 +450,7 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
     // Get fresh zone data
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.MAP_ZONE_GONE));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.MAP_ZONE_GONE));
       guiManager.openAdminZone(player, ref, store, playerRef);
       return;
     }
@@ -471,9 +471,9 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
       case "Claim" -> {
         ZoneManager.ZoneResult result = zoneManager.claimChunk(zoneId, zoneWorld, data.chunkX, data.chunkZ);
         if (result == ZoneManager.ZoneResult.SUCCESS) {
-          player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.MAP_CLAIMED, "#44cc44", data.chunkX, data.chunkZ, zone.name()));
+          playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.MAP_CLAIMED, "#44cc44", data.chunkX, data.chunkZ, zone.name()));
         } else {
-          player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.MAP_CLAIM_FAILED, result));
+          playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.MAP_CLAIM_FAILED, result));
         }
 
         // Refresh by opening new page with fresh zone data, preserving openFlagsAfter
@@ -486,9 +486,9 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
       case "Unclaim" -> {
         ZoneManager.ZoneResult result = zoneManager.unclaimChunk(zoneId, zoneWorld, data.chunkX, data.chunkZ);
         if (result == ZoneManager.ZoneResult.SUCCESS) {
-          player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.MAP_UNCLAIMED, "#44cc44", data.chunkX, data.chunkZ, zone.name()));
+          playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.MAP_UNCLAIMED, "#44cc44", data.chunkX, data.chunkZ, zone.name()));
         } else {
-          player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.MAP_UNCLAIM_FAILED, result));
+          playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.MAP_UNCLAIM_FAILED, result));
         }
 
         // Refresh by opening new page with fresh zone data, preserving openFlagsAfter
@@ -501,15 +501,15 @@ public class AdminZoneMapPage extends InteractiveCustomUIPage<AdminZoneMapData> 
       case "OtherZone" -> {
         Zone otherZone = zoneManager.getZone(zoneWorld, data.chunkX, data.chunkZ);
         String zoneName = otherZone != null ? otherZone.name() : HFMessages.get(playerRef, AdminGuiKeys.AdminGui.MAP_ANOTHER_ZONE);
-        player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.MAP_CHUNK_BELONGS, MessageUtil.COLOR_GOLD, zoneName));
+        playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.MAP_CHUNK_BELONGS, MessageUtil.COLOR_GOLD, zoneName));
       }
 
       case "Faction" -> {
-        player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.MAP_CHUNK_FACTION, MessageUtil.COLOR_GOLD));
+        playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.MAP_CHUNK_FACTION, MessageUtil.COLOR_GOLD));
       }
 
       case "Protected" -> {
-        player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.MAP_CHUNK_PROTECTED, MessageUtil.COLOR_GOLD));
+        playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.MAP_CHUNK_PROTECTED, MessageUtil.COLOR_GOLD));
       }
 
       default -> {}

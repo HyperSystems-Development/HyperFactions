@@ -172,14 +172,14 @@ public class TreasuryTransferConfirmPage extends InteractiveCustomUIPage<Treasur
     UUID uuid = playerRef.getUuid();
     BigDecimal amount = UiUtil.parseAmount(data.amount);
     if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.ENTER_VALID_AMOUNT));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.ENTER_VALID_AMOUNT));
       sendUpdate();
       return;
     }
 
     // Permission check
     if (!PermissionManager.get().hasPermission(uuid, Permissions.ECONOMY_TRANSFER)) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.NO_TRANSFER_PERMISSION));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.NO_TRANSFER_PERMISSION));
       sendUpdate();
       return;
     }
@@ -187,7 +187,7 @@ public class TreasuryTransferConfirmPage extends InteractiveCustomUIPage<Treasur
     // Limit check
     String limitReason = economyManager.checkTransferLimits(faction.id(), amount);
     if (limitReason != null) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.TRANSFER_DENIED, limitReason));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.TRANSFER_DENIED, limitReason));
       sendUpdate();
       return;
     }
@@ -208,14 +208,14 @@ public class TreasuryTransferConfirmPage extends InteractiveCustomUIPage<Treasur
     try {
       targetFactionId = UUID.fromString(targetId);
     } catch (IllegalArgumentException e) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.INVALID_TARGET_FACTION));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.INVALID_TARGET_FACTION));
       sendUpdate();
       return;
     }
 
     Faction targetFaction = factionManager.getFaction(targetFactionId);
     if (targetFaction == null) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.TARGET_FACTION_GONE));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.TARGET_FACTION_GONE));
       sendUpdate();
       return;
     }
@@ -226,7 +226,7 @@ public class TreasuryTransferConfirmPage extends InteractiveCustomUIPage<Treasur
         EconomyAPI.TransactionType.TRANSFER_OUT).join();
 
     if (withdrawResult != EconomyAPI.TransactionResult.SUCCESS) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.TRANSFER_FAILED, withdrawResult));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.TRANSFER_FAILED, withdrawResult));
       sendUpdate();
       return;
     }
@@ -238,12 +238,12 @@ public class TreasuryTransferConfirmPage extends InteractiveCustomUIPage<Treasur
     if (depositResult != EconomyAPI.TransactionResult.SUCCESS) {
       // Rollback
       economyManager.deposit(faction.id(), deducted, null, "Rollback: transfer to " + targetName + " failed");
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.TRANSFER_FAILED_RETURNED));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.TRANSFER_FAILED_RETURNED));
       sendUpdate();
       return;
     }
 
-    player.sendMessage(MessageUtil.successText(playerRef, GuiKeys.TreasuryGui.TRANSFERRED,
+    playerRef.sendMessage(MessageUtil.successText(playerRef, GuiKeys.TreasuryGui.TRANSFERRED,
         economyManager.formatCurrency(recipientReceives), targetName));
 
     Faction fresh = factionManager.getFaction(faction.id());
@@ -258,7 +258,7 @@ public class TreasuryTransferConfirmPage extends InteractiveCustomUIPage<Treasur
     try {
       targetUuid = UUID.fromString(targetId);
     } catch (IllegalArgumentException e) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.INVALID_TARGET_PLAYER));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.INVALID_TARGET_PLAYER));
       sendUpdate();
       return;
     }
@@ -269,7 +269,7 @@ public class TreasuryTransferConfirmPage extends InteractiveCustomUIPage<Treasur
         EconomyAPI.TransactionType.PLAYER_TRANSFER_OUT).join();
 
     if (withdrawResult != EconomyAPI.TransactionResult.SUCCESS) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.TRANSFER_FAILED, withdrawResult));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.TRANSFER_FAILED, withdrawResult));
       sendUpdate();
       return;
     }
@@ -279,12 +279,12 @@ public class TreasuryTransferConfirmPage extends InteractiveCustomUIPage<Treasur
     if (!vault.deposit(targetUuid, recipientReceives)) {
       // Rollback
       economyManager.deposit(faction.id(), deducted, null, "Rollback: player transfer failed");
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.PLAYER_TRANSFER_FAILED));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.PLAYER_TRANSFER_FAILED));
       sendUpdate();
       return;
     }
 
-    player.sendMessage(MessageUtil.successText(playerRef, GuiKeys.TreasuryGui.TRANSFERRED,
+    playerRef.sendMessage(MessageUtil.successText(playerRef, GuiKeys.TreasuryGui.TRANSFERRED,
         economyManager.formatCurrency(recipientReceives), targetName));
 
     Faction fresh = factionManager.getFaction(faction.id());

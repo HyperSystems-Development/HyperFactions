@@ -116,7 +116,7 @@ public class ZoneRenameModalPage extends InteractiveCustomUIPage<ZoneRenameModal
 
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZREN_ZONE_GONE));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZREN_ZONE_GONE));
       guiManager.openAdminZone(player, ref, store, playerRef, currentTab, currentPage);
       return;
     }
@@ -131,7 +131,7 @@ public class ZoneRenameModalPage extends InteractiveCustomUIPage<ZoneRenameModal
 
         // Validation
         if (newName == null || newName.trim().isEmpty()) {
-          player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZREN_ENTER_NAME));
+          playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZREN_ENTER_NAME));
           sendUpdate();
           return;
         }
@@ -139,20 +139,20 @@ public class ZoneRenameModalPage extends InteractiveCustomUIPage<ZoneRenameModal
         newName = newName.trim();
 
         if (newName.length() < MIN_NAME_LENGTH) {
-          player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZREN_TOO_SHORT, MIN_NAME_LENGTH));
+          playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZREN_TOO_SHORT, MIN_NAME_LENGTH));
           sendUpdate();
           return;
         }
 
         if (newName.length() > MAX_NAME_LENGTH) {
-          player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZREN_TOO_LONG, MAX_NAME_LENGTH));
+          playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZREN_TOO_LONG, MAX_NAME_LENGTH));
           sendUpdate();
           return;
         }
 
         // Check if name is the same
         if (newName.equalsIgnoreCase(zone.name())) {
-          player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.ZREN_SAME_NAME, MessageUtil.COLOR_GOLD));
+          playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.ZREN_SAME_NAME, MessageUtil.COLOR_GOLD));
           sendUpdate();
           return;
         }
@@ -163,23 +163,23 @@ public class ZoneRenameModalPage extends InteractiveCustomUIPage<ZoneRenameModal
 
         switch (result) {
           case SUCCESS -> {
-            player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.ZREN_RENAMED, "#AAAAAA", oldName, newName));
+            playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.ZREN_RENAMED, "#AAAAAA", oldName, newName));
             guiManager.openAdminZone(player, ref, store, playerRef, currentTab, currentPage);
           }
           case NAME_TAKEN -> {
-            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZREN_NAME_TAKEN));
+            playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZREN_NAME_TAKEN));
             sendUpdate();
           }
           case INVALID_NAME -> {
-            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZREN_INVALID_NAME));
+            playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZREN_INVALID_NAME));
             sendUpdate();
           }
           case NOT_FOUND -> {
-            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZREN_ZONE_GONE));
+            playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZREN_ZONE_GONE));
             guiManager.openAdminZone(player, ref, store, playerRef, currentTab, currentPage);
           }
           default -> {
-            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZREN_RENAME_FAILED, result));
+            playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.ZREN_RENAME_FAILED, result));
             sendUpdate();
           }
         }

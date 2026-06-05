@@ -12,7 +12,7 @@ import com.hyperfactions.util.CommandKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.math.vector.Vector3d;
+import org.joml.Vector3d;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.entity.entities.Player;
@@ -66,8 +66,8 @@ public class MapSubCommand extends FactionSubCommand {
     }
 
     Vector3d pos = transform.getPosition();
-    int centerChunkX = ChunkUtil.toChunkCoord(pos.getX());
-    int centerChunkZ = ChunkUtil.toChunkCoord(pos.getZ());
+    int centerChunkX = ChunkUtil.toChunkCoord(pos.x());
+    int centerChunkZ = ChunkUtil.toChunkCoord(pos.z());
 
     UUID playerFactionId = hyperFactions.getFactionManager().getPlayerFactionId(player.getUuid());
 

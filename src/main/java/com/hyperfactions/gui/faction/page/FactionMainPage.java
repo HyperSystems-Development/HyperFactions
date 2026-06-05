@@ -15,8 +15,8 @@ import com.hyperfactions.util.MessageUtil;
 import com.hyperfactions.util.UuidUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.math.vector.Vector3d;
-import com.hypixel.hytale.math.vector.Vector3f;
+import org.joml.Vector3d;
+import com.hypixel.hytale.math.vector.Rotation3f;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.server.core.entity.entities.Player;
@@ -280,7 +280,7 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
 
     UUID factionId = UuidUtil.parseOrNull(data.factionId);
     if (factionId == null) {
-      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.INVALID_ID));
+      playerRef.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.INVALID_ID));
       return;
     }
 
@@ -291,11 +291,11 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
       );
       if (result == FactionManager.FactionResult.SUCCESS) {
         inviteManager.removeInvite(factionId, uuid);
-        player.sendMessage(MessageUtil.success(playerRef, GuiKeys.FactionMainGui.JOINED));
+        playerRef.sendMessage(MessageUtil.success(playerRef, GuiKeys.FactionMainGui.JOINED));
         // Refresh the page
         guiManager.openFactionMain(player, ref, store, playerRef);
       } else {
-        player.sendMessage(MessageUtil.error(playerRef, GuiKeys.FactionMainGui.JOIN_FAILED, result));
+        playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.FactionMainGui.JOIN_FAILED, result));
       }
     }
   }
@@ -308,12 +308,12 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
 
     UUID factionId = UuidUtil.parseOrNull(data.factionId);
     if (factionId == null) {
-      player.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.INVALID_ID));
+      playerRef.sendMessage(MessageUtil.error(playerRef, CommonKeys.Common.INVALID_ID));
       return;
     }
 
     inviteManager.removeInvite(factionId, uuid);
-    player.sendMessage(MessageUtil.info(playerRef, GuiKeys.FactionMainGui.INVITE_DECLINED, MessageUtil.COLOR_GOLD));
+    playerRef.sendMessage(MessageUtil.info(playerRef, GuiKeys.FactionMainGui.INVITE_DECLINED, MessageUtil.COLOR_GOLD));
     // Refresh the page
     guiManager.openFactionMain(player, ref, store, playerRef);
   }
@@ -333,14 +333,14 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
     // Check cooldown
     if (teleportManager.isOnCooldown(uuid)) {
       int remaining = teleportManager.getCooldownRemaining(uuid);
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.FactionMainGui.COOLDOWN, remaining));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.FactionMainGui.COOLDOWN, remaining));
       return;
     }
 
     // Get current world
     World currentWorld = player.getWorld();
     if (currentWorld == null) {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.FactionMainGui.WORLD_NOT_FOUND));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.FactionMainGui.WORLD_NOT_FOUND));
       return;
     }
 
@@ -351,7 +351,7 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
     } else {
       targetWorld = Universe.get().getWorld(home.world());
       if (targetWorld == null) {
-        player.sendMessage(MessageUtil.error(playerRef, GuiKeys.FactionMainGui.WORLD_NOT_FOUND));
+        playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.FactionMainGui.WORLD_NOT_FOUND));
         return;
       }
     }
@@ -359,12 +359,12 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
     // Execute teleport on the target world's thread using createForPlayer for proper player teleportation
     targetWorld.execute(() -> {
       Vector3d position = new Vector3d(home.x(), home.y(), home.z());
-      Vector3f rotation = new Vector3f(home.pitch(), home.yaw(), 0);
+      Rotation3f rotation = new Rotation3f(home.pitch(), home.yaw(), 0);
       Teleport teleport = Teleport.createForPlayer(targetWorld, position, rotation);
       store.addComponent(ref, Teleport.getComponentType(), teleport);
     });
 
-    player.sendMessage(MessageUtil.success(playerRef, CommandKeys.Home.TELEPORTED));
+    playerRef.sendMessage(MessageUtil.success(playerRef, CommandKeys.Home.TELEPORTED));
   }
 
   private void handleLeave(Player player, Ref<EntityStore> ref, Store<EntityStore> store,
@@ -375,10 +375,10 @@ public class FactionMainPage extends InteractiveCustomUIPage<FactionPageData> {
 
     FactionManager.FactionResult result = factionManager.removeMember(faction.id(), uuid, uuid, false);
     if (result == FactionManager.FactionResult.SUCCESS) {
-      player.sendMessage(MessageUtil.success(playerRef, CommandKeys.Leave.SUCCESS));
+      playerRef.sendMessage(MessageUtil.success(playerRef, CommandKeys.Leave.SUCCESS));
       guiManager.openFactionMain(player, ref, store, playerRef);
     } else {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.FactionMainGui.LEAVE_FAILED, result));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.FactionMainGui.LEAVE_FAILED, result));
     }
   }
 
