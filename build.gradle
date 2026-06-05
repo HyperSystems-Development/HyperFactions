@@ -41,6 +41,9 @@ def isMonorepo = rootProject.name == 'HyperSystems'
 // Check if optional local dependencies are available (WiFlowExpansion needs WiFlow API to compile)
 def hasWiFlowLib = file('libs').listFiles()?.any { it.name.contains('WiFlow') } ?: false
 
+// HyperPerms may be provided as a local jar in libs/ (dev) instead of resolved from JitPack (CI)
+def hasHyperPermsLib = file('libs').listFiles()?.any { it.name.contains('HyperPerms') } ?: false
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(25)
@@ -61,11 +64,13 @@ dependencies {
     // Hytale Server API
     compileOnly "com.hypixel.hytale:Server:${hytaleServerVersion}"
 
-    // HyperPerms soft dependency (for compile-time reference only)
+    // HyperPerms soft dependency (for compile-time reference only).
+    // Local dev provides libs/HyperPerms.jar (picked up by the libs fileTree below);
+    // CI/JitPack builds without it resolve from the renamed org.
     if (isMonorepo) {
         compileOnly project(':HyperPerms')
-    } else {
-        compileOnly 'com.github.HyperSystemsDev:HyperPerms:v2.8.5'
+    } else if (!hasHyperPermsLib) {
+        compileOnly 'com.github.HyperSystems-Development:HyperPerms:v2.9.6'
     }
 
     // JSON handling
