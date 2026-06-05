@@ -20,8 +20,8 @@ import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.math.vector.Vector3d;
-import com.hypixel.hytale.math.vector.Vector3f;
+import org.joml.Vector3d;
+import com.hypixel.hytale.math.vector.Rotation3f;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.server.core.Message;
@@ -538,7 +538,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
     }
 
     TeleportManager.StartLocation startLoc = new TeleportManager.StartLocation(
-        world.getName(), pos.getX(), pos.getY(), pos.getZ()
+        world.getName(), pos.x(), pos.y(), pos.z()
     );
 
     TeleportManager.TeleportResult result = hyperFactions.getTeleportManager().teleportToHome(
@@ -571,7 +571,7 @@ public class FactionSettingsPage extends InteractiveCustomUIPage<FactionSettings
 
     targetWorld.execute(() -> {
       Vector3d position = new Vector3d(home.x(), home.y(), home.z());
-      Vector3f rotation = new Vector3f(home.pitch(), home.yaw(), 0);
+      Rotation3f rotation = new Rotation3f(home.pitch(), home.yaw(), 0);
       Teleport teleport = Teleport.createForPlayer(targetWorld, position, rotation);
       store.addComponent(ref, Teleport.getComponentType(), teleport);
     });

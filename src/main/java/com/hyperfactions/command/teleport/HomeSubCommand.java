@@ -9,8 +9,8 @@ import com.hyperfactions.platform.HyperFactionsPlugin;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.math.vector.Vector3d;
-import com.hypixel.hytale.math.vector.Vector3f;
+import org.joml.Vector3d;
+import com.hypixel.hytale.math.vector.Rotation3f;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
 import com.hypixel.hytale.server.core.modules.entity.teleport.Teleport;
@@ -60,7 +60,7 @@ public class HomeSubCommand extends FactionSubCommand {
 
     // Create start location for movement checking
     TeleportManager.StartLocation startLoc = new TeleportManager.StartLocation(
-      currentWorld.getName(), pos.getX(), pos.getY(), pos.getZ()
+      currentWorld.getName(), pos.x(), pos.y(), pos.z()
     );
 
     // Call TeleportManager
@@ -115,7 +115,7 @@ public class HomeSubCommand extends FactionSubCommand {
     // Pass targetWorld to createForPlayer so TeleportSystems handles the cross-world move.
     currentWorld.execute(() -> {
       Vector3d position = new Vector3d(home.x(), home.y(), home.z());
-      Vector3f rotation = new Vector3f(home.pitch(), home.yaw(), 0);
+      Rotation3f rotation = new Rotation3f(home.pitch(), home.yaw(), 0);
       Teleport teleport = Teleport.createForPlayer(targetWorld, position, rotation);
       store.addComponent(ref, Teleport.getComponentType(), teleport);
     });

@@ -20,7 +20,7 @@ import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.RefChangeSystem;
 import com.hypixel.hytale.math.vector.Transform;
-import com.hypixel.hytale.math.vector.Vector3d;
+import org.joml.Vector3d;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
@@ -106,8 +106,8 @@ public class PlayerDeathSystem extends RefChangeSystem<EntityStore, DeathCompone
       TransformComponent transform = commandBuffer.getComponent(ref, TransformComponent.getComponentType());
       if (transform != null) {
         Vector3d pos = transform.getPosition();
-        int chunkX = ChunkUtil.toChunkCoord(pos.getX());
-        int chunkZ = ChunkUtil.toChunkCoord(pos.getZ());
+        int chunkX = ChunkUtil.toChunkCoord(pos.x());
+        int chunkZ = ChunkUtil.toChunkCoord(pos.z());
         try {
           String worldName = store.getExternalData().getWorld().getName();
           Zone zone = hyperFactions.getZoneManager().getZone(worldName, chunkX, chunkZ);
@@ -273,9 +273,9 @@ public class PlayerDeathSystem extends RefChangeSystem<EntityStore, DeathCompone
       }
 
       Vector3d pos = transform.getPosition();
-      int x = (int) Math.floor(pos.getX());
-      int y = (int) Math.floor(pos.getY());
-      int z = (int) Math.floor(pos.getZ());
+      int x = (int) Math.floor(pos.x());
+      int y = (int) Math.floor(pos.y());
+      int z = (int) Math.floor(pos.z());
 
       // Get world name
       String worldName;

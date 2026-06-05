@@ -29,8 +29,8 @@ import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.math.vector.Vector3d;
-import com.hypixel.hytale.math.vector.Vector3f;
+import org.joml.Vector3d;
+import com.hypixel.hytale.math.vector.Rotation3f;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.server.core.Message;
@@ -513,7 +513,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     }
 
     TeleportManager.StartLocation startLoc = new TeleportManager.StartLocation(
-        world.getName(), pos.getX(), pos.getY(), pos.getZ()
+        world.getName(), pos.x(), pos.y(), pos.z()
     );
 
     // Initiate teleport with warmup/combat checking
@@ -552,7 +552,7 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     // Execute teleport on the target world's thread using createForPlayer for proper player teleportation
     targetWorld.execute(() -> {
       Vector3d position = new Vector3d(home.x(), home.y(), home.z());
-      Vector3f rotation = new Vector3f(home.pitch(), home.yaw(), 0);
+      Rotation3f rotation = new Rotation3f(home.pitch(), home.yaw(), 0);
       Teleport teleport = Teleport.createForPlayer(targetWorld, position, rotation);
       store.addComponent(ref, Teleport.getComponentType(), teleport);
     });
@@ -589,8 +589,8 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     }
 
     Vector3d pos = transform.getPosition();
-    int chunkX = ChunkUtil.toChunkCoord(pos.getX());
-    int chunkZ = ChunkUtil.toChunkCoord(pos.getZ());
+    int chunkX = ChunkUtil.toChunkCoord(pos.x());
+    int chunkZ = ChunkUtil.toChunkCoord(pos.z());
 
     // Check if in faction territory
     UUID owner = claimManager.getClaimOwner(world.getName(), chunkX, chunkZ);
@@ -601,16 +601,16 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     }
 
     // Get rotation from transform
-    Vector3f rot = transform.getRotation();
-    float yaw = rot != null ? rot.getY() : 0;
-    float pitch = rot != null ? rot.getX() : 0;
+    Rotation3f rot = transform.getRotation();
+    float yaw = rot != null ? rot.y() : 0;
+    float pitch = rot != null ? rot.x() : 0;
 
     // Set the home
     Faction.FactionHome home = new Faction.FactionHome(
         world.getName(),
-        pos.getX(),
-        pos.getY(),
-        pos.getZ(),
+        pos.x(),
+        pos.y(),
+        pos.z(),
         yaw,
         pitch,
         System.currentTimeMillis(),
@@ -647,8 +647,8 @@ public class FactionDashboardPage extends InteractiveCustomUIPage<FactionDashboa
     }
 
     Vector3d pos = transform.getPosition();
-    int chunkX = ChunkUtil.toChunkCoord(pos.getX());
-    int chunkZ = ChunkUtil.toChunkCoord(pos.getZ());
+    int chunkX = ChunkUtil.toChunkCoord(pos.x());
+    int chunkZ = ChunkUtil.toChunkCoord(pos.z());
 
     // Attempt to claim
     ClaimManager.ClaimResult result = claimManager.claim(uuid, world.getName(), chunkX, chunkZ);

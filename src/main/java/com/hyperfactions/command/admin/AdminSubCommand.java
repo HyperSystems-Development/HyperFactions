@@ -22,7 +22,7 @@ import com.hyperfactions.util.HelpFormatter;
 import com.hyperfactions.util.PlayerResolver;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.math.vector.Vector3d;
+import org.joml.Vector3d;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.command.system.basecommands.AbstractAsyncCommand;
@@ -212,8 +212,8 @@ public class AdminSubCommand extends AbstractAsyncCommand {
         return;
       }
       Vector3d pos = transform.getPosition();
-      chunkX = ChunkUtil.toChunkCoord(pos.getX());
-      chunkZ = ChunkUtil.toChunkCoord(pos.getZ());
+      chunkX = ChunkUtil.toChunkCoord(pos.x());
+      chunkZ = ChunkUtil.toChunkCoord(pos.z());
     }
 
     // Sender UUID for operations that track who performed them

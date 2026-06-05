@@ -12,7 +12,7 @@ import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.math.vector.Vector3d;
+import org.joml.Vector3d;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
@@ -57,8 +57,8 @@ public class ClaimSubCommand extends FactionSubCommand {
     }
 
     Vector3d pos = transform.getPosition();
-    int chunkX = ChunkUtil.toChunkCoord(pos.getX());
-    int chunkZ = ChunkUtil.toChunkCoord(pos.getZ());
+    int chunkX = ChunkUtil.toChunkCoord(pos.x());
+    int chunkZ = ChunkUtil.toChunkCoord(pos.z());
 
     String[] rawArgs = CommandUtil.parseRawArgs(ctx.getInputString(), 2);
     FactionCommandContext fctx = parseContext(rawArgs);

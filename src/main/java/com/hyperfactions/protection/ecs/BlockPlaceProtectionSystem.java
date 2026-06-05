@@ -12,9 +12,9 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.EntityEventSystem;
-import com.hypixel.hytale.math.vector.Vector3d;
-import com.hypixel.hytale.math.vector.Vector3f;
-import com.hypixel.hytale.math.vector.Vector3i;
+import org.joml.Vector3d;
+import com.hypixel.hytale.math.vector.Rotation3f;
+import org.joml.Vector3i;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.event.events.ecs.PlaceBlockEvent;
 import com.hypixel.hytale.server.core.modules.entity.component.HeadRotation;
@@ -63,7 +63,7 @@ public class BlockPlaceProtectionSystem extends EntityEventSystem<EntityStore, P
       String worldName = getWorldName(store);
 
       Logger.debugInteraction("[ECS:PlaceBlock] player=%s, world=%s, pos=(%d,%d,%d), alreadyCancelled=%b",
-        player.getUuid(), worldName, pos.getX(), pos.getY(), pos.getZ(), event.isCancelled());
+        player.getUuid(), worldName, pos.x(), pos.y(), pos.z(), event.isCancelled());
 
       if (worldName == null) {
         // Fail-closed: can't determine world, deny to be safe
@@ -74,14 +74,14 @@ public class BlockPlaceProtectionSystem extends EntityEventSystem<EntityStore, P
 
       // Evaluate protection once and cache result
       ProtectionChecker.ProtectionResult result = hyperFactions.getProtectionChecker().canInteract(
-        player.getUuid(), worldName, pos.getX(), pos.getZ(),
+        player.getUuid(), worldName, pos.x(), pos.z(),
         ProtectionChecker.InteractionType.BUILD
       );
 
       boolean blocked = !hyperFactions.getProtectionChecker().isAllowed(result);
 
       Logger.debugInteraction("[ECS:PlaceBlock] player=%s, result=%s, blocked=%b, pos=(%d,%d,%d), world=%s",
-        player.getUuid(), result, blocked, pos.getX(), pos.getY(), pos.getZ(), worldName);
+        player.getUuid(), result, blocked, pos.x(), pos.y(), pos.z(), worldName);
 
       if (blocked) {
         event.setCancelled(true);
@@ -119,16 +119,16 @@ public class BlockPlaceProtectionSystem extends EntityEventSystem<EntityStore, P
       // Use head rotation (pitch+yaw) so the player's view direction is preserved.
       // TransformComponent.getRotation() is body-only (yaw, no pitch).
       HeadRotation headRot = store.getComponent(ref, HeadRotation.getComponentType());
-      Vector3f lookRot = (headRot != null) ? headRot.getRotation() : transform.getRotation();
+      Rotation3f lookRot = (headRot != null) ? headRot.getRotation() : transform.getRotation();
       if (lookRot == null) {
-        lookRot = new Vector3f(0, 0, 0);
+        lookRot = new Rotation3f(0, 0, 0);
       }
 
       Teleport teleport = Teleport.createForPlayer(currentPos, lookRot);
       commandBuffer.addComponent(ref, Teleport.getComponentType(), teleport);
 
       Logger.debugProtection("[ECS:PlaceBlock] Anti-pillar correction for %s at (%.1f,%.1f,%.1f)",
-        player.getUuid(), currentPos.getX(), currentPos.getY(), currentPos.getZ());
+        player.getUuid(), currentPos.x(), currentPos.y(), currentPos.z());
     } catch (Exception e) {
       Logger.debugProtection("[ECS:PlaceBlock] Failed to apply anti-pillar correction: %s", e.getMessage());
     }

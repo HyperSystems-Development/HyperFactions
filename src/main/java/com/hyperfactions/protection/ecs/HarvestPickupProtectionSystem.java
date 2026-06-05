@@ -102,9 +102,9 @@ public class HarvestPickupProtectionSystem extends EntityEventSystem<EntityStore
         return;
       }
 
-      int x = (int) transform.getPosition().getX();
-      int y = (int) transform.getPosition().getY();
-      int z = (int) transform.getPosition().getZ();
+      int x = (int) transform.getPosition().x();
+      int y = (int) transform.getPosition().y();
+      int z = (int) transform.getPosition().z();
 
       String worldName = getWorldName(store);
       if (worldName == null) {

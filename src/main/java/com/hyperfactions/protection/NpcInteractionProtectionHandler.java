@@ -5,7 +5,7 @@ import com.hyperfactions.protection.ProtectionMessageDebounce;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.math.vector.Vector3d;
+import org.joml.Vector3d;
 import com.hypixel.hytale.protocol.InteractionType;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.entity.entities.Player;
@@ -84,14 +84,14 @@ public class NpcInteractionProtectionHandler {
 
       // Check protection using NPC_TAME type
       ProtectionChecker.ProtectionResult result = hyperFactions.getProtectionChecker().canInteract(
-        playerUuid, worldName, pos.getX(), pos.getZ(),
+        playerUuid, worldName, pos.x(), pos.z(),
         ProtectionChecker.InteractionType.NPC_TAME
       );
 
       boolean blocked = !hyperFactions.getProtectionChecker().isAllowed(result);
 
       Logger.debugInteraction("[NPC:Interact] player=%s, world=%s, pos=(%.0f,%.0f,%.0f), blocked=%b",
-        playerUuid, worldName, pos.getX(), pos.getY(), pos.getZ(), blocked);
+        playerUuid, worldName, pos.x(), pos.y(), pos.z(), blocked);
 
       if (blocked) {
         event.setCancelled(true);

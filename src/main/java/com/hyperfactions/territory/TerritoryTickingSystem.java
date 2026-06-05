@@ -11,8 +11,8 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.tick.EntityTickingSystem;
-import com.hypixel.hytale.math.vector.Vector3d;
-import com.hypixel.hytale.math.vector.Vector3f;
+import org.joml.Vector3d;
+import com.hypixel.hytale.math.vector.Rotation3f;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.modules.entity.teleport.Teleport;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -75,9 +75,9 @@ public class TerritoryTickingSystem extends EntityTickingSystem<EntityStore> {
       }
 
       // Get current position (as double for precision)
-      double posX = playerRef.getTransform().getPosition().getX();
-      double posY = playerRef.getTransform().getPosition().getY();
-      double posZ = playerRef.getTransform().getPosition().getZ();
+      double posX = playerRef.getTransform().getPosition().x();
+      double posY = playerRef.getTransform().getPosition().y();
+      double posZ = playerRef.getTransform().getPosition().z();
 
       UUID playerUuid = playerRef.getUuid();
       TeleportManager teleportManager = hyperFactions.getTeleportManager();
@@ -151,7 +151,7 @@ public class TerritoryTickingSystem extends EntityTickingSystem<EntityStore> {
       ChunkUtil.toChunkCoord(dest.x()), ChunkUtil.toChunkCoord(dest.z()));
 
     Vector3d position = new Vector3d(dest.x(), dest.y(), dest.z());
-    Vector3f rotation = new Vector3f(dest.pitch(), dest.yaw(), 0);
+    Rotation3f rotation = new Rotation3f(dest.pitch(), dest.yaw(), 0);
     boolean sameWorld = currentWorld.getName().equals(dest.world());
 
     // Schedule teleport via world.execute() — runs on world thread AFTER tick completes.

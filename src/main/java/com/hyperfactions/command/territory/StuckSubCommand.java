@@ -11,7 +11,7 @@ import com.hyperfactions.util.ChunkUtil;
 import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.math.vector.Vector3d;
+import org.joml.Vector3d;
 import com.hypixel.hytale.protocol.BlockMaterial;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
@@ -59,8 +59,8 @@ public class StuckSubCommand extends FactionSubCommand {
     Vector3d pos = transform.getPosition();
     UUID playerUuid = player.getUuid();
 
-    int chunkX = ChunkUtil.toChunkCoord(pos.getX());
-    int chunkZ = ChunkUtil.toChunkCoord(pos.getZ());
+    int chunkX = ChunkUtil.toChunkCoord(pos.x());
+    int chunkZ = ChunkUtil.toChunkCoord(pos.z());
 
     // Check if in claimed territory (any faction's claims)
     UUID claimOwner = hyperFactions.getClaimManager().getClaimOwner(currentWorld.getName(), chunkX, chunkZ);
@@ -87,14 +87,14 @@ public class StuckSubCommand extends FactionSubCommand {
     // Create teleport location (center of safe chunk, fitted to safe ground)
     double targetX = ChunkUtil.chunkToCenter(safeChunk[0]);
     double targetZ = ChunkUtil.chunkToCenter(safeChunk[1]);
-    double targetY = findSafeY(currentWorld, targetX, targetZ, pos.getY());
+    double targetY = findSafeY(currentWorld, targetX, targetZ, pos.y());
 
     // Use extended warmup for stuck (30 seconds by default)
     int warmupSeconds = ConfigManager.get().getStuckWarmupSeconds();
 
     // Create start location for movement checking
     TeleportManager.StartLocation startLoc = new TeleportManager.StartLocation(
-      currentWorld.getName(), pos.getX(), pos.getY(), pos.getZ()
+      currentWorld.getName(), pos.x(), pos.y(), pos.z()
     );
 
     // Create destination

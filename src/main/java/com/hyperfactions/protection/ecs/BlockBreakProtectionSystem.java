@@ -11,7 +11,7 @@ import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.EntityEventSystem;
-import com.hypixel.hytale.math.vector.Vector3i;
+import org.joml.Vector3i;
 import com.hypixel.hytale.server.core.Message;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.event.events.ecs.BreakBlockEvent;
@@ -61,7 +61,7 @@ public class BlockBreakProtectionSystem extends EntityEventSystem<EntityStore, B
       String blockId = blockType != null ? blockType.getId() : null;
 
       Logger.debugInteraction("[ECS:BreakBlock] player=%s, world=%s, pos=(%d,%d,%d), blockId=%s, alreadyCancelled=%b",
-        player.getUuid(), worldName, pos.getX(), pos.getY(), pos.getZ(), blockId, event.isCancelled());
+        player.getUuid(), worldName, pos.x(), pos.y(), pos.z(), blockId, event.isCancelled());
 
       if (worldName == null) {
         // Fail-closed: can't determine world, deny to be safe
@@ -76,7 +76,7 @@ public class BlockBreakProtectionSystem extends EntityEventSystem<EntityStore, B
         var gsIntegration = hyperFactions.getProtectionChecker().getGravestoneIntegration();
         if (gsIntegration != null && gsIntegration.isAvailable()) {
           Logger.debugInteraction("[ECS:BreakBlock] BYPASS gravestone for %s at (%d,%d,%d)",
-              player.getUuid(), pos.getX(), pos.getY(), pos.getZ());
+              player.getUuid(), pos.x(), pos.y(), pos.z());
           return;  // Let gravestone plugin handle via AccessChecker
         }
 
@@ -85,14 +85,14 @@ public class BlockBreakProtectionSystem extends EntityEventSystem<EntityStore, B
 
       // Evaluate protection once and cache result
       ProtectionChecker.ProtectionResult result = hyperFactions.getProtectionChecker().canInteract(
-        player.getUuid(), worldName, pos.getX(), pos.getZ(),
+        player.getUuid(), worldName, pos.x(), pos.z(),
         ProtectionChecker.InteractionType.BUILD
       );
 
       boolean blocked = !hyperFactions.getProtectionChecker().isAllowed(result);
 
       Logger.debugInteraction("[ECS:BreakBlock] player=%s, result=%s, blocked=%b, pos=(%d,%d,%d), world=%s",
-        player.getUuid(), result, blocked, pos.getX(), pos.getY(), pos.getZ(), worldName);
+        player.getUuid(), result, blocked, pos.x(), pos.y(), pos.z(), worldName);
 
       if (blocked) {
         event.setCancelled(true);
