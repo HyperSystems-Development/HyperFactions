@@ -9,6 +9,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 *No changes yet*
 
+## [0.14.0] - 2026-06-04
+
+**Server Version:** `0.5.3`
+
+### Changed
+
+**Hytale 0.5.3 ("Update 5") support**
+- Migrated from the March pre-release (`2026.03.26-89796e57b`) to the Hytale **0.5.3**
+  release. 0.5.3 is API-identical to 0.5.2 for the surface this plugin uses.
+- **Messaging/permissions:** the `Player` entity no longer implements `CommandSender`;
+  all player-facing messages and permission checks now route through `PlayerRef`.
+- **Math types:** vectors migrated from `com.hypixel.hytale.math.vector.Vector3d/3f/3i`
+  to JOML (`org.joml.*`); accessors `getX/getY/getZ()` → `x()/y()/z()`. Rotations use the
+  dedicated `Rotation3f`/`Rotation3fc` type (`pitch()`/`yaw()`), and the fluid-refill
+  raycast uses JOML's copy-ctor/`mul()` in place of `clone()`/`scale()`.
+- **World map:** removed the obsolete `UpdateWorldMapSettings.biomeDataMap` field (gone
+  in 0.5.3). The palette/packed-index `MapImage` decoding was already in place.
+- **Manifest:** conformed version fields to 0.5.x's stricter SemverRange codec —
+  `ServerVersion` `^0.5.3` and `OptionalDependencies` `>=x.y.z` (no space after `>=`),
+  which otherwise hard-fail manifest loading.
+
+**HyperPerms**
+- Integration validated against HyperPerms `2.9.6`; the reflection-based adapter is
+  unchanged and still degrades gracefully when HyperPerms is absent.
+
 ## [0.13.1] - 2026-03-29
 
 **Server Version:** `2026.03.26-89796e57b`
