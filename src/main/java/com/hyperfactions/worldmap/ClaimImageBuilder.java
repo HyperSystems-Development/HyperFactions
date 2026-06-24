@@ -15,6 +15,7 @@ import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.asset.type.environment.config.Environment;
 import com.hypixel.hytale.server.core.asset.type.fluid.Fluid;
 import com.hypixel.hytale.server.core.universe.world.World;
+import com.hypixel.hytale.server.core.universe.world.chunk.BlockChunk;
 import com.hypixel.hytale.server.core.universe.world.chunk.ChunkColumn;
 import com.hypixel.hytale.server.core.universe.world.chunk.WorldChunk;
 import com.hypixel.hytale.server.core.universe.world.chunk.section.FluidSection;
@@ -153,6 +154,9 @@ public class ClaimImageBuilder {
   @Nullable
   private WorldChunk worldChunk;
 
+  @Nullable
+  private BlockChunk blockChunk;
+
   private FluidSection[] fluidSections;
 
   // Manager references for claim lookups
@@ -263,6 +267,7 @@ public class ClaimImageBuilder {
 
       if (valid) {
         this.worldChunk = ref.getStore().getComponent(ref, WorldChunk.getComponentType());
+        this.blockChunk = ref.getStore().getComponent(ref, BlockChunk.getComponentType());
         ChunkColumn chunkColumn = ref.getStore().getComponent(ref, ChunkColumn.getComponentType());
         this.fluidSections = new FluidSection[10];
         for (int y = 0; y < 10; ++y) {
@@ -390,7 +395,7 @@ public class ClaimImageBuilder {
 
         this.heightSamples[sampleIndex] = (short) height;
         this.tintSamples[sampleIndex] = tint;
-        this.blockSamples[sampleIndex] = this.worldChunk.getBlock(x, height, z);
+        this.blockSamples[sampleIndex] = this.blockChunk.getBlock(x, height, z);
 
         // Sample fluid data
         int fluidId = 0;
@@ -441,7 +446,7 @@ public class ClaimImageBuilder {
         }
 
         short fluidDepth = fluidId != 0 ? (short) (fluidTop - fluidBottom + 1) : 0;
-        int environmentId = this.worldChunk.getBlockChunk().getEnvironment(x, fluidTop, z);
+        int environmentId = this.blockChunk.getEnvironment(x, fluidTop, z);
         this.fluidDepthSamples[sampleIndex] = fluidDepth;
         this.environmentSamples[sampleIndex] = environmentId;
         this.fluidSamples[sampleIndex] = fluidId;

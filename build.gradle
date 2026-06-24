@@ -86,7 +86,10 @@ dependencies {
     // Optional local soft dependencies (only available in monorepo dev environment)
     // WiFlowPlaceholderAPI and GravestonePlugin integrations use reflection so the build
     // succeeds without them. WiFlowExpansion.java is conditionally excluded below.
-    compileOnly fileTree('libs') { include '*.jar' }
+    // Exclude any local Hytale Server jar: the server API must come exclusively from the
+    // channel-resolved maven dependency (-Phytale_channel), otherwise a stale HytaleServer.jar
+    // dropped in libs/ would silently shadow it and defeat the release/pre-release switch.
+    compileOnly fileTree('libs') { include '*.jar'; exclude 'HytaleServer*.jar', 'Server-*.jar' }
 
     // Null safety annotations
     compileOnly 'org.jetbrains:annotations:24.1.0'
