@@ -15,8 +15,8 @@ import com.hyperfactions.util.GuiKeys;
 import com.hyperfactions.util.UuidUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.math.vector.Vector3d;
-import com.hypixel.hytale.math.vector.Vector3f;
+import org.joml.Vector3d;
+import com.hypixel.hytale.math.vector.Rotation3f;
 import com.hypixel.hytale.protocol.packets.interface_.CustomPageLifetime;
 import com.hypixel.hytale.protocol.packets.interface_.CustomUIEventBindingType;
 import com.hypixel.hytale.server.core.Message;
@@ -415,7 +415,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.INVALID_FACTION));
+            playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.INVALID_FACTION));
             return;
           }
           Faction faction = factionManager.getFaction(factionId);
@@ -426,21 +426,21 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
             // Get target world
             World targetWorld = Universe.get().getWorld(home.world());
             if (targetWorld == null) {
-              player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.FAC_WORLD_NOT_FOUND));
+              playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.FAC_WORLD_NOT_FOUND));
               return;
             }
 
             // Execute teleport on the target world's thread using createForPlayer for proper player teleportation
             targetWorld.execute(() -> {
               Vector3d position = new Vector3d(home.x(), home.y(), home.z());
-              Vector3f rotation = new Vector3f(home.pitch(), home.yaw(), 0);
+              Rotation3f rotation = new Rotation3f(home.pitch(), home.yaw(), 0);
               Teleport teleport = Teleport.createForPlayer(targetWorld, position, rotation);
               store.addComponent(ref, Teleport.getComponentType(), teleport);
             });
 
-            player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.FAC_TELEPORTED, "#00FFFF", faction.name()));
+            playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.FAC_TELEPORTED, "#00FFFF", faction.name()));
           } else {
-            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.FAC_NO_HOME));
+            playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.FAC_NO_HOME));
           }
         }
       }
@@ -449,7 +449,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.INVALID_FACTION));
+            playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.INVALID_FACTION));
             return;
           }
           Faction faction = factionManager.getFaction(factionId);
@@ -464,7 +464,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.INVALID_FACTION));
+            playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.INVALID_FACTION));
             return;
           }
           Faction faction = factionManager.getFaction(factionId);
@@ -478,7 +478,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.INVALID_FACTION));
+            playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.INVALID_FACTION));
             return;
           }
           Faction faction = factionManager.getFaction(factionId);
@@ -492,7 +492,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.INVALID_FACTION));
+            playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.INVALID_FACTION));
             return;
           }
           guiManager.openAdminDisbandConfirm(player, ref, store, playerRef, factionId, data.factionName);
@@ -503,7 +503,7 @@ public class AdminFactionsPage extends InteractiveCustomUIPage<AdminFactionsData
         if (data.factionId != null) {
           UUID factionId = UuidUtil.parseOrNull(data.factionId);
           if (factionId == null) {
-            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.INVALID_FACTION));
+            playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.INVALID_FACTION));
             return;
           }
           Faction faction = factionManager.getFaction(factionId);

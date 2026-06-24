@@ -420,7 +420,7 @@ public class FactionBrowserPage extends InteractiveCustomUIPage<FactionPageData>
 
     UUID factionId = UuidUtil.parseOrNull(data.factionId);
     if (factionId == null) {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
       return;
     }
 

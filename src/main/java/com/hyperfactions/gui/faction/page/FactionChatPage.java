@@ -292,7 +292,7 @@ public class FactionChatPage extends InteractiveCustomUIPage<FactionChatData> im
       }
       case "TabAlly" -> {
         if (!PermissionManager.get().hasPermission(pRef.getUuid(), Permissions.CHAT_ALLY)) {
-          player.sendMessage(MessageUtil.errorText(pRef, GuiKeys.ChatGui.NO_ALLY_PERMISSION));
+          playerRef.sendMessage(MessageUtil.errorText(pRef, GuiKeys.ChatGui.NO_ALLY_PERMISSION));
           rebuild();
           return;
         }
@@ -322,7 +322,7 @@ public class FactionChatPage extends InteractiveCustomUIPage<FactionChatData> im
     String requiredPerm = (channel == ChatMessage.Channel.ALLY)
         ? Permissions.CHAT_ALLY : Permissions.CHAT_FACTION;
     if (!PermissionManager.get().hasPermission(uuid, requiredPerm)) {
-      player.sendMessage(MessageUtil.errorText(pRef, GuiKeys.ChatGui.NO_PERMISSION));
+      playerRef.sendMessage(MessageUtil.errorText(pRef, GuiKeys.ChatGui.NO_PERMISSION));
       rebuild();
       return;
     }
@@ -330,7 +330,7 @@ public class FactionChatPage extends InteractiveCustomUIPage<FactionChatData> im
     // Get fresh faction data
     Faction currentFaction = factionManager.getFaction(faction.id());
     if (currentFaction == null) {
-      player.sendMessage(MessageUtil.errorText(pRef, GuiKeys.ChatGui.FACTION_GONE));
+      playerRef.sendMessage(MessageUtil.errorText(pRef, GuiKeys.ChatGui.FACTION_GONE));
       rebuild();
       return;
     }

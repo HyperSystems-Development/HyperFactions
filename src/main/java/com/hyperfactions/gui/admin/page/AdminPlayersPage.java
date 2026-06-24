@@ -555,12 +555,12 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
             guiManager.closePage(player, ref, store);
             var targetWorld = Universe.get().getWorld(targetPlayer.getWorldUuid());
             if (targetWorld == null) {
-              player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.PLR_WORLD_NOT_FOUND));
+              playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.PLR_WORLD_NOT_FOUND));
               return;
             }
             var targetTransform = targetPlayer.getTransform();
             if (targetTransform == null) {
-              player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.PLR_NOT_ONLINE));
+              playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.PLR_NOT_ONLINE));
               return;
             }
             var targetPos = targetTransform.getPosition();
@@ -570,9 +570,9 @@ public class AdminPlayersPage extends InteractiveCustomUIPage<AdminPlayersData> 
                   targetWorld, targetPos, targetRot);
               store.addComponent(ref, Teleport.getComponentType(), teleport);
             });
-            player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.PLR_TELEPORTED, "#55FF55", data.playerName != null ? data.playerName : "player"));
+            playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.PLR_TELEPORTED, "#55FF55", data.playerName != null ? data.playerName : "player"));
           } else {
-            player.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.PLR_NOT_ONLINE));
+            playerRef.sendMessage(MessageUtil.errorText(playerRef, AdminGuiKeys.AdminGui.PLR_NOT_ONLINE));
             sendUpdate();
           }
         }

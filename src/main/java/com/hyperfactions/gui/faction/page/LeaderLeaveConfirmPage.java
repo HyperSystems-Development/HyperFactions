@@ -136,13 +136,13 @@ public class LeaderLeaveConfirmPage extends InteractiveCustomUIPage<LeaderLeaveC
 
     // Verify still in faction and still leader
     if (member == null) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.NOT_IN_FACTION));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.NOT_IN_FACTION));
       guiManager.openFactionMain(player, ref, store, playerRef);
       return;
     }
 
     if (member.role() != FactionRole.LEADER) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.NOT_LEADER_ANYMORE));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.NOT_LEADER_ANYMORE));
       Faction fresh = factionManager.getFaction(faction.id());
       if (fresh != null) {
         guiManager.openFactionDashboard(player, ref, store, playerRef, fresh);
@@ -166,7 +166,7 @@ public class LeaderLeaveConfirmPage extends InteractiveCustomUIPage<LeaderLeaveC
       case "Leave" -> {
         // Transfer leadership to successor and leave
         if (successor == null) {
-          player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.NO_SUCCESSOR));
+          playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.NO_SUCCESSOR));
           return;
         }
 
@@ -177,7 +177,7 @@ public class LeaderLeaveConfirmPage extends InteractiveCustomUIPage<LeaderLeaveC
             faction.id(), successor.uuid(), uuid);
 
         if (transferResult != FactionManager.FactionResult.SUCCESS) {
-          player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.TRANSFER_FAILED, transferResult));
+          playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.TRANSFER_FAILED, transferResult));
           return;
         }
 
@@ -186,10 +186,10 @@ public class LeaderLeaveConfirmPage extends InteractiveCustomUIPage<LeaderLeaveC
             faction.id(), uuid, uuid, false);
 
         if (leaveResult == FactionManager.FactionResult.SUCCESS) {
-          player.sendMessage(MessageUtil.successText(playerRef, GuiKeys.ConfirmGui.LEADER_LEFT, successor.username(), factionName));
+          playerRef.sendMessage(MessageUtil.successText(playerRef, GuiKeys.ConfirmGui.LEADER_LEFT, successor.username(), factionName));
           guiManager.openFactionMain(player, ref, store, playerRef);
         } else {
-          player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.LEAVE_FAILED, leaveResult));
+          playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.LEAVE_FAILED, leaveResult));
           Faction fresh = factionManager.getFaction(faction.id());
           if (fresh != null) {
             guiManager.openFactionDashboard(player, ref, store, playerRef, fresh);

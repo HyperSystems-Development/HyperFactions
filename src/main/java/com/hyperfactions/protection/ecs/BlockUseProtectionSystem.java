@@ -13,7 +13,7 @@ import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.EntityEventSystem;
-import com.hypixel.hytale.math.vector.Vector3i;
+import org.joml.Vector3i;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
 import com.hypixel.hytale.server.core.event.events.ecs.UseBlockEvent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -73,7 +73,7 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
       String stateId = getBlockStateId(blockType);
 
       Logger.debugInteraction("UseBlockEvent.Pre: player=%s, world=%s, pos=(%d,%d,%d), blockId=%s, stateId=%s, cancelled=%s",
-        player.getUuid(), worldName, pos.getX(), pos.getY(), pos.getZ(),
+        player.getUuid(), worldName, pos.x(), pos.y(), pos.z(),
         blockId, stateId, event.isCancelled());
 
       // Check bypass permissions first
@@ -87,7 +87,7 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
         var gsIntegration = hyperFactions.getProtectionChecker().getGravestoneIntegration();
         if (gsIntegration != null && gsIntegration.isAvailable()) {
           Logger.debugIntegration("Gravestone interaction bypassed normal protection for %s at (%d,%d,%d)",
-              player.getUuid(), pos.getX(), pos.getY(), pos.getZ());
+              player.getUuid(), pos.x(), pos.y(), pos.z());
           return;  // Let gravestone plugin handle via AccessChecker
         }
 
@@ -99,18 +99,18 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
       // 1. Check if this is a crop/plant block (berry, etc.) - uses ITEM_PICKUP_MANUAL flag
       //    Crop harvesting is conceptually the same as F-key pickup (manual item acquisition)
       if (isCropBlock(blockId)) {
-        boolean cropHarvestAllowed = zoneProtection.isManualPickupAllowed(worldName, pos.getX(), pos.getZ());
+        boolean cropHarvestAllowed = zoneProtection.isManualPickupAllowed(worldName, pos.x(), pos.z());
         if (!cropHarvestAllowed) {
           event.setCancelled(true);
           ProtectionMessageDebounce.sendDenial(player, "zone_harvest", "You can't harvest plants in this zone.");
           Logger.debugProtection("Plant harvest blocked by zone (ITEM_PICKUP_MANUAL=false) at %s/%d/%d for player %s",
-            worldName, pos.getX(), pos.getZ(), player.getUuid());
+            worldName, pos.x(), pos.z(), player.getUuid());
           return;
         }
 
         // If crop harvest allowed by zone, still check faction permissions
         ProtectionChecker.ProtectionResult cropResult = hyperFactions.getProtectionChecker().canInteract(
-          player.getUuid(), worldName, pos.getX(), pos.getZ(),
+          player.getUuid(), worldName, pos.x(), pos.z(),
           ProtectionChecker.InteractionType.INTERACT
         );
         if (!hyperFactions.getProtectionChecker().isAllowed(cropResult)) {
@@ -127,7 +127,7 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
       if (effectiveStateId == null && isLightBlock(blockId)) {
         effectiveStateId = "light";  // Synthetic state to trigger LIGHT detection
       }
-      boolean zoneAllows = zoneProtection.isBlockInteractionAllowed(effectiveStateId, worldName, pos.getX(), pos.getZ());
+      boolean zoneAllows = zoneProtection.isBlockInteractionAllowed(effectiveStateId, worldName, pos.x(), pos.z());
 
       if (!zoneAllows) {
         event.setCancelled(true);
@@ -161,13 +161,13 @@ public class BlockUseProtectionSystem extends EntityEventSystem<EntityStore, Use
       };
 
       ProtectionChecker.ProtectionResult factionResult = hyperFactions.getProtectionChecker().canInteract(
-        player.getUuid(), worldName, pos.getX(), pos.getZ(), interactionType
+        player.getUuid(), worldName, pos.x(), pos.z(), interactionType
       );
 
       boolean blocked = !hyperFactions.getProtectionChecker().isAllowed(factionResult);
 
       Logger.debugInteraction("[ECS:UseBlock] player=%s, result=%s, blocked=%b, interactionType=%s, blockId=%s, pos=(%d,%d,%d), world=%s",
-        player.getUuid(), factionResult, blocked, interactionType, blockId, pos.getX(), pos.getY(), pos.getZ(), worldName);
+        player.getUuid(), factionResult, blocked, interactionType, blockId, pos.x(), pos.y(), pos.z(), worldName);
 
       if (blocked) {
         event.setCancelled(true);

@@ -333,14 +333,14 @@ public class AdminZoneSettingsPage extends InteractiveCustomUIPage<AdminZoneSett
   private void handleToggleFlag(Player player, AdminZoneSettingsData data) {
     String flagName = data.flag;
     if (flagName == null || !ZoneFlags.isValidFlag(flagName)) {
-      player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_INVALID_FLAG));
+      playerRef.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_INVALID_FLAG));
       sendUpdate();
       return;
     }
 
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_ZONE_NOT_FOUND));
+      playerRef.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_ZONE_NOT_FOUND));
       sendUpdate();
       return;
     }
@@ -368,9 +368,9 @@ public class AdminZoneSettingsPage extends InteractiveCustomUIPage<AdminZoneSett
     ZoneManager.ZoneResult result = zoneManager.clearAllZoneFlags(zoneId);
 
     if (result == ZoneManager.ZoneResult.SUCCESS) {
-      player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_RESET_ALL));
+      playerRef.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_RESET_ALL));
     } else {
-      player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_RESET_FAILED, result));
+      playerRef.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_RESET_FAILED, result));
     }
 
     rebuildPage();

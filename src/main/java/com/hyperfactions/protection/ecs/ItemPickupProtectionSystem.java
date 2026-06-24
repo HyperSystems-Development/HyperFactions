@@ -71,9 +71,9 @@ public class ItemPickupProtectionSystem extends EntityEventSystem<EntityStore, I
         return;
       }
       var position = transform.getPosition();
-      int x = (int) Math.floor(position.getX());
-      int y = (int) Math.floor(position.getY());
-      int z = (int) Math.floor(position.getZ());
+      int x = (int) Math.floor(position.x());
+      int y = (int) Math.floor(position.y());
+      int z = (int) Math.floor(position.z());
 
       Logger.debugInteraction("[ECS:ItemPickup] player=%s, world=%s, pos=(%d,%d,%d), alreadyCancelled=%b",
         playerRef.getUuid(), worldName, x, y, z, event.isCancelled());

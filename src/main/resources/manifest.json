@@ -5,12 +5,12 @@
   "Description": "Comprehensive faction management for Hytale servers. Create factions, claim territory, manage relations, and wage war. Part of the HyperSystems plugin suite.",
   "Website": "https://github.com/HyperSystems-Development/HyperFactions",
   "Main": "com.hyperfactions.platform.HyperFactionsPlugin",
-  "ServerVersion": "${serverVersion}",
+  "ServerVersion": "^${serverVersion}",
   "SoftDependencies": ["HyperPerms", "OrbisGuard", "OrbisGuard-Mixins", "HyperProtect-Mixin", "LuckPerms", "VaultUnlocked"],
   "OptionalDependencies": {
-    "HelpChat:PlaceholderAPI": ">= 1.0.2",
-    "com.wiflow:WiFlowPlaceholderAPI": ">= 1.0.3",
-    "dev.ninesliced:BetterMap": ">= 1.3.3"
+    "HelpChat:PlaceholderAPI": ">=1.0.2",
+    "com.wiflow:WiFlowPlaceholderAPI": ">=1.0.3",
+    "dev.ninesliced:BetterMap": ">=1.3.3"
   },
   "IncludesAssetPack": true
 }

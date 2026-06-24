@@ -75,8 +75,8 @@ public class DamageProtectionSystem extends EntityEventSystem<EntityStore, Damag
         return;
       }
 
-      double x = transform.getPosition().getX();
-      double z = transform.getPosition().getZ();
+      double x = transform.getPosition().x();
+      double z = transform.getPosition().z();
 
       Logger.debugInteraction("[ECS:Damage] defender=%s, world=%s, pos=(%.1f,%.1f), source=%s, alreadyCancelled=%b",
         defender.getUuid(), worldName, x, z, event.getClass().getSimpleName(), event.isCancelled());

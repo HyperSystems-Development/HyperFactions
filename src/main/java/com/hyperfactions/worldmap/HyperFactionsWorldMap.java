@@ -113,9 +113,6 @@ public class HyperFactionsWorldMap implements IWorldMap {
     // Always enable — we need the map for claim overlays
     merged.enabled = true;
 
-    // Inherit biome data from the world's original settings
-    merged.biomeDataMap = original.biomeDataMap;
-
     // Scale values: use config override if set, otherwise inherit from original.
     // IMPORTANT: vanilla UpdateWorldMapSettings has 0.0f defaults (Java float default) —
     // the server never sets these because the client handles zoom independently.

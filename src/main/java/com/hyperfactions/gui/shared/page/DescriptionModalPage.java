@@ -138,7 +138,7 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
 
     // Verify officer permission (skip in admin mode)
     if (!adminMode && (member == null || member.role().getLevel() < FactionRole.OFFICER.getLevel())) {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.DescGui.NO_PERMISSION));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.DescGui.NO_PERMISSION));
       guiManager.openFactionSettings(player, ref, store, playerRef,
           factionManager.getFaction(faction.id()));
       return;
@@ -164,7 +164,7 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
         if (adminMode) {
           msg = HFMessages.get(playerRef, CommonKeys.Common.ADMIN_PREFIX) + " " + msg;
         }
-        player.sendMessage(Message.raw(msg).color("#AAAAAA"));
+        playerRef.sendMessage(Message.raw(msg).color("#AAAAAA"));
 
         if (adminMode) {
           guiManager.openAdminFactionSettings(player, ref, store, playerRef, faction.id());
@@ -186,7 +186,7 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
           if (adminMode) {
             clearMsg = HFMessages.get(playerRef, CommonKeys.Common.ADMIN_PREFIX) + " " + clearMsg;
           }
-          player.sendMessage(Message.raw(clearMsg).color("#AAAAAA"));
+          playerRef.sendMessage(Message.raw(clearMsg).color("#AAAAAA"));
         } else {
           newDesc = newDesc.trim();
 
@@ -202,7 +202,7 @@ public class DescriptionModalPage extends InteractiveCustomUIPage<DescriptionMod
           if (adminMode) {
             updateMsg = HFMessages.get(playerRef, CommonKeys.Common.ADMIN_PREFIX) + " " + updateMsg;
           }
-          player.sendMessage(Message.raw(updateMsg).color("#55FF55"));
+          playerRef.sendMessage(Message.raw(updateMsg).color("#55FF55"));
         }
 
         if (adminMode) {

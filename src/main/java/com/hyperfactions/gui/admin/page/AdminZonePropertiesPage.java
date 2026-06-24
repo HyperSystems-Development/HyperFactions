@@ -300,7 +300,7 @@ public class AdminZonePropertiesPage extends InteractiveCustomUIPage<AdminZonePr
     switch (result) {
       case SUCCESS -> {
         nameError = null;
-        player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ZPROP_RENAMED, newName));
+        playerRef.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ZPROP_RENAMED, newName));
       }
       case NAME_TAKEN -> nameError = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ZPROP_NAME_TAKEN);
       case INVALID_NAME -> nameError = HFMessages.get(playerRef, AdminGuiKeys.AdminGui.ZPROP_NAME_INVALID);
@@ -328,38 +328,38 @@ public class AdminZonePropertiesPage extends InteractiveCustomUIPage<AdminZonePr
   private void handleSaveUpper(Player player, AdminZonePropertiesData data) {
     String upper = data.upperTitle;
     if (upper == null || upper.isBlank()) {
-      player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZPROP_UPPER_EMPTY));
+      playerRef.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZPROP_UPPER_EMPTY));
       sendUpdate();
       return;
     }
 
     zoneManager.setZoneNotifyTitle(zoneId, upper.trim(), null);
-    player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ZPROP_UPPER_SET));
+    playerRef.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ZPROP_UPPER_SET));
     rebuildPage();
   }
 
   private void handleClearUpper(Player player) {
     zoneManager.setZoneNotifyTitle(zoneId, "clear", null);
-    player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ZPROP_UPPER_RESET));
+    playerRef.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ZPROP_UPPER_RESET));
     rebuildPage();
   }
 
   private void handleSaveLower(Player player, AdminZonePropertiesData data) {
     String lower = data.lowerTitle;
     if (lower == null || lower.isBlank()) {
-      player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZPROP_LOWER_EMPTY));
+      playerRef.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZPROP_LOWER_EMPTY));
       sendUpdate();
       return;
     }
 
     zoneManager.setZoneNotifyTitle(zoneId, null, lower.trim());
-    player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ZPROP_LOWER_SET));
+    playerRef.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ZPROP_LOWER_SET));
     rebuildPage();
   }
 
   private void handleClearLower(Player player) {
     zoneManager.setZoneNotifyTitle(zoneId, null, "clear");
-    player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ZPROP_LOWER_RESET));
+    playerRef.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ZPROP_LOWER_RESET));
     rebuildPage();
   }
 

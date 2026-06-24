@@ -9,6 +9,54 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 *No changes yet*
 
+## [0.14.0] - 2026-06-23
+
+**Server Version:** `0.5.6` (stable build) · `0.6.0-pre.4` (pre-release build)
+
+This release ships **two JARs from a single codebase**: a stable build for the current
+Hytale release line (0.5.3–0.5.6) and a pre-release build for Hytale 0.6.0-pre.4
+("Update 6" pre-release). Both are produced from identical source via the
+`-Phytale_channel=release|pre-release` build switch.
+
+### Changed
+
+**Hytale 0.5.x ("Update 5") support**
+- Migrated from the March pre-release (`2026.03.26-89796e57b`) to the Hytale **0.5.x**
+  release line (validated against 0.5.3 and 0.5.6). 0.5.3–0.5.6 are API-identical for the
+  surface this plugin uses.
+- **Messaging/permissions:** the `Player` entity no longer implements `CommandSender`;
+  all player-facing messages and permission checks now route through `PlayerRef`.
+- **Math types:** vectors migrated from `com.hypixel.hytale.math.vector.Vector3d/3f/3i`
+  to JOML (`org.joml.*`); accessors `getX/getY/getZ()` → `x()/y()/z()`. Rotations use the
+  dedicated `Rotation3f`/`Rotation3fc` type (`pitch()`/`yaw()`), and the fluid-refill
+  raycast uses JOML's copy-ctor/`mul()` in place of `clone()`/`scale()`.
+- **World map:** removed the obsolete `UpdateWorldMapSettings.biomeDataMap` field (gone
+  in 0.5.3). The palette/packed-index `MapImage` decoding was already in place.
+- **Manifest:** conformed version fields to 0.5.x's stricter SemverRange codec —
+  `ServerVersion` `^${serverVersion}` (channel-resolved) and `OptionalDependencies`
+  `>=x.y.z` (no space after `>=`), which otherwise hard-fail manifest loading. Verified the
+  caret + pre-release-tag form `^0.6.0-pre.4` satisfies a 0.6.0-pre.4 server.
+
+**Hytale 0.6.0-pre.4 ("Update 6") pre-release support**
+- Audited the full Hytale API surface this plugin uses (ECS/component, codec, UI,
+  protocol/packets, universe/world, commands, events, builtin gameplay, plugin lifecycle,
+  and reflection targets) against the 0.6.0-pre.4 source. No hard breaks; the plugin
+  compiles and runs on both 0.5.6 and 0.6.0-pre.4 from one codebase.
+- **World map:** `ClaimImageBuilder` now reads blocks/environment from the `BlockChunk`
+  component (`blockChunk.getBlock(...)` / `getEnvironment(...)`) instead of the
+  `WorldChunk.getBlock(...)` / `getBlockChunk()` accessors deprecated in 0.6.0-pre.4 —
+  behavior-identical (same bounds guards), and compatible with both channels.
+
+### Fixed
+- **Build (dual-channel safety):** the `libs/` compile-classpath fileTree now excludes any
+  local `HytaleServer*.jar` / `Server-*.jar`. A stale local server JAR could otherwise
+  shadow the channel-resolved Hytale dependency and silently defeat the
+  `-Phytale_channel` release/pre-release switch.
+
+**HyperPerms**
+- Integration validated against HyperPerms `2.10.0`; the reflection-based adapter is
+  unchanged and still degrades gracefully when HyperPerms is absent.
+
 ## [0.13.1] - 2026-03-29
 
 **Server Version:** `2026.03.26-89796e57b`

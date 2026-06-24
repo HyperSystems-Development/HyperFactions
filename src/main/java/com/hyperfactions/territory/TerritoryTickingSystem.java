@@ -17,8 +17,8 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.tick.EntityTickingSystem;
-import com.hypixel.hytale.math.vector.Vector3d;
-import com.hypixel.hytale.math.vector.Vector3f;
+import org.joml.Vector3d;
+import com.hypixel.hytale.math.vector.Rotation3f;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.modules.entity.teleport.Teleport;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -91,9 +91,9 @@ public class TerritoryTickingSystem extends EntityTickingSystem<EntityStore> {
       if (transform == null) {
         return;
       }
-      double posX = transform.getPosition().getX();
-      double posY = transform.getPosition().getY();
-      double posZ = transform.getPosition().getZ();
+      double posX = transform.getPosition().x();
+      double posY = transform.getPosition().y();
+      double posZ = transform.getPosition().z();
 
       UUID playerUuid = playerRef.getUuid();
       TeleportManager teleportManager = hyperFactions.getTeleportManager();
@@ -171,7 +171,7 @@ public class TerritoryTickingSystem extends EntityTickingSystem<EntityStore> {
               if (safePos != null) {
                 double safeY = findSafeY(player.getWorld(), safePos[0], safePos[1], prev[1]);
                 Vector3d backPos = new Vector3d(safePos[0], safeY, safePos[1]);
-                Vector3f backRot = new Vector3f(0, 0, 0);
+                Rotation3f backRot = new Rotation3f(0, 0, 0);
                 player.getWorld().execute(() -> {
                   if (ref.isValid()) {
                     Teleport tp = Teleport.createForPlayer(backPos, backRot);
@@ -220,7 +220,7 @@ public class TerritoryTickingSystem extends EntityTickingSystem<EntityStore> {
       ChunkUtil.toChunkCoord(dest.x()), ChunkUtil.toChunkCoord(dest.z()));
 
     Vector3d position = new Vector3d(dest.x(), dest.y(), dest.z());
-    Vector3f rotation = new Vector3f(dest.pitch(), dest.yaw(), 0);
+    Rotation3f rotation = new Rotation3f(dest.pitch(), dest.yaw(), 0);
     boolean sameWorld = currentWorld.getName().equals(dest.world());
 
     // Schedule teleport via world.execute() — runs on world thread AFTER tick completes.

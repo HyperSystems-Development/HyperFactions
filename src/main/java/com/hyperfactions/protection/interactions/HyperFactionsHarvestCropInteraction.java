@@ -8,7 +8,7 @@ import com.hypixel.hytale.builtin.adventure.farming.interactions.HarvestCropInte
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.Ref;
-import com.hypixel.hytale.math.vector.Vector3i;
+import org.joml.Vector3i;
 import com.hypixel.hytale.protocol.InteractionType;
 import com.hypixel.hytale.server.core.entity.InteractionContext;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
@@ -60,7 +60,7 @@ public class HyperFactionsHarvestCropInteraction extends HarvestCropInteraction 
 
         // Check zone protection (ITEM_PICKUP_MANUAL flag — crop harvest = manual item acquisition)
         boolean zoneAllows = plugin.getHyperFactions().getZoneInteractionProtection()
-            .isManualPickupAllowed(world.getName(), targetBlock.getX(), targetBlock.getZ());
+            .isManualPickupAllowed(world.getName(), targetBlock.x(), targetBlock.z());
         if (!zoneAllows) {
           ProtectionMessageDebounce.sendDenial(playerRef, "zone_harvest",
               "You can't harvest plants in this zone.");
@@ -71,14 +71,14 @@ public class HyperFactionsHarvestCropInteraction extends HarvestCropInteraction 
         ProtectionChecker.ProtectionResult result = checker.canInteract(
             playerRef.getUuid(),
             world.getName(),
-            targetBlock.getX(), targetBlock.getZ(),
+            targetBlock.x(), targetBlock.z(),
             ProtectionChecker.InteractionType.INTERACT
         );
 
         if (!checker.isAllowed(result)) {
           Logger.debugProtection("Crop harvest blocked for %s at (%d,%d,%d) in %s: %s",
-              playerRef.getUsername(), targetBlock.getX(), targetBlock.getY(),
-              targetBlock.getZ(), world.getName(), result);
+              playerRef.getUsername(), targetBlock.x(), targetBlock.y(),
+              targetBlock.z(), world.getName(), result);
           ProtectionMessageDebounce.sendDenial(playerRef, "crop_harvest",
               checker.getDenialMessage(result, ProtectionChecker.InteractionType.INTERACT));
           return;

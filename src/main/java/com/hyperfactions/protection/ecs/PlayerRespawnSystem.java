@@ -11,7 +11,7 @@ import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
 import com.hypixel.hytale.component.query.Query;
 import com.hypixel.hytale.component.system.RefChangeSystem;
-import com.hypixel.hytale.math.vector.Vector3d;
+import org.joml.Vector3d;
 import com.hypixel.hytale.server.core.entity.entities.Player;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
 import com.hypixel.hytale.server.core.modules.entity.damage.DeathComponent;
@@ -102,8 +102,8 @@ public class PlayerRespawnSystem extends RefChangeSystem<EntityStore, DeathCompo
         if (transform != null) {
           Vector3d position = transform.getPosition();
           String worldName = store.getExternalData().getWorld().getName();
-          int chunkX = ChunkUtil.toChunkCoord(position.getX());
-          int chunkZ = ChunkUtil.toChunkCoord(position.getZ());
+          int chunkX = ChunkUtil.toChunkCoord(position.x());
+          int chunkZ = ChunkUtil.toChunkCoord(position.z());
           int duration = config.getSpawnProtectionDurationSeconds();
 
           hyperFactions.getCombatTagManager().applySpawnProtection(

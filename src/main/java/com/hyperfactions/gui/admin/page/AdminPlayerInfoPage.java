@@ -349,7 +349,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
       case "SetPower" -> {
         double amount = parseDoubleOrNaN(data.powerInput);
         if (Double.isNaN(amount)) {
-          player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.PLR_ENTER_VALID_NUMBER));
+          playerRef.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.PLR_ENTER_VALID_NUMBER));
           return;
         }
         double oldPower = powerManager.getPlayerPower(targetPlayerUuid).power();
@@ -376,7 +376,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
       case "SetMax" -> {
         double amount = parseDoubleOrNaN(data.powerInput);
         if (Double.isNaN(amount) || amount <= 0) {
-          player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.PLR_ENTER_VALID_POSITIVE));
+          playerRef.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.PLR_ENTER_VALID_POSITIVE));
           return;
         }
         PlayerPower old = powerManager.getPlayerPower(targetPlayerUuid);
@@ -438,7 +438,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
               GuiKeys.LogsGui.MSG_ADMIN_KD_RESET, targetPlayerName));
           factionManager.updateFaction(updated);
         }
-        player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.PLR_KD_RESET, targetPlayerName));
+        playerRef.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.PLR_KD_RESET, targetPlayerName));
         reopenPage(player, ref, store, playerRef);
       }
 
@@ -458,7 +458,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
             // Last member — disband the faction
             factionManager.forceDisband(faction.id(),
               "[Admin] Disbanded via admin kick of last member " + targetPlayerName);
-            player.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.PLR_DISBANDED_KICK, MessageUtil.COLOR_GOLD, faction.name()));
+            playerRef.sendMessage(MessageUtil.text(playerRef, AdminGuiKeys.AdminGui.PLR_DISBANDED_KICK, MessageUtil.COLOR_GOLD, faction.name()));
             // Navigate back to factions list since faction no longer exists
             guiManager.openAdminFactions(player, ref, store, playerRef);
           } else {
@@ -478,7 +478,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
 
               // Now kick the demoted member
               factionManager.adminRemoveMember(faction.id(), targetPlayerUuid);
-              player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.PLR_KICKED_LEADER, targetPlayerName, successor.username()));
+              playerRef.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.PLR_KICKED_LEADER, targetPlayerName, successor.username()));
             }
             reopenPage(player, ref, store, playerRef);
           }
@@ -486,7 +486,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
           // Normal kick
           FactionResult result = factionManager.adminRemoveMember(faction.id(), targetPlayerUuid);
           if (result == FactionResult.SUCCESS) {
-            player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.PLR_KICKED_SUCCESS, targetPlayerName, faction.name()));
+            playerRef.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.PLR_KICKED_SUCCESS, targetPlayerName, faction.name()));
           }
           reopenPage(player, ref, store, playerRef);
         }
@@ -498,7 +498,7 @@ public class AdminPlayerInfoPage extends InteractiveCustomUIPage<AdminPlayerInfo
         if (viewFaction != null) {
           guiManager.openAdminFactionInfo(player, ref, store, playerRef, viewFaction.id());
         } else {
-          player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.PLR_FACTION_GONE));
+          playerRef.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.PLR_FACTION_GONE));
         }
       }
 

@@ -7,7 +7,7 @@ import com.hyperfactions.util.Logger;
 import com.hypixel.hytale.codec.builder.BuilderCodec;
 import com.hypixel.hytale.component.CommandBuffer;
 import com.hypixel.hytale.component.Ref;
-import com.hypixel.hytale.math.vector.Vector3i;
+import org.joml.Vector3i;
 import com.hypixel.hytale.protocol.InteractionType;
 import com.hypixel.hytale.server.core.entity.InteractionContext;
 import com.hypixel.hytale.server.core.inventory.ItemStack;
@@ -50,22 +50,22 @@ public class HyperFactionsPlaceFluidInteraction extends PlaceFluidInteraction {
         ProtectionChecker.ProtectionResult result = checker.canInteract(
             playerRef.getUuid(),
             world.getName(),
-            targetBlock.getX(), targetBlock.getZ(),
+            targetBlock.x(), targetBlock.z(),
             ProtectionChecker.InteractionType.BUILD
         );
 
         if (!checker.isAllowed(result)) {
           Logger.debugProtection("Fluid placement blocked for %s at (%d,%d,%d) in %s: %s",
-              playerRef.getUsername(), targetBlock.getX(), targetBlock.getY(),
-              targetBlock.getZ(), world.getName(), result);
+              playerRef.getUsername(), targetBlock.x(), targetBlock.y(),
+              targetBlock.z(), world.getName(), result);
           ProtectionMessageDebounce.sendDenial(playerRef, "place_fluid",
               checker.getDenialMessage(result, ProtectionChecker.InteractionType.BUILD));
           return;
         }
 
         Logger.debugProtection("Fluid placement allowed for %s at (%d,%d,%d) in %s: %s",
-            playerRef.getUsername(), targetBlock.getX(), targetBlock.getY(),
-            targetBlock.getZ(), world.getName(), result);
+            playerRef.getUsername(), targetBlock.x(), targetBlock.y(),
+            targetBlock.z(), world.getName(), result);
       }
     }
 

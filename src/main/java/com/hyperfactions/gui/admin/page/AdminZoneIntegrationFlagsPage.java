@@ -276,14 +276,14 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
   private void handleToggleFlag(Player player, AdminZoneSettingsData data) {
     String flagName = data.flag;
     if (flagName == null || !ZoneFlags.isValidFlag(flagName)) {
-      player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_INVALID_FLAG));
+      playerRef.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_INVALID_FLAG));
       sendUpdate();
       return;
     }
 
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_ZONE_NOT_FOUND));
+      playerRef.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_ZONE_NOT_FOUND));
       sendUpdate();
       return;
     }
@@ -307,7 +307,7 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
   private void handleCycleMapVisibility(Player player) {
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_ZONE_NOT_FOUND));
+      playerRef.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_ZONE_NOT_FOUND));
       sendUpdate();
       return;
     }
@@ -339,7 +339,7 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
     // Clear only integration flags and settings, not all zone flags
     Zone zone = zoneManager.getZoneById(zoneId);
     if (zone == null) {
-      player.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_ZONE_NOT_FOUND));
+      playerRef.sendMessage(MessageUtil.adminError(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_ZONE_NOT_FOUND));
       sendUpdate();
       return;
     }
@@ -355,7 +355,7 @@ public class AdminZoneIntegrationFlagsPage extends InteractiveCustomUIPage<Admin
       }
     }
 
-    player.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_RESET_INT));
+    playerRef.sendMessage(MessageUtil.adminSuccess(playerRef, AdminGuiKeys.AdminGui.ZFLAGS_RESET_INT));
     rebuildPage();
   }
 

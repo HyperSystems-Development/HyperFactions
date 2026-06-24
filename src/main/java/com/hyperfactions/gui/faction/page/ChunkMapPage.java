@@ -588,7 +588,7 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
       default -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, GuiKeys.MapGui.CLAIM_FAILED)).color("#FF5555"));
     };
 
-    player.sendMessage(message);
+    playerRef.sendMessage(message);
 
     // Rebuild the same page instance to update the overlay grid.
     // This preserves terrainAssetFuture, skipping terrain re-generation.
@@ -609,7 +609,7 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
       default -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, GuiKeys.MapGui.UNCLAIM_FAILED)).color("#FF5555"));
     };
 
-    player.sendMessage(message);
+    playerRef.sendMessage(message);
 
     // Rebuild the same page instance to update the overlay grid.
     // This preserves terrainAssetFuture, skipping terrain re-generation.
@@ -635,7 +635,7 @@ public class ChunkMapPage extends InteractiveCustomUIPage<ChunkMapData> implemen
       default -> CommandUtil.prefix().insert(Message.raw(HFMessages.get(playerRef, GuiKeys.MapGui.OVERCLAIM_FAILED)).color("#FF5555"));
     };
 
-    player.sendMessage(message);
+    playerRef.sendMessage(message);
 
     // Rebuild the same page instance to update the overlay grid.
     // This preserves terrainAssetFuture, skipping terrain re-generation.

@@ -12,8 +12,8 @@ import com.hyperfactions.util.CommandKeys;
 import com.hyperfactions.util.MessageUtil;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.component.Store;
-import com.hypixel.hytale.math.vector.Vector3d;
-import com.hypixel.hytale.math.vector.Vector3f;
+import org.joml.Vector3d;
+import com.hypixel.hytale.math.vector.Rotation3f;
 import com.hypixel.hytale.server.core.command.system.CommandContext;
 import com.hypixel.hytale.server.core.modules.entity.component.TransformComponent;
 import com.hypixel.hytale.server.core.universe.PlayerRef;
@@ -62,9 +62,9 @@ public class SetHomeSubCommand extends FactionSubCommand {
     }
 
     Vector3d pos = transform.getPosition();
-    Vector3f rot = transform.getRotation();
-    int chunkX = ChunkUtil.toChunkCoord(pos.getX());
-    int chunkZ = ChunkUtil.toChunkCoord(pos.getZ());
+    Rotation3f rot = transform.getRotation();
+    int chunkX = ChunkUtil.toChunkCoord(pos.x());
+    int chunkZ = ChunkUtil.toChunkCoord(pos.z());
     UUID claimOwner = hyperFactions.getClaimManager().getClaimOwner(currentWorld.getName(), chunkX, chunkZ);
 
     if (claimOwner == null || !claimOwner.equals(faction.id())) {
@@ -74,7 +74,7 @@ public class SetHomeSubCommand extends FactionSubCommand {
 
     // Capture player's look direction (yaw and pitch)
     Faction.FactionHome home = Faction.FactionHome.create(
-      currentWorld.getName(), pos.getX(), pos.getY(), pos.getZ(), rot.getYaw(), rot.getPitch(), player.getUuid()
+      currentWorld.getName(), pos.x(), pos.y(), pos.z(), rot.yaw(), rot.pitch(), player.getUuid()
     );
 
     FactionManager.FactionResult result = hyperFactions.getFactionManager().setHome(faction.id(), home, player.getUuid());

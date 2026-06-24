@@ -210,7 +210,7 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
     UUID uuid = playerRef.getUuid();
     BigDecimal amount = UiUtil.parseAmount(data.amount);
     if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.ENTER_VALID_AMOUNT));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.ENTER_VALID_AMOUNT));
       sendUpdate();
       return;
     }
@@ -232,7 +232,7 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
     VaultEconomyProvider vault = economyManager.getVaultProvider();
 
     if (!vault.has(uuid, totalFromWallet)) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.INSUFFICIENT_WALLET,
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.INSUFFICIENT_WALLET,
           economyManager.formatCurrency(totalFromWallet),
           economyManager.formatCurrency(vault.getBalanceBigDecimal(uuid))));
       sendUpdate();
@@ -240,7 +240,7 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
     }
 
     if (!vault.withdraw(uuid, totalFromWallet)) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.WALLET_WITHDRAW_FAILED));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.WALLET_WITHDRAW_FAILED));
       sendUpdate();
       return;
     }
@@ -250,16 +250,16 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
 
     if (result != EconomyAPI.TransactionResult.SUCCESS) {
       vault.deposit(uuid, totalFromWallet); // Rollback
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.DEPOSIT_FAILED_RETURNED));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.DEPOSIT_FAILED_RETURNED));
       sendUpdate();
       return;
     }
 
     if (fee.compareTo(BigDecimal.ZERO) > 0) {
-      player.sendMessage(MessageUtil.successText(playerRef, GuiKeys.TreasuryGui.DEPOSITED_FEE,
+      playerRef.sendMessage(MessageUtil.successText(playerRef, GuiKeys.TreasuryGui.DEPOSITED_FEE,
           economyManager.formatCurrency(amount), economyManager.formatCurrency(fee)));
     } else {
-      player.sendMessage(MessageUtil.successText(playerRef, GuiKeys.TreasuryGui.DEPOSITED,
+      playerRef.sendMessage(MessageUtil.successText(playerRef, GuiKeys.TreasuryGui.DEPOSITED,
           economyManager.formatCurrency(amount)));
     }
 
@@ -273,7 +273,7 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
                     PlayerRef playerRef, UUID uuid, BigDecimal amount, BigDecimal fee) {
     // Permission check
     if (!PermissionManager.get().hasPermission(uuid, Permissions.ECONOMY_WITHDRAW)) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.NO_WITHDRAW_PERMISSION));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.NO_WITHDRAW_PERMISSION));
       sendUpdate();
       return;
     }
@@ -281,7 +281,7 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
     // Limit check
     String limitReason = economyManager.checkWithdrawLimits(faction.id(), amount);
     if (limitReason != null) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.WITHDRAW_DENIED, limitReason));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.WITHDRAW_DENIED, limitReason));
       sendUpdate();
       return;
     }
@@ -292,11 +292,11 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
     if (result != EconomyAPI.TransactionResult.SUCCESS) {
       switch (result) {
         case INSUFFICIENT_FUNDS ->
-          player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.INSUFFICIENT_TREASURY));
+          playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.INSUFFICIENT_TREASURY));
         case LIMIT_EXCEEDED ->
-          player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.WITHDRAW_LIMIT));
+          playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.WITHDRAW_LIMIT));
         default ->
-          player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.WITHDRAW_FAILED, result));
+          playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.WITHDRAW_FAILED, result));
       }
       sendUpdate();
       return;
@@ -305,17 +305,17 @@ public class TreasuryDepositModalPage extends InteractiveCustomUIPage<DepositMod
     BigDecimal netToWallet = amount.subtract(fee);
     VaultEconomyProvider vault = economyManager.getVaultProvider();
     if (!vault.deposit(uuid, netToWallet)) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.WALLET_DEPOSIT_WARN));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.TreasuryGui.WALLET_DEPOSIT_WARN));
       sendUpdate();
       return;
     }
 
     if (fee.compareTo(BigDecimal.ZERO) > 0) {
-      player.sendMessage(MessageUtil.successText(playerRef, GuiKeys.TreasuryGui.WITHDREW_FEE,
+      playerRef.sendMessage(MessageUtil.successText(playerRef, GuiKeys.TreasuryGui.WITHDREW_FEE,
           economyManager.formatCurrency(amount), economyManager.formatCurrency(fee),
           economyManager.formatCurrency(netToWallet)));
     } else {
-      player.sendMessage(MessageUtil.successText(playerRef, GuiKeys.TreasuryGui.WITHDREW,
+      playerRef.sendMessage(MessageUtil.successText(playerRef, GuiKeys.TreasuryGui.WITHDREW,
           economyManager.formatCurrency(amount)));
     }
 

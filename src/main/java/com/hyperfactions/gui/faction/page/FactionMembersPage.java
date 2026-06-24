@@ -524,17 +524,17 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
     }
     FactionMember target = faction.members().get(targetUuid);
     if (target == null) {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.MembersGui.MEMBER_NOT_FOUND));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.MembersGui.MEMBER_NOT_FOUND));
       sendUpdate();
       return;
     }
 
     var result = factionManager.promoteMember(faction.id(), targetUuid, playerRef.getUuid());
     if (result == FactionManager.FactionResult.SUCCESS) {
-      player.sendMessage(MessageUtil.success(playerRef, GuiKeys.MembersGui.PROMOTED,
+      playerRef.sendMessage(MessageUtil.success(playerRef, GuiKeys.MembersGui.PROMOTED,
           target.username(), ConfigManager.get().getRoleDisplayName(FactionRole.OFFICER)));
     } else {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.MembersGui.PROMOTE_FAILED, result.name()));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.MembersGui.PROMOTE_FAILED, result.name()));
     }
     rebuildList(ref, store);
   }
@@ -552,17 +552,17 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
     }
     FactionMember target = faction.members().get(targetUuid);
     if (target == null) {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.MembersGui.MEMBER_NOT_FOUND));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.MembersGui.MEMBER_NOT_FOUND));
       sendUpdate();
       return;
     }
 
     var result = factionManager.demoteMember(faction.id(), targetUuid, playerRef.getUuid());
     if (result == FactionManager.FactionResult.SUCCESS) {
-      player.sendMessage(MessageUtil.success(playerRef, GuiKeys.MembersGui.DEMOTED,
+      playerRef.sendMessage(MessageUtil.success(playerRef, GuiKeys.MembersGui.DEMOTED,
           target.username(), ConfigManager.get().getRoleDisplayName(FactionRole.MEMBER)));
     } else {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.MembersGui.DEMOTE_FAILED, result.name()));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.MembersGui.DEMOTE_FAILED, result.name()));
     }
     rebuildList(ref, store);
   }
@@ -580,16 +580,16 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
     }
     FactionMember target = faction.members().get(targetUuid);
     if (target == null) {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.MembersGui.MEMBER_NOT_FOUND));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.MembersGui.MEMBER_NOT_FOUND));
       sendUpdate();
       return;
     }
 
     var result = factionManager.removeMember(faction.id(), targetUuid, playerRef.getUuid(), true);
     if (result == FactionManager.FactionResult.SUCCESS) {
-      player.sendMessage(MessageUtil.success(playerRef, GuiKeys.MembersGui.KICKED, target.username()));
+      playerRef.sendMessage(MessageUtil.success(playerRef, GuiKeys.MembersGui.KICKED, target.username()));
     } else {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.MembersGui.KICK_FAILED, result.name()));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.MembersGui.KICK_FAILED, result.name()));
     }
     rebuildList(ref, store);
   }
@@ -607,7 +607,7 @@ public class FactionMembersPage extends InteractiveCustomUIPage<FactionMembersDa
     }
     FactionMember target = faction.members().get(targetUuid);
     if (target == null) {
-      player.sendMessage(MessageUtil.error(playerRef, GuiKeys.MembersGui.MEMBER_NOT_FOUND));
+      playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.MembersGui.MEMBER_NOT_FOUND));
       sendUpdate();
       return;
     }

@@ -296,7 +296,7 @@ public class SetRelationModalPage extends InteractiveCustomUIPage<SetRelationMod
 
       case "RequestAlly" -> {
         if (!canManage) {
-          player.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.NO_PERMISSION));
+          playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.NO_PERMISSION));
           sendUpdate();
           return;
         }
@@ -304,7 +304,7 @@ public class SetRelationModalPage extends InteractiveCustomUIPage<SetRelationMod
         if (data.factionId != null) {
           UUID targetId = UuidUtil.parseOrNull(data.factionId);
           if (targetId == null) {
-            player.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
+            playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
             sendUpdate();
             return;
           }
@@ -312,17 +312,17 @@ public class SetRelationModalPage extends InteractiveCustomUIPage<SetRelationMod
           RelationManager.RelationResult result = relationManager.requestAlly(uuid, targetId);
 
           if (result == RelationManager.RelationResult.REQUEST_SENT) {
-            player.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.REQUEST_SENT, "#00AAFF", data.factionName));
+            playerRef.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.REQUEST_SENT, "#00AAFF", data.factionName));
             // Navigate to pending tab since a request was sent
             guiManager.openFactionRelations(player, ref, store, playerRef,
                 factionManager.getFaction(faction.id()), "pending");
           } else if (result == RelationManager.RelationResult.REQUEST_ACCEPTED) {
-            player.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.NOW_ALLIED, "#00AAFF", data.factionName));
+            playerRef.sendMessage(MessageUtil.info(playerRef, GuiKeys.RelationsGui.NOW_ALLIED, "#00AAFF", data.factionName));
             // Navigate to relations tab since alliance is now active
             guiManager.openFactionRelations(player, ref, store, playerRef,
                 factionManager.getFaction(faction.id()), "relations");
           } else {
-            player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.FAILED, result));
+            playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.FAILED, result));
             guiManager.openFactionRelations(player, ref, store, playerRef,
                 factionManager.getFaction(faction.id()));
           }
@@ -331,7 +331,7 @@ public class SetRelationModalPage extends InteractiveCustomUIPage<SetRelationMod
 
       case "SetEnemy" -> {
         if (!canManage) {
-          player.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.NO_PERMISSION));
+          playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.SettingsGui.NO_PERMISSION));
           sendUpdate();
           return;
         }
@@ -339,7 +339,7 @@ public class SetRelationModalPage extends InteractiveCustomUIPage<SetRelationMod
         if (data.factionId != null) {
           UUID targetId = UuidUtil.parseOrNull(data.factionId);
           if (targetId == null) {
-            player.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
+            playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
             sendUpdate();
             return;
           }
@@ -347,9 +347,9 @@ public class SetRelationModalPage extends InteractiveCustomUIPage<SetRelationMod
           RelationManager.RelationResult result = relationManager.setEnemy(uuid, targetId);
 
           if (result == RelationManager.RelationResult.SUCCESS) {
-            player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.NOW_ENEMIES, data.factionName));
+            playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.NOW_ENEMIES, data.factionName));
           } else {
-            player.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.FAILED, result));
+            playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.RelationsGui.FAILED, result));
           }
 
           guiManager.openFactionRelations(player, ref, store, playerRef,
@@ -361,7 +361,7 @@ public class SetRelationModalPage extends InteractiveCustomUIPage<SetRelationMod
         if (data.factionId != null) {
           UUID targetId = UuidUtil.parseOrNull(data.factionId);
           if (targetId == null) {
-            player.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
+            playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.BrowserGui.INVALID_FACTION));
             sendUpdate();
             return;
           }
@@ -371,7 +371,7 @@ public class SetRelationModalPage extends InteractiveCustomUIPage<SetRelationMod
           if (targetFaction != null) {
             guiManager.openFactionInfo(player, ref, store, playerRef, targetFaction, "relations");
           } else {
-            player.sendMessage(MessageUtil.error(playerRef, GuiKeys.PlayerInfoGui.FACTION_GONE));
+            playerRef.sendMessage(MessageUtil.error(playerRef, GuiKeys.PlayerInfoGui.FACTION_GONE));
             sendUpdate();
           }
         }

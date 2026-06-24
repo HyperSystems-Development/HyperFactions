@@ -10,7 +10,7 @@ import com.hypixel.hytale.component.ComponentAccessor;
 import com.hypixel.hytale.component.Ref;
 import com.hypixel.hytale.math.iterator.BlockIterator;
 import com.hypixel.hytale.math.util.ChunkUtil;
-import com.hypixel.hytale.math.vector.Vector3d;
+import org.joml.Vector3d;
 import com.hypixel.hytale.protocol.InteractionState;
 import com.hypixel.hytale.protocol.InteractionType;
 import com.hypixel.hytale.server.core.asset.type.blocktype.config.BlockType;
@@ -88,10 +88,10 @@ public class HyperFactionsRefillContainerInteraction extends RefillContainerInte
 
     InteractionConfiguration interactionConfig = heldItem.getItem().getInteractionConfig();
     float distance = interactionConfig.getUseDistance(playerComponent.getGameMode());
-    Vector3d fromPos = transformComponent.getPosition().clone();
+    Vector3d fromPos = new Vector3d(transformComponent.getPosition());
     fromPos.y += (double) modelComponent.getModel().getEyeHeight(ref, commandBuffer);
     Vector3d lookDir = headRotation.getDirection();
-    Vector3d toPos = fromPos.clone().add(lookDir.scale((double) distance));
+    Vector3d toPos = new Vector3d(fromPos).add(new Vector3d(lookDir).mul((double) distance));
 
     // Find the fluid position via raycast (same logic as vanilla/OrbisGuard)
     AtomicReference<int[]> fluidPos = new AtomicReference<>(null);

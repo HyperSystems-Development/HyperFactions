@@ -107,9 +107,9 @@ public class PlayerConnectionHandler {
           // Get spawn position for initial territory notification
           com.hypixel.hytale.math.vector.Transform transform = playerRef.getTransform();
           if (transform != null) {
-            com.hypixel.hytale.math.vector.Vector3d position = transform.getPosition();
+            org.joml.Vector3d position = transform.getPosition();
             hyperFactions.getTerritoryNotifier().onPlayerConnect(
-              playerRef, world.getName(), position.getX(), position.getZ()
+              playerRef, world.getName(), position.x(), position.z()
             );
           }
         }

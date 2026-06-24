@@ -111,7 +111,7 @@ public class TransferConfirmPage extends InteractiveCustomUIPage<TransferConfirm
     // Re-fetch faction to ensure fresh state
     Faction currentFaction = factionManager.getFaction(faction.id());
     if (currentFaction == null) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.FACTION_GONE));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.FACTION_GONE));
       guiManager.openFactionMain(player, ref, store, playerRef);
       return;
     }
@@ -120,7 +120,7 @@ public class TransferConfirmPage extends InteractiveCustomUIPage<TransferConfirm
 
     // Verify leader permission
     if (member == null || member.role() != FactionRole.LEADER) {
-      player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.NOT_LEADER_TRANSFER));
+      playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.NOT_LEADER_TRANSFER));
       guiManager.openFactionMembers(player, ref, store, playerRef, currentFaction);
       return;
     }
@@ -137,7 +137,7 @@ public class TransferConfirmPage extends InteractiveCustomUIPage<TransferConfirm
             faction.id(), targetUuid, uuid);
 
         if (result == FactionManager.FactionResult.SUCCESS) {
-          player.sendMessage(MessageUtil.successText(playerRef, GuiKeys.ConfirmGui.LEADERSHIP_TRANSFERRED, targetName));
+          playerRef.sendMessage(MessageUtil.successText(playerRef, GuiKeys.ConfirmGui.LEADERSHIP_TRANSFERRED, targetName));
           // Refresh to show updated roles
           Faction refreshedFaction = factionManager.getFaction(faction.id());
           if (refreshedFaction != null) {
@@ -146,7 +146,7 @@ public class TransferConfirmPage extends InteractiveCustomUIPage<TransferConfirm
             guiManager.openFactionMain(player, ref, store, playerRef);
           }
         } else {
-          player.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.TRANSFER_FAILED, result));
+          playerRef.sendMessage(MessageUtil.errorText(playerRef, GuiKeys.ConfirmGui.TRANSFER_FAILED, result));
           guiManager.openFactionMembers(player, ref, store, playerRef, currentFaction);
         }
       }

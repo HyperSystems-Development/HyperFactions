@@ -827,7 +827,7 @@ public class HyperFactionsExpansion extends PlaceholderExpansion implements Rela
       var pos = transform.getPosition();
       String world = store.getExternalData().getWorld().getName();
 
-      return new PositionData(world, pos.getX(), pos.getZ());
+      return new PositionData(world, pos.x(), pos.z());
     } catch (Exception e) {
       return null;
     }
